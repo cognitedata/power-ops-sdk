@@ -21,6 +21,7 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     DomainModelCore,
     DomainModelWrite,
     DomainRelationWrite,
+    GraphQLList,
     ResourcesWriteResult,
     T_DomainModel,
     T_DomainModelWrite,
@@ -32,6 +33,8 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     DomainModelCore,
     DomainRelation,
 )
+from cognite.powerops.client._generated.v1 import data_classes
+
 
 DEFAULT_LIMIT_READ = 25
 DEFAULT_QUERY_LIMIT = 3
@@ -751,3 +754,168 @@ def _create_edge_filter(
     if filter:
         filters.append(filter)
     return dm.filters.And(*filters)
+
+
+class GraphQLQueryResponse:
+    def __init__(self, data_model_id: dm.DataModelId):
+        self._output = GraphQLList([])
+        self._data_class_by_type = _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE[data_model_id]
+
+    def parse(self, response: dict[str, Any]) -> GraphQLList:
+        if "errors" in response:
+            raise RuntimeError(response["errors"])
+        _, data = list(response.items())[0]
+        self._parse_item(data)
+        return self._output
+
+    def _parse_item(self, data: dict[str, Any]) -> None:
+        if "items" in data:
+            for item in data["items"]:
+                self._parse_item(item)
+        elif "__typename" in data:
+            try:
+                item = self._data_class_by_type[data["__typename"]].model_validate(data)
+            except KeyError:
+                raise ValueError(f"Could not find class for type {data['__typename']}")
+            else:
+                self._output.append(item)
+        else:
+            raise RuntimeError("Missing '__typename' in GraphQL response. Cannot determine the type of the response.")
+
+
+_GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE = {
+    dm.DataModelId("sp_powerops_models", "compute_SHOPBasedDayAhead", "1"): {
+        "TaskDispatcherShopInput": data_classes.TaskDispatcherShopInputGraphQL,
+        "TaskDispatcherShopOutput": data_classes.TaskDispatcherShopOutputGraphQL,
+        "PreprocessorInput": data_classes.PreprocessorInputGraphQL,
+        "PreprocessorOutput": data_classes.PreprocessorOutputGraphQL,
+        "SHOPTriggerInput": data_classes.SHOPTriggerInputGraphQL,
+        "SHOPTriggerOutput": data_classes.SHOPTriggerOutputGraphQL,
+        "ShopPartialBidCalculationInput": data_classes.ShopPartialBidCalculationInputGraphQL,
+        "ShopPartialBidCalculationOutput": data_classes.ShopPartialBidCalculationOutputGraphQL,
+        "BidMatrixRaw": data_classes.BidMatrixRawGraphQL,
+        "MultiScenarioMatrixRaw": data_classes.MultiScenarioMatrixRawGraphQL,
+        "MarketConfiguration": data_classes.MarketConfigurationGraphQL,
+        "BidMethodSHOPMultiScenario": data_classes.BidMethodSHOPMultiScenarioGraphQL,
+        "Scenario": data_classes.ScenarioGraphQL,
+        "Mapping": data_classes.MappingGraphQL,
+        "ModelTemplate": data_classes.ModelTemplateGraphQL,
+        "SHOPResult": data_classes.SHOPResultGraphQL,
+        "Case": data_classes.CaseGraphQL,
+        "SHOPResultPriceProd": data_classes.SHOPResultPriceProdGraphQL,
+        "Alert": data_classes.AlertGraphQL,
+        "PlantShop": data_classes.PlantShopGraphQL,
+        "WatercourseShop": data_classes.WatercourseShopGraphQL,
+        "BidConfigurationShop": data_classes.BidConfigurationShopGraphQL,
+        "PriceArea": data_classes.PriceAreaGraphQL,
+        "PriceProdCase": data_classes.PriceProdCaseGraphQL,
+        "SHOPTimeSeries": data_classes.SHOPTimeSeriesGraphQL,
+        "Commands": data_classes.CommandsGraphQL,
+    },
+    dm.DataModelId("sp_powerops_models", "compute_TotalBidCalculation", "1"): {
+        "BidMatrixRaw": data_classes.BidMatrixRawGraphQL,
+        "MultiScenarioMatrixRaw": data_classes.MultiScenarioMatrixRawGraphQL,
+        "BidMatrix": data_classes.BidMatrixGraphQL,
+        "MultiScenarioMatrix": data_classes.MultiScenarioMatrixGraphQL,
+        "PartialPostProcessingInput": data_classes.PartialPostProcessingInputGraphQL,
+        "PartialPostProcessingOutput": data_classes.PartialPostProcessingOutputGraphQL,
+        "TotalBidMatrixCalculationInput": data_classes.TotalBidMatrixCalculationInputGraphQL,
+        "TotalBidMatrixCalculationOutput": data_classes.TotalBidMatrixCalculationOutputGraphQL,
+        "BidDocumentDayAhead": data_classes.BidDocumentDayAheadGraphQL,
+        "PriceArea": data_classes.PriceAreaGraphQL,
+        "BidMethodDayAhead": data_classes.BidMethodDayAheadGraphQL,
+        "BidMethodWaterValue": data_classes.BidMethodWaterValueGraphQL,
+        "BidMethodSHOPMultiScenario": data_classes.BidMethodSHOPMultiScenarioGraphQL,
+        "Alert": data_classes.AlertGraphQL,
+        "SHOPResult": data_classes.SHOPResultGraphQL,
+        "SHOPResultPriceProd": data_classes.SHOPResultPriceProdGraphQL,
+        "MarketConfiguration": data_classes.MarketConfigurationGraphQL,
+        "Scenario": data_classes.ScenarioGraphQL,
+        "ModelTemplate": data_classes.ModelTemplateGraphQL,
+        "Mapping": data_classes.MappingGraphQL,
+        "WatercourseShop": data_classes.WatercourseShopGraphQL,
+        "PriceProdCase": data_classes.PriceProdCaseGraphQL,
+        "Case": data_classes.CaseGraphQL,
+        "SHOPTimeSeries": data_classes.SHOPTimeSeriesGraphQL,
+        "Commands": data_classes.CommandsGraphQL,
+    },
+    dm.DataModelId("sp_powerops_models", "compute_WaterValueBasedDayAheadBid", "1"): {
+        "TaskDispatcherWaterInput": data_classes.TaskDispatcherWaterInputGraphQL,
+        "TaskDispatcherWaterOutput": data_classes.TaskDispatcherWaterOutputGraphQL,
+        "BidCalculationTask": data_classes.BidCalculationTaskGraphQL,
+        "WaterPartialBidCalculationInput": data_classes.WaterPartialBidCalculationInputGraphQL,
+        "WaterPartialBidCalculationOutput": data_classes.WaterPartialBidCalculationOutputGraphQL,
+        "BidMatrixRaw": data_classes.BidMatrixRawGraphQL,
+        "BidMethodWaterValue": data_classes.BidMethodWaterValueGraphQL,
+        "Plant": data_classes.PlantGraphQL,
+        "Watercourse": data_classes.WatercourseGraphQL,
+        "Alert": data_classes.AlertGraphQL,
+        "BidConfigurationWater": data_classes.BidConfigurationWaterGraphQL,
+        "PriceArea": data_classes.PriceAreaGraphQL,
+        "MarketConfiguration": data_classes.MarketConfigurationGraphQL,
+        "Reservoir": data_classes.ReservoirGraphQL,
+        "Generator": data_classes.GeneratorGraphQL,
+        "GeneratorEfficiencyCurve": data_classes.GeneratorEfficiencyCurveGraphQL,
+        "TurbineEfficiencyCurve": data_classes.TurbineEfficiencyCurveGraphQL,
+    },
+    dm.DataModelId("sp_powerops_models", "config_DayAheadConfiguration", "1"): {
+        "BidConfiguration": data_classes.BidConfigurationGraphQL,
+        "BidConfigurationShop": data_classes.BidConfigurationShopGraphQL,
+        "BidConfigurationWater": data_classes.BidConfigurationWaterGraphQL,
+        "MarketConfiguration": data_classes.MarketConfigurationGraphQL,
+        "Scenario": data_classes.ScenarioGraphQL,
+        "Mapping": data_classes.MappingGraphQL,
+        "ModelTemplate": data_classes.ModelTemplateGraphQL,
+        "Watercourse": data_classes.WatercourseGraphQL,
+        "WatercourseShop": data_classes.WatercourseShopGraphQL,
+        "Plant": data_classes.PlantGraphQL,
+        "PlantShop": data_classes.PlantShopGraphQL,
+        "Generator": data_classes.GeneratorGraphQL,
+        "Reservoir": data_classes.ReservoirGraphQL,
+        "TurbineEfficiencyCurve": data_classes.TurbineEfficiencyCurveGraphQL,
+        "GeneratorEfficiencyCurve": data_classes.GeneratorEfficiencyCurveGraphQL,
+        "BidMethodDayAhead": data_classes.BidMethodDayAheadGraphQL,
+        "BidMethodWaterValue": data_classes.BidMethodWaterValueGraphQL,
+        "BidMethodSHOPMultiScenario": data_classes.BidMethodSHOPMultiScenarioGraphQL,
+        "PriceArea": data_classes.PriceAreaGraphQL,
+        "BidMethod": data_classes.BidMethodGraphQL,
+        "Commands": data_classes.CommandsGraphQL,
+    },
+    dm.DataModelId("sp_powerops_models", "frontend_AFRRBid", "1"): {
+        "BidDocumentAFRR": data_classes.BidDocumentAFRRGraphQL,
+        "BidRow": data_classes.BidRowGraphQL,
+        "PriceAreaAFRR": data_classes.PriceAreaAFRRGraphQL,
+        "BidMethodAFRR": data_classes.BidMethodAFRRGraphQL,
+        "Alert": data_classes.AlertGraphQL,
+    },
+    dm.DataModelId("sp_powerops_models", "frontend_Asset", "1"): {
+        "PriceAreaAsset": data_classes.PriceAreaAssetGraphQL,
+        "Watercourse": data_classes.WatercourseGraphQL,
+        "Plant": data_classes.PlantGraphQL,
+        "Generator": data_classes.GeneratorGraphQL,
+        "Reservoir": data_classes.ReservoirGraphQL,
+        "TurbineEfficiencyCurve": data_classes.TurbineEfficiencyCurveGraphQL,
+        "GeneratorEfficiencyCurve": data_classes.GeneratorEfficiencyCurveGraphQL,
+        "BidMethodDayAhead": data_classes.BidMethodDayAheadGraphQL,
+    },
+    dm.DataModelId("sp_powerops_models", "frontend_DayAheadBid", "1"): {
+        "BidDocumentDayAhead": data_classes.BidDocumentDayAheadGraphQL,
+        "BidMatrix": data_classes.BidMatrixGraphQL,
+        "MultiScenarioMatrix": data_classes.MultiScenarioMatrixGraphQL,
+        "BasicBidMatrix": data_classes.BasicBidMatrixGraphQL,
+        "CustomBidMatrix": data_classes.CustomBidMatrixGraphQL,
+        "BidMethodCustom": data_classes.BidMethodCustomGraphQL,
+        "BidMethodDayAhead": data_classes.BidMethodDayAheadGraphQL,
+        "PriceArea": data_classes.PriceAreaGraphQL,
+        "BidMethodSHOPMultiScenario": data_classes.BidMethodSHOPMultiScenarioGraphQL,
+        "BidMethodWaterValue": data_classes.BidMethodWaterValueGraphQL,
+        "Alert": data_classes.AlertGraphQL,
+        "Scenario": data_classes.ScenarioGraphQL,
+        "ModelTemplate": data_classes.ModelTemplateGraphQL,
+        "Mapping": data_classes.MappingGraphQL,
+        "WatercourseShop": data_classes.WatercourseShopGraphQL,
+        "PriceProdCase": data_classes.PriceProdCaseGraphQL,
+        "Commands": data_classes.CommandsGraphQL,
+        "Case": data_classes.CaseGraphQL,
+    },
+}

@@ -6,9 +6,12 @@ from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
 from pydantic import Field
+from pydantic import field_validator, model_validator
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
@@ -16,12 +19,13 @@ from ._core import (
     DomainModelWriteList,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
     ResourcesWrite,
     TimeSeries,
 )
 
 if TYPE_CHECKING:
-    from ._case import Case, CaseWrite
+    from ._case import Case, CaseGraphQL, CaseWrite
 
 
 __all__ = [
@@ -43,6 +47,74 @@ _PRICEPRODCASE_PROPERTIES_BY_FIELD = {
     "price": "price",
     "production": "production",
 }
+
+
+class PriceProdCaseGraphQL(GraphQLCore):
+    """This represents the reading version of price prod case, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the price prod case.
+        data_record: The data record of the price prod case node.
+        price: The price field.
+        production: The production field.
+        case: The case field.
+    """
+
+    view_id = dm.ViewId("sp_powerops_models", "PriceProdCase", "1")
+    price: Union[TimeSeries, str, None] = None
+    production: Union[TimeSeries, str, None] = None
+    case: Optional[CaseGraphQL] = Field(None, repr=False)
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+    @field_validator("case", mode="before")
+    def parse_graphql(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        if "items" in value:
+            return value["items"]
+        return value
+
+    def as_read(self) -> PriceProdCase:
+        """Convert this GraphQL format of price prod case to the reading format."""
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return PriceProdCase(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            price=self.price,
+            production=self.production,
+            case=self.case.as_read() if isinstance(self.case, GraphQLCore) else self.case,
+        )
+
+    def as_write(self) -> PriceProdCaseWrite:
+        """Convert this GraphQL format of price prod case to the writing format."""
+        return PriceProdCaseWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            price=self.price,
+            production=self.production,
+            case=self.case.as_write() if isinstance(self.case, DomainModel) else self.case,
+        )
 
 
 class PriceProdCase(DomainModel):
@@ -115,6 +187,7 @@ class PriceProdCaseWrite(DomainModelWrite):
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
@@ -148,7 +221,7 @@ class PriceProdCaseWrite(DomainModelWrite):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.data_record.existing_version,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(

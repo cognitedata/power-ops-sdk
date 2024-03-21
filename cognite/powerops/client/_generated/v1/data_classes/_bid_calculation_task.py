@@ -6,9 +6,12 @@ from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
+from pydantic import field_validator, model_validator
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
@@ -16,12 +19,13 @@ from ._core import (
     DomainModelWriteList,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
     ResourcesWrite,
 )
 
 if TYPE_CHECKING:
-    from ._plant import Plant, PlantWrite
-    from ._price_area import PriceArea, PriceAreaWrite
+    from ._plant import Plant, PlantGraphQL, PlantWrite
+    from ._price_area import PriceArea, PriceAreaGraphQL, PriceAreaWrite
 
 
 __all__ = [
@@ -39,6 +43,74 @@ BidCalculationTaskFields = Literal["bid_date"]
 _BIDCALCULATIONTASK_PROPERTIES_BY_FIELD = {
     "bid_date": "bidDate",
 }
+
+
+class BidCalculationTaskGraphQL(GraphQLCore):
+    """This represents the reading version of bid calculation task, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the bid calculation task.
+        data_record: The data record of the bid calculation task node.
+        plant: The plant field.
+        bid_date: The bid date that the task is for
+        price_area: The price area related to the bid calculation task
+    """
+
+    view_id = dm.ViewId("sp_powerops_models", "BidCalculationTask", "1")
+    plant: Optional[PlantGraphQL] = Field(None, repr=False)
+    bid_date: Optional[datetime.date] = Field(None, alias="bidDate")
+    price_area: Optional[PriceAreaGraphQL] = Field(None, repr=False, alias="priceArea")
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+    @field_validator("plant", "price_area", mode="before")
+    def parse_graphql(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        if "items" in value:
+            return value["items"]
+        return value
+
+    def as_read(self) -> BidCalculationTask:
+        """Convert this GraphQL format of bid calculation task to the reading format."""
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return BidCalculationTask(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            plant=self.plant.as_read() if isinstance(self.plant, GraphQLCore) else self.plant,
+            bid_date=self.bid_date,
+            price_area=self.price_area.as_read() if isinstance(self.price_area, GraphQLCore) else self.price_area,
+        )
+
+    def as_write(self) -> BidCalculationTaskWrite:
+        """Convert this GraphQL format of bid calculation task to the writing format."""
+        return BidCalculationTaskWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            plant=self.plant.as_write() if isinstance(self.plant, DomainModel) else self.plant,
+            bid_date=self.bid_date,
+            price_area=self.price_area.as_write() if isinstance(self.price_area, DomainModel) else self.price_area,
+        )
 
 
 class BidCalculationTask(DomainModel):
@@ -111,6 +183,7 @@ class BidCalculationTaskWrite(DomainModelWrite):
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
@@ -141,7 +214,7 @@ class BidCalculationTaskWrite(DomainModelWrite):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.data_record.existing_version,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(

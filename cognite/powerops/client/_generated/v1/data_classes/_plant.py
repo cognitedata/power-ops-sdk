@@ -6,9 +6,12 @@ from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
 from pydantic import Field
+from pydantic import field_validator, model_validator
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
@@ -16,14 +19,15 @@ from ._core import (
     DomainModelWriteList,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
     ResourcesWrite,
     TimeSeries,
 )
 
 if TYPE_CHECKING:
-    from ._generator import Generator, GeneratorWrite
-    from ._reservoir import Reservoir, ReservoirWrite
-    from ._watercourse import Watercourse, WatercourseWrite
+    from ._generator import Generator, GeneratorGraphQL, GeneratorWrite
+    from ._reservoir import Reservoir, ReservoirGraphQL, ReservoirWrite
+    from ._watercourse import Watercourse, WatercourseGraphQL, WatercourseWrite
 
 
 __all__ = [
@@ -88,6 +92,152 @@ _PLANT_PROPERTIES_BY_FIELD = {
 }
 
 
+class PlantGraphQL(GraphQLCore):
+    """This represents the reading version of plant, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the plant.
+        data_record: The data record of the plant node.
+        name: Name for the Asset
+        display_name: Display name for the Asset.
+        ordering: The ordering of the asset
+        head_loss_factor: The head loss factor field.
+        outlet_level: The outlet level field.
+        p_max: The p max field.
+        p_min: The p min field.
+        penstock_head_loss_factors: The penstock head loss factor field.
+        watercourse: The watercourse field.
+        connection_losses: The connection loss field.
+        p_max_time_series: The p max time series field.
+        p_min_time_series: The p min time series field.
+        water_value_time_series: The water value time series field.
+        feeding_fee_time_series: The feeding fee time series field.
+        outlet_level_time_series: The outlet level time series field.
+        inlet_level_time_series: The inlet level time series field.
+        head_direct_time_series: The head direct time series field.
+        inlet_reservoir: The inlet reservoir field.
+        generators: The generator field.
+    """
+
+    view_id = dm.ViewId("sp_powerops_models", "Plant", "1")
+    name: Optional[str] = None
+    display_name: Optional[str] = Field(None, alias="displayName")
+    ordering: Optional[int] = None
+    head_loss_factor: Optional[float] = Field(None, alias="headLossFactor")
+    outlet_level: Optional[float] = Field(None, alias="outletLevel")
+    p_max: Optional[float] = Field(None, alias="pMax")
+    p_min: Optional[float] = Field(None, alias="pMin")
+    penstock_head_loss_factors: Optional[dict] = Field(None, alias="penstockHeadLossFactors")
+    watercourse: Optional[WatercourseGraphQL] = Field(None, repr=False)
+    connection_losses: Optional[float] = Field(None, alias="connectionLosses")
+    p_max_time_series: Union[TimeSeries, str, None] = Field(None, alias="pMaxTimeSeries")
+    p_min_time_series: Union[TimeSeries, str, None] = Field(None, alias="pMinTimeSeries")
+    water_value_time_series: Union[TimeSeries, str, None] = Field(None, alias="waterValueTimeSeries")
+    feeding_fee_time_series: Union[TimeSeries, str, None] = Field(None, alias="feedingFeeTimeSeries")
+    outlet_level_time_series: Union[TimeSeries, str, None] = Field(None, alias="outletLevelTimeSeries")
+    inlet_level_time_series: Union[TimeSeries, str, None] = Field(None, alias="inletLevelTimeSeries")
+    head_direct_time_series: Union[TimeSeries, str, None] = Field(None, alias="headDirectTimeSeries")
+    inlet_reservoir: Optional[ReservoirGraphQL] = Field(None, repr=False, alias="inletReservoir")
+    generators: Optional[list[GeneratorGraphQL]] = Field(default=None, repr=False)
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+    @field_validator("watercourse", "inlet_reservoir", "generators", mode="before")
+    def parse_graphql(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        if "items" in value:
+            return value["items"]
+        return value
+
+    def as_read(self) -> Plant:
+        """Convert this GraphQL format of plant to the reading format."""
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return Plant(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            name=self.name,
+            display_name=self.display_name,
+            ordering=self.ordering,
+            head_loss_factor=self.head_loss_factor,
+            outlet_level=self.outlet_level,
+            p_max=self.p_max,
+            p_min=self.p_min,
+            penstock_head_loss_factors=self.penstock_head_loss_factors,
+            watercourse=self.watercourse.as_read() if isinstance(self.watercourse, GraphQLCore) else self.watercourse,
+            connection_losses=self.connection_losses,
+            p_max_time_series=self.p_max_time_series,
+            p_min_time_series=self.p_min_time_series,
+            water_value_time_series=self.water_value_time_series,
+            feeding_fee_time_series=self.feeding_fee_time_series,
+            outlet_level_time_series=self.outlet_level_time_series,
+            inlet_level_time_series=self.inlet_level_time_series,
+            head_direct_time_series=self.head_direct_time_series,
+            inlet_reservoir=(
+                self.inlet_reservoir.as_read()
+                if isinstance(self.inlet_reservoir, GraphQLCore)
+                else self.inlet_reservoir
+            ),
+            generators=[
+                generator.as_read() if isinstance(generator, GraphQLCore) else generator
+                for generator in self.generators or []
+            ],
+        )
+
+    def as_write(self) -> PlantWrite:
+        """Convert this GraphQL format of plant to the writing format."""
+        return PlantWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            name=self.name,
+            display_name=self.display_name,
+            ordering=self.ordering,
+            head_loss_factor=self.head_loss_factor,
+            outlet_level=self.outlet_level,
+            p_max=self.p_max,
+            p_min=self.p_min,
+            penstock_head_loss_factors=self.penstock_head_loss_factors,
+            watercourse=self.watercourse.as_write() if isinstance(self.watercourse, DomainModel) else self.watercourse,
+            connection_losses=self.connection_losses,
+            p_max_time_series=self.p_max_time_series,
+            p_min_time_series=self.p_min_time_series,
+            water_value_time_series=self.water_value_time_series,
+            feeding_fee_time_series=self.feeding_fee_time_series,
+            outlet_level_time_series=self.outlet_level_time_series,
+            inlet_level_time_series=self.inlet_level_time_series,
+            head_direct_time_series=self.head_direct_time_series,
+            inlet_reservoir=(
+                self.inlet_reservoir.as_write()
+                if isinstance(self.inlet_reservoir, DomainModel)
+                else self.inlet_reservoir
+            ),
+            generators=[
+                generator.as_write() if isinstance(generator, DomainModel) else generator
+                for generator in self.generators or []
+            ],
+        )
+
+
 class Plant(DomainModel):
     """This represents the reading version of plant.
 
@@ -138,7 +288,7 @@ class Plant(DomainModel):
     inlet_level_time_series: Union[TimeSeries, str, None] = Field(None, alias="inletLevelTimeSeries")
     head_direct_time_series: Union[TimeSeries, str, None] = Field(None, alias="headDirectTimeSeries")
     inlet_reservoir: Union[Reservoir, str, dm.NodeId, None] = Field(None, repr=False, alias="inletReservoir")
-    generators: Union[list[Generator], list[str], None] = Field(default=None, repr=False)
+    generators: Union[list[Generator], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
     def as_write(self) -> PlantWrite:
         """Convert this read version of plant to the writing version."""
@@ -234,13 +384,14 @@ class PlantWrite(DomainModelWrite):
     inlet_level_time_series: Union[TimeSeries, str, None] = Field(None, alias="inletLevelTimeSeries")
     head_direct_time_series: Union[TimeSeries, str, None] = Field(None, alias="headDirectTimeSeries")
     inlet_reservoir: Union[ReservoirWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="inletReservoir")
-    generators: Union[list[GeneratorWrite], list[str], None] = Field(default=None, repr=False)
+    generators: Union[list[GeneratorWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
@@ -337,7 +488,7 @@ class PlantWrite(DomainModelWrite):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.data_record.existing_version,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
@@ -352,7 +503,13 @@ class PlantWrite(DomainModelWrite):
         edge_type = dm.DirectRelationReference("sp_powerops_types", "isSubAssetOf")
         for generator in self.generators or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
-                cache, start_node=self, end_node=generator, edge_type=edge_type, view_by_read_class=view_by_read_class
+                cache,
+                start_node=self,
+                end_node=generator,
+                edge_type=edge_type,
+                view_by_read_class=view_by_read_class,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
             )
             resources.extend(other_resources)
 

@@ -5,9 +5,12 @@ from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
+from pydantic import field_validator, model_validator
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
@@ -15,12 +18,13 @@ from ._core import (
     DomainModelWriteList,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
     ResourcesWrite,
 )
 from ._bid_method_day_ahead import BidMethodDayAhead, BidMethodDayAheadWrite
 
 if TYPE_CHECKING:
-    from ._scenario import Scenario, ScenarioWrite
+    from ._scenario import Scenario, ScenarioGraphQL, ScenarioWrite
 
 
 __all__ = [
@@ -50,6 +54,88 @@ _BIDMETHODSHOPMULTISCENARIO_PROPERTIES_BY_FIELD = {
 }
 
 
+class BidMethodSHOPMultiScenarioGraphQL(GraphQLCore):
+    """This represents the reading version of bid method shop multi scenario, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the bid method shop multi scenario.
+        data_record: The data record of the bid method shop multi scenario node.
+        name: Name for the BidMethod
+        shop_start_specification: The shop start specification
+        shop_end_specification: The shop end specification
+        shop_bid_date_specification: The shop bid date specification
+        scenarios: The scenarios to run this bid method with (includes incremental mappings and base mappings)
+    """
+
+    view_id = dm.ViewId("sp_powerops_models", "BidMethodSHOPMultiScenario", "1")
+    name: Optional[str] = None
+    shop_start_specification: Optional[str] = Field(None, alias="shopStartSpecification")
+    shop_end_specification: Optional[str] = Field(None, alias="shopEndSpecification")
+    shop_bid_date_specification: Optional[str] = Field(None, alias="shopBidDateSpecification")
+    scenarios: Optional[list[ScenarioGraphQL]] = Field(default=None, repr=False)
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+    @field_validator("scenarios", mode="before")
+    def parse_graphql(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        if "items" in value:
+            return value["items"]
+        return value
+
+    def as_read(self) -> BidMethodSHOPMultiScenario:
+        """Convert this GraphQL format of bid method shop multi scenario to the reading format."""
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return BidMethodSHOPMultiScenario(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            name=self.name,
+            shop_start_specification=self.shop_start_specification,
+            shop_end_specification=self.shop_end_specification,
+            shop_bid_date_specification=self.shop_bid_date_specification,
+            scenarios=[
+                scenario.as_read() if isinstance(scenario, GraphQLCore) else scenario
+                for scenario in self.scenarios or []
+            ],
+        )
+
+    def as_write(self) -> BidMethodSHOPMultiScenarioWrite:
+        """Convert this GraphQL format of bid method shop multi scenario to the writing format."""
+        return BidMethodSHOPMultiScenarioWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            name=self.name,
+            shop_start_specification=self.shop_start_specification,
+            shop_end_specification=self.shop_end_specification,
+            shop_bid_date_specification=self.shop_bid_date_specification,
+            scenarios=[
+                scenario.as_write() if isinstance(scenario, DomainModel) else scenario
+                for scenario in self.scenarios or []
+            ],
+        )
+
+
 class BidMethodSHOPMultiScenario(BidMethodDayAhead):
     """This represents the reading version of bid method shop multi scenario.
 
@@ -72,7 +158,7 @@ class BidMethodSHOPMultiScenario(BidMethodDayAhead):
     shop_start_specification: Optional[str] = Field(None, alias="shopStartSpecification")
     shop_end_specification: Optional[str] = Field(None, alias="shopEndSpecification")
     shop_bid_date_specification: Optional[str] = Field(None, alias="shopBidDateSpecification")
-    scenarios: Union[list[Scenario], list[str], None] = Field(default=None, repr=False)
+    scenarios: Union[list[Scenario], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
     def as_write(self) -> BidMethodSHOPMultiScenarioWrite:
         """Convert this read version of bid method shop multi scenario to the writing version."""
@@ -122,13 +208,14 @@ class BidMethodSHOPMultiScenarioWrite(BidMethodDayAheadWrite):
     shop_start_specification: Optional[str] = Field(None, alias="shopStartSpecification")
     shop_end_specification: Optional[str] = Field(None, alias="shopEndSpecification")
     shop_bid_date_specification: Optional[str] = Field(None, alias="shopBidDateSpecification")
-    scenarios: Union[list[ScenarioWrite], list[str], None] = Field(default=None, repr=False)
+    scenarios: Union[list[ScenarioWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
@@ -156,7 +243,7 @@ class BidMethodSHOPMultiScenarioWrite(BidMethodDayAheadWrite):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.data_record.existing_version,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
@@ -171,7 +258,13 @@ class BidMethodSHOPMultiScenarioWrite(BidMethodDayAheadWrite):
         edge_type = dm.DirectRelationReference("sp_powerops_types", "BidMethodDayahead.scenarios")
         for scenario in self.scenarios or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
-                cache, start_node=self, end_node=scenario, edge_type=edge_type, view_by_read_class=view_by_read_class
+                cache,
+                start_node=self,
+                end_node=scenario,
+                edge_type=edge_type,
+                view_by_read_class=view_by_read_class,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
             )
             resources.extend(other_resources)
 

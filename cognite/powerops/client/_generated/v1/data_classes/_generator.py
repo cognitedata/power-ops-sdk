@@ -6,9 +6,12 @@ from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
 from pydantic import Field
+from pydantic import field_validator, model_validator
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
@@ -16,13 +19,22 @@ from ._core import (
     DomainModelWriteList,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
     ResourcesWrite,
     TimeSeries,
 )
 
 if TYPE_CHECKING:
-    from ._generator_efficiency_curve import GeneratorEfficiencyCurve, GeneratorEfficiencyCurveWrite
-    from ._turbine_efficiency_curve import TurbineEfficiencyCurve, TurbineEfficiencyCurveWrite
+    from ._generator_efficiency_curve import (
+        GeneratorEfficiencyCurve,
+        GeneratorEfficiencyCurveGraphQL,
+        GeneratorEfficiencyCurveWrite,
+    )
+    from ._turbine_efficiency_curve import (
+        TurbineEfficiencyCurve,
+        TurbineEfficiencyCurveGraphQL,
+        TurbineEfficiencyCurveWrite,
+    )
 
 
 __all__ = [
@@ -52,6 +64,118 @@ _GENERATOR_PROPERTIES_BY_FIELD = {
     "start_stop_cost": "startStopCost",
     "is_available_time_series": "isAvailableTimeSeries",
 }
+
+
+class GeneratorGraphQL(GraphQLCore):
+    """This represents the reading version of generator, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the generator.
+        data_record: The data record of the generator node.
+        name: Name for the Asset
+        display_name: Display name for the Asset.
+        ordering: The ordering of the asset
+        p_min: The p min field.
+        penstock: The penstock field.
+        start_cost: The start cost field.
+        start_stop_cost: The start stop cost field.
+        is_available_time_series: The is available time series field.
+        efficiency_curve: The efficiency curve field.
+        turbine_curves: The watercourses that are connected to the PriceArea.
+    """
+
+    view_id = dm.ViewId("sp_powerops_models", "Generator", "1")
+    name: Optional[str] = None
+    display_name: Optional[str] = Field(None, alias="displayName")
+    ordering: Optional[int] = None
+    p_min: Optional[float] = Field(None, alias="pMin")
+    penstock: Optional[int] = None
+    start_cost: Optional[float] = Field(None, alias="startCost")
+    start_stop_cost: Union[TimeSeries, str, None] = Field(None, alias="startStopCost")
+    is_available_time_series: Union[TimeSeries, str, None] = Field(None, alias="isAvailableTimeSeries")
+    efficiency_curve: Optional[GeneratorEfficiencyCurveGraphQL] = Field(None, repr=False, alias="efficiencyCurve")
+    turbine_curves: Optional[list[TurbineEfficiencyCurveGraphQL]] = Field(
+        default=None, repr=False, alias="turbineCurves"
+    )
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+    @field_validator("efficiency_curve", "turbine_curves", mode="before")
+    def parse_graphql(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        if "items" in value:
+            return value["items"]
+        return value
+
+    def as_read(self) -> Generator:
+        """Convert this GraphQL format of generator to the reading format."""
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return Generator(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            name=self.name,
+            display_name=self.display_name,
+            ordering=self.ordering,
+            p_min=self.p_min,
+            penstock=self.penstock,
+            start_cost=self.start_cost,
+            start_stop_cost=self.start_stop_cost,
+            is_available_time_series=self.is_available_time_series,
+            efficiency_curve=(
+                self.efficiency_curve.as_read()
+                if isinstance(self.efficiency_curve, GraphQLCore)
+                else self.efficiency_curve
+            ),
+            turbine_curves=[
+                turbine_curve.as_read() if isinstance(turbine_curve, GraphQLCore) else turbine_curve
+                for turbine_curve in self.turbine_curves or []
+            ],
+        )
+
+    def as_write(self) -> GeneratorWrite:
+        """Convert this GraphQL format of generator to the writing format."""
+        return GeneratorWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            name=self.name,
+            display_name=self.display_name,
+            ordering=self.ordering,
+            p_min=self.p_min,
+            penstock=self.penstock,
+            start_cost=self.start_cost,
+            start_stop_cost=self.start_stop_cost,
+            is_available_time_series=self.is_available_time_series,
+            efficiency_curve=(
+                self.efficiency_curve.as_write()
+                if isinstance(self.efficiency_curve, DomainModel)
+                else self.efficiency_curve
+            ),
+            turbine_curves=[
+                turbine_curve.as_write() if isinstance(turbine_curve, DomainModel) else turbine_curve
+                for turbine_curve in self.turbine_curves or []
+            ],
+        )
 
 
 class Generator(DomainModel):
@@ -88,7 +212,7 @@ class Generator(DomainModel):
     efficiency_curve: Union[GeneratorEfficiencyCurve, str, dm.NodeId, None] = Field(
         None, repr=False, alias="efficiencyCurve"
     )
-    turbine_curves: Union[list[TurbineEfficiencyCurve], list[str], None] = Field(
+    turbine_curves: Union[list[TurbineEfficiencyCurve], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="turbineCurves"
     )
 
@@ -161,7 +285,7 @@ class GeneratorWrite(DomainModelWrite):
     efficiency_curve: Union[GeneratorEfficiencyCurveWrite, str, dm.NodeId, None] = Field(
         None, repr=False, alias="efficiencyCurve"
     )
-    turbine_curves: Union[list[TurbineEfficiencyCurveWrite], list[str], None] = Field(
+    turbine_curves: Union[list[TurbineEfficiencyCurveWrite], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="turbineCurves"
     )
 
@@ -170,6 +294,7 @@ class GeneratorWrite(DomainModelWrite):
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
@@ -223,7 +348,7 @@ class GeneratorWrite(DomainModelWrite):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.data_record.existing_version,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
@@ -243,6 +368,8 @@ class GeneratorWrite(DomainModelWrite):
                 end_node=turbine_curve,
                 edge_type=edge_type,
                 view_by_read_class=view_by_read_class,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
             )
             resources.extend(other_resources)
 

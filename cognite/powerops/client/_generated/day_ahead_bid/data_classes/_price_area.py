@@ -6,9 +6,12 @@ from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
 from pydantic import Field
+from pydantic import field_validator, model_validator
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
@@ -16,12 +19,13 @@ from ._core import (
     DomainModelWriteList,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
     ResourcesWrite,
     TimeSeries,
 )
 
 if TYPE_CHECKING:
-    from ._bid_method import BidMethod, BidMethodWrite
+    from ._bid_method import BidMethod, BidMethodGraphQL, BidMethodWrite
 
 
 __all__ = [
@@ -45,6 +49,86 @@ _PRICEAREA_PROPERTIES_BY_FIELD = {
     "main_scenario": "mainScenario",
     "price_scenarios": "priceScenarios",
 }
+
+
+class PriceAreaGraphQL(GraphQLCore):
+    """This represents the reading version of price area, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the price area.
+        data_record: The data record of the price area node.
+        name: The name field.
+        default_method: The default method field.
+        timezone: The timezone field.
+        main_scenario: The main scenario field.
+        price_scenarios: The price scenario field.
+    """
+
+    view_id = dm.ViewId("power-ops-day-ahead-bid", "PriceArea", "1")
+    name: Optional[str] = None
+    default_method: Optional[BidMethodGraphQL] = Field(None, repr=False, alias="defaultMethod")
+    timezone: Optional[str] = None
+    main_scenario: Union[TimeSeries, str, None] = Field(None, alias="mainScenario")
+    price_scenarios: Union[list[TimeSeries], list[str], None] = Field(None, alias="priceScenarios")
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+    @field_validator("default_method", mode="before")
+    def parse_graphql(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        if "items" in value:
+            return value["items"]
+        return value
+
+    def as_read(self) -> PriceArea:
+        """Convert this GraphQL format of price area to the reading format."""
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return PriceArea(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            name=self.name,
+            default_method=(
+                self.default_method.as_read() if isinstance(self.default_method, GraphQLCore) else self.default_method
+            ),
+            timezone=self.timezone,
+            main_scenario=self.main_scenario,
+            price_scenarios=self.price_scenarios,
+        )
+
+    def as_write(self) -> PriceAreaWrite:
+        """Convert this GraphQL format of price area to the writing format."""
+        return PriceAreaWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            name=self.name,
+            default_method=(
+                self.default_method.as_write() if isinstance(self.default_method, DomainModel) else self.default_method
+            ),
+            timezone=self.timezone,
+            main_scenario=self.main_scenario,
+            price_scenarios=self.price_scenarios,
+        )
 
 
 class PriceArea(DomainModel):
@@ -125,6 +209,7 @@ class PriceAreaWrite(DomainModelWrite):
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
@@ -163,7 +248,7 @@ class PriceAreaWrite(DomainModelWrite):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.data_record.existing_version,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(

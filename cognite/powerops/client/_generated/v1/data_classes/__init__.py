@@ -1,11 +1,14 @@
 from ._core import (
     DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
     DomainModelWrite,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
+    GraphQLList,
     ResourcesWrite,
     ResourcesWriteResult,
 )
@@ -14,6 +17,7 @@ from ._alert import (
     AlertApply,
     AlertApplyList,
     AlertFields,
+    AlertGraphQL,
     AlertList,
     AlertTextFields,
     AlertWrite,
@@ -24,6 +28,7 @@ from ._basic_bid_matrix import (
     BasicBidMatrixApply,
     BasicBidMatrixApplyList,
     BasicBidMatrixFields,
+    BasicBidMatrixGraphQL,
     BasicBidMatrixList,
     BasicBidMatrixTextFields,
     BasicBidMatrixWrite,
@@ -34,6 +39,7 @@ from ._bid_calculation_task import (
     BidCalculationTaskApply,
     BidCalculationTaskApplyList,
     BidCalculationTaskFields,
+    BidCalculationTaskGraphQL,
     BidCalculationTaskList,
     BidCalculationTaskWrite,
     BidCalculationTaskWriteList,
@@ -42,6 +48,7 @@ from ._bid_configuration import (
     BidConfiguration,
     BidConfigurationApply,
     BidConfigurationApplyList,
+    BidConfigurationGraphQL,
     BidConfigurationList,
     BidConfigurationWrite,
     BidConfigurationWriteList,
@@ -51,6 +58,7 @@ from ._bid_configuration_shop import (
     BidConfigurationShopApply,
     BidConfigurationShopApplyList,
     BidConfigurationShopFields,
+    BidConfigurationShopGraphQL,
     BidConfigurationShopList,
     BidConfigurationShopTextFields,
     BidConfigurationShopWrite,
@@ -60,6 +68,7 @@ from ._bid_configuration_water import (
     BidConfigurationWater,
     BidConfigurationWaterApply,
     BidConfigurationWaterApplyList,
+    BidConfigurationWaterGraphQL,
     BidConfigurationWaterList,
     BidConfigurationWaterWrite,
     BidConfigurationWaterWriteList,
@@ -69,6 +78,7 @@ from ._bid_document_afrr import (
     BidDocumentAFRRApply,
     BidDocumentAFRRApplyList,
     BidDocumentAFRRFields,
+    BidDocumentAFRRGraphQL,
     BidDocumentAFRRList,
     BidDocumentAFRRTextFields,
     BidDocumentAFRRWrite,
@@ -79,6 +89,7 @@ from ._bid_document_day_ahead import (
     BidDocumentDayAheadApply,
     BidDocumentDayAheadApplyList,
     BidDocumentDayAheadFields,
+    BidDocumentDayAheadGraphQL,
     BidDocumentDayAheadList,
     BidDocumentDayAheadTextFields,
     BidDocumentDayAheadWrite,
@@ -89,6 +100,7 @@ from ._bid_matrix import (
     BidMatrixApply,
     BidMatrixApplyList,
     BidMatrixFields,
+    BidMatrixGraphQL,
     BidMatrixList,
     BidMatrixTextFields,
     BidMatrixWrite,
@@ -99,6 +111,7 @@ from ._bid_matrix_raw import (
     BidMatrixRawApply,
     BidMatrixRawApplyList,
     BidMatrixRawFields,
+    BidMatrixRawGraphQL,
     BidMatrixRawList,
     BidMatrixRawTextFields,
     BidMatrixRawWrite,
@@ -109,6 +122,7 @@ from ._bid_method import (
     BidMethodApply,
     BidMethodApplyList,
     BidMethodFields,
+    BidMethodGraphQL,
     BidMethodList,
     BidMethodTextFields,
     BidMethodWrite,
@@ -119,6 +133,7 @@ from ._bid_method_afrr import (
     BidMethodAFRRApply,
     BidMethodAFRRApplyList,
     BidMethodAFRRFields,
+    BidMethodAFRRGraphQL,
     BidMethodAFRRList,
     BidMethodAFRRTextFields,
     BidMethodAFRRWrite,
@@ -129,6 +144,7 @@ from ._bid_method_custom import (
     BidMethodCustomApply,
     BidMethodCustomApplyList,
     BidMethodCustomFields,
+    BidMethodCustomGraphQL,
     BidMethodCustomList,
     BidMethodCustomTextFields,
     BidMethodCustomWrite,
@@ -139,6 +155,7 @@ from ._bid_method_day_ahead import (
     BidMethodDayAheadApply,
     BidMethodDayAheadApplyList,
     BidMethodDayAheadFields,
+    BidMethodDayAheadGraphQL,
     BidMethodDayAheadList,
     BidMethodDayAheadTextFields,
     BidMethodDayAheadWrite,
@@ -149,6 +166,7 @@ from ._bid_method_shop_multi_scenario import (
     BidMethodSHOPMultiScenarioApply,
     BidMethodSHOPMultiScenarioApplyList,
     BidMethodSHOPMultiScenarioFields,
+    BidMethodSHOPMultiScenarioGraphQL,
     BidMethodSHOPMultiScenarioList,
     BidMethodSHOPMultiScenarioTextFields,
     BidMethodSHOPMultiScenarioWrite,
@@ -159,6 +177,7 @@ from ._bid_method_water_value import (
     BidMethodWaterValueApply,
     BidMethodWaterValueApplyList,
     BidMethodWaterValueFields,
+    BidMethodWaterValueGraphQL,
     BidMethodWaterValueList,
     BidMethodWaterValueTextFields,
     BidMethodWaterValueWrite,
@@ -169,17 +188,19 @@ from ._bid_row import (
     BidRowApply,
     BidRowApplyList,
     BidRowFields,
+    BidRowGraphQL,
     BidRowList,
     BidRowTextFields,
     BidRowWrite,
     BidRowWriteList,
 )
-from ._case import Case, CaseApply, CaseApplyList, CaseFields, CaseList, CaseWrite, CaseWriteList
+from ._case import Case, CaseApply, CaseApplyList, CaseFields, CaseGraphQL, CaseList, CaseWrite, CaseWriteList
 from ._commands import (
     Commands,
     CommandsApply,
     CommandsApplyList,
     CommandsFields,
+    CommandsGraphQL,
     CommandsList,
     CommandsTextFields,
     CommandsWrite,
@@ -190,6 +211,7 @@ from ._custom_bid_matrix import (
     CustomBidMatrixApply,
     CustomBidMatrixApplyList,
     CustomBidMatrixFields,
+    CustomBidMatrixGraphQL,
     CustomBidMatrixList,
     CustomBidMatrixTextFields,
     CustomBidMatrixWrite,
@@ -200,6 +222,7 @@ from ._generator import (
     GeneratorApply,
     GeneratorApplyList,
     GeneratorFields,
+    GeneratorGraphQL,
     GeneratorList,
     GeneratorTextFields,
     GeneratorWrite,
@@ -210,6 +233,7 @@ from ._generator_efficiency_curve import (
     GeneratorEfficiencyCurveApply,
     GeneratorEfficiencyCurveApplyList,
     GeneratorEfficiencyCurveFields,
+    GeneratorEfficiencyCurveGraphQL,
     GeneratorEfficiencyCurveList,
     GeneratorEfficiencyCurveWrite,
     GeneratorEfficiencyCurveWriteList,
@@ -219,6 +243,7 @@ from ._mapping import (
     MappingApply,
     MappingApplyList,
     MappingFields,
+    MappingGraphQL,
     MappingList,
     MappingTextFields,
     MappingWrite,
@@ -229,6 +254,7 @@ from ._market_configuration import (
     MarketConfigurationApply,
     MarketConfigurationApplyList,
     MarketConfigurationFields,
+    MarketConfigurationGraphQL,
     MarketConfigurationList,
     MarketConfigurationTextFields,
     MarketConfigurationWrite,
@@ -239,6 +265,7 @@ from ._model_template import (
     ModelTemplateApply,
     ModelTemplateApplyList,
     ModelTemplateFields,
+    ModelTemplateGraphQL,
     ModelTemplateList,
     ModelTemplateTextFields,
     ModelTemplateWrite,
@@ -249,6 +276,7 @@ from ._multi_scenario_matrix import (
     MultiScenarioMatrixApply,
     MultiScenarioMatrixApplyList,
     MultiScenarioMatrixFields,
+    MultiScenarioMatrixGraphQL,
     MultiScenarioMatrixList,
     MultiScenarioMatrixTextFields,
     MultiScenarioMatrixWrite,
@@ -259,6 +287,7 @@ from ._multi_scenario_matrix_raw import (
     MultiScenarioMatrixRawApply,
     MultiScenarioMatrixRawApplyList,
     MultiScenarioMatrixRawFields,
+    MultiScenarioMatrixRawGraphQL,
     MultiScenarioMatrixRawList,
     MultiScenarioMatrixRawTextFields,
     MultiScenarioMatrixRawWrite,
@@ -269,6 +298,7 @@ from ._partial_post_processing_input import (
     PartialPostProcessingInputApply,
     PartialPostProcessingInputApplyList,
     PartialPostProcessingInputFields,
+    PartialPostProcessingInputGraphQL,
     PartialPostProcessingInputList,
     PartialPostProcessingInputTextFields,
     PartialPostProcessingInputWrite,
@@ -279,6 +309,7 @@ from ._partial_post_processing_output import (
     PartialPostProcessingOutputApply,
     PartialPostProcessingOutputApplyList,
     PartialPostProcessingOutputFields,
+    PartialPostProcessingOutputGraphQL,
     PartialPostProcessingOutputList,
     PartialPostProcessingOutputTextFields,
     PartialPostProcessingOutputWrite,
@@ -289,6 +320,7 @@ from ._plant import (
     PlantApply,
     PlantApplyList,
     PlantFields,
+    PlantGraphQL,
     PlantList,
     PlantTextFields,
     PlantWrite,
@@ -299,6 +331,7 @@ from ._plant_shop import (
     PlantShopApply,
     PlantShopApplyList,
     PlantShopFields,
+    PlantShopGraphQL,
     PlantShopList,
     PlantShopTextFields,
     PlantShopWrite,
@@ -309,6 +342,7 @@ from ._preprocessor_input import (
     PreprocessorInputApply,
     PreprocessorInputApplyList,
     PreprocessorInputFields,
+    PreprocessorInputGraphQL,
     PreprocessorInputList,
     PreprocessorInputTextFields,
     PreprocessorInputWrite,
@@ -319,6 +353,7 @@ from ._preprocessor_output import (
     PreprocessorOutputApply,
     PreprocessorOutputApplyList,
     PreprocessorOutputFields,
+    PreprocessorOutputGraphQL,
     PreprocessorOutputList,
     PreprocessorOutputTextFields,
     PreprocessorOutputWrite,
@@ -329,6 +364,7 @@ from ._price_area import (
     PriceAreaApply,
     PriceAreaApplyList,
     PriceAreaFields,
+    PriceAreaGraphQL,
     PriceAreaList,
     PriceAreaTextFields,
     PriceAreaWrite,
@@ -339,6 +375,7 @@ from ._price_area_afrr import (
     PriceAreaAFRRApply,
     PriceAreaAFRRApplyList,
     PriceAreaAFRRFields,
+    PriceAreaAFRRGraphQL,
     PriceAreaAFRRList,
     PriceAreaAFRRTextFields,
     PriceAreaAFRRWrite,
@@ -349,6 +386,7 @@ from ._price_area_asset import (
     PriceAreaAssetApply,
     PriceAreaAssetApplyList,
     PriceAreaAssetFields,
+    PriceAreaAssetGraphQL,
     PriceAreaAssetList,
     PriceAreaAssetTextFields,
     PriceAreaAssetWrite,
@@ -359,6 +397,7 @@ from ._price_prod_case import (
     PriceProdCaseApply,
     PriceProdCaseApplyList,
     PriceProdCaseFields,
+    PriceProdCaseGraphQL,
     PriceProdCaseList,
     PriceProdCaseWrite,
     PriceProdCaseWriteList,
@@ -368,6 +407,7 @@ from ._reservoir import (
     ReservoirApply,
     ReservoirApplyList,
     ReservoirFields,
+    ReservoirGraphQL,
     ReservoirList,
     ReservoirTextFields,
     ReservoirWrite,
@@ -378,6 +418,7 @@ from ._shop_result import (
     SHOPResultApply,
     SHOPResultApplyList,
     SHOPResultFields,
+    SHOPResultGraphQL,
     SHOPResultList,
     SHOPResultWrite,
     SHOPResultWriteList,
@@ -387,6 +428,7 @@ from ._shop_result_price_prod import (
     SHOPResultPriceProdApply,
     SHOPResultPriceProdApplyList,
     SHOPResultPriceProdFields,
+    SHOPResultPriceProdGraphQL,
     SHOPResultPriceProdList,
     SHOPResultPriceProdWrite,
     SHOPResultPriceProdWriteList,
@@ -396,6 +438,7 @@ from ._shop_time_series import (
     SHOPTimeSeriesApply,
     SHOPTimeSeriesApplyList,
     SHOPTimeSeriesFields,
+    SHOPTimeSeriesGraphQL,
     SHOPTimeSeriesList,
     SHOPTimeSeriesTextFields,
     SHOPTimeSeriesWrite,
@@ -406,6 +449,7 @@ from ._shop_trigger_input import (
     SHOPTriggerInputApply,
     SHOPTriggerInputApplyList,
     SHOPTriggerInputFields,
+    SHOPTriggerInputGraphQL,
     SHOPTriggerInputList,
     SHOPTriggerInputTextFields,
     SHOPTriggerInputWrite,
@@ -416,6 +460,7 @@ from ._shop_trigger_output import (
     SHOPTriggerOutputApply,
     SHOPTriggerOutputApplyList,
     SHOPTriggerOutputFields,
+    SHOPTriggerOutputGraphQL,
     SHOPTriggerOutputList,
     SHOPTriggerOutputTextFields,
     SHOPTriggerOutputWrite,
@@ -426,6 +471,7 @@ from ._scenario import (
     ScenarioApply,
     ScenarioApplyList,
     ScenarioFields,
+    ScenarioGraphQL,
     ScenarioList,
     ScenarioTextFields,
     ScenarioWrite,
@@ -436,6 +482,7 @@ from ._shop_partial_bid_calculation_input import (
     ShopPartialBidCalculationInputApply,
     ShopPartialBidCalculationInputApplyList,
     ShopPartialBidCalculationInputFields,
+    ShopPartialBidCalculationInputGraphQL,
     ShopPartialBidCalculationInputList,
     ShopPartialBidCalculationInputTextFields,
     ShopPartialBidCalculationInputWrite,
@@ -446,6 +493,7 @@ from ._shop_partial_bid_calculation_output import (
     ShopPartialBidCalculationOutputApply,
     ShopPartialBidCalculationOutputApplyList,
     ShopPartialBidCalculationOutputFields,
+    ShopPartialBidCalculationOutputGraphQL,
     ShopPartialBidCalculationOutputList,
     ShopPartialBidCalculationOutputTextFields,
     ShopPartialBidCalculationOutputWrite,
@@ -456,6 +504,7 @@ from ._task_dispatcher_shop_input import (
     TaskDispatcherShopInputApply,
     TaskDispatcherShopInputApplyList,
     TaskDispatcherShopInputFields,
+    TaskDispatcherShopInputGraphQL,
     TaskDispatcherShopInputList,
     TaskDispatcherShopInputTextFields,
     TaskDispatcherShopInputWrite,
@@ -466,6 +515,7 @@ from ._task_dispatcher_shop_output import (
     TaskDispatcherShopOutputApply,
     TaskDispatcherShopOutputApplyList,
     TaskDispatcherShopOutputFields,
+    TaskDispatcherShopOutputGraphQL,
     TaskDispatcherShopOutputList,
     TaskDispatcherShopOutputTextFields,
     TaskDispatcherShopOutputWrite,
@@ -476,6 +526,7 @@ from ._task_dispatcher_water_input import (
     TaskDispatcherWaterInputApply,
     TaskDispatcherWaterInputApplyList,
     TaskDispatcherWaterInputFields,
+    TaskDispatcherWaterInputGraphQL,
     TaskDispatcherWaterInputList,
     TaskDispatcherWaterInputTextFields,
     TaskDispatcherWaterInputWrite,
@@ -486,6 +537,7 @@ from ._task_dispatcher_water_output import (
     TaskDispatcherWaterOutputApply,
     TaskDispatcherWaterOutputApplyList,
     TaskDispatcherWaterOutputFields,
+    TaskDispatcherWaterOutputGraphQL,
     TaskDispatcherWaterOutputList,
     TaskDispatcherWaterOutputTextFields,
     TaskDispatcherWaterOutputWrite,
@@ -496,6 +548,7 @@ from ._total_bid_matrix_calculation_input import (
     TotalBidMatrixCalculationInputApply,
     TotalBidMatrixCalculationInputApplyList,
     TotalBidMatrixCalculationInputFields,
+    TotalBidMatrixCalculationInputGraphQL,
     TotalBidMatrixCalculationInputList,
     TotalBidMatrixCalculationInputTextFields,
     TotalBidMatrixCalculationInputWrite,
@@ -506,6 +559,7 @@ from ._total_bid_matrix_calculation_output import (
     TotalBidMatrixCalculationOutputApply,
     TotalBidMatrixCalculationOutputApplyList,
     TotalBidMatrixCalculationOutputFields,
+    TotalBidMatrixCalculationOutputGraphQL,
     TotalBidMatrixCalculationOutputList,
     TotalBidMatrixCalculationOutputTextFields,
     TotalBidMatrixCalculationOutputWrite,
@@ -516,6 +570,7 @@ from ._turbine_efficiency_curve import (
     TurbineEfficiencyCurveApply,
     TurbineEfficiencyCurveApplyList,
     TurbineEfficiencyCurveFields,
+    TurbineEfficiencyCurveGraphQL,
     TurbineEfficiencyCurveList,
     TurbineEfficiencyCurveWrite,
     TurbineEfficiencyCurveWriteList,
@@ -525,6 +580,7 @@ from ._water_partial_bid_calculation_input import (
     WaterPartialBidCalculationInputApply,
     WaterPartialBidCalculationInputApplyList,
     WaterPartialBidCalculationInputFields,
+    WaterPartialBidCalculationInputGraphQL,
     WaterPartialBidCalculationInputList,
     WaterPartialBidCalculationInputTextFields,
     WaterPartialBidCalculationInputWrite,
@@ -535,6 +591,7 @@ from ._water_partial_bid_calculation_output import (
     WaterPartialBidCalculationOutputApply,
     WaterPartialBidCalculationOutputApplyList,
     WaterPartialBidCalculationOutputFields,
+    WaterPartialBidCalculationOutputGraphQL,
     WaterPartialBidCalculationOutputList,
     WaterPartialBidCalculationOutputTextFields,
     WaterPartialBidCalculationOutputWrite,
@@ -545,6 +602,7 @@ from ._watercourse import (
     WatercourseApply,
     WatercourseApplyList,
     WatercourseFields,
+    WatercourseGraphQL,
     WatercourseList,
     WatercourseTextFields,
     WatercourseWrite,
@@ -555,6 +613,7 @@ from ._watercourse_shop import (
     WatercourseShopApply,
     WatercourseShopApplyList,
     WatercourseShopFields,
+    WatercourseShopGraphQL,
     WatercourseShopList,
     WatercourseShopTextFields,
     WatercourseShopWrite,
@@ -562,128 +621,170 @@ from ._watercourse_shop import (
 )
 
 BasicBidMatrix.model_rebuild()
+BasicBidMatrixGraphQL.model_rebuild()
 BasicBidMatrixWrite.model_rebuild()
 BasicBidMatrixApply.model_rebuild()
 BidCalculationTask.model_rebuild()
+BidCalculationTaskGraphQL.model_rebuild()
 BidCalculationTaskWrite.model_rebuild()
 BidCalculationTaskApply.model_rebuild()
 BidConfiguration.model_rebuild()
+BidConfigurationGraphQL.model_rebuild()
 BidConfigurationWrite.model_rebuild()
 BidConfigurationApply.model_rebuild()
 BidConfigurationShop.model_rebuild()
+BidConfigurationShopGraphQL.model_rebuild()
 BidConfigurationShopWrite.model_rebuild()
 BidConfigurationShopApply.model_rebuild()
 BidConfigurationWater.model_rebuild()
+BidConfigurationWaterGraphQL.model_rebuild()
 BidConfigurationWaterWrite.model_rebuild()
 BidConfigurationWaterApply.model_rebuild()
 BidDocumentAFRR.model_rebuild()
+BidDocumentAFRRGraphQL.model_rebuild()
 BidDocumentAFRRWrite.model_rebuild()
 BidDocumentAFRRApply.model_rebuild()
 BidDocumentDayAhead.model_rebuild()
+BidDocumentDayAheadGraphQL.model_rebuild()
 BidDocumentDayAheadWrite.model_rebuild()
 BidDocumentDayAheadApply.model_rebuild()
 BidMatrix.model_rebuild()
+BidMatrixGraphQL.model_rebuild()
 BidMatrixWrite.model_rebuild()
 BidMatrixApply.model_rebuild()
 BidMatrixRaw.model_rebuild()
+BidMatrixRawGraphQL.model_rebuild()
 BidMatrixRawWrite.model_rebuild()
 BidMatrixRawApply.model_rebuild()
 BidMethodSHOPMultiScenario.model_rebuild()
+BidMethodSHOPMultiScenarioGraphQL.model_rebuild()
 BidMethodSHOPMultiScenarioWrite.model_rebuild()
 BidMethodSHOPMultiScenarioApply.model_rebuild()
 BidRow.model_rebuild()
+BidRowGraphQL.model_rebuild()
 BidRowWrite.model_rebuild()
 BidRowApply.model_rebuild()
 Case.model_rebuild()
+CaseGraphQL.model_rebuild()
 CaseWrite.model_rebuild()
 CaseApply.model_rebuild()
 CustomBidMatrix.model_rebuild()
+CustomBidMatrixGraphQL.model_rebuild()
 CustomBidMatrixWrite.model_rebuild()
 CustomBidMatrixApply.model_rebuild()
 Generator.model_rebuild()
+GeneratorGraphQL.model_rebuild()
 GeneratorWrite.model_rebuild()
 GeneratorApply.model_rebuild()
 ModelTemplate.model_rebuild()
+ModelTemplateGraphQL.model_rebuild()
 ModelTemplateWrite.model_rebuild()
 ModelTemplateApply.model_rebuild()
 MultiScenarioMatrix.model_rebuild()
+MultiScenarioMatrixGraphQL.model_rebuild()
 MultiScenarioMatrixWrite.model_rebuild()
 MultiScenarioMatrixApply.model_rebuild()
 MultiScenarioMatrixRaw.model_rebuild()
+MultiScenarioMatrixRawGraphQL.model_rebuild()
 MultiScenarioMatrixRawWrite.model_rebuild()
 MultiScenarioMatrixRawApply.model_rebuild()
 PartialPostProcessingInput.model_rebuild()
+PartialPostProcessingInputGraphQL.model_rebuild()
 PartialPostProcessingInputWrite.model_rebuild()
 PartialPostProcessingInputApply.model_rebuild()
 PartialPostProcessingOutput.model_rebuild()
+PartialPostProcessingOutputGraphQL.model_rebuild()
 PartialPostProcessingOutputWrite.model_rebuild()
 PartialPostProcessingOutputApply.model_rebuild()
 Plant.model_rebuild()
+PlantGraphQL.model_rebuild()
 PlantWrite.model_rebuild()
 PlantApply.model_rebuild()
 PreprocessorInput.model_rebuild()
+PreprocessorInputGraphQL.model_rebuild()
 PreprocessorInputWrite.model_rebuild()
 PreprocessorInputApply.model_rebuild()
 PreprocessorOutput.model_rebuild()
+PreprocessorOutputGraphQL.model_rebuild()
 PreprocessorOutputWrite.model_rebuild()
 PreprocessorOutputApply.model_rebuild()
 PriceAreaAsset.model_rebuild()
+PriceAreaAssetGraphQL.model_rebuild()
 PriceAreaAssetWrite.model_rebuild()
 PriceAreaAssetApply.model_rebuild()
 PriceProdCase.model_rebuild()
+PriceProdCaseGraphQL.model_rebuild()
 PriceProdCaseWrite.model_rebuild()
 PriceProdCaseApply.model_rebuild()
 SHOPResult.model_rebuild()
+SHOPResultGraphQL.model_rebuild()
 SHOPResultWrite.model_rebuild()
 SHOPResultApply.model_rebuild()
 SHOPResultPriceProd.model_rebuild()
+SHOPResultPriceProdGraphQL.model_rebuild()
 SHOPResultPriceProdWrite.model_rebuild()
 SHOPResultPriceProdApply.model_rebuild()
 SHOPTriggerInput.model_rebuild()
+SHOPTriggerInputGraphQL.model_rebuild()
 SHOPTriggerInputWrite.model_rebuild()
 SHOPTriggerInputApply.model_rebuild()
 SHOPTriggerOutput.model_rebuild()
+SHOPTriggerOutputGraphQL.model_rebuild()
 SHOPTriggerOutputWrite.model_rebuild()
 SHOPTriggerOutputApply.model_rebuild()
 Scenario.model_rebuild()
+ScenarioGraphQL.model_rebuild()
 ScenarioWrite.model_rebuild()
 ScenarioApply.model_rebuild()
 ShopPartialBidCalculationInput.model_rebuild()
+ShopPartialBidCalculationInputGraphQL.model_rebuild()
 ShopPartialBidCalculationInputWrite.model_rebuild()
 ShopPartialBidCalculationInputApply.model_rebuild()
 ShopPartialBidCalculationOutput.model_rebuild()
+ShopPartialBidCalculationOutputGraphQL.model_rebuild()
 ShopPartialBidCalculationOutputWrite.model_rebuild()
 ShopPartialBidCalculationOutputApply.model_rebuild()
 TaskDispatcherShopInput.model_rebuild()
+TaskDispatcherShopInputGraphQL.model_rebuild()
 TaskDispatcherShopInputWrite.model_rebuild()
 TaskDispatcherShopInputApply.model_rebuild()
 TaskDispatcherShopOutput.model_rebuild()
+TaskDispatcherShopOutputGraphQL.model_rebuild()
 TaskDispatcherShopOutputWrite.model_rebuild()
 TaskDispatcherShopOutputApply.model_rebuild()
 TaskDispatcherWaterInput.model_rebuild()
+TaskDispatcherWaterInputGraphQL.model_rebuild()
 TaskDispatcherWaterInputWrite.model_rebuild()
 TaskDispatcherWaterInputApply.model_rebuild()
 TaskDispatcherWaterOutput.model_rebuild()
+TaskDispatcherWaterOutputGraphQL.model_rebuild()
 TaskDispatcherWaterOutputWrite.model_rebuild()
 TaskDispatcherWaterOutputApply.model_rebuild()
 TotalBidMatrixCalculationInput.model_rebuild()
+TotalBidMatrixCalculationInputGraphQL.model_rebuild()
 TotalBidMatrixCalculationInputWrite.model_rebuild()
 TotalBidMatrixCalculationInputApply.model_rebuild()
 TotalBidMatrixCalculationOutput.model_rebuild()
+TotalBidMatrixCalculationOutputGraphQL.model_rebuild()
 TotalBidMatrixCalculationOutputWrite.model_rebuild()
 TotalBidMatrixCalculationOutputApply.model_rebuild()
 WaterPartialBidCalculationInput.model_rebuild()
+WaterPartialBidCalculationInputGraphQL.model_rebuild()
 WaterPartialBidCalculationInputWrite.model_rebuild()
 WaterPartialBidCalculationInputApply.model_rebuild()
 WaterPartialBidCalculationOutput.model_rebuild()
+WaterPartialBidCalculationOutputGraphQL.model_rebuild()
 WaterPartialBidCalculationOutputWrite.model_rebuild()
 WaterPartialBidCalculationOutputApply.model_rebuild()
 Watercourse.model_rebuild()
+WatercourseGraphQL.model_rebuild()
 WatercourseWrite.model_rebuild()
 WatercourseApply.model_rebuild()
 
+
 __all__ = [
     "DataRecord",
+    "DataRecordGraphQL",
     "DataRecordWrite",
     "ResourcesWrite",
     "DomainModel",
@@ -691,8 +792,11 @@ __all__ = [
     "DomainModelWrite",
     "DomainModelList",
     "DomainRelationWrite",
+    "GraphQLCore",
+    "GraphQLList",
     "ResourcesWriteResult",
     "Alert",
+    "AlertGraphQL",
     "AlertWrite",
     "AlertApply",
     "AlertList",
@@ -701,6 +805,7 @@ __all__ = [
     "AlertFields",
     "AlertTextFields",
     "BasicBidMatrix",
+    "BasicBidMatrixGraphQL",
     "BasicBidMatrixWrite",
     "BasicBidMatrixApply",
     "BasicBidMatrixList",
@@ -709,6 +814,7 @@ __all__ = [
     "BasicBidMatrixFields",
     "BasicBidMatrixTextFields",
     "BidCalculationTask",
+    "BidCalculationTaskGraphQL",
     "BidCalculationTaskWrite",
     "BidCalculationTaskApply",
     "BidCalculationTaskList",
@@ -716,12 +822,14 @@ __all__ = [
     "BidCalculationTaskApplyList",
     "BidCalculationTaskFields",
     "BidConfiguration",
+    "BidConfigurationGraphQL",
     "BidConfigurationWrite",
     "BidConfigurationApply",
     "BidConfigurationList",
     "BidConfigurationWriteList",
     "BidConfigurationApplyList",
     "BidConfigurationShop",
+    "BidConfigurationShopGraphQL",
     "BidConfigurationShopWrite",
     "BidConfigurationShopApply",
     "BidConfigurationShopList",
@@ -730,12 +838,14 @@ __all__ = [
     "BidConfigurationShopFields",
     "BidConfigurationShopTextFields",
     "BidConfigurationWater",
+    "BidConfigurationWaterGraphQL",
     "BidConfigurationWaterWrite",
     "BidConfigurationWaterApply",
     "BidConfigurationWaterList",
     "BidConfigurationWaterWriteList",
     "BidConfigurationWaterApplyList",
     "BidDocumentAFRR",
+    "BidDocumentAFRRGraphQL",
     "BidDocumentAFRRWrite",
     "BidDocumentAFRRApply",
     "BidDocumentAFRRList",
@@ -744,6 +854,7 @@ __all__ = [
     "BidDocumentAFRRFields",
     "BidDocumentAFRRTextFields",
     "BidDocumentDayAhead",
+    "BidDocumentDayAheadGraphQL",
     "BidDocumentDayAheadWrite",
     "BidDocumentDayAheadApply",
     "BidDocumentDayAheadList",
@@ -752,6 +863,7 @@ __all__ = [
     "BidDocumentDayAheadFields",
     "BidDocumentDayAheadTextFields",
     "BidMatrix",
+    "BidMatrixGraphQL",
     "BidMatrixWrite",
     "BidMatrixApply",
     "BidMatrixList",
@@ -760,6 +872,7 @@ __all__ = [
     "BidMatrixFields",
     "BidMatrixTextFields",
     "BidMatrixRaw",
+    "BidMatrixRawGraphQL",
     "BidMatrixRawWrite",
     "BidMatrixRawApply",
     "BidMatrixRawList",
@@ -768,6 +881,7 @@ __all__ = [
     "BidMatrixRawFields",
     "BidMatrixRawTextFields",
     "BidMethod",
+    "BidMethodGraphQL",
     "BidMethodWrite",
     "BidMethodApply",
     "BidMethodList",
@@ -776,6 +890,7 @@ __all__ = [
     "BidMethodFields",
     "BidMethodTextFields",
     "BidMethodAFRR",
+    "BidMethodAFRRGraphQL",
     "BidMethodAFRRWrite",
     "BidMethodAFRRApply",
     "BidMethodAFRRList",
@@ -784,6 +899,7 @@ __all__ = [
     "BidMethodAFRRFields",
     "BidMethodAFRRTextFields",
     "BidMethodCustom",
+    "BidMethodCustomGraphQL",
     "BidMethodCustomWrite",
     "BidMethodCustomApply",
     "BidMethodCustomList",
@@ -792,6 +908,7 @@ __all__ = [
     "BidMethodCustomFields",
     "BidMethodCustomTextFields",
     "BidMethodDayAhead",
+    "BidMethodDayAheadGraphQL",
     "BidMethodDayAheadWrite",
     "BidMethodDayAheadApply",
     "BidMethodDayAheadList",
@@ -800,6 +917,7 @@ __all__ = [
     "BidMethodDayAheadFields",
     "BidMethodDayAheadTextFields",
     "BidMethodSHOPMultiScenario",
+    "BidMethodSHOPMultiScenarioGraphQL",
     "BidMethodSHOPMultiScenarioWrite",
     "BidMethodSHOPMultiScenarioApply",
     "BidMethodSHOPMultiScenarioList",
@@ -808,6 +926,7 @@ __all__ = [
     "BidMethodSHOPMultiScenarioFields",
     "BidMethodSHOPMultiScenarioTextFields",
     "BidMethodWaterValue",
+    "BidMethodWaterValueGraphQL",
     "BidMethodWaterValueWrite",
     "BidMethodWaterValueApply",
     "BidMethodWaterValueList",
@@ -816,6 +935,7 @@ __all__ = [
     "BidMethodWaterValueFields",
     "BidMethodWaterValueTextFields",
     "BidRow",
+    "BidRowGraphQL",
     "BidRowWrite",
     "BidRowApply",
     "BidRowList",
@@ -824,6 +944,7 @@ __all__ = [
     "BidRowFields",
     "BidRowTextFields",
     "Case",
+    "CaseGraphQL",
     "CaseWrite",
     "CaseApply",
     "CaseList",
@@ -831,6 +952,7 @@ __all__ = [
     "CaseApplyList",
     "CaseFields",
     "Commands",
+    "CommandsGraphQL",
     "CommandsWrite",
     "CommandsApply",
     "CommandsList",
@@ -839,6 +961,7 @@ __all__ = [
     "CommandsFields",
     "CommandsTextFields",
     "CustomBidMatrix",
+    "CustomBidMatrixGraphQL",
     "CustomBidMatrixWrite",
     "CustomBidMatrixApply",
     "CustomBidMatrixList",
@@ -847,6 +970,7 @@ __all__ = [
     "CustomBidMatrixFields",
     "CustomBidMatrixTextFields",
     "Generator",
+    "GeneratorGraphQL",
     "GeneratorWrite",
     "GeneratorApply",
     "GeneratorList",
@@ -855,6 +979,7 @@ __all__ = [
     "GeneratorFields",
     "GeneratorTextFields",
     "GeneratorEfficiencyCurve",
+    "GeneratorEfficiencyCurveGraphQL",
     "GeneratorEfficiencyCurveWrite",
     "GeneratorEfficiencyCurveApply",
     "GeneratorEfficiencyCurveList",
@@ -862,6 +987,7 @@ __all__ = [
     "GeneratorEfficiencyCurveApplyList",
     "GeneratorEfficiencyCurveFields",
     "Mapping",
+    "MappingGraphQL",
     "MappingWrite",
     "MappingApply",
     "MappingList",
@@ -870,6 +996,7 @@ __all__ = [
     "MappingFields",
     "MappingTextFields",
     "MarketConfiguration",
+    "MarketConfigurationGraphQL",
     "MarketConfigurationWrite",
     "MarketConfigurationApply",
     "MarketConfigurationList",
@@ -878,6 +1005,7 @@ __all__ = [
     "MarketConfigurationFields",
     "MarketConfigurationTextFields",
     "ModelTemplate",
+    "ModelTemplateGraphQL",
     "ModelTemplateWrite",
     "ModelTemplateApply",
     "ModelTemplateList",
@@ -886,6 +1014,7 @@ __all__ = [
     "ModelTemplateFields",
     "ModelTemplateTextFields",
     "MultiScenarioMatrix",
+    "MultiScenarioMatrixGraphQL",
     "MultiScenarioMatrixWrite",
     "MultiScenarioMatrixApply",
     "MultiScenarioMatrixList",
@@ -894,6 +1023,7 @@ __all__ = [
     "MultiScenarioMatrixFields",
     "MultiScenarioMatrixTextFields",
     "MultiScenarioMatrixRaw",
+    "MultiScenarioMatrixRawGraphQL",
     "MultiScenarioMatrixRawWrite",
     "MultiScenarioMatrixRawApply",
     "MultiScenarioMatrixRawList",
@@ -902,6 +1032,7 @@ __all__ = [
     "MultiScenarioMatrixRawFields",
     "MultiScenarioMatrixRawTextFields",
     "PartialPostProcessingInput",
+    "PartialPostProcessingInputGraphQL",
     "PartialPostProcessingInputWrite",
     "PartialPostProcessingInputApply",
     "PartialPostProcessingInputList",
@@ -910,6 +1041,7 @@ __all__ = [
     "PartialPostProcessingInputFields",
     "PartialPostProcessingInputTextFields",
     "PartialPostProcessingOutput",
+    "PartialPostProcessingOutputGraphQL",
     "PartialPostProcessingOutputWrite",
     "PartialPostProcessingOutputApply",
     "PartialPostProcessingOutputList",
@@ -918,6 +1050,7 @@ __all__ = [
     "PartialPostProcessingOutputFields",
     "PartialPostProcessingOutputTextFields",
     "Plant",
+    "PlantGraphQL",
     "PlantWrite",
     "PlantApply",
     "PlantList",
@@ -926,6 +1059,7 @@ __all__ = [
     "PlantFields",
     "PlantTextFields",
     "PlantShop",
+    "PlantShopGraphQL",
     "PlantShopWrite",
     "PlantShopApply",
     "PlantShopList",
@@ -934,6 +1068,7 @@ __all__ = [
     "PlantShopFields",
     "PlantShopTextFields",
     "PreprocessorInput",
+    "PreprocessorInputGraphQL",
     "PreprocessorInputWrite",
     "PreprocessorInputApply",
     "PreprocessorInputList",
@@ -942,6 +1077,7 @@ __all__ = [
     "PreprocessorInputFields",
     "PreprocessorInputTextFields",
     "PreprocessorOutput",
+    "PreprocessorOutputGraphQL",
     "PreprocessorOutputWrite",
     "PreprocessorOutputApply",
     "PreprocessorOutputList",
@@ -950,6 +1086,7 @@ __all__ = [
     "PreprocessorOutputFields",
     "PreprocessorOutputTextFields",
     "PriceArea",
+    "PriceAreaGraphQL",
     "PriceAreaWrite",
     "PriceAreaApply",
     "PriceAreaList",
@@ -958,6 +1095,7 @@ __all__ = [
     "PriceAreaFields",
     "PriceAreaTextFields",
     "PriceAreaAFRR",
+    "PriceAreaAFRRGraphQL",
     "PriceAreaAFRRWrite",
     "PriceAreaAFRRApply",
     "PriceAreaAFRRList",
@@ -966,6 +1104,7 @@ __all__ = [
     "PriceAreaAFRRFields",
     "PriceAreaAFRRTextFields",
     "PriceAreaAsset",
+    "PriceAreaAssetGraphQL",
     "PriceAreaAssetWrite",
     "PriceAreaAssetApply",
     "PriceAreaAssetList",
@@ -974,6 +1113,7 @@ __all__ = [
     "PriceAreaAssetFields",
     "PriceAreaAssetTextFields",
     "PriceProdCase",
+    "PriceProdCaseGraphQL",
     "PriceProdCaseWrite",
     "PriceProdCaseApply",
     "PriceProdCaseList",
@@ -981,6 +1121,7 @@ __all__ = [
     "PriceProdCaseApplyList",
     "PriceProdCaseFields",
     "Reservoir",
+    "ReservoirGraphQL",
     "ReservoirWrite",
     "ReservoirApply",
     "ReservoirList",
@@ -989,6 +1130,7 @@ __all__ = [
     "ReservoirFields",
     "ReservoirTextFields",
     "SHOPResult",
+    "SHOPResultGraphQL",
     "SHOPResultWrite",
     "SHOPResultApply",
     "SHOPResultList",
@@ -996,6 +1138,7 @@ __all__ = [
     "SHOPResultApplyList",
     "SHOPResultFields",
     "SHOPResultPriceProd",
+    "SHOPResultPriceProdGraphQL",
     "SHOPResultPriceProdWrite",
     "SHOPResultPriceProdApply",
     "SHOPResultPriceProdList",
@@ -1003,6 +1146,7 @@ __all__ = [
     "SHOPResultPriceProdApplyList",
     "SHOPResultPriceProdFields",
     "SHOPTimeSeries",
+    "SHOPTimeSeriesGraphQL",
     "SHOPTimeSeriesWrite",
     "SHOPTimeSeriesApply",
     "SHOPTimeSeriesList",
@@ -1011,6 +1155,7 @@ __all__ = [
     "SHOPTimeSeriesFields",
     "SHOPTimeSeriesTextFields",
     "SHOPTriggerInput",
+    "SHOPTriggerInputGraphQL",
     "SHOPTriggerInputWrite",
     "SHOPTriggerInputApply",
     "SHOPTriggerInputList",
@@ -1019,6 +1164,7 @@ __all__ = [
     "SHOPTriggerInputFields",
     "SHOPTriggerInputTextFields",
     "SHOPTriggerOutput",
+    "SHOPTriggerOutputGraphQL",
     "SHOPTriggerOutputWrite",
     "SHOPTriggerOutputApply",
     "SHOPTriggerOutputList",
@@ -1027,6 +1173,7 @@ __all__ = [
     "SHOPTriggerOutputFields",
     "SHOPTriggerOutputTextFields",
     "Scenario",
+    "ScenarioGraphQL",
     "ScenarioWrite",
     "ScenarioApply",
     "ScenarioList",
@@ -1035,6 +1182,7 @@ __all__ = [
     "ScenarioFields",
     "ScenarioTextFields",
     "ShopPartialBidCalculationInput",
+    "ShopPartialBidCalculationInputGraphQL",
     "ShopPartialBidCalculationInputWrite",
     "ShopPartialBidCalculationInputApply",
     "ShopPartialBidCalculationInputList",
@@ -1043,6 +1191,7 @@ __all__ = [
     "ShopPartialBidCalculationInputFields",
     "ShopPartialBidCalculationInputTextFields",
     "ShopPartialBidCalculationOutput",
+    "ShopPartialBidCalculationOutputGraphQL",
     "ShopPartialBidCalculationOutputWrite",
     "ShopPartialBidCalculationOutputApply",
     "ShopPartialBidCalculationOutputList",
@@ -1051,6 +1200,7 @@ __all__ = [
     "ShopPartialBidCalculationOutputFields",
     "ShopPartialBidCalculationOutputTextFields",
     "TaskDispatcherShopInput",
+    "TaskDispatcherShopInputGraphQL",
     "TaskDispatcherShopInputWrite",
     "TaskDispatcherShopInputApply",
     "TaskDispatcherShopInputList",
@@ -1059,6 +1209,7 @@ __all__ = [
     "TaskDispatcherShopInputFields",
     "TaskDispatcherShopInputTextFields",
     "TaskDispatcherShopOutput",
+    "TaskDispatcherShopOutputGraphQL",
     "TaskDispatcherShopOutputWrite",
     "TaskDispatcherShopOutputApply",
     "TaskDispatcherShopOutputList",
@@ -1067,6 +1218,7 @@ __all__ = [
     "TaskDispatcherShopOutputFields",
     "TaskDispatcherShopOutputTextFields",
     "TaskDispatcherWaterInput",
+    "TaskDispatcherWaterInputGraphQL",
     "TaskDispatcherWaterInputWrite",
     "TaskDispatcherWaterInputApply",
     "TaskDispatcherWaterInputList",
@@ -1075,6 +1227,7 @@ __all__ = [
     "TaskDispatcherWaterInputFields",
     "TaskDispatcherWaterInputTextFields",
     "TaskDispatcherWaterOutput",
+    "TaskDispatcherWaterOutputGraphQL",
     "TaskDispatcherWaterOutputWrite",
     "TaskDispatcherWaterOutputApply",
     "TaskDispatcherWaterOutputList",
@@ -1083,6 +1236,7 @@ __all__ = [
     "TaskDispatcherWaterOutputFields",
     "TaskDispatcherWaterOutputTextFields",
     "TotalBidMatrixCalculationInput",
+    "TotalBidMatrixCalculationInputGraphQL",
     "TotalBidMatrixCalculationInputWrite",
     "TotalBidMatrixCalculationInputApply",
     "TotalBidMatrixCalculationInputList",
@@ -1091,6 +1245,7 @@ __all__ = [
     "TotalBidMatrixCalculationInputFields",
     "TotalBidMatrixCalculationInputTextFields",
     "TotalBidMatrixCalculationOutput",
+    "TotalBidMatrixCalculationOutputGraphQL",
     "TotalBidMatrixCalculationOutputWrite",
     "TotalBidMatrixCalculationOutputApply",
     "TotalBidMatrixCalculationOutputList",
@@ -1099,6 +1254,7 @@ __all__ = [
     "TotalBidMatrixCalculationOutputFields",
     "TotalBidMatrixCalculationOutputTextFields",
     "TurbineEfficiencyCurve",
+    "TurbineEfficiencyCurveGraphQL",
     "TurbineEfficiencyCurveWrite",
     "TurbineEfficiencyCurveApply",
     "TurbineEfficiencyCurveList",
@@ -1106,6 +1262,7 @@ __all__ = [
     "TurbineEfficiencyCurveApplyList",
     "TurbineEfficiencyCurveFields",
     "WaterPartialBidCalculationInput",
+    "WaterPartialBidCalculationInputGraphQL",
     "WaterPartialBidCalculationInputWrite",
     "WaterPartialBidCalculationInputApply",
     "WaterPartialBidCalculationInputList",
@@ -1114,6 +1271,7 @@ __all__ = [
     "WaterPartialBidCalculationInputFields",
     "WaterPartialBidCalculationInputTextFields",
     "WaterPartialBidCalculationOutput",
+    "WaterPartialBidCalculationOutputGraphQL",
     "WaterPartialBidCalculationOutputWrite",
     "WaterPartialBidCalculationOutputApply",
     "WaterPartialBidCalculationOutputList",
@@ -1122,6 +1280,7 @@ __all__ = [
     "WaterPartialBidCalculationOutputFields",
     "WaterPartialBidCalculationOutputTextFields",
     "Watercourse",
+    "WatercourseGraphQL",
     "WatercourseWrite",
     "WatercourseApply",
     "WatercourseList",
@@ -1130,6 +1289,7 @@ __all__ = [
     "WatercourseFields",
     "WatercourseTextFields",
     "WatercourseShop",
+    "WatercourseShopGraphQL",
     "WatercourseShopWrite",
     "WatercourseShopApply",
     "WatercourseShopList",
