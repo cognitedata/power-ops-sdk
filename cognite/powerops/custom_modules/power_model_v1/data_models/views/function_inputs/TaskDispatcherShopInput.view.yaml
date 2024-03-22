@@ -52,7 +52,7 @@ properties:
       space: '{{powerops_models}}'
       externalId: FunctionData
       type: container
-    containerPropertyIdentifier: date2
+    containerPropertyIdentifier: timestamp1
     name: shopStart
     description: The shop start date
   shopEnd:
@@ -60,6 +60,6 @@ properties:
       space: '{{powerops_models}}'
       externalId: FunctionData
       type: container
-    containerPropertyIdentifier: date3
+    containerPropertyIdentifier: timestamp2
     name: shopEnd
     description: The shop end date
