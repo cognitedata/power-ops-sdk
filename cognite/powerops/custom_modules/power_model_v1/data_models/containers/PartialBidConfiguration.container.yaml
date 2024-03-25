@@ -11,13 +11,6 @@ properties:
     nullable: false
     autoIncrement: false
     name: name
-  asset:
-    type:
-      type: direct
-      list: false
-    nullable: false
-    autoIncrement: false
-    name: asset
   method:
     type:
       type: direct
@@ -25,6 +18,13 @@ properties:
     nullable: false
     autoIncrement: false
     name: method
+  asset:
+    type:
+      type: direct
+      list: false
+    nullable: false
+    autoIncrement: false
+    name: asset
   addSteps:
     type:
       type: boolean

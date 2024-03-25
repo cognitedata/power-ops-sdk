@@ -5,55 +5,49 @@ usedFor: node
 properties:
   pMin:
     type:
-      list: false
       type: float64
-    nullable: true
+      list: false
+    nullable: false
     autoIncrement: false
     name: pMin
-    description: The minimum power output of the Generator
-  penstock:
+  penstockNumber:
     type:
+      type: int64
       list: false
-      type: int32
-    nullable: true
+    nullable: false
     autoIncrement: false
-    name: penstock
-    description: The number of gates for water intakes to the Generator
+    name: penstockNumber
   startCost:
     type:
-      list: false
       type: float64
-    nullable: true
+      list: false
+    nullable: false
     autoIncrement: false
     name: startCost
-    description: The start up cost, i.e., the cost to start the Generator
   startStopCost:
     type:
+      type: TimeSeries
       list: false
-      type: timeseries
-    nullable: true
+    nullable: false
     autoIncrement: false
     name: startStopCost
-    description: A timeseries with the start/stop cost of the Generator
-  isAvailable:
+  availabilityTimeSeries:
     type:
+      type: TimeSeries
       list: false
-      type: timeseries
-    nullable: true
+    nullable: false
     autoIncrement: false
-    name: isAvailable
-    description: A binary timeseries indicating whether the Generator is available
-  efficiencyCurve:
+    name: availabilityTimeSeries
+  generatorEfficiencyCurve:
     type:
       type: direct
-    nullable: true
+      list: false
+    nullable: false
     autoIncrement: false
-    name: efficiencyCurve
-    description: The generator efficiency curve.
-constraints:
-  requiredAsset:
-    require:
-      space: "{{powerops_models}}"
-      externalId: Asset
-      type: container
-    constraintType: requires
+    name: generatorEfficiencyCurve
+indexes:
+  nameIndex:
+    properties:
+      - name
+    indexType: btree
+    cursorable: false

@@ -16,6 +16,18 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
+  - externalId: PartialBidConfiguration
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: ShopBasedPartialBidConfiguration
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: WaterValueBasedPartialBidConfiguration
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
   - externalId: Scenario
     space: "{{powerops_models}}"
     type: view
@@ -28,30 +40,30 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: Watercourse
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
+  # - externalId: Watercourse
+  #   space: "{{powerops_models}}"
+  #   type: view
+  #   version: "{{version}}"
   - externalId: WatercourseShop
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: Plant
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: PlantShop
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
+  # - externalId: Plant
+  #   space: "{{powerops_models}}"
+  #   type: view
+  #   version: "{{version}}"
+  # - externalId: PlantShop
+  #   space: "{{powerops_models}}"
+  #   type: view
+  #   version: "{{version}}"
   - externalId: Generator
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: Reservoir
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
+  # - externalId: Reservoir
+  #   space: "{{powerops_models}}"
+  #   type: view
+  #   version: "{{version}}"
   - externalId: TurbineEfficiencyCurve
     space: "{{powerops_models}}"
     type: view
@@ -60,10 +72,10 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: BidMethodDayAhead
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
+  # - externalId: BidMethodDayAhead
+  #   space: "{{powerops_models}}"
+  #   type: view
+  #   version: "{{version}}"
   - externalId: BidMethodWaterValue
     space: "{{powerops_models}}"
     type: view

@@ -7,7 +7,7 @@ filter:
     - hasData:
         - type: container
           space: "{{powerops_models}}"
-          externalId: PartialShopBased
+          externalId: PartialBidConfiguration
     - equals:
         property:
           - node
@@ -18,7 +18,7 @@ filter:
           - node
           - type
         value:
-          externalId: PartialShopBased
+          externalId: ShopBasedPartialBidConfiguration
           space: "{{powerops_type_space}}"
 implements:
   - space: "{{powerops_models}}"
@@ -27,6 +27,32 @@ implements:
     type: view
 version: "{{version}}"
 properties:
+  method:
+    container:
+      space: "{{powerops_models}}"
+      externalId: PartialBidConfiguration
+      type: container
+    containerPropertyIdentifier: method
+    name: method
+    description: The bid method related to the bid configuration
+    source:
+      space: "{{powerops_models}}"
+      externalId: BidMethodSHOPMultiScenario #TODO: update to right bid method
+      version: "{{version}}"
+      type: view
+  asset:
+    container:
+      space: "{{powerops_models}}"
+      externalId: PartialBidConfiguration
+      type: container
+    containerPropertyIdentifier: asset
+    name: asset
+    description: TODO description
+    source:
+      space: "{{powerops_models}}"
+      externalId: PowerAsset # TODO: update to right asset
+      version: "{{version}}"
+      type: view
   cutOffPrice:
     container:
       space: "{{powerops_models}}"
@@ -62,13 +88,13 @@ properties:
   shopScenarios:
     type:
       space: "{{powerops_type_space}}"
-      externalId: PartialShopBased.scenario
+      externalId: PartialShopBased.scenarios
     source:
       space: "{{powerops_models}}"
       externalId: Scenario
       version: "{{version}}"
       type: view
     direction: outwards
-    name: shopRuns
-    description: Configuration of the partial bids that make up the total bid
+    name: shopScenarios
+    description: Configuration of the partial bids that make up the total bid configuration
     connectionType: multi_edge_connection
