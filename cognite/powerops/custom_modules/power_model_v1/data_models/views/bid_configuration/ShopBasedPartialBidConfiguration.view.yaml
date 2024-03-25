@@ -88,7 +88,7 @@ properties:
   shopScenarios:
     type:
       space: "{{powerops_type_space}}"
-      externalId: PartialShopBased.scenarios
+      externalId: ShopBasedPartialBidConfiguration.scenarios
     source:
       space: "{{powerops_models}}"
       externalId: Scenario

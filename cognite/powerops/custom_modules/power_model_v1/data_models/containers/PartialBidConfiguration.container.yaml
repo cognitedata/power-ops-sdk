@@ -15,14 +15,14 @@ properties:
     type:
       type: direct
       list: false
-    nullable: false
+    nullable: true
     autoIncrement: false
     name: method
   asset:
     type:
       type: direct
       list: false
-    nullable: false
+    nullable: true
     autoIncrement: false
     name: asset
   addSteps:

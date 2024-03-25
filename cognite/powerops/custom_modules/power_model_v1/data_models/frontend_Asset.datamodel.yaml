@@ -1,38 +1,38 @@
 externalId: frontend_Asset
-space: '{{powerops_models}}'
-version: '1'
+space: "{{powerops_models}}"
+version: "1"
 name: PowerAsset
-description: 'Describes the power operations asset model'
+description: "Describes the power operations asset model"
 views:
   - externalId: PriceAreaAsset
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: Watercourse
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: Plant
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: Generator
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: Reservoir
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: TurbineEfficiencyCurve
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: GeneratorEfficiencyCurve
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
-  - externalId: BidMethodDayAhead
-    space: '{{powerops_models}}'
+    version: "{{version}}"
+  - externalId: BidMethod
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"

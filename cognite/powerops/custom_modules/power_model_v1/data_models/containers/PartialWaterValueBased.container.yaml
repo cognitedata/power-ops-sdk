@@ -47,49 +47,49 @@ properties:
     name: penstockHeadLossFactors
   pMaxTimeSeries:
     type:
-      type: TimeSeries
+      type: timeseries
       list: false
     nullable: false
     autoIncrement: false
     name: pMaxTimeSeries
   pMinTimeSeries:
     type:
-      type: TimeSeries
+      type: timeseries
       list: false
     nullable: false
     autoIncrement: false
     name: pMinTimeSeries
   waterValueTimeSeries:
     type:
-      type: TimeSeries
+      type: timeseries
       list: false
     nullable: false
     autoIncrement: false
     name: waterValueTimeSeries
   feedingFeeTimeSeries:
     type:
-      type: TimeSeries
+      type: timeseries
       list: false
     nullable: false
     autoIncrement: false
     name: feedingFeeTimeSeries
   outletLevelTimeSeries:
     type:
-      type: TimeSeries
+      type: timeseries
       list: false
     nullable: false
     autoIncrement: false
     name: outletLevelTimeSeries
   inletLevelTimeSeries:
     type:
-      type: TimeSeries
+      type: timeseries
       list: false
     nullable: false
     autoIncrement: false
     name: inletLevelTimeSeries
   headDirectTimeSeries:
     type:
-      type: TimeSeries
+      type: timeseries
       list: false
     nullable: false
     autoIncrement: false

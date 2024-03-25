@@ -60,7 +60,7 @@ properties:
   partials:
     type:
       space: "{{powerops_type_space}}"
-      externalId: PartialBidConfiguration.partials
+      externalId: BidConfiguration.partials
     source:
       space: "{{powerops_models}}"
       externalId: PartialBidConfiguration

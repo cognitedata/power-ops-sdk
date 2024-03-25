@@ -160,10 +160,10 @@ properties:
   generators:
     type:
       space: "{{powerops_type_space}}"
-      externalId: GeneratorWaterValueBased.generators
+      externalId: WaterValueBasedPartialBidConfiguration.generators
     source:
       space: "{{powerops_models}}"
-      externalId: GeneratorWaterValueBased # TODO: update to right generator
+      externalId: Generator
       version: "{{version}}"
       type: view
     direction: outwards

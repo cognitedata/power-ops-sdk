@@ -25,17 +25,23 @@
 
 ## Assets Types
 - space: "{{powerops_type_space}}"
+  externalId: PowerAsset
+- space: "{{powerops_type_space}}"
+  externalId: PriceArea
+- space: "{{powerops_type_space}}"
   externalId: Generator
 - space: "{{powerops_type_space}}"
   externalId: GeneratorEfficiencyCurve
 - space: "{{powerops_type_space}}"
   externalId: Plant
 - space: "{{powerops_type_space}}"
-  externalId: PriceArea
-- space: "{{powerops_type_space}}"
-  externalId: PriceAreaDayAhead
+  externalId: PlantShop
 - space: "{{powerops_type_space}}"
   externalId: PriceAreaAFRR
+- space: "{{powerops_type_space}}"
+  externalId: PriceAreaAsset
+- space: "{{powerops_type_space}}"
+  externalId: PriceAreaDayAhead
 - space: "{{powerops_type_space}}"
   externalId: Reservoir
 - space: "{{powerops_type_space}}"
@@ -43,15 +49,9 @@
 - space: "{{powerops_type_space}}"
   externalId: Watercourse
 - space: "{{powerops_type_space}}"
-  externalId: Alert
-- space: "{{powerops_type_space}}"
-  externalId: PlantShop
-- space: "{{powerops_type_space}}"
   externalId: WatercourseShop
 - space: "{{powerops_type_space}}"
-  externalId: PriceAreaAsset
-- space: "{{powerops_type_space}}"
-  externalId: PowerAsset
+  externalId: Alert
 
 ## CogShop types
 - space: "{{powerops_type_space}}"
@@ -145,13 +145,9 @@
 - space: "{{powerops_type_space}}"
   externalId: WaterPartialBidCalculationInput
 - space: "{{powerops_type_space}}"
-  externalId: BidMethodDayAhead
-- space: "{{powerops_type_space}}"
   externalId: BidMethodSHOPMultiScenario
 - space: "{{powerops_type_space}}"
   externalId: BidMethodWaterValue
-- space: "{{powerops_type_space}}"
-  externalId: BidMethodDayahead.scenarios
 - space: "{{powerops_type_space}}"
   externalId: MultiScenarioMatrix.shopResults
 - space: "{{powerops_type_space}}"
@@ -159,7 +155,13 @@
 - space: "{{powerops_type_space}}"
   externalId: ModelTemplate.baseMappings
 - space: "{{powerops_type_space}}"
-  externalId: BidMethod
+  externalId: ShopBasedPartialBidConfiguration
+- space: "{{powerops_type_space}}"
+  externalId: ShopBasedPartialBidConfiguration.scenarios
+- space: "{{powerops_type_space}}"
+  externalId: WaterValueBasedPartialBidConfiguration
+- space: "{{powerops_type_space}}"
+  externalId: WaterValueBasedPartialBidConfiguration.generators
 
 # Generic Types
 - space: "{{powerops_type_space}}"
@@ -171,9 +173,13 @@
 - space: "{{powerops_type_space}}"
   externalId: MarketConfiguration
 - space: "{{powerops_type_space}}"
-  externalId: BidConfigurationWater
+  externalId: BidConfiguration
+- space: "{{powerops_type_space}}"
+  externalId: BidConfiguration.partials
 - space: "{{powerops_type_space}}"
   externalId: BidDocument
+- space: "{{powerops_type_space}}"
+  externalId: BidMethod
 
 # Benchmarking Types
 - space: "{{powerops_type_space}}"

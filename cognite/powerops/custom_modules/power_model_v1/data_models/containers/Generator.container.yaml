@@ -26,14 +26,14 @@ properties:
     name: startCost
   startStopCost:
     type:
-      type: TimeSeries
+      type: timeseries
       list: false
     nullable: false
     autoIncrement: false
     name: startStopCost
   availabilityTimeSeries:
     type:
-      type: TimeSeries
+      type: timeseries
       list: false
     nullable: false
     autoIncrement: false
@@ -42,7 +42,7 @@ properties:
     type:
       type: direct
       list: false
-    nullable: false
+    nullable: true
     autoIncrement: false
     name: generatorEfficiencyCurve
 indexes:
