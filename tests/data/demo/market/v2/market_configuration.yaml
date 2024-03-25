@@ -1,0 +1,10 @@
+- name: "Nord Pool Day-ahead"
+  market_type: "???"
+  max_price: 4000
+  min_price: -500
+  time_zone: "Europe/Oslo"
+  price_unit: "EUR/MWh"
+  price_steps: 200
+  tick_size: 0.1
+  time_unit: "1h"
+  trade_lot: 0.1
