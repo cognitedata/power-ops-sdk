@@ -1,6 +1,6 @@
 space: "{{powerops_models}}"
-externalId: TaskDispatcherWaterInput
-name: TaskDispatcherWaterInput
+externalId: TaskDispatcherInput
+name: TaskDispatcherInput
 description: Input to the task dispatcher in the shop bid process
 filter:
   and:
@@ -18,7 +18,7 @@ filter:
           - node
           - type
         value:
-          externalId: TaskDispatcherWaterInput
+          externalId: TaskDispatcherInput
           space: "{{powerops_type_space}}"
 implements:
   - space: "{{powerops_models}}"

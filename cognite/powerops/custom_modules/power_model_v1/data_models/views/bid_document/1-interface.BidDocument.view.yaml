@@ -24,6 +24,14 @@ properties:
     containerPropertyIdentifier: name
     name: name
     description: Unique name for a given instance of a Bid Document. A combination of name, priceArea, date and startCalculation.
+  processId:
+    container:
+      space: "{{powerops_models}}"
+      externalId: BidDocument
+      type: container
+    containerPropertyIdentifier: processId
+    name: processId
+    description: The process associated with the Bid calculation workflow.
   deliveryDate:
     container:
       space: "{{powerops_models}}"

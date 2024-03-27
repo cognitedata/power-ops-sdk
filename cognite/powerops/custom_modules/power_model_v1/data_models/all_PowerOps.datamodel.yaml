@@ -15,10 +15,6 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: BidCalculationTask
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
   - externalId: Alert
     space: "{{powerops_models}}"
     type: view
@@ -67,11 +63,7 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: TaskDispatcherShopInput
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: TaskDispatcherWaterInput
+  - externalId: TaskDispatcherInput
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
@@ -111,15 +103,11 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: TaskDispatcherWaterOutput
+  - externalId: TaskDispatcherOutput
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
   - externalId: TotalBidMatrixCalculationOutput
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: TaskDispatcherShopOutput
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"

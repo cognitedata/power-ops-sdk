@@ -8,6 +8,10 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
+  - externalId: BidDocument
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
   - externalId: BidMatrix
     space: "{{powerops_models}}"
     type: view
@@ -73,6 +77,10 @@ views:
     type: view
     version: "{{version}}"
   - externalId: Case
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PowerAsset
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"

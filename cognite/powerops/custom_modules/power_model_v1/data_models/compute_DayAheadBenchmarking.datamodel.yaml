@@ -48,3 +48,35 @@ views:
     externalId: ShopObjectiveValue
     version: "{{version}}"
     type: view
+  - space: "{{powerops_models}}"
+    externalId: FunctionInput
+    version: "{{version}}"
+    type: view
+  - space: "{{powerops_models}}"
+    externalId: FunctionOutput
+    version: "{{version}}"
+    type: view
+  - space: "{{powerops_models}}"
+    externalId: PriceArea
+    version: "{{version}}"
+    type: view
+  - space: "{{powerops_models}}"
+    externalId: ModelTemplate
+    version: "{{version}}"
+    type: view
+  - space: "{{powerops_models}}"
+    externalId: Commands
+    version: "{{version}}"
+    type: view
+  - space: "{{powerops_models}}"
+    externalId: Mapping
+    version: "{{version}}"
+    type: view
+  - space: "{{powerops_models}}"
+    externalId: WatercourseShop
+    version: "{{version}}"
+    type: view
+  - space: "{{powerops_models}}"
+    externalId: PowerAsset
+    version: "{{version}}"
+    type: view

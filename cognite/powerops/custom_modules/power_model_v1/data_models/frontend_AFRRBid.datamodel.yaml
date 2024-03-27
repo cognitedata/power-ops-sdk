@@ -8,6 +8,10 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
+  - externalId: BidDocument
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
   - externalId: BidRow
     space: "{{powerops_models}}"
     type: view
@@ -16,7 +20,15 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
+  - externalId: PriceArea
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
   - externalId: BidMethodAFRR
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: BidMethod
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"

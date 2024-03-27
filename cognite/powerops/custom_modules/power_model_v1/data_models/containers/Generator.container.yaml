@@ -45,9 +45,9 @@ properties:
     nullable: true
     autoIncrement: false
     name: generatorEfficiencyCurve
-indexes:
-  nameIndex:
-    properties:
-      - name
-    indexType: btree
-    cursorable: false
+# indexes:
+#   nameIndex:
+#     properties:
+#       - name
+#     indexType: btree
+#     cursorable: false

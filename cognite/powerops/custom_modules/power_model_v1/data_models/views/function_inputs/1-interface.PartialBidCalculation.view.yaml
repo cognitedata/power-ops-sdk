@@ -1,7 +1,7 @@
 space: "{{powerops_models}}"
-externalId: WaterPartialBidCalculationOutput
-name: WaterPartialBidCalculationOutput
-description: The output of a bid calculation for watervalue based method
+externalId: PartialBidCalculationInput
+name: PartialBidCalculation
+description: The data for a bid calculation for water value based method
 filter:
   and:
     - hasData:
@@ -13,41 +13,40 @@ filter:
           - node
           - space
         value: "{{powerops_instance_space}}"
-    - equals:
-        property:
-          - node
-          - type
-        value:
-          externalId: WaterPartialBidCalculationOutput
-          space: "{{powerops_type_space}}"
-implements:
-  - space: "{{powerops_models}}"
-    externalId: FunctionOutput
-    version: "{{version}}"
-    type: view
+implements: {}
 version: "{{version}}"
 properties:
-  rawPartialMatrix:
+  bidDate:
+    container:
+      space: "{{powerops_models}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: date1
+    name: bidDate
+    description: The bid date
+  marketConfiguration:
     container:
       space: "{{powerops_models}}"
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct1
-    name: rawPartialMatrix
+    name: priceArea
+    description: The market configuration related to the bid calculation task
     source:
       space: "{{powerops_models}}"
-      externalId: BidMatrixRaw
+      externalId: MarketConfiguration
       version: "{{version}}"
       type: view
-  input:
+  priceArea:
     container:
       space: "{{powerops_models}}"
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct2
-    name: input
+    name: priceArea
+    description: The price area related to the bid calculation task
     source:
       space: "{{powerops_models}}"
-      externalId: WaterPartialBidCalculationInput
+      externalId: PriceArea
       version: "{{version}}"
       type: view

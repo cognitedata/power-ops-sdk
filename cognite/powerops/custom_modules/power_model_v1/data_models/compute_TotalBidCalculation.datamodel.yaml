@@ -104,3 +104,19 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
+  - space: "{{powerops_models}}"
+    externalId: FunctionInput
+    version: "{{version}}"
+    type: view
+  - space: "{{powerops_models}}"
+    externalId: FunctionOutput
+    version: "{{version}}"
+    type: view
+  - space: "{{powerops_models}}"
+    externalId: BidDocument
+    version: "{{version}}"
+    type: view
+  - space: "{{powerops_models}}"
+    externalId: PowerAsset
+    version: "{{version}}"
+    type: view

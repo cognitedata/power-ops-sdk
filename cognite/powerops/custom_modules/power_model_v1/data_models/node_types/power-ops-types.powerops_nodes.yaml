@@ -113,9 +113,9 @@
 - space: "{{powerops_type_space}}"
   externalId: partialBidMatricesRaw
 - space: "{{powerops_type_space}}"
-  externalId: TaskDispatcherShopInput
+  externalId: TaskDispatcherInput
 - space: "{{powerops_type_space}}"
-  externalId: TaskDispatcherShopOutput
+  externalId: TaskDispatcherOutput
 - space: "{{powerops_type_space}}"
   externalId: PreprocessorInput
 - space: "{{powerops_type_space}}"
@@ -129,11 +129,9 @@
 - space: "{{powerops_type_space}}"
   externalId: WaterPartialBidCalculationOutput
 - space: "{{powerops_type_space}}"
+  externalId: PartialBidCalculationInput
+- space: "{{powerops_type_space}}"
   externalId: BidCalculationTask
-- space: "{{powerops_type_space}}"
-  externalId: TaskDispatcherWaterInput
-- space: "{{powerops_type_space}}"
-  externalId: TaskDispatcherWaterOutput
 - space: "{{powerops_type_space}}"
   externalId: PartialPostProcessingInput
 - space: "{{powerops_type_space}}"
@@ -162,6 +160,8 @@
   externalId: WaterValueBasedPartialBidConfiguration
 - space: "{{powerops_type_space}}"
   externalId: WaterValueBasedPartialBidConfiguration.generators
+- space: "{{powerops_type_space}}"
+  externalId: cogShopTaskCalculations
 
 # Generic Types
 - space: "{{powerops_type_space}}"
