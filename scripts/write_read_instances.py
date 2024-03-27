@@ -13,7 +13,9 @@ from cognite.powerops.utils.cdf import get_cognite_client
 from cognite.powerops.utils.serialization import chdir
 
 REPO_ROOT = Path(__file__).parent.parent
-INSTANCE_SPACE = "sp_powerops_instance"
+INSTANCE_SPACE = "sp_powerops_instance_temp"
+MODEL_SPACE = "sp_powerops_models_temp"
+TYPE_SPACE = "sp_powerops_types_temp"
 # TODO: consider adding a separate space for mock data
 
 
@@ -24,7 +26,7 @@ def main():
 
     print(f"Connected to {client.config.project}")
 
-    data_model_ids = [dm.DataModelId("sp_powerops_models", "all_PowerOps", "1")]
+    data_model_ids = [dm.DataModelId(MODEL_SPACE, "all_PowerOps", "1")]
     node_count = 5
     for data_model_id in data_model_ids:
         data_models = client.data_modeling.data_models.retrieve(data_model_id, inline_views=True)
@@ -41,12 +43,12 @@ def main():
         # Custom fix of the Scenario/BidMatrix data as it filters on a property which the PygenMockGenerator does not set.
         for view_data in mock_data:
             if view_data.view_id in {
-                dm.ViewId("sp_powerops_models", "BidMatrixRaw", "1"),
-                dm.ViewId("sp_powerops_models", "MultiScenarioMatrix", "1"),
-                dm.ViewId("sp_powerops_models", "MultiScenarioMatrixRaw", "1"),
-                dm.ViewId("sp_powerops_models", "CustomBidMatrix", "1"),
-                dm.ViewId("sp_powerops_models", "BasicBidMatrixRaw", "1"),
-                dm.ViewId("sp_powerops_models", "BasicBidMatrix", "1"),
+                dm.ViewId(MODEL_SPACE, "BidMatrixRaw", "1"),
+                dm.ViewId(MODEL_SPACE, "MultiScenarioMatrix", "1"),
+                dm.ViewId(MODEL_SPACE, "MultiScenarioMatrixRaw", "1"),
+                dm.ViewId(MODEL_SPACE, "CustomBidMatrix", "1"),
+                dm.ViewId(MODEL_SPACE, "BasicBidMatrixRaw", "1"),
+                dm.ViewId(MODEL_SPACE, "BasicBidMatrix", "1"),
             }:
                 is_processed = False if "Raw" in view_data.view_id.external_id else True
                 for node in view_data.node:
@@ -83,8 +85,8 @@ def main():
                 expected_node_count = node_count
 
             if view_id in {
-                dm.ViewId("sp_powerops_models", "FunctionInput", "1"),
-                dm.ViewId("sp_powerops_models", "FunctionOutput", "1"),
+                dm.ViewId(MODEL_SPACE, "FunctionInput", "1"),
+                dm.ViewId(MODEL_SPACE, "FunctionOutput", "1"),
             }:
                 # This is an exception, the input and output stores data in the same container and has identical filtering.
                 # So Input will retrieve input + output and output will retrieve input + output.
@@ -93,8 +95,7 @@ def main():
 
             if len(nodes) != expected_node_count:
                 print(f"Print unexpected number of nodes for {view_id}: {len(nodes)} instead of {expected_node_count}.")
-                if False:
-                    print(f"Expected {expected_node_count} nodes: {expected_nodes}")
+                print(f"Expected {expected_node_count} nodes: {expected_nodes}")
             else:
                 correct_count += 1
                 # print(f"Read {len(nodes)} nodes for {view_id} as expected.")

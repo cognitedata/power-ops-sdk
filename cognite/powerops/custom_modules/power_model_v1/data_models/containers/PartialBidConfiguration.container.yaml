@@ -1,6 +1,6 @@
 space: "{{powerops_models}}"
-externalId: BidConfiguration
-name: BidConfiguration
+externalId: PartialBidConfiguration
+name: PartialBidConfiguration
 usedFor: node
 properties:
   name:
@@ -11,23 +11,30 @@ properties:
     nullable: false
     autoIncrement: false
     name: name
-  marketConfiguration:
+  method:
     type:
       type: direct
       list: false
     nullable: true
     autoIncrement: false
-    name: marketConfiguration
-  priceArea:
+    name: method
+  asset:
     type:
       type: direct
       list: false
     nullable: true
     autoIncrement: false
-    name: priceArea
+    name: asset
+  addSteps:
+    type:
+      type: boolean
+      list: false
+    nullable: false
+    autoIncrement: false
+    name: addSteps
 indexes:
-  priceAreaIndex:
+  assetIndex:
     properties:
-      - priceArea
+      - asset
     indexType: btree
     cursorable: false

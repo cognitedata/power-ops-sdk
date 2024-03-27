@@ -50,7 +50,7 @@ properties:
     name: method
     source:
       space: "{{powerops_models}}"
-      externalId: BidMethodDayAhead
+      externalId: BidMethod
       version: "{{version}}"
       type: view
   total:

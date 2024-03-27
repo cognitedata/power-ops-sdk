@@ -1,4 +1,4 @@
-space: '{{powerops_models}}'
+space: "{{powerops_models}}"
 externalId: SHOPResult
 name: SHOPResult
 description: A generic shop result type that collects all time series outputs from SHOP. This type replaces the POWEROPS_SHOP_RUN event in cdf today
@@ -7,32 +7,40 @@ filter:
   and:
     - hasData:
         - type: container
-          space: '{{powerops_models}}'
+          space: "{{powerops_models}}"
           externalId: SHOPResult
     - equals:
         property:
           - node
           - space
-        value: '{{powerops_instance_space}}'
+        value: "{{powerops_instance_space}}"
 implements: []
-version: '{{version}}'
+version: "{{version}}"
 properties:
+  cogShopProcessId:
+    container:
+      space: "{{powerops_models}}"
+      externalId: SHOPResult
+      type: container
+    containerPropertyIdentifier: cogShopProcessId
+    name: cogShopProcessId
+    description: The id of the cog shop process
   case:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: SHOPResult
       type: container
     containerPropertyIdentifier: case
     name: case
     description: The case that was used to produce this result
     source:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: Case
-      version: '{{version}}'
+      version: "{{version}}"
       type: view
   outputTimeseries:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: SHOPResult
       type: container
     containerPropertyIdentifier: tsList1
@@ -40,7 +48,7 @@ properties:
     description: A general placeholder for all timeseries that stem from a shop run
   objectiveSequence:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: SHOPResult
       type: container
     containerPropertyIdentifier: objectiveSequence
@@ -48,7 +56,7 @@ properties:
     description: The sequence of the objective function
   preRun:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: SHOPResult
       type: container
     containerPropertyIdentifier: preRun
@@ -56,7 +64,7 @@ properties:
     description: The pre-run data for the SHOP run
   postRun:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: SHOPResult
       type: container
     containerPropertyIdentifier: postRun
@@ -64,7 +72,7 @@ properties:
     description: The post-run data for the SHOP run
   shopMessages:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: SHOPResult
       type: container
     containerPropertyIdentifier: shopMessages
@@ -72,7 +80,7 @@ properties:
     description: The messages from the SHOP run
   cplexLogs:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: SHOPResult
       type: container
     containerPropertyIdentifier: cplexLogs
@@ -80,12 +88,12 @@ properties:
     description: The logs from CPLEX
   alerts:
     type:
-      space: '{{powerops_type_space}}'
+      space: "{{powerops_type_space}}"
       externalId: calculationIssue
     source:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: Alert
-      version: '{{version}}'
+      version: "{{version}}"
       type: view
     direction: outwards
     name: alerts

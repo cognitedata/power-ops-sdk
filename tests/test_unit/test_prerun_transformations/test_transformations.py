@@ -644,6 +644,7 @@ def test_add_water_in_transit(cognite_client_mock: CogniteClient, test_case: Add
             value=test_case.discharge_values,
             timestamp=discharge_times_ms,
         )
+
         cognite_client_mock.time_series.data.retrieve_latest.return_value = Datapoints(
             external_id=test_case.discharge_ts_external_id,
             value=[test_case.discharge_values[-1]],

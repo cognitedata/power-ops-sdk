@@ -53,7 +53,7 @@ properties:
   startTime:
     type:
       list: false
-      type: date
+      type: timestamp
     nullable: true
     autoIncrement: false
     name: startTime
@@ -61,7 +61,7 @@ properties:
   endTime:
     type:
       list: false
-      type: date
+      type: timestamp
     nullable: true
     autoIncrement: false
     name: endTime

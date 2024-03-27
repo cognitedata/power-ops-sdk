@@ -35,6 +35,6 @@ properties:
     name: defaultMethod
     source:
       space: "{{powerops_models}}"
-      externalId: BidMethodDayAhead
+      externalId: BidMethod
       version: "{{version}}"
       type: view

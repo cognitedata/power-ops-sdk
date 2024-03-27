@@ -106,3 +106,12 @@ properties:
     nullable: true
     autoIncrement: false
     name: objectiveSequence
+  cogShopProcessId:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: cogShopProcessId
+    description: The id of the cog shop process
