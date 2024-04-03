@@ -3,6 +3,12 @@ externalId: BidDocumentDayAhead
 name: BidDocumentDayAhead
 usedFor: node
 properties:
+  bidConfiguration:
+    type:
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: bidConfiguration
   total:
     type:
       type: direct

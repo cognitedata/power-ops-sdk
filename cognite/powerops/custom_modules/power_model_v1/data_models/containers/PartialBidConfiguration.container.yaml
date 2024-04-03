@@ -19,13 +19,13 @@ properties:
     nullable: true
     autoIncrement: false
     name: method
-  asset:
+  powerAsset:
     type:
       type: direct
       list: false
     nullable: true
     autoIncrement: false
-    name: asset
+    name: powerAsset
   addSteps:
     type:
       type: boolean
@@ -36,6 +36,6 @@ properties:
 indexes:
   assetIndex:
     properties:
-      - asset
+      - powerAsset
     indexType: btree
     cursorable: false

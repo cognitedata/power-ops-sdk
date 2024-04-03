@@ -41,44 +41,15 @@ properties:
       type: container
     containerPropertyIdentifier: stepState
     name: stepState
-  # assetType:
-  #   container:
-  #     space: "{{powerops_models}}"
-  #     externalId: BidMatrix
-  #     type: container
-  #   containerPropertyIdentifier: assetType
-  #   name: assetType
-  # assetId:
-  #   container:
-  #     space: "{{powerops_models}}"
-  #     externalId: BidMatrix
-  #     type: container
-  #   containerPropertyIdentifier: assetId
-  #   name: assetId
-  # alerts:
-  #   type:
-  #     space: "{{powerops_type_space}}"
-  #     externalId: calculationIssue
-  #   source:
-  #     space: "{{powerops_models}}"
-  #     externalId: Alert
-  #     version: "{{version}}"
-  #     type: view
-  #   direction: outwards
-  #   name: alerts
-  #   connectionType: multi_edge_connection
-  # isProcessed:
-  #   container:
-  #     space: "{{powerops_models}}"
-  #     externalId: BidMatrix
-  #     type: container
-  #   containerPropertyIdentifier: isProcessed
-  #   name: isProcessed
-  #   description: Whether the bid matrix has been processed by the bid matrix processor or not
-  # resourceCost:
-  #   container:
-  #     space: "{{powerops_models}}"
-  #     externalId: BidMatrix
-  #     type: container
-  #   containerPropertyIdentifier: resourceCost
-  #   name: resourceCost
+  partialBidConfiguration:
+    container:
+      space: "{{powerops_models}}"
+      externalId: BidMatrix
+      type: container
+    source:
+      space: "{{powerops_models}}"
+      externalId: PartialBidConfiguration
+      version: "{{version}}"
+      type: view
+    containerPropertyIdentifier: partialBidConfiguration
+    name: partialBidConfiguration

@@ -17,14 +17,6 @@ filter:
 implements: []
 version: "{{version}}"
 properties:
-  cogShopProcessId:
-    container:
-      space: "{{powerops_models}}"
-      externalId: SHOPResult
-      type: container
-    containerPropertyIdentifier: cogShopProcessId
-    name: cogShopProcessId
-    description: The id of the cog shop process
   case:
     container:
       space: "{{powerops_models}}"
@@ -38,14 +30,6 @@ properties:
       externalId: Case
       version: "{{version}}"
       type: view
-  outputTimeseries:
-    container:
-      space: "{{powerops_models}}"
-      externalId: SHOPResult
-      type: container
-    containerPropertyIdentifier: tsList1
-    name: outputTimeseries
-    description: A general placeholder for all timeseries that stem from a shop run
   objectiveSequence:
     container:
       space: "{{powerops_models}}"
@@ -86,6 +70,19 @@ properties:
     containerPropertyIdentifier: cplexLogs
     name: cplexLogs
     description: The logs from CPLEX
+  outputTimeseries:
+    type:
+      space: "{{powerops_type_space}}"
+      externalId: SHOPResult.outputTimeseries
+    source:
+      space: "{{powerops_models}}"
+      externalId: SHOPTimeSeries
+      version: "{{version}}"
+      type: view
+    direction: outwards
+    name: outputTimeseries
+    description: TODO
+    connectionType: multi_edge_connection
   alerts:
     type:
       space: "{{powerops_type_space}}"

@@ -27,20 +27,12 @@ implements:
     type: view
 version: "{{version}}"
 properties:
-  cogShopProcessId:
-    container:
-      space: "{{powerops_models}}"
-      externalId: FunctionData
-      type: container
-    containerPropertyIdentifier: text1
-    name: cogShopProcessId
-    description: The id of the cog shop process
   cogShopTag:
     container:
       space: "{{powerops_models}}"
       externalId: FunctionData
       type: container
-    containerPropertyIdentifier: text2
+    containerPropertyIdentifier: text1
     name: cogShopTag
     description: Optionally specify cogshop tag to trigger
   case:

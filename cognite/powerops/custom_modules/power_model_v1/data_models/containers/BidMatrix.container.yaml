@@ -7,7 +7,7 @@ properties:
     type:
       list: false
       type: sequence
-    nullable: true
+    nullable: false
     autoIncrement: false
     name: matrix
   powerAsset:
@@ -22,9 +22,16 @@ properties:
       list: false
       collation: ucs_basic
       type: text
-    nullable: true
+    nullable: false
     autoIncrement: false
     name: stepState
+  partialBidConfiguration:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: partialBidConfiguration
   # assetId:
   #   type:
   #     list: false

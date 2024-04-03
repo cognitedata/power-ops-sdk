@@ -73,7 +73,11 @@
 - space: "{{powerops_type_space}}"
   externalId: SHOPTimeSeries
 - space: "{{powerops_type_space}}"
-  externalId: SHOPResultPriceProd.productionTimeseries
+  externalId: SHOPResult.outputTimeseries
+- space: "{{powerops_type_space}}"
+  externalId: PriceProduction
+- space: "{{powerops_type_space}}"
+  externalId: PartialBidMatrixCalculationOutput
 
 ## DayAhead Types
 - space: "{{powerops_type_space}}"
@@ -113,23 +117,23 @@
 - space: "{{powerops_type_space}}"
   externalId: SHOPTriggerOutput
 - space: "{{powerops_type_space}}"
-  externalId: WaterPartialBidCalculationOutput
+  externalId: WaterPartialBidMatrixCalculationOutput
 - space: "{{powerops_type_space}}"
-  externalId: PartialBidCalculationInput
+  externalId: PartialBidMatrixCalculationInput
 - space: "{{powerops_type_space}}"
-  externalId: BidCalculationTask
+  externalId: BidMatrixCalculationTask
 - space: "{{powerops_type_space}}"
   externalId: PartialPostProcessingInput
 - space: "{{powerops_type_space}}"
   externalId: PartialPostProcessingOutput
 - space: "{{powerops_type_space}}"
-  externalId: ShopPartialBidCalculationInput
+  externalId: ShopPartialBidMatrixCalculationInput
 - space: "{{powerops_type_space}}"
-  externalId: ShopPartialBidCalculationOutput
+  externalId: ShopPartialBidMatrixCalculationOutput
 - space: "{{powerops_type_space}}"
-  externalId: WaterPartialBidCalculationInput
+  externalId: WaterPartialBidMatrixCalculationInput
 - space: "{{powerops_type_space}}"
-  externalId: Water.partialBidCalculations
+  externalId: Water.partialBidMatrixCalculations
 - space: "{{powerops_type_space}}"
   externalId: ModelTemplate.baseMappings
 - space: "{{powerops_type_space}}"

@@ -27,32 +27,18 @@ implements:
     type: view
 version: "{{version}}"
 properties:
-  priceArea:
+  bidConfiguration:
     container:
       space: "{{powerops_models}}"
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct1
+    name: bidConfiguration
     source:
       space: "{{powerops_models}}"
-      externalId: PriceArea
+      externalId: BidConfiguration
       version: "{{version}}"
       type: view
-    name: priceArea
-    description: TODO
-  marketConfiguration:
-    container:
-      space: "{{powerops_models}}"
-      externalId: FunctionData
-      type: container
-    containerPropertyIdentifier: direct2
-    source:
-      space: "{{powerops_models}}"
-      externalId: MarketConfiguration
-      version: "{{version}}"
-      type: view
-    name: marketConfiguration
-    description: TODO
   bidDate:
     container:
       space: "{{powerops_models}}"

@@ -1,0 +1,41 @@
+space: "{{powerops_models}}"
+externalId: ScenarioSet
+name: ScenarioSet
+usedFor: node
+properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+    description: TODO
+  shopStartSpecification:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: shopStartSpecification
+    description: The shop start specification
+  shopEndSpecification:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: shopEndSpecification
+    description: The shop end specification
+  shopBidDateSpecification:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: shopBidDateSpecification
+    description: The shop bid date specification

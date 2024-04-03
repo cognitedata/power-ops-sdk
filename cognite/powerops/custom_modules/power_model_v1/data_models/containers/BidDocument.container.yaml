@@ -11,14 +11,6 @@ properties:
     nullable: true
     autoIncrement: false
     name: name
-  method:
-    type:
-      list: false
-      collation: ucs_basic
-      type: text
-    nullable: true
-    autoIncrement: false
-    name: method
   deliveryDate:
     type:
       list: false

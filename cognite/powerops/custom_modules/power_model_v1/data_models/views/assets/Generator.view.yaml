@@ -27,13 +27,13 @@ implements:
     type: view
 version: "{{version}}"
 properties:
-  pMin:
+  productionMin:
     container:
       space: "{{powerops_models}}"
       externalId: Generator
       type: container
-    containerPropertyIdentifier: pMin
-    name: pMin
+    containerPropertyIdentifier: productionMin
+    name: productionMin
   penstockNumber:
     container:
       space: "{{powerops_models}}"

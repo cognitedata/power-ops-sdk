@@ -3,37 +3,11 @@ externalId: PartialShopBased
 name: PartialShopBased
 usedFor: node
 properties:
-  cutOffPrice:
-    type:
-      type: float64
-      list: false
-    nullable: false
-    autoIncrement: false
-    name: cutOffPrice
-  shopStartSpecification:
+  shopScenarios:
     type:
       list: false
-      collation: ucs_basic
-      type: text
-    nullable: false
+      type: direct
+    nullable: true
     autoIncrement: false
-    name: shopStartSpecification
-    description: The shop start specification
-  shopEndSpecification:
-    type:
-      list: false
-      collation: ucs_basic
-      type: text
-    nullable: false
-    autoIncrement: false
-    name: shopEndSpecification
-    description: The shop end specification
-  shopBidDateSpecification:
-    type:
-      list: false
-      collation: ucs_basic
-      type: text
-    nullable: false
-    autoIncrement: false
-    name: shopBidDateSpecification
-    description: The shop bid date specification
+    name: shopScenarios
+    description: TODO

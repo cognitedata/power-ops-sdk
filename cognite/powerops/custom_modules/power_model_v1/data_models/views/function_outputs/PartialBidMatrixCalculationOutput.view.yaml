@@ -1,7 +1,7 @@
 space: "{{powerops_models}}"
-externalId: ShopPartialBidCalculationInput
-name: ShopPartialBidCalculationInput
-description: Input to the task dispatcher in the shop bid process
+externalId: PartialBidMatrixCalculationOutput
+name: PartialBidMatrixCalculationOutput
+description: The output of a bid calculation method
 filter:
   and:
     - hasData:
@@ -18,46 +18,48 @@ filter:
           - node
           - type
         value:
-          externalId: ShopPartialBidCalculationInput
+          externalId: PartialBidMatrixCalculationOutput
           space: "{{powerops_type_space}}"
 implements:
   - space: "{{powerops_models}}"
-    externalId: PartialBidCalculationInput
+    externalId: FunctionOutput
     version: "{{version}}"
     type: view
 version: "{{version}}"
 properties:
-  cogShopProcessId:
+  partialMatrix:
     container:
       space: "{{powerops_models}}"
       externalId: FunctionData
       type: container
-    containerPropertyIdentifier: text1
-    name: cogShopProcessId
-    description: The id of the cog shop process
-  shopResultPriceProd:
-    type:
-      space: "{{powerops_type_space}}"
-      externalId: SHOPResultPriceProd
+    containerPropertyIdentifier: direct1
+    name: partialMatrix
     source:
       space: "{{powerops_models}}"
-      externalId: SHOPResultPriceProd
+      externalId: BidMatrix
       version: "{{version}}"
       type: view
-    direction: outwards
-    name: shopResults
-    description: An array of shop results with price/prod timeseries pairs for all plants included in the respective shop scenario
-    connectionType: multi_edge_connection
-  partialBidConfiguration:
+  bidConfiguration:
+    container:
+      space: "{{powerops_models}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct2
+    name: bidConfiguration
+    source:
+      space: "{{powerops_models}}"
+      externalId: BidConfiguration
+      version: "{{version}}"
+      type: view
+  input:
     container:
       space: "{{powerops_models}}"
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct3
-    name: partialBidConfiguration
-    description: The partial bid configuration related to the bid calculation task
+    name: input
     source:
       space: "{{powerops_models}}"
-      externalId: ShopBasedPartialBidConfiguration
+      externalId: PartialBidMatrixCalculationInput
       version: "{{version}}"
       type: view

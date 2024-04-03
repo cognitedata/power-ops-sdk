@@ -27,61 +27,28 @@ implements:
     type: view
 version: "{{version}}"
 properties:
-  asset:
+  powerAsset:
     container:
       space: "{{powerops_models}}"
       externalId: PartialBidConfiguration
       type: container
-    containerPropertyIdentifier: asset
-    name: asset
+    containerPropertyIdentifier: powerAsset
+    name: powerAsset
     description: TODO description
     source:
       space: "{{powerops_models}}"
       externalId: PowerAsset # TODO: update to right asset
       version: "{{version}}"
       type: view
-  cutOffPrice:
-    container:
-      space: "{{powerops_models}}"
-      externalId: PartialShopBased
-      type: container
-    containerPropertyIdentifier: cutOffPrice
-    name: cutOffPrice
-    description: TODO definition
-  shopStartSpecification:
-    container:
-      space: "{{powerops_models}}"
-      externalId: PartialShopBased
-      type: container
-    containerPropertyIdentifier: shopStartSpecification
-    name: shopStartSpecification
-    description: TODO definition
-  shopEndSpecification:
-    container:
-      space: "{{powerops_models}}"
-      externalId: PartialShopBased
-      type: container
-    containerPropertyIdentifier: shopEndSpecification
-    name: shopEndSpecification
-    description: TODO definition
-  shopBidDateSpecification:
-    container:
-      space: "{{powerops_models}}"
-      externalId: PartialShopBased
-      type: container
-    containerPropertyIdentifier: shopBidDateSpecification
-    name: shopBidDateSpecification
-    description: TODO definition
   shopScenarios:
-    type:
-      space: "{{powerops_type_space}}"
-      externalId: ShopBasedPartialBidConfiguration.scenarios
+    container:
+      space: "{{powerops_models}}"
+      externalId: PartialShopBased
+      type: container
+    containerPropertyIdentifier: shopScenarios
+    name: shopScenarios
     source:
       space: "{{powerops_models}}"
-      externalId: Scenario
+      externalId: ScenarioSet
       version: "{{version}}"
       type: view
-    direction: outwards
-    name: shopScenarios
-    description: Configuration of the partial bids that make up the total bid configuration
-    connectionType: multi_edge_connection

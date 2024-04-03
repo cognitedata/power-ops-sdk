@@ -1,7 +1,7 @@
-externalId: compute_TotalBidCalculation
+externalId: compute_TotalBidMatrixCalculation
 space: "{{powerops_models}}"
 version: "1"
-name: TotalBidCalculation
+name: TotalBidMatrixCalculation
 description: "The process of going from PartialBidMatrix to TotalBidMatrix"
 views:
   - externalId: BidMatrix
@@ -40,10 +40,6 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: SHOPResultPriceProd
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
   - externalId: MarketConfiguration
     space: "{{powerops_models}}"
     type: view
@@ -64,7 +60,7 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: PriceProdCase
+  - externalId: PriceProduction
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"

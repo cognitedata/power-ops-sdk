@@ -1,0 +1,29 @@
+space: "{{powerops_models}}"
+externalId: PriceProduction
+name: PriceProduction
+usedFor: node
+properties:
+  price:
+    type:
+      list: false
+      type: timeseries
+    nullable: false
+    autoIncrement: false
+    name: price
+    description: TODO
+  production:
+    type:
+      list: false
+      type: timeseries
+    nullable: false
+    autoIncrement: false
+    name: production
+    description: TODO
+  shopResult:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: shopResult
+    description: TODO

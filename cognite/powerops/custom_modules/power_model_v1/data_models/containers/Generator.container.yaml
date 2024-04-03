@@ -3,13 +3,13 @@ externalId: Generator
 name: Generator
 usedFor: node
 properties:
-  pMin:
+  productionMin:
     type:
       type: float64
       list: false
     nullable: false
     autoIncrement: false
-    name: pMin
+    name: productionMin
   penstockNumber:
     type:
       type: int64

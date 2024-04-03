@@ -47,7 +47,7 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: WaterPartialBidCalculationInput
+  - externalId: WaterPartialBidMatrixCalculationInput
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
@@ -71,7 +71,7 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: ShopPartialBidCalculationInput
+  - externalId: ShopPartialBidMatrixCalculationInput
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
@@ -83,7 +83,7 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: PartialBidCalculationOutput
+  - externalId: PartialBidMatrixCalculationOutput
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
@@ -207,11 +207,7 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: PriceProdCase
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: SHOPResultPriceProd
+  - externalId: PriceProduction
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
