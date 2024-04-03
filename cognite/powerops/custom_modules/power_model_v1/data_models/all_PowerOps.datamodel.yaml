@@ -83,7 +83,7 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: WaterPartialBidCalculationOutput
+  - externalId: PartialBidCalculationOutput
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
@@ -92,10 +92,6 @@ views:
     type: view
     version: "{{version}}"
   - externalId: PartialPostProcessingOutput
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: ShopPartialBidCalculationOutput
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"

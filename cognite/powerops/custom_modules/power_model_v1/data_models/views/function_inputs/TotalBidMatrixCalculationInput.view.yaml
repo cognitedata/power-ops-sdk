@@ -1,4 +1,4 @@
-space: '{{powerops_models}}'
+space: "{{powerops_models}}"
 externalId: TotalBidMatrixCalculationInput
 name: TotalBidMatrixCalculationInput
 description: Input for the total bid matrix calculation
@@ -6,35 +6,69 @@ filter:
   and:
     - hasData:
         - type: container
-          space: '{{powerops_models}}'
+          space: "{{powerops_models}}"
           externalId: FunctionMetadata
     - equals:
         property:
           - node
           - space
-        value: '{{powerops_instance_space}}'
+        value: "{{powerops_instance_space}}"
     - equals:
         property:
           - node
           - type
         value:
           externalId: TotalBidMatrixCalculationInput
-          space: '{{powerops_type_space}}'
+          space: "{{powerops_type_space}}"
 implements:
-  - space: '{{powerops_models}}'
+  - space: "{{powerops_models}}"
     externalId: FunctionInput
-    version: '{{version}}'
+    version: "{{version}}"
     type: view
-version: '{{version}}'
+version: "{{version}}"
 properties:
+  priceArea:
+    container:
+      space: "{{powerops_models}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
+    source:
+      space: "{{powerops_models}}"
+      externalId: PriceArea
+      version: "{{version}}"
+      type: view
+    name: priceArea
+    description: TODO
+  marketConfiguration:
+    container:
+      space: "{{powerops_models}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct2
+    source:
+      space: "{{powerops_models}}"
+      externalId: MarketConfiguration
+      version: "{{version}}"
+      type: view
+    name: marketConfiguration
+    description: TODO
+  bidDate:
+    container:
+      space: "{{powerops_models}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: date1
+    name: bidDate
+    description: The bid date
   partialBidMatrices:
     type:
-      space: '{{powerops_type_space}}'
+      space: "{{powerops_type_space}}"
       externalId: BidMatrix
     source:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: BidMatrix
-      version: '{{version}}'
+      version: "{{version}}"
       type: view
     direction: outwards
     name: partialBidMatrices
