@@ -10,6 +10,15 @@ properties:
     nullable: false
     autoIncrement: false
     name: time
+  processId:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: processId
+    description: The process id
   title:
     type:
       list: false

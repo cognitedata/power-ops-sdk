@@ -13,7 +13,11 @@ filter:
           - node
           - space
         value: "{{powerops_instance_space}}"
-implements: {}
+implements:
+  - space: "{{powerops_models}}"
+    externalId: FunctionInput
+    version: "{{version}}"
+    type: view
 version: "{{version}}"
 properties:
   bidDate:

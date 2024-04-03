@@ -1,4 +1,4 @@
-space: '{{powerops_models}}'
+space: "{{powerops_models}}"
 externalId: PreprocessorInput
 name: PreprocessorInput
 description: Input to the task dispatcher in the shop bid process
@@ -6,53 +6,53 @@ filter:
   and:
     - hasData:
         - type: container
-          space: '{{powerops_models}}'
+          space: "{{powerops_models}}"
           externalId: FunctionData
     - equals:
         property:
           - node
           - space
-        value: '{{powerops_instance_space}}'
+        value: "{{powerops_instance_space}}"
     - equals:
         property:
           - node
           - type
         value:
           externalId: PreprocessorInput
-          space: '{{powerops_type_space}}'
+          space: "{{powerops_type_space}}"
 implements:
-  - space: '{{powerops_models}}'
+  - space: "{{powerops_models}}"
     externalId: FunctionInput
-    version: '{{version}}'
+    version: "{{version}}"
     type: view
-version: '{{version}}'
+version: "{{version}}"
 properties:
   scenario:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct1
     name: scenario
     description: The scenario to run shop with
     source:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: Scenario
-      version: '{{version}}'
+      version: "{{version}}"
       type: view
   shopStart:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: FunctionData
       type: container
-    containerPropertyIdentifier: date1
+    containerPropertyIdentifier: timestamp1
     name: shopStart
     description: Start date of bid period
   shopEnd:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: FunctionData
       type: container
-    containerPropertyIdentifier: date2
+    containerPropertyIdentifier: timestamp2
     name: shopEnd
     description: End date of bid period

@@ -22,10 +22,6 @@ filter:
           space: "{{powerops_type_space}}"
 implements:
   - space: "{{powerops_models}}"
-    externalId: FunctionInput
-    version: "{{version}}"
-    type: view
-  - space: "{{powerops_models}}"
     externalId: PartialBidCalculationInput
     version: "{{version}}"
     type: view

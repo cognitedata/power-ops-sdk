@@ -1,4 +1,4 @@
-space: '{{powerops_models}}'
+space: "{{powerops_models}}"
 externalId: PartialPostProcessingInput
 name: PartialPostProcessingInput
 description: Partial post processing input
@@ -6,49 +6,49 @@ filter:
   and:
     - hasData:
         - type: container
-          space: '{{powerops_models}}'
+          space: "{{powerops_models}}"
           externalId: FunctionMetadata
     - equals:
         property:
           - node
           - space
-        value: '{{powerops_instance_space}}'
+        value: "{{powerops_instance_space}}"
     - equals:
         property:
           - node
           - type
         value:
           externalId: PartialPostProcessingInput
-          space: '{{powerops_type_space}}'
+          space: "{{powerops_type_space}}"
 implements:
-  - space: '{{powerops_models}}'
+  - space: "{{powerops_models}}"
     externalId: FunctionInput
-    version: '{{version}}'
+    version: "{{version}}"
     type: view
-version: '{{version}}'
+version: "{{version}}"
 properties:
   marketConfig:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: FunctionMetadata
       type: container
     containerPropertyIdentifier: data
     name: marketConfig
     source:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: MarketConfiguration
-      version: '{{version}}'
+      version: "{{version}}"
       type: view
-  partialBidMatricesRaw:
+  partialBidMatrices:
     type:
-      space: '{{powerops_type_space}}'
-      externalId: partialBidMatricesRaw
+      space: "{{powerops_type_space}}"
+      externalId: partialBidMatrices
     source:
-      space: '{{powerops_models}}'
-      externalId: BidMatrixRaw
-      version: '{{version}}'
+      space: "{{powerops_models}}"
+      externalId: BidMatrix
+      version: "{{version}}"
       type: view
     direction: outwards
-    name: partialBidMatricesRaw
+    name: partialBidMatrices
     description: The partial bid matrices that needs post processing.
     connectionType: multi_edge_connection

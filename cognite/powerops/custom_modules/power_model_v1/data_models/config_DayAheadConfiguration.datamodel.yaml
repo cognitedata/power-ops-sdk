@@ -16,18 +16,6 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: BidMethod
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: BidMethodWaterValue
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: BidMethodSHOPMultiScenario
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
   - externalId: PartialBidConfiguration
     space: "{{powerops_models}}"
     type: view

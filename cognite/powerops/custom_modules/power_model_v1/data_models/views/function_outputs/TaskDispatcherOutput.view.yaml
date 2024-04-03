@@ -40,29 +40,16 @@ properties:
       externalId: TaskDispatcherInput
       version: "{{version}}"
       type: view
-  cogShopTaskCalculations:
+  processSubTasks:
     type:
       space: "{{powerops_type_space}}"
-      externalId: cogShopTaskCalculations
+      externalId: processSubTasks
     source:
       space: "{{powerops_models}}"
-      externalId: SHOPTriggerInput
+      externalId: FunctionInput
       version: "{{version}}"
       type: view
     direction: outwards
-    name: cogShopTaskCalculations
-    description: TODO description
-    connectionType: multi_edge_connection
-  partialBidCalculations:
-    type:
-      space: "{{powerops_type_space}}"
-      externalId: PartialBidCalculationInput
-    source:
-      space: "{{powerops_models}}"
-      externalId: PartialBidCalculationInput
-      version: "{{version}}"
-      type: view
-    direction: outwards
-    name: partialBidCalculations
-    description: An array of preprocessor calculations/inputs to preprocessor function.
+    name: processSubTasks
+    description: An array of input for process subtasks used for partial bid calculations.
     connectionType: multi_edge_connection

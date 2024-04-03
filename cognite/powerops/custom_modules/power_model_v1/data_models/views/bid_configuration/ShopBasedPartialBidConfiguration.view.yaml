@@ -27,19 +27,6 @@ implements:
     type: view
 version: "{{version}}"
 properties:
-  method:
-    container:
-      space: "{{powerops_models}}"
-      externalId: PartialBidConfiguration
-      type: container
-    containerPropertyIdentifier: method
-    name: method
-    description: The bid method related to the bid configuration
-    source:
-      space: "{{powerops_models}}"
-      externalId: BidMethodSHOPMultiScenario #TODO: update to right bid method
-      version: "{{version}}"
-      type: view
   asset:
     container:
       space: "{{powerops_models}}"

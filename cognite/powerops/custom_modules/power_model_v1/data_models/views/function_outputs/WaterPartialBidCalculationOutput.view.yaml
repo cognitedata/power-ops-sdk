@@ -27,16 +27,16 @@ implements:
     type: view
 version: "{{version}}"
 properties:
-  rawPartialMatrix:
+  partialMatrix:
     container:
       space: "{{powerops_models}}"
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct1
-    name: rawPartialMatrix
+    name: partialMatrix
     source:
       space: "{{powerops_models}}"
-      externalId: BidMatrixRaw
+      externalId: BidMatrix
       version: "{{version}}"
       type: view
   input:

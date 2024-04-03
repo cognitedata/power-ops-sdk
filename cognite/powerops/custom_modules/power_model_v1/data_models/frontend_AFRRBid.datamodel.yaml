@@ -24,14 +24,6 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: BidMethodAFRR
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: BidMethod
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
   - externalId: Alert
     space: "{{powerops_models}}"
     type: view

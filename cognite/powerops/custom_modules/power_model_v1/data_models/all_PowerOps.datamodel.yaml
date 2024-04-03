@@ -175,51 +175,7 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: BidMethod
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: BidMethodWaterValue
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: BidMethodSHOPMultiScenario
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: BidMethodCustom
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: BidMethodAFRR
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: BidMatrixRaw
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
   - externalId: BidMatrix
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: CustomBidMatrix
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: MultiScenarioMatrix
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: MultiScenarioMatrixRaw
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: BasicBidMatrix
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: BasicBidMatrixRaw
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"

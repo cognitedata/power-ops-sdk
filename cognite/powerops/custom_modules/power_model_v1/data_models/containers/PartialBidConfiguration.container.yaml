@@ -13,8 +13,9 @@ properties:
     name: name
   method:
     type:
-      type: direct
       list: false
+      collation: ucs_basic
+      type: text
     nullable: true
     autoIncrement: false
     name: method

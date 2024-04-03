@@ -25,16 +25,4 @@ implements:
     version: "{{version}}"
     type: view
 version: "{{version}}"
-properties:
-  defaultMethod:
-    container:
-      space: "{{powerops_models}}"
-      externalId: PriceArea
-      type: container
-    containerPropertyIdentifier: defaultMethodDayAhead
-    name: defaultMethod
-    source:
-      space: "{{powerops_models}}"
-      externalId: BidMethod
-      version: "{{version}}"
-      type: view
+properties: {}

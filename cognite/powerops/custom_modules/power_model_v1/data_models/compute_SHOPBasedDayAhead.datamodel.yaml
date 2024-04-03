@@ -40,19 +40,11 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: BidMatrixRaw
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: MultiScenarioMatrixRaw
+  - externalId: BidMatrix
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
   - externalId: MarketConfiguration
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: BidMethodSHOPMultiScenario
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
@@ -118,14 +110,6 @@ views:
     type: view
   - space: "{{powerops_models}}"
     externalId: FunctionOutput
-    version: "{{version}}"
-    type: view
-  - space: "{{powerops_models}}"
-    externalId: BidMatrix
-    version: "{{version}}"
-    type: view
-  - space: "{{powerops_models}}"
-    externalId: BidMethod
     version: "{{version}}"
     type: view
   - space: "{{powerops_models}}"

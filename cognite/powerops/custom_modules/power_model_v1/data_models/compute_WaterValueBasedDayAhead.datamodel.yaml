@@ -24,14 +24,6 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - space: "{{powerops_models}}"
-    externalId: BidMatrixRaw
-    type: view
-    version: "{{version}}"
-  - externalId: BidMethodWaterValue
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
   - externalId: Plant
     space: "{{powerops_models}}"
     type: view
@@ -82,10 +74,6 @@ views:
     type: view
   - space: "{{powerops_models}}"
     externalId: BidMatrix
-    version: "{{version}}"
-    type: view
-  - space: "{{powerops_models}}"
-    externalId: BidMethod
     version: "{{version}}"
     type: view
   - space: "{{powerops_models}}"

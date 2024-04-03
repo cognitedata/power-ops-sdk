@@ -4,19 +4,7 @@ version: "1"
 name: TotalBidCalculation
 description: "The process of going from PartialBidMatrix to TotalBidMatrix"
 views:
-  - externalId: BidMatrixRaw
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: MultiScenarioMatrixRaw
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
   - externalId: BidMatrix
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: MultiScenarioMatrix
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
@@ -41,18 +29,6 @@ views:
     type: view
     version: "{{version}}"
   - externalId: PriceArea
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: BidMethod
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: BidMethodWaterValue
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: BidMethodSHOPMultiScenario
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
