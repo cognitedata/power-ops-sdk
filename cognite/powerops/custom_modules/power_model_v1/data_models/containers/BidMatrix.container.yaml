@@ -17,14 +17,14 @@ properties:
     nullable: true
     autoIncrement: false
     name: powerAsset
-  stepState:
+  state:
     type:
       list: false
       collation: ucs_basic
       type: text
     nullable: false
     autoIncrement: false
-    name: stepState
+    name: state
   partialBidConfiguration:
     type:
       list: false

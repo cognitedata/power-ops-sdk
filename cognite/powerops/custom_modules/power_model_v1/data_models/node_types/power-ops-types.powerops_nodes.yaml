@@ -33,21 +33,15 @@
 - space: "{{powerops_type_space}}"
   externalId: Plant
 - space: "{{powerops_type_space}}"
-  externalId: PlantShop
-- space: "{{powerops_type_space}}"
   externalId: PriceAreaAFRR
 - space: "{{powerops_type_space}}"
   externalId: PriceAreaAsset
 - space: "{{powerops_type_space}}"
   externalId: PriceAreaDayAhead
 - space: "{{powerops_type_space}}"
-  externalId: Reservoir
-- space: "{{powerops_type_space}}"
   externalId: TurbineEfficiencyCurve
 - space: "{{powerops_type_space}}"
   externalId: Watercourse
-- space: "{{powerops_type_space}}"
-  externalId: WatercourseShop
 - space: "{{powerops_type_space}}"
   externalId: Alert
 
@@ -117,8 +111,6 @@
 - space: "{{powerops_type_space}}"
   externalId: SHOPTriggerOutput
 - space: "{{powerops_type_space}}"
-  externalId: WaterPartialBidMatrixCalculationOutput
-- space: "{{powerops_type_space}}"
   externalId: PartialBidMatrixCalculationInput
 - space: "{{powerops_type_space}}"
   externalId: BidMatrixCalculationTask
@@ -131,7 +123,7 @@
 - space: "{{powerops_type_space}}"
   externalId: ShopPartialBidMatrixCalculationOutput
 - space: "{{powerops_type_space}}"
-  externalId: WaterPartialBidMatrixCalculationInput
+  externalId: WaterValueBasedPartialBidMatrixCalculationInput
 - space: "{{powerops_type_space}}"
   externalId: Water.partialBidMatrixCalculations
 - space: "{{powerops_type_space}}"

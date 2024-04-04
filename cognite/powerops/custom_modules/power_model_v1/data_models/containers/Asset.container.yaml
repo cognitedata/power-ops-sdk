@@ -37,6 +37,15 @@ properties:
     autoIncrement: false
     name: order
     description: The order of the Asset
+  assetType:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: assetType
+    description: The type of the Asset
 indexes:
   time:
     properties:

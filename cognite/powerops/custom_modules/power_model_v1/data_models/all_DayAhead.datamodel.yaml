@@ -112,14 +112,6 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: PlantShop
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: WatercourseShop
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
   - externalId: PriceProduction
     space: "{{powerops_models}}"
     type: view
@@ -136,15 +128,11 @@ views:
     externalId: FunctionOutput
     version: "{{version}}"
     type: view
-  - externalId: WaterPartialBidMatrixCalculationInput
+  - externalId: WaterValueBasedPartialBidMatrixCalculationInput
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
   - externalId: Watercourse
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: Reservoir
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"

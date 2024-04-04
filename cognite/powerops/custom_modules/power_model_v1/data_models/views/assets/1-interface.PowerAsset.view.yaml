@@ -45,3 +45,11 @@ properties:
     containerPropertyIdentifier: order
     name: ordering
     description: The ordering of the asset
+  assetType:
+    container:
+      space: "{{powerops_models}}"
+      externalId: Asset
+      type: container
+    containerPropertyIdentifier: assetType
+    name: assetType
+    description: The type of the asset

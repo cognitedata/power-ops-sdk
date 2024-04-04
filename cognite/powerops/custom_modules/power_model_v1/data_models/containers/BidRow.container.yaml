@@ -78,32 +78,10 @@ properties:
     nullable: true
     autoIncrement: false
     defaultValue: null
-  assetType:
-    type:
-      list: false
-      type: text
-      collation: ucs_basic
-    name: assetType
-    description: null
-    nullable: true
-    autoIncrement: false
-    defaultValue: null
-  assetId:
-    type:
-      list: false
-      type: text
-      collation: ucs_basic
-    name: assetId
-    description: null
-    nullable: true
-    autoIncrement: false
-    defaultValue: null
-  method:
+  powerAsset:
     type:
       type: direct
       list: false
-    name: method
-    description: null
     nullable: true
     autoIncrement: false
-    defaultValue: null
+    name: powerAsset

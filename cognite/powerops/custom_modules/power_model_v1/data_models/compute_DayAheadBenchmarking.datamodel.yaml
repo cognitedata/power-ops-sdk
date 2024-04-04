@@ -69,10 +69,6 @@ views:
     version: "{{version}}"
     type: view
   - space: "{{powerops_models}}"
-    externalId: WatercourseShop
-    version: "{{version}}"
-    type: view
-  - space: "{{powerops_models}}"
     externalId: PowerAsset
     version: "{{version}}"
     type: view

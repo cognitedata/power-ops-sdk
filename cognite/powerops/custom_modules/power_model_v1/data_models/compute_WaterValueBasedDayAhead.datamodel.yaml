@@ -16,7 +16,7 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: WaterPartialBidMatrixCalculationInput
+  - externalId: WaterValueBasedPartialBidMatrixCalculationInput
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
@@ -45,10 +45,6 @@ views:
     type: view
     version: "{{version}}"
   - externalId: MarketConfiguration
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: Reservoir
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"

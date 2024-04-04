@@ -36,10 +36,6 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: WatercourseShop
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
   - externalId: PriceProduction
     space: "{{powerops_models}}"
     type: view
