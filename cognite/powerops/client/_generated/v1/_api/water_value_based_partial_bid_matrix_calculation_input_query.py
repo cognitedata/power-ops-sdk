@@ -82,6 +82,7 @@ class WaterValueBasedPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainM
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
                 result_cls=BidConfiguration,
+                is_single_direct_relation=True,
             ),
         )
 
@@ -101,5 +102,6 @@ class WaterValueBasedPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainM
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
                 result_cls=WaterValueBasedPartialBidConfiguration,
+                is_single_direct_relation=True,
             ),
         )

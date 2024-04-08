@@ -5,9 +5,12 @@ from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
+from pydantic import field_validator, model_validator
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
@@ -15,13 +18,14 @@ from ._core import (
     DomainModelWriteList,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
     ResourcesWrite,
 )
 
 if TYPE_CHECKING:
-    from ._alert import Alert, AlertWrite
-    from ._case import Case, CaseWrite
-    from ._shop_time_series import SHOPTimeSeries, SHOPTimeSeriesWrite
+    from ._alert import Alert, AlertGraphQL, AlertWrite
+    from ._case import Case, CaseGraphQL, CaseWrite
+    from ._shop_time_series import SHOPTimeSeries, SHOPTimeSeriesGraphQL, SHOPTimeSeriesWrite
 
 
 __all__ = [
@@ -46,6 +50,100 @@ _SHOPRESULT_PROPERTIES_BY_FIELD = {
     "shop_messages": "shopMessages",
     "cplex_logs": "cplexLogs",
 }
+
+
+class SHOPResultGraphQL(GraphQLCore):
+    """This represents the reading version of shop result, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the shop result.
+        data_record: The data record of the shop result node.
+        case: The case that was used to produce this result
+        objective_sequence: The sequence of the objective function
+        pre_run: The pre-run data for the SHOP run
+        post_run: The post-run data for the SHOP run
+        shop_messages: The messages from the SHOP run
+        cplex_logs: The logs from CPLEX
+        alerts: An array of calculation level Alerts.
+        output_timeseries: TODO
+    """
+
+    view_id = dm.ViewId("sp_powerops_models_temp", "SHOPResult", "1")
+    case: Optional[CaseGraphQL] = Field(None, repr=False)
+    objective_sequence: Union[str, None] = Field(None, alias="objectiveSequence")
+    pre_run: Union[str, None] = Field(None, alias="preRun")
+    post_run: Union[str, None] = Field(None, alias="postRun")
+    shop_messages: Union[str, None] = Field(None, alias="shopMessages")
+    cplex_logs: Union[str, None] = Field(None, alias="cplexLogs")
+    alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
+    output_timeseries: Optional[list[SHOPTimeSeriesGraphQL]] = Field(default=None, repr=False, alias="outputTimeseries")
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+    @field_validator("case", "alerts", "output_timeseries", mode="before")
+    def parse_graphql(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        if "items" in value:
+            return value["items"]
+        return value
+
+    def as_read(self) -> SHOPResult:
+        """Convert this GraphQL format of shop result to the reading format."""
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return SHOPResult(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            case=self.case.as_read() if isinstance(self.case, GraphQLCore) else self.case,
+            objective_sequence=self.objective_sequence,
+            pre_run=self.pre_run,
+            post_run=self.post_run,
+            shop_messages=self.shop_messages,
+            cplex_logs=self.cplex_logs,
+            alerts=[alert.as_read() if isinstance(alert, GraphQLCore) else alert for alert in self.alerts or []],
+            output_timeseries=[
+                output_timesery.as_read() if isinstance(output_timesery, GraphQLCore) else output_timesery
+                for output_timesery in self.output_timeseries or []
+            ],
+        )
+
+    def as_write(self) -> SHOPResultWrite:
+        """Convert this GraphQL format of shop result to the writing format."""
+        return SHOPResultWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            case=self.case.as_write() if isinstance(self.case, DomainModel) else self.case,
+            objective_sequence=self.objective_sequence,
+            pre_run=self.pre_run,
+            post_run=self.post_run,
+            shop_messages=self.shop_messages,
+            cplex_logs=self.cplex_logs,
+            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
+            output_timeseries=[
+                output_timesery.as_write() if isinstance(output_timesery, DomainModel) else output_timesery
+                for output_timesery in self.output_timeseries or []
+            ],
+        )
 
 
 class SHOPResult(DomainModel):
@@ -75,8 +173,8 @@ class SHOPResult(DomainModel):
     post_run: Union[str, None] = Field(None, alias="postRun")
     shop_messages: Union[str, None] = Field(None, alias="shopMessages")
     cplex_logs: Union[str, None] = Field(None, alias="cplexLogs")
-    alerts: Union[list[Alert], list[str], None] = Field(default=None, repr=False)
-    output_timeseries: Union[list[SHOPTimeSeries], list[str], None] = Field(
+    alerts: Union[list[Alert], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
+    output_timeseries: Union[list[SHOPTimeSeries], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="outputTimeseries"
     )
 
@@ -136,8 +234,8 @@ class SHOPResultWrite(DomainModelWrite):
     post_run: Union[str, None] = Field(None, alias="postRun")
     shop_messages: Union[str, None] = Field(None, alias="shopMessages")
     cplex_logs: Union[str, None] = Field(None, alias="cplexLogs")
-    alerts: Union[list[AlertWrite], list[str], None] = Field(default=None, repr=False)
-    output_timeseries: Union[list[SHOPTimeSeriesWrite], list[str], None] = Field(
+    alerts: Union[list[AlertWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
+    output_timeseries: Union[list[SHOPTimeSeriesWrite], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="outputTimeseries"
     )
 
@@ -146,6 +244,7 @@ class SHOPResultWrite(DomainModelWrite):
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
@@ -180,7 +279,7 @@ class SHOPResultWrite(DomainModelWrite):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.data_record.existing_version,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
@@ -195,7 +294,13 @@ class SHOPResultWrite(DomainModelWrite):
         edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
-                cache, start_node=self, end_node=alert, edge_type=edge_type, view_by_read_class=view_by_read_class
+                cache,
+                start_node=self,
+                end_node=alert,
+                edge_type=edge_type,
+                view_by_read_class=view_by_read_class,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
             )
             resources.extend(other_resources)
 
@@ -207,6 +312,8 @@ class SHOPResultWrite(DomainModelWrite):
                 end_node=output_timesery,
                 edge_type=edge_type,
                 view_by_read_class=view_by_read_class,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
             )
             resources.extend(other_resources)
 

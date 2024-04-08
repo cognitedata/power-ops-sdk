@@ -6,9 +6,12 @@ from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
+from pydantic import field_validator, model_validator
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
@@ -16,11 +19,12 @@ from ._core import (
     DomainModelWriteList,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
     ResourcesWrite,
 )
 
 if TYPE_CHECKING:
-    from ._scenario import Scenario, ScenarioWrite
+    from ._scenario import Scenario, ScenarioGraphQL, ScenarioWrite
 
 
 __all__ = [
@@ -55,6 +59,94 @@ _CASE_PROPERTIES_BY_FIELD = {
     "start_time": "startTime",
     "end_time": "endTime",
 }
+
+
+class CaseGraphQL(GraphQLCore):
+    """This represents the reading version of case, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the case.
+        data_record: The data record of the case node.
+        scenario: The Shop scenario that was used to produce this result
+        case_file: The case file used
+        reservoir_mapping: The cut file reservoir mapping
+        cut_order_files: Cut order files (Module series in PRODRISK)
+        extra_files: The extra file field.
+        cog_shop_files_config: Configuration for in what order to load the various files into pyshop
+        start_time: The start time of the case
+        end_time: The end time of the case
+    """
+
+    view_id = dm.ViewId("sp_powerops_models_temp", "Case", "1")
+    scenario: Optional[ScenarioGraphQL] = Field(None, repr=False)
+    case_file: Union[str, None] = Field(None, alias="caseFile")
+    reservoir_mapping: Optional[list[str]] = Field(None, alias="reservoirMapping")
+    cut_order_files: Optional[list[str]] = Field(None, alias="cutOrderFiles")
+    extra_files: Optional[list[str]] = Field(None, alias="extraFiles")
+    cog_shop_files_config: Optional[list[dict]] = Field(None, alias="cogShopFilesConfig")
+    start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
+    end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+    @field_validator("scenario", mode="before")
+    def parse_graphql(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        if "items" in value:
+            return value["items"]
+        return value
+
+    def as_read(self) -> Case:
+        """Convert this GraphQL format of case to the reading format."""
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return Case(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            scenario=self.scenario.as_read() if isinstance(self.scenario, GraphQLCore) else self.scenario,
+            case_file=self.case_file,
+            reservoir_mapping=self.reservoir_mapping,
+            cut_order_files=self.cut_order_files,
+            extra_files=self.extra_files,
+            cog_shop_files_config=self.cog_shop_files_config,
+            start_time=self.start_time,
+            end_time=self.end_time,
+        )
+
+    def as_write(self) -> CaseWrite:
+        """Convert this GraphQL format of case to the writing format."""
+        return CaseWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            scenario=self.scenario.as_write() if isinstance(self.scenario, DomainModel) else self.scenario,
+            case_file=self.case_file,
+            reservoir_mapping=self.reservoir_mapping,
+            cut_order_files=self.cut_order_files,
+            extra_files=self.extra_files,
+            cog_shop_files_config=self.cog_shop_files_config,
+            start_time=self.start_time,
+            end_time=self.end_time,
+        )
 
 
 class Case(DomainModel):
@@ -148,6 +240,7 @@ class CaseWrite(DomainModelWrite):
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
@@ -188,7 +281,7 @@ class CaseWrite(DomainModelWrite):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.data_record.existing_version,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(

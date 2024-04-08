@@ -5,9 +5,12 @@ from typing import Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
+from pydantic import field_validator, model_validator
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
@@ -15,6 +18,7 @@ from ._core import (
     DomainModelWriteList,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
     ResourcesWrite,
 )
 
@@ -39,6 +43,66 @@ _PARTIALBIDCONFIGURATION_PROPERTIES_BY_FIELD = {
     "method": "method",
     "add_steps": "addSteps",
 }
+
+
+class PartialBidConfigurationGraphQL(GraphQLCore):
+    """This represents the reading version of partial bid configuration, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the partial bid configuration.
+        data_record: The data record of the partial bid configuration node.
+        name: Name for the PartialBidConfiguration
+        method: Name of the method used for the bid calculation
+        add_steps: TODO definition
+    """
+
+    view_id = dm.ViewId("sp_powerops_models_temp", "PartialBidConfiguration", "1")
+    name: Optional[str] = None
+    method: Optional[str] = None
+    add_steps: Optional[bool] = Field(None, alias="addSteps")
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+    def as_read(self) -> PartialBidConfiguration:
+        """Convert this GraphQL format of partial bid configuration to the reading format."""
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return PartialBidConfiguration(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            name=self.name,
+            method=self.method,
+            add_steps=self.add_steps,
+        )
+
+    def as_write(self) -> PartialBidConfigurationWrite:
+        """Convert this GraphQL format of partial bid configuration to the writing format."""
+        return PartialBidConfigurationWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            name=self.name,
+            method=self.method,
+            add_steps=self.add_steps,
+        )
 
 
 class PartialBidConfiguration(DomainModel):
@@ -107,6 +171,7 @@ class PartialBidConfigurationWrite(DomainModelWrite):
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
@@ -131,7 +196,7 @@ class PartialBidConfigurationWrite(DomainModelWrite):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.data_record.existing_version,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(

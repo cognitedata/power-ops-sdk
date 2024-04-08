@@ -5,9 +5,12 @@ from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
+from pydantic import field_validator, model_validator
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
@@ -15,16 +18,18 @@ from ._core import (
     DomainModelWriteList,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
     ResourcesWrite,
 )
 from ._function_output import FunctionOutput, FunctionOutputWrite
 
 if TYPE_CHECKING:
-    from ._alert import Alert, AlertWrite
-    from ._bid_configuration import BidConfiguration, BidConfigurationWrite
-    from ._bid_matrix import BidMatrix, BidMatrixWrite
+    from ._alert import Alert, AlertGraphQL, AlertWrite
+    from ._bid_configuration import BidConfiguration, BidConfigurationGraphQL, BidConfigurationWrite
+    from ._bid_matrix import BidMatrix, BidMatrixGraphQL, BidMatrixWrite
     from ._partial_bid_matrix_calculation_input import (
         PartialBidMatrixCalculationInput,
+        PartialBidMatrixCalculationInputGraphQL,
         PartialBidMatrixCalculationInputWrite,
     )
 
@@ -50,6 +55,106 @@ _PARTIALBIDMATRIXCALCULATIONOUTPUT_PROPERTIES_BY_FIELD = {
     "function_name": "functionName",
     "function_call_id": "functionCallId",
 }
+
+
+class PartialBidMatrixCalculationOutputGraphQL(GraphQLCore):
+    """This represents the reading version of partial bid matrix calculation output, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the partial bid matrix calculation output.
+        data_record: The data record of the partial bid matrix calculation output node.
+        process_id: The process associated with the function execution
+        process_step: This is the step in the process.
+        function_name: The name of the function
+        function_call_id: The function call id
+        alerts: An array of calculation level Alerts.
+        partial_matrix: The partial matrix field.
+        bid_configuration: The bid configuration field.
+        input_: The input field.
+    """
+
+    view_id = dm.ViewId("sp_powerops_models_temp", "PartialBidMatrixCalculationOutput", "1")
+    process_id: Optional[str] = Field(None, alias="processId")
+    process_step: Optional[int] = Field(None, alias="processStep")
+    function_name: Optional[str] = Field(None, alias="functionName")
+    function_call_id: Optional[str] = Field(None, alias="functionCallId")
+    alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
+    partial_matrix: Optional[BidMatrixGraphQL] = Field(None, repr=False, alias="partialMatrix")
+    bid_configuration: Optional[BidConfigurationGraphQL] = Field(None, repr=False, alias="bidConfiguration")
+    input_: Optional[PartialBidMatrixCalculationInputGraphQL] = Field(None, repr=False, alias="input")
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+    @field_validator("alerts", "partial_matrix", "bid_configuration", "input_", mode="before")
+    def parse_graphql(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        if "items" in value:
+            return value["items"]
+        return value
+
+    def as_read(self) -> PartialBidMatrixCalculationOutput:
+        """Convert this GraphQL format of partial bid matrix calculation output to the reading format."""
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return PartialBidMatrixCalculationOutput(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            process_id=self.process_id,
+            process_step=self.process_step,
+            function_name=self.function_name,
+            function_call_id=self.function_call_id,
+            alerts=[alert.as_read() if isinstance(alert, GraphQLCore) else alert for alert in self.alerts or []],
+            partial_matrix=(
+                self.partial_matrix.as_read() if isinstance(self.partial_matrix, GraphQLCore) else self.partial_matrix
+            ),
+            bid_configuration=(
+                self.bid_configuration.as_read()
+                if isinstance(self.bid_configuration, GraphQLCore)
+                else self.bid_configuration
+            ),
+            input_=self.input_.as_read() if isinstance(self.input_, GraphQLCore) else self.input_,
+        )
+
+    def as_write(self) -> PartialBidMatrixCalculationOutputWrite:
+        """Convert this GraphQL format of partial bid matrix calculation output to the writing format."""
+        return PartialBidMatrixCalculationOutputWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            process_id=self.process_id,
+            process_step=self.process_step,
+            function_name=self.function_name,
+            function_call_id=self.function_call_id,
+            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
+            partial_matrix=(
+                self.partial_matrix.as_write() if isinstance(self.partial_matrix, DomainModel) else self.partial_matrix
+            ),
+            bid_configuration=(
+                self.bid_configuration.as_write()
+                if isinstance(self.bid_configuration, DomainModel)
+                else self.bid_configuration
+            ),
+            input_=self.input_.as_write() if isinstance(self.input_, DomainModel) else self.input_,
+        )
 
 
 class PartialBidMatrixCalculationOutput(FunctionOutput):
@@ -143,6 +248,7 @@ class PartialBidMatrixCalculationOutputWrite(FunctionOutputWrite):
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
@@ -195,7 +301,7 @@ class PartialBidMatrixCalculationOutputWrite(FunctionOutputWrite):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.data_record.existing_version,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
@@ -210,7 +316,13 @@ class PartialBidMatrixCalculationOutputWrite(FunctionOutputWrite):
         edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
-                cache, start_node=self, end_node=alert, edge_type=edge_type, view_by_read_class=view_by_read_class
+                cache,
+                start_node=self,
+                end_node=alert,
+                edge_type=edge_type,
+                view_by_read_class=view_by_read_class,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
             )
             resources.extend(other_resources)
 

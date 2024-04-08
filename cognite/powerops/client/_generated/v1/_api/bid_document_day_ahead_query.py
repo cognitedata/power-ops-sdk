@@ -11,6 +11,14 @@ from cognite.powerops.client._generated.v1.data_classes import (
     BidConfiguration,
     BidMatrix,
 )
+from cognite.powerops.client._generated.v1.data_classes._alert import (
+    Alert,
+    _create_alert_filter,
+)
+from cognite.powerops.client._generated.v1.data_classes._bid_matrix import (
+    BidMatrix,
+    _create_bid_matrix_filter,
+)
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
 if TYPE_CHECKING:
@@ -44,8 +52,27 @@ class BidDocumentDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
 
     def alerts(
         self,
+        min_time: datetime.datetime | None = None,
+        max_time: datetime.datetime | None = None,
+        process_id: str | list[str] | None = None,
+        process_id_prefix: str | None = None,
+        title: str | list[str] | None = None,
+        title_prefix: str | None = None,
+        description: str | list[str] | None = None,
+        description_prefix: str | None = None,
+        severity: str | list[str] | None = None,
+        severity_prefix: str | None = None,
+        alert_type: str | list[str] | None = None,
+        alert_type_prefix: str | None = None,
+        min_status_code: int | None = None,
+        max_status_code: int | None = None,
+        calculation_run: str | list[str] | None = None,
+        calculation_run_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
+        external_id_prefix_edge: str | None = None,
+        space_edge: str | list[str] | None = None,
+        filter: dm.Filter | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
         retrieve_bid_configuration: bool = False,
         retrieve_total: bool = False,
@@ -53,9 +80,28 @@ class BidDocumentDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         """Query along the alert edges of the bid document day ahead.
 
         Args:
+            min_time: The minimum value of the time to filter on.
+            max_time: The maximum value of the time to filter on.
+            process_id: The process id to filter on.
+            process_id_prefix: The prefix of the process id to filter on.
+            title: The title to filter on.
+            title_prefix: The prefix of the title to filter on.
+            description: The description to filter on.
+            description_prefix: The prefix of the description to filter on.
+            severity: The severity to filter on.
+            severity_prefix: The prefix of the severity to filter on.
+            alert_type: The alert type to filter on.
+            alert_type_prefix: The prefix of the alert type to filter on.
+            min_status_code: The minimum value of the status code to filter on.
+            max_status_code: The maximum value of the status code to filter on.
+            calculation_run: The calculation run to filter on.
+            calculation_run_prefix: The prefix of the calculation run to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of alert edges to return. Defaults to 25. Set to -1, float("inf") or None
+            external_id_prefix_edge: The prefix of the external ID to filter on.
+            space_edge: The space to filter on.
+            filter: (Advanced) Filter applied to node. If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of alert edges to return. Defaults to 3. Set to -1, float("inf") or None
                 to return all items.
             retrieve_bid_configuration: Whether to retrieve the bid configuration for each bid document day ahead or not.
             retrieve_total: Whether to retrieve the total for each bid document day ahead or not.
@@ -66,11 +112,10 @@ class BidDocumentDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         from .alert_query import AlertQueryAPI
 
         from_ = self._builder[-1].name
-
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
-            external_id_prefix=external_id_prefix,
-            space=space,
+            external_id_prefix=external_id_prefix_edge,
+            space=space_edge,
         )
         self._builder.append(
             QueryStep(
@@ -84,16 +129,48 @@ class BidDocumentDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
+
+        view_id = self._view_by_read_class[Alert]
+        has_data = dm.filters.HasData(views=[view_id])
+        node_filer = _create_alert_filter(
+            view_id,
+            min_time,
+            max_time,
+            process_id,
+            process_id_prefix,
+            title,
+            title_prefix,
+            description,
+            description_prefix,
+            severity,
+            severity_prefix,
+            alert_type,
+            alert_type_prefix,
+            min_status_code,
+            max_status_code,
+            calculation_run,
+            calculation_run_prefix,
+            external_id_prefix,
+            space,
+            (filter and dm.filters.And(filter, has_data)) or has_data,
+        )
         if retrieve_bid_configuration:
             self._query_append_bid_configuration(from_)
         if retrieve_total:
             self._query_append_total(from_)
-        return AlertQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
+        return AlertQueryAPI(self._client, self._builder, self._view_by_read_class, node_filer, limit)
 
     def partials(
         self,
+        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        state: str | list[str] | None = None,
+        state_prefix: str | None = None,
+        partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
+        external_id_prefix_edge: str | None = None,
+        space_edge: str | list[str] | None = None,
+        filter: dm.Filter | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
         retrieve_bid_configuration: bool = False,
         retrieve_total: bool = False,
@@ -101,9 +178,16 @@ class BidDocumentDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         """Query along the partial edges of the bid document day ahead.
 
         Args:
+            power_asset: The power asset to filter on.
+            state: The state to filter on.
+            state_prefix: The prefix of the state to filter on.
+            partial_bid_configuration: The partial bid configuration to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of partial edges to return. Defaults to 25. Set to -1, float("inf") or None
+            external_id_prefix_edge: The prefix of the external ID to filter on.
+            space_edge: The space to filter on.
+            filter: (Advanced) Filter applied to node. If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of partial edges to return. Defaults to 3. Set to -1, float("inf") or None
                 to return all items.
             retrieve_bid_configuration: Whether to retrieve the bid configuration for each bid document day ahead or not.
             retrieve_total: Whether to retrieve the total for each bid document day ahead or not.
@@ -114,11 +198,10 @@ class BidDocumentDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         from .bid_matrix_query import BidMatrixQueryAPI
 
         from_ = self._builder[-1].name
-
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("sp_powerops_types_temp", "partialBid"),
-            external_id_prefix=external_id_prefix,
-            space=space,
+            external_id_prefix=external_id_prefix_edge,
+            space=space_edge,
         )
         self._builder.append(
             QueryStep(
@@ -132,11 +215,24 @@ class BidDocumentDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
+
+        view_id = self._view_by_read_class[BidMatrix]
+        has_data = dm.filters.HasData(views=[view_id])
+        node_filer = _create_bid_matrix_filter(
+            view_id,
+            power_asset,
+            state,
+            state_prefix,
+            partial_bid_configuration,
+            external_id_prefix,
+            space,
+            (filter and dm.filters.And(filter, has_data)) or has_data,
+        )
         if retrieve_bid_configuration:
             self._query_append_bid_configuration(from_)
         if retrieve_total:
             self._query_append_total(from_)
-        return BidMatrixQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
+        return BidMatrixQueryAPI(self._client, self._builder, self._view_by_read_class, node_filer, limit)
 
     def query(
         self,
@@ -174,6 +270,7 @@ class BidDocumentDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
                 result_cls=BidConfiguration,
+                is_single_direct_relation=True,
             ),
         )
 
@@ -191,5 +288,6 @@ class BidDocumentDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
                 result_cls=BidMatrix,
+                is_single_direct_relation=True,
             ),
         )

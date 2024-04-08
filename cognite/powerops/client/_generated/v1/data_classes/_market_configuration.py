@@ -5,9 +5,12 @@ from typing import Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
+from pydantic import field_validator, model_validator
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
@@ -15,6 +18,7 @@ from ._core import (
     DomainModelWriteList,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
     ResourcesWrite,
 )
 
@@ -47,6 +51,90 @@ _MARKETCONFIGURATION_PROPERTIES_BY_FIELD = {
     "time_unit": "timeUnit",
     "trade_lot": "tradeLot",
 }
+
+
+class MarketConfigurationGraphQL(GraphQLCore):
+    """This represents the reading version of market configuration, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the market configuration.
+        data_record: The data record of the market configuration node.
+        name: The name of the market
+        max_price: The highest price allowed
+        min_price: The lowest price allowed
+        time_zone: The time zone field.
+        price_unit: Unit of measurement for the price ('EUR/MWh')
+        price_steps: The maximum number of price steps
+        tick_size: 'Granularity' of the price; tick size = 0.1 means that prices must be 'rounded to nearest 0.1' (i. e. 66.43 is not allowed, but 66.4 is)
+        time_unit: The time unit ('1h')
+        trade_lot: 'Granularity' of the volumes; trade lot = 0.2 means that volumes must be 'rounded to nearest 0.2' (i. e. 66.5 is not allowed, but 66.4 is)
+    """
+
+    view_id = dm.ViewId("sp_powerops_models_temp", "MarketConfiguration", "1")
+    name: Optional[str] = None
+    max_price: Optional[float] = Field(None, alias="maxPrice")
+    min_price: Optional[float] = Field(None, alias="minPrice")
+    time_zone: Optional[str] = Field(None, alias="timeZone")
+    price_unit: Optional[str] = Field(None, alias="priceUnit")
+    price_steps: Optional[int] = Field(None, alias="priceSteps")
+    tick_size: Optional[float] = Field(None, alias="tickSize")
+    time_unit: Optional[str] = Field(None, alias="timeUnit")
+    trade_lot: Optional[float] = Field(None, alias="tradeLot")
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+    def as_read(self) -> MarketConfiguration:
+        """Convert this GraphQL format of market configuration to the reading format."""
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return MarketConfiguration(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            name=self.name,
+            max_price=self.max_price,
+            min_price=self.min_price,
+            time_zone=self.time_zone,
+            price_unit=self.price_unit,
+            price_steps=self.price_steps,
+            tick_size=self.tick_size,
+            time_unit=self.time_unit,
+            trade_lot=self.trade_lot,
+        )
+
+    def as_write(self) -> MarketConfigurationWrite:
+        """Convert this GraphQL format of market configuration to the writing format."""
+        return MarketConfigurationWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            name=self.name,
+            max_price=self.max_price,
+            min_price=self.min_price,
+            time_zone=self.time_zone,
+            price_unit=self.price_unit,
+            price_steps=self.price_steps,
+            tick_size=self.tick_size,
+            time_unit=self.time_unit,
+            trade_lot=self.trade_lot,
+        )
 
 
 class MarketConfiguration(DomainModel):
@@ -149,6 +237,7 @@ class MarketConfigurationWrite(DomainModelWrite):
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
@@ -191,7 +280,7 @@ class MarketConfigurationWrite(DomainModelWrite):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.data_record.existing_version,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(

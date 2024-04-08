@@ -6,9 +6,12 @@ from typing import Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
+from pydantic import field_validator, model_validator
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
@@ -16,6 +19,7 @@ from ._core import (
     DomainModelWriteList,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
     ResourcesWrite,
 )
 
@@ -56,6 +60,90 @@ _ALERT_PROPERTIES_BY_FIELD = {
     "event_ids": "eventIds",
     "calculation_run": "calculationRun",
 }
+
+
+class AlertGraphQL(GraphQLCore):
+    """This represents the reading version of alert, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the alert.
+        data_record: The data record of the alert node.
+        time: Timestamp that the alert occurred (within the workflow)
+        process_id: Process ID in the workflow that the alert is related to
+        title: Summary description of the alert
+        description: Detailed description of the alert
+        severity: CRITICAL (calculation could not completed) WARNING  (calculation completed, with major issue) INFO     (calculation completed, with minor issues)
+        alert_type: Classification of the alert (not in current alerting implementation)
+        status_code: Unique status code for the alert. May be used by the frontend to avoid use of hardcoded description (i.e. like a translation)
+        event_ids: An array of associated alert CDF Events (e.g. SHOP Run events)
+        calculation_run: The identifier of the parent Bid Calculation (required so tha alerts can be created befor the BidDocument)
+    """
+
+    view_id = dm.ViewId("sp_powerops_models_temp", "Alert", "1")
+    time: Optional[datetime.datetime] = None
+    process_id: Optional[str] = Field(None, alias="processId")
+    title: Optional[str] = None
+    description: Optional[str] = None
+    severity: Optional[str] = None
+    alert_type: Optional[str] = Field(None, alias="alertType")
+    status_code: Optional[int] = Field(None, alias="statusCode")
+    event_ids: Optional[list[int]] = Field(None, alias="eventIds")
+    calculation_run: Optional[str] = Field(None, alias="calculationRun")
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+    def as_read(self) -> Alert:
+        """Convert this GraphQL format of alert to the reading format."""
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return Alert(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            time=self.time,
+            process_id=self.process_id,
+            title=self.title,
+            description=self.description,
+            severity=self.severity,
+            alert_type=self.alert_type,
+            status_code=self.status_code,
+            event_ids=self.event_ids,
+            calculation_run=self.calculation_run,
+        )
+
+    def as_write(self) -> AlertWrite:
+        """Convert this GraphQL format of alert to the writing format."""
+        return AlertWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            time=self.time,
+            process_id=self.process_id,
+            title=self.title,
+            description=self.description,
+            severity=self.severity,
+            alert_type=self.alert_type,
+            status_code=self.status_code,
+            event_ids=self.event_ids,
+            calculation_run=self.calculation_run,
+        )
 
 
 class Alert(DomainModel):
@@ -154,6 +242,7 @@ class AlertWrite(DomainModelWrite):
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
@@ -194,7 +283,7 @@ class AlertWrite(DomainModelWrite):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.data_record.existing_version,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(

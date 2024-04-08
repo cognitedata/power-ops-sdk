@@ -5,9 +5,12 @@ from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
+from pydantic import field_validator, model_validator
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
@@ -15,13 +18,14 @@ from ._core import (
     DomainModelWriteList,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
     ResourcesWrite,
 )
 from ._price_area import PriceArea, PriceAreaWrite
 
 if TYPE_CHECKING:
-    from ._plant import Plant, PlantWrite
-    from ._watercourse import Watercourse, WatercourseWrite
+    from ._plant import Plant, PlantGraphQL, PlantWrite
+    from ._watercourse import Watercourse, WatercourseGraphQL, WatercourseWrite
 
 
 __all__ = [
@@ -45,6 +49,84 @@ _PRICEAREAASSET_PROPERTIES_BY_FIELD = {
 }
 
 
+class PriceAreaAssetGraphQL(GraphQLCore):
+    """This represents the reading version of price area asset, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the price area asset.
+        data_record: The data record of the price area asset node.
+        name: The name of the price area
+        timezone: The timezone of the price area
+        plants: An array of associated plants.
+        watercourses: An array of associated watercourses.
+    """
+
+    view_id = dm.ViewId("sp_powerops_models", "PriceAreaAsset", "1")
+    name: Optional[str] = None
+    timezone: Optional[str] = None
+    plants: Optional[list[PlantGraphQL]] = Field(default=None, repr=False)
+    watercourses: Optional[list[WatercourseGraphQL]] = Field(default=None, repr=False)
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+    @field_validator("plants", "watercourses", mode="before")
+    def parse_graphql(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        if "items" in value:
+            return value["items"]
+        return value
+
+    def as_read(self) -> PriceAreaAsset:
+        """Convert this GraphQL format of price area asset to the reading format."""
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return PriceAreaAsset(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            name=self.name,
+            timezone=self.timezone,
+            plants=[plant.as_read() if isinstance(plant, GraphQLCore) else plant for plant in self.plants or []],
+            watercourses=[
+                watercourse.as_read() if isinstance(watercourse, GraphQLCore) else watercourse
+                for watercourse in self.watercourses or []
+            ],
+        )
+
+    def as_write(self) -> PriceAreaAssetWrite:
+        """Convert this GraphQL format of price area asset to the writing format."""
+        return PriceAreaAssetWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            name=self.name,
+            timezone=self.timezone,
+            plants=[plant.as_write() if isinstance(plant, DomainModel) else plant for plant in self.plants or []],
+            watercourses=[
+                watercourse.as_write() if isinstance(watercourse, DomainModel) else watercourse
+                for watercourse in self.watercourses or []
+            ],
+        )
+
+
 class PriceAreaAsset(PriceArea):
     """This represents the reading version of price area asset.
 
@@ -61,8 +143,8 @@ class PriceAreaAsset(PriceArea):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "PriceArea")
-    plants: Union[list[Plant], list[str], None] = Field(default=None, repr=False)
-    watercourses: Union[list[Watercourse], list[str], None] = Field(default=None, repr=False)
+    plants: Union[list[Plant], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
+    watercourses: Union[list[Watercourse], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
     def as_write(self) -> PriceAreaAssetWrite:
         """Convert this read version of price area asset to the writing version."""
@@ -105,14 +187,15 @@ class PriceAreaAssetWrite(PriceAreaWrite):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "PriceArea")
-    plants: Union[list[PlantWrite], list[str], None] = Field(default=None, repr=False)
-    watercourses: Union[list[WatercourseWrite], list[str], None] = Field(default=None, repr=False)
+    plants: Union[list[PlantWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
+    watercourses: Union[list[WatercourseWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
@@ -134,7 +217,7 @@ class PriceAreaAssetWrite(PriceAreaWrite):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.data_record.existing_version,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
@@ -149,14 +232,26 @@ class PriceAreaAssetWrite(PriceAreaWrite):
         edge_type = dm.DirectRelationReference("sp_powerops_types", "isPlantOf")
         for plant in self.plants or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
-                cache, start_node=self, end_node=plant, edge_type=edge_type, view_by_read_class=view_by_read_class
+                cache,
+                start_node=self,
+                end_node=plant,
+                edge_type=edge_type,
+                view_by_read_class=view_by_read_class,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
             )
             resources.extend(other_resources)
 
         edge_type = dm.DirectRelationReference("sp_powerops_types", "isWatercourseOf")
         for watercourse in self.watercourses or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
-                cache, start_node=self, end_node=watercourse, edge_type=edge_type, view_by_read_class=view_by_read_class
+                cache,
+                start_node=self,
+                end_node=watercourse,
+                edge_type=edge_type,
+                view_by_read_class=view_by_read_class,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
             )
             resources.extend(other_resources)
 

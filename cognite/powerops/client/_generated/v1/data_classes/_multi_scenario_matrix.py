@@ -5,9 +5,12 @@ from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
+from pydantic import field_validator, model_validator
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
@@ -15,14 +18,19 @@ from ._core import (
     DomainModelWriteList,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
     ResourcesWrite,
 )
 from ._bid_matrix import BidMatrix, BidMatrixWrite
 
 if TYPE_CHECKING:
-    from ._alert import Alert, AlertWrite
-    from ._bid_method_shop_multi_scenario import BidMethodSHOPMultiScenario, BidMethodSHOPMultiScenarioWrite
-    from ._price_prod_case import PriceProdCase, PriceProdCaseWrite
+    from ._alert import Alert, AlertGraphQL, AlertWrite
+    from ._bid_method_shop_multi_scenario import (
+        BidMethodSHOPMultiScenario,
+        BidMethodSHOPMultiScenarioGraphQL,
+        BidMethodSHOPMultiScenarioWrite,
+    )
+    from ._price_prod_case import PriceProdCase, PriceProdCaseGraphQL, PriceProdCaseWrite
 
 
 __all__ = [
@@ -49,6 +57,100 @@ _MULTISCENARIOMATRIX_PROPERTIES_BY_FIELD = {
 }
 
 
+class MultiScenarioMatrixGraphQL(GraphQLCore):
+    """This represents the reading version of multi scenario matrix, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the multi scenario matrix.
+        data_record: The data record of the multi scenario matrix node.
+        resource_cost: The resource cost field.
+        matrix: The matrix field.
+        asset_type: The asset type field.
+        asset_id: The asset id field.
+        is_processed: Whether the bid matrix has been processed by the bid matrix processor or not
+        alerts: The alert field.
+        method: The method field.
+        scenario_results: An array of price/prod pairs, one for each scenario/case - this is needed for the frontend
+    """
+
+    view_id = dm.ViewId("sp_powerops_models", "MultiScenarioMatrix", "1")
+    resource_cost: Optional[str] = Field(None, alias="resourceCost")
+    matrix: Union[str, None] = None
+    asset_type: Optional[str] = Field(None, alias="assetType")
+    asset_id: Optional[str] = Field(None, alias="assetId")
+    is_processed: Optional[bool] = Field(None, alias="isProcessed")
+    alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
+    method: Optional[BidMethodSHOPMultiScenarioGraphQL] = Field(None, repr=False)
+    scenario_results: Optional[list[PriceProdCaseGraphQL]] = Field(default=None, repr=False, alias="scenarioResults")
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+    @field_validator("alerts", "method", "scenario_results", mode="before")
+    def parse_graphql(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        if "items" in value:
+            return value["items"]
+        return value
+
+    def as_read(self) -> MultiScenarioMatrix:
+        """Convert this GraphQL format of multi scenario matrix to the reading format."""
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return MultiScenarioMatrix(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            resource_cost=self.resource_cost,
+            matrix=self.matrix,
+            asset_type=self.asset_type,
+            asset_id=self.asset_id,
+            is_processed=self.is_processed,
+            alerts=[alert.as_read() if isinstance(alert, GraphQLCore) else alert for alert in self.alerts or []],
+            method=self.method.as_read() if isinstance(self.method, GraphQLCore) else self.method,
+            scenario_results=[
+                scenario_result.as_read() if isinstance(scenario_result, GraphQLCore) else scenario_result
+                for scenario_result in self.scenario_results or []
+            ],
+        )
+
+    def as_write(self) -> MultiScenarioMatrixWrite:
+        """Convert this GraphQL format of multi scenario matrix to the writing format."""
+        return MultiScenarioMatrixWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            resource_cost=self.resource_cost,
+            matrix=self.matrix,
+            asset_type=self.asset_type,
+            asset_id=self.asset_id,
+            is_processed=self.is_processed,
+            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
+            method=self.method.as_write() if isinstance(self.method, DomainModel) else self.method,
+            scenario_results=[
+                scenario_result.as_write() if isinstance(scenario_result, DomainModel) else scenario_result
+                for scenario_result in self.scenario_results or []
+            ],
+        )
+
+
 class MultiScenarioMatrix(BidMatrix):
     """This represents the reading version of multi scenario matrix.
 
@@ -72,7 +174,7 @@ class MultiScenarioMatrix(BidMatrix):
         "sp_powerops_types", "DayAheadMultiScenarioMatrix"
     )
     method: Union[BidMethodSHOPMultiScenario, str, dm.NodeId, None] = Field(None, repr=False)
-    scenario_results: Union[list[PriceProdCase], list[str], None] = Field(
+    scenario_results: Union[list[PriceProdCase], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="scenarioResults"
     )
 
@@ -128,7 +230,7 @@ class MultiScenarioMatrixWrite(BidMatrixWrite):
         "sp_powerops_types", "DayAheadMultiScenarioMatrix"
     )
     method: Union[BidMethodSHOPMultiScenarioWrite, str, dm.NodeId, None] = Field(None, repr=False)
-    scenario_results: Union[list[PriceProdCaseWrite], list[str], None] = Field(
+    scenario_results: Union[list[PriceProdCaseWrite], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="scenarioResults"
     )
 
@@ -137,6 +239,7 @@ class MultiScenarioMatrixWrite(BidMatrixWrite):
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
@@ -173,7 +276,7 @@ class MultiScenarioMatrixWrite(BidMatrixWrite):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.data_record.existing_version,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
@@ -188,7 +291,13 @@ class MultiScenarioMatrixWrite(BidMatrixWrite):
         edge_type = dm.DirectRelationReference("sp_powerops_types", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
-                cache, start_node=self, end_node=alert, edge_type=edge_type, view_by_read_class=view_by_read_class
+                cache,
+                start_node=self,
+                end_node=alert,
+                edge_type=edge_type,
+                view_by_read_class=view_by_read_class,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
             )
             resources.extend(other_resources)
 
@@ -200,6 +309,8 @@ class MultiScenarioMatrixWrite(BidMatrixWrite):
                 end_node=scenario_result,
                 edge_type=edge_type,
                 view_by_read_class=view_by_read_class,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
             )
             resources.extend(other_resources)
 

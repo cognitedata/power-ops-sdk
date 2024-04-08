@@ -17,6 +17,10 @@ Changes are grouped as follows
 ### Changed
 * `v1` data model updates for enablement of multi method bid calculation
 
+## [0.91.3] - 2024-03-21
+### Added
+* Regenerated the SDK with the latest version of `pygen` to get GraphQL feature for querying and parsing responses from cdf
+
 ## [0.91.2] - 2024-03-15
 ### Changed
 * Changed property in `MultiScenarioMatrixRaw` for `shopResults` to `SHOPResultPriceProd` and added the `MultiScenarioMatrixRaw` to the `TotalBidCalculation` data model.

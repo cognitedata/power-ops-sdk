@@ -11,6 +11,10 @@ from cognite.powerops.client._generated.v1.data_classes import (
     ModelTemplate,
     Commands,
 )
+from cognite.powerops.client._generated.v1.data_classes._mapping import (
+    Mapping,
+    _create_mapping_filter,
+)
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
 if TYPE_CHECKING:
@@ -43,8 +47,17 @@ class ScenarioQueryAPI(QueryAPI[T_DomainModelList]):
 
     def mappings_override(
         self,
+        shop_path: str | list[str] | None = None,
+        shop_path_prefix: str | None = None,
+        retrieve: str | list[str] | None = None,
+        retrieve_prefix: str | None = None,
+        aggregation: str | list[str] | None = None,
+        aggregation_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
+        external_id_prefix_edge: str | None = None,
+        space_edge: str | list[str] | None = None,
+        filter: dm.Filter | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
         retrieve_model_template: bool = False,
         retrieve_commands: bool = False,
@@ -52,9 +65,18 @@ class ScenarioQueryAPI(QueryAPI[T_DomainModelList]):
         """Query along the mappings override edges of the scenario.
 
         Args:
+            shop_path: The shop path to filter on.
+            shop_path_prefix: The prefix of the shop path to filter on.
+            retrieve: The retrieve to filter on.
+            retrieve_prefix: The prefix of the retrieve to filter on.
+            aggregation: The aggregation to filter on.
+            aggregation_prefix: The prefix of the aggregation to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of mappings override edges to return. Defaults to 25. Set to -1, float("inf") or None
+            external_id_prefix_edge: The prefix of the external ID to filter on.
+            space_edge: The space to filter on.
+            filter: (Advanced) Filter applied to node. If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of mappings override edges to return. Defaults to 3. Set to -1, float("inf") or None
                 to return all items.
             retrieve_model_template: Whether to retrieve the model template for each scenario or not.
             retrieve_commands: Whether to retrieve the command for each scenario or not.
@@ -65,11 +87,10 @@ class ScenarioQueryAPI(QueryAPI[T_DomainModelList]):
         from .mapping_query import MappingQueryAPI
 
         from_ = self._builder[-1].name
-
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("sp_powerops_types_temp", "Mapping"),
-            external_id_prefix=external_id_prefix,
-            space=space,
+            external_id_prefix=external_id_prefix_edge,
+            space=space_edge,
         )
         self._builder.append(
             QueryStep(
@@ -83,11 +104,26 @@ class ScenarioQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
+
+        view_id = self._view_by_read_class[Mapping]
+        has_data = dm.filters.HasData(views=[view_id])
+        node_filer = _create_mapping_filter(
+            view_id,
+            shop_path,
+            shop_path_prefix,
+            retrieve,
+            retrieve_prefix,
+            aggregation,
+            aggregation_prefix,
+            external_id_prefix,
+            space,
+            (filter and dm.filters.And(filter, has_data)) or has_data,
+        )
         if retrieve_model_template:
             self._query_append_model_template(from_)
         if retrieve_commands:
             self._query_append_commands(from_)
-        return MappingQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
+        return MappingQueryAPI(self._client, self._builder, self._view_by_read_class, node_filer, limit)
 
     def query(
         self,
@@ -125,6 +161,7 @@ class ScenarioQueryAPI(QueryAPI[T_DomainModelList]):
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
                 result_cls=ModelTemplate,
+                is_single_direct_relation=True,
             ),
         )
 
@@ -142,5 +179,6 @@ class ScenarioQueryAPI(QueryAPI[T_DomainModelList]):
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
                 result_cls=Commands,
+                is_single_direct_relation=True,
             ),
         )

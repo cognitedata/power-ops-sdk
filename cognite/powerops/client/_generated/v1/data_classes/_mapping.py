@@ -6,9 +6,12 @@ from typing import Any, Literal, Optional, Union
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
 from pydantic import Field
+from pydantic import field_validator, model_validator
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
@@ -16,6 +19,7 @@ from ._core import (
     DomainModelWriteList,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
     ResourcesWrite,
     TimeSeries,
 )
@@ -43,6 +47,74 @@ _MAPPING_PROPERTIES_BY_FIELD = {
     "retrieve": "retrieve",
     "aggregation": "aggregation",
 }
+
+
+class MappingGraphQL(GraphQLCore):
+    """This represents the reading version of mapping, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the mapping.
+        data_record: The data record of the mapping node.
+        shop_path: The key in shop file to map to
+        timeseries: The time series to map to
+        transformations: The transformations to apply to the time series
+        retrieve: How to retrieve time series data
+        aggregation: How to aggregate time series data
+    """
+
+    view_id = dm.ViewId("sp_powerops_models_temp", "Mapping", "1")
+    shop_path: Optional[str] = Field(None, alias="shopPath")
+    timeseries: Union[TimeSeries, str, None] = None
+    transformations: Optional[list[dict]] = None
+    retrieve: Optional[str] = None
+    aggregation: Optional[str] = None
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+    def as_read(self) -> Mapping:
+        """Convert this GraphQL format of mapping to the reading format."""
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return Mapping(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            shop_path=self.shop_path,
+            timeseries=self.timeseries,
+            transformations=self.transformations,
+            retrieve=self.retrieve,
+            aggregation=self.aggregation,
+        )
+
+    def as_write(self) -> MappingWrite:
+        """Convert this GraphQL format of mapping to the writing format."""
+        return MappingWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            shop_path=self.shop_path,
+            timeseries=self.timeseries,
+            transformations=self.transformations,
+            retrieve=self.retrieve,
+            aggregation=self.aggregation,
+        )
 
 
 class Mapping(DomainModel):
@@ -121,6 +193,7 @@ class MappingWrite(DomainModelWrite):
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
@@ -152,7 +225,7 @@ class MappingWrite(DomainModelWrite):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.data_record.existing_version,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(

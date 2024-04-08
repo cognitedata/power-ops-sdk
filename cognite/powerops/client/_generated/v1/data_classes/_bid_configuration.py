@@ -5,9 +5,12 @@ from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
+from pydantic import field_validator, model_validator
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
@@ -15,13 +18,18 @@ from ._core import (
     DomainModelWriteList,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
     ResourcesWrite,
 )
 
 if TYPE_CHECKING:
-    from ._market_configuration import MarketConfiguration, MarketConfigurationWrite
-    from ._partial_bid_configuration import PartialBidConfiguration, PartialBidConfigurationWrite
-    from ._price_area import PriceArea, PriceAreaWrite
+    from ._market_configuration import MarketConfiguration, MarketConfigurationGraphQL, MarketConfigurationWrite
+    from ._partial_bid_configuration import (
+        PartialBidConfiguration,
+        PartialBidConfigurationGraphQL,
+        PartialBidConfigurationWrite,
+    )
+    from ._price_area import PriceArea, PriceAreaGraphQL, PriceAreaWrite
 
 
 __all__ = [
@@ -42,6 +50,90 @@ BidConfigurationFields = Literal["name"]
 _BIDCONFIGURATION_PROPERTIES_BY_FIELD = {
     "name": "name",
 }
+
+
+class BidConfigurationGraphQL(GraphQLCore):
+    """This represents the reading version of bid configuration, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the bid configuration.
+        data_record: The data record of the bid configuration node.
+        name: The name of the bid configuration
+        market_configuration: The market configuration related to the bid configuration
+        price_area: The price area related to the bid calculation task
+        partials: Configuration of the partial bids that make up the total bid
+    """
+
+    view_id = dm.ViewId("sp_powerops_models_temp", "BidConfiguration", "1")
+    name: Optional[str] = None
+    market_configuration: Optional[MarketConfigurationGraphQL] = Field(None, repr=False, alias="marketConfiguration")
+    price_area: Optional[PriceAreaGraphQL] = Field(None, repr=False, alias="priceArea")
+    partials: Optional[list[PartialBidConfigurationGraphQL]] = Field(default=None, repr=False)
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+    @field_validator("market_configuration", "price_area", "partials", mode="before")
+    def parse_graphql(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        if "items" in value:
+            return value["items"]
+        return value
+
+    def as_read(self) -> BidConfiguration:
+        """Convert this GraphQL format of bid configuration to the reading format."""
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return BidConfiguration(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            name=self.name,
+            market_configuration=(
+                self.market_configuration.as_read()
+                if isinstance(self.market_configuration, GraphQLCore)
+                else self.market_configuration
+            ),
+            price_area=self.price_area.as_read() if isinstance(self.price_area, GraphQLCore) else self.price_area,
+            partials=[
+                partial.as_read() if isinstance(partial, GraphQLCore) else partial for partial in self.partials or []
+            ],
+        )
+
+    def as_write(self) -> BidConfigurationWrite:
+        """Convert this GraphQL format of bid configuration to the writing format."""
+        return BidConfigurationWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            name=self.name,
+            market_configuration=(
+                self.market_configuration.as_write()
+                if isinstance(self.market_configuration, DomainModel)
+                else self.market_configuration
+            ),
+            price_area=self.price_area.as_write() if isinstance(self.price_area, DomainModel) else self.price_area,
+            partials=[
+                partial.as_write() if isinstance(partial, DomainModel) else partial for partial in self.partials or []
+            ],
+        )
 
 
 class BidConfiguration(DomainModel):
@@ -68,7 +160,7 @@ class BidConfiguration(DomainModel):
         None, repr=False, alias="marketConfiguration"
     )
     price_area: Union[PriceArea, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
-    partials: Union[list[PartialBidConfiguration], list[str], None] = Field(default=None, repr=False)
+    partials: Union[list[PartialBidConfiguration], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
     def as_write(self) -> BidConfigurationWrite:
         """Convert this read version of bid configuration to the writing version."""
@@ -122,13 +214,16 @@ class BidConfigurationWrite(DomainModelWrite):
         None, repr=False, alias="marketConfiguration"
     )
     price_area: Union[PriceAreaWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
-    partials: Union[list[PartialBidConfigurationWrite], list[str], None] = Field(default=None, repr=False)
+    partials: Union[list[PartialBidConfigurationWrite], list[str], list[dm.NodeId], None] = Field(
+        default=None, repr=False
+    )
 
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
@@ -163,7 +258,7 @@ class BidConfigurationWrite(DomainModelWrite):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.data_record.existing_version,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
@@ -178,7 +273,13 @@ class BidConfigurationWrite(DomainModelWrite):
         edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "BidConfiguration.partials")
         for partial in self.partials or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
-                cache, start_node=self, end_node=partial, edge_type=edge_type, view_by_read_class=view_by_read_class
+                cache,
+                start_node=self,
+                end_node=partial,
+                edge_type=edge_type,
+                view_by_read_class=view_by_read_class,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
             )
             resources.extend(other_resources)
 

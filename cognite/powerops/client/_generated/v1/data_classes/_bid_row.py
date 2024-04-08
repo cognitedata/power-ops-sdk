@@ -5,9 +5,12 @@ from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
+from pydantic import field_validator, model_validator
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
@@ -15,13 +18,14 @@ from ._core import (
     DomainModelWriteList,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
     ResourcesWrite,
 )
 
 if TYPE_CHECKING:
-    from ._alert import Alert, AlertWrite
-    from ._bid_row import BidRow, BidRowWrite
-    from ._power_asset import PowerAsset, PowerAssetWrite
+    from ._alert import Alert, AlertGraphQL, AlertWrite
+    from ._bid_row import BidRow, BidRowGraphQL, BidRowWrite
+    from ._power_asset import PowerAsset, PowerAssetGraphQL, PowerAssetWrite
 
 
 __all__ = [
@@ -50,6 +54,102 @@ _BIDROW_PROPERTIES_BY_FIELD = {
     "is_block": "isBlock",
     "exclusive_group_id": "exclusiveGroupId",
 }
+
+
+class BidRowGraphQL(GraphQLCore):
+    """This represents the reading version of bid row, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the bid row.
+        data_record: The data record of the bid row node.
+        price: Price in EUR/MW/h, rounded to nearest price step (0.1?)
+        quantity_per_hour: The capacity offered, per hour, in MW, rounded to nearest step size (5?)
+        product: The product field.
+        is_divisible: The is divisible field.
+        min_quantity: Min quantity, per hour. Only relevant for divisible Bids. The minimum capacity that must be accepted; this must be lower than capacityPerHour and is rounded to the nearest step (5 MW?)).
+        is_block: Indication if the row is part of a Block bid. If true: quantityPerHour must have the same value for consecutive hours (and no breaks). Block bids must be accepted for all hours or none.
+        exclusive_group_id: Other bids with the same ID are part of an exclusive group - only one of them can be accepted, and they must have the same direction (product). Not allowed for block bids.
+        linked_bid: The linked bid must have the opposite direction (link means that both or none must be accepted). Should be bi-directional.
+        power_asset: TODO description
+        alerts: An array of associated alerts.
+    """
+
+    view_id = dm.ViewId("sp_powerops_models_temp", "BidRow", "1")
+    price: Optional[float] = None
+    quantity_per_hour: Optional[list[float]] = Field(None, alias="quantityPerHour")
+    product: Optional[str] = None
+    is_divisible: Optional[bool] = Field(None, alias="isDivisible")
+    min_quantity: Optional[list[float]] = Field(None, alias="minQuantity")
+    is_block: Optional[bool] = Field(None, alias="isBlock")
+    exclusive_group_id: Optional[str] = Field(None, alias="exclusiveGroupId")
+    linked_bid: Optional[BidRowGraphQL] = Field(None, repr=False, alias="linkedBid")
+    power_asset: Optional[PowerAssetGraphQL] = Field(None, repr=False, alias="powerAsset")
+    alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+    @field_validator("linked_bid", "power_asset", "alerts", mode="before")
+    def parse_graphql(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        if "items" in value:
+            return value["items"]
+        return value
+
+    def as_read(self) -> BidRow:
+        """Convert this GraphQL format of bid row to the reading format."""
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return BidRow(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            price=self.price,
+            quantity_per_hour=self.quantity_per_hour,
+            product=self.product,
+            is_divisible=self.is_divisible,
+            min_quantity=self.min_quantity,
+            is_block=self.is_block,
+            exclusive_group_id=self.exclusive_group_id,
+            linked_bid=self.linked_bid.as_read() if isinstance(self.linked_bid, GraphQLCore) else self.linked_bid,
+            power_asset=self.power_asset.as_read() if isinstance(self.power_asset, GraphQLCore) else self.power_asset,
+            alerts=[alert.as_read() if isinstance(alert, GraphQLCore) else alert for alert in self.alerts or []],
+        )
+
+    def as_write(self) -> BidRowWrite:
+        """Convert this GraphQL format of bid row to the writing format."""
+        return BidRowWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            price=self.price,
+            quantity_per_hour=self.quantity_per_hour,
+            product=self.product,
+            is_divisible=self.is_divisible,
+            min_quantity=self.min_quantity,
+            is_block=self.is_block,
+            exclusive_group_id=self.exclusive_group_id,
+            linked_bid=self.linked_bid.as_write() if isinstance(self.linked_bid, DomainModel) else self.linked_bid,
+            power_asset=self.power_asset.as_write() if isinstance(self.power_asset, DomainModel) else self.power_asset,
+            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
+        )
 
 
 class BidRow(DomainModel):
@@ -84,7 +184,7 @@ class BidRow(DomainModel):
     exclusive_group_id: Optional[str] = Field(None, alias="exclusiveGroupId")
     linked_bid: Union[BidRow, str, dm.NodeId, None] = Field(None, repr=False, alias="linkedBid")
     power_asset: Union[PowerAsset, str, dm.NodeId, None] = Field(None, repr=False, alias="powerAsset")
-    alerts: Union[list[Alert], list[str], None] = Field(default=None, repr=False)
+    alerts: Union[list[Alert], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
     def as_write(self) -> BidRowWrite:
         """Convert this read version of bid row to the writing version."""
@@ -146,13 +246,14 @@ class BidRowWrite(DomainModelWrite):
     exclusive_group_id: Optional[str] = Field(None, alias="exclusiveGroupId")
     linked_bid: Union[BidRowWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="linkedBid")
     power_asset: Union[PowerAssetWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="powerAsset")
-    alerts: Union[list[AlertWrite], list[str], None] = Field(default=None, repr=False)
+    alerts: Union[list[AlertWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
@@ -199,7 +300,7 @@ class BidRowWrite(DomainModelWrite):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.data_record.existing_version,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
@@ -214,7 +315,13 @@ class BidRowWrite(DomainModelWrite):
         edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
-                cache, start_node=self, end_node=alert, edge_type=edge_type, view_by_read_class=view_by_read_class
+                cache,
+                start_node=self,
+                end_node=alert,
+                edge_type=edge_type,
+                view_by_read_class=view_by_read_class,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
             )
             resources.extend(other_resources)
 

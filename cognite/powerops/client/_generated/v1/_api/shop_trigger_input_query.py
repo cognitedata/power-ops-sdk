@@ -74,6 +74,7 @@ class SHOPTriggerInputQueryAPI(QueryAPI[T_DomainModelList]):
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
                 result_cls=Case,
+                is_single_direct_relation=True,
             ),
         )
 
@@ -91,5 +92,6 @@ class SHOPTriggerInputQueryAPI(QueryAPI[T_DomainModelList]):
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
                 result_cls=PreprocessorInput,
+                is_single_direct_relation=True,
             ),
         )

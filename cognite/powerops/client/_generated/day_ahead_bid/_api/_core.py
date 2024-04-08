@@ -21,6 +21,7 @@ from cognite.powerops.client._generated.day_ahead_bid.data_classes._core import 
     DomainModelCore,
     DomainModelWrite,
     DomainRelationWrite,
+    GraphQLList,
     ResourcesWriteResult,
     T_DomainModel,
     T_DomainModelWrite,
@@ -32,6 +33,8 @@ from cognite.powerops.client._generated.day_ahead_bid.data_classes._core import 
     DomainModelCore,
     DomainRelation,
 )
+from cognite.powerops.client._generated.day_ahead_bid import data_classes
+
 
 DEFAULT_LIMIT_READ = 25
 DEFAULT_QUERY_LIMIT = 3
@@ -479,6 +482,7 @@ class QueryStep:
     max_retrieve_limit: int
     select: dm.query.Select
     result_cls: type[DomainModelCore] | None = None
+    is_single_direct_relation: bool = False
 
     # Query Variables
     cursor: str | None = None
@@ -495,6 +499,17 @@ class QueryStep:
     @property
     def is_unlimited(self) -> bool:
         return self.max_retrieve_limit in {None, -1, math.inf}
+
+    @property
+    def is_finished(self) -> bool:
+        return (
+            (not self.is_unlimited and self.total_retrieved >= self.max_retrieve_limit)
+            or self.cursor is None
+            or self.last_batch_count == 0
+            # Single direct relations are dependent on the parent node,
+            # so we assume that the parent node is the limiting factor.
+            or self.is_single_direct_relation
+        )
 
 
 class QueryBuilder(UserList, Generic[T_DomainModelList]):
@@ -566,12 +581,7 @@ class QueryBuilder(UserList, Generic[T_DomainModelList]):
 
     @property
     def is_finished(self):
-        return all(
-            (not expression.is_unlimited and expression.total_retrieved >= expression.max_retrieve_limit)
-            or expression.cursor is None
-            or expression.last_batch_count == 0
-            for expression in self
-        )
+        return all(expression.is_finished for expression in self)
 
     def unpack(self) -> T_DomainModelList:
         nodes_by_type: dict[str | None, dict[tuple[str, str], DomainModel]] = defaultdict(dict)
@@ -751,3 +761,47 @@ def _create_edge_filter(
     if filter:
         filters.append(filter)
     return dm.filters.And(*filters)
+
+
+class GraphQLQueryResponse:
+    def __init__(self, data_model_id: dm.DataModelId):
+        self._output = GraphQLList([])
+        self._data_class_by_type = _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE[data_model_id]
+
+    def parse(self, response: dict[str, Any]) -> GraphQLList:
+        if "errors" in response:
+            raise RuntimeError(response["errors"])
+        _, data = list(response.items())[0]
+        self._parse_item(data)
+        return self._output
+
+    def _parse_item(self, data: dict[str, Any]) -> None:
+        if "items" in data:
+            for item in data["items"]:
+                self._parse_item(item)
+        elif "__typename" in data:
+            try:
+                item = self._data_class_by_type[data["__typename"]].model_validate(data)
+            except KeyError:
+                raise ValueError(f"Could not find class for type {data['__typename']}")
+            else:
+                self._output.append(item)
+        else:
+            raise RuntimeError("Missing '__typename' in GraphQL response. Cannot determine the type of the response.")
+
+
+_GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE = {
+    dm.DataModelId("power-ops-day-ahead-bid", "DayAheadBid", "1"): {
+        "BidDocument": data_classes.BidDocumentGraphQL,
+        "BidMatrix": data_classes.BidMatrixGraphQL,
+        "MultiScenarioMatrix": data_classes.MultiScenarioMatrixGraphQL,
+        "SHOPPriceScenario": data_classes.SHOPPriceScenarioGraphQL,
+        "SHOPPriceScenarioResult": data_classes.SHOPPriceScenarioResultGraphQL,
+        "BasicBidMatrix": data_classes.BasicBidMatrixGraphQL,
+        "SHOPMultiScenarioMethod": data_classes.SHOPMultiScenarioMethodGraphQL,
+        "WaterValueBasedMethod": data_classes.WaterValueBasedMethodGraphQL,
+        "PriceArea": data_classes.PriceAreaGraphQL,
+        "BidMethod": data_classes.BidMethodGraphQL,
+        "Alert": data_classes.AlertGraphQL,
+    },
+}

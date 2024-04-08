@@ -5,9 +5,12 @@ from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
+from pydantic import field_validator, model_validator
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
@@ -15,13 +18,14 @@ from ._core import (
     DomainModelWriteList,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
     ResourcesWrite,
 )
 from ._function_input import FunctionInput, FunctionInputWrite
 
 if TYPE_CHECKING:
-    from ._case import Case, CaseWrite
-    from ._preprocessor_input import PreprocessorInput, PreprocessorInputWrite
+    from ._case import Case, CaseGraphQL, CaseWrite
+    from ._preprocessor_input import PreprocessorInput, PreprocessorInputGraphQL, PreprocessorInputWrite
 
 
 __all__ = [
@@ -46,6 +50,98 @@ _SHOPTRIGGERINPUT_PROPERTIES_BY_FIELD = {
     "function_call_id": "functionCallId",
     "cog_shop_tag": "cogShopTag",
 }
+
+
+class SHOPTriggerInputGraphQL(GraphQLCore):
+    """This represents the reading version of shop trigger input, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the shop trigger input.
+        data_record: The data record of the shop trigger input node.
+        process_id: The process associated with the function execution
+        process_step: This is the step in the process.
+        function_name: The name of the function
+        function_call_id: The function call id
+        cog_shop_tag: Optionally specify cogshop tag to trigger
+        case: The scenario that is used in the shop run
+        pre_processor_input: The preprocessor input to the shop run
+    """
+
+    view_id = dm.ViewId("sp_powerops_models_temp", "SHOPTriggerInput", "1")
+    process_id: Optional[str] = Field(None, alias="processId")
+    process_step: Optional[int] = Field(None, alias="processStep")
+    function_name: Optional[str] = Field(None, alias="functionName")
+    function_call_id: Optional[str] = Field(None, alias="functionCallId")
+    cog_shop_tag: Optional[str] = Field(None, alias="cogShopTag")
+    case: Optional[CaseGraphQL] = Field(None, repr=False)
+    pre_processor_input: Optional[PreprocessorInputGraphQL] = Field(None, repr=False, alias="preProcessorInput")
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+    @field_validator("case", "pre_processor_input", mode="before")
+    def parse_graphql(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        if "items" in value:
+            return value["items"]
+        return value
+
+    def as_read(self) -> SHOPTriggerInput:
+        """Convert this GraphQL format of shop trigger input to the reading format."""
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return SHOPTriggerInput(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            process_id=self.process_id,
+            process_step=self.process_step,
+            function_name=self.function_name,
+            function_call_id=self.function_call_id,
+            cog_shop_tag=self.cog_shop_tag,
+            case=self.case.as_read() if isinstance(self.case, GraphQLCore) else self.case,
+            pre_processor_input=(
+                self.pre_processor_input.as_read()
+                if isinstance(self.pre_processor_input, GraphQLCore)
+                else self.pre_processor_input
+            ),
+        )
+
+    def as_write(self) -> SHOPTriggerInputWrite:
+        """Convert this GraphQL format of shop trigger input to the writing format."""
+        return SHOPTriggerInputWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            process_id=self.process_id,
+            process_step=self.process_step,
+            function_name=self.function_name,
+            function_call_id=self.function_call_id,
+            cog_shop_tag=self.cog_shop_tag,
+            case=self.case.as_write() if isinstance(self.case, DomainModel) else self.case,
+            pre_processor_input=(
+                self.pre_processor_input.as_write()
+                if isinstance(self.pre_processor_input, DomainModel)
+                else self.pre_processor_input
+            ),
+        )
 
 
 class SHOPTriggerInput(FunctionInput):
@@ -136,6 +232,7 @@ class SHOPTriggerInputWrite(FunctionInputWrite):
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
@@ -182,7 +279,7 @@ class SHOPTriggerInputWrite(FunctionInputWrite):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.data_record.existing_version,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
