@@ -49,6 +49,8 @@ class ShopPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
 
     def price_production(
         self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -62,6 +64,8 @@ class ShopPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
         """Query along the price production edges of the shop partial bid matrix calculation input.
 
         Args:
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             shop_result: The shop result to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -101,6 +105,8 @@ class ShopPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
         has_data = dm.filters.HasData(views=[view_id])
         node_filer = _create_price_production_filter(
             view_id,
+            name,
+            name_prefix,
             shop_result,
             external_id_prefix,
             space,

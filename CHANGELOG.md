@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+
+## [0.92.1] - 2024-04-08
+### Added
+* Add missing `name` field to `PriceProduction` type
+
 ## [0.92.0] - 2024-04-08
 ### Changed
 * `v1` data model updates for enablement of multi method bid calculation

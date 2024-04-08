@@ -283,6 +283,7 @@ from ._price_production import (
     PriceProductionFields,
     PriceProductionGraphQL,
     PriceProductionList,
+    PriceProductionTextFields,
     PriceProductionWrite,
     PriceProductionWriteList,
 )
@@ -812,6 +813,7 @@ __all__ = [
     "PriceProductionWriteList",
     "PriceProductionApplyList",
     "PriceProductionFields",
+    "PriceProductionTextFields",
     "SHOPResult",
     "SHOPResultGraphQL",
     "SHOPResultWrite",

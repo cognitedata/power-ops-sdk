@@ -40,10 +40,11 @@ __all__ = [
 ]
 
 
-PriceProductionTextFields = Literal["price", "production"]
-PriceProductionFields = Literal["price", "production"]
+PriceProductionTextFields = Literal["name", "price", "production"]
+PriceProductionFields = Literal["name", "price", "production"]
 
 _PRICEPRODUCTION_PROPERTIES_BY_FIELD = {
+    "name": "name",
     "price": "price",
     "production": "production",
 }
@@ -59,12 +60,14 @@ class PriceProductionGraphQL(GraphQLCore):
         space: The space where the node is located.
         external_id: The external id of the price production.
         data_record: The data record of the price production node.
+        name: TODO
         price: The price field.
         production: The production field.
         shop_result: The shop result field.
     """
 
     view_id = dm.ViewId("sp_powerops_models_temp", "PriceProduction", "1")
+    name: Optional[str] = None
     price: Union[TimeSeries, str, None] = None
     production: Union[TimeSeries, str, None] = None
     shop_result: Optional[SHOPResultGraphQL] = Field(None, repr=False, alias="shopResult")
@@ -100,6 +103,7 @@ class PriceProductionGraphQL(GraphQLCore):
                 last_updated_time=self.data_record.last_updated_time,
                 created_time=self.data_record.created_time,
             ),
+            name=self.name,
             price=self.price,
             production=self.production,
             shop_result=self.shop_result.as_read() if isinstance(self.shop_result, GraphQLCore) else self.shop_result,
@@ -111,6 +115,7 @@ class PriceProductionGraphQL(GraphQLCore):
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
+            name=self.name,
             price=self.price,
             production=self.production,
             shop_result=self.shop_result.as_write() if isinstance(self.shop_result, DomainModel) else self.shop_result,
@@ -126,6 +131,7 @@ class PriceProduction(DomainModel):
         space: The space where the node is located.
         external_id: The external id of the price production.
         data_record: The data record of the price production node.
+        name: TODO
         price: The price field.
         production: The production field.
         shop_result: The shop result field.
@@ -135,6 +141,7 @@ class PriceProduction(DomainModel):
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "sp_powerops_types_temp", "PriceProduction"
     )
+    name: str
     price: Union[TimeSeries, str, None] = None
     production: Union[TimeSeries, str, None] = None
     shop_result: Union[SHOPResult, str, dm.NodeId, None] = Field(None, repr=False, alias="shopResult")
@@ -145,6 +152,7 @@ class PriceProduction(DomainModel):
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
+            name=self.name,
             price=self.price,
             production=self.production,
             shop_result=self.shop_result.as_write() if isinstance(self.shop_result, DomainModel) else self.shop_result,
@@ -169,6 +177,7 @@ class PriceProductionWrite(DomainModelWrite):
         space: The space where the node is located.
         external_id: The external id of the price production.
         data_record: The data record of the price production node.
+        name: TODO
         price: The price field.
         production: The production field.
         shop_result: The shop result field.
@@ -178,6 +187,7 @@ class PriceProductionWrite(DomainModelWrite):
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "sp_powerops_types_temp", "PriceProduction"
     )
+    name: str
     price: Union[TimeSeries, str, None] = None
     production: Union[TimeSeries, str, None] = None
     shop_result: Union[SHOPResultWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="shopResult")
@@ -198,6 +208,9 @@ class PriceProductionWrite(DomainModelWrite):
         )
 
         properties: dict[str, Any] = {}
+
+        if self.name is not None:
+            properties["name"] = self.name
 
         if self.price is not None:
             if isinstance(self.price, str) or self.price is None:
@@ -288,12 +301,20 @@ class PriceProductionApplyList(PriceProductionWriteList): ...
 
 def _create_price_production_filter(
     view_id: dm.ViewId,
+    name: str | list[str] | None = None,
+    name_prefix: str | None = None,
     shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
+    if isinstance(name, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
+    if name and isinstance(name, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
+    if name_prefix is not None:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
     if shop_result and isinstance(shop_result, str):
         filters.append(
             dm.filters.Equals(
