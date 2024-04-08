@@ -51,6 +51,8 @@ class CommandsAPI(NodeAPI[Commands, CommandsWrite, CommandsList]):
 
     def __call__(
         self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -59,6 +61,8 @@ class CommandsAPI(NodeAPI[Commands, CommandsWrite, CommandsList]):
         """Query starting at commands.
 
         Args:
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of commands to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -71,6 +75,8 @@ class CommandsAPI(NodeAPI[Commands, CommandsWrite, CommandsList]):
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_command_filter(
             self._view_id,
+            name,
+            name_prefix,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -182,6 +188,8 @@ class CommandsAPI(NodeAPI[Commands, CommandsWrite, CommandsList]):
         self,
         query: str,
         properties: CommandsTextFields | Sequence[CommandsTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -192,6 +200,8 @@ class CommandsAPI(NodeAPI[Commands, CommandsWrite, CommandsList]):
         Args:
             query: The search query,
             properties: The property to search, if nothing is passed all text fields will be searched.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of commands to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -211,6 +221,8 @@ class CommandsAPI(NodeAPI[Commands, CommandsWrite, CommandsList]):
         """
         filter_ = _create_command_filter(
             self._view_id,
+            name,
+            name_prefix,
             external_id_prefix,
             space,
             filter,
@@ -230,6 +242,8 @@ class CommandsAPI(NodeAPI[Commands, CommandsWrite, CommandsList]):
         group_by: None = None,
         query: str | None = None,
         search_properties: CommandsTextFields | Sequence[CommandsTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -249,6 +263,8 @@ class CommandsAPI(NodeAPI[Commands, CommandsWrite, CommandsList]):
         group_by: CommandsFields | Sequence[CommandsFields] = None,
         query: str | None = None,
         search_properties: CommandsTextFields | Sequence[CommandsTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -267,6 +283,8 @@ class CommandsAPI(NodeAPI[Commands, CommandsWrite, CommandsList]):
         group_by: CommandsFields | Sequence[CommandsFields] | None = None,
         query: str | None = None,
         search_property: CommandsTextFields | Sequence[CommandsTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -280,6 +298,8 @@ class CommandsAPI(NodeAPI[Commands, CommandsWrite, CommandsList]):
             group_by: The property to group by when doing the aggregation.
             query: The query to search for in the text field.
             search_property: The text field to search in.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of commands to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -300,6 +320,8 @@ class CommandsAPI(NodeAPI[Commands, CommandsWrite, CommandsList]):
 
         filter_ = _create_command_filter(
             self._view_id,
+            name,
+            name_prefix,
             external_id_prefix,
             space,
             filter,
@@ -322,6 +344,8 @@ class CommandsAPI(NodeAPI[Commands, CommandsWrite, CommandsList]):
         interval: float,
         query: str | None = None,
         search_property: CommandsTextFields | Sequence[CommandsTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -334,6 +358,8 @@ class CommandsAPI(NodeAPI[Commands, CommandsWrite, CommandsList]):
             interval: The interval to use for the histogram bins.
             query: The query to search for in the text field.
             search_property: The text field to search in.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of commands to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -345,6 +371,8 @@ class CommandsAPI(NodeAPI[Commands, CommandsWrite, CommandsList]):
         """
         filter_ = _create_command_filter(
             self._view_id,
+            name,
+            name_prefix,
             external_id_prefix,
             space,
             filter,
@@ -362,6 +390,8 @@ class CommandsAPI(NodeAPI[Commands, CommandsWrite, CommandsList]):
 
     def list(
         self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -370,6 +400,8 @@ class CommandsAPI(NodeAPI[Commands, CommandsWrite, CommandsList]):
         """List/filter commands
 
         Args:
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of commands to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -389,6 +421,8 @@ class CommandsAPI(NodeAPI[Commands, CommandsWrite, CommandsList]):
         """
         filter_ = _create_command_filter(
             self._view_id,
+            name,
+            name_prefix,
             external_id_prefix,
             space,
             filter,

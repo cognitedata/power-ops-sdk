@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.92.0] - 2024-04-08
+### Changed
+* `v1` data model updates for enablement of multi method bid calculation
+
 ## [0.91.2] - 2024-03-15
 ### Changed
 * Changed property in `MultiScenarioMatrixRaw` for `shopResults` to `SHOPResultPriceProd` and added the `MultiScenarioMatrixRaw` to the `TotalBidCalculation` data model.

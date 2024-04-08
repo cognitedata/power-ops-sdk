@@ -208,9 +208,9 @@ class ScenarioAPI(NodeAPI[Scenario, ScenarioWrite, ScenarioList]):
                 (
                     self.mappings_override_edge,
                     "mappings_override",
-                    dm.DirectRelationReference("sp_powerops_types", "Mapping"),
+                    dm.DirectRelationReference("sp_powerops_types_temp", "Mapping"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models", "Mapping", "1"),
+                    dm.ViewId("sp_powerops_models_temp", "Mapping", "1"),
                 ),
             ],
         )
@@ -525,9 +525,9 @@ class ScenarioAPI(NodeAPI[Scenario, ScenarioWrite, ScenarioList]):
                 (
                     self.mappings_override_edge,
                     "mappings_override",
-                    dm.DirectRelationReference("sp_powerops_types", "Mapping"),
+                    dm.DirectRelationReference("sp_powerops_types_temp", "Mapping"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models", "Mapping", "1"),
+                    dm.ViewId("sp_powerops_models_temp", "Mapping", "1"),
                 ),
             ],
         )

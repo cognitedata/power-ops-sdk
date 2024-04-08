@@ -8,8 +8,6 @@ from cognite.client import data_modeling as dm, CogniteClient
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     Plant,
-    Watercourse,
-    Reservoir,
 )
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
@@ -46,8 +44,6 @@ class PlantQueryAPI(QueryAPI[T_DomainModelList]):
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
-        retrieve_watercourse: bool = False,
-        retrieve_inlet_reservoir: bool = False,
     ) -> GeneratorQueryAPI[T_DomainModelList]:
         """Query along the generator edges of the plant.
 
@@ -56,8 +52,6 @@ class PlantQueryAPI(QueryAPI[T_DomainModelList]):
             space: The space to filter on.
             limit: Maximum number of generator edges to return. Defaults to 25. Set to -1, float("inf") or None
                 to return all items.
-            retrieve_watercourse: Whether to retrieve the watercourse for each plant or not.
-            retrieve_inlet_reservoir: Whether to retrieve the inlet reservoir for each plant or not.
 
         Returns:
             GeneratorQueryAPI: The query API for the generator.
@@ -67,7 +61,7 @@ class PlantQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = self._builder[-1].name
 
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("sp_powerops_types", "isSubAssetOf"),
+            dm.DirectRelationReference("sp_powerops_types_temp", "isSubAssetOf"),
             external_id_prefix=external_id_prefix,
             space=space,
         )
@@ -83,64 +77,15 @@ class PlantQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
-        if retrieve_watercourse:
-            self._query_append_watercourse(from_)
-        if retrieve_inlet_reservoir:
-            self._query_append_inlet_reservoir(from_)
         return GeneratorQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
 
     def query(
         self,
-        retrieve_watercourse: bool = False,
-        retrieve_inlet_reservoir: bool = False,
     ) -> T_DomainModelList:
         """Execute query and return the result.
-
-        Args:
-            retrieve_watercourse: Whether to retrieve the watercourse for each plant or not.
-            retrieve_inlet_reservoir: Whether to retrieve the inlet reservoir for each plant or not.
 
         Returns:
             The list of the source nodes of the query.
 
         """
-        from_ = self._builder[-1].name
-        if retrieve_watercourse:
-            self._query_append_watercourse(from_)
-        if retrieve_inlet_reservoir:
-            self._query_append_inlet_reservoir(from_)
         return self._query()
-
-    def _query_append_watercourse(self, from_: str) -> None:
-        view_id = self._view_by_read_class[Watercourse]
-        self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("watercourse"),
-                expression=dm.query.NodeResultSetExpression(
-                    filter=dm.filters.HasData(views=[view_id]),
-                    from_=from_,
-                    through=self._view_by_read_class[Plant].as_property_ref("watercourse"),
-                    direction="outwards",
-                ),
-                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
-                max_retrieve_limit=-1,
-                result_cls=Watercourse,
-            ),
-        )
-
-    def _query_append_inlet_reservoir(self, from_: str) -> None:
-        view_id = self._view_by_read_class[Reservoir]
-        self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("inlet_reservoir"),
-                expression=dm.query.NodeResultSetExpression(
-                    filter=dm.filters.HasData(views=[view_id]),
-                    from_=from_,
-                    through=self._view_by_read_class[Plant].as_property_ref("inletReservoir"),
-                    direction="outwards",
-                ),
-                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
-                max_retrieve_limit=-1,
-                result_cls=Reservoir,
-            ),
-        )

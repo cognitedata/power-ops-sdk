@@ -53,7 +53,7 @@ class TurbineEfficiencyCurve(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "TurbineEfficiencyCurve"
+        "sp_powerops_types_temp", "TurbineEfficiencyCurve"
     )
     head: Optional[float] = None
     flow: Optional[list[float]] = None
@@ -96,7 +96,7 @@ class TurbineEfficiencyCurveWrite(DomainModelWrite):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "TurbineEfficiencyCurve"
+        "sp_powerops_types_temp", "TurbineEfficiencyCurve"
     )
     head: Optional[float] = None
     flow: list[float]
@@ -113,7 +113,7 @@ class TurbineEfficiencyCurveWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            TurbineEfficiencyCurve, dm.ViewId("sp_powerops_models", "TurbineEfficiencyCurve", "1")
+            TurbineEfficiencyCurve, dm.ViewId("sp_powerops_models_temp", "TurbineEfficiencyCurve", "1")
         )
 
         properties: dict[str, Any] = {}

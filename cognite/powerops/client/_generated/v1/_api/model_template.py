@@ -53,11 +53,14 @@ class ModelTemplateAPI(NodeAPI[ModelTemplate, ModelTemplateWrite, ModelTemplateL
 
     def __call__(
         self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         version_: str | list[str] | None = None,
         version_prefix: str | None = None,
         shop_version: str | list[str] | None = None,
         shop_version_prefix: str | None = None,
-        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_penalty_limit: float | None = None,
+        max_penalty_limit: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -66,11 +69,14 @@ class ModelTemplateAPI(NodeAPI[ModelTemplate, ModelTemplateWrite, ModelTemplateL
         """Query starting at model templates.
 
         Args:
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             version_: The version to filter on.
             version_prefix: The prefix of the version to filter on.
             shop_version: The shop version to filter on.
             shop_version_prefix: The prefix of the shop version to filter on.
-            watercourse: The watercourse to filter on.
+            min_penalty_limit: The minimum value of the penalty limit to filter on.
+            max_penalty_limit: The maximum value of the penalty limit to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of model templates to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -83,11 +89,14 @@ class ModelTemplateAPI(NodeAPI[ModelTemplate, ModelTemplateWrite, ModelTemplateL
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_model_template_filter(
             self._view_id,
+            name,
+            name_prefix,
             version_,
             version_prefix,
             shop_version,
             shop_version_prefix,
-            watercourse,
+            min_penalty_limit,
+            max_penalty_limit,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -205,9 +214,9 @@ class ModelTemplateAPI(NodeAPI[ModelTemplate, ModelTemplateWrite, ModelTemplateL
                 (
                     self.base_mappings_edge,
                     "base_mappings",
-                    dm.DirectRelationReference("sp_powerops_types", "ModelTemplate.baseMappings"),
+                    dm.DirectRelationReference("sp_powerops_types_temp", "ModelTemplate.baseMappings"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models", "Mapping", "1"),
+                    dm.ViewId("sp_powerops_models_temp", "Mapping", "1"),
                 ),
             ],
         )
@@ -216,11 +225,14 @@ class ModelTemplateAPI(NodeAPI[ModelTemplate, ModelTemplateWrite, ModelTemplateL
         self,
         query: str,
         properties: ModelTemplateTextFields | Sequence[ModelTemplateTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         version_: str | list[str] | None = None,
         version_prefix: str | None = None,
         shop_version: str | list[str] | None = None,
         shop_version_prefix: str | None = None,
-        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_penalty_limit: float | None = None,
+        max_penalty_limit: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -231,11 +243,14 @@ class ModelTemplateAPI(NodeAPI[ModelTemplate, ModelTemplateWrite, ModelTemplateL
         Args:
             query: The search query,
             properties: The property to search, if nothing is passed all text fields will be searched.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             version_: The version to filter on.
             version_prefix: The prefix of the version to filter on.
             shop_version: The shop version to filter on.
             shop_version_prefix: The prefix of the shop version to filter on.
-            watercourse: The watercourse to filter on.
+            min_penalty_limit: The minimum value of the penalty limit to filter on.
+            max_penalty_limit: The maximum value of the penalty limit to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of model templates to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -255,11 +270,14 @@ class ModelTemplateAPI(NodeAPI[ModelTemplate, ModelTemplateWrite, ModelTemplateL
         """
         filter_ = _create_model_template_filter(
             self._view_id,
+            name,
+            name_prefix,
             version_,
             version_prefix,
             shop_version,
             shop_version_prefix,
-            watercourse,
+            min_penalty_limit,
+            max_penalty_limit,
             external_id_prefix,
             space,
             filter,
@@ -279,11 +297,14 @@ class ModelTemplateAPI(NodeAPI[ModelTemplate, ModelTemplateWrite, ModelTemplateL
         group_by: None = None,
         query: str | None = None,
         search_properties: ModelTemplateTextFields | Sequence[ModelTemplateTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         version_: str | list[str] | None = None,
         version_prefix: str | None = None,
         shop_version: str | list[str] | None = None,
         shop_version_prefix: str | None = None,
-        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_penalty_limit: float | None = None,
+        max_penalty_limit: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -303,11 +324,14 @@ class ModelTemplateAPI(NodeAPI[ModelTemplate, ModelTemplateWrite, ModelTemplateL
         group_by: ModelTemplateFields | Sequence[ModelTemplateFields] = None,
         query: str | None = None,
         search_properties: ModelTemplateTextFields | Sequence[ModelTemplateTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         version_: str | list[str] | None = None,
         version_prefix: str | None = None,
         shop_version: str | list[str] | None = None,
         shop_version_prefix: str | None = None,
-        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_penalty_limit: float | None = None,
+        max_penalty_limit: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -326,11 +350,14 @@ class ModelTemplateAPI(NodeAPI[ModelTemplate, ModelTemplateWrite, ModelTemplateL
         group_by: ModelTemplateFields | Sequence[ModelTemplateFields] | None = None,
         query: str | None = None,
         search_property: ModelTemplateTextFields | Sequence[ModelTemplateTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         version_: str | list[str] | None = None,
         version_prefix: str | None = None,
         shop_version: str | list[str] | None = None,
         shop_version_prefix: str | None = None,
-        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_penalty_limit: float | None = None,
+        max_penalty_limit: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -344,11 +371,14 @@ class ModelTemplateAPI(NodeAPI[ModelTemplate, ModelTemplateWrite, ModelTemplateL
             group_by: The property to group by when doing the aggregation.
             query: The query to search for in the text field.
             search_property: The text field to search in.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             version_: The version to filter on.
             version_prefix: The prefix of the version to filter on.
             shop_version: The shop version to filter on.
             shop_version_prefix: The prefix of the shop version to filter on.
-            watercourse: The watercourse to filter on.
+            min_penalty_limit: The minimum value of the penalty limit to filter on.
+            max_penalty_limit: The maximum value of the penalty limit to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of model templates to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -369,11 +399,14 @@ class ModelTemplateAPI(NodeAPI[ModelTemplate, ModelTemplateWrite, ModelTemplateL
 
         filter_ = _create_model_template_filter(
             self._view_id,
+            name,
+            name_prefix,
             version_,
             version_prefix,
             shop_version,
             shop_version_prefix,
-            watercourse,
+            min_penalty_limit,
+            max_penalty_limit,
             external_id_prefix,
             space,
             filter,
@@ -396,11 +429,14 @@ class ModelTemplateAPI(NodeAPI[ModelTemplate, ModelTemplateWrite, ModelTemplateL
         interval: float,
         query: str | None = None,
         search_property: ModelTemplateTextFields | Sequence[ModelTemplateTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         version_: str | list[str] | None = None,
         version_prefix: str | None = None,
         shop_version: str | list[str] | None = None,
         shop_version_prefix: str | None = None,
-        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_penalty_limit: float | None = None,
+        max_penalty_limit: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -413,11 +449,14 @@ class ModelTemplateAPI(NodeAPI[ModelTemplate, ModelTemplateWrite, ModelTemplateL
             interval: The interval to use for the histogram bins.
             query: The query to search for in the text field.
             search_property: The text field to search in.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             version_: The version to filter on.
             version_prefix: The prefix of the version to filter on.
             shop_version: The shop version to filter on.
             shop_version_prefix: The prefix of the shop version to filter on.
-            watercourse: The watercourse to filter on.
+            min_penalty_limit: The minimum value of the penalty limit to filter on.
+            max_penalty_limit: The maximum value of the penalty limit to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of model templates to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -429,11 +468,14 @@ class ModelTemplateAPI(NodeAPI[ModelTemplate, ModelTemplateWrite, ModelTemplateL
         """
         filter_ = _create_model_template_filter(
             self._view_id,
+            name,
+            name_prefix,
             version_,
             version_prefix,
             shop_version,
             shop_version_prefix,
-            watercourse,
+            min_penalty_limit,
+            max_penalty_limit,
             external_id_prefix,
             space,
             filter,
@@ -451,11 +493,14 @@ class ModelTemplateAPI(NodeAPI[ModelTemplate, ModelTemplateWrite, ModelTemplateL
 
     def list(
         self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         version_: str | list[str] | None = None,
         version_prefix: str | None = None,
         shop_version: str | list[str] | None = None,
         shop_version_prefix: str | None = None,
-        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_penalty_limit: float | None = None,
+        max_penalty_limit: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -465,11 +510,14 @@ class ModelTemplateAPI(NodeAPI[ModelTemplate, ModelTemplateWrite, ModelTemplateL
         """List/filter model templates
 
         Args:
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             version_: The version to filter on.
             version_prefix: The prefix of the version to filter on.
             shop_version: The shop version to filter on.
             shop_version_prefix: The prefix of the shop version to filter on.
-            watercourse: The watercourse to filter on.
+            min_penalty_limit: The minimum value of the penalty limit to filter on.
+            max_penalty_limit: The maximum value of the penalty limit to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of model templates to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -490,11 +538,14 @@ class ModelTemplateAPI(NodeAPI[ModelTemplate, ModelTemplateWrite, ModelTemplateL
         """
         filter_ = _create_model_template_filter(
             self._view_id,
+            name,
+            name_prefix,
             version_,
             version_prefix,
             shop_version,
             shop_version_prefix,
-            watercourse,
+            min_penalty_limit,
+            max_penalty_limit,
             external_id_prefix,
             space,
             filter,
@@ -508,9 +559,9 @@ class ModelTemplateAPI(NodeAPI[ModelTemplate, ModelTemplateWrite, ModelTemplateL
                 (
                     self.base_mappings_edge,
                     "base_mappings",
-                    dm.DirectRelationReference("sp_powerops_types", "ModelTemplate.baseMappings"),
+                    dm.DirectRelationReference("sp_powerops_types_temp", "ModelTemplate.baseMappings"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models", "Mapping", "1"),
+                    dm.ViewId("sp_powerops_models_temp", "Mapping", "1"),
                 ),
             ],
         )

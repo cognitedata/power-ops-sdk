@@ -17,6 +17,7 @@ from ._core import (
     DomainRelationWrite,
     ResourcesWrite,
 )
+from ._function_output import FunctionOutput, FunctionOutputWrite
 
 if TYPE_CHECKING:
     from ._alert import Alert, AlertWrite
@@ -47,7 +48,7 @@ _TOTALBIDMATRIXCALCULATIONOUTPUT_PROPERTIES_BY_FIELD = {
 }
 
 
-class TotalBidMatrixCalculationOutput(DomainModel):
+class TotalBidMatrixCalculationOutput(FunctionOutput):
     """This represents the reading version of total bid matrix calculation output.
 
     It is used to when data is retrieved from CDF.
@@ -65,15 +66,9 @@ class TotalBidMatrixCalculationOutput(DomainModel):
         input_: The previous step in the process.
     """
 
-    space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "TotalBidMatrixCalculationOutput"
+        "sp_powerops_types_temp", "TotalBidMatrixCalculationOutput"
     )
-    process_id: str = Field(alias="processId")
-    process_step: int = Field(alias="processStep")
-    function_name: str = Field(alias="functionName")
-    function_call_id: str = Field(alias="functionCallId")
-    alerts: Union[list[Alert], list[str], None] = Field(default=None, repr=False)
     bid_document: Union[BidDocumentDayAhead, str, dm.NodeId, None] = Field(None, repr=False, alias="bidDocument")
     input_: Union[TotalBidMatrixCalculationInput, str, dm.NodeId, None] = Field(None, repr=False, alias="input")
 
@@ -104,7 +99,7 @@ class TotalBidMatrixCalculationOutput(DomainModel):
         return self.as_write()
 
 
-class TotalBidMatrixCalculationOutputWrite(DomainModelWrite):
+class TotalBidMatrixCalculationOutputWrite(FunctionOutputWrite):
     """This represents the writing version of total bid matrix calculation output.
 
     It is used to when data is sent to CDF.
@@ -122,15 +117,9 @@ class TotalBidMatrixCalculationOutputWrite(DomainModelWrite):
         input_: The previous step in the process.
     """
 
-    space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "TotalBidMatrixCalculationOutput"
+        "sp_powerops_types_temp", "TotalBidMatrixCalculationOutput"
     )
-    process_id: str = Field(alias="processId")
-    process_step: int = Field(alias="processStep")
-    function_name: str = Field(alias="functionName")
-    function_call_id: str = Field(alias="functionCallId")
-    alerts: Union[list[AlertWrite], list[str], None] = Field(default=None, repr=False)
     bid_document: Union[BidDocumentDayAheadWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="bidDocument")
     input_: Union[TotalBidMatrixCalculationInputWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="input")
 
@@ -145,7 +134,8 @@ class TotalBidMatrixCalculationOutputWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            TotalBidMatrixCalculationOutput, dm.ViewId("sp_powerops_models", "TotalBidMatrixCalculationOutput", "1")
+            TotalBidMatrixCalculationOutput,
+            dm.ViewId("sp_powerops_models_temp", "TotalBidMatrixCalculationOutput", "1"),
         )
 
         properties: dict[str, Any] = {}
@@ -192,7 +182,7 @@ class TotalBidMatrixCalculationOutputWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_powerops_types", "calculationIssue")
+        edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache, start_node=self, end_node=alert, edge_type=edge_type, view_by_read_class=view_by_read_class

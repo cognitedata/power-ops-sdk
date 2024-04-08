@@ -8,6 +8,7 @@ environment:
 modules:
   custom_modules:
     power_model_v1:
+      # TODO: update space to not be temp
       powerops_type_space: "sp_powerops_types_temp"
       powerops_instance_space: "sp_powerops_instance_temp"
       powerops_models: "sp_powerops_models_temp"

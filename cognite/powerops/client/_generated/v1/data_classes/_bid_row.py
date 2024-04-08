@@ -20,8 +20,8 @@ from ._core import (
 
 if TYPE_CHECKING:
     from ._alert import Alert, AlertWrite
-    from ._bid_method_afrr import BidMethodAFRR, BidMethodAFRRWrite
     from ._bid_row import BidRow, BidRowWrite
+    from ._power_asset import PowerAsset, PowerAssetWrite
 
 
 __all__ = [
@@ -36,17 +36,9 @@ __all__ = [
 ]
 
 
-BidRowTextFields = Literal["product", "exclusive_group_id", "asset_type", "asset_id"]
+BidRowTextFields = Literal["product", "exclusive_group_id"]
 BidRowFields = Literal[
-    "price",
-    "quantity_per_hour",
-    "product",
-    "is_divisible",
-    "min_quantity",
-    "is_block",
-    "exclusive_group_id",
-    "asset_type",
-    "asset_id",
+    "price", "quantity_per_hour", "product", "is_divisible", "min_quantity", "is_block", "exclusive_group_id"
 ]
 
 _BIDROW_PROPERTIES_BY_FIELD = {
@@ -57,8 +49,6 @@ _BIDROW_PROPERTIES_BY_FIELD = {
     "min_quantity": "minQuantity",
     "is_block": "isBlock",
     "exclusive_group_id": "exclusiveGroupId",
-    "asset_type": "assetType",
-    "asset_id": "assetId",
 }
 
 
@@ -79,14 +69,12 @@ class BidRow(DomainModel):
         is_block: Indication if the row is part of a Block bid. If true: quantityPerHour must have the same value for consecutive hours (and no breaks). Block bids must be accepted for all hours or none.
         exclusive_group_id: Other bids with the same ID are part of an exclusive group - only one of them can be accepted, and they must have the same direction (product). Not allowed for block bids.
         linked_bid: The linked bid must have the opposite direction (link means that both or none must be accepted). Should be bi-directional.
-        asset_type: The asset type field.
-        asset_id: The asset id field.
-        method: The method field.
+        power_asset: TODO description
         alerts: An array of associated alerts.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "BidRow")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types_temp", "BidRow")
     price: Optional[float] = None
     quantity_per_hour: Optional[list[float]] = Field(None, alias="quantityPerHour")
     product: Optional[str] = None
@@ -95,9 +83,7 @@ class BidRow(DomainModel):
     is_block: Optional[bool] = Field(None, alias="isBlock")
     exclusive_group_id: Optional[str] = Field(None, alias="exclusiveGroupId")
     linked_bid: Union[BidRow, str, dm.NodeId, None] = Field(None, repr=False, alias="linkedBid")
-    asset_type: Optional[str] = Field(None, alias="assetType")
-    asset_id: Optional[str] = Field(None, alias="assetId")
-    method: Union[BidMethodAFRR, str, dm.NodeId, None] = Field(None, repr=False)
+    power_asset: Union[PowerAsset, str, dm.NodeId, None] = Field(None, repr=False, alias="powerAsset")
     alerts: Union[list[Alert], list[str], None] = Field(default=None, repr=False)
 
     def as_write(self) -> BidRowWrite:
@@ -114,9 +100,7 @@ class BidRow(DomainModel):
             is_block=self.is_block,
             exclusive_group_id=self.exclusive_group_id,
             linked_bid=self.linked_bid.as_write() if isinstance(self.linked_bid, DomainModel) else self.linked_bid,
-            asset_type=self.asset_type,
-            asset_id=self.asset_id,
-            method=self.method.as_write() if isinstance(self.method, DomainModel) else self.method,
+            power_asset=self.power_asset.as_write() if isinstance(self.power_asset, DomainModel) else self.power_asset,
             alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
         )
 
@@ -147,14 +131,12 @@ class BidRowWrite(DomainModelWrite):
         is_block: Indication if the row is part of a Block bid. If true: quantityPerHour must have the same value for consecutive hours (and no breaks). Block bids must be accepted for all hours or none.
         exclusive_group_id: Other bids with the same ID are part of an exclusive group - only one of them can be accepted, and they must have the same direction (product). Not allowed for block bids.
         linked_bid: The linked bid must have the opposite direction (link means that both or none must be accepted). Should be bi-directional.
-        asset_type: The asset type field.
-        asset_id: The asset id field.
-        method: The method field.
+        power_asset: TODO description
         alerts: An array of associated alerts.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "BidRow")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types_temp", "BidRow")
     price: Optional[float] = None
     quantity_per_hour: Optional[list[float]] = Field(None, alias="quantityPerHour")
     product: Optional[str] = None
@@ -163,9 +145,7 @@ class BidRowWrite(DomainModelWrite):
     is_block: Optional[bool] = Field(None, alias="isBlock")
     exclusive_group_id: Optional[str] = Field(None, alias="exclusiveGroupId")
     linked_bid: Union[BidRowWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="linkedBid")
-    asset_type: Optional[str] = Field(None, alias="assetType")
-    asset_id: Optional[str] = Field(None, alias="assetId")
-    method: Union[BidMethodAFRRWrite, str, dm.NodeId, None] = Field(None, repr=False)
+    power_asset: Union[PowerAssetWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="powerAsset")
     alerts: Union[list[AlertWrite], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_write(
@@ -178,7 +158,7 @@ class BidRowWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(BidRow, dm.ViewId("sp_powerops_models", "BidRow", "1"))
+        write_view = (view_by_read_class or {}).get(BidRow, dm.ViewId("sp_powerops_models_temp", "BidRow", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -209,16 +189,10 @@ class BidRowWrite(DomainModelWrite):
                 "externalId": self.linked_bid if isinstance(self.linked_bid, str) else self.linked_bid.external_id,
             }
 
-        if self.asset_type is not None or write_none:
-            properties["assetType"] = self.asset_type
-
-        if self.asset_id is not None or write_none:
-            properties["assetId"] = self.asset_id
-
-        if self.method is not None:
-            properties["method"] = {
-                "space": self.space if isinstance(self.method, str) else self.method.space,
-                "externalId": self.method if isinstance(self.method, str) else self.method.external_id,
+        if self.power_asset is not None:
+            properties["powerAsset"] = {
+                "space": self.space if isinstance(self.power_asset, str) else self.power_asset.space,
+                "externalId": self.power_asset if isinstance(self.power_asset, str) else self.power_asset.external_id,
             }
 
         if properties:
@@ -237,7 +211,7 @@ class BidRowWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_powerops_types", "calculationIssue")
+        edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache, start_node=self, end_node=alert, edge_type=edge_type, view_by_read_class=view_by_read_class
@@ -248,8 +222,8 @@ class BidRowWrite(DomainModelWrite):
             other_resources = self.linked_bid._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
 
-        if isinstance(self.method, DomainModelWrite):
-            other_resources = self.method._to_instances_write(cache, view_by_read_class)
+        if isinstance(self.power_asset, DomainModelWrite):
+            other_resources = self.power_asset._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
 
         return resources
@@ -306,11 +280,7 @@ def _create_bid_row_filter(
     exclusive_group_id: str | list[str] | None = None,
     exclusive_group_id_prefix: str | None = None,
     linked_bid: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-    asset_type: str | list[str] | None = None,
-    asset_type_prefix: str | None = None,
-    asset_id: str | list[str] | None = None,
-    asset_id_prefix: str | None = None,
-    method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -360,39 +330,31 @@ def _create_bid_row_filter(
                 values=[{"space": item[0], "externalId": item[1]} for item in linked_bid],
             )
         )
-    if isinstance(asset_type, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("assetType"), value=asset_type))
-    if asset_type and isinstance(asset_type, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("assetType"), values=asset_type))
-    if asset_type_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("assetType"), value=asset_type_prefix))
-    if isinstance(asset_id, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("assetId"), value=asset_id))
-    if asset_id and isinstance(asset_id, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("assetId"), values=asset_id))
-    if asset_id_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("assetId"), value=asset_id_prefix))
-    if method and isinstance(method, str):
+    if power_asset and isinstance(power_asset, str):
         filters.append(
             dm.filters.Equals(
-                view_id.as_property_ref("method"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": method}
+                view_id.as_property_ref("powerAsset"),
+                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": power_asset},
             )
         )
-    if method and isinstance(method, tuple):
+    if power_asset and isinstance(power_asset, tuple):
         filters.append(
-            dm.filters.Equals(view_id.as_property_ref("method"), value={"space": method[0], "externalId": method[1]})
-        )
-    if method and isinstance(method, list) and isinstance(method[0], str):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("method"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in method],
+            dm.filters.Equals(
+                view_id.as_property_ref("powerAsset"), value={"space": power_asset[0], "externalId": power_asset[1]}
             )
         )
-    if method and isinstance(method, list) and isinstance(method[0], tuple):
+    if power_asset and isinstance(power_asset, list) and isinstance(power_asset[0], str):
         filters.append(
             dm.filters.In(
-                view_id.as_property_ref("method"), values=[{"space": item[0], "externalId": item[1]} for item in method]
+                view_id.as_property_ref("powerAsset"),
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in power_asset],
+            )
+        )
+    if power_asset and isinstance(power_asset, list) and isinstance(power_asset[0], tuple):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("powerAsset"),
+                values=[{"space": item[0], "externalId": item[1]} for item in power_asset],
             )
         )
     if external_id_prefix is not None:

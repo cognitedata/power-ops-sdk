@@ -67,7 +67,7 @@ class ScenarioQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = self._builder[-1].name
 
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("sp_powerops_types", "Mapping"),
+            dm.DirectRelationReference("sp_powerops_types_temp", "Mapping"),
             external_id_prefix=external_id_prefix,
             space=space,
         )

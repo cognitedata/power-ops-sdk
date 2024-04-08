@@ -71,7 +71,7 @@ class MarketConfiguration(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "MarketConfiguration"
+        "sp_powerops_types_temp", "MarketConfiguration"
     )
     name: Optional[str] = None
     max_price: float = Field(alias="maxPrice")
@@ -132,7 +132,7 @@ class MarketConfigurationWrite(DomainModelWrite):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "MarketConfiguration"
+        "sp_powerops_types_temp", "MarketConfiguration"
     )
     name: Optional[str] = None
     max_price: float = Field(alias="maxPrice")
@@ -155,7 +155,7 @@ class MarketConfigurationWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            MarketConfiguration, dm.ViewId("sp_powerops_models", "MarketConfiguration", "1")
+            MarketConfiguration, dm.ViewId("sp_powerops_models_temp", "MarketConfiguration", "1")
         )
 
         properties: dict[str, Any] = {}

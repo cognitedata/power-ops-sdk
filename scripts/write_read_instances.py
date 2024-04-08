@@ -13,6 +13,7 @@ from cognite.powerops.utils.cdf import get_cognite_client
 from cognite.powerops.utils.serialization import chdir
 
 REPO_ROOT = Path(__file__).parent.parent
+# TODO: update space to not be temp
 INSTANCE_SPACE = "sp_powerops_instance_temp"
 MODEL_SPACE = "sp_powerops_models_temp"
 TYPE_SPACE = "sp_powerops_types_temp"

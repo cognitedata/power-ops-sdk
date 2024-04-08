@@ -62,11 +62,7 @@ class BidRowAPI(NodeAPI[BidRow, BidRowWrite, BidRowList]):
         exclusive_group_id: str | list[str] | None = None,
         exclusive_group_id_prefix: str | None = None,
         linked_bid: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        asset_type: str | list[str] | None = None,
-        asset_type_prefix: str | None = None,
-        asset_id: str | list[str] | None = None,
-        asset_id_prefix: str | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -84,11 +80,7 @@ class BidRowAPI(NodeAPI[BidRow, BidRowWrite, BidRowList]):
             exclusive_group_id: The exclusive group id to filter on.
             exclusive_group_id_prefix: The prefix of the exclusive group id to filter on.
             linked_bid: The linked bid to filter on.
-            asset_type: The asset type to filter on.
-            asset_type_prefix: The prefix of the asset type to filter on.
-            asset_id: The asset id to filter on.
-            asset_id_prefix: The prefix of the asset id to filter on.
-            method: The method to filter on.
+            power_asset: The power asset to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid rows to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -110,11 +102,7 @@ class BidRowAPI(NodeAPI[BidRow, BidRowWrite, BidRowList]):
             exclusive_group_id,
             exclusive_group_id_prefix,
             linked_bid,
-            asset_type,
-            asset_type_prefix,
-            asset_id,
-            asset_id_prefix,
-            method,
+            power_asset,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -232,9 +220,9 @@ class BidRowAPI(NodeAPI[BidRow, BidRowWrite, BidRowList]):
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_powerops_types", "calculationIssue"),
+                    dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models", "Alert", "1"),
+                    dm.ViewId("sp_powerops_models_temp", "Alert", "1"),
                 ),
             ],
         )
@@ -252,11 +240,7 @@ class BidRowAPI(NodeAPI[BidRow, BidRowWrite, BidRowList]):
         exclusive_group_id: str | list[str] | None = None,
         exclusive_group_id_prefix: str | None = None,
         linked_bid: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        asset_type: str | list[str] | None = None,
-        asset_type_prefix: str | None = None,
-        asset_id: str | list[str] | None = None,
-        asset_id_prefix: str | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -276,11 +260,7 @@ class BidRowAPI(NodeAPI[BidRow, BidRowWrite, BidRowList]):
             exclusive_group_id: The exclusive group id to filter on.
             exclusive_group_id_prefix: The prefix of the exclusive group id to filter on.
             linked_bid: The linked bid to filter on.
-            asset_type: The asset type to filter on.
-            asset_type_prefix: The prefix of the asset type to filter on.
-            asset_id: The asset id to filter on.
-            asset_id_prefix: The prefix of the asset id to filter on.
-            method: The method to filter on.
+            power_asset: The power asset to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid rows to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -309,11 +289,7 @@ class BidRowAPI(NodeAPI[BidRow, BidRowWrite, BidRowList]):
             exclusive_group_id,
             exclusive_group_id_prefix,
             linked_bid,
-            asset_type,
-            asset_type_prefix,
-            asset_id,
-            asset_id_prefix,
-            method,
+            power_asset,
             external_id_prefix,
             space,
             filter,
@@ -342,11 +318,7 @@ class BidRowAPI(NodeAPI[BidRow, BidRowWrite, BidRowList]):
         exclusive_group_id: str | list[str] | None = None,
         exclusive_group_id_prefix: str | None = None,
         linked_bid: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        asset_type: str | list[str] | None = None,
-        asset_type_prefix: str | None = None,
-        asset_id: str | list[str] | None = None,
-        asset_id_prefix: str | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -375,11 +347,7 @@ class BidRowAPI(NodeAPI[BidRow, BidRowWrite, BidRowList]):
         exclusive_group_id: str | list[str] | None = None,
         exclusive_group_id_prefix: str | None = None,
         linked_bid: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        asset_type: str | list[str] | None = None,
-        asset_type_prefix: str | None = None,
-        asset_id: str | list[str] | None = None,
-        asset_id_prefix: str | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -407,11 +375,7 @@ class BidRowAPI(NodeAPI[BidRow, BidRowWrite, BidRowList]):
         exclusive_group_id: str | list[str] | None = None,
         exclusive_group_id_prefix: str | None = None,
         linked_bid: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        asset_type: str | list[str] | None = None,
-        asset_type_prefix: str | None = None,
-        asset_id: str | list[str] | None = None,
-        asset_id_prefix: str | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -434,11 +398,7 @@ class BidRowAPI(NodeAPI[BidRow, BidRowWrite, BidRowList]):
             exclusive_group_id: The exclusive group id to filter on.
             exclusive_group_id_prefix: The prefix of the exclusive group id to filter on.
             linked_bid: The linked bid to filter on.
-            asset_type: The asset type to filter on.
-            asset_type_prefix: The prefix of the asset type to filter on.
-            asset_id: The asset id to filter on.
-            asset_id_prefix: The prefix of the asset id to filter on.
-            method: The method to filter on.
+            power_asset: The power asset to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid rows to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -468,11 +428,7 @@ class BidRowAPI(NodeAPI[BidRow, BidRowWrite, BidRowList]):
             exclusive_group_id,
             exclusive_group_id_prefix,
             linked_bid,
-            asset_type,
-            asset_type_prefix,
-            asset_id,
-            asset_id_prefix,
-            method,
+            power_asset,
             external_id_prefix,
             space,
             filter,
@@ -504,11 +460,7 @@ class BidRowAPI(NodeAPI[BidRow, BidRowWrite, BidRowList]):
         exclusive_group_id: str | list[str] | None = None,
         exclusive_group_id_prefix: str | None = None,
         linked_bid: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        asset_type: str | list[str] | None = None,
-        asset_type_prefix: str | None = None,
-        asset_id: str | list[str] | None = None,
-        asset_id_prefix: str | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -530,11 +482,7 @@ class BidRowAPI(NodeAPI[BidRow, BidRowWrite, BidRowList]):
             exclusive_group_id: The exclusive group id to filter on.
             exclusive_group_id_prefix: The prefix of the exclusive group id to filter on.
             linked_bid: The linked bid to filter on.
-            asset_type: The asset type to filter on.
-            asset_type_prefix: The prefix of the asset type to filter on.
-            asset_id: The asset id to filter on.
-            asset_id_prefix: The prefix of the asset id to filter on.
-            method: The method to filter on.
+            power_asset: The power asset to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid rows to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -555,11 +503,7 @@ class BidRowAPI(NodeAPI[BidRow, BidRowWrite, BidRowList]):
             exclusive_group_id,
             exclusive_group_id_prefix,
             linked_bid,
-            asset_type,
-            asset_type_prefix,
-            asset_id,
-            asset_id_prefix,
-            method,
+            power_asset,
             external_id_prefix,
             space,
             filter,
@@ -586,11 +530,7 @@ class BidRowAPI(NodeAPI[BidRow, BidRowWrite, BidRowList]):
         exclusive_group_id: str | list[str] | None = None,
         exclusive_group_id_prefix: str | None = None,
         linked_bid: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        asset_type: str | list[str] | None = None,
-        asset_type_prefix: str | None = None,
-        asset_id: str | list[str] | None = None,
-        asset_id_prefix: str | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -609,11 +549,7 @@ class BidRowAPI(NodeAPI[BidRow, BidRowWrite, BidRowList]):
             exclusive_group_id: The exclusive group id to filter on.
             exclusive_group_id_prefix: The prefix of the exclusive group id to filter on.
             linked_bid: The linked bid to filter on.
-            asset_type: The asset type to filter on.
-            asset_type_prefix: The prefix of the asset type to filter on.
-            asset_id: The asset id to filter on.
-            asset_id_prefix: The prefix of the asset id to filter on.
-            method: The method to filter on.
+            power_asset: The power asset to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid rows to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -643,11 +579,7 @@ class BidRowAPI(NodeAPI[BidRow, BidRowWrite, BidRowList]):
             exclusive_group_id,
             exclusive_group_id_prefix,
             linked_bid,
-            asset_type,
-            asset_type_prefix,
-            asset_id,
-            asset_id_prefix,
-            method,
+            power_asset,
             external_id_prefix,
             space,
             filter,
@@ -661,9 +593,9 @@ class BidRowAPI(NodeAPI[BidRow, BidRowWrite, BidRowList]):
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_powerops_types", "calculationIssue"),
+                    dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models", "Alert", "1"),
+                    dm.ViewId("sp_powerops_models_temp", "Alert", "1"),
                 ),
             ],
         )

@@ -20,6 +20,8 @@ from ._core import (
 
 if TYPE_CHECKING:
     from ._market_configuration import MarketConfiguration, MarketConfigurationWrite
+    from ._partial_bid_configuration import PartialBidConfiguration, PartialBidConfigurationWrite
+    from ._price_area import PriceArea, PriceAreaWrite
 
 
 __all__ = [
@@ -29,7 +31,17 @@ __all__ = [
     "BidConfigurationList",
     "BidConfigurationWriteList",
     "BidConfigurationApplyList",
+    "BidConfigurationFields",
+    "BidConfigurationTextFields",
 ]
+
+
+BidConfigurationTextFields = Literal["name"]
+BidConfigurationFields = Literal["name"]
+
+_BIDCONFIGURATION_PROPERTIES_BY_FIELD = {
+    "name": "name",
+}
 
 
 class BidConfiguration(DomainModel):
@@ -41,14 +53,22 @@ class BidConfiguration(DomainModel):
         space: The space where the node is located.
         external_id: The external id of the bid configuration.
         data_record: The data record of the bid configuration node.
-        market_configuration: The bid method related to the bid configuration
+        name: The name of the bid configuration
+        market_configuration: The market configuration related to the bid configuration
+        price_area: The price area related to the bid calculation task
+        partials: Configuration of the partial bids that make up the total bid
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = None
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
+        "sp_powerops_types_temp", "BidConfiguration"
+    )
+    name: str
     market_configuration: Union[MarketConfiguration, str, dm.NodeId, None] = Field(
         None, repr=False, alias="marketConfiguration"
     )
+    price_area: Union[PriceArea, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
+    partials: Union[list[PartialBidConfiguration], list[str], None] = Field(default=None, repr=False)
 
     def as_write(self) -> BidConfigurationWrite:
         """Convert this read version of bid configuration to the writing version."""
@@ -56,11 +76,16 @@ class BidConfiguration(DomainModel):
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
+            name=self.name,
             market_configuration=(
                 self.market_configuration.as_write()
                 if isinstance(self.market_configuration, DomainModel)
                 else self.market_configuration
             ),
+            price_area=self.price_area.as_write() if isinstance(self.price_area, DomainModel) else self.price_area,
+            partials=[
+                partial.as_write() if isinstance(partial, DomainModel) else partial for partial in self.partials or []
+            ],
         )
 
     def as_apply(self) -> BidConfigurationWrite:
@@ -82,14 +107,22 @@ class BidConfigurationWrite(DomainModelWrite):
         space: The space where the node is located.
         external_id: The external id of the bid configuration.
         data_record: The data record of the bid configuration node.
-        market_configuration: The bid method related to the bid configuration
+        name: The name of the bid configuration
+        market_configuration: The market configuration related to the bid configuration
+        price_area: The price area related to the bid calculation task
+        partials: Configuration of the partial bids that make up the total bid
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = None
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
+        "sp_powerops_types_temp", "BidConfiguration"
+    )
+    name: str
     market_configuration: Union[MarketConfigurationWrite, str, dm.NodeId, None] = Field(
         None, repr=False, alias="marketConfiguration"
     )
+    price_area: Union[PriceAreaWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
+    partials: Union[list[PartialBidConfigurationWrite], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_write(
         self,
@@ -102,10 +135,13 @@ class BidConfigurationWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            BidConfiguration, dm.ViewId("sp_powerops_models", "BidConfiguration", "1")
+            BidConfiguration, dm.ViewId("sp_powerops_models_temp", "BidConfiguration", "1")
         )
 
         properties: dict[str, Any] = {}
+
+        if self.name is not None:
+            properties["name"] = self.name
 
         if self.market_configuration is not None:
             properties["marketConfiguration"] = {
@@ -115,6 +151,12 @@ class BidConfigurationWrite(DomainModelWrite):
                     if isinstance(self.market_configuration, str)
                     else self.market_configuration.external_id
                 ),
+            }
+
+        if self.price_area is not None:
+            properties["priceArea"] = {
+                "space": self.space if isinstance(self.price_area, str) else self.price_area.space,
+                "externalId": self.price_area if isinstance(self.price_area, str) else self.price_area.external_id,
             }
 
         if properties:
@@ -133,8 +175,19 @@ class BidConfigurationWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
+        edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "BidConfiguration.partials")
+        for partial in self.partials or []:
+            other_resources = DomainRelationWrite.from_edge_to_resources(
+                cache, start_node=self, end_node=partial, edge_type=edge_type, view_by_read_class=view_by_read_class
+            )
+            resources.extend(other_resources)
+
         if isinstance(self.market_configuration, DomainModelWrite):
             other_resources = self.market_configuration._to_instances_write(cache, view_by_read_class)
+            resources.extend(other_resources)
+
+        if isinstance(self.price_area, DomainModelWrite):
+            other_resources = self.price_area._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
 
         return resources
@@ -182,12 +235,21 @@ class BidConfigurationApplyList(BidConfigurationWriteList): ...
 
 def _create_bid_configuration_filter(
     view_id: dm.ViewId,
+    name: str | list[str] | None = None,
+    name_prefix: str | None = None,
     market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
+    if isinstance(name, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
+    if name and isinstance(name, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
+    if name_prefix is not None:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
     if market_configuration and isinstance(market_configuration, str):
         filters.append(
             dm.filters.Equals(
@@ -214,6 +276,32 @@ def _create_bid_configuration_filter(
             dm.filters.In(
                 view_id.as_property_ref("marketConfiguration"),
                 values=[{"space": item[0], "externalId": item[1]} for item in market_configuration],
+            )
+        )
+    if price_area and isinstance(price_area, str):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("priceArea"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": price_area}
+            )
+        )
+    if price_area and isinstance(price_area, tuple):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("priceArea"), value={"space": price_area[0], "externalId": price_area[1]}
+            )
+        )
+    if price_area and isinstance(price_area, list) and isinstance(price_area[0], str):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("priceArea"),
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in price_area],
+            )
+        )
+    if price_area and isinstance(price_area, list) and isinstance(price_area[0], tuple):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("priceArea"),
+                values=[{"space": item[0], "externalId": item[1]} for item in price_area],
             )
         )
     if external_id_prefix is not None:

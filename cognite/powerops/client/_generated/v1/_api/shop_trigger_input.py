@@ -61,7 +61,8 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
         function_call_id_prefix: str | None = None,
         cog_shop_tag: str | list[str] | None = None,
         cog_shop_tag_prefix: str | None = None,
-        scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        pre_processor_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -80,7 +81,8 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
             function_call_id_prefix: The prefix of the function call id to filter on.
             cog_shop_tag: The cog shop tag to filter on.
             cog_shop_tag_prefix: The prefix of the cog shop tag to filter on.
-            scenario: The scenario to filter on.
+            case: The case to filter on.
+            pre_processor_input: The pre processor input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop trigger inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -103,7 +105,8 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
             function_call_id_prefix,
             cog_shop_tag,
             cog_shop_tag_prefix,
-            scenario,
+            case,
+            pre_processor_input,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -227,7 +230,8 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
         function_call_id_prefix: str | None = None,
         cog_shop_tag: str | list[str] | None = None,
         cog_shop_tag_prefix: str | None = None,
-        scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        pre_processor_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -248,7 +252,8 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
             function_call_id_prefix: The prefix of the function call id to filter on.
             cog_shop_tag: The cog shop tag to filter on.
             cog_shop_tag_prefix: The prefix of the cog shop tag to filter on.
-            scenario: The scenario to filter on.
+            case: The case to filter on.
+            pre_processor_input: The pre processor input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop trigger inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -278,7 +283,8 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
             function_call_id_prefix,
             cog_shop_tag,
             cog_shop_tag_prefix,
-            scenario,
+            case,
+            pre_processor_input,
             external_id_prefix,
             space,
             filter,
@@ -308,7 +314,8 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
         function_call_id_prefix: str | None = None,
         cog_shop_tag: str | list[str] | None = None,
         cog_shop_tag_prefix: str | None = None,
-        scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        pre_processor_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -338,7 +345,8 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
         function_call_id_prefix: str | None = None,
         cog_shop_tag: str | list[str] | None = None,
         cog_shop_tag_prefix: str | None = None,
-        scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        pre_processor_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -367,7 +375,8 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
         function_call_id_prefix: str | None = None,
         cog_shop_tag: str | list[str] | None = None,
         cog_shop_tag_prefix: str | None = None,
-        scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        pre_processor_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -391,7 +400,8 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
             function_call_id_prefix: The prefix of the function call id to filter on.
             cog_shop_tag: The cog shop tag to filter on.
             cog_shop_tag_prefix: The prefix of the cog shop tag to filter on.
-            scenario: The scenario to filter on.
+            case: The case to filter on.
+            pre_processor_input: The pre processor input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop trigger inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -422,7 +432,8 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
             function_call_id_prefix,
             cog_shop_tag,
             cog_shop_tag_prefix,
-            scenario,
+            case,
+            pre_processor_input,
             external_id_prefix,
             space,
             filter,
@@ -455,7 +466,8 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
         function_call_id_prefix: str | None = None,
         cog_shop_tag: str | list[str] | None = None,
         cog_shop_tag_prefix: str | None = None,
-        scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        pre_processor_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -478,7 +490,8 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
             function_call_id_prefix: The prefix of the function call id to filter on.
             cog_shop_tag: The cog shop tag to filter on.
             cog_shop_tag_prefix: The prefix of the cog shop tag to filter on.
-            scenario: The scenario to filter on.
+            case: The case to filter on.
+            pre_processor_input: The pre processor input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop trigger inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -500,7 +513,8 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
             function_call_id_prefix,
             cog_shop_tag,
             cog_shop_tag_prefix,
-            scenario,
+            case,
+            pre_processor_input,
             external_id_prefix,
             space,
             filter,
@@ -528,7 +542,8 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
         function_call_id_prefix: str | None = None,
         cog_shop_tag: str | list[str] | None = None,
         cog_shop_tag_prefix: str | None = None,
-        scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        pre_processor_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -547,7 +562,8 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
             function_call_id_prefix: The prefix of the function call id to filter on.
             cog_shop_tag: The cog shop tag to filter on.
             cog_shop_tag_prefix: The prefix of the cog shop tag to filter on.
-            scenario: The scenario to filter on.
+            case: The case to filter on.
+            pre_processor_input: The pre processor input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop trigger inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -577,7 +593,8 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
             function_call_id_prefix,
             cog_shop_tag,
             cog_shop_tag_prefix,
-            scenario,
+            case,
+            pre_processor_input,
             external_id_prefix,
             space,
             filter,

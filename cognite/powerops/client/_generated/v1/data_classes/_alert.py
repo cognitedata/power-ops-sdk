@@ -32,13 +32,22 @@ __all__ = [
 ]
 
 
-AlertTextFields = Literal["title", "description", "severity", "alert_type", "calculation_run"]
+AlertTextFields = Literal["process_id", "title", "description", "severity", "alert_type", "calculation_run"]
 AlertFields = Literal[
-    "time", "title", "description", "severity", "alert_type", "status_code", "event_ids", "calculation_run"
+    "time",
+    "process_id",
+    "title",
+    "description",
+    "severity",
+    "alert_type",
+    "status_code",
+    "event_ids",
+    "calculation_run",
 ]
 
 _ALERT_PROPERTIES_BY_FIELD = {
     "time": "time",
+    "process_id": "processId",
     "title": "title",
     "description": "description",
     "severity": "severity",
@@ -59,6 +68,7 @@ class Alert(DomainModel):
         external_id: The external id of the alert.
         data_record: The data record of the alert node.
         time: Timestamp that the alert occurred (within the workflow)
+        process_id: Process ID in the workflow that the alert is related to
         title: Summary description of the alert
         description: Detailed description of the alert
         severity: CRITICAL (calculation could not completed) WARNING  (calculation completed, with major issue) INFO     (calculation completed, with minor issues)
@@ -69,8 +79,9 @@ class Alert(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "Alert")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types_temp", "Alert")
     time: datetime.datetime
+    process_id: str = Field(alias="processId")
     title: str
     description: Optional[str] = None
     severity: Optional[str] = None
@@ -86,6 +97,7 @@ class Alert(DomainModel):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             time=self.time,
+            process_id=self.process_id,
             title=self.title,
             description=self.description,
             severity=self.severity,
@@ -115,6 +127,7 @@ class AlertWrite(DomainModelWrite):
         external_id: The external id of the alert.
         data_record: The data record of the alert node.
         time: Timestamp that the alert occurred (within the workflow)
+        process_id: Process ID in the workflow that the alert is related to
         title: Summary description of the alert
         description: Detailed description of the alert
         severity: CRITICAL (calculation could not completed) WARNING  (calculation completed, with major issue) INFO     (calculation completed, with minor issues)
@@ -125,8 +138,9 @@ class AlertWrite(DomainModelWrite):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "Alert")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types_temp", "Alert")
     time: datetime.datetime
+    process_id: str = Field(alias="processId")
     title: str
     description: Optional[str] = None
     severity: Optional[str] = None
@@ -145,12 +159,15 @@ class AlertWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(Alert, dm.ViewId("sp_powerops_models", "Alert", "1"))
+        write_view = (view_by_read_class or {}).get(Alert, dm.ViewId("sp_powerops_models_temp", "Alert", "1"))
 
         properties: dict[str, Any] = {}
 
         if self.time is not None:
             properties["time"] = self.time.isoformat(timespec="milliseconds") if self.time else None
+
+        if self.process_id is not None:
+            properties["processId"] = self.process_id
 
         if self.title is not None:
             properties["title"] = self.title
@@ -236,6 +253,8 @@ def _create_alert_filter(
     view_id: dm.ViewId,
     min_time: datetime.datetime | None = None,
     max_time: datetime.datetime | None = None,
+    process_id: str | list[str] | None = None,
+    process_id_prefix: str | None = None,
     title: str | list[str] | None = None,
     title_prefix: str | None = None,
     description: str | list[str] | None = None,
@@ -261,6 +280,12 @@ def _create_alert_filter(
                 lte=max_time.isoformat(timespec="milliseconds") if max_time else None,
             )
         )
+    if isinstance(process_id, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("processId"), value=process_id))
+    if process_id and isinstance(process_id, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("processId"), values=process_id))
+    if process_id_prefix is not None:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("processId"), value=process_id_prefix))
     if isinstance(title, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("title"), value=title))
     if title and isinstance(title, list):

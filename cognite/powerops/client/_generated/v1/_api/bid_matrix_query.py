@@ -8,6 +8,8 @@ from cognite.client import data_modeling as dm, CogniteClient
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     BidMatrix,
+    PowerAsset,
+    PartialBidConfiguration,
 )
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
@@ -44,6 +46,8 @@ class BidMatrixQueryAPI(QueryAPI[T_DomainModelList]):
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
+        retrieve_power_asset: bool = False,
+        retrieve_partial_bid_configuration: bool = False,
     ) -> AlertQueryAPI[T_DomainModelList]:
         """Query along the alert edges of the bid matrix.
 
@@ -52,6 +56,8 @@ class BidMatrixQueryAPI(QueryAPI[T_DomainModelList]):
             space: The space to filter on.
             limit: Maximum number of alert edges to return. Defaults to 25. Set to -1, float("inf") or None
                 to return all items.
+            retrieve_power_asset: Whether to retrieve the power asset for each bid matrix or not.
+            retrieve_partial_bid_configuration: Whether to retrieve the partial bid configuration for each bid matrix or not.
 
         Returns:
             AlertQueryAPI: The query API for the alert.
@@ -61,7 +67,7 @@ class BidMatrixQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = self._builder[-1].name
 
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("sp_powerops_types", "calculationIssue"),
+            dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
             external_id_prefix=external_id_prefix,
             space=space,
         )
@@ -77,15 +83,64 @@ class BidMatrixQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
+        if retrieve_power_asset:
+            self._query_append_power_asset(from_)
+        if retrieve_partial_bid_configuration:
+            self._query_append_partial_bid_configuration(from_)
         return AlertQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
 
     def query(
         self,
+        retrieve_power_asset: bool = False,
+        retrieve_partial_bid_configuration: bool = False,
     ) -> T_DomainModelList:
         """Execute query and return the result.
+
+        Args:
+            retrieve_power_asset: Whether to retrieve the power asset for each bid matrix or not.
+            retrieve_partial_bid_configuration: Whether to retrieve the partial bid configuration for each bid matrix or not.
 
         Returns:
             The list of the source nodes of the query.
 
         """
+        from_ = self._builder[-1].name
+        if retrieve_power_asset:
+            self._query_append_power_asset(from_)
+        if retrieve_partial_bid_configuration:
+            self._query_append_partial_bid_configuration(from_)
         return self._query()
+
+    def _query_append_power_asset(self, from_: str) -> None:
+        view_id = self._view_by_read_class[PowerAsset]
+        self._builder.append(
+            QueryStep(
+                name=self._builder.next_name("power_asset"),
+                expression=dm.query.NodeResultSetExpression(
+                    filter=dm.filters.HasData(views=[view_id]),
+                    from_=from_,
+                    through=self._view_by_read_class[BidMatrix].as_property_ref("powerAsset"),
+                    direction="outwards",
+                ),
+                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
+                max_retrieve_limit=-1,
+                result_cls=PowerAsset,
+            ),
+        )
+
+    def _query_append_partial_bid_configuration(self, from_: str) -> None:
+        view_id = self._view_by_read_class[PartialBidConfiguration]
+        self._builder.append(
+            QueryStep(
+                name=self._builder.next_name("partial_bid_configuration"),
+                expression=dm.query.NodeResultSetExpression(
+                    filter=dm.filters.HasData(views=[view_id]),
+                    from_=from_,
+                    through=self._view_by_read_class[BidMatrix].as_property_ref("partialBidConfiguration"),
+                    direction="outwards",
+                ),
+                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
+                max_retrieve_limit=-1,
+                result_cls=PartialBidConfiguration,
+            ),
+        )

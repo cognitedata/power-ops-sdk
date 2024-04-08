@@ -14,6 +14,9 @@ from ._core import DEFAULT_LIMIT_READ, INSTANCE_QUERY_LIMIT
 
 ColumnNames = Literal[
     "name",
+    "displayName",
+    "ordering",
+    "assetType",
     "timezone",
     "capacityPriceUp",
     "capacityPriceDown",
@@ -373,6 +376,12 @@ class PriceAreaAFRROwnCapacityAllocationUpAPI:
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
         timezone: str | list[str] | None = None,
         timezone_prefix: str | None = None,
         external_id_prefix: str | None = None,
@@ -385,6 +394,12 @@ class PriceAreaAFRROwnCapacityAllocationUpAPI:
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
+            display_name: The display name to filter on.
+            display_name_prefix: The prefix of the display name to filter on.
+            min_ordering: The minimum value of the ordering to filter on.
+            max_ordering: The maximum value of the ordering to filter on.
+            asset_type: The asset type to filter on.
+            asset_type_prefix: The prefix of the asset type to filter on.
             timezone: The timezone to filter on.
             timezone_prefix: The prefix of the timezone to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
@@ -409,6 +424,12 @@ class PriceAreaAFRROwnCapacityAllocationUpAPI:
             self._view_id,
             name,
             name_prefix,
+            display_name,
+            display_name_prefix,
+            min_ordering,
+            max_ordering,
+            asset_type,
+            asset_type_prefix,
             timezone,
             timezone_prefix,
             external_id_prefix,
@@ -427,6 +448,12 @@ class PriceAreaAFRROwnCapacityAllocationUpAPI:
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
         timezone: str | list[str] | None = None,
         timezone_prefix: str | None = None,
         external_id_prefix: str | None = None,
@@ -439,6 +466,12 @@ class PriceAreaAFRROwnCapacityAllocationUpAPI:
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
+            display_name: The display name to filter on.
+            display_name_prefix: The prefix of the display name to filter on.
+            min_ordering: The minimum value of the ordering to filter on.
+            max_ordering: The maximum value of the ordering to filter on.
+            asset_type: The asset type to filter on.
+            asset_type_prefix: The prefix of the asset type to filter on.
             timezone: The timezone to filter on.
             timezone_prefix: The prefix of the timezone to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
@@ -462,6 +495,12 @@ class PriceAreaAFRROwnCapacityAllocationUpAPI:
             self._view_id,
             name,
             name_prefix,
+            display_name,
+            display_name_prefix,
+            min_ordering,
+            max_ordering,
+            asset_type,
+            asset_type_prefix,
             timezone,
             timezone_prefix,
             external_id_prefix,

@@ -1,6 +1,6 @@
 # Mypy does not understand the pydantic classes that allows both alias and name to be used in population
 # https://github.com/pydantic/pydantic/issues/3923
-# mypy: disable-error-code="call-arg"
+# mypy: disable-error-code="call-arg,attr-defined"
 from __future__ import annotations
 
 from math import floor, log10

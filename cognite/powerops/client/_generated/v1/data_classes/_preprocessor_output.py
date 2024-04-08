@@ -17,6 +17,7 @@ from ._core import (
     DomainRelationWrite,
     ResourcesWrite,
 )
+from ._function_output import FunctionOutput, FunctionOutputWrite
 
 if TYPE_CHECKING:
     from ._alert import Alert, AlertWrite
@@ -47,7 +48,7 @@ _PREPROCESSOROUTPUT_PROPERTIES_BY_FIELD = {
 }
 
 
-class PreprocessorOutput(DomainModel):
+class PreprocessorOutput(FunctionOutput):
     """This represents the reading version of preprocessor output.
 
     It is used to when data is retrieved from CDF.
@@ -65,15 +66,9 @@ class PreprocessorOutput(DomainModel):
         input_: The prepped and processed scenario to send to shop trigger
     """
 
-    space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "PreprocessorOutput"
+        "sp_powerops_types_temp", "PreprocessorOutput"
     )
-    process_id: str = Field(alias="processId")
-    process_step: int = Field(alias="processStep")
-    function_name: str = Field(alias="functionName")
-    function_call_id: str = Field(alias="functionCallId")
-    alerts: Union[list[Alert], list[str], None] = Field(default=None, repr=False)
     case: Union[Case, str, dm.NodeId, None] = Field(None, repr=False)
     input_: Union[PreprocessorInput, str, dm.NodeId, None] = Field(None, repr=False, alias="input")
 
@@ -102,7 +97,7 @@ class PreprocessorOutput(DomainModel):
         return self.as_write()
 
 
-class PreprocessorOutputWrite(DomainModelWrite):
+class PreprocessorOutputWrite(FunctionOutputWrite):
     """This represents the writing version of preprocessor output.
 
     It is used to when data is sent to CDF.
@@ -120,15 +115,9 @@ class PreprocessorOutputWrite(DomainModelWrite):
         input_: The prepped and processed scenario to send to shop trigger
     """
 
-    space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "PreprocessorOutput"
+        "sp_powerops_types_temp", "PreprocessorOutput"
     )
-    process_id: str = Field(alias="processId")
-    process_step: int = Field(alias="processStep")
-    function_name: str = Field(alias="functionName")
-    function_call_id: str = Field(alias="functionCallId")
-    alerts: Union[list[AlertWrite], list[str], None] = Field(default=None, repr=False)
     case: Union[CaseWrite, str, dm.NodeId, None] = Field(None, repr=False)
     input_: Union[PreprocessorInputWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="input")
 
@@ -143,7 +132,7 @@ class PreprocessorOutputWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            PreprocessorOutput, dm.ViewId("sp_powerops_models", "PreprocessorOutput", "1")
+            PreprocessorOutput, dm.ViewId("sp_powerops_models_temp", "PreprocessorOutput", "1")
         )
 
         properties: dict[str, Any] = {}
@@ -188,7 +177,7 @@ class PreprocessorOutputWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_powerops_types", "calculationIssue")
+        edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache, start_node=self, end_node=alert, edge_type=edge_type, view_by_read_class=view_by_read_class

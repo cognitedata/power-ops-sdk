@@ -62,7 +62,7 @@ class Mapping(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "Mapping")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types_temp", "Mapping")
     shop_path: str = Field(alias="shopPath")
     timeseries: Union[TimeSeries, str, None] = None
     transformations: Optional[list[dict]] = None
@@ -109,7 +109,7 @@ class MappingWrite(DomainModelWrite):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "Mapping")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types_temp", "Mapping")
     shop_path: str = Field(alias="shopPath")
     timeseries: Union[TimeSeries, str, None] = None
     transformations: Optional[list[dict]] = None
@@ -126,7 +126,7 @@ class MappingWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(Mapping, dm.ViewId("sp_powerops_models", "Mapping", "1"))
+        write_view = (view_by_read_class or {}).get(Mapping, dm.ViewId("sp_powerops_models_temp", "Mapping", "1"))
 
         properties: dict[str, Any] = {}
 

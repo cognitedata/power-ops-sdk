@@ -14,6 +14,7 @@ from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_Dom
 
 if TYPE_CHECKING:
     from .alert_query import AlertQueryAPI
+    from .shop_time_series_query import SHOPTimeSeriesQueryAPI
 
 
 class SHOPResultQueryAPI(QueryAPI[T_DomainModelList]):
@@ -64,7 +65,7 @@ class SHOPResultQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = self._builder[-1].name
 
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("sp_powerops_types", "calculationIssue"),
+            dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
             external_id_prefix=external_id_prefix,
             space=space,
         )
@@ -83,6 +84,50 @@ class SHOPResultQueryAPI(QueryAPI[T_DomainModelList]):
         if retrieve_case:
             self._query_append_case(from_)
         return AlertQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
+
+    def output_timeseries(
+        self,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int | None = DEFAULT_QUERY_LIMIT,
+        retrieve_case: bool = False,
+    ) -> SHOPTimeSeriesQueryAPI[T_DomainModelList]:
+        """Query along the output timesery edges of the shop result.
+
+        Args:
+            external_id_prefix: The prefix of the external ID to filter on.
+            space: The space to filter on.
+            limit: Maximum number of output timesery edges to return. Defaults to 25. Set to -1, float("inf") or None
+                to return all items.
+            retrieve_case: Whether to retrieve the case for each shop result or not.
+
+        Returns:
+            SHOPTimeSeriesQueryAPI: The query API for the shop time series.
+        """
+        from .shop_time_series_query import SHOPTimeSeriesQueryAPI
+
+        from_ = self._builder[-1].name
+
+        edge_filter = _create_edge_filter(
+            dm.DirectRelationReference("sp_powerops_types_temp", "SHOPResult.outputTimeseries"),
+            external_id_prefix=external_id_prefix,
+            space=space,
+        )
+        self._builder.append(
+            QueryStep(
+                name=self._builder.next_name("output_timeseries"),
+                expression=dm.query.EdgeResultSetExpression(
+                    filter=edge_filter,
+                    from_=from_,
+                    direction="outwards",
+                ),
+                select=dm.query.Select(),
+                max_retrieve_limit=limit,
+            )
+        )
+        if retrieve_case:
+            self._query_append_case(from_)
+        return SHOPTimeSeriesQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
 
     def query(
         self,

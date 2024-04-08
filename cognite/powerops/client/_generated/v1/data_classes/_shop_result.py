@@ -4,7 +4,6 @@ import warnings
 from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
 from pydantic import Field
 
 from ._core import (
@@ -17,12 +16,12 @@ from ._core import (
     DomainModelList,
     DomainRelationWrite,
     ResourcesWrite,
-    TimeSeries,
 )
 
 if TYPE_CHECKING:
     from ._alert import Alert, AlertWrite
     from ._case import Case, CaseWrite
+    from ._shop_time_series import SHOPTimeSeries, SHOPTimeSeriesWrite
 
 
 __all__ = [
@@ -37,15 +36,10 @@ __all__ = [
 ]
 
 
-SHOPResultTextFields = Literal[
-    "output_timeseries", "objective_sequence", "pre_run", "post_run", "shop_messages", "cplex_logs"
-]
-SHOPResultFields = Literal[
-    "output_timeseries", "objective_sequence", "pre_run", "post_run", "shop_messages", "cplex_logs"
-]
+SHOPResultTextFields = Literal["objective_sequence", "pre_run", "post_run", "shop_messages", "cplex_logs"]
+SHOPResultFields = Literal["objective_sequence", "pre_run", "post_run", "shop_messages", "cplex_logs"]
 
 _SHOPRESULT_PROPERTIES_BY_FIELD = {
-    "output_timeseries": "outputTimeseries",
     "objective_sequence": "objectiveSequence",
     "pre_run": "preRun",
     "post_run": "postRun",
@@ -64,25 +58,27 @@ class SHOPResult(DomainModel):
         external_id: The external id of the shop result.
         data_record: The data record of the shop result node.
         case: The case that was used to produce this result
-        output_timeseries: A general placeholder for all timeseries that stem from a shop run
         objective_sequence: The sequence of the objective function
         pre_run: The pre-run data for the SHOP run
         post_run: The post-run data for the SHOP run
         shop_messages: The messages from the SHOP run
         cplex_logs: The logs from CPLEX
         alerts: An array of calculation level Alerts.
+        output_timeseries: TODO
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
     case: Union[Case, str, dm.NodeId, None] = Field(None, repr=False)
-    output_timeseries: Union[list[TimeSeries], list[str], None] = Field(None, alias="outputTimeseries")
     objective_sequence: Union[str, None] = Field(None, alias="objectiveSequence")
     pre_run: Union[str, None] = Field(None, alias="preRun")
     post_run: Union[str, None] = Field(None, alias="postRun")
     shop_messages: Union[str, None] = Field(None, alias="shopMessages")
     cplex_logs: Union[str, None] = Field(None, alias="cplexLogs")
     alerts: Union[list[Alert], list[str], None] = Field(default=None, repr=False)
+    output_timeseries: Union[list[SHOPTimeSeries], list[str], None] = Field(
+        default=None, repr=False, alias="outputTimeseries"
+    )
 
     def as_write(self) -> SHOPResultWrite:
         """Convert this read version of shop result to the writing version."""
@@ -91,13 +87,16 @@ class SHOPResult(DomainModel):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             case=self.case.as_write() if isinstance(self.case, DomainModel) else self.case,
-            output_timeseries=self.output_timeseries,
             objective_sequence=self.objective_sequence,
             pre_run=self.pre_run,
             post_run=self.post_run,
             shop_messages=self.shop_messages,
             cplex_logs=self.cplex_logs,
             alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
+            output_timeseries=[
+                output_timesery.as_write() if isinstance(output_timesery, DomainModel) else output_timesery
+                for output_timesery in self.output_timeseries or []
+            ],
         )
 
     def as_apply(self) -> SHOPResultWrite:
@@ -120,25 +119,27 @@ class SHOPResultWrite(DomainModelWrite):
         external_id: The external id of the shop result.
         data_record: The data record of the shop result node.
         case: The case that was used to produce this result
-        output_timeseries: A general placeholder for all timeseries that stem from a shop run
         objective_sequence: The sequence of the objective function
         pre_run: The pre-run data for the SHOP run
         post_run: The post-run data for the SHOP run
         shop_messages: The messages from the SHOP run
         cplex_logs: The logs from CPLEX
         alerts: An array of calculation level Alerts.
+        output_timeseries: TODO
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
     case: Union[CaseWrite, str, dm.NodeId, None] = Field(None, repr=False)
-    output_timeseries: Union[list[TimeSeries], list[str], None] = Field(None, alias="outputTimeseries")
     objective_sequence: Union[str, None] = Field(None, alias="objectiveSequence")
     pre_run: Union[str, None] = Field(None, alias="preRun")
     post_run: Union[str, None] = Field(None, alias="postRun")
     shop_messages: Union[str, None] = Field(None, alias="shopMessages")
     cplex_logs: Union[str, None] = Field(None, alias="cplexLogs")
     alerts: Union[list[AlertWrite], list[str], None] = Field(default=None, repr=False)
+    output_timeseries: Union[list[SHOPTimeSeriesWrite], list[str], None] = Field(
+        default=None, repr=False, alias="outputTimeseries"
+    )
 
     def _to_instances_write(
         self,
@@ -150,7 +151,7 @@ class SHOPResultWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(SHOPResult, dm.ViewId("sp_powerops_models", "SHOPResult", "1"))
+        write_view = (view_by_read_class or {}).get(SHOPResult, dm.ViewId("sp_powerops_models_temp", "SHOPResult", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -159,11 +160,6 @@ class SHOPResultWrite(DomainModelWrite):
                 "space": self.space if isinstance(self.case, str) else self.case.space,
                 "externalId": self.case if isinstance(self.case, str) else self.case.external_id,
             }
-
-        if self.output_timeseries is not None or write_none:
-            properties["outputTimeseries"] = [
-                value if isinstance(value, str) else value.external_id for value in self.output_timeseries or []
-            ] or None
 
         if self.objective_sequence is not None or write_none:
             properties["objectiveSequence"] = self.objective_sequence
@@ -196,19 +192,27 @@ class SHOPResultWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_powerops_types", "calculationIssue")
+        edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache, start_node=self, end_node=alert, edge_type=edge_type, view_by_read_class=view_by_read_class
             )
             resources.extend(other_resources)
 
+        edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "SHOPResult.outputTimeseries")
+        for output_timesery in self.output_timeseries or []:
+            other_resources = DomainRelationWrite.from_edge_to_resources(
+                cache,
+                start_node=self,
+                end_node=output_timesery,
+                edge_type=edge_type,
+                view_by_read_class=view_by_read_class,
+            )
+            resources.extend(other_resources)
+
         if isinstance(self.case, DomainModelWrite):
             other_resources = self.case._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
-
-        if isinstance(self.output_timeseries, CogniteTimeSeries):
-            resources.time_series.append(self.output_timeseries)
 
         return resources
 

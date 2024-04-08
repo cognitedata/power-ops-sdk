@@ -8,7 +8,6 @@ from cognite.client import data_modeling as dm, CogniteClient
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     ModelTemplate,
-    WatercourseShop,
 )
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
@@ -45,7 +44,6 @@ class ModelTemplateQueryAPI(QueryAPI[T_DomainModelList]):
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
-        retrieve_watercourse: bool = False,
     ) -> MappingQueryAPI[T_DomainModelList]:
         """Query along the base mapping edges of the model template.
 
@@ -54,7 +52,6 @@ class ModelTemplateQueryAPI(QueryAPI[T_DomainModelList]):
             space: The space to filter on.
             limit: Maximum number of base mapping edges to return. Defaults to 25. Set to -1, float("inf") or None
                 to return all items.
-            retrieve_watercourse: Whether to retrieve the watercourse for each model template or not.
 
         Returns:
             MappingQueryAPI: The query API for the mapping.
@@ -64,7 +61,7 @@ class ModelTemplateQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = self._builder[-1].name
 
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("sp_powerops_types", "ModelTemplate.baseMappings"),
+            dm.DirectRelationReference("sp_powerops_types_temp", "ModelTemplate.baseMappings"),
             external_id_prefix=external_id_prefix,
             space=space,
         )
@@ -80,41 +77,15 @@ class ModelTemplateQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
-        if retrieve_watercourse:
-            self._query_append_watercourse(from_)
         return MappingQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
 
     def query(
         self,
-        retrieve_watercourse: bool = False,
     ) -> T_DomainModelList:
         """Execute query and return the result.
-
-        Args:
-            retrieve_watercourse: Whether to retrieve the watercourse for each model template or not.
 
         Returns:
             The list of the source nodes of the query.
 
         """
-        from_ = self._builder[-1].name
-        if retrieve_watercourse:
-            self._query_append_watercourse(from_)
         return self._query()
-
-    def _query_append_watercourse(self, from_: str) -> None:
-        view_id = self._view_by_read_class[WatercourseShop]
-        self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("watercourse"),
-                expression=dm.query.NodeResultSetExpression(
-                    filter=dm.filters.HasData(views=[view_id]),
-                    from_=from_,
-                    through=self._view_by_read_class[ModelTemplate].as_property_ref("watercourse"),
-                    direction="outwards",
-                ),
-                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
-                max_retrieve_limit=-1,
-                result_cls=WatercourseShop,
-            ),
-        )

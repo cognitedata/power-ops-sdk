@@ -18,6 +18,7 @@ from ._core import (
     DomainRelationWrite,
     ResourcesWrite,
 )
+from ._function_input import FunctionInput, FunctionInputWrite
 
 if TYPE_CHECKING:
     from ._scenario import Scenario, ScenarioWrite
@@ -50,7 +51,7 @@ _PREPROCESSORINPUT_PROPERTIES_BY_FIELD = {
 }
 
 
-class PreprocessorInput(DomainModel):
+class PreprocessorInput(FunctionInput):
     """This represents the reading version of preprocessor input.
 
     It is used to when data is retrieved from CDF.
@@ -68,17 +69,12 @@ class PreprocessorInput(DomainModel):
         shop_end: End date of bid period
     """
 
-    space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "PreprocessorInput"
+        "sp_powerops_types_temp", "PreprocessorInput"
     )
-    process_id: str = Field(alias="processId")
-    process_step: int = Field(alias="processStep")
-    function_name: str = Field(alias="functionName")
-    function_call_id: str = Field(alias="functionCallId")
     scenario: Union[Scenario, str, dm.NodeId, None] = Field(None, repr=False)
-    shop_start: Optional[datetime.date] = Field(None, alias="shopStart")
-    shop_end: Optional[datetime.date] = Field(None, alias="shopEnd")
+    shop_start: Optional[datetime.datetime] = Field(None, alias="shopStart")
+    shop_end: Optional[datetime.datetime] = Field(None, alias="shopEnd")
 
     def as_write(self) -> PreprocessorInputWrite:
         """Convert this read version of preprocessor input to the writing version."""
@@ -105,7 +101,7 @@ class PreprocessorInput(DomainModel):
         return self.as_write()
 
 
-class PreprocessorInputWrite(DomainModelWrite):
+class PreprocessorInputWrite(FunctionInputWrite):
     """This represents the writing version of preprocessor input.
 
     It is used to when data is sent to CDF.
@@ -123,17 +119,12 @@ class PreprocessorInputWrite(DomainModelWrite):
         shop_end: End date of bid period
     """
 
-    space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "PreprocessorInput"
+        "sp_powerops_types_temp", "PreprocessorInput"
     )
-    process_id: str = Field(alias="processId")
-    process_step: int = Field(alias="processStep")
-    function_name: str = Field(alias="functionName")
-    function_call_id: str = Field(alias="functionCallId")
     scenario: Union[ScenarioWrite, str, dm.NodeId, None] = Field(None, repr=False)
-    shop_start: Optional[datetime.date] = Field(None, alias="shopStart")
-    shop_end: Optional[datetime.date] = Field(None, alias="shopEnd")
+    shop_start: Optional[datetime.datetime] = Field(None, alias="shopStart")
+    shop_end: Optional[datetime.datetime] = Field(None, alias="shopEnd")
 
     def _to_instances_write(
         self,
@@ -146,7 +137,7 @@ class PreprocessorInputWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            PreprocessorInput, dm.ViewId("sp_powerops_models", "PreprocessorInput", "1")
+            PreprocessorInput, dm.ViewId("sp_powerops_models_temp", "PreprocessorInput", "1")
         )
 
         properties: dict[str, Any] = {}
@@ -170,10 +161,10 @@ class PreprocessorInputWrite(DomainModelWrite):
             }
 
         if self.shop_start is not None or write_none:
-            properties["shopStart"] = self.shop_start.isoformat() if self.shop_start else None
+            properties["shopStart"] = self.shop_start.isoformat(timespec="milliseconds") if self.shop_start else None
 
         if self.shop_end is not None or write_none:
-            properties["shopEnd"] = self.shop_end.isoformat() if self.shop_end else None
+            properties["shopEnd"] = self.shop_end.isoformat(timespec="milliseconds") if self.shop_end else None
 
         if properties:
             this_node = dm.NodeApply(
@@ -249,10 +240,10 @@ def _create_preprocessor_input_filter(
     function_call_id: str | list[str] | None = None,
     function_call_id_prefix: str | None = None,
     scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-    min_shop_start: datetime.date | None = None,
-    max_shop_start: datetime.date | None = None,
-    min_shop_end: datetime.date | None = None,
-    max_shop_end: datetime.date | None = None,
+    min_shop_start: datetime.datetime | None = None,
+    max_shop_start: datetime.datetime | None = None,
+    min_shop_end: datetime.datetime | None = None,
+    max_shop_end: datetime.datetime | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -310,16 +301,16 @@ def _create_preprocessor_input_filter(
         filters.append(
             dm.filters.Range(
                 view_id.as_property_ref("shopStart"),
-                gte=min_shop_start.isoformat() if min_shop_start else None,
-                lte=max_shop_start.isoformat() if max_shop_start else None,
+                gte=min_shop_start.isoformat(timespec="milliseconds") if min_shop_start else None,
+                lte=max_shop_start.isoformat(timespec="milliseconds") if max_shop_start else None,
             )
         )
     if min_shop_end is not None or max_shop_end is not None:
         filters.append(
             dm.filters.Range(
                 view_id.as_property_ref("shopEnd"),
-                gte=min_shop_end.isoformat() if min_shop_end else None,
-                lte=max_shop_end.isoformat() if max_shop_end else None,
+                gte=min_shop_end.isoformat(timespec="milliseconds") if min_shop_end else None,
+                lte=max_shop_end.isoformat(timespec="milliseconds") if max_shop_end else None,
             )
         )
     if external_id_prefix is not None:

@@ -13,7 +13,15 @@ from cognite.powerops.client._generated.v1.data_classes._generator import _creat
 from ._core import DEFAULT_LIMIT_READ, INSTANCE_QUERY_LIMIT
 
 ColumnNames = Literal[
-    "name", "displayName", "ordering", "pMin", "penstock", "startCost", "startStopCost", "isAvailableTimeSeries"
+    "name",
+    "displayName",
+    "ordering",
+    "assetType",
+    "productionMin",
+    "penstockNumber",
+    "startCost",
+    "startStopCost",
+    "availabilityTimeSeries",
 ]
 
 
@@ -367,13 +375,15 @@ class GeneratorStartStopCostAPI:
         display_name_prefix: str | None = None,
         min_ordering: int | None = None,
         max_ordering: int | None = None,
-        min_p_min: float | None = None,
-        max_p_min: float | None = None,
-        min_penstock: int | None = None,
-        max_penstock: int | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
+        min_production_min: float | None = None,
+        max_production_min: float | None = None,
+        min_penstock_number: int | None = None,
+        max_penstock_number: int | None = None,
         min_start_cost: float | None = None,
         max_start_cost: float | None = None,
-        efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        generator_efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -388,13 +398,15 @@ class GeneratorStartStopCostAPI:
             display_name_prefix: The prefix of the display name to filter on.
             min_ordering: The minimum value of the ordering to filter on.
             max_ordering: The maximum value of the ordering to filter on.
-            min_p_min: The minimum value of the p min to filter on.
-            max_p_min: The maximum value of the p min to filter on.
-            min_penstock: The minimum value of the penstock to filter on.
-            max_penstock: The maximum value of the penstock to filter on.
+            asset_type: The asset type to filter on.
+            asset_type_prefix: The prefix of the asset type to filter on.
+            min_production_min: The minimum value of the production min to filter on.
+            max_production_min: The maximum value of the production min to filter on.
+            min_penstock_number: The minimum value of the penstock number to filter on.
+            max_penstock_number: The maximum value of the penstock number to filter on.
             min_start_cost: The minimum value of the start cost to filter on.
             max_start_cost: The maximum value of the start cost to filter on.
-            efficiency_curve: The efficiency curve to filter on.
+            generator_efficiency_curve: The generator efficiency curve to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of generators to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -421,13 +433,15 @@ class GeneratorStartStopCostAPI:
             display_name_prefix,
             min_ordering,
             max_ordering,
-            min_p_min,
-            max_p_min,
-            min_penstock,
-            max_penstock,
+            asset_type,
+            asset_type_prefix,
+            min_production_min,
+            max_production_min,
+            min_penstock_number,
+            max_penstock_number,
             min_start_cost,
             max_start_cost,
-            efficiency_curve,
+            generator_efficiency_curve,
             external_id_prefix,
             space,
             filter,
@@ -448,13 +462,15 @@ class GeneratorStartStopCostAPI:
         display_name_prefix: str | None = None,
         min_ordering: int | None = None,
         max_ordering: int | None = None,
-        min_p_min: float | None = None,
-        max_p_min: float | None = None,
-        min_penstock: int | None = None,
-        max_penstock: int | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
+        min_production_min: float | None = None,
+        max_production_min: float | None = None,
+        min_penstock_number: int | None = None,
+        max_penstock_number: int | None = None,
         min_start_cost: float | None = None,
         max_start_cost: float | None = None,
-        efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        generator_efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -469,13 +485,15 @@ class GeneratorStartStopCostAPI:
             display_name_prefix: The prefix of the display name to filter on.
             min_ordering: The minimum value of the ordering to filter on.
             max_ordering: The maximum value of the ordering to filter on.
-            min_p_min: The minimum value of the p min to filter on.
-            max_p_min: The maximum value of the p min to filter on.
-            min_penstock: The minimum value of the penstock to filter on.
-            max_penstock: The maximum value of the penstock to filter on.
+            asset_type: The asset type to filter on.
+            asset_type_prefix: The prefix of the asset type to filter on.
+            min_production_min: The minimum value of the production min to filter on.
+            max_production_min: The maximum value of the production min to filter on.
+            min_penstock_number: The minimum value of the penstock number to filter on.
+            max_penstock_number: The maximum value of the penstock number to filter on.
             min_start_cost: The minimum value of the start cost to filter on.
             max_start_cost: The maximum value of the start cost to filter on.
-            efficiency_curve: The efficiency curve to filter on.
+            generator_efficiency_curve: The generator efficiency curve to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of generators to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -501,13 +519,15 @@ class GeneratorStartStopCostAPI:
             display_name_prefix,
             min_ordering,
             max_ordering,
-            min_p_min,
-            max_p_min,
-            min_penstock,
-            max_penstock,
+            asset_type,
+            asset_type_prefix,
+            min_production_min,
+            max_production_min,
+            min_penstock_number,
+            max_penstock_number,
             min_start_cost,
             max_start_cost,
-            efficiency_curve,
+            generator_efficiency_curve,
             external_id_prefix,
             space,
             filter,
