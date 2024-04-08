@@ -23,6 +23,14 @@ filter:
 implements: []
 version: "{{version}}"
 properties:
+  name:
+    container:
+      space: "{{powerops_models}}"
+      externalId: PriceProduction
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: TODO
   price:
     container:
       space: "{{powerops_models}}"
