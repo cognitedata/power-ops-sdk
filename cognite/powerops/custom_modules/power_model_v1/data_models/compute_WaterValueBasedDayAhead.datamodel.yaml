@@ -4,31 +4,23 @@ version: "1"
 name: WaterValueBasedDayAheadBidProcess
 description: "The process of going from BidConfig to a PartialBidMatrix"
 views:
-  - externalId: TaskDispatcherWaterInput
+  - externalId: TaskDispatcherInput
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: TaskDispatcherWaterOutput
+  - externalId: TaskDispatcherOutput
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - space: "{{powerops_models}}"
-    externalId: BidCalculationTask
-    type: view
-    version: "{{version}}"
-  - externalId: WaterPartialBidCalculationInput
+  - externalId: PartialBidMatrixCalculationInput
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: WaterPartialBidCalculationOutput
+  - externalId: WaterValueBasedPartialBidMatrixCalculationInput
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - space: "{{powerops_models}}"
-    externalId: BidMatrixRaw
-    type: view
-    version: "{{version}}"
-  - externalId: BidMethodWaterValue
+  - externalId: PartialBidMatrixCalculationOutput
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
@@ -36,15 +28,11 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: Watercourse
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
   - externalId: Alert
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: BidConfigurationWater
+  - externalId: BidConfiguration
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
@@ -53,10 +41,6 @@ views:
     type: view
     version: "{{version}}"
   - externalId: MarketConfiguration
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: Reservoir
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
@@ -69,6 +53,34 @@ views:
     type: view
     version: "{{version}}"
   - externalId: TurbineEfficiencyCurve
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - space: "{{powerops_models}}"
+    externalId: FunctionInput
+    version: "{{version}}"
+    type: view
+  - space: "{{powerops_models}}"
+    externalId: FunctionOutput
+    version: "{{version}}"
+    type: view
+  - space: "{{powerops_models}}"
+    externalId: BidMatrix
+    version: "{{version}}"
+    type: view
+  - space: "{{powerops_models}}"
+    externalId: PowerAsset
+    version: "{{version}}"
+    type: view
+  - space: "{{powerops_models}}"
+    externalId: PartialBidConfiguration
+    version: "{{version}}"
+    type: view
+  - space: "{{powerops_models}}"
+    externalId: WaterValueBasedPartialBidConfiguration
+    version: "{{version}}"
+    type: view
+  - externalId: Plant
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"

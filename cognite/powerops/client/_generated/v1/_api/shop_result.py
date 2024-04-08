@@ -50,7 +50,7 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
         )
         self._view_id = view_id
         self.alerts_edge = SHOPResultAlertsAPI(client)
-        self.output_timeseries = SHOPResultOutputTimeseriesAPI(client, view_id)
+        self.output_timeseries_edge = SHOPResultOutputTimeseriesAPI(client)
 
     def __call__(
         self,
@@ -93,7 +93,7 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
         """Add or update (upsert) shop results.
 
         Note: This method iterates through all nodes and timeseries linked to shop_result and creates them including the edges
-        between the nodes. For example, if any of `alerts` are set, then these
+        between the nodes. For example, if any of `alerts` or `output_timeseries` are set, then these
         nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
@@ -194,9 +194,16 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_powerops_types", "calculationIssue"),
+                    dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models", "Alert", "1"),
+                    dm.ViewId("sp_powerops_models_temp", "Alert", "1"),
+                ),
+                (
+                    self.output_timeseries_edge,
+                    "output_timeseries",
+                    dm.DirectRelationReference("sp_powerops_types_temp", "SHOPResult.outputTimeseries"),
+                    "outwards",
+                    dm.ViewId("sp_powerops_models_temp", "SHOPTimeSeries", "1"),
                 ),
             ],
         )
@@ -357,7 +364,7 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
             space: The space to filter on.
             limit: Maximum number of shop results to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            retrieve_edges: Whether to retrieve `alerts` external ids for the shop results. Defaults to True.
+            retrieve_edges: Whether to retrieve `alerts` or `output_timeseries` external ids for the shop results. Defaults to True.
 
         Returns:
             List of requested shop results
@@ -387,9 +394,16 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_powerops_types", "calculationIssue"),
+                    dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models", "Alert", "1"),
+                    dm.ViewId("sp_powerops_models_temp", "Alert", "1"),
+                ),
+                (
+                    self.output_timeseries_edge,
+                    "output_timeseries",
+                    dm.DirectRelationReference("sp_powerops_types_temp", "SHOPResult.outputTimeseries"),
+                    "outwards",
+                    dm.ViewId("sp_powerops_models_temp", "SHOPTimeSeries", "1"),
                 ),
             ],
         )

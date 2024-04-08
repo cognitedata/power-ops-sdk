@@ -1,0 +1,158 @@
+externalId: all_DayAhead
+space: "{{powerops_models}}"
+version: "1"
+name: All DayAhead
+description: "Settings for the day ahead bid process"
+views:
+  - externalId: BidConfiguration
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: MarketConfiguration
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PriceArea
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PartialBidConfiguration
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: ShopBasedPartialBidConfiguration
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: WaterValueBasedPartialBidConfiguration
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: Scenario
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: ScenarioSet
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: Mapping
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: ModelTemplate
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: Generator
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: TurbineEfficiencyCurve
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: GeneratorEfficiencyCurve
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: Commands
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: Plant
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: TaskDispatcherInput
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: TaskDispatcherOutput
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PreprocessorInput
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PreprocessorOutput
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: SHOPTriggerInput
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: SHOPTriggerOutput
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PartialBidMatrixCalculationInput
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: ShopPartialBidMatrixCalculationInput
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PartialBidMatrixCalculationOutput
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: BidMatrix
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: SHOPResult
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: Alert
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PriceProduction
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: SHOPTimeSeries
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - space: "{{powerops_models}}"
+    externalId: FunctionInput
+    version: "{{version}}"
+    type: view
+  - space: "{{powerops_models}}"
+    externalId: FunctionOutput
+    version: "{{version}}"
+    type: view
+  - externalId: WaterValueBasedPartialBidMatrixCalculationInput
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: TotalBidMatrixCalculationInput
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: TotalBidMatrixCalculationOutput
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: BidDocumentDayAhead
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: Case
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - space: "{{powerops_models}}"
+    externalId: BidDocument
+    version: "{{version}}"
+    type: view
+  - space: "{{powerops_models}}"
+    externalId: PowerAsset
+    version: "{{version}}"
+    type: view

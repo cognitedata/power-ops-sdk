@@ -21,6 +21,7 @@ from ._core import (
     GraphQLCore,
     ResourcesWrite,
 )
+from ._function_output import FunctionOutput, FunctionOutputWrite
 
 if TYPE_CHECKING:
     from ._alert import Alert, AlertGraphQL, AlertWrite
@@ -70,7 +71,7 @@ class SHOPTriggerOutputGraphQL(GraphQLCore):
         input_: The prepped and processed scenario to send to shop trigger
     """
 
-    view_id = dm.ViewId("sp_powerops_models", "SHOPTriggerOutput", "1")
+    view_id = dm.ViewId("sp_powerops_models_temp", "SHOPTriggerOutput", "1")
     process_id: Optional[str] = Field(None, alias="processId")
     process_step: Optional[int] = Field(None, alias="processStep")
     function_name: Optional[str] = Field(None, alias="functionName")
@@ -135,7 +136,7 @@ class SHOPTriggerOutputGraphQL(GraphQLCore):
         )
 
 
-class SHOPTriggerOutput(DomainModel):
+class SHOPTriggerOutput(FunctionOutput):
     """This represents the reading version of shop trigger output.
 
     It is used to when data is retrieved from CDF.
@@ -153,15 +154,9 @@ class SHOPTriggerOutput(DomainModel):
         input_: The prepped and processed scenario to send to shop trigger
     """
 
-    space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "SHOPTriggerOutput"
+        "sp_powerops_types_temp", "SHOPTriggerOutput"
     )
-    process_id: str = Field(alias="processId")
-    process_step: int = Field(alias="processStep")
-    function_name: str = Field(alias="functionName")
-    function_call_id: str = Field(alias="functionCallId")
-    alerts: Union[list[Alert], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
     shop_result: Union[SHOPResult, str, dm.NodeId, None] = Field(None, repr=False, alias="shopResult")
     input_: Union[SHOPTriggerInput, str, dm.NodeId, None] = Field(None, repr=False, alias="input")
 
@@ -190,7 +185,7 @@ class SHOPTriggerOutput(DomainModel):
         return self.as_write()
 
 
-class SHOPTriggerOutputWrite(DomainModelWrite):
+class SHOPTriggerOutputWrite(FunctionOutputWrite):
     """This represents the writing version of shop trigger output.
 
     It is used to when data is sent to CDF.
@@ -208,15 +203,9 @@ class SHOPTriggerOutputWrite(DomainModelWrite):
         input_: The prepped and processed scenario to send to shop trigger
     """
 
-    space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "SHOPTriggerOutput"
+        "sp_powerops_types_temp", "SHOPTriggerOutput"
     )
-    process_id: str = Field(alias="processId")
-    process_step: int = Field(alias="processStep")
-    function_name: str = Field(alias="functionName")
-    function_call_id: str = Field(alias="functionCallId")
-    alerts: Union[list[AlertWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
     shop_result: Union[SHOPResultWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="shopResult")
     input_: Union[SHOPTriggerInputWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="input")
 
@@ -232,7 +221,7 @@ class SHOPTriggerOutputWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            SHOPTriggerOutput, dm.ViewId("sp_powerops_models", "SHOPTriggerOutput", "1")
+            SHOPTriggerOutput, dm.ViewId("sp_powerops_models_temp", "SHOPTriggerOutput", "1")
         )
 
         properties: dict[str, Any] = {}
@@ -277,7 +266,7 @@ class SHOPTriggerOutputWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_powerops_types", "calculationIssue")
+        edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

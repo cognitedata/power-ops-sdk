@@ -1,0 +1,41 @@
+space: "{{powerops_models}}"
+externalId: PartialBidConfiguration
+name: PartialBidConfiguration
+description: A partial bid configuration
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{powerops_models}}"
+          externalId: PartialBidConfiguration
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{powerops_instance_space}}"
+version: "{{version}}"
+properties:
+  name:
+    container:
+      space: "{{powerops_models}}"
+      externalId: PartialBidConfiguration
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: Name for the PartialBidConfiguration
+  method:
+    container:
+      space: "{{powerops_models}}"
+      externalId: PartialBidConfiguration
+      type: container
+    containerPropertyIdentifier: method
+    name: method
+    description: Name of the method used for the bid calculation
+  addSteps:
+    container:
+      space: "{{powerops_models}}"
+      externalId: PartialBidConfiguration
+      type: container
+    containerPropertyIdentifier: addSteps
+    name: addSteps
+    description: TODO definition

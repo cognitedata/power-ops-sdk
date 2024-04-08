@@ -10,40 +10,6 @@ properties:
     nullable: true
     autoIncrement: false
     name: headLossFactor
-  outletLevel:
-    type:
-      type: float64
-      list: false
-    nullable: true
-    autoIncrement: false
-    name: outletLevel
-  pMax:
-    type:
-      type: float64
-      list: false
-    nullable: true
-    autoIncrement: false
-    name: pMax
-  pMin:
-    type:
-      type: float64
-      list: false
-    nullable: true
-    autoIncrement: false
-    name: pMin
-  penstockHeadLossFactors:
-    type:
-      type: json
-      list: false
-    nullable: true
-    autoIncrement: false
-    name: penstockHeadLossFactors
-  watercourse:
-    type:
-      type: direct
-    nullable: true
-    autoIncrement: false
-    name: watercourse
   connectionLosses:
     type:
       type: float64
@@ -51,20 +17,54 @@ properties:
     nullable: true
     autoIncrement: false
     name: connectionLosses
-  pMaxTimeSeries:
+  outletLevel:
+    type:
+      type: float64
+      list: false
+    nullable: true
+    autoIncrement: false
+    name: outletLevel
+  productionMax:
+    type:
+      type: float64
+      list: false
+    nullable: true
+    autoIncrement: false
+    name: productionMax
+  productionMin:
+    type:
+      type: float64
+      list: false
+    nullable: true
+    autoIncrement: false
+    name: productionMin
+  penstockHeadLossFactors:
+    type:
+      type: json
+      list: false
+    nullable: true
+    autoIncrement: false
+    name: penstockHeadLossFactors
+  # watercourse:
+  #   type:
+  #     type: direct
+  #   nullable: true
+  #   autoIncrement: false
+  #   name: watercourse
+  productionMaxTimeSeries:
     type:
       type: timeseries
       list: false
     nullable: true
     autoIncrement: false
-    name: pMaxTimeSeries
-  pMinTimeSeries:
+    name: productionMaxTimeSeries
+  productionMinTimeSeries:
     type:
       type: timeseries
       list: false
     nullable: true
     autoIncrement: false
-    name: pMinTimeSeries
+    name: productionMinTimeSeries
   waterValueTimeSeries:
     type:
       type: timeseries
@@ -100,12 +100,12 @@ properties:
     nullable: true
     autoIncrement: false
     name: headDirectTimeSeries
-  inletReservoir:
-    type:
-      type: direct
-    nullable: true
-    autoIncrement: false
-    name: inletReservoir
+    # inletReservoir:
+    #   type:
+    #     type: direct
+    #   nullable: true
+    #   autoIncrement: false
+    #   name: inletReservoir
 constraints:
   requiredAsset:
     require:

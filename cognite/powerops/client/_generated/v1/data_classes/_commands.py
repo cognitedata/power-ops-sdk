@@ -34,10 +34,11 @@ __all__ = [
 ]
 
 
-CommandsTextFields = Literal["commands"]
-CommandsFields = Literal["commands"]
+CommandsTextFields = Literal["name", "commands"]
+CommandsFields = Literal["name", "commands"]
 
 _COMMANDS_PROPERTIES_BY_FIELD = {
+    "name": "name",
     "commands": "commands",
 }
 
@@ -52,10 +53,12 @@ class CommandsGraphQL(GraphQLCore):
         space: The space where the node is located.
         external_id: The external id of the command.
         data_record: The data record of the command node.
+        name: Name for the Commands
         commands: The commands used in the shop model file
     """
 
-    view_id = dm.ViewId("sp_powerops_models", "Commands", "1")
+    view_id = dm.ViewId("sp_powerops_models_temp", "Commands", "1")
+    name: Optional[str] = None
     commands: Optional[list[str]] = None
 
     @model_validator(mode="before")
@@ -81,6 +84,7 @@ class CommandsGraphQL(GraphQLCore):
                 last_updated_time=self.data_record.last_updated_time,
                 created_time=self.data_record.created_time,
             ),
+            name=self.name,
             commands=self.commands,
         )
 
@@ -90,6 +94,7 @@ class CommandsGraphQL(GraphQLCore):
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
+            name=self.name,
             commands=self.commands,
         )
 
@@ -103,11 +108,15 @@ class Commands(DomainModel):
         space: The space where the node is located.
         external_id: The external id of the command.
         data_record: The data record of the command node.
+        name: Name for the Commands
         commands: The commands used in the shop model file
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "Commands")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
+        "sp_powerops_types_temp", "Commands"
+    )
+    name: str
     commands: Optional[list[str]] = None
 
     def as_write(self) -> CommandsWrite:
@@ -116,6 +125,7 @@ class Commands(DomainModel):
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
+            name=self.name,
             commands=self.commands,
         )
 
@@ -138,11 +148,15 @@ class CommandsWrite(DomainModelWrite):
         space: The space where the node is located.
         external_id: The external id of the command.
         data_record: The data record of the command node.
+        name: Name for the Commands
         commands: The commands used in the shop model file
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "Commands")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
+        "sp_powerops_types_temp", "Commands"
+    )
+    name: str
     commands: list[str]
 
     def _to_instances_write(
@@ -156,9 +170,12 @@ class CommandsWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(Commands, dm.ViewId("sp_powerops_models", "Commands", "1"))
+        write_view = (view_by_read_class or {}).get(Commands, dm.ViewId("sp_powerops_models_temp", "Commands", "1"))
 
         properties: dict[str, Any] = {}
+
+        if self.name is not None:
+            properties["name"] = self.name
 
         if self.commands is not None:
             properties["commands"] = self.commands
@@ -224,11 +241,19 @@ class CommandsApplyList(CommandsWriteList): ...
 
 def _create_command_filter(
     view_id: dm.ViewId,
+    name: str | list[str] | None = None,
+    name_prefix: str | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
+    if isinstance(name, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
+    if name and isinstance(name, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
+    if name_prefix is not None:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):

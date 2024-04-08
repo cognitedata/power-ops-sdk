@@ -1,0 +1,13 @@
+space: "{{powerops_models}}"
+externalId: PartialShopBased
+name: PartialShopBased
+usedFor: node
+properties:
+  shopScenarios:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: shopScenarios
+    description: TODO

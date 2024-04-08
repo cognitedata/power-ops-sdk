@@ -8,15 +8,9 @@ properties:
       list: false
       collation: ucs_basic
       type: text
-    nullable: true
+    nullable: false
     autoIncrement: false
     name: name
-  method:
-    type:
-      type: direct # points to BidMethod container
-    nullable: true
-    autoIncrement: false
-    name: method
   marketConfiguration:
     type:
       type: direct
@@ -32,11 +26,6 @@ properties:
     autoIncrement: false
     name: priceArea
 indexes:
-  methodIndex:
-    properties:
-      - method
-    indexType: btree
-    cursorable: false
   priceAreaIndex:
     properties:
       - priceArea

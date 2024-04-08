@@ -81,15 +81,15 @@ class CaseGraphQL(GraphQLCore):
         end_time: The end time of the case
     """
 
-    view_id = dm.ViewId("sp_powerops_models", "Case", "1")
+    view_id = dm.ViewId("sp_powerops_models_temp", "Case", "1")
     scenario: Optional[ScenarioGraphQL] = Field(None, repr=False)
     case_file: Union[str, None] = Field(None, alias="caseFile")
     reservoir_mapping: Optional[list[str]] = Field(None, alias="reservoirMapping")
     cut_order_files: Optional[list[str]] = Field(None, alias="cutOrderFiles")
     extra_files: Optional[list[str]] = Field(None, alias="extraFiles")
     cog_shop_files_config: Optional[list[dict]] = Field(None, alias="cogShopFilesConfig")
-    start_time: Optional[datetime.date] = Field(None, alias="startTime")
-    end_time: Optional[datetime.date] = Field(None, alias="endTime")
+    start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
+    end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -169,15 +169,15 @@ class Case(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "Case")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types_temp", "Case")
     scenario: Union[Scenario, str, dm.NodeId, None] = Field(None, repr=False)
     case_file: Union[str, None] = Field(None, alias="caseFile")
     reservoir_mapping: Optional[list[str]] = Field(None, alias="reservoirMapping")
     cut_order_files: Optional[list[str]] = Field(None, alias="cutOrderFiles")
     extra_files: Optional[list[str]] = Field(None, alias="extraFiles")
     cog_shop_files_config: Optional[list[dict]] = Field(None, alias="cogShopFilesConfig")
-    start_time: Optional[datetime.date] = Field(None, alias="startTime")
-    end_time: Optional[datetime.date] = Field(None, alias="endTime")
+    start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
+    end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
 
     def as_write(self) -> CaseWrite:
         """Convert this read version of case to the writing version."""
@@ -225,15 +225,15 @@ class CaseWrite(DomainModelWrite):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "Case")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types_temp", "Case")
     scenario: Union[ScenarioWrite, str, dm.NodeId, None] = Field(None, repr=False)
     case_file: Union[str, None] = Field(None, alias="caseFile")
     reservoir_mapping: Optional[list[str]] = Field(None, alias="reservoirMapping")
     cut_order_files: Optional[list[str]] = Field(None, alias="cutOrderFiles")
     extra_files: Optional[list[str]] = Field(None, alias="extraFiles")
     cog_shop_files_config: Optional[list[dict]] = Field(None, alias="cogShopFilesConfig")
-    start_time: Optional[datetime.date] = Field(None, alias="startTime")
-    end_time: Optional[datetime.date] = Field(None, alias="endTime")
+    start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
+    end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
 
     def _to_instances_write(
         self,
@@ -246,7 +246,7 @@ class CaseWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(Case, dm.ViewId("sp_powerops_models", "Case", "1"))
+        write_view = (view_by_read_class or {}).get(Case, dm.ViewId("sp_powerops_models_temp", "Case", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -272,10 +272,10 @@ class CaseWrite(DomainModelWrite):
             properties["cogShopFilesConfig"] = self.cog_shop_files_config
 
         if self.start_time is not None or write_none:
-            properties["startTime"] = self.start_time.isoformat() if self.start_time else None
+            properties["startTime"] = self.start_time.isoformat(timespec="milliseconds") if self.start_time else None
 
         if self.end_time is not None or write_none:
-            properties["endTime"] = self.end_time.isoformat() if self.end_time else None
+            properties["endTime"] = self.end_time.isoformat(timespec="milliseconds") if self.end_time else None
 
         if properties:
             this_node = dm.NodeApply(
@@ -343,10 +343,10 @@ class CaseApplyList(CaseWriteList): ...
 def _create_case_filter(
     view_id: dm.ViewId,
     scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-    min_start_time: datetime.date | None = None,
-    max_start_time: datetime.date | None = None,
-    min_end_time: datetime.date | None = None,
-    max_end_time: datetime.date | None = None,
+    min_start_time: datetime.datetime | None = None,
+    max_start_time: datetime.datetime | None = None,
+    min_end_time: datetime.datetime | None = None,
+    max_end_time: datetime.datetime | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -382,16 +382,16 @@ def _create_case_filter(
         filters.append(
             dm.filters.Range(
                 view_id.as_property_ref("startTime"),
-                gte=min_start_time.isoformat() if min_start_time else None,
-                lte=max_start_time.isoformat() if max_start_time else None,
+                gte=min_start_time.isoformat(timespec="milliseconds") if min_start_time else None,
+                lte=max_start_time.isoformat(timespec="milliseconds") if max_start_time else None,
             )
         )
     if min_end_time is not None or max_end_time is not None:
         filters.append(
             dm.filters.Range(
                 view_id.as_property_ref("endTime"),
-                gte=min_end_time.isoformat() if min_end_time else None,
-                lte=max_end_time.isoformat() if max_end_time else None,
+                gte=min_end_time.isoformat(timespec="milliseconds") if min_end_time else None,
+                lte=max_end_time.isoformat(timespec="milliseconds") if max_end_time else None,
             )
         )
     if external_id_prefix is not None:

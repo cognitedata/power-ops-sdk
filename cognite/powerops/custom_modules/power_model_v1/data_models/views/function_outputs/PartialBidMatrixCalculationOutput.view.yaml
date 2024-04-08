@@ -1,0 +1,65 @@
+space: "{{powerops_models}}"
+externalId: PartialBidMatrixCalculationOutput
+name: PartialBidMatrixCalculationOutput
+description: The output of a bid calculation method
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{powerops_models}}"
+          externalId: FunctionData
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{powerops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: PartialBidMatrixCalculationOutput
+          space: "{{powerops_type_space}}"
+implements:
+  - space: "{{powerops_models}}"
+    externalId: FunctionOutput
+    version: "{{version}}"
+    type: view
+version: "{{version}}"
+properties:
+  partialMatrix:
+    container:
+      space: "{{powerops_models}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
+    name: partialMatrix
+    source:
+      space: "{{powerops_models}}"
+      externalId: BidMatrix
+      version: "{{version}}"
+      type: view
+  bidConfiguration:
+    container:
+      space: "{{powerops_models}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct2
+    name: bidConfiguration
+    source:
+      space: "{{powerops_models}}"
+      externalId: BidConfiguration
+      version: "{{version}}"
+      type: view
+  input:
+    container:
+      space: "{{powerops_models}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct3
+    name: input
+    source:
+      space: "{{powerops_models}}"
+      externalId: PartialBidMatrixCalculationInput
+      version: "{{version}}"
+      type: view

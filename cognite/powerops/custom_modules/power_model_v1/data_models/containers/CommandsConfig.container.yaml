@@ -3,6 +3,15 @@ externalId: CommandsConfig
 name: CommandsConfig
 usedFor: node
 properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+    description: The name of the commands config
   commands:
     type:
       list: true

@@ -228,9 +228,9 @@ class TotalBidMatrixCalculationOutputAPI(
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_powerops_types", "calculationIssue"),
+                    dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models", "Alert", "1"),
+                    dm.ViewId("sp_powerops_models_temp", "Alert", "1"),
                 ),
             ],
         )
@@ -613,9 +613,9 @@ class TotalBidMatrixCalculationOutputAPI(
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_powerops_types", "calculationIssue"),
+                    dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models", "Alert", "1"),
+                    dm.ViewId("sp_powerops_models_temp", "Alert", "1"),
                 ),
             ],
         )

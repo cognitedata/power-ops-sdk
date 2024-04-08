@@ -74,7 +74,7 @@ class MarketConfigurationGraphQL(GraphQLCore):
         trade_lot: 'Granularity' of the volumes; trade lot = 0.2 means that volumes must be 'rounded to nearest 0.2' (i. e. 66.5 is not allowed, but 66.4 is)
     """
 
-    view_id = dm.ViewId("sp_powerops_models", "MarketConfiguration", "1")
+    view_id = dm.ViewId("sp_powerops_models_temp", "MarketConfiguration", "1")
     name: Optional[str] = None
     max_price: Optional[float] = Field(None, alias="maxPrice")
     min_price: Optional[float] = Field(None, alias="minPrice")
@@ -159,7 +159,7 @@ class MarketConfiguration(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "MarketConfiguration"
+        "sp_powerops_types_temp", "MarketConfiguration"
     )
     name: Optional[str] = None
     max_price: float = Field(alias="maxPrice")
@@ -220,7 +220,7 @@ class MarketConfigurationWrite(DomainModelWrite):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "MarketConfiguration"
+        "sp_powerops_types_temp", "MarketConfiguration"
     )
     name: Optional[str] = None
     max_price: float = Field(alias="maxPrice")
@@ -244,7 +244,7 @@ class MarketConfigurationWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            MarketConfiguration, dm.ViewId("sp_powerops_models", "MarketConfiguration", "1")
+            MarketConfiguration, dm.ViewId("sp_powerops_models_temp", "MarketConfiguration", "1")
         )
 
         properties: dict[str, Any] = {}

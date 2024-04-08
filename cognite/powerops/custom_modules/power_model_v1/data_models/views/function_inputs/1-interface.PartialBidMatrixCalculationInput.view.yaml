@@ -1,0 +1,50 @@
+space: "{{powerops_models}}"
+externalId: PartialBidMatrixCalculationInput
+name: PartialBidMatrixCalculation
+description: The data for a bid calculation for water value based method
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{powerops_models}}"
+          externalId: FunctionData
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{powerops_instance_space}}"
+        # - in:
+        #     property:
+        #       - node
+        #       - type
+        #     value:
+        #       - WaterValueBasedPartialBidMatrixCalculationInput
+        #       - ShopPartialBidMatrixCalculationInput
+implements:
+  - space: "{{powerops_models}}"
+    externalId: FunctionInput
+    version: "{{version}}"
+    type: view
+version: "{{version}}"
+properties:
+  bidDate:
+    container:
+      space: "{{powerops_models}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: date1
+    name: bidDate
+    description: The bid date
+  bidConfiguration:
+    container:
+      space: "{{powerops_models}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
+    name: bidConfiguration
+    description: TODO description
+    source:
+      space: "{{powerops_models}}"
+      externalId: BidConfiguration
+      version: "{{version}}"
+      type: view

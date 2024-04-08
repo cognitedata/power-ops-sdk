@@ -1,0 +1,63 @@
+space: "{{powerops_models}}"
+externalId: ScenarioSet
+name: ScenarioSet
+description: The Scenario Set to run shop with
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{powerops_models}}"
+          externalId: ScenarioSet
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{powerops_instance_space}}"
+implements: []
+version: "{{version}}"
+properties:
+  name:
+    container:
+      space: "{{powerops_models}}"
+      externalId: ScenarioSet
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: The name of the scenario set to run
+  shopStartSpecification:
+    container:
+      space: "{{powerops_models}}"
+      externalId: ScenarioSet
+      type: container
+    containerPropertyIdentifier: shopStartSpecification
+    name: shopStartSpecification
+    description: TODO definition
+  shopEndSpecification:
+    container:
+      space: "{{powerops_models}}"
+      externalId: ScenarioSet
+      type: container
+    containerPropertyIdentifier: shopEndSpecification
+    name: shopEndSpecification
+    description: TODO definition
+  shopBidDateSpecification:
+    container:
+      space: "{{powerops_models}}"
+      externalId: ScenarioSet
+      type: container
+    containerPropertyIdentifier: shopBidDateSpecification
+    name: shopBidDateSpecification
+    description: TODO definition
+  shopScenarios:
+    type:
+      space: "{{powerops_type_space}}"
+      externalId: ScenarioSet.scenarios
+    source:
+      space: "{{powerops_models}}"
+      externalId: Scenario
+      version: "{{version}}"
+      type: view
+    direction: outwards
+    name: shopScenarios
+    description: Configuration of the partial bids that make up the total bid configuration
+    connectionType: multi_edge_connection

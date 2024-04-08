@@ -1,0 +1,55 @@
+space: "{{powerops_models}}"
+externalId: TaskDispatcherOutput
+name: TaskDispatcherOutput
+description: Input to the task dispatcher in the shop bid process
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{powerops_models}}"
+          externalId: FunctionData
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{powerops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: TaskDispatcherOutput
+          space: "{{powerops_type_space}}"
+implements:
+  - space: "{{powerops_models}}"
+    externalId: FunctionOutput
+    version: "{{version}}"
+    type: view
+version: "{{version}}"
+properties:
+  input:
+    container:
+      space: "{{powerops_models}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
+    name: input
+    description: The previous step in the process.
+    source:
+      space: "{{powerops_models}}"
+      externalId: TaskDispatcherInput
+      version: "{{version}}"
+      type: view
+  processSubTasks:
+    type:
+      space: "{{powerops_type_space}}"
+      externalId: processSubTasks
+    source:
+      space: "{{powerops_models}}"
+      externalId: FunctionInput
+      version: "{{version}}"
+      type: view
+    direction: outwards
+    name: processSubTasks
+    description: An array of input for process subtasks used for partial bid calculations.
+    connectionType: multi_edge_connection

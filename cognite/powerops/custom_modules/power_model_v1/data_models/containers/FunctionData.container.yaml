@@ -38,13 +38,20 @@ properties:
     nullable: true
     autoIncrement: false
     name: date2
-  date3:
+  timestamp1:
     type:
       list: false
-      type: date
+      type: timestamp
     nullable: true
     autoIncrement: false
-    name: date3
+    name: timestamp1
+  timestamp2:
+    type:
+      list: false
+      type: timestamp
+    nullable: true
+    autoIncrement: false
+    name: timestamp2
   text1:
     type:
       list: false

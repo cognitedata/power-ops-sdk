@@ -43,7 +43,7 @@ class ScenarioMappingsOverrideAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("sp_powerops_types", "Mapping"),
+            dm.DirectRelationReference("sp_powerops_types_temp", "Mapping"),
             from_scenario,
             from_scenario_space,
             to_mapping,

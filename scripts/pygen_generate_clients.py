@@ -97,10 +97,11 @@ def main():
             )
         print(Panel("Done generating v0 clients", title="Done", style="bold green"))
 
-        space = "sp_powerops_models"
+        # TODO: update space to not be temp
+        space = "sp_powerops_models_temp"
         v1_models = [
             "compute_SHOPBasedDayAhead",
-            "compute_TotalBidCalculation",
+            "compute_TotalBidMatrixCalculation",
             "compute_WaterValueBasedDayAheadBid",
             "config_DayAheadConfiguration",
             "frontend_AFRRBid",
@@ -118,7 +119,7 @@ def main():
             [dm.DataModelId(space, external_id, "1") for external_id in v1_models],
             client,
             top_level_package=f"{top_level}.v1",
-            default_instance_space="sp_powerops_instance",
+            default_instance_space="sp_powerops_instance_temp",  # TODO: update space to not be temp
             client_name="PowerOpsModelsV1Client",
             output_dir=REPO_ROOT,
             logger=print,

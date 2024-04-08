@@ -22,12 +22,12 @@ from ._core import (
     GraphQLCore,
     ResourcesWrite,
 )
+from ._bid_document import BidDocument, BidDocumentWrite
 
 if TYPE_CHECKING:
     from ._alert import Alert, AlertGraphQL, AlertWrite
+    from ._bid_configuration import BidConfiguration, BidConfigurationGraphQL, BidConfigurationWrite
     from ._bid_matrix import BidMatrix, BidMatrixGraphQL, BidMatrixWrite
-    from ._bid_method_day_ahead import BidMethodDayAhead, BidMethodDayAheadGraphQL, BidMethodDayAheadWrite
-    from ._price_area import PriceArea, PriceAreaGraphQL, PriceAreaWrite
 
 
 __all__ = [
@@ -42,11 +42,14 @@ __all__ = [
 ]
 
 
-BidDocumentDayAheadTextFields = Literal["name"]
-BidDocumentDayAheadFields = Literal["name", "delivery_date", "start_calculation", "end_calculation", "is_complete"]
+BidDocumentDayAheadTextFields = Literal["name", "process_id"]
+BidDocumentDayAheadFields = Literal[
+    "name", "process_id", "delivery_date", "start_calculation", "end_calculation", "is_complete"
+]
 
 _BIDDOCUMENTDAYAHEAD_PROPERTIES_BY_FIELD = {
     "name": "name",
+    "process_id": "processId",
     "delivery_date": "deliveryDate",
     "start_calculation": "startCalculation",
     "end_calculation": "endCalculation",
@@ -65,26 +68,26 @@ class BidDocumentDayAheadGraphQL(GraphQLCore):
         external_id: The external id of the bid document day ahead.
         data_record: The data record of the bid document day ahead node.
         name: Unique name for a given instance of a Bid Document. A combination of name, priceArea, date and startCalculation.
+        process_id: The process associated with the Bid calculation workflow.
         delivery_date: The date of the Bid.
         start_calculation: Timestamp of when the Bid calculation workflow started.
         end_calculation: Timestamp of when the Bid calculation workflow completed.
         is_complete: Indicates that the Bid calculation workflow has completed (although has not necessarily succeeded).
         alerts: An array of calculation level Alerts.
-        price_area: The price area field.
-        method: The method field.
+        bid_configuration: The bid configuration field.
         total: The total field.
         partials: The partial field.
     """
 
-    view_id = dm.ViewId("sp_powerops_models", "BidDocumentDayAhead", "1")
+    view_id = dm.ViewId("sp_powerops_models_temp", "BidDocumentDayAhead", "1")
     name: Optional[str] = None
+    process_id: Optional[str] = Field(None, alias="processId")
     delivery_date: Optional[datetime.date] = Field(None, alias="deliveryDate")
     start_calculation: Optional[datetime.datetime] = Field(None, alias="startCalculation")
     end_calculation: Optional[datetime.datetime] = Field(None, alias="endCalculation")
     is_complete: Optional[bool] = Field(None, alias="isComplete")
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
-    price_area: Optional[PriceAreaGraphQL] = Field(None, repr=False, alias="priceArea")
-    method: Optional[BidMethodDayAheadGraphQL] = Field(None, repr=False)
+    bid_configuration: Optional[BidConfigurationGraphQL] = Field(None, repr=False, alias="bidConfiguration")
     total: Optional[BidMatrixGraphQL] = Field(None, repr=False)
     partials: Optional[list[BidMatrixGraphQL]] = Field(default=None, repr=False)
 
@@ -99,7 +102,7 @@ class BidDocumentDayAheadGraphQL(GraphQLCore):
             )
         return values
 
-    @field_validator("alerts", "price_area", "method", "total", "partials", mode="before")
+    @field_validator("alerts", "bid_configuration", "total", "partials", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
             return value
@@ -120,13 +123,17 @@ class BidDocumentDayAheadGraphQL(GraphQLCore):
                 created_time=self.data_record.created_time,
             ),
             name=self.name,
+            process_id=self.process_id,
             delivery_date=self.delivery_date,
             start_calculation=self.start_calculation,
             end_calculation=self.end_calculation,
             is_complete=self.is_complete,
             alerts=[alert.as_read() if isinstance(alert, GraphQLCore) else alert for alert in self.alerts or []],
-            price_area=self.price_area.as_read() if isinstance(self.price_area, GraphQLCore) else self.price_area,
-            method=self.method.as_read() if isinstance(self.method, GraphQLCore) else self.method,
+            bid_configuration=(
+                self.bid_configuration.as_read()
+                if isinstance(self.bid_configuration, GraphQLCore)
+                else self.bid_configuration
+            ),
             total=self.total.as_read() if isinstance(self.total, GraphQLCore) else self.total,
             partials=[
                 partial.as_read() if isinstance(partial, GraphQLCore) else partial for partial in self.partials or []
@@ -140,13 +147,17 @@ class BidDocumentDayAheadGraphQL(GraphQLCore):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,
+            process_id=self.process_id,
             delivery_date=self.delivery_date,
             start_calculation=self.start_calculation,
             end_calculation=self.end_calculation,
             is_complete=self.is_complete,
             alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            price_area=self.price_area.as_write() if isinstance(self.price_area, DomainModel) else self.price_area,
-            method=self.method.as_write() if isinstance(self.method, DomainModel) else self.method,
+            bid_configuration=(
+                self.bid_configuration.as_write()
+                if isinstance(self.bid_configuration, DomainModel)
+                else self.bid_configuration
+            ),
             total=self.total.as_write() if isinstance(self.total, DomainModel) else self.total,
             partials=[
                 partial.as_write() if isinstance(partial, DomainModel) else partial for partial in self.partials or []
@@ -154,7 +165,7 @@ class BidDocumentDayAheadGraphQL(GraphQLCore):
         )
 
 
-class BidDocumentDayAhead(DomainModel):
+class BidDocumentDayAhead(BidDocument):
     """This represents the reading version of bid document day ahead.
 
     It is used to when data is retrieved from CDF.
@@ -164,29 +175,21 @@ class BidDocumentDayAhead(DomainModel):
         external_id: The external id of the bid document day ahead.
         data_record: The data record of the bid document day ahead node.
         name: Unique name for a given instance of a Bid Document. A combination of name, priceArea, date and startCalculation.
+        process_id: The process associated with the Bid calculation workflow.
         delivery_date: The date of the Bid.
         start_calculation: Timestamp of when the Bid calculation workflow started.
         end_calculation: Timestamp of when the Bid calculation workflow completed.
         is_complete: Indicates that the Bid calculation workflow has completed (although has not necessarily succeeded).
         alerts: An array of calculation level Alerts.
-        price_area: The price area field.
-        method: The method field.
+        bid_configuration: The bid configuration field.
         total: The total field.
         partials: The partial field.
     """
 
-    space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "DayAheadBidDocument"
+        "sp_powerops_types_temp", "DayAheadBidDocument"
     )
-    name: Optional[str] = None
-    delivery_date: datetime.date = Field(alias="deliveryDate")
-    start_calculation: Optional[datetime.datetime] = Field(None, alias="startCalculation")
-    end_calculation: Optional[datetime.datetime] = Field(None, alias="endCalculation")
-    is_complete: Optional[bool] = Field(None, alias="isComplete")
-    alerts: Union[list[Alert], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
-    price_area: Union[PriceArea, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
-    method: Union[BidMethodDayAhead, str, dm.NodeId, None] = Field(None, repr=False)
+    bid_configuration: Union[BidConfiguration, str, dm.NodeId, None] = Field(None, repr=False, alias="bidConfiguration")
     total: Union[BidMatrix, str, dm.NodeId, None] = Field(None, repr=False)
     partials: Union[list[BidMatrix], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
@@ -197,13 +200,17 @@ class BidDocumentDayAhead(DomainModel):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             name=self.name,
+            process_id=self.process_id,
             delivery_date=self.delivery_date,
             start_calculation=self.start_calculation,
             end_calculation=self.end_calculation,
             is_complete=self.is_complete,
             alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            price_area=self.price_area.as_write() if isinstance(self.price_area, DomainModel) else self.price_area,
-            method=self.method.as_write() if isinstance(self.method, DomainModel) else self.method,
+            bid_configuration=(
+                self.bid_configuration.as_write()
+                if isinstance(self.bid_configuration, DomainModel)
+                else self.bid_configuration
+            ),
             total=self.total.as_write() if isinstance(self.total, DomainModel) else self.total,
             partials=[
                 partial.as_write() if isinstance(partial, DomainModel) else partial for partial in self.partials or []
@@ -220,7 +227,7 @@ class BidDocumentDayAhead(DomainModel):
         return self.as_write()
 
 
-class BidDocumentDayAheadWrite(DomainModelWrite):
+class BidDocumentDayAheadWrite(BidDocumentWrite):
     """This represents the writing version of bid document day ahead.
 
     It is used to when data is sent to CDF.
@@ -230,29 +237,23 @@ class BidDocumentDayAheadWrite(DomainModelWrite):
         external_id: The external id of the bid document day ahead.
         data_record: The data record of the bid document day ahead node.
         name: Unique name for a given instance of a Bid Document. A combination of name, priceArea, date and startCalculation.
+        process_id: The process associated with the Bid calculation workflow.
         delivery_date: The date of the Bid.
         start_calculation: Timestamp of when the Bid calculation workflow started.
         end_calculation: Timestamp of when the Bid calculation workflow completed.
         is_complete: Indicates that the Bid calculation workflow has completed (although has not necessarily succeeded).
         alerts: An array of calculation level Alerts.
-        price_area: The price area field.
-        method: The method field.
+        bid_configuration: The bid configuration field.
         total: The total field.
         partials: The partial field.
     """
 
-    space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "DayAheadBidDocument"
+        "sp_powerops_types_temp", "DayAheadBidDocument"
     )
-    name: Optional[str] = None
-    delivery_date: datetime.date = Field(alias="deliveryDate")
-    start_calculation: Optional[datetime.datetime] = Field(None, alias="startCalculation")
-    end_calculation: Optional[datetime.datetime] = Field(None, alias="endCalculation")
-    is_complete: Optional[bool] = Field(None, alias="isComplete")
-    alerts: Union[list[AlertWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
-    price_area: Union[PriceAreaWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
-    method: Union[BidMethodDayAheadWrite, str, dm.NodeId, None] = Field(None, repr=False)
+    bid_configuration: Union[BidConfigurationWrite, str, dm.NodeId, None] = Field(
+        None, repr=False, alias="bidConfiguration"
+    )
     total: Union[BidMatrixWrite, str, dm.NodeId, None] = Field(None, repr=False)
     partials: Union[list[BidMatrixWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
@@ -268,13 +269,16 @@ class BidDocumentDayAheadWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            BidDocumentDayAhead, dm.ViewId("sp_powerops_models", "BidDocumentDayAhead", "1")
+            BidDocumentDayAhead, dm.ViewId("sp_powerops_models_temp", "BidDocumentDayAhead", "1")
         )
 
         properties: dict[str, Any] = {}
 
         if self.name is not None or write_none:
             properties["name"] = self.name
+
+        if self.process_id is not None or write_none:
+            properties["processId"] = self.process_id
 
         if self.delivery_date is not None:
             properties["deliveryDate"] = self.delivery_date.isoformat() if self.delivery_date else None
@@ -292,16 +296,14 @@ class BidDocumentDayAheadWrite(DomainModelWrite):
         if self.is_complete is not None or write_none:
             properties["isComplete"] = self.is_complete
 
-        if self.price_area is not None:
-            properties["priceArea"] = {
-                "space": self.space if isinstance(self.price_area, str) else self.price_area.space,
-                "externalId": self.price_area if isinstance(self.price_area, str) else self.price_area.external_id,
-            }
-
-        if self.method is not None:
-            properties["method"] = {
-                "space": self.space if isinstance(self.method, str) else self.method.space,
-                "externalId": self.method if isinstance(self.method, str) else self.method.external_id,
+        if self.bid_configuration is not None:
+            properties["bidConfiguration"] = {
+                "space": self.space if isinstance(self.bid_configuration, str) else self.bid_configuration.space,
+                "externalId": (
+                    self.bid_configuration
+                    if isinstance(self.bid_configuration, str)
+                    else self.bid_configuration.external_id
+                ),
             }
 
         if self.total is not None:
@@ -326,7 +328,7 @@ class BidDocumentDayAheadWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_powerops_types", "calculationIssue")
+        edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
@@ -339,7 +341,7 @@ class BidDocumentDayAheadWrite(DomainModelWrite):
             )
             resources.extend(other_resources)
 
-        edge_type = dm.DirectRelationReference("sp_powerops_types", "partialBid")
+        edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "partialBid")
         for partial in self.partials or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
@@ -352,12 +354,8 @@ class BidDocumentDayAheadWrite(DomainModelWrite):
             )
             resources.extend(other_resources)
 
-        if isinstance(self.price_area, DomainModelWrite):
-            other_resources = self.price_area._to_instances_write(cache, view_by_read_class)
-            resources.extend(other_resources)
-
-        if isinstance(self.method, DomainModelWrite):
-            other_resources = self.method._to_instances_write(cache, view_by_read_class)
+        if isinstance(self.bid_configuration, DomainModelWrite):
+            other_resources = self.bid_configuration._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
 
         if isinstance(self.total, DomainModelWrite):
@@ -411,6 +409,8 @@ def _create_bid_document_day_ahead_filter(
     view_id: dm.ViewId,
     name: str | list[str] | None = None,
     name_prefix: str | None = None,
+    process_id: str | list[str] | None = None,
+    process_id_prefix: str | None = None,
     min_delivery_date: datetime.date | None = None,
     max_delivery_date: datetime.date | None = None,
     min_start_calculation: datetime.datetime | None = None,
@@ -418,8 +418,7 @@ def _create_bid_document_day_ahead_filter(
     min_end_calculation: datetime.datetime | None = None,
     max_end_calculation: datetime.datetime | None = None,
     is_complete: bool | None = None,
-    price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-    method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
@@ -432,6 +431,12 @@ def _create_bid_document_day_ahead_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
     if name_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
+    if isinstance(process_id, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("processId"), value=process_id))
+    if process_id and isinstance(process_id, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("processId"), values=process_id))
+    if process_id_prefix is not None:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("processId"), value=process_id_prefix))
     if min_delivery_date is not None or max_delivery_date is not None:
         filters.append(
             dm.filters.Range(
@@ -458,53 +463,32 @@ def _create_bid_document_day_ahead_filter(
         )
     if isinstance(is_complete, bool):
         filters.append(dm.filters.Equals(view_id.as_property_ref("isComplete"), value=is_complete))
-    if price_area and isinstance(price_area, str):
+    if bid_configuration and isinstance(bid_configuration, str):
         filters.append(
             dm.filters.Equals(
-                view_id.as_property_ref("priceArea"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": price_area}
+                view_id.as_property_ref("bidConfiguration"),
+                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": bid_configuration},
             )
         )
-    if price_area and isinstance(price_area, tuple):
+    if bid_configuration and isinstance(bid_configuration, tuple):
         filters.append(
             dm.filters.Equals(
-                view_id.as_property_ref("priceArea"), value={"space": price_area[0], "externalId": price_area[1]}
+                view_id.as_property_ref("bidConfiguration"),
+                value={"space": bid_configuration[0], "externalId": bid_configuration[1]},
             )
         )
-    if price_area and isinstance(price_area, list) and isinstance(price_area[0], str):
+    if bid_configuration and isinstance(bid_configuration, list) and isinstance(bid_configuration[0], str):
         filters.append(
             dm.filters.In(
-                view_id.as_property_ref("priceArea"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in price_area],
+                view_id.as_property_ref("bidConfiguration"),
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in bid_configuration],
             )
         )
-    if price_area and isinstance(price_area, list) and isinstance(price_area[0], tuple):
+    if bid_configuration and isinstance(bid_configuration, list) and isinstance(bid_configuration[0], tuple):
         filters.append(
             dm.filters.In(
-                view_id.as_property_ref("priceArea"),
-                values=[{"space": item[0], "externalId": item[1]} for item in price_area],
-            )
-        )
-    if method and isinstance(method, str):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("method"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": method}
-            )
-        )
-    if method and isinstance(method, tuple):
-        filters.append(
-            dm.filters.Equals(view_id.as_property_ref("method"), value={"space": method[0], "externalId": method[1]})
-        )
-    if method and isinstance(method, list) and isinstance(method[0], str):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("method"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in method],
-            )
-        )
-    if method and isinstance(method, list) and isinstance(method[0], tuple):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("method"), values=[{"space": item[0], "externalId": item[1]} for item in method]
+                view_id.as_property_ref("bidConfiguration"),
+                values=[{"space": item[0], "externalId": item[1]} for item in bid_configuration],
             )
         )
     if total and isinstance(total, str):

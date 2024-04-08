@@ -1,0 +1,68 @@
+space: "{{powerops_models}}"
+externalId: BidMatrix
+name: BidMatrix
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{powerops_models}}"
+          externalId: BidMatrix
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{powerops_instance_space}}"
+implements: []
+version: "{{version}}"
+properties:
+  matrix:
+    container:
+      space: "{{powerops_models}}"
+      externalId: BidMatrix
+      type: container
+    containerPropertyIdentifier: matrix
+    name: matrix
+  powerAsset:
+    container:
+      space: "{{powerops_models}}"
+      externalId: BidMatrix
+      type: container
+    source:
+      space: "{{powerops_models}}"
+      externalId: PowerAsset
+      version: "{{version}}"
+      type: view
+    containerPropertyIdentifier: powerAsset
+    name: powerAsset
+  state:
+    container:
+      space: "{{powerops_models}}"
+      externalId: BidMatrix
+      type: container
+    containerPropertyIdentifier: state
+    name: state
+  partialBidConfiguration:
+    container:
+      space: "{{powerops_models}}"
+      externalId: BidMatrix
+      type: container
+    source:
+      space: "{{powerops_models}}"
+      externalId: PartialBidConfiguration
+      version: "{{version}}"
+      type: view
+    containerPropertyIdentifier: partialBidConfiguration
+    name: partialBidConfiguration
+  alerts:
+    type:
+      space: "{{powerops_type_space}}"
+      externalId: calculationIssue
+    source:
+      space: "{{powerops_models}}"
+      externalId: Alert
+      version: "{{version}}"
+      type: view
+    direction: outwards
+    name: alerts
+    description: An array of calculation level Alerts.
+    connectionType: multi_edge_connection

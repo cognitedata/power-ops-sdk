@@ -12,6 +12,14 @@ from cognite.powerops.client._generated.day_ahead_bid.data_classes import (
     BidMethod,
     BidMatrix,
 )
+from cognite.powerops.client._generated.day_ahead_bid.data_classes._alert import (
+    Alert,
+    _create_alert_filter,
+)
+from cognite.powerops.client._generated.day_ahead_bid.data_classes._bid_matrix import (
+    BidMatrix,
+    _create_bid_matrix_filter,
+)
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
 if TYPE_CHECKING:
@@ -45,8 +53,25 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
 
     def alerts(
         self,
+        min_time: datetime.datetime | None = None,
+        max_time: datetime.datetime | None = None,
+        title: str | list[str] | None = None,
+        title_prefix: str | None = None,
+        description: str | list[str] | None = None,
+        description_prefix: str | None = None,
+        severity: str | list[str] | None = None,
+        severity_prefix: str | None = None,
+        alert_type: str | list[str] | None = None,
+        alert_type_prefix: str | None = None,
+        min_status_code: int | None = None,
+        max_status_code: int | None = None,
+        calculation_run: str | list[str] | None = None,
+        calculation_run_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
+        external_id_prefix_edge: str | None = None,
+        space_edge: str | list[str] | None = None,
+        filter: dm.Filter | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
         retrieve_price_area: bool = False,
         retrieve_method: bool = False,
@@ -55,9 +80,26 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
         """Query along the alert edges of the bid document.
 
         Args:
+            min_time: The minimum value of the time to filter on.
+            max_time: The maximum value of the time to filter on.
+            title: The title to filter on.
+            title_prefix: The prefix of the title to filter on.
+            description: The description to filter on.
+            description_prefix: The prefix of the description to filter on.
+            severity: The severity to filter on.
+            severity_prefix: The prefix of the severity to filter on.
+            alert_type: The alert type to filter on.
+            alert_type_prefix: The prefix of the alert type to filter on.
+            min_status_code: The minimum value of the status code to filter on.
+            max_status_code: The maximum value of the status code to filter on.
+            calculation_run: The calculation run to filter on.
+            calculation_run_prefix: The prefix of the calculation run to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of alert edges to return. Defaults to 25. Set to -1, float("inf") or None
+            external_id_prefix_edge: The prefix of the external ID to filter on.
+            space_edge: The space to filter on.
+            filter: (Advanced) Filter applied to node. If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of alert edges to return. Defaults to 3. Set to -1, float("inf") or None
                 to return all items.
             retrieve_price_area: Whether to retrieve the price area for each bid document or not.
             retrieve_method: Whether to retrieve the method for each bid document or not.
@@ -69,11 +111,10 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
         from .alert_query import AlertQueryAPI
 
         from_ = self._builder[-1].name
-
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power-ops-types", "calculationIssue"),
-            external_id_prefix=external_id_prefix,
-            space=space,
+            external_id_prefix=external_id_prefix_edge,
+            space=space_edge,
         )
         self._builder.append(
             QueryStep(
@@ -87,18 +128,51 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
+
+        view_id = self._view_by_read_class[Alert]
+        has_data = dm.filters.HasData(views=[view_id])
+        node_filer = _create_alert_filter(
+            view_id,
+            min_time,
+            max_time,
+            title,
+            title_prefix,
+            description,
+            description_prefix,
+            severity,
+            severity_prefix,
+            alert_type,
+            alert_type_prefix,
+            min_status_code,
+            max_status_code,
+            calculation_run,
+            calculation_run_prefix,
+            external_id_prefix,
+            space,
+            (filter and dm.filters.And(filter, has_data)) or has_data,
+        )
         if retrieve_price_area:
             self._query_append_price_area(from_)
         if retrieve_method:
             self._query_append_method(from_)
         if retrieve_total:
             self._query_append_total(from_)
-        return AlertQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
+        return AlertQueryAPI(self._client, self._builder, self._view_by_read_class, node_filer, limit)
 
     def partials(
         self,
+        resource_cost: str | list[str] | None = None,
+        resource_cost_prefix: str | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
+        asset_id: str | list[str] | None = None,
+        asset_id_prefix: str | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
+        external_id_prefix_edge: str | None = None,
+        space_edge: str | list[str] | None = None,
+        filter: dm.Filter | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
         retrieve_price_area: bool = False,
         retrieve_method: bool = False,
@@ -107,9 +181,19 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
         """Query along the partial edges of the bid document.
 
         Args:
+            resource_cost: The resource cost to filter on.
+            resource_cost_prefix: The prefix of the resource cost to filter on.
+            asset_type: The asset type to filter on.
+            asset_type_prefix: The prefix of the asset type to filter on.
+            asset_id: The asset id to filter on.
+            asset_id_prefix: The prefix of the asset id to filter on.
+            method: The method to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of partial edges to return. Defaults to 25. Set to -1, float("inf") or None
+            external_id_prefix_edge: The prefix of the external ID to filter on.
+            space_edge: The space to filter on.
+            filter: (Advanced) Filter applied to node. If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of partial edges to return. Defaults to 3. Set to -1, float("inf") or None
                 to return all items.
             retrieve_price_area: Whether to retrieve the price area for each bid document or not.
             retrieve_method: Whether to retrieve the method for each bid document or not.
@@ -121,11 +205,10 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
         from .bid_matrix_query import BidMatrixQueryAPI
 
         from_ = self._builder[-1].name
-
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power-ops-types", "partialBid"),
-            external_id_prefix=external_id_prefix,
-            space=space,
+            external_id_prefix=external_id_prefix_edge,
+            space=space_edge,
         )
         self._builder.append(
             QueryStep(
@@ -139,13 +222,29 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
+
+        view_id = self._view_by_read_class[BidMatrix]
+        has_data = dm.filters.HasData(views=[view_id])
+        node_filer = _create_bid_matrix_filter(
+            view_id,
+            resource_cost,
+            resource_cost_prefix,
+            asset_type,
+            asset_type_prefix,
+            asset_id,
+            asset_id_prefix,
+            method,
+            external_id_prefix,
+            space,
+            (filter and dm.filters.And(filter, has_data)) or has_data,
+        )
         if retrieve_price_area:
             self._query_append_price_area(from_)
         if retrieve_method:
             self._query_append_method(from_)
         if retrieve_total:
             self._query_append_total(from_)
-        return BidMatrixQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
+        return BidMatrixQueryAPI(self._client, self._builder, self._view_by_read_class, node_filer, limit)
 
     def query(
         self,
@@ -187,6 +286,7 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
                 result_cls=PriceArea,
+                is_single_direct_relation=True,
             ),
         )
 
@@ -204,6 +304,7 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
                 result_cls=BidMethod,
+                is_single_direct_relation=True,
             ),
         )
 
@@ -221,5 +322,6 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
                 result_cls=BidMatrix,
+                is_single_direct_relation=True,
             ),
         )

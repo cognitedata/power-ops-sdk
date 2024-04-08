@@ -1,0 +1,41 @@
+space: "{{powerops_models}}"
+externalId: PartialBidConfiguration
+name: PartialBidConfiguration
+usedFor: node
+properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+  method:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: method
+  powerAsset:
+    type:
+      type: direct
+      list: false
+    nullable: true
+    autoIncrement: false
+    name: powerAsset
+  addSteps:
+    type:
+      type: boolean
+      list: false
+    nullable: false
+    autoIncrement: false
+    name: addSteps
+indexes:
+  assetIndex:
+    properties:
+      - powerAsset
+    indexType: btree
+    cursorable: false

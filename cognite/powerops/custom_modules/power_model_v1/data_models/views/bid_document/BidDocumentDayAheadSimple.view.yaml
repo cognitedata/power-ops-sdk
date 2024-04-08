@@ -34,19 +34,7 @@ properties:
     name: priceArea
     source:
       space: "{{powerops_models}}"
-      externalId: PriceAreaDayAhead
-      version: "{{version}}"
-      type: view
-  method:
-    container:
-      space: "{{powerops_models}}"
-      externalId: BidDocumentDayAhead
-      type: container
-    containerPropertyIdentifier: method
-    name: method
-    source:
-      space: "{{powerops_models}}"
-      externalId: BidMethodDayAhead
+      externalId: PriceArea
       version: "{{version}}"
       type: view
   total:

@@ -1,0 +1,90 @@
+externalId: compute_TotalBidMatrixCalculation
+space: "{{powerops_models}}"
+version: "1"
+name: TotalBidMatrixCalculation
+description: "The process of going from PartialBidMatrix to TotalBidMatrix"
+views:
+  - externalId: BidMatrix
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: TotalBidMatrixCalculationInput
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: TotalBidMatrixCalculationOutput
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: BidDocumentDayAhead
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PriceArea
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: Alert
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: SHOPResult
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: MarketConfiguration
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: Scenario
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: ModelTemplate
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: Mapping
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PriceProduction
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: Case
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: SHOPTimeSeries
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: Commands
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - space: "{{powerops_models}}"
+    externalId: FunctionInput
+    version: "{{version}}"
+    type: view
+  - space: "{{powerops_models}}"
+    externalId: FunctionOutput
+    version: "{{version}}"
+    type: view
+  - space: "{{powerops_models}}"
+    externalId: BidDocument
+    version: "{{version}}"
+    type: view
+  - space: "{{powerops_models}}"
+    externalId: PowerAsset
+    version: "{{version}}"
+    type: view
+  - space: "{{powerops_models}}"
+    externalId: PartialBidConfiguration
+    version: "{{version}}"
+    type: view
+  - space: "{{powerops_models}}"
+    externalId: BidConfiguration
+    version: "{{version}}"
+    type: view

@@ -43,7 +43,7 @@ class ModelTemplateBaseMappingsAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("sp_powerops_types", "ModelTemplate.baseMappings"),
+            dm.DirectRelationReference("sp_powerops_types_temp", "ModelTemplate.baseMappings"),
             from_model_template,
             from_model_template_space,
             to_mapping,

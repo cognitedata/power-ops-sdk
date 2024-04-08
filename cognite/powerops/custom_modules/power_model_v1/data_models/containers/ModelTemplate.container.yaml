@@ -3,6 +3,15 @@ externalId: ModelTemplate
 name: ModelTemplate
 usedFor: node
 properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+    description: The name of the model template
   version:
     type:
       list: false
@@ -21,14 +30,13 @@ properties:
     autoIncrement: false
     name: shopVersion
     description: The version of SHOP to run
-  watercourse:
+  penaltyLimit:
     type:
+      type: float64
       list: false
-      type: direct
     nullable: true
     autoIncrement: false
-    name: watercourse
-    description: The watercourse to run the model for
+    name: penaltyLimit
   model:
     type:
       list: false
@@ -53,9 +61,3 @@ properties:
     autoIncrement: false
     name: extraFiles
     description: Extra files to include in the model
-indexes:
-  watercourseIndex:
-    properties:
-      - watercourse
-    indexType: btree
-    cursorable: false

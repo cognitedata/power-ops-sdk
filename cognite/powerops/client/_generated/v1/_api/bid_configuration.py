@@ -6,6 +6,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -14,10 +15,13 @@ from cognite.powerops.client._generated.v1.data_classes import (
     ResourcesWriteResult,
     BidConfiguration,
     BidConfigurationWrite,
+    BidConfigurationFields,
     BidConfigurationList,
     BidConfigurationWriteList,
+    BidConfigurationTextFields,
 )
 from cognite.powerops.client._generated.v1.data_classes._bid_configuration import (
+    _BIDCONFIGURATION_PROPERTIES_BY_FIELD,
     _create_bid_configuration_filter,
 )
 from ._core import (
@@ -29,6 +33,7 @@ from ._core import (
     QueryStep,
     QueryBuilder,
 )
+from .bid_configuration_partials import BidConfigurationPartialsAPI
 from .bid_configuration_query import BidConfigurationQueryAPI
 
 
@@ -44,10 +49,14 @@ class BidConfigurationAPI(NodeAPI[BidConfiguration, BidConfigurationWrite, BidCo
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
+        self.partials_edge = BidConfigurationPartialsAPI(client)
 
     def __call__(
         self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -56,7 +65,10 @@ class BidConfigurationAPI(NodeAPI[BidConfiguration, BidConfigurationWrite, BidCo
         """Query starting at bid configurations.
 
         Args:
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             market_configuration: The market configuration to filter on.
+            price_area: The price area to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid configurations to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -69,7 +81,10 @@ class BidConfigurationAPI(NodeAPI[BidConfiguration, BidConfigurationWrite, BidCo
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_bid_configuration_filter(
             self._view_id,
+            name,
+            name_prefix,
             market_configuration,
+            price_area,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -84,6 +99,10 @@ class BidConfigurationAPI(NodeAPI[BidConfiguration, BidConfigurationWrite, BidCo
         write_none: bool = False,
     ) -> ResourcesWriteResult:
         """Add or update (upsert) bid configurations.
+
+        Note: This method iterates through all nodes and timeseries linked to bid_configuration and creates them including the edges
+        between the nodes. For example, if any of `partials` are set, then these
+        nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
             bid_configuration: Bid configuration or sequence of bid configurations to upsert.
@@ -177,24 +196,271 @@ class BidConfigurationAPI(NodeAPI[BidConfiguration, BidConfigurationWrite, BidCo
                 >>> bid_configuration = client.bid_configuration.retrieve("my_bid_configuration")
 
         """
-        return self._retrieve(external_id, space)
+        return self._retrieve(
+            external_id,
+            space,
+            retrieve_edges=True,
+            edge_api_name_type_direction_view_id_penta=[
+                (
+                    self.partials_edge,
+                    "partials",
+                    dm.DirectRelationReference("sp_powerops_types_temp", "BidConfiguration.partials"),
+                    "outwards",
+                    dm.ViewId("sp_powerops_models_temp", "PartialBidConfiguration", "1"),
+                ),
+            ],
+        )
 
-    def list(
+    def search(
         self,
+        query: str,
+        properties: BidConfigurationTextFields | Sequence[BidConfigurationTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> BidConfigurationList:
-        """List/filter bid configurations
+        """Search bid configurations
 
         Args:
+            query: The search query,
+            properties: The property to search, if nothing is passed all text fields will be searched.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             market_configuration: The market configuration to filter on.
+            price_area: The price area to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid configurations to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+
+        Returns:
+            Search results bid configurations matching the query.
+
+        Examples:
+
+           Search for 'my_bid_configuration' in all text properties:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> bid_configurations = client.bid_configuration.search('my_bid_configuration')
+
+        """
+        filter_ = _create_bid_configuration_filter(
+            self._view_id,
+            name,
+            name_prefix,
+            market_configuration,
+            price_area,
+            external_id_prefix,
+            space,
+            filter,
+        )
+        return self._search(self._view_id, query, _BIDCONFIGURATION_PROPERTIES_BY_FIELD, properties, filter_, limit)
+
+    @overload
+    def aggregate(
+        self,
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
+        property: BidConfigurationFields | Sequence[BidConfigurationFields] | None = None,
+        group_by: None = None,
+        query: str | None = None,
+        search_properties: BidConfigurationTextFields | Sequence[BidConfigurationTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int | None = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
+        property: BidConfigurationFields | Sequence[BidConfigurationFields] | None = None,
+        group_by: BidConfigurationFields | Sequence[BidConfigurationFields] = None,
+        query: str | None = None,
+        search_properties: BidConfigurationTextFields | Sequence[BidConfigurationTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int | None = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList: ...
+
+    def aggregate(
+        self,
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
+        property: BidConfigurationFields | Sequence[BidConfigurationFields] | None = None,
+        group_by: BidConfigurationFields | Sequence[BidConfigurationFields] | None = None,
+        query: str | None = None,
+        search_property: BidConfigurationTextFields | Sequence[BidConfigurationTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int | None = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+        """Aggregate data across bid configurations
+
+        Args:
+            aggregate: The aggregation to perform.
+            property: The property to perform aggregation on.
+            group_by: The property to group by when doing the aggregation.
+            query: The query to search for in the text field.
+            search_property: The text field to search in.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
+            market_configuration: The market configuration to filter on.
+            price_area: The price area to filter on.
+            external_id_prefix: The prefix of the external ID to filter on.
+            space: The space to filter on.
+            limit: Maximum number of bid configurations to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+
+        Returns:
+            Aggregation results.
+
+        Examples:
+
+            Count bid configurations in space `my_space`:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> result = client.bid_configuration.aggregate("count", space="my_space")
+
+        """
+
+        filter_ = _create_bid_configuration_filter(
+            self._view_id,
+            name,
+            name_prefix,
+            market_configuration,
+            price_area,
+            external_id_prefix,
+            space,
+            filter,
+        )
+        return self._aggregate(
+            self._view_id,
+            aggregate,
+            _BIDCONFIGURATION_PROPERTIES_BY_FIELD,
+            property,
+            group_by,
+            query,
+            search_property,
+            limit,
+            filter_,
+        )
+
+    def histogram(
+        self,
+        property: BidConfigurationFields,
+        interval: float,
+        query: str | None = None,
+        search_property: BidConfigurationTextFields | Sequence[BidConfigurationTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int | None = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> dm.aggregations.HistogramValue:
+        """Produces histograms for bid configurations
+
+        Args:
+            property: The property to use as the value in the histogram.
+            interval: The interval to use for the histogram bins.
+            query: The query to search for in the text field.
+            search_property: The text field to search in.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
+            market_configuration: The market configuration to filter on.
+            price_area: The price area to filter on.
+            external_id_prefix: The prefix of the external ID to filter on.
+            space: The space to filter on.
+            limit: Maximum number of bid configurations to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+
+        Returns:
+            Bucketed histogram results.
+
+        """
+        filter_ = _create_bid_configuration_filter(
+            self._view_id,
+            name,
+            name_prefix,
+            market_configuration,
+            price_area,
+            external_id_prefix,
+            space,
+            filter,
+        )
+        return self._histogram(
+            self._view_id,
+            property,
+            interval,
+            _BIDCONFIGURATION_PROPERTIES_BY_FIELD,
+            query,
+            search_property,
+            limit,
+            filter_,
+        )
+
+    def list(
+        self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int | None = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+        retrieve_edges: bool = True,
+    ) -> BidConfigurationList:
+        """List/filter bid configurations
+
+        Args:
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
+            market_configuration: The market configuration to filter on.
+            price_area: The price area to filter on.
+            external_id_prefix: The prefix of the external ID to filter on.
+            space: The space to filter on.
+            limit: Maximum number of bid configurations to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            retrieve_edges: Whether to retrieve `partials` external ids for the bid configurations. Defaults to True.
 
         Returns:
             List of requested bid configurations
@@ -210,9 +476,26 @@ class BidConfigurationAPI(NodeAPI[BidConfiguration, BidConfigurationWrite, BidCo
         """
         filter_ = _create_bid_configuration_filter(
             self._view_id,
+            name,
+            name_prefix,
             market_configuration,
+            price_area,
             external_id_prefix,
             space,
             filter,
         )
-        return self._list(limit=limit, filter=filter_)
+
+        return self._list(
+            limit=limit,
+            filter=filter_,
+            retrieve_edges=retrieve_edges,
+            edge_api_name_type_direction_view_id_penta=[
+                (
+                    self.partials_edge,
+                    "partials",
+                    dm.DirectRelationReference("sp_powerops_types_temp", "BidConfiguration.partials"),
+                    "outwards",
+                    dm.ViewId("sp_powerops_models_temp", "PartialBidConfiguration", "1"),
+                ),
+            ],
+        )

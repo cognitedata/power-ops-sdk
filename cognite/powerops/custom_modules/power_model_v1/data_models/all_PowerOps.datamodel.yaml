@@ -1,285 +1,193 @@
 externalId: all_PowerOps
-space: '{{powerops_models}}'
-version: '{{version}}'
+space: "{{powerops_models}}"
+version: "{{version}}"
 name: all_PowerOps
 views:
   - externalId: SHOPResult
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: BidRow
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: MarketConfiguration
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
-  - externalId: BidCalculationTask
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: Alert
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: ModelTemplate
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: Mapping
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
-  - externalId: BidConfigurationShop
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: BidConfiguration
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
-  - externalId: BidConfigurationAFRR
-    space: '{{powerops_models}}'
+    version: "{{version}}"
+  - externalId: PartialBidConfiguration
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
-  - externalId: BidConfigurationWater
-    space: '{{powerops_models}}'
+    version: "{{version}}"
+  - externalId: ShopBasedPartialBidConfiguration
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"
+  - externalId: WaterValueBasedPartialBidConfiguration
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
   - externalId: SHOPTriggerInput
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
-  - externalId: WaterPartialBidCalculationInput
-    space: '{{powerops_models}}'
+    version: "{{version}}"
+  - externalId: WaterValueBasedPartialBidMatrixCalculationInput
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: PreprocessorInput
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: FunctionInput
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: TotalBidMatrixCalculationInput
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
-  - externalId: TaskDispatcherShopInput
-    space: '{{powerops_models}}'
+    version: "{{version}}"
+  - externalId: TaskDispatcherInput
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
-  - externalId: TaskDispatcherWaterInput
-    space: '{{powerops_models}}'
+    version: "{{version}}"
+  - externalId: ShopPartialBidMatrixCalculationInput
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
-  - externalId: PartialPostProcessingInput
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
-  - externalId: ShopPartialBidCalculationInput
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: Scenario
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"
+  - externalId: ScenarioSet
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
   - externalId: PreprocessorOutput
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
-  - externalId: WaterPartialBidCalculationOutput
-    space: '{{powerops_models}}'
+    version: "{{version}}"
+  - externalId: PartialBidMatrixCalculationInput
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"
+  - externalId: PartialBidMatrixCalculationOutput
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
   - externalId: SHOPTriggerOutput
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
-  - externalId: PartialPostProcessingOutput
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
-  - externalId: ShopPartialBidCalculationOutput
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: FunctionOutput
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
-  - externalId: TaskDispatcherWaterOutput
-    space: '{{powerops_models}}'
+    version: "{{version}}"
+  - externalId: TaskDispatcherOutput
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: TotalBidMatrixCalculationOutput
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
-  - externalId: TaskDispatcherShopOutput
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: BidDocument
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: BidDocumentDayAhead
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: BidDocumentAFRR
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: PowerAsset
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: Generator
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
-  - externalId: PriceAreaDayAhead
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
-  - externalId: WatercourseShop
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
-  - externalId: PriceAreaAsset
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: TurbineEfficiencyCurve
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
-  - externalId: Reservoir
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: Plant
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
-  - externalId: PlantShop
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
-  - externalId: Watercourse
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: PriceArea
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: GeneratorEfficiencyCurve
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: PriceAreaAFRR
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
-  - externalId: BidMethod
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
-  - externalId: BidMethodWaterValue
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
-  - externalId: BidMethodSHOPMultiScenario
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
-  - externalId: BidMethodCustom
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
-  - externalId: BidMethodDayAhead
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
-  - externalId: BidMethodAFRR
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
-  - externalId: BidMatrixRaw
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: BidMatrix
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
-  - externalId: CustomBidMatrix
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
-  - externalId: MultiScenarioMatrix
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
-  - externalId: MultiScenarioMatrixRaw
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
-  - externalId: BasicBidMatrix
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
-  - externalId: BasicBidMatrixRaw
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
-  - space: '{{powerops_models}}'
+    version: "{{version}}"
+  - space: "{{powerops_models}}"
     externalId: ShopObjectiveValue
-    version: '{{version}}'
+    version: "{{version}}"
     type: view
   - externalId: TaskDispatcherBenchmarkingInput
-    space: '{{powerops_models}}'
-    version: '{{version}}'
+    space: "{{powerops_models}}"
+    version: "{{version}}"
     type: view
   - externalId: TaskDispatcherBenchmarkingOutput
-    space: '{{powerops_models}}'
-    version: '{{version}}'
+    space: "{{powerops_models}}"
+    version: "{{version}}"
     type: view
   - externalId: BenchmarkingCollectorInput
-    space: '{{powerops_models}}'
-    version: '{{version}}'
+    space: "{{powerops_models}}"
+    version: "{{version}}"
     type: view
   - externalId: BenchmarkingCollectorOutput
-    space: '{{powerops_models}}'
-    version: '{{version}}'
+    space: "{{powerops_models}}"
+    version: "{{version}}"
     type: view
   - externalId: BidDocumentDayAheadSimple
-    space: '{{powerops_models}}'
-    version: '{{version}}'
+    space: "{{powerops_models}}"
+    version: "{{version}}"
     type: view
   - externalId: Case
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: Commands
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
-  - externalId: PriceProdCase
-    space: '{{powerops_models}}'
+    version: "{{version}}"
+  - externalId: PriceProduction
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
-  - externalId: SHOPResultPriceProd
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
+    version: "{{version}}"
   - externalId: SHOPTimeSeries
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"

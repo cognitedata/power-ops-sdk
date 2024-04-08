@@ -58,6 +58,8 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
+        process_id: str | list[str] | None = None,
+        process_id_prefix: str | None = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
@@ -65,8 +67,7 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         min_end_calculation: datetime.datetime | None = None,
         max_end_calculation: datetime.datetime | None = None,
         is_complete: bool | None = None,
-        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -78,6 +79,8 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
+            process_id: The process id to filter on.
+            process_id_prefix: The prefix of the process id to filter on.
             min_delivery_date: The minimum value of the delivery date to filter on.
             max_delivery_date: The maximum value of the delivery date to filter on.
             min_start_calculation: The minimum value of the start calculation to filter on.
@@ -85,8 +88,7 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
             min_end_calculation: The minimum value of the end calculation to filter on.
             max_end_calculation: The maximum value of the end calculation to filter on.
             is_complete: The is complete to filter on.
-            price_area: The price area to filter on.
-            method: The method to filter on.
+            bid_configuration: The bid configuration to filter on.
             total: The total to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -102,6 +104,8 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
             self._view_id,
             name,
             name_prefix,
+            process_id,
+            process_id_prefix,
             min_delivery_date,
             max_delivery_date,
             min_start_calculation,
@@ -109,8 +113,7 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
             min_end_calculation,
             max_end_calculation,
             is_complete,
-            price_area,
-            method,
+            bid_configuration,
             total,
             external_id_prefix,
             space,
@@ -231,16 +234,16 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_powerops_types", "calculationIssue"),
+                    dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models", "Alert", "1"),
+                    dm.ViewId("sp_powerops_models_temp", "Alert", "1"),
                 ),
                 (
                     self.partials_edge,
                     "partials",
-                    dm.DirectRelationReference("sp_powerops_types", "partialBid"),
+                    dm.DirectRelationReference("sp_powerops_types_temp", "partialBid"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models", "BidMatrix", "1"),
+                    dm.ViewId("sp_powerops_models_temp", "BidMatrix", "1"),
                 ),
             ],
         )
@@ -251,6 +254,8 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         properties: BidDocumentDayAheadTextFields | Sequence[BidDocumentDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
+        process_id: str | list[str] | None = None,
+        process_id_prefix: str | None = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
@@ -258,8 +263,7 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         min_end_calculation: datetime.datetime | None = None,
         max_end_calculation: datetime.datetime | None = None,
         is_complete: bool | None = None,
-        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -273,6 +277,8 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
             properties: The property to search, if nothing is passed all text fields will be searched.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
+            process_id: The process id to filter on.
+            process_id_prefix: The prefix of the process id to filter on.
             min_delivery_date: The minimum value of the delivery date to filter on.
             max_delivery_date: The maximum value of the delivery date to filter on.
             min_start_calculation: The minimum value of the start calculation to filter on.
@@ -280,8 +286,7 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
             min_end_calculation: The minimum value of the end calculation to filter on.
             max_end_calculation: The maximum value of the end calculation to filter on.
             is_complete: The is complete to filter on.
-            price_area: The price area to filter on.
-            method: The method to filter on.
+            bid_configuration: The bid configuration to filter on.
             total: The total to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -304,6 +309,8 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
             self._view_id,
             name,
             name_prefix,
+            process_id,
+            process_id_prefix,
             min_delivery_date,
             max_delivery_date,
             min_start_calculation,
@@ -311,8 +318,7 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
             min_end_calculation,
             max_end_calculation,
             is_complete,
-            price_area,
-            method,
+            bid_configuration,
             total,
             external_id_prefix,
             space,
@@ -335,6 +341,8 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         search_properties: BidDocumentDayAheadTextFields | Sequence[BidDocumentDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
+        process_id: str | list[str] | None = None,
+        process_id_prefix: str | None = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
@@ -342,8 +350,7 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         min_end_calculation: datetime.datetime | None = None,
         max_end_calculation: datetime.datetime | None = None,
         is_complete: bool | None = None,
-        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -366,6 +373,8 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         search_properties: BidDocumentDayAheadTextFields | Sequence[BidDocumentDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
+        process_id: str | list[str] | None = None,
+        process_id_prefix: str | None = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
@@ -373,8 +382,7 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         min_end_calculation: datetime.datetime | None = None,
         max_end_calculation: datetime.datetime | None = None,
         is_complete: bool | None = None,
-        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -396,6 +404,8 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         search_property: BidDocumentDayAheadTextFields | Sequence[BidDocumentDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
+        process_id: str | list[str] | None = None,
+        process_id_prefix: str | None = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
@@ -403,8 +413,7 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         min_end_calculation: datetime.datetime | None = None,
         max_end_calculation: datetime.datetime | None = None,
         is_complete: bool | None = None,
-        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -421,6 +430,8 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
             search_property: The text field to search in.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
+            process_id: The process id to filter on.
+            process_id_prefix: The prefix of the process id to filter on.
             min_delivery_date: The minimum value of the delivery date to filter on.
             max_delivery_date: The maximum value of the delivery date to filter on.
             min_start_calculation: The minimum value of the start calculation to filter on.
@@ -428,8 +439,7 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
             min_end_calculation: The minimum value of the end calculation to filter on.
             max_end_calculation: The maximum value of the end calculation to filter on.
             is_complete: The is complete to filter on.
-            price_area: The price area to filter on.
-            method: The method to filter on.
+            bid_configuration: The bid configuration to filter on.
             total: The total to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -453,6 +463,8 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
             self._view_id,
             name,
             name_prefix,
+            process_id,
+            process_id_prefix,
             min_delivery_date,
             max_delivery_date,
             min_start_calculation,
@@ -460,8 +472,7 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
             min_end_calculation,
             max_end_calculation,
             is_complete,
-            price_area,
-            method,
+            bid_configuration,
             total,
             external_id_prefix,
             space,
@@ -487,6 +498,8 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         search_property: BidDocumentDayAheadTextFields | Sequence[BidDocumentDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
+        process_id: str | list[str] | None = None,
+        process_id_prefix: str | None = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
@@ -494,8 +507,7 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         min_end_calculation: datetime.datetime | None = None,
         max_end_calculation: datetime.datetime | None = None,
         is_complete: bool | None = None,
-        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -511,6 +523,8 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
             search_property: The text field to search in.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
+            process_id: The process id to filter on.
+            process_id_prefix: The prefix of the process id to filter on.
             min_delivery_date: The minimum value of the delivery date to filter on.
             max_delivery_date: The maximum value of the delivery date to filter on.
             min_start_calculation: The minimum value of the start calculation to filter on.
@@ -518,8 +532,7 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
             min_end_calculation: The minimum value of the end calculation to filter on.
             max_end_calculation: The maximum value of the end calculation to filter on.
             is_complete: The is complete to filter on.
-            price_area: The price area to filter on.
-            method: The method to filter on.
+            bid_configuration: The bid configuration to filter on.
             total: The total to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -534,6 +547,8 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
             self._view_id,
             name,
             name_prefix,
+            process_id,
+            process_id_prefix,
             min_delivery_date,
             max_delivery_date,
             min_start_calculation,
@@ -541,8 +556,7 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
             min_end_calculation,
             max_end_calculation,
             is_complete,
-            price_area,
-            method,
+            bid_configuration,
             total,
             external_id_prefix,
             space,
@@ -563,6 +577,8 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
+        process_id: str | list[str] | None = None,
+        process_id_prefix: str | None = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
@@ -570,8 +586,7 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         min_end_calculation: datetime.datetime | None = None,
         max_end_calculation: datetime.datetime | None = None,
         is_complete: bool | None = None,
-        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -584,6 +599,8 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
+            process_id: The process id to filter on.
+            process_id_prefix: The prefix of the process id to filter on.
             min_delivery_date: The minimum value of the delivery date to filter on.
             max_delivery_date: The maximum value of the delivery date to filter on.
             min_start_calculation: The minimum value of the start calculation to filter on.
@@ -591,8 +608,7 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
             min_end_calculation: The minimum value of the end calculation to filter on.
             max_end_calculation: The maximum value of the end calculation to filter on.
             is_complete: The is complete to filter on.
-            price_area: The price area to filter on.
-            method: The method to filter on.
+            bid_configuration: The bid configuration to filter on.
             total: The total to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -616,6 +632,8 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
             self._view_id,
             name,
             name_prefix,
+            process_id,
+            process_id_prefix,
             min_delivery_date,
             max_delivery_date,
             min_start_calculation,
@@ -623,8 +641,7 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
             min_end_calculation,
             max_end_calculation,
             is_complete,
-            price_area,
-            method,
+            bid_configuration,
             total,
             external_id_prefix,
             space,
@@ -639,16 +656,16 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_powerops_types", "calculationIssue"),
+                    dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models", "Alert", "1"),
+                    dm.ViewId("sp_powerops_models_temp", "Alert", "1"),
                 ),
                 (
                     self.partials_edge,
                     "partials",
-                    dm.DirectRelationReference("sp_powerops_types", "partialBid"),
+                    dm.DirectRelationReference("sp_powerops_types_temp", "partialBid"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models", "BidMatrix", "1"),
+                    dm.ViewId("sp_powerops_models_temp", "BidMatrix", "1"),
                 ),
             ],
         )

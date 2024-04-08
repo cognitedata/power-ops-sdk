@@ -24,7 +24,6 @@ from ._core import (
 
 if TYPE_CHECKING:
     from ._mapping import Mapping, MappingGraphQL, MappingWrite
-    from ._watercourse_shop import WatercourseShop, WatercourseShopGraphQL, WatercourseShopWrite
 
 
 __all__ = [
@@ -39,12 +38,16 @@ __all__ = [
 ]
 
 
-ModelTemplateTextFields = Literal["version_", "shop_version", "model", "extra_files"]
-ModelTemplateFields = Literal["version_", "shop_version", "model", "cog_shop_files_config", "extra_files"]
+ModelTemplateTextFields = Literal["name", "version_", "shop_version", "model", "extra_files"]
+ModelTemplateFields = Literal[
+    "name", "version_", "shop_version", "penalty_limit", "model", "cog_shop_files_config", "extra_files"
+]
 
 _MODELTEMPLATE_PROPERTIES_BY_FIELD = {
+    "name": "name",
     "version_": "version",
     "shop_version": "shopVersion",
+    "penalty_limit": "penaltyLimit",
     "model": "model",
     "cog_shop_files_config": "cogShopFilesConfig",
     "extra_files": "extraFiles",
@@ -61,19 +64,21 @@ class ModelTemplateGraphQL(GraphQLCore, protected_namespaces=()):
         space: The space where the node is located.
         external_id: The external id of the model template.
         data_record: The data record of the model template node.
+        name: TODO
         version_: The version of the model
         shop_version: The version of SHOP to run
-        watercourse: The watercourse to run the model for
+        penalty_limit: TODO
         model: The shop model file to use as template before applying base mapping
         cog_shop_files_config: Configuration for in what order to load the various files into pyshop
         extra_files: Extra files related to a model template
         base_mappings: The base mappings for the model
     """
 
-    view_id = dm.ViewId("sp_powerops_models", "ModelTemplate", "1")
+    view_id = dm.ViewId("sp_powerops_models_temp", "ModelTemplate", "1")
+    name: Optional[str] = None
     version_: Optional[str] = Field(None, alias="version")
     shop_version: Optional[str] = Field(None, alias="shopVersion")
-    watercourse: Optional[WatercourseShopGraphQL] = Field(None, repr=False)
+    penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
     model: Union[str, None] = None
     cog_shop_files_config: Optional[list[dict]] = Field(None, alias="cogShopFilesConfig")
     extra_files: Optional[list[str]] = Field(None, alias="extraFiles")
@@ -90,7 +95,7 @@ class ModelTemplateGraphQL(GraphQLCore, protected_namespaces=()):
             )
         return values
 
-    @field_validator("watercourse", "base_mappings", mode="before")
+    @field_validator("base_mappings", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
             return value
@@ -110,9 +115,10 @@ class ModelTemplateGraphQL(GraphQLCore, protected_namespaces=()):
                 last_updated_time=self.data_record.last_updated_time,
                 created_time=self.data_record.created_time,
             ),
+            name=self.name,
             version_=self.version_,
             shop_version=self.shop_version,
-            watercourse=self.watercourse.as_read() if isinstance(self.watercourse, GraphQLCore) else self.watercourse,
+            penalty_limit=self.penalty_limit,
             model=self.model,
             cog_shop_files_config=self.cog_shop_files_config,
             extra_files=self.extra_files,
@@ -128,9 +134,10 @@ class ModelTemplateGraphQL(GraphQLCore, protected_namespaces=()):
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
+            name=self.name,
             version_=self.version_,
             shop_version=self.shop_version,
-            watercourse=self.watercourse.as_write() if isinstance(self.watercourse, DomainModel) else self.watercourse,
+            penalty_limit=self.penalty_limit,
             model=self.model,
             cog_shop_files_config=self.cog_shop_files_config,
             extra_files=self.extra_files,
@@ -150,9 +157,10 @@ class ModelTemplate(DomainModel, protected_namespaces=()):
         space: The space where the node is located.
         external_id: The external id of the model template.
         data_record: The data record of the model template node.
+        name: TODO
         version_: The version of the model
         shop_version: The version of SHOP to run
-        watercourse: The watercourse to run the model for
+        penalty_limit: TODO
         model: The shop model file to use as template before applying base mapping
         cog_shop_files_config: Configuration for in what order to load the various files into pyshop
         extra_files: Extra files related to a model template
@@ -161,11 +169,12 @@ class ModelTemplate(DomainModel, protected_namespaces=()):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "ModelTemplate"
+        "sp_powerops_types_temp", "ModelTemplate"
     )
+    name: str
     version_: Optional[str] = Field(None, alias="version")
     shop_version: str = Field(alias="shopVersion")
-    watercourse: Union[WatercourseShop, str, dm.NodeId, None] = Field(None, repr=False)
+    penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
     model: Union[str, None] = None
     cog_shop_files_config: Optional[list[dict]] = Field(None, alias="cogShopFilesConfig")
     extra_files: Optional[list[str]] = Field(None, alias="extraFiles")
@@ -179,9 +188,10 @@ class ModelTemplate(DomainModel, protected_namespaces=()):
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
+            name=self.name,
             version_=self.version_,
             shop_version=self.shop_version,
-            watercourse=self.watercourse.as_write() if isinstance(self.watercourse, DomainModel) else self.watercourse,
+            penalty_limit=self.penalty_limit,
             model=self.model,
             cog_shop_files_config=self.cog_shop_files_config,
             extra_files=self.extra_files,
@@ -210,9 +220,10 @@ class ModelTemplateWrite(DomainModelWrite, protected_namespaces=()):
         space: The space where the node is located.
         external_id: The external id of the model template.
         data_record: The data record of the model template node.
+        name: TODO
         version_: The version of the model
         shop_version: The version of SHOP to run
-        watercourse: The watercourse to run the model for
+        penalty_limit: TODO
         model: The shop model file to use as template before applying base mapping
         cog_shop_files_config: Configuration for in what order to load the various files into pyshop
         extra_files: Extra files related to a model template
@@ -221,11 +232,12 @@ class ModelTemplateWrite(DomainModelWrite, protected_namespaces=()):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "ModelTemplate"
+        "sp_powerops_types_temp", "ModelTemplate"
     )
+    name: str
     version_: Optional[str] = Field(None, alias="version")
     shop_version: str = Field(alias="shopVersion")
-    watercourse: Union[WatercourseShopWrite, str, dm.NodeId, None] = Field(None, repr=False)
+    penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
     model: Union[str, None] = None
     cog_shop_files_config: Optional[list[dict]] = Field(None, alias="cogShopFilesConfig")
     extra_files: Optional[list[str]] = Field(None, alias="extraFiles")
@@ -245,10 +257,13 @@ class ModelTemplateWrite(DomainModelWrite, protected_namespaces=()):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            ModelTemplate, dm.ViewId("sp_powerops_models", "ModelTemplate", "1")
+            ModelTemplate, dm.ViewId("sp_powerops_models_temp", "ModelTemplate", "1")
         )
 
         properties: dict[str, Any] = {}
+
+        if self.name is not None:
+            properties["name"] = self.name
 
         if self.version_ is not None or write_none:
             properties["version"] = self.version_
@@ -256,11 +271,8 @@ class ModelTemplateWrite(DomainModelWrite, protected_namespaces=()):
         if self.shop_version is not None:
             properties["shopVersion"] = self.shop_version
 
-        if self.watercourse is not None:
-            properties["watercourse"] = {
-                "space": self.space if isinstance(self.watercourse, str) else self.watercourse.space,
-                "externalId": self.watercourse if isinstance(self.watercourse, str) else self.watercourse.external_id,
-            }
+        if self.penalty_limit is not None or write_none:
+            properties["penaltyLimit"] = self.penalty_limit
 
         if self.model is not None:
             properties["model"] = self.model
@@ -287,7 +299,7 @@ class ModelTemplateWrite(DomainModelWrite, protected_namespaces=()):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_powerops_types", "ModelTemplate.baseMappings")
+        edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "ModelTemplate.baseMappings")
         for base_mapping in self.base_mappings or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
@@ -298,10 +310,6 @@ class ModelTemplateWrite(DomainModelWrite, protected_namespaces=()):
                 write_none=write_none,
                 allow_version_increase=allow_version_increase,
             )
-            resources.extend(other_resources)
-
-        if isinstance(self.watercourse, DomainModelWrite):
-            other_resources = self.watercourse._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
 
         return resources
@@ -349,16 +357,25 @@ class ModelTemplateApplyList(ModelTemplateWriteList): ...
 
 def _create_model_template_filter(
     view_id: dm.ViewId,
+    name: str | list[str] | None = None,
+    name_prefix: str | None = None,
     version_: str | list[str] | None = None,
     version_prefix: str | None = None,
     shop_version: str | list[str] | None = None,
     shop_version_prefix: str | None = None,
-    watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    min_penalty_limit: float | None = None,
+    max_penalty_limit: float | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
+    if isinstance(name, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
+    if name and isinstance(name, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
+    if name_prefix is not None:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
     if isinstance(version_, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("version"), value=version_))
     if version_ and isinstance(version_, list):
@@ -371,32 +388,9 @@ def _create_model_template_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("shopVersion"), values=shop_version))
     if shop_version_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("shopVersion"), value=shop_version_prefix))
-    if watercourse and isinstance(watercourse, str):
+    if min_penalty_limit is not None or max_penalty_limit is not None:
         filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("watercourse"),
-                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": watercourse},
-            )
-        )
-    if watercourse and isinstance(watercourse, tuple):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("watercourse"), value={"space": watercourse[0], "externalId": watercourse[1]}
-            )
-        )
-    if watercourse and isinstance(watercourse, list) and isinstance(watercourse[0], str):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("watercourse"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in watercourse],
-            )
-        )
-    if watercourse and isinstance(watercourse, list) and isinstance(watercourse[0], tuple):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("watercourse"),
-                values=[{"space": item[0], "externalId": item[1]} for item in watercourse],
-            )
+            dm.filters.Range(view_id.as_property_ref("penaltyLimit"), gte=min_penalty_limit, lte=max_penalty_limit)
         )
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))

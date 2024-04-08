@@ -13,7 +13,10 @@ from cognite.powerops.utils.cdf import get_cognite_client
 from cognite.powerops.utils.serialization import chdir
 
 REPO_ROOT = Path(__file__).parent.parent
-INSTANCE_SPACE = "sp_powerops_instance"
+# TODO: update space to not be temp
+INSTANCE_SPACE = "sp_powerops_instance_temp"
+MODEL_SPACE = "sp_powerops_models_temp"
+TYPE_SPACE = "sp_powerops_types_temp"
 # TODO: consider adding a separate space for mock data
 
 
@@ -24,7 +27,7 @@ def main():
 
     print(f"Connected to {client.config.project}")
 
-    data_model_ids = [dm.DataModelId("sp_powerops_models", "all_PowerOps", "1")]
+    data_model_ids = [dm.DataModelId(MODEL_SPACE, "all_PowerOps", "1")]
     node_count = 5
     for data_model_id in data_model_ids:
         data_models = client.data_modeling.data_models.retrieve(data_model_id, inline_views=True)
@@ -34,19 +37,19 @@ def main():
         data_model = data_models.latest_version()
         leaf_views_by_parent = MockGenerator._to_leaf_children_by_parent(data_model.views)
 
-        mock_generator = MockGenerator(data_model.views, instance_space=INSTANCE_SPACE, seed=42, skip_interfaces=True)
+        mock_generator = MockGenerator(data_model.views, instance_space=INSTANCE_SPACE, seed=42, skip_interfaces=False)
         mock_data = mock_generator.generate_mock_data(node_count=node_count)
         print(f"Generated {len(mock_data.nodes)} nodes for {len(data_model.views)} views.")
 
         # Custom fix of the Scenario/BidMatrix data as it filters on a property which the PygenMockGenerator does not set.
         for view_data in mock_data:
             if view_data.view_id in {
-                dm.ViewId("sp_powerops_models", "BidMatrixRaw", "1"),
-                dm.ViewId("sp_powerops_models", "MultiScenarioMatrix", "1"),
-                dm.ViewId("sp_powerops_models", "MultiScenarioMatrixRaw", "1"),
-                dm.ViewId("sp_powerops_models", "CustomBidMatrix", "1"),
-                dm.ViewId("sp_powerops_models", "BasicBidMatrixRaw", "1"),
-                dm.ViewId("sp_powerops_models", "BasicBidMatrix", "1"),
+                dm.ViewId(MODEL_SPACE, "BidMatrixRaw", "1"),
+                dm.ViewId(MODEL_SPACE, "MultiScenarioMatrix", "1"),
+                dm.ViewId(MODEL_SPACE, "MultiScenarioMatrixRaw", "1"),
+                dm.ViewId(MODEL_SPACE, "CustomBidMatrix", "1"),
+                dm.ViewId(MODEL_SPACE, "BasicBidMatrixRaw", "1"),
+                dm.ViewId(MODEL_SPACE, "BasicBidMatrix", "1"),
             }:
                 is_processed = False if "Raw" in view_data.view_id.external_id else True
                 for node in view_data.node:
@@ -83,8 +86,8 @@ def main():
                 expected_node_count = node_count
 
             if view_id in {
-                dm.ViewId("sp_powerops_models", "FunctionInput", "1"),
-                dm.ViewId("sp_powerops_models", "FunctionOutput", "1"),
+                dm.ViewId(MODEL_SPACE, "FunctionInput", "1"),
+                dm.ViewId(MODEL_SPACE, "FunctionOutput", "1"),
             }:
                 # This is an exception, the input and output stores data in the same container and has identical filtering.
                 # So Input will retrieve input + output and output will retrieve input + output.
@@ -93,8 +96,7 @@ def main():
 
             if len(nodes) != expected_node_count:
                 print(f"Print unexpected number of nodes for {view_id}: {len(nodes)} instead of {expected_node_count}.")
-                if False:
-                    print(f"Expected {expected_node_count} nodes: {expected_nodes}")
+                print(f"Expected {expected_node_count} nodes: {expected_nodes}")
             else:
                 correct_count += 1
                 # print(f"Read {len(nodes)} nodes for {view_id} as expected.")
@@ -136,6 +138,37 @@ def clean_instances():
     if files:
         client.files.delete(id=[file.id for file in files])
         print(f"Deleted {len(files)} files. Elapsed time {time.perf_counter() - t0:.2f} seconds")
+
+
+def clean_containers_views_data_models():
+    with chdir(REPO_ROOT):
+        os.environ["SETTINGS_FILES"] = "settings.toml;.secrets.toml"
+        client = get_cognite_client()
+    t0 = time.perf_counter()
+    spaces = [MODEL_SPACE, INSTANCE_SPACE, TYPE_SPACE]
+
+    for space in spaces:
+        views = client.data_modeling.views.list(space=space, limit=-1, all_versions=True).as_ids()
+
+        if views:
+            print(f"Deleting {len(views)} views in {space}")
+            client.data_modeling.views.delete(views)
+        else:
+            print(f"No views found in {space}")
+
+        data_models = client.data_modeling.data_models.list(space=space, limit=-1, all_versions=True).as_ids()
+        if data_models:
+            print(f"Deleting {len(data_models)} data models in {space}")
+            client.data_modeling.data_models.delete(data_models)
+        else:
+            print(f"No data models found in {space}")
+
+        containers = client.data_modeling.containers.list(space=space, limit=-1).as_ids()
+        if containers:
+            print(f"Deleting {len(containers)} containers in {space}")
+            client.data_modeling.containers.delete(containers)
+        else:
+            print(f"No containers found in {space}")
 
 
 if __name__ == "__main__":

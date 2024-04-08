@@ -1,0 +1,159 @@
+space: "{{powerops_models}}"
+externalId: WaterValueBasedPartialBidConfiguration
+name: WaterValueBasedPartialBidConfiguration
+description: A description of the WaterValueBasedPartialBidConfiguration
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{powerops_models}}"
+          externalId: PartialBidConfiguration
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{powerops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: WaterValueBasedPartialBidConfiguration
+          space: "{{powerops_type_space}}"
+implements:
+  - space: "{{powerops_models}}"
+    externalId: PartialBidConfiguration
+    version: "{{version}}"
+    type: view
+version: "{{version}}"
+properties:
+  plant:
+    container:
+      space: "{{powerops_models}}"
+      externalId: PartialBidConfiguration
+      type: container
+    containerPropertyIdentifier: powerAsset
+    name: plant
+    description: TODO description
+    source:
+      space: "{{powerops_models}}"
+      externalId: Plant
+      version: "{{version}}"
+      type: view
+  # headLossFactor:
+  #   container:
+  #     space: "{{powerops_models}}"
+  #     externalId: PartialWaterValueBased
+  #     type: container
+  #   containerPropertyIdentifier: headLossFactor
+  #   name: headLossFactor
+  #   description: TODO definition
+  # connectionLosses:
+  #   container:
+  #     space: "{{powerops_models}}"
+  #     externalId: PartialWaterValueBased
+  #     type: container
+  #   containerPropertyIdentifier: connectionLosses
+  #   name: connectionLosses
+  #   description: TODO definition
+  # outletLevel:
+  #   container:
+  #     space: "{{powerops_models}}"
+  #     externalId: PartialWaterValueBased
+  #     type: container
+  #   containerPropertyIdentifier: outletLevel
+  #   name: outletLevel
+  #   description: TODO definition
+  # productionMax:
+  #   container:
+  #     space: "{{powerops_models}}"
+  #     externalId: PartialWaterValueBased
+  #     type: container
+  #   containerPropertyIdentifier: productionMax
+  #   name: productionMax
+  #   description: TODO definition
+  # productionMin:
+  #   container:
+  #     space: "{{powerops_models}}"
+  #     externalId: PartialWaterValueBased
+  #     type: container
+  #   containerPropertyIdentifier: productionMin
+  #   name: productionMin
+  #   description: TODO definition
+  # penstockHeadLossFactors:
+  #   container:
+  #     space: "{{powerops_models}}"
+  #     externalId: PartialWaterValueBased
+  #     type: container
+  #   containerPropertyIdentifier: penstockHeadLossFactors
+  #   name: penstockHeadLossFactors
+  #   description: TODO definition
+  # productionMaxTimeSeries:
+  #   container:
+  #     space: "{{powerops_models}}"
+  #     externalId: PartialWaterValueBased
+  #     type: container
+  #   containerPropertyIdentifier: productionMaxTimeSeries
+  #   name: productionMaxTimeSeries
+  #   description: TODO definition
+  # productionMinTimeSeries:
+  #   container:
+  #     space: "{{powerops_models}}"
+  #     externalId: PartialWaterValueBased
+  #     type: container
+  #   containerPropertyIdentifier: productionMinTimeSeries
+  #   name: productionMinTimeSeries
+  #   description: TODO definition
+  # waterValueTimeSeries:
+  #   container:
+  #     space: "{{powerops_models}}"
+  #     externalId: PartialWaterValueBased
+  #     type: container
+  #   containerPropertyIdentifier: waterValueTimeSeries
+  #   name: waterValueTimeSeries
+  #   description: TODO definition
+  # feedingFeeTimeSeries:
+  #   container:
+  #     space: "{{powerops_models}}"
+  #     externalId: PartialWaterValueBased
+  #     type: container
+  #   containerPropertyIdentifier: feedingFeeTimeSeries
+  #   name: feedingFeeTimeSeries
+  #   description: TODO definition
+  # outletLevelTimeSeries:
+  #   container:
+  #     space: "{{powerops_models}}"
+  #     externalId: PartialWaterValueBased
+  #     type: container
+  #   containerPropertyIdentifier: outletLevelTimeSeries
+  #   name: outletLevelTimeSeries
+  #   description: TODO definition
+  # inletLevelTimeSeries:
+  #   container:
+  #     space: "{{powerops_models}}"
+  #     externalId: PartialWaterValueBased
+  #     type: container
+  #   containerPropertyIdentifier: inletLevelTimeSeries
+  #   name: inletLevelTimeSeries
+  #   description: TODO definition
+  # headDirectTimeSeries:
+  #   container:
+  #     space: "{{powerops_models}}"
+  #     externalId: PartialWaterValueBased
+  #     type: container
+  #   containerPropertyIdentifier: headDirectTimeSeries
+  #   name: headDirectTimeSeries
+  #   description: TODO definition
+  # generators:
+  #   type:
+  #     space: "{{powerops_type_space}}"
+  #     externalId: WaterValueBasedPartialBidConfiguration.generators
+  #   source:
+  #     space: "{{powerops_models}}"
+  #     externalId: Generator
+  #     version: "{{version}}"
+  #     type: view
+  #   direction: outwards
+  #   name: generators
+  #   description: TODO definition
+  #   connectionType: multi_edge_connection

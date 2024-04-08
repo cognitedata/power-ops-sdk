@@ -8,19 +8,31 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: BidConfigurationShop
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: BidConfigurationWater
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
   - externalId: MarketConfiguration
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
+  - externalId: PriceArea
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PartialBidConfiguration
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: ShopBasedPartialBidConfiguration
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: WaterValueBasedPartialBidConfiguration
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
   - externalId: Scenario
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: ScenarioSet
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
@@ -32,27 +44,7 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: Watercourse
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: WatercourseShop
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: Plant
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: PlantShop
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
   - externalId: Generator
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: Reservoir
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
@@ -64,27 +56,15 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: BidMethodDayAhead
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: BidMethodWaterValue
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: BidMethodSHOPMultiScenario
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: PriceArea
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: BidMethod
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
   - externalId: Commands
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PowerAsset
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: Plant
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"

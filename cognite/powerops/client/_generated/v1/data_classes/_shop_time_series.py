@@ -64,7 +64,7 @@ class SHOPTimeSeriesGraphQL(GraphQLCore):
         timeseries: Timeseries object from output of SHOP stored as a timeseries in cdf
     """
 
-    view_id = dm.ViewId("sp_powerops_models", "SHOPTimeSeries", "1")
+    view_id = dm.ViewId("sp_powerops_models_temp", "SHOPTimeSeries", "1")
     object_type: Optional[str] = Field(None, alias="objectType")
     object_name: Optional[str] = Field(None, alias="objectName")
     attribute_name: Optional[str] = Field(None, alias="attributeName")
@@ -129,7 +129,7 @@ class SHOPTimeSeries(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "SHOPTimeSeries"
+        "sp_powerops_types_temp", "SHOPTimeSeries"
     )
     object_type: Optional[str] = Field(None, alias="objectType")
     object_name: Optional[str] = Field(None, alias="objectName")
@@ -175,7 +175,7 @@ class SHOPTimeSeriesWrite(DomainModelWrite):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "SHOPTimeSeries"
+        "sp_powerops_types_temp", "SHOPTimeSeries"
     )
     object_type: Optional[str] = Field(None, alias="objectType")
     object_name: Optional[str] = Field(None, alias="objectName")
@@ -194,7 +194,7 @@ class SHOPTimeSeriesWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            SHOPTimeSeries, dm.ViewId("sp_powerops_models", "SHOPTimeSeries", "1")
+            SHOPTimeSeries, dm.ViewId("sp_powerops_models_temp", "SHOPTimeSeries", "1")
         )
 
         properties: dict[str, Any] = {}

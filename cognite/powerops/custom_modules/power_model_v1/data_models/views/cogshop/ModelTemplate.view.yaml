@@ -1,4 +1,4 @@
-space: '{{powerops_models}}'
+space: "{{powerops_models}}"
 externalId: ModelTemplate
 name: ModelTemplate
 description: The template for SHOP models
@@ -6,26 +6,34 @@ filter:
   and:
     - hasData:
         - type: container
-          space: '{{powerops_models}}'
+          space: "{{powerops_models}}"
           externalId: ModelTemplate
     - equals:
         property:
           - node
           - space
-        value: '{{powerops_instance_space}}'
+        value: "{{powerops_instance_space}}"
     - equals:
         property:
           - node
           - type
         value:
           externalId: ModelTemplate
-          space: '{{powerops_type_space}}'
+          space: "{{powerops_type_space}}"
 implements: []
-version: '{{version}}'
+version: "{{version}}"
 properties:
+  name:
+    container:
+      space: "{{powerops_models}}"
+      externalId: ModelTemplate
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: TODO
   version:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: ModelTemplate
       type: container
     containerPropertyIdentifier: version
@@ -33,28 +41,23 @@ properties:
     description: The version of the model
   shopVersion:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: ModelTemplate
       type: container
     containerPropertyIdentifier: shopVersion
     name: shopVersion
     description: The version of SHOP to run
-  watercourse:
+  penaltyLimit:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: ModelTemplate
       type: container
-    containerPropertyIdentifier: watercourse
-    name: watercourse
-    description: The watercourse to run the model for
-    source:
-      space: '{{powerops_models}}'
-      externalId: WatercourseShop
-      version: '{{version}}'
-      type: view
+    containerPropertyIdentifier: penaltyLimit
+    name: penaltyLimit
+    description: TODO
   model:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: ModelTemplate
       type: container
     containerPropertyIdentifier: model
@@ -62,7 +65,7 @@ properties:
     description: The shop model file to use as template before applying base mapping
   cogShopFilesConfig:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: ModelTemplate
       type: container
     containerPropertyIdentifier: cogShopFilesConfig
@@ -70,7 +73,7 @@ properties:
     description: Configuration for in what order to load the various files into pyshop
   extraFiles:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: ModelTemplate
       type: container
     containerPropertyIdentifier: extraFiles
@@ -78,12 +81,12 @@ properties:
     description: Extra files related to a model template
   baseMappings:
     type:
-      space: '{{powerops_type_space}}'
+      space: "{{powerops_type_space}}"
       externalId: ModelTemplate.baseMappings
     source:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: Mapping
-      version: '{{version}}'
+      version: "{{version}}"
       type: view
     direction: outwards
     name: baseMappings

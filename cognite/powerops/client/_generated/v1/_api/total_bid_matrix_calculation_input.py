@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Sequence
 from typing import overload
 import warnings
@@ -63,6 +64,9 @@ class TotalBidMatrixCalculationInputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
+        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_bid_date: datetime.date | None = None,
+        max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -79,6 +83,9 @@ class TotalBidMatrixCalculationInputAPI(
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
+            bid_configuration: The bid configuration to filter on.
+            min_bid_date: The minimum value of the bid date to filter on.
+            max_bid_date: The maximum value of the bid date to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of total bid matrix calculation inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -99,6 +106,9 @@ class TotalBidMatrixCalculationInputAPI(
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
+            bid_configuration,
+            min_bid_date,
+            max_bid_date,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -222,9 +232,9 @@ class TotalBidMatrixCalculationInputAPI(
                 (
                     self.partial_bid_matrices_edge,
                     "partial_bid_matrices",
-                    dm.DirectRelationReference("sp_powerops_types", "BidMatrix"),
+                    dm.DirectRelationReference("sp_powerops_types_temp", "BidMatrix"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models", "BidMatrix", "1"),
+                    dm.ViewId("sp_powerops_models_temp", "BidMatrix", "1"),
                 ),
             ],
         )
@@ -243,6 +253,9 @@ class TotalBidMatrixCalculationInputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
+        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_bid_date: datetime.date | None = None,
+        max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -261,6 +274,9 @@ class TotalBidMatrixCalculationInputAPI(
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
+            bid_configuration: The bid configuration to filter on.
+            min_bid_date: The minimum value of the bid date to filter on.
+            max_bid_date: The maximum value of the bid date to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of total bid matrix calculation inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -288,6 +304,9 @@ class TotalBidMatrixCalculationInputAPI(
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
+            bid_configuration,
+            min_bid_date,
+            max_bid_date,
             external_id_prefix,
             space,
             filter,
@@ -319,6 +338,9 @@ class TotalBidMatrixCalculationInputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
+        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_bid_date: datetime.date | None = None,
+        max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -348,6 +370,9 @@ class TotalBidMatrixCalculationInputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
+        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_bid_date: datetime.date | None = None,
+        max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -376,6 +401,9 @@ class TotalBidMatrixCalculationInputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
+        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_bid_date: datetime.date | None = None,
+        max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -397,6 +425,9 @@ class TotalBidMatrixCalculationInputAPI(
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
+            bid_configuration: The bid configuration to filter on.
+            min_bid_date: The minimum value of the bid date to filter on.
+            max_bid_date: The maximum value of the bid date to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of total bid matrix calculation inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -425,6 +456,9 @@ class TotalBidMatrixCalculationInputAPI(
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
+            bid_configuration,
+            min_bid_date,
+            max_bid_date,
             external_id_prefix,
             space,
             filter,
@@ -457,6 +491,9 @@ class TotalBidMatrixCalculationInputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
+        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_bid_date: datetime.date | None = None,
+        max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -477,6 +514,9 @@ class TotalBidMatrixCalculationInputAPI(
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
+            bid_configuration: The bid configuration to filter on.
+            min_bid_date: The minimum value of the bid date to filter on.
+            max_bid_date: The maximum value of the bid date to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of total bid matrix calculation inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -496,6 +536,9 @@ class TotalBidMatrixCalculationInputAPI(
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
+            bid_configuration,
+            min_bid_date,
+            max_bid_date,
             external_id_prefix,
             space,
             filter,
@@ -521,6 +564,9 @@ class TotalBidMatrixCalculationInputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
+        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_bid_date: datetime.date | None = None,
+        max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -538,6 +584,9 @@ class TotalBidMatrixCalculationInputAPI(
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
+            bid_configuration: The bid configuration to filter on.
+            min_bid_date: The minimum value of the bid date to filter on.
+            max_bid_date: The maximum value of the bid date to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of total bid matrix calculation inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -566,6 +615,9 @@ class TotalBidMatrixCalculationInputAPI(
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
+            bid_configuration,
+            min_bid_date,
+            max_bid_date,
             external_id_prefix,
             space,
             filter,
@@ -579,9 +631,9 @@ class TotalBidMatrixCalculationInputAPI(
                 (
                     self.partial_bid_matrices_edge,
                     "partial_bid_matrices",
-                    dm.DirectRelationReference("sp_powerops_types", "BidMatrix"),
+                    dm.DirectRelationReference("sp_powerops_types_temp", "BidMatrix"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models", "BidMatrix", "1"),
+                    dm.ViewId("sp_powerops_models_temp", "BidMatrix", "1"),
                 ),
             ],
         )

@@ -29,28 +29,16 @@ implements:
     type: view
 version: "{{version}}"
 properties:
-  priceArea:
-    container:
-      space: "{{powerops_models}}"
-      externalId: BidDocument
-      type: container
-    containerPropertyIdentifier: priceArea
-    name: priceArea
-    source:
-      space: "{{powerops_models}}"
-      externalId: PriceArea
-      version: "{{version}}"
-      type: view
-  method:
+  bidConfiguration:
     container:
       space: "{{powerops_models}}"
       externalId: BidDocumentDayAhead
       type: container
-    containerPropertyIdentifier: method
-    name: method
+    containerPropertyIdentifier: bidConfiguration
+    name: bidConfiguration
     source:
       space: "{{powerops_models}}"
-      externalId: BidMethodDayAhead
+      externalId: BidConfiguration
       version: "{{version}}"
       type: view
   total:

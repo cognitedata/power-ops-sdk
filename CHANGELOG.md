@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.92.0] - 2024-04-08
+### Changed
+* `v1` data model updates for enablement of multi method bid calculation
+
 ## [0.91.3] - 2024-03-21
 ### Added
 * Regenerated the SDK with the latest version of `pygen` to get GraphQL feature for querying and parsing responses from cdf

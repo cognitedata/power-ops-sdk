@@ -24,6 +24,12 @@ from ._core import (
 
 if TYPE_CHECKING:
     from ._alert import Alert, AlertGraphQL, AlertWrite
+    from ._partial_bid_configuration import (
+        PartialBidConfiguration,
+        PartialBidConfigurationGraphQL,
+        PartialBidConfigurationWrite,
+    )
+    from ._power_asset import PowerAsset, PowerAssetGraphQL, PowerAssetWrite
 
 
 __all__ = [
@@ -38,15 +44,12 @@ __all__ = [
 ]
 
 
-BidMatrixTextFields = Literal["resource_cost", "matrix", "asset_type", "asset_id"]
-BidMatrixFields = Literal["resource_cost", "matrix", "asset_type", "asset_id", "is_processed"]
+BidMatrixTextFields = Literal["matrix", "state"]
+BidMatrixFields = Literal["matrix", "state"]
 
 _BIDMATRIX_PROPERTIES_BY_FIELD = {
-    "resource_cost": "resourceCost",
     "matrix": "matrix",
-    "asset_type": "assetType",
-    "asset_id": "assetId",
-    "is_processed": "isProcessed",
+    "state": "state",
 }
 
 
@@ -60,20 +63,20 @@ class BidMatrixGraphQL(GraphQLCore):
         space: The space where the node is located.
         external_id: The external id of the bid matrix.
         data_record: The data record of the bid matrix node.
-        resource_cost: The resource cost field.
         matrix: The matrix field.
-        asset_type: The asset type field.
-        asset_id: The asset id field.
-        is_processed: Whether the bid matrix has been processed by the bid matrix processor or not
-        alerts: The alert field.
+        power_asset: The power asset field.
+        state: The state field.
+        partial_bid_configuration: The partial bid configuration field.
+        alerts: An array of calculation level Alerts.
     """
 
-    view_id = dm.ViewId("sp_powerops_models", "BidMatrix", "1")
-    resource_cost: Optional[str] = Field(None, alias="resourceCost")
+    view_id = dm.ViewId("sp_powerops_models_temp", "BidMatrix", "1")
     matrix: Union[str, None] = None
-    asset_type: Optional[str] = Field(None, alias="assetType")
-    asset_id: Optional[str] = Field(None, alias="assetId")
-    is_processed: Optional[bool] = Field(None, alias="isProcessed")
+    power_asset: Optional[PowerAssetGraphQL] = Field(None, repr=False, alias="powerAsset")
+    state: Optional[str] = None
+    partial_bid_configuration: Optional[PartialBidConfigurationGraphQL] = Field(
+        None, repr=False, alias="partialBidConfiguration"
+    )
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
 
     @model_validator(mode="before")
@@ -87,7 +90,7 @@ class BidMatrixGraphQL(GraphQLCore):
             )
         return values
 
-    @field_validator("alerts", mode="before")
+    @field_validator("power_asset", "partial_bid_configuration", "alerts", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
             return value
@@ -107,11 +110,14 @@ class BidMatrixGraphQL(GraphQLCore):
                 last_updated_time=self.data_record.last_updated_time,
                 created_time=self.data_record.created_time,
             ),
-            resource_cost=self.resource_cost,
             matrix=self.matrix,
-            asset_type=self.asset_type,
-            asset_id=self.asset_id,
-            is_processed=self.is_processed,
+            power_asset=self.power_asset.as_read() if isinstance(self.power_asset, GraphQLCore) else self.power_asset,
+            state=self.state,
+            partial_bid_configuration=(
+                self.partial_bid_configuration.as_read()
+                if isinstance(self.partial_bid_configuration, GraphQLCore)
+                else self.partial_bid_configuration
+            ),
             alerts=[alert.as_read() if isinstance(alert, GraphQLCore) else alert for alert in self.alerts or []],
         )
 
@@ -121,11 +127,14 @@ class BidMatrixGraphQL(GraphQLCore):
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
-            resource_cost=self.resource_cost,
             matrix=self.matrix,
-            asset_type=self.asset_type,
-            asset_id=self.asset_id,
-            is_processed=self.is_processed,
+            power_asset=self.power_asset.as_write() if isinstance(self.power_asset, DomainModel) else self.power_asset,
+            state=self.state,
+            partial_bid_configuration=(
+                self.partial_bid_configuration.as_write()
+                if isinstance(self.partial_bid_configuration, DomainModel)
+                else self.partial_bid_configuration
+            ),
             alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
         )
 
@@ -139,21 +148,21 @@ class BidMatrix(DomainModel):
         space: The space where the node is located.
         external_id: The external id of the bid matrix.
         data_record: The data record of the bid matrix node.
-        resource_cost: The resource cost field.
         matrix: The matrix field.
-        asset_type: The asset type field.
-        asset_id: The asset id field.
-        is_processed: Whether the bid matrix has been processed by the bid matrix processor or not
-        alerts: The alert field.
+        power_asset: The power asset field.
+        state: The state field.
+        partial_bid_configuration: The partial bid configuration field.
+        alerts: An array of calculation level Alerts.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
-    resource_cost: Optional[str] = Field(None, alias="resourceCost")
     matrix: Union[str, None] = None
-    asset_type: Optional[str] = Field(None, alias="assetType")
-    asset_id: Optional[str] = Field(None, alias="assetId")
-    is_processed: Optional[bool] = Field(None, alias="isProcessed")
+    power_asset: Union[PowerAsset, str, dm.NodeId, None] = Field(None, repr=False, alias="powerAsset")
+    state: str
+    partial_bid_configuration: Union[PartialBidConfiguration, str, dm.NodeId, None] = Field(
+        None, repr=False, alias="partialBidConfiguration"
+    )
     alerts: Union[list[Alert], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
     def as_write(self) -> BidMatrixWrite:
@@ -162,11 +171,14 @@ class BidMatrix(DomainModel):
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
-            resource_cost=self.resource_cost,
             matrix=self.matrix,
-            asset_type=self.asset_type,
-            asset_id=self.asset_id,
-            is_processed=self.is_processed,
+            power_asset=self.power_asset.as_write() if isinstance(self.power_asset, DomainModel) else self.power_asset,
+            state=self.state,
+            partial_bid_configuration=(
+                self.partial_bid_configuration.as_write()
+                if isinstance(self.partial_bid_configuration, DomainModel)
+                else self.partial_bid_configuration
+            ),
             alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
         )
 
@@ -189,21 +201,21 @@ class BidMatrixWrite(DomainModelWrite):
         space: The space where the node is located.
         external_id: The external id of the bid matrix.
         data_record: The data record of the bid matrix node.
-        resource_cost: The resource cost field.
         matrix: The matrix field.
-        asset_type: The asset type field.
-        asset_id: The asset id field.
-        is_processed: Whether the bid matrix has been processed by the bid matrix processor or not
-        alerts: The alert field.
+        power_asset: The power asset field.
+        state: The state field.
+        partial_bid_configuration: The partial bid configuration field.
+        alerts: An array of calculation level Alerts.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
-    resource_cost: Optional[str] = Field(None, alias="resourceCost")
     matrix: Union[str, None] = None
-    asset_type: Optional[str] = Field(None, alias="assetType")
-    asset_id: Optional[str] = Field(None, alias="assetId")
-    is_processed: Optional[bool] = Field(None, alias="isProcessed")
+    power_asset: Union[PowerAssetWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="powerAsset")
+    state: str
+    partial_bid_configuration: Union[PartialBidConfigurationWrite, str, dm.NodeId, None] = Field(
+        None, repr=False, alias="partialBidConfiguration"
+    )
     alerts: Union[list[AlertWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
     def _to_instances_write(
@@ -217,24 +229,35 @@ class BidMatrixWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(BidMatrix, dm.ViewId("sp_powerops_models", "BidMatrix", "1"))
+        write_view = (view_by_read_class or {}).get(BidMatrix, dm.ViewId("sp_powerops_models_temp", "BidMatrix", "1"))
 
         properties: dict[str, Any] = {}
 
-        if self.resource_cost is not None or write_none:
-            properties["resourceCost"] = self.resource_cost
-
-        if self.matrix is not None or write_none:
+        if self.matrix is not None:
             properties["matrix"] = self.matrix
 
-        if self.asset_type is not None or write_none:
-            properties["assetType"] = self.asset_type
+        if self.power_asset is not None:
+            properties["powerAsset"] = {
+                "space": self.space if isinstance(self.power_asset, str) else self.power_asset.space,
+                "externalId": self.power_asset if isinstance(self.power_asset, str) else self.power_asset.external_id,
+            }
 
-        if self.asset_id is not None or write_none:
-            properties["assetId"] = self.asset_id
+        if self.state is not None:
+            properties["state"] = self.state
 
-        if self.is_processed is not None or write_none:
-            properties["isProcessed"] = self.is_processed
+        if self.partial_bid_configuration is not None:
+            properties["partialBidConfiguration"] = {
+                "space": (
+                    self.space
+                    if isinstance(self.partial_bid_configuration, str)
+                    else self.partial_bid_configuration.space
+                ),
+                "externalId": (
+                    self.partial_bid_configuration
+                    if isinstance(self.partial_bid_configuration, str)
+                    else self.partial_bid_configuration.external_id
+                ),
+            }
 
         if properties:
             this_node = dm.NodeApply(
@@ -252,7 +275,7 @@ class BidMatrixWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_powerops_types", "calculationIssue")
+        edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
@@ -263,6 +286,14 @@ class BidMatrixWrite(DomainModelWrite):
                 write_none=write_none,
                 allow_version_increase=allow_version_increase,
             )
+            resources.extend(other_resources)
+
+        if isinstance(self.power_asset, DomainModelWrite):
+            other_resources = self.power_asset._to_instances_write(cache, view_by_read_class)
+            resources.extend(other_resources)
+
+        if isinstance(self.partial_bid_configuration, DomainModelWrite):
+            other_resources = self.partial_bid_configuration._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
 
         return resources
@@ -310,38 +341,84 @@ class BidMatrixApplyList(BidMatrixWriteList): ...
 
 def _create_bid_matrix_filter(
     view_id: dm.ViewId,
-    resource_cost: str | list[str] | None = None,
-    resource_cost_prefix: str | None = None,
-    asset_type: str | list[str] | None = None,
-    asset_type_prefix: str | None = None,
-    asset_id: str | list[str] | None = None,
-    asset_id_prefix: str | None = None,
-    is_processed: bool | None = None,
+    power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    state: str | list[str] | None = None,
+    state_prefix: str | None = None,
+    partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if isinstance(resource_cost, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("resourceCost"), value=resource_cost))
-    if resource_cost and isinstance(resource_cost, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("resourceCost"), values=resource_cost))
-    if resource_cost_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("resourceCost"), value=resource_cost_prefix))
-    if isinstance(asset_type, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("assetType"), value=asset_type))
-    if asset_type and isinstance(asset_type, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("assetType"), values=asset_type))
-    if asset_type_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("assetType"), value=asset_type_prefix))
-    if isinstance(asset_id, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("assetId"), value=asset_id))
-    if asset_id and isinstance(asset_id, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("assetId"), values=asset_id))
-    if asset_id_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("assetId"), value=asset_id_prefix))
-    if isinstance(is_processed, bool):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("isProcessed"), value=is_processed))
+    if power_asset and isinstance(power_asset, str):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("powerAsset"),
+                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": power_asset},
+            )
+        )
+    if power_asset and isinstance(power_asset, tuple):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("powerAsset"), value={"space": power_asset[0], "externalId": power_asset[1]}
+            )
+        )
+    if power_asset and isinstance(power_asset, list) and isinstance(power_asset[0], str):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("powerAsset"),
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in power_asset],
+            )
+        )
+    if power_asset and isinstance(power_asset, list) and isinstance(power_asset[0], tuple):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("powerAsset"),
+                values=[{"space": item[0], "externalId": item[1]} for item in power_asset],
+            )
+        )
+    if isinstance(state, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("state"), value=state))
+    if state and isinstance(state, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("state"), values=state))
+    if state_prefix is not None:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("state"), value=state_prefix))
+    if partial_bid_configuration and isinstance(partial_bid_configuration, str):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("partialBidConfiguration"),
+                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": partial_bid_configuration},
+            )
+        )
+    if partial_bid_configuration and isinstance(partial_bid_configuration, tuple):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("partialBidConfiguration"),
+                value={"space": partial_bid_configuration[0], "externalId": partial_bid_configuration[1]},
+            )
+        )
+    if (
+        partial_bid_configuration
+        and isinstance(partial_bid_configuration, list)
+        and isinstance(partial_bid_configuration[0], str)
+    ):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("partialBidConfiguration"),
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in partial_bid_configuration],
+            )
+        )
+    if (
+        partial_bid_configuration
+        and isinstance(partial_bid_configuration, list)
+        and isinstance(partial_bid_configuration[0], tuple)
+    ):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("partialBidConfiguration"),
+                values=[{"space": item[0], "externalId": item[1]} for item in partial_bid_configuration],
+            )
+        )
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):

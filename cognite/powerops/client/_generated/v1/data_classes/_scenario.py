@@ -66,7 +66,7 @@ class ScenarioGraphQL(GraphQLCore, protected_namespaces=()):
         mappings_override: An array of base mappings to override in shop model file
     """
 
-    view_id = dm.ViewId("sp_powerops_models", "Scenario", "1")
+    view_id = dm.ViewId("sp_powerops_models_temp", "Scenario", "1")
     name: Optional[str] = None
     model_template: Optional[ModelTemplateGraphQL] = Field(None, repr=False, alias="modelTemplate")
     commands: Optional[CommandsGraphQL] = Field(None, repr=False)
@@ -226,7 +226,7 @@ class ScenarioWrite(DomainModelWrite, protected_namespaces=()):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(Scenario, dm.ViewId("sp_powerops_models", "Scenario", "1"))
+        write_view = (view_by_read_class or {}).get(Scenario, dm.ViewId("sp_powerops_models_temp", "Scenario", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -266,7 +266,7 @@ class ScenarioWrite(DomainModelWrite, protected_namespaces=()):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_powerops_types", "Mapping")
+        edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "Mapping")
         for mappings_override in self.mappings_override or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

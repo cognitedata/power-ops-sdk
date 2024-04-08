@@ -41,20 +41,20 @@ properties:
       type: container
     containerPropertyIdentifier: outletLevel
     name: outletLevel
-  pMax:
+  productionMax:
     container:
       space: "{{powerops_models}}"
       externalId: Plant
       type: container
-    containerPropertyIdentifier: pMax
-    name: pMax
-  pMin:
+    containerPropertyIdentifier: productionMax
+    name: productionMax
+  productionMin:
     container:
       space: "{{powerops_models}}"
       externalId: Plant
       type: container
-    containerPropertyIdentifier: pMin
-    name: pMin
+    containerPropertyIdentifier: productionMin
+    name: productionMin
   penstockHeadLossFactors:
     container:
       space: "{{powerops_models}}"
@@ -62,18 +62,18 @@ properties:
       type: container
     containerPropertyIdentifier: penstockHeadLossFactors
     name: penstockHeadLossFactors
-  watercourse:
-    container:
-      space: "{{powerops_models}}"
-      externalId: Plant
-      type: container
-    containerPropertyIdentifier: watercourse
-    name: watercourse
-    source:
-      space: "{{powerops_models}}"
-      externalId: Watercourse
-      version: "{{version}}"
-      type: view
+  # watercourse:
+  #   container:
+  #     space: "{{powerops_models}}"
+  #     externalId: Plant
+  #     type: container
+  #   containerPropertyIdentifier: watercourse
+  #   name: watercourse
+  #   source:
+  #     space: "{{powerops_models}}"
+  #     externalId: Watercourse
+  #     version: "{{version}}"
+  #     type: view
   connectionLosses:
     container:
       space: "{{powerops_models}}"
@@ -81,20 +81,20 @@ properties:
       type: container
     containerPropertyIdentifier: connectionLosses
     name: connectionLosses
-  pMaxTimeSeries:
+  productionMaxTimeSeries:
     container:
       space: "{{powerops_models}}"
       externalId: Plant
       type: container
-    containerPropertyIdentifier: pMaxTimeSeries
-    name: pMaxTimeSeries
-  pMinTimeSeries:
+    containerPropertyIdentifier: productionMaxTimeSeries
+    name: productionMaxTimeSeries
+  productionMinTimeSeries:
     container:
       space: "{{powerops_models}}"
       externalId: Plant
       type: container
-    containerPropertyIdentifier: pMinTimeSeries
-    name: pMinTimeSeries
+    containerPropertyIdentifier: productionMinTimeSeries
+    name: productionMinTimeSeries
   waterValueTimeSeries:
     container:
       space: "{{powerops_models}}"
@@ -130,18 +130,18 @@ properties:
       type: container
     containerPropertyIdentifier: headDirectTimeSeries
     name: headDirectTimeSeries
-  inletReservoir:
-    container:
-      space: "{{powerops_models}}"
-      externalId: Plant
-      type: container
-    containerPropertyIdentifier: inletReservoir
-    name: inletReservoir
-    source:
-      space: "{{powerops_models}}"
-      externalId: Reservoir
-      version: "{{version}}"
-      type: view
+  # inletReservoir:
+  #   container:
+  #     space: "{{powerops_models}}"
+  #     externalId: Plant
+  #     type: container
+  #   containerPropertyIdentifier: inletReservoir
+  #   name: inletReservoir
+  #   source:
+  #     space: "{{powerops_models}}"
+  #     externalId: Reservoir
+  #     version: "{{version}}"
+  #     type: view
   generators:
     type:
       space: "{{powerops_type_space}}"

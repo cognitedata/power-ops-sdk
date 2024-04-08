@@ -22,6 +22,7 @@ from ._core import (
     GraphQLCore,
     ResourcesWrite,
 )
+from ._bid_document import BidDocument, BidDocumentWrite
 
 if TYPE_CHECKING:
     from ._alert import Alert, AlertGraphQL, AlertWrite
@@ -41,11 +42,14 @@ __all__ = [
 ]
 
 
-BidDocumentAFRRTextFields = Literal["name"]
-BidDocumentAFRRFields = Literal["name", "delivery_date", "start_calculation", "end_calculation", "is_complete"]
+BidDocumentAFRRTextFields = Literal["name", "process_id"]
+BidDocumentAFRRFields = Literal[
+    "name", "process_id", "delivery_date", "start_calculation", "end_calculation", "is_complete"
+]
 
 _BIDDOCUMENTAFRR_PROPERTIES_BY_FIELD = {
     "name": "name",
+    "process_id": "processId",
     "delivery_date": "deliveryDate",
     "start_calculation": "startCalculation",
     "end_calculation": "endCalculation",
@@ -64,6 +68,7 @@ class BidDocumentAFRRGraphQL(GraphQLCore):
         external_id: The external id of the bid document afrr.
         data_record: The data record of the bid document afrr node.
         name: Unique name for a given instance of a Bid Document. A combination of name, priceArea, date and startCalculation.
+        process_id: The process associated with the Bid calculation workflow.
         delivery_date: The date of the Bid.
         start_calculation: Timestamp of when the Bid calculation workflow started.
         end_calculation: Timestamp of when the Bid calculation workflow completed.
@@ -73,8 +78,9 @@ class BidDocumentAFRRGraphQL(GraphQLCore):
         bids: An array of BidRows containing the Bid data.
     """
 
-    view_id = dm.ViewId("sp_powerops_models", "BidDocumentAFRR", "1")
+    view_id = dm.ViewId("sp_powerops_models_temp", "BidDocumentAFRR", "1")
     name: Optional[str] = None
+    process_id: Optional[str] = Field(None, alias="processId")
     delivery_date: Optional[datetime.date] = Field(None, alias="deliveryDate")
     start_calculation: Optional[datetime.datetime] = Field(None, alias="startCalculation")
     end_calculation: Optional[datetime.datetime] = Field(None, alias="endCalculation")
@@ -115,6 +121,7 @@ class BidDocumentAFRRGraphQL(GraphQLCore):
                 created_time=self.data_record.created_time,
             ),
             name=self.name,
+            process_id=self.process_id,
             delivery_date=self.delivery_date,
             start_calculation=self.start_calculation,
             end_calculation=self.end_calculation,
@@ -131,6 +138,7 @@ class BidDocumentAFRRGraphQL(GraphQLCore):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,
+            process_id=self.process_id,
             delivery_date=self.delivery_date,
             start_calculation=self.start_calculation,
             end_calculation=self.end_calculation,
@@ -141,7 +149,7 @@ class BidDocumentAFRRGraphQL(GraphQLCore):
         )
 
 
-class BidDocumentAFRR(DomainModel):
+class BidDocumentAFRR(BidDocument):
     """This represents the reading version of bid document afrr.
 
     It is used to when data is retrieved from CDF.
@@ -151,6 +159,7 @@ class BidDocumentAFRR(DomainModel):
         external_id: The external id of the bid document afrr.
         data_record: The data record of the bid document afrr node.
         name: Unique name for a given instance of a Bid Document. A combination of name, priceArea, date and startCalculation.
+        process_id: The process associated with the Bid calculation workflow.
         delivery_date: The date of the Bid.
         start_calculation: Timestamp of when the Bid calculation workflow started.
         end_calculation: Timestamp of when the Bid calculation workflow completed.
@@ -160,16 +169,9 @@ class BidDocumentAFRR(DomainModel):
         bids: An array of BidRows containing the Bid data.
     """
 
-    space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "AFRRBidDocument"
+        "sp_powerops_types_temp", "AFRRBidDocument"
     )
-    name: Optional[str] = None
-    delivery_date: datetime.date = Field(alias="deliveryDate")
-    start_calculation: Optional[datetime.datetime] = Field(None, alias="startCalculation")
-    end_calculation: Optional[datetime.datetime] = Field(None, alias="endCalculation")
-    is_complete: Optional[bool] = Field(None, alias="isComplete")
-    alerts: Union[list[Alert], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
     price_area: Union[PriceAreaAFRR, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
     bids: Union[list[BidRow], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
@@ -180,6 +182,7 @@ class BidDocumentAFRR(DomainModel):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             name=self.name,
+            process_id=self.process_id,
             delivery_date=self.delivery_date,
             start_calculation=self.start_calculation,
             end_calculation=self.end_calculation,
@@ -199,7 +202,7 @@ class BidDocumentAFRR(DomainModel):
         return self.as_write()
 
 
-class BidDocumentAFRRWrite(DomainModelWrite):
+class BidDocumentAFRRWrite(BidDocumentWrite):
     """This represents the writing version of bid document afrr.
 
     It is used to when data is sent to CDF.
@@ -209,6 +212,7 @@ class BidDocumentAFRRWrite(DomainModelWrite):
         external_id: The external id of the bid document afrr.
         data_record: The data record of the bid document afrr node.
         name: Unique name for a given instance of a Bid Document. A combination of name, priceArea, date and startCalculation.
+        process_id: The process associated with the Bid calculation workflow.
         delivery_date: The date of the Bid.
         start_calculation: Timestamp of when the Bid calculation workflow started.
         end_calculation: Timestamp of when the Bid calculation workflow completed.
@@ -218,16 +222,9 @@ class BidDocumentAFRRWrite(DomainModelWrite):
         bids: An array of BidRows containing the Bid data.
     """
 
-    space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "AFRRBidDocument"
+        "sp_powerops_types_temp", "AFRRBidDocument"
     )
-    name: Optional[str] = None
-    delivery_date: datetime.date = Field(alias="deliveryDate")
-    start_calculation: Optional[datetime.datetime] = Field(None, alias="startCalculation")
-    end_calculation: Optional[datetime.datetime] = Field(None, alias="endCalculation")
-    is_complete: Optional[bool] = Field(None, alias="isComplete")
-    alerts: Union[list[AlertWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
     price_area: Union[PriceAreaAFRRWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
     bids: Union[list[BidRowWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
@@ -243,13 +240,16 @@ class BidDocumentAFRRWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            BidDocumentAFRR, dm.ViewId("sp_powerops_models", "BidDocumentAFRR", "1")
+            BidDocumentAFRR, dm.ViewId("sp_powerops_models_temp", "BidDocumentAFRR", "1")
         )
 
         properties: dict[str, Any] = {}
 
         if self.name is not None or write_none:
             properties["name"] = self.name
+
+        if self.process_id is not None or write_none:
+            properties["processId"] = self.process_id
 
         if self.delivery_date is not None:
             properties["deliveryDate"] = self.delivery_date.isoformat() if self.delivery_date else None
@@ -289,7 +289,7 @@ class BidDocumentAFRRWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_powerops_types", "calculationIssue")
+        edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
@@ -302,7 +302,7 @@ class BidDocumentAFRRWrite(DomainModelWrite):
             )
             resources.extend(other_resources)
 
-        edge_type = dm.DirectRelationReference("sp_powerops_types", "partialBid")
+        edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "partialBid")
         for bid in self.bids or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
@@ -366,6 +366,8 @@ def _create_bid_document_afrr_filter(
     view_id: dm.ViewId,
     name: str | list[str] | None = None,
     name_prefix: str | None = None,
+    process_id: str | list[str] | None = None,
+    process_id_prefix: str | None = None,
     min_delivery_date: datetime.date | None = None,
     max_delivery_date: datetime.date | None = None,
     min_start_calculation: datetime.datetime | None = None,
@@ -385,6 +387,12 @@ def _create_bid_document_afrr_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
     if name_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
+    if isinstance(process_id, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("processId"), value=process_id))
+    if process_id and isinstance(process_id, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("processId"), values=process_id))
+    if process_id_prefix is not None:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("processId"), value=process_id_prefix))
     if min_delivery_date is not None or max_delivery_date is not None:
         filters.append(
             dm.filters.Range(

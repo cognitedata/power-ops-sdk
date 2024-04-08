@@ -3,46 +3,54 @@ externalId: BidMatrix
 name: BidMatrix
 usedFor: node
 properties:
-  resourceCost:
-    type:
-      list: false
-      collation: ucs_basic
-      type: text
-    nullable: true
-    autoIncrement: false
-    name: resourceCost
   matrix:
     type:
       list: false
       type: sequence
-    nullable: true
+    nullable: false
     autoIncrement: false
     name: matrix
-  assetType:
+  powerAsset:
     type:
       list: false
-      collation: ucs_basic
-      type: text
-    nullable: true
-    autoIncrement: false
-    name: assetType
-  assetId:
-    type:
-      list: false
-      collation: ucs_basic
-      type: text
-    nullable: true
-    autoIncrement: false
-    name: assetId
-  method:
-    type:
       type: direct
     nullable: true
     autoIncrement: false
-    name: method
-  isProcessed:
+    name: powerAsset
+  state:
     type:
-      type: boolean
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: state
+  partialBidConfiguration:
+    type:
+      list: false
+      type: direct
     nullable: true
     autoIncrement: false
-    name: isProcessed
+    name: partialBidConfiguration
+  # assetId:
+  #   type:
+  #     list: false
+  #     collation: ucs_basic
+  #     type: text
+  #   nullable: true
+  #   autoIncrement: false
+  #   name: assetId
+  # isProcessed:
+  #   type:
+  #     type: boolean
+  #   nullable: true
+  #   autoIncrement: false
+  #   name: isProcessed
+  # resourceCost:
+  #   type:
+  #     list: false
+  #     collation: ucs_basic
+  #     type: text
+  #   nullable: true
+  #   autoIncrement: false
+  #   name: resourceCost

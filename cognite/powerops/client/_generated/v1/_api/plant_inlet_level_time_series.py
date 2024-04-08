@@ -16,14 +16,15 @@ ColumnNames = Literal[
     "name",
     "displayName",
     "ordering",
+    "assetType",
     "headLossFactor",
     "outletLevel",
-    "pMax",
-    "pMin",
+    "productionMax",
+    "productionMin",
     "penstockHeadLossFactors",
     "connectionLosses",
-    "pMaxTimeSeries",
-    "pMinTimeSeries",
+    "productionMaxTimeSeries",
+    "productionMinTimeSeries",
     "waterValueTimeSeries",
     "feedingFeeTimeSeries",
     "outletLevelTimeSeries",
@@ -382,18 +383,18 @@ class PlantInletLevelTimeSeriesAPI:
         display_name_prefix: str | None = None,
         min_ordering: int | None = None,
         max_ordering: int | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
         min_head_loss_factor: float | None = None,
         max_head_loss_factor: float | None = None,
         min_outlet_level: float | None = None,
         max_outlet_level: float | None = None,
-        min_p_max: float | None = None,
-        max_p_max: float | None = None,
-        min_p_min: float | None = None,
-        max_p_min: float | None = None,
-        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_production_max: float | None = None,
+        max_production_max: float | None = None,
+        min_production_min: float | None = None,
+        max_production_min: float | None = None,
         min_connection_losses: float | None = None,
         max_connection_losses: float | None = None,
-        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -408,18 +409,18 @@ class PlantInletLevelTimeSeriesAPI:
             display_name_prefix: The prefix of the display name to filter on.
             min_ordering: The minimum value of the ordering to filter on.
             max_ordering: The maximum value of the ordering to filter on.
+            asset_type: The asset type to filter on.
+            asset_type_prefix: The prefix of the asset type to filter on.
             min_head_loss_factor: The minimum value of the head loss factor to filter on.
             max_head_loss_factor: The maximum value of the head loss factor to filter on.
             min_outlet_level: The minimum value of the outlet level to filter on.
             max_outlet_level: The maximum value of the outlet level to filter on.
-            min_p_max: The minimum value of the p max to filter on.
-            max_p_max: The maximum value of the p max to filter on.
-            min_p_min: The minimum value of the p min to filter on.
-            max_p_min: The maximum value of the p min to filter on.
-            watercourse: The watercourse to filter on.
+            min_production_max: The minimum value of the production max to filter on.
+            max_production_max: The maximum value of the production max to filter on.
+            min_production_min: The minimum value of the production min to filter on.
+            max_production_min: The maximum value of the production min to filter on.
             min_connection_losses: The minimum value of the connection loss to filter on.
             max_connection_losses: The maximum value of the connection loss to filter on.
-            inlet_reservoir: The inlet reservoir to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of plants to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -446,18 +447,18 @@ class PlantInletLevelTimeSeriesAPI:
             display_name_prefix,
             min_ordering,
             max_ordering,
+            asset_type,
+            asset_type_prefix,
             min_head_loss_factor,
             max_head_loss_factor,
             min_outlet_level,
             max_outlet_level,
-            min_p_max,
-            max_p_max,
-            min_p_min,
-            max_p_min,
-            watercourse,
+            min_production_max,
+            max_production_max,
+            min_production_min,
+            max_production_min,
             min_connection_losses,
             max_connection_losses,
-            inlet_reservoir,
             external_id_prefix,
             space,
             filter,
@@ -478,18 +479,18 @@ class PlantInletLevelTimeSeriesAPI:
         display_name_prefix: str | None = None,
         min_ordering: int | None = None,
         max_ordering: int | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
         min_head_loss_factor: float | None = None,
         max_head_loss_factor: float | None = None,
         min_outlet_level: float | None = None,
         max_outlet_level: float | None = None,
-        min_p_max: float | None = None,
-        max_p_max: float | None = None,
-        min_p_min: float | None = None,
-        max_p_min: float | None = None,
-        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_production_max: float | None = None,
+        max_production_max: float | None = None,
+        min_production_min: float | None = None,
+        max_production_min: float | None = None,
         min_connection_losses: float | None = None,
         max_connection_losses: float | None = None,
-        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -504,18 +505,18 @@ class PlantInletLevelTimeSeriesAPI:
             display_name_prefix: The prefix of the display name to filter on.
             min_ordering: The minimum value of the ordering to filter on.
             max_ordering: The maximum value of the ordering to filter on.
+            asset_type: The asset type to filter on.
+            asset_type_prefix: The prefix of the asset type to filter on.
             min_head_loss_factor: The minimum value of the head loss factor to filter on.
             max_head_loss_factor: The maximum value of the head loss factor to filter on.
             min_outlet_level: The minimum value of the outlet level to filter on.
             max_outlet_level: The maximum value of the outlet level to filter on.
-            min_p_max: The minimum value of the p max to filter on.
-            max_p_max: The maximum value of the p max to filter on.
-            min_p_min: The minimum value of the p min to filter on.
-            max_p_min: The maximum value of the p min to filter on.
-            watercourse: The watercourse to filter on.
+            min_production_max: The minimum value of the production max to filter on.
+            max_production_max: The maximum value of the production max to filter on.
+            min_production_min: The minimum value of the production min to filter on.
+            max_production_min: The maximum value of the production min to filter on.
             min_connection_losses: The minimum value of the connection loss to filter on.
             max_connection_losses: The maximum value of the connection loss to filter on.
-            inlet_reservoir: The inlet reservoir to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of plants to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -541,18 +542,18 @@ class PlantInletLevelTimeSeriesAPI:
             display_name_prefix,
             min_ordering,
             max_ordering,
+            asset_type,
+            asset_type_prefix,
             min_head_loss_factor,
             max_head_loss_factor,
             min_outlet_level,
             max_outlet_level,
-            min_p_max,
-            max_p_max,
-            min_p_min,
-            max_p_min,
-            watercourse,
+            min_production_max,
+            max_production_max,
+            min_production_min,
+            max_production_min,
             min_connection_losses,
             max_connection_losses,
-            inlet_reservoir,
             external_id_prefix,
             space,
             filter,
