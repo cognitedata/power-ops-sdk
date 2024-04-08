@@ -132,18 +132,6 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: Watercourse
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: PartialPostProcessingInput
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: PartialPostProcessingOutput
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
   - externalId: TotalBidMatrixCalculationInput
     space: "{{powerops_models}}"
     type: view

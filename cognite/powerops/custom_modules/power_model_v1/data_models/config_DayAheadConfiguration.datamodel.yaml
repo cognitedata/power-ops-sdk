@@ -44,10 +44,6 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: Watercourse
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
   - externalId: Generator
     space: "{{powerops_models}}"
     type: view

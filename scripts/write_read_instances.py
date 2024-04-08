@@ -36,7 +36,7 @@ def main():
         data_model = data_models.latest_version()
         leaf_views_by_parent = MockGenerator._to_leaf_children_by_parent(data_model.views)
 
-        mock_generator = MockGenerator(data_model.views, instance_space=INSTANCE_SPACE, seed=42, skip_interfaces=True)
+        mock_generator = MockGenerator(data_model.views, instance_space=INSTANCE_SPACE, seed=42, skip_interfaces=False)
         mock_data = mock_generator.generate_mock_data(node_count=node_count)
         print(f"Generated {len(mock_data.nodes)} nodes for {len(data_model.views)} views.")
 
@@ -137,6 +137,37 @@ def clean_instances():
     if files:
         client.files.delete(id=[file.id for file in files])
         print(f"Deleted {len(files)} files. Elapsed time {time.perf_counter() - t0:.2f} seconds")
+
+
+def clean_containers_views_data_models():
+    with chdir(REPO_ROOT):
+        os.environ["SETTINGS_FILES"] = "settings.toml;.secrets.toml"
+        client = get_cognite_client()
+    t0 = time.perf_counter()
+    spaces = [MODEL_SPACE, INSTANCE_SPACE, TYPE_SPACE]
+
+    for space in spaces:
+        views = client.data_modeling.views.list(space=space, limit=-1, all_versions=True).as_ids()
+
+        if views:
+            print(f"Deleting {len(views)} views in {space}")
+            client.data_modeling.views.delete(views)
+        else:
+            print(f"No views found in {space}")
+
+        data_models = client.data_modeling.data_models.list(space=space, limit=-1, all_versions=True).as_ids()
+        if data_models:
+            print(f"Deleting {len(data_models)} data models in {space}")
+            client.data_modeling.data_models.delete(data_models)
+        else:
+            print(f"No data models found in {space}")
+
+        containers = client.data_modeling.containers.list(space=space, limit=-1).as_ids()
+        if containers:
+            print(f"Deleting {len(containers)} containers in {space}")
+            client.data_modeling.containers.delete(containers)
+        else:
+            print(f"No containers found in {space}")
 
 
 if __name__ == "__main__":

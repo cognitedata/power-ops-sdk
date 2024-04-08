@@ -13,6 +13,13 @@ filter:
           - node
           - space
         value: "{{powerops_instance_space}}"
+        # - in:
+        #     property:
+        #       - node
+        #       - type
+        #     value:
+        #       - WaterValueBasedPartialBidMatrixCalculationInput
+        #       - ShopPartialBidMatrixCalculationInput
 implements:
   - space: "{{powerops_models}}"
     externalId: FunctionInput

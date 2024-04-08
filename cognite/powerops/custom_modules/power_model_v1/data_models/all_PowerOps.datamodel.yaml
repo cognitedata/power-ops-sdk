@@ -67,10 +67,6 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: PartialPostProcessingInput
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
   - externalId: ShopPartialBidMatrixCalculationInput
     space: "{{powerops_models}}"
     type: view
@@ -79,7 +75,15 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
+  - externalId: ScenarioSet
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
   - externalId: PreprocessorOutput
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PartialBidMatrixCalculationInput
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
@@ -88,10 +92,6 @@ views:
     type: view
     version: "{{version}}"
   - externalId: SHOPTriggerOutput
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: PartialPostProcessingOutput
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
@@ -127,23 +127,11 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: PriceAreaDayAhead
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: PriceAreaAsset
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
   - externalId: TurbineEfficiencyCurve
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
   - externalId: Plant
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: Watercourse
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"

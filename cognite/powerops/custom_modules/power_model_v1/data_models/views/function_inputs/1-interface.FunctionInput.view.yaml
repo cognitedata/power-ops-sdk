@@ -13,6 +13,12 @@ filter:
           - node
           - space
         value: "{{powerops_instance_space}}"
+        # - not:
+        #     in:
+        #       property:
+        #         - node
+        #         - type
+        #       value: FunctionOutput
 implements: []
 version: "{{version}}"
 properties:

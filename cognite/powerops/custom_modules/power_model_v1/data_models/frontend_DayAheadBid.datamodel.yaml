@@ -52,3 +52,23 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
+  - externalId: BidConfiguration
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PartialBidConfiguration
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: SHOPResult
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: MarketConfiguration
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: SHOPTimeSeries
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"

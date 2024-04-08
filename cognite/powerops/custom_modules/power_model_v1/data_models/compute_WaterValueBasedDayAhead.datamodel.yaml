@@ -28,10 +28,6 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: Watercourse
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
   - externalId: Alert
     space: "{{powerops_models}}"
     type: view

@@ -47,6 +47,14 @@ properties:
     containerPropertyIdentifier: shopVersion
     name: shopVersion
     description: The version of SHOP to run
+  penaltyLimit:
+    container:
+      space: "{{powerops_models}}"
+      externalId: ModelTemplate
+      type: container
+    containerPropertyIdentifier: penaltyLimit
+    name: penaltyLimit
+    description: TODO
   model:
     container:
       space: "{{powerops_models}}"

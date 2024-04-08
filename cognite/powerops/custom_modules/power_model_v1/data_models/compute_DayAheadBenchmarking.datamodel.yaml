@@ -25,10 +25,6 @@ views:
     version: "{{version}}"
     type: view
   - space: "{{powerops_models}}"
-    externalId: PriceAreaDayAhead
-    version: "{{version}}"
-    type: view
-  - space: "{{powerops_models}}"
     externalId: BidMatrix
     version: "{{version}}"
     type: view
@@ -70,5 +66,9 @@ views:
     type: view
   - space: "{{powerops_models}}"
     externalId: PowerAsset
+    version: "{{version}}"
+    type: view
+  - space: "{{powerops_models}}"
+    externalId: PartialBidConfiguration
     version: "{{version}}"
     type: view

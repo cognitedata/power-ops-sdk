@@ -8,14 +8,6 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: PartialPostProcessingInput
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: PartialPostProcessingOutput
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
   - externalId: TotalBidMatrixCalculationInput
     space: "{{powerops_models}}"
     type: view
@@ -86,5 +78,13 @@ views:
     type: view
   - space: "{{powerops_models}}"
     externalId: PowerAsset
+    version: "{{version}}"
+    type: view
+  - space: "{{powerops_models}}"
+    externalId: PartialBidConfiguration
+    version: "{{version}}"
+    type: view
+  - space: "{{powerops_models}}"
+    externalId: BidConfiguration
     version: "{{version}}"
     type: view
