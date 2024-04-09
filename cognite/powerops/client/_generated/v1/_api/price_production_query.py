@@ -69,6 +69,5 @@ class PriceProductionQueryAPI(QueryAPI[T_DomainModelList]):
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
                 result_cls=SHOPResult,
-                is_single_direct_relation=True,
             ),
         )

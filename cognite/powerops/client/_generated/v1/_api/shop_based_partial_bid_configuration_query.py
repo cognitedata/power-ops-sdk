@@ -76,7 +76,6 @@ class ShopBasedPartialBidConfigurationQueryAPI(QueryAPI[T_DomainModelList]):
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
                 result_cls=PowerAsset,
-                is_single_direct_relation=True,
             ),
         )
 
@@ -94,6 +93,5 @@ class ShopBasedPartialBidConfigurationQueryAPI(QueryAPI[T_DomainModelList]):
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
                 result_cls=ScenarioSet,
-                is_single_direct_relation=True,
             ),
         )

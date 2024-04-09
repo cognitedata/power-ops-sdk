@@ -51,7 +51,7 @@ properties:
   shopScenarios:
     type:
       space: "{{powerops_type_space}}"
-      externalId: ScenarioSet.scenarios
+      externalId: ScenarioSet.shopScenarios
     source:
       space: "{{powerops_models}}"
       externalId: Scenario

@@ -25,37 +25,14 @@ from ._core import (
 
 if TYPE_CHECKING:
     from ._scenario import Scenario, ScenarioGraphQL, ScenarioWrite
+    from ._shop_file import ShopFile, ShopFileGraphQL, ShopFileWrite
 
 
-__all__ = [
-    "Case",
-    "CaseWrite",
-    "CaseApply",
-    "CaseList",
-    "CaseWriteList",
-    "CaseApplyList",
-    "CaseFields",
-    "CaseTextFields",
-]
+__all__ = ["Case", "CaseWrite", "CaseApply", "CaseList", "CaseWriteList", "CaseApplyList", "CaseFields"]
 
-
-CaseTextFields = Literal["case_file", "reservoir_mapping", "cut_order_files", "extra_files"]
-CaseFields = Literal[
-    "case_file",
-    "reservoir_mapping",
-    "cut_order_files",
-    "extra_files",
-    "cog_shop_files_config",
-    "start_time",
-    "end_time",
-]
+CaseFields = Literal["start_time", "end_time"]
 
 _CASE_PROPERTIES_BY_FIELD = {
-    "case_file": "caseFile",
-    "reservoir_mapping": "reservoirMapping",
-    "cut_order_files": "cutOrderFiles",
-    "extra_files": "extraFiles",
-    "cog_shop_files_config": "cogShopFilesConfig",
     "start_time": "startTime",
     "end_time": "endTime",
 }
@@ -72,24 +49,16 @@ class CaseGraphQL(GraphQLCore):
         external_id: The external id of the case.
         data_record: The data record of the case node.
         scenario: The Shop scenario that was used to produce this result
-        case_file: The case file used
-        reservoir_mapping: The cut file reservoir mapping
-        cut_order_files: Cut order files (Module series in PRODRISK)
-        extra_files: The extra file field.
-        cog_shop_files_config: Configuration for in what order to load the various files into pyshop
         start_time: The start time of the case
         end_time: The end time of the case
+        shop_files: The list of shop files that are used in a shop run. This encompasses all shop files such as case, module series, cut files etc.
     """
 
     view_id = dm.ViewId("sp_powerops_models_temp", "Case", "1")
     scenario: Optional[ScenarioGraphQL] = Field(None, repr=False)
-    case_file: Union[str, None] = Field(None, alias="caseFile")
-    reservoir_mapping: Optional[list[str]] = Field(None, alias="reservoirMapping")
-    cut_order_files: Optional[list[str]] = Field(None, alias="cutOrderFiles")
-    extra_files: Optional[list[str]] = Field(None, alias="extraFiles")
-    cog_shop_files_config: Optional[list[dict]] = Field(None, alias="cogShopFilesConfig")
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
+    shop_files: Optional[list[ShopFileGraphQL]] = Field(default=None, repr=False, alias="shopFiles")
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -102,7 +71,7 @@ class CaseGraphQL(GraphQLCore):
             )
         return values
 
-    @field_validator("scenario", mode="before")
+    @field_validator("scenario", "shop_files", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
             return value
@@ -123,13 +92,12 @@ class CaseGraphQL(GraphQLCore):
                 created_time=self.data_record.created_time,
             ),
             scenario=self.scenario.as_read() if isinstance(self.scenario, GraphQLCore) else self.scenario,
-            case_file=self.case_file,
-            reservoir_mapping=self.reservoir_mapping,
-            cut_order_files=self.cut_order_files,
-            extra_files=self.extra_files,
-            cog_shop_files_config=self.cog_shop_files_config,
             start_time=self.start_time,
             end_time=self.end_time,
+            shop_files=[
+                shop_file.as_read() if isinstance(shop_file, GraphQLCore) else shop_file
+                for shop_file in self.shop_files or []
+            ],
         )
 
     def as_write(self) -> CaseWrite:
@@ -139,13 +107,12 @@ class CaseGraphQL(GraphQLCore):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             scenario=self.scenario.as_write() if isinstance(self.scenario, DomainModel) else self.scenario,
-            case_file=self.case_file,
-            reservoir_mapping=self.reservoir_mapping,
-            cut_order_files=self.cut_order_files,
-            extra_files=self.extra_files,
-            cog_shop_files_config=self.cog_shop_files_config,
             start_time=self.start_time,
             end_time=self.end_time,
+            shop_files=[
+                shop_file.as_write() if isinstance(shop_file, DomainModel) else shop_file
+                for shop_file in self.shop_files or []
+            ],
         )
 
 
@@ -159,25 +126,19 @@ class Case(DomainModel):
         external_id: The external id of the case.
         data_record: The data record of the case node.
         scenario: The Shop scenario that was used to produce this result
-        case_file: The case file used
-        reservoir_mapping: The cut file reservoir mapping
-        cut_order_files: Cut order files (Module series in PRODRISK)
-        extra_files: The extra file field.
-        cog_shop_files_config: Configuration for in what order to load the various files into pyshop
         start_time: The start time of the case
         end_time: The end time of the case
+        shop_files: The list of shop files that are used in a shop run. This encompasses all shop files such as case, module series, cut files etc.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types_temp", "Case")
     scenario: Union[Scenario, str, dm.NodeId, None] = Field(None, repr=False)
-    case_file: Union[str, None] = Field(None, alias="caseFile")
-    reservoir_mapping: Optional[list[str]] = Field(None, alias="reservoirMapping")
-    cut_order_files: Optional[list[str]] = Field(None, alias="cutOrderFiles")
-    extra_files: Optional[list[str]] = Field(None, alias="extraFiles")
-    cog_shop_files_config: Optional[list[dict]] = Field(None, alias="cogShopFilesConfig")
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
+    shop_files: Union[list[ShopFile], list[str], list[dm.NodeId], None] = Field(
+        default=None, repr=False, alias="shopFiles"
+    )
 
     def as_write(self) -> CaseWrite:
         """Convert this read version of case to the writing version."""
@@ -186,13 +147,12 @@ class Case(DomainModel):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             scenario=self.scenario.as_write() if isinstance(self.scenario, DomainModel) else self.scenario,
-            case_file=self.case_file,
-            reservoir_mapping=self.reservoir_mapping,
-            cut_order_files=self.cut_order_files,
-            extra_files=self.extra_files,
-            cog_shop_files_config=self.cog_shop_files_config,
             start_time=self.start_time,
             end_time=self.end_time,
+            shop_files=[
+                shop_file.as_write() if isinstance(shop_file, DomainModel) else shop_file
+                for shop_file in self.shop_files or []
+            ],
         )
 
     def as_apply(self) -> CaseWrite:
@@ -215,25 +175,19 @@ class CaseWrite(DomainModelWrite):
         external_id: The external id of the case.
         data_record: The data record of the case node.
         scenario: The Shop scenario that was used to produce this result
-        case_file: The case file used
-        reservoir_mapping: The cut file reservoir mapping
-        cut_order_files: Cut order files (Module series in PRODRISK)
-        extra_files: The extra file field.
-        cog_shop_files_config: Configuration for in what order to load the various files into pyshop
         start_time: The start time of the case
         end_time: The end time of the case
+        shop_files: The list of shop files that are used in a shop run. This encompasses all shop files such as case, module series, cut files etc.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types_temp", "Case")
     scenario: Union[ScenarioWrite, str, dm.NodeId, None] = Field(None, repr=False)
-    case_file: Union[str, None] = Field(None, alias="caseFile")
-    reservoir_mapping: Optional[list[str]] = Field(None, alias="reservoirMapping")
-    cut_order_files: Optional[list[str]] = Field(None, alias="cutOrderFiles")
-    extra_files: Optional[list[str]] = Field(None, alias="extraFiles")
-    cog_shop_files_config: Optional[list[dict]] = Field(None, alias="cogShopFilesConfig")
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
+    shop_files: Union[list[ShopFileWrite], list[str], list[dm.NodeId], None] = Field(
+        default=None, repr=False, alias="shopFiles"
+    )
 
     def _to_instances_write(
         self,
@@ -256,21 +210,6 @@ class CaseWrite(DomainModelWrite):
                 "externalId": self.scenario if isinstance(self.scenario, str) else self.scenario.external_id,
             }
 
-        if self.case_file is not None or write_none:
-            properties["caseFile"] = self.case_file
-
-        if self.reservoir_mapping is not None or write_none:
-            properties["reservoirMapping"] = self.reservoir_mapping
-
-        if self.cut_order_files is not None or write_none:
-            properties["cutOrderFiles"] = self.cut_order_files
-
-        if self.extra_files is not None or write_none:
-            properties["extraFiles"] = self.extra_files
-
-        if self.cog_shop_files_config is not None or write_none:
-            properties["cogShopFilesConfig"] = self.cog_shop_files_config
-
         if self.start_time is not None or write_none:
             properties["startTime"] = self.start_time.isoformat(timespec="milliseconds") if self.start_time else None
 
@@ -292,6 +231,19 @@ class CaseWrite(DomainModelWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
+
+        edge_type = dm.DirectRelationReference("sp_powerops_models_temp", "Case.shopFiles")
+        for shop_file in self.shop_files or []:
+            other_resources = DomainRelationWrite.from_edge_to_resources(
+                cache,
+                start_node=self,
+                end_node=shop_file,
+                edge_type=edge_type,
+                view_by_read_class=view_by_read_class,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
+            )
+            resources.extend(other_resources)
 
         if isinstance(self.scenario, DomainModelWrite):
             other_resources = self.scenario._to_instances_write(cache, view_by_read_class)
