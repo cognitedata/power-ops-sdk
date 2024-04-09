@@ -40,7 +40,7 @@ properties:
   isAscii:
     type:
       list: false
-      type: bool
+      type: boolean
     nullable: false
     autoIncrement: false
     name: isAscii
