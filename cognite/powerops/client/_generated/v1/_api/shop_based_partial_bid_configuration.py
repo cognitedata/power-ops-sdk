@@ -61,7 +61,7 @@ class ShopBasedPartialBidConfigurationAPI(
         method_prefix: str | None = None,
         add_steps: bool | None = None,
         power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        shop_scenarios: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -76,7 +76,7 @@ class ShopBasedPartialBidConfigurationAPI(
             method_prefix: The prefix of the method to filter on.
             add_steps: The add step to filter on.
             power_asset: The power asset to filter on.
-            shop_scenarios: The shop scenario to filter on.
+            scenario_set: The scenario set to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop based partial bid configurations to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -95,7 +95,7 @@ class ShopBasedPartialBidConfigurationAPI(
             method_prefix,
             add_steps,
             power_asset,
-            shop_scenarios,
+            scenario_set,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -221,7 +221,7 @@ class ShopBasedPartialBidConfigurationAPI(
         method_prefix: str | None = None,
         add_steps: bool | None = None,
         power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        shop_scenarios: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -238,7 +238,7 @@ class ShopBasedPartialBidConfigurationAPI(
             method_prefix: The prefix of the method to filter on.
             add_steps: The add step to filter on.
             power_asset: The power asset to filter on.
-            shop_scenarios: The shop scenario to filter on.
+            scenario_set: The scenario set to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop based partial bid configurations to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -264,7 +264,7 @@ class ShopBasedPartialBidConfigurationAPI(
             method_prefix,
             add_steps,
             power_asset,
-            shop_scenarios,
+            scenario_set,
             external_id_prefix,
             space,
             filter,
@@ -296,7 +296,7 @@ class ShopBasedPartialBidConfigurationAPI(
         method_prefix: str | None = None,
         add_steps: bool | None = None,
         power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        shop_scenarios: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -326,7 +326,7 @@ class ShopBasedPartialBidConfigurationAPI(
         method_prefix: str | None = None,
         add_steps: bool | None = None,
         power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        shop_scenarios: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -357,7 +357,7 @@ class ShopBasedPartialBidConfigurationAPI(
         method_prefix: str | None = None,
         add_steps: bool | None = None,
         power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        shop_scenarios: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -377,7 +377,7 @@ class ShopBasedPartialBidConfigurationAPI(
             method_prefix: The prefix of the method to filter on.
             add_steps: The add step to filter on.
             power_asset: The power asset to filter on.
-            shop_scenarios: The shop scenario to filter on.
+            scenario_set: The scenario set to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop based partial bid configurations to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -404,7 +404,7 @@ class ShopBasedPartialBidConfigurationAPI(
             method_prefix,
             add_steps,
             power_asset,
-            shop_scenarios,
+            scenario_set,
             external_id_prefix,
             space,
             filter,
@@ -435,7 +435,7 @@ class ShopBasedPartialBidConfigurationAPI(
         method_prefix: str | None = None,
         add_steps: bool | None = None,
         power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        shop_scenarios: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -454,7 +454,7 @@ class ShopBasedPartialBidConfigurationAPI(
             method_prefix: The prefix of the method to filter on.
             add_steps: The add step to filter on.
             power_asset: The power asset to filter on.
-            shop_scenarios: The shop scenario to filter on.
+            scenario_set: The scenario set to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop based partial bid configurations to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -472,7 +472,7 @@ class ShopBasedPartialBidConfigurationAPI(
             method_prefix,
             add_steps,
             power_asset,
-            shop_scenarios,
+            scenario_set,
             external_id_prefix,
             space,
             filter,
@@ -496,7 +496,7 @@ class ShopBasedPartialBidConfigurationAPI(
         method_prefix: str | None = None,
         add_steps: bool | None = None,
         power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        shop_scenarios: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -511,7 +511,7 @@ class ShopBasedPartialBidConfigurationAPI(
             method_prefix: The prefix of the method to filter on.
             add_steps: The add step to filter on.
             power_asset: The power asset to filter on.
-            shop_scenarios: The shop scenario to filter on.
+            scenario_set: The scenario set to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop based partial bid configurations to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -537,7 +537,7 @@ class ShopBasedPartialBidConfigurationAPI(
             method_prefix,
             add_steps,
             power_asset,
-            shop_scenarios,
+            scenario_set,
             external_id_prefix,
             space,
             filter,

@@ -36,45 +36,6 @@ properties:
       externalId: Scenario
       version: "{{version}}"
       type: view
-  caseFile:
-    container:
-      space: "{{powerops_models}}"
-      externalId: Case
-      type: container
-    containerPropertyIdentifier: caseFile
-    name: caseFile
-    description: The case file used
-  reservoirMapping:
-    container:
-      space: "{{powerops_models}}"
-      externalId: Case
-      type: container
-    containerPropertyIdentifier: reservoirMapping
-    name: reservoirMapping
-    description: The cut file reservoir mapping
-  cutOrderFiles:
-    container:
-      space: "{{powerops_models}}"
-      externalId: Case
-      type: container
-    containerPropertyIdentifier: cutOrderFiles
-    name: cutOrderFiles
-    description: Cut order files (Module series in PRODRISK)
-  extraFiles:
-    container:
-      space: "{{powerops_models}}"
-      externalId: Case
-      type: container
-    containerPropertyIdentifier: extraFiles
-    name: extraFiles
-  cogShopFilesConfig:
-    container:
-      space: "{{powerops_models}}"
-      externalId: Case
-      type: container
-    containerPropertyIdentifier: cogShopFilesConfig
-    name: cogShopFilesConfig
-    description: Configuration for in what order to load the various files into pyshop
   startTime:
     container:
       space: "{{powerops_models}}"
@@ -91,3 +52,16 @@ properties:
     containerPropertyIdentifier: endTime
     name: endTime
     description: The end time of the case
+  shopFiles:
+    type:
+      externalId: Case.shopFiles
+      space: "{{powerops_type_space}}"
+    name: shopFiles
+    source:
+      space: "{{powerops_models}}"
+      externalId: ShopFile
+      version: "{{version}}"
+      type: view
+    direction: outwards
+    description: The list of shop files that are used in a shop run. This encompasses all shop files such as case, module series, cut files etc.
+    connectionType: multi_edge_connection

@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.93.0] - 2024-04-09
+### Changed
+* Added ShopFile type as wrapper for shop files to be used in a Case in CogShop. Changes name from property shopScenarios to
+scenarioSet in `ShopBasedPartialBidConfiguration` type.
+
 ## [0.92.0] - 2024-04-08
 ### Changed
 * `v1` data model updates for enablement of multi method bid calculation

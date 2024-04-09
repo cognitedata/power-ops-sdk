@@ -362,6 +362,17 @@ from ._shop_based_partial_bid_configuration import (
     ShopBasedPartialBidConfigurationWrite,
     ShopBasedPartialBidConfigurationWriteList,
 )
+from ._shop_file import (
+    ShopFile,
+    ShopFileApply,
+    ShopFileApplyList,
+    ShopFileFields,
+    ShopFileGraphQL,
+    ShopFileList,
+    ShopFileTextFields,
+    ShopFileWrite,
+    ShopFileWriteList,
+)
 from ._shop_partial_bid_matrix_calculation_input import (
     ShopPartialBidMatrixCalculationInput,
     ShopPartialBidMatrixCalculationInputApply,
@@ -874,6 +885,15 @@ __all__ = [
     "ShopBasedPartialBidConfigurationApplyList",
     "ShopBasedPartialBidConfigurationFields",
     "ShopBasedPartialBidConfigurationTextFields",
+    "ShopFile",
+    "ShopFileGraphQL",
+    "ShopFileWrite",
+    "ShopFileApply",
+    "ShopFileList",
+    "ShopFileWriteList",
+    "ShopFileApplyList",
+    "ShopFileFields",
+    "ShopFileTextFields",
     "ShopPartialBidMatrixCalculationInput",
     "ShopPartialBidMatrixCalculationInputGraphQL",
     "ShopPartialBidMatrixCalculationInputWrite",

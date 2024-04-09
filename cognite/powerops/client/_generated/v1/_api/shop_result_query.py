@@ -10,14 +10,6 @@ from cognite.powerops.client._generated.v1.data_classes import (
     SHOPResult,
     Case,
 )
-from cognite.powerops.client._generated.v1.data_classes._alert import (
-    Alert,
-    _create_alert_filter,
-)
-from cognite.powerops.client._generated.v1.data_classes._shop_time_series import (
-    SHOPTimeSeries,
-    _create_shop_time_series_filter,
-)
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
 if TYPE_CHECKING:
@@ -51,55 +43,17 @@ class SHOPResultQueryAPI(QueryAPI[T_DomainModelList]):
 
     def alerts(
         self,
-        min_time: datetime.datetime | None = None,
-        max_time: datetime.datetime | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        title: str | list[str] | None = None,
-        title_prefix: str | None = None,
-        description: str | list[str] | None = None,
-        description_prefix: str | None = None,
-        severity: str | list[str] | None = None,
-        severity_prefix: str | None = None,
-        alert_type: str | list[str] | None = None,
-        alert_type_prefix: str | None = None,
-        min_status_code: int | None = None,
-        max_status_code: int | None = None,
-        calculation_run: str | list[str] | None = None,
-        calculation_run_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        external_id_prefix_edge: str | None = None,
-        space_edge: str | list[str] | None = None,
-        filter: dm.Filter | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
         retrieve_case: bool = False,
     ) -> AlertQueryAPI[T_DomainModelList]:
         """Query along the alert edges of the shop result.
 
         Args:
-            min_time: The minimum value of the time to filter on.
-            max_time: The maximum value of the time to filter on.
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
-            title: The title to filter on.
-            title_prefix: The prefix of the title to filter on.
-            description: The description to filter on.
-            description_prefix: The prefix of the description to filter on.
-            severity: The severity to filter on.
-            severity_prefix: The prefix of the severity to filter on.
-            alert_type: The alert type to filter on.
-            alert_type_prefix: The prefix of the alert type to filter on.
-            min_status_code: The minimum value of the status code to filter on.
-            max_status_code: The maximum value of the status code to filter on.
-            calculation_run: The calculation run to filter on.
-            calculation_run_prefix: The prefix of the calculation run to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            external_id_prefix_edge: The prefix of the external ID to filter on.
-            space_edge: The space to filter on.
-            filter: (Advanced) Filter applied to node. If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            limit: Maximum number of alert edges to return. Defaults to 3. Set to -1, float("inf") or None
+            limit: Maximum number of alert edges to return. Defaults to 25. Set to -1, float("inf") or None
                 to return all items.
             retrieve_case: Whether to retrieve the case for each shop result or not.
 
@@ -109,10 +63,11 @@ class SHOPResultQueryAPI(QueryAPI[T_DomainModelList]):
         from .alert_query import AlertQueryAPI
 
         from_ = self._builder[-1].name
+
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
-            external_id_prefix=external_id_prefix_edge,
-            space=space_edge,
+            external_id_prefix=external_id_prefix,
+            space=space,
         )
         self._builder.append(
             QueryStep(
@@ -126,66 +81,23 @@ class SHOPResultQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
-
-        view_id = self._view_by_read_class[Alert]
-        has_data = dm.filters.HasData(views=[view_id])
-        node_filer = _create_alert_filter(
-            view_id,
-            min_time,
-            max_time,
-            process_id,
-            process_id_prefix,
-            title,
-            title_prefix,
-            description,
-            description_prefix,
-            severity,
-            severity_prefix,
-            alert_type,
-            alert_type_prefix,
-            min_status_code,
-            max_status_code,
-            calculation_run,
-            calculation_run_prefix,
-            external_id_prefix,
-            space,
-            (filter and dm.filters.And(filter, has_data)) or has_data,
-        )
         if retrieve_case:
             self._query_append_case(from_)
-        return AlertQueryAPI(self._client, self._builder, self._view_by_read_class, node_filer, limit)
+        return AlertQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
 
     def output_timeseries(
         self,
-        object_type: str | list[str] | None = None,
-        object_type_prefix: str | None = None,
-        object_name: str | list[str] | None = None,
-        object_name_prefix: str | None = None,
-        attribute_name: str | list[str] | None = None,
-        attribute_name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        external_id_prefix_edge: str | None = None,
-        space_edge: str | list[str] | None = None,
-        filter: dm.Filter | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
         retrieve_case: bool = False,
     ) -> SHOPTimeSeriesQueryAPI[T_DomainModelList]:
         """Query along the output timesery edges of the shop result.
 
         Args:
-            object_type: The object type to filter on.
-            object_type_prefix: The prefix of the object type to filter on.
-            object_name: The object name to filter on.
-            object_name_prefix: The prefix of the object name to filter on.
-            attribute_name: The attribute name to filter on.
-            attribute_name_prefix: The prefix of the attribute name to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            external_id_prefix_edge: The prefix of the external ID to filter on.
-            space_edge: The space to filter on.
-            filter: (Advanced) Filter applied to node. If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            limit: Maximum number of output timesery edges to return. Defaults to 3. Set to -1, float("inf") or None
+            limit: Maximum number of output timesery edges to return. Defaults to 25. Set to -1, float("inf") or None
                 to return all items.
             retrieve_case: Whether to retrieve the case for each shop result or not.
 
@@ -195,10 +107,11 @@ class SHOPResultQueryAPI(QueryAPI[T_DomainModelList]):
         from .shop_time_series_query import SHOPTimeSeriesQueryAPI
 
         from_ = self._builder[-1].name
+
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("sp_powerops_types_temp", "SHOPResult.outputTimeseries"),
-            external_id_prefix=external_id_prefix_edge,
-            space=space_edge,
+            external_id_prefix=external_id_prefix,
+            space=space,
         )
         self._builder.append(
             QueryStep(
@@ -212,24 +125,9 @@ class SHOPResultQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
-
-        view_id = self._view_by_read_class[SHOPTimeSeries]
-        has_data = dm.filters.HasData(views=[view_id])
-        node_filer = _create_shop_time_series_filter(
-            view_id,
-            object_type,
-            object_type_prefix,
-            object_name,
-            object_name_prefix,
-            attribute_name,
-            attribute_name_prefix,
-            external_id_prefix,
-            space,
-            (filter and dm.filters.And(filter, has_data)) or has_data,
-        )
         if retrieve_case:
             self._query_append_case(from_)
-        return SHOPTimeSeriesQueryAPI(self._client, self._builder, self._view_by_read_class, node_filer, limit)
+        return SHOPTimeSeriesQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
 
     def query(
         self,
@@ -263,6 +161,5 @@ class SHOPResultQueryAPI(QueryAPI[T_DomainModelList]):
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
                 result_cls=Case,
-                is_single_direct_relation=True,
             ),
         )

@@ -1,0 +1,47 @@
+space: "{{powerops_models}}"
+externalId: ShopFile
+name: ShopFile
+usedFor: node
+properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+    description: The name of the shop file
+  label:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+    description: The type of the shop file, e.g. 'water_value_cut_file', 'case_file', 'module_series'
+  fileReference:
+    type:
+      list: false
+      type: file
+    nullable: false
+    autoIncrement: false
+    name: model
+    description: The file reference of the shop file in cdf
+  order:
+    type:
+      list: false
+      type: int32
+    nullable: false
+    autoIncrement: false
+    name: order
+    description: The order in which the file should be loaded into pyshop
+  isAscii:
+    type:
+      list: false
+      type: boolean
+    nullable: false
+    autoIncrement: false
+    name: isAscii
+    description: The file extension of the file to determine if the filed should be loaded as either Ascii or Yaml

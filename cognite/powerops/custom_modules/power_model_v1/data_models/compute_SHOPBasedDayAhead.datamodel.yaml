@@ -116,3 +116,7 @@ views:
     externalId: ShopBasedPartialBidConfiguration
     version: "{{version}}"
     type: view
+  - space: "{{powerops_models}}"
+    externalId: ShopFile
+    version: "{{version}}"
+    type: view

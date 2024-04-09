@@ -66,6 +66,12 @@
   externalId: PriceProduction
 - space: "{{powerops_type_space}}"
   externalId: PartialBidMatrixCalculationOutput
+- space: "{{powerops_type_space}}"
+  externalId: Case.shopFiles
+- space: "{{powerops_type_space}}"
+  externalId: ShopFile
+- space: "{{powerops_type_space}}"
+  externalId: ScenarioSet.shopScenarios
 
 ## DayAhead Types
 - space: "{{powerops_type_space}}"

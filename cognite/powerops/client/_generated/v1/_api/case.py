@@ -33,6 +33,7 @@ from ._core import (
     QueryStep,
     QueryBuilder,
 )
+from .case_shop_files import CaseShopFilesAPI
 from .case_query import CaseQueryAPI
 
 
@@ -48,6 +49,7 @@ class CaseAPI(NodeAPI[Case, CaseWrite, CaseList]):
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
+        self.shop_files_edge = CaseShopFilesAPI(client)
 
     def __call__(
         self,
@@ -100,6 +102,10 @@ class CaseAPI(NodeAPI[Case, CaseWrite, CaseList]):
         write_none: bool = False,
     ) -> ResourcesWriteResult:
         """Add or update (upsert) cases.
+
+        Note: This method iterates through all nodes and timeseries linked to case and creates them including the edges
+        between the nodes. For example, if any of `shop_files` are set, then these
+        nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
             case: Case or sequence of cases to upsert.
@@ -191,7 +197,20 @@ class CaseAPI(NodeAPI[Case, CaseWrite, CaseList]):
                 >>> case = client.case.retrieve("my_case")
 
         """
-        return self._retrieve(external_id, space)
+        return self._retrieve(
+            external_id,
+            space,
+            retrieve_edges=True,
+            edge_api_name_type_direction_view_id_penta=[
+                (
+                    self.shop_files_edge,
+                    "shop_files",
+                    dm.DirectRelationReference("sp_powerops_types_temp", "Case.shopFiles"),
+                    "outwards",
+                    dm.ViewId("sp_powerops_models_temp", "ShopFile", "1"),
+                ),
+            ],
+        )
 
     @overload
     def aggregate(
@@ -375,6 +394,7 @@ class CaseAPI(NodeAPI[Case, CaseWrite, CaseList]):
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        retrieve_edges: bool = True,
     ) -> CaseList:
         """List/filter cases
 
@@ -388,6 +408,7 @@ class CaseAPI(NodeAPI[Case, CaseWrite, CaseList]):
             space: The space to filter on.
             limit: Maximum number of cases to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            retrieve_edges: Whether to retrieve `shop_files` external ids for the cases. Defaults to True.
 
         Returns:
             List of requested cases
@@ -412,4 +433,18 @@ class CaseAPI(NodeAPI[Case, CaseWrite, CaseList]):
             space,
             filter,
         )
-        return self._list(limit=limit, filter=filter_)
+
+        return self._list(
+            limit=limit,
+            filter=filter_,
+            retrieve_edges=retrieve_edges,
+            edge_api_name_type_direction_view_id_penta=[
+                (
+                    self.shop_files_edge,
+                    "shop_files",
+                    dm.DirectRelationReference("sp_powerops_types_temp", "Case.shopFiles"),
+                    "outwards",
+                    dm.ViewId("sp_powerops_models_temp", "ShopFile", "1"),
+                ),
+            ],
+        )

@@ -40,13 +40,13 @@ properties:
       externalId: PowerAsset
       version: "{{version}}"
       type: view
-  shopScenarios:
+  scenarioSet:
     container:
       space: "{{powerops_models}}"
       externalId: PartialShopBased
       type: container
-    containerPropertyIdentifier: shopScenarios
-    name: shopScenarios
+    containerPropertyIdentifier: scenarioSet
+    name: scenarioSet
     source:
       space: "{{powerops_models}}"
       externalId: ScenarioSet

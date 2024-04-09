@@ -41,6 +41,7 @@ from ._api.shop_trigger_output import SHOPTriggerOutputAPI
 from ._api.scenario import ScenarioAPI
 from ._api.scenario_set import ScenarioSetAPI
 from ._api.shop_based_partial_bid_configuration import ShopBasedPartialBidConfigurationAPI
+from ._api.shop_file import ShopFileAPI
 from ._api.shop_partial_bid_matrix_calculation_input import ShopPartialBidMatrixCalculationInputAPI
 from ._api.task_dispatcher_input import TaskDispatcherInputAPI
 from ._api.task_dispatcher_output import TaskDispatcherOutputAPI
@@ -100,6 +101,7 @@ class SHOPBasedDayAheadBidProcesAPIs:
             data_classes.ShopBasedPartialBidConfiguration: dm.ViewId(
                 "sp_powerops_models_temp", "ShopBasedPartialBidConfiguration", "1"
             ),
+            data_classes.ShopFile: dm.ViewId("sp_powerops_models_temp", "ShopFile", "1"),
             data_classes.ShopPartialBidMatrixCalculationInput: dm.ViewId(
                 "sp_powerops_models_temp", "ShopPartialBidMatrixCalculationInput", "1"
             ),
@@ -134,6 +136,7 @@ class SHOPBasedDayAheadBidProcesAPIs:
         self.scenario = ScenarioAPI(client, view_by_read_class)
         self.scenario_set = ScenarioSetAPI(client, view_by_read_class)
         self.shop_based_partial_bid_configuration = ShopBasedPartialBidConfigurationAPI(client, view_by_read_class)
+        self.shop_file = ShopFileAPI(client, view_by_read_class)
         self.shop_partial_bid_matrix_calculation_input = ShopPartialBidMatrixCalculationInputAPI(
             client, view_by_read_class
         )
@@ -537,7 +540,7 @@ class PowerOpsModelsV1Client:
     PowerOpsModelsV1Client
 
     Generated with:
-        pygen = 0.99.17
+        pygen = 0.99.14
         cognite-sdk = 7.26.2
         pydantic = 2.6.4
 
@@ -551,7 +554,7 @@ class PowerOpsModelsV1Client:
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
         # The client name is used for aggregated logging of Pygen Usage
-        client.config.client_name = "CognitePygen:0.99.17"
+        client.config.client_name = "CognitePygen:0.99.14"
 
         self.shop_based_day_ahead_bid_process = SHOPBasedDayAheadBidProcesAPIs(client)
         self.total_bid_matrix_calculation = TotalBidMatrixCalculationAPIs(client)
@@ -668,8 +671,8 @@ class PowerOpsModelsV1Client:
 
             Delete item by id:
 
-                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
-                >>> client = PowerOpsModelsV1Client()
+                >>> from omni import OmniClient
+                >>> client = OmniClient()
                 >>> client.delete("my_node_external_id")
         """
         if isinstance(external_id, str):

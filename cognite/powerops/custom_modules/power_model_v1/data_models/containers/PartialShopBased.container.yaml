@@ -3,7 +3,7 @@ externalId: PartialShopBased
 name: PartialShopBased
 usedFor: node
 properties:
-  shopScenarios:
+  scenarioSet:
     type:
       list: false
       type: direct
