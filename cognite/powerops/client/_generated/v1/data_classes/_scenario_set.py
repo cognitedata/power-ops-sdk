@@ -256,7 +256,7 @@ class ScenarioSetWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "ScenarioSet.scenarios")
+        edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "ScenarioSet.shopScenarios")
         for shop_scenario in self.shop_scenarios or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

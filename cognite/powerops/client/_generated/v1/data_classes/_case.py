@@ -232,7 +232,7 @@ class CaseWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_powerops_models_temp", "Case.shopFiles")
+        edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "Case.shopFiles")
         for shop_file in self.shop_files or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

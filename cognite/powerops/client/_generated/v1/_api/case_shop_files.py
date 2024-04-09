@@ -43,7 +43,7 @@ class CaseShopFilesAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("sp_powerops_models_temp", "Case.shopFiles"),
+            dm.DirectRelationReference("sp_powerops_types_temp", "Case.shopFiles"),
             from_case,
             from_case_space,
             to_shop_file,

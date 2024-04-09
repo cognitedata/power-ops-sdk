@@ -205,7 +205,7 @@ class CaseAPI(NodeAPI[Case, CaseWrite, CaseList]):
                 (
                     self.shop_files_edge,
                     "shop_files",
-                    dm.DirectRelationReference("sp_powerops_models_temp", "Case.shopFiles"),
+                    dm.DirectRelationReference("sp_powerops_types_temp", "Case.shopFiles"),
                     "outwards",
                     dm.ViewId("sp_powerops_models_temp", "ShopFile", "1"),
                 ),
@@ -442,7 +442,7 @@ class CaseAPI(NodeAPI[Case, CaseWrite, CaseList]):
                 (
                     self.shop_files_edge,
                     "shop_files",
-                    dm.DirectRelationReference("sp_powerops_models_temp", "Case.shopFiles"),
+                    dm.DirectRelationReference("sp_powerops_types_temp", "Case.shopFiles"),
                     "outwards",
                     dm.ViewId("sp_powerops_models_temp", "ShopFile", "1"),
                 ),

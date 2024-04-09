@@ -214,7 +214,7 @@ class ScenarioSetAPI(NodeAPI[ScenarioSet, ScenarioSetWrite, ScenarioSetList]):
                 (
                     self.shop_scenarios_edge,
                     "shop_scenarios",
-                    dm.DirectRelationReference("sp_powerops_types_temp", "ScenarioSet.scenarios"),
+                    dm.DirectRelationReference("sp_powerops_types_temp", "ScenarioSet.shopScenarios"),
                     "outwards",
                     dm.ViewId("sp_powerops_models_temp", "Scenario", "1"),
                 ),
@@ -559,7 +559,7 @@ class ScenarioSetAPI(NodeAPI[ScenarioSet, ScenarioSetWrite, ScenarioSetList]):
                 (
                     self.shop_scenarios_edge,
                     "shop_scenarios",
-                    dm.DirectRelationReference("sp_powerops_types_temp", "ScenarioSet.scenarios"),
+                    dm.DirectRelationReference("sp_powerops_types_temp", "ScenarioSet.shopScenarios"),
                     "outwards",
                     dm.ViewId("sp_powerops_models_temp", "Scenario", "1"),
                 ),
