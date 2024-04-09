@@ -191,3 +191,7 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
+  - space: "{{powerops_models}}"
+    externalId: ShopFile
+    version: "{{version}}"
+    type: view

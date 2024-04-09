@@ -59,6 +59,6 @@ properties:
       space: "{{powerops_models}}"
       externalId: ShopFile
       type: container
-    containerPropertyIdentifier: fileType
+    containerPropertyIdentifier: isAscii
     name: isAscii
     description: The file extension of the file
