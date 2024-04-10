@@ -12,13 +12,13 @@ properties:
     autoIncrement: false
     name: name
     description: The name of the Scenario
-  modelTemplate:
+  model:
     type:
       list: false
       type: direct
     nullable: true
     autoIncrement: false
-    name: modelTemplate
+    name: model
     description: The model template
   commands:
     type:

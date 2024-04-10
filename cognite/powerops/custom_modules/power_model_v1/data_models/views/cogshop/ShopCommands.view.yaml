@@ -1,13 +1,13 @@
 space: "{{powerops_models}}"
-externalId: Commands
-name: Commands
+externalId: ShopCommands
+name: ShopCommands
 description: The commands to use in the shop model file
 filter:
   and:
     - hasData:
         - type: container
           space: "{{powerops_models}}"
-          externalId: CommandsConfig
+          externalId: ShopCommands
     - equals:
         property:
           - node
@@ -18,7 +18,7 @@ filter:
           - node
           - type
         value:
-          externalId: Commands
+          externalId: ShopCommands
           space: "{{powerops_type_space}}"
 implements: []
 version: "{{version}}"
@@ -26,15 +26,15 @@ properties:
   name:
     container:
       space: "{{powerops_models}}"
-      externalId: CommandsConfig
+      externalId: ShopCommands
       type: container
     containerPropertyIdentifier: name
     name: name
-    description: Name for the Commands
+    description: Name for the ShopCommands
   commands:
     container:
       space: "{{powerops_models}}"
-      externalId: CommandsConfig
+      externalId: ShopCommands
       type: container
     containerPropertyIdentifier: commands
     name: commands

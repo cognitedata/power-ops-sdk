@@ -1,7 +1,7 @@
-externalId: compute_SHOPBasedDayAhead
+externalId: compute_ShopBasedDayAhead
 space: "{{powerops_models}}"
 version: "1"
-name: SHOPBasedDayAheadBidProcess
+name: ShopBasedDayAheadBidProcess
 description: "The process of going from BidConfig to a PartialBidMatrix"
 views:
   - externalId: TaskDispatcherInput
@@ -20,11 +20,11 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: SHOPTriggerInput
+  - externalId: ShopTriggerInput
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: SHOPTriggerOutput
+  - externalId: ShopTriggerOutput
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
@@ -60,15 +60,15 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: ModelTemplate
+  - externalId: ShopModel
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: SHOPResult
+  - externalId: ShopResult
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: Case
+  - externalId: ShopCase
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
@@ -88,11 +88,11 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: SHOPTimeSeries
+  - externalId: ShopTimeSeries
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: Commands
+  - externalId: ShopCommands
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"

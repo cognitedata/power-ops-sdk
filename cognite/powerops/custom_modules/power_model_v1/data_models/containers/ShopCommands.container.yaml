@@ -1,6 +1,6 @@
 space: "{{powerops_models}}"
-externalId: CommandsConfig
-name: CommandsConfig
+externalId: ShopCommands
+name: ShopCommands
 usedFor: node
 properties:
   name:

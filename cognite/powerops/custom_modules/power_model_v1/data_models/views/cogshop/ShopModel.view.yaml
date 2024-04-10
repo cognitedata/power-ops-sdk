@@ -1,13 +1,13 @@
 space: "{{powerops_models}}"
-externalId: ModelTemplate
-name: ModelTemplate
+externalId: ShopModel
+name: ShopModel
 description: The template for SHOP models
 filter:
   and:
     - hasData:
         - type: container
           space: "{{powerops_models}}"
-          externalId: ModelTemplate
+          externalId: ShopModel
     - equals:
         property:
           - node
@@ -18,7 +18,7 @@ filter:
           - node
           - type
         value:
-          externalId: ModelTemplate
+          externalId: ShopModel
           space: "{{powerops_type_space}}"
 implements: []
 version: "{{version}}"
@@ -26,7 +26,7 @@ properties:
   name:
     container:
       space: "{{powerops_models}}"
-      externalId: ModelTemplate
+      externalId: ShopModel
       type: container
     containerPropertyIdentifier: name
     name: name
@@ -34,7 +34,7 @@ properties:
   version:
     container:
       space: "{{powerops_models}}"
-      externalId: ModelTemplate
+      externalId: ShopModel
       type: container
     containerPropertyIdentifier: version
     name: version
@@ -42,7 +42,7 @@ properties:
   shopVersion:
     container:
       space: "{{powerops_models}}"
-      externalId: ModelTemplate
+      externalId: ShopModel
       type: container
     containerPropertyIdentifier: shopVersion
     name: shopVersion
@@ -50,7 +50,7 @@ properties:
   penaltyLimit:
     container:
       space: "{{powerops_models}}"
-      externalId: ModelTemplate
+      externalId: ShopModel
       type: container
     containerPropertyIdentifier: penaltyLimit
     name: penaltyLimit
@@ -58,7 +58,7 @@ properties:
   model:
     container:
       space: "{{powerops_models}}"
-      externalId: ModelTemplate
+      externalId: ShopModel
       type: container
     containerPropertyIdentifier: model
     name: model
@@ -66,7 +66,7 @@ properties:
   cogShopFilesConfig:
     container:
       space: "{{powerops_models}}"
-      externalId: ModelTemplate
+      externalId: ShopModel
       type: container
     containerPropertyIdentifier: cogShopFilesConfig
     name: cogShopFilesConfig
@@ -74,7 +74,7 @@ properties:
   extraFiles:
     container:
       space: "{{powerops_models}}"
-      externalId: ModelTemplate
+      externalId: ShopModel
       type: container
     containerPropertyIdentifier: extraFiles
     name: extraFiles
@@ -82,7 +82,7 @@ properties:
   baseMappings:
     type:
       space: "{{powerops_type_space}}"
-      externalId: ModelTemplate.baseMappings
+      externalId: ShopModel.baseMappings
     source:
       space: "{{powerops_models}}"
       externalId: Mapping

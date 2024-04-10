@@ -1,6 +1,6 @@
 space: "{{powerops_models}}"
 externalId: PriceProduction
-name: PriceProdution
+name: PriceProduction
 description: TODO
 filter:
   and:
@@ -44,7 +44,7 @@ properties:
       type: container
     source:
       space: "{{powerops_models}}"
-      externalId: SHOPResult
+      externalId: ShopResult
       version: "{{version}}"
       type: view
     containerPropertyIdentifier: shopResult

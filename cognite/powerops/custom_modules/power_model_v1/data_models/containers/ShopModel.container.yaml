@@ -1,6 +1,6 @@
 space: "{{powerops_models}}"
-externalId: ModelTemplate
-name: ModelTemplate
+externalId: ShopModel
+name: ShopModel
 usedFor: node
 properties:
   name:

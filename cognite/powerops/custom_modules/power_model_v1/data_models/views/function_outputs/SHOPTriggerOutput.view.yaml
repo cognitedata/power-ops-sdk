@@ -1,6 +1,6 @@
 space: "{{powerops_models}}"
-externalId: SHOPTriggerOutput
-name: SHOPTriggerOutput
+externalId: ShopTriggerOutput
+name: ShopTriggerOutput
 description: Base class for all function inputs
 filter:
   and:
@@ -18,7 +18,7 @@ filter:
           - node
           - type
         value:
-          externalId: SHOPTriggerOutput
+          externalId: ShopTriggerOutput
           space: "{{powerops_type_space}}"
 implements:
   - space: "{{powerops_models}}"
@@ -36,7 +36,7 @@ properties:
     name: shopResult
     source:
       space: "{{powerops_models}}"
-      externalId: SHOPResult
+      externalId: ShopResult
       version: "{{version}}"
       type: view
   input:
@@ -49,6 +49,6 @@ properties:
     description: The prepped and processed scenario to send to shop trigger
     source:
       space: "{{powerops_models}}"
-      externalId: SHOPTriggerInput
+      externalId: ShopTriggerInput
       version: "{{version}}"
       type: view

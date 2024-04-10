@@ -1,4 +1,4 @@
-space: '{{powerops_models}}'
+space: "{{powerops_models}}"
 externalId: ShopObjectiveValue
 name: ShopObjectiveValue
 description: The objective value of a shop
@@ -6,41 +6,41 @@ filter:
   and:
     - hasData:
         - type: container
-          space: '{{powerops_models}}'
-          externalId: SHOPObjectiveValue
+          space: "{{powerops_models}}"
+          externalId: ShopObjectiveValue
     - equals:
         property:
           - node
           - space
-        value: '{{powerops_instance_space}}'
+        value: "{{powerops_instance_space}}"
     - equals:
         property:
           - node
           - type
         value:
           externalId: ShopObjectiveValue
-          space: '{{powerops_type_space}}'
+          space: "{{powerops_type_space}}"
 implements: []
-version: '{{version}}'
+version: "{{version}}"
 properties:
   name:
     container:
-      space: '{{powerops_models}}'
-      externalId: SHOPObjectiveValue
+      space: "{{powerops_models}}"
+      externalId: ShopObjectiveValue
       type: container
     containerPropertyIdentifier: name
     name: name
   value:
     container:
-      space: '{{powerops_models}}'
-      externalId: SHOPObjectiveValue
+      space: "{{powerops_models}}"
+      externalId: ShopObjectiveValue
       type: container
     containerPropertyIdentifier: value
     name: value
   parts:
     container:
-      space: '{{powerops_models}}'
-      externalId: SHOPObjectiveValue
+      space: "{{powerops_models}}"
+      externalId: ShopObjectiveValue
       type: container
     containerPropertyIdentifier: parts
     name: parts

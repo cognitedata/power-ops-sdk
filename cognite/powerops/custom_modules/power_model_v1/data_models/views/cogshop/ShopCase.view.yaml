@@ -1,13 +1,13 @@
 space: "{{powerops_models}}"
-externalId: Case
-name: Case
+externalId: ShopCase
+name: ShopCase
 description: A case that links a Scenario and shop dates to run shop with
 filter:
   and:
     - hasData:
         - type: container
           space: "{{powerops_models}}"
-          externalId: Case
+          externalId: ShopCase
     - equals:
         property:
           - node
@@ -18,7 +18,7 @@ filter:
           - node
           - type
         value:
-          externalId: Case
+          externalId: ShopCase
           space: "{{powerops_type_space}}"
 implements: []
 version: "{{version}}"
@@ -26,7 +26,7 @@ properties:
   scenario:
     container:
       space: "{{powerops_models}}"
-      externalId: Case
+      externalId: ShopCase
       type: container
     containerPropertyIdentifier: scenario
     name: scenario
@@ -39,7 +39,7 @@ properties:
   startTime:
     container:
       space: "{{powerops_models}}"
-      externalId: Case
+      externalId: ShopCase
       type: container
     containerPropertyIdentifier: startTime
     name: startTime
@@ -47,14 +47,14 @@ properties:
   endTime:
     container:
       space: "{{powerops_models}}"
-      externalId: Case
+      externalId: ShopCase
       type: container
     containerPropertyIdentifier: endTime
     name: endTime
     description: The end time of the case
   shopFiles:
     type:
-      externalId: Case.shopFiles
+      externalId: ShopCase.shopFiles
       space: "{{powerops_type_space}}"
     name: shopFiles
     source:

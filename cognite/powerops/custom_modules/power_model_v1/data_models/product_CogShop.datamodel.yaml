@@ -4,7 +4,7 @@ version: "1"
 name: CogShop
 description: CogShop data model
 views:
-  - externalId: Case
+  - externalId: ShopCase
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
@@ -12,7 +12,7 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: Commands
+  - externalId: ShopCommands
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
@@ -20,7 +20,7 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: ModelTemplate
+  - externalId: ShopModel
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"

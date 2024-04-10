@@ -1,14 +1,13 @@
 space: "{{powerops_models}}"
-externalId: SHOPResult
-name: SHOPResult
+externalId: ShopResult
+name: ShopResult
 description: A generic shop result type that collects all time series outputs from SHOP. This type replaces the POWEROPS_SHOP_RUN event in cdf today
-#TODO: Consider adding a filter for SHOPResult and SHOPResultPriceProd to exclude PriceProdCase instances from this view that also uses the SHOPResult container
 filter:
   and:
     - hasData:
         - type: container
           space: "{{powerops_models}}"
-          externalId: SHOPResult
+          externalId: ShopResult
     - equals:
         property:
           - node
@@ -20,20 +19,20 @@ properties:
   case:
     container:
       space: "{{powerops_models}}"
-      externalId: SHOPResult
+      externalId: ShopResult
       type: container
     containerPropertyIdentifier: case
     name: case
     description: The case that was used to produce this result
     source:
       space: "{{powerops_models}}"
-      externalId: Case
+      externalId: ShopCase
       version: "{{version}}"
       type: view
   objectiveSequence:
     container:
       space: "{{powerops_models}}"
-      externalId: SHOPResult
+      externalId: ShopResult
       type: container
     containerPropertyIdentifier: objectiveSequence
     name: objectiveSequence
@@ -41,7 +40,7 @@ properties:
   preRun:
     container:
       space: "{{powerops_models}}"
-      externalId: SHOPResult
+      externalId: ShopResult
       type: container
     containerPropertyIdentifier: preRun
     name: preRun
@@ -49,38 +48,38 @@ properties:
   postRun:
     container:
       space: "{{powerops_models}}"
-      externalId: SHOPResult
+      externalId: ShopResult
       type: container
     containerPropertyIdentifier: postRun
     name: postRun
     description: The post-run data for the SHOP run
-  shopMessages:
+  messages:
     container:
       space: "{{powerops_models}}"
-      externalId: SHOPResult
+      externalId: ShopResult
       type: container
-    containerPropertyIdentifier: shopMessages
-    name: shopMessages
+    containerPropertyIdentifier: messages
+    name: messages
     description: The messages from the SHOP run
   cplexLogs:
     container:
       space: "{{powerops_models}}"
-      externalId: SHOPResult
+      externalId: ShopResult
       type: container
     containerPropertyIdentifier: cplexLogs
     name: cplexLogs
     description: The logs from CPLEX
-  outputTimeseries:
+  outputTimeSeries:
     type:
       space: "{{powerops_type_space}}"
-      externalId: SHOPResult.outputTimeseries
+      externalId: ShopResult.outputTimeSeries
     source:
       space: "{{powerops_models}}"
-      externalId: SHOPTimeSeries
+      externalId: ShopTimeSeries
       version: "{{version}}"
       type: view
     direction: outwards
-    name: outputTimeseries
+    name: outputTimeSeries
     description: TODO
     connectionType: multi_edge_connection
   alerts:

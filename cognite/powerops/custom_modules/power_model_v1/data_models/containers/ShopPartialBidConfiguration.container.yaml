@@ -1,6 +1,6 @@
 space: "{{powerops_models}}"
-externalId: PartialShopBased
-name: PartialShopBased
+externalId: ShopPartialBidConfiguration
+name: ShopPartialBidConfiguration
 usedFor: node
 properties:
   scenarioSet:
@@ -9,5 +9,5 @@ properties:
       type: direct
     nullable: true
     autoIncrement: false
-    name: shopScenarios
+    name: scenarioSet
     description: TODO

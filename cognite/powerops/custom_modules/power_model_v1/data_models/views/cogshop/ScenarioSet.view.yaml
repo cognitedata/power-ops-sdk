@@ -48,16 +48,16 @@ properties:
     containerPropertyIdentifier: shopBidDateSpecification
     name: shopBidDateSpecification
     description: TODO definition
-  shopScenarios:
+  scenarios:
     type:
       space: "{{powerops_type_space}}"
-      externalId: ScenarioSet.shopScenarios
+      externalId: ScenarioSet.scenarios
     source:
       space: "{{powerops_models}}"
       externalId: Scenario
       version: "{{version}}"
       type: view
     direction: outwards
-    name: shopScenarios
+    name: scenarios
     description: Configuration of the partial bids that make up the total bid configuration
     connectionType: multi_edge_connection

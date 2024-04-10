@@ -53,11 +53,11 @@ views:
     version: "{{version}}"
     type: view
   - space: "{{powerops_models}}"
-    externalId: ModelTemplate
+    externalId: ShopModel
     version: "{{version}}"
     type: view
   - space: "{{powerops_models}}"
-    externalId: Commands
+    externalId: ShopCommands
     version: "{{version}}"
     type: view
   - space: "{{powerops_models}}"

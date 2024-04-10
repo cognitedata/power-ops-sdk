@@ -41,9 +41,9 @@
 
 ## CogShop types
 - space: "{{powerops_type_space}}"
-  externalId: Case
+  externalId: ShopCase
 - space: "{{powerops_type_space}}"
-  externalId: ModelTemplate
+  externalId: ShopModel
 - space: "{{powerops_type_space}}"
   externalId: Mapping
 - space: "{{powerops_type_space}}"
@@ -51,35 +51,29 @@
 - space: "{{powerops_type_space}}"
   externalId: PriceScenario
 - space: "{{powerops_type_space}}"
-  externalId: SHOPResult
+  externalId: ShopResult
 - space: "{{powerops_type_space}}"
-  externalId: SHOPResultPriceProd
+  externalId: ShopResultPriceProd
 - space: "{{powerops_type_space}}"
-  externalId: PriceProdCase
+  externalId: ShopCommands
 - space: "{{powerops_type_space}}"
-  externalId: Commands
+  externalId: ShopTimeSeries
 - space: "{{powerops_type_space}}"
-  externalId: SHOPTimeSeries
-- space: "{{powerops_type_space}}"
-  externalId: SHOPResult.outputTimeseries
+  externalId: ShopResult.outputTimeSeries
 - space: "{{powerops_type_space}}"
   externalId: PriceProduction
 - space: "{{powerops_type_space}}"
   externalId: PartialBidMatrixCalculationOutput
 - space: "{{powerops_type_space}}"
-  externalId: Case.shopFiles
-- space: "{{powerops_type_space}}"
   externalId: ShopFile
 - space: "{{powerops_type_space}}"
-  externalId: ScenarioSet.shopScenarios
+  externalId: ScenarioSet.scenarios
 
 ## DayAhead Types
 - space: "{{powerops_type_space}}"
   externalId: DayAheadBidDocument
 - space: "{{powerops_type_space}}"
   externalId: WaterValueBasedMethod
-- space: "{{powerops_type_space}}"
-  externalId: DayAheadSHOPMultiScenario
 - space: "{{powerops_type_space}}"
   externalId: DayAheadWaterValueBased
 
@@ -107,9 +101,9 @@
 - space: "{{powerops_type_space}}"
   externalId: BidMatrix
 - space: "{{powerops_type_space}}"
-  externalId: SHOPTriggerInput
+  externalId: ShopTriggerInput
 - space: "{{powerops_type_space}}"
-  externalId: SHOPTriggerOutput
+  externalId: ShopTriggerOutput
 - space: "{{powerops_type_space}}"
   externalId: PartialBidMatrixCalculationInput
 - space: "{{powerops_type_space}}"
@@ -123,7 +117,7 @@
 - space: "{{powerops_type_space}}"
   externalId: Water.partialBidMatrixCalculations
 - space: "{{powerops_type_space}}"
-  externalId: ModelTemplate.baseMappings
+  externalId: ShopModel.baseMappings
 - space: "{{powerops_type_space}}"
   externalId: ShopBasedPartialBidConfiguration
 - space: "{{powerops_type_space}}"

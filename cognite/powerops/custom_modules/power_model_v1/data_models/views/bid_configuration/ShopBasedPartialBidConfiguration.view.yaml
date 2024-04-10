@@ -1,7 +1,7 @@
 space: "{{powerops_models}}"
 externalId: ShopBasedPartialBidConfiguration
 name: ShopBasedPartialBidConfiguration
-description: A description of the ShopBasedPartialBidConfiguration
+description: TODO
 filter:
   and:
     - hasData:
@@ -43,7 +43,7 @@ properties:
   scenarioSet:
     container:
       space: "{{powerops_models}}"
-      externalId: PartialShopBased
+      externalId: ShopPartialBidConfiguration
       type: container
     containerPropertyIdentifier: scenarioSet
     name: scenarioSet

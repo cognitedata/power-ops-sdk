@@ -1,4 +1,4 @@
-space: '{{powerops_models}}'
+space: "{{powerops_models}}"
 externalId: Scenario
 name: Scenario
 description: The Scenario to run shop with
@@ -6,53 +6,53 @@ filter:
   and:
     - hasData:
         - type: container
-          space: '{{powerops_models}}'
+          space: "{{powerops_models}}"
           externalId: Scenario
     - equals:
         property:
           - node
           - space
-        value: '{{powerops_instance_space}}'
+        value: "{{powerops_instance_space}}"
 implements: []
-version: '{{version}}'
+version: "{{version}}"
 properties:
   name:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: Scenario
       type: container
     containerPropertyIdentifier: name
     name: name
     description: The name of the scenario to run
-  modelTemplate:
+  model:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: Scenario
       type: container
-    containerPropertyIdentifier: modelTemplate
-    name: modelTemplate
+    containerPropertyIdentifier: model
+    name: model
     description: The model template to use when running the scenario
     source:
-      space: '{{powerops_models}}'
-      externalId: ModelTemplate
-      version: '{{version}}'
+      space: "{{powerops_models}}"
+      externalId: ShopModel
+      version: "{{version}}"
       type: view
   commands:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: Scenario
       type: container
     containerPropertyIdentifier: commands
     name: commands
     description: The commands to run
     source:
-      space: '{{powerops_models}}'
-      externalId: Commands
-      version: '{{version}}'
+      space: "{{powerops_models}}"
+      externalId: ShopCommands
+      version: "{{version}}"
       type: view
   source:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: Scenario
       type: container
     containerPropertyIdentifier: source
@@ -60,12 +60,12 @@ properties:
     description: The source of the scenario
   mappingsOverride:
     type:
-      space: '{{powerops_type_space}}'
+      space: "{{powerops_type_space}}"
       externalId: Mapping
     source:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: Mapping
-      version: '{{version}}'
+      version: "{{version}}"
       type: view
     direction: outwards
     name: mappingsOverride

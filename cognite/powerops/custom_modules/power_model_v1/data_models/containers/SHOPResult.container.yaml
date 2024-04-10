@@ -1,6 +1,6 @@
 space: "{{powerops_models}}"
-externalId: SHOPResult
-name: SHOPResult
+externalId: ShopResult
+name: ShopResult
 usedFor: node
 properties:
   case:
@@ -34,14 +34,14 @@ properties:
     autoIncrement: false
     name: postRun
     description: The post run file from the shop run
-  shopMessages:
+  messages:
     type:
       list: false
       type: file
     nullable: true
     autoIncrement: false
-    name: shopMessages
-    description: The prerun file from the shop run
+    name: messages
+    description: TODO
   cplexLogs:
     type:
       list: false

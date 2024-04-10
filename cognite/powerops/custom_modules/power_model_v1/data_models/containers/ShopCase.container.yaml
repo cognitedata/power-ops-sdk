@@ -1,6 +1,6 @@
 space: "{{powerops_models}}"
-externalId: Case
-name: Case
+externalId: ShopCase
+name: ShopCase
 usedFor: node
 properties:
   scenario:
