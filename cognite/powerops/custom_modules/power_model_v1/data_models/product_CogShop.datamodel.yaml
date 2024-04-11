@@ -16,7 +16,7 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: Mapping
+  - externalId: ShopAttributeMapping
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"

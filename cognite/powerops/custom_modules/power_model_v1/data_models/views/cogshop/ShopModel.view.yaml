@@ -79,16 +79,16 @@ properties:
     containerPropertyIdentifier: extraFiles
     name: extraFiles
     description: Extra files related to a model template
-  baseMappings:
+  baseAttributeMappings:
     type:
       space: "{{powerops_type_space}}"
-      externalId: ShopModel.baseMappings
+      externalId: ShopModel.baseAttributeMappings
     source:
       space: "{{powerops_models}}"
-      externalId: Mapping
+      externalId: ShopAttributeMapping
       version: "{{version}}"
       type: view
     direction: outwards
-    name: baseMappings
+    name: baseAttributeMappings
     description: The base mappings for the model
     connectionType: multi_edge_connection

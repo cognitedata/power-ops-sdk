@@ -1,13 +1,13 @@
 space: "{{powerops_models}}"
-externalId: Mapping
-name: Mapping
+externalId: ShopAttributeMapping
+name: ShopAttributeMapping
 description: SHOP scenario that holds all data needed for a shop run. May be unprocessed or processed
 filter:
   and:
     - hasData:
         - type: container
           space: "{{powerops_models}}"
-          externalId: Mapping
+          externalId: ShopAttributeMapping
     - equals:
         property:
           - node
@@ -18,7 +18,7 @@ filter:
           - node
           - type
         value:
-          externalId: Mapping
+          externalId: ShopAttributeMapping
           space: "{{powerops_type_space}}"
 implements: []
 version: "{{version}}"
@@ -26,7 +26,7 @@ properties:
   shopPath:
     container:
       space: "{{powerops_models}}"
-      externalId: Mapping
+      externalId: ShopAttributeMapping
       type: container
     containerPropertyIdentifier: shopPath
     name: shopPath
@@ -34,7 +34,7 @@ properties:
   timeSeries:
     container:
       space: "{{powerops_models}}"
-      externalId: Mapping
+      externalId: ShopAttributeMapping
       type: container
     containerPropertyIdentifier: timeSeries
     name: timeSeries
@@ -42,7 +42,7 @@ properties:
   transformations:
     container:
       space: "{{powerops_models}}"
-      externalId: Mapping
+      externalId: ShopAttributeMapping
       type: container
     containerPropertyIdentifier: transformations
     name: transformations
@@ -50,7 +50,7 @@ properties:
   retrieve:
     container:
       space: "{{powerops_models}}"
-      externalId: Mapping
+      externalId: ShopAttributeMapping
       type: container
     containerPropertyIdentifier: retrieve
     name: retrieve
@@ -58,7 +58,7 @@ properties:
   aggregation:
     container:
       space: "{{powerops_models}}"
-      externalId: Mapping
+      externalId: ShopAttributeMapping
       type: container
     containerPropertyIdentifier: aggregation
     name: aggregation

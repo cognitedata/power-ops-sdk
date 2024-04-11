@@ -58,16 +58,16 @@ properties:
     containerPropertyIdentifier: source
     name: source
     description: The source of the scenario
-  mappingsOverride:
+  attributeMappingsOverride:
     type:
       space: "{{powerops_type_space}}"
-      externalId: Mapping
+      externalId: ShopAttributeMapping
     source:
       space: "{{powerops_models}}"
-      externalId: Mapping
+      externalId: ShopAttributeMapping
       version: "{{version}}"
       type: view
     direction: outwards
-    name: mappingsOverride
+    name: attributeMappingsOverride
     description: An array of base mappings to override in shop model file
     connectionType: multi_edge_connection

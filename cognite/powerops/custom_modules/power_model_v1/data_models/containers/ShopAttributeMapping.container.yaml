@@ -1,6 +1,6 @@
 space: "{{powerops_models}}"
-externalId: Mapping
-name: Mapping
+externalId: ShopAttributeMapping
+name: ShopAttributeMapping
 usedFor: node
 properties:
   shopPath:
