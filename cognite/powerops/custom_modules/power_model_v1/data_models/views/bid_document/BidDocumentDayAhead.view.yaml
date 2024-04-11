@@ -50,7 +50,7 @@ properties:
     name: total
     source:
       space: "{{power_ops_models}}"
-      externalId: BidMatrix
+      externalId: BidMatrixInformation
       version: "{{version}}"
       type: view
   partials:
@@ -59,7 +59,7 @@ properties:
       externalId: partialBid
     source:
       space: "{{power_ops_models}}"
-      externalId: BidMatrix
+      externalId: PartialBidMatrixInformation
       version: "{{version}}"
       type: view
     direction: outwards

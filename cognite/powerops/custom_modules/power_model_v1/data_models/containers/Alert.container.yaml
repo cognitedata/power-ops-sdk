@@ -73,6 +73,13 @@ properties:
     nullable: true
     autoIncrement: false
     name: calculationRun
+  jsonAdditionalData:
+    type:
+      list: true
+      type: json
+    nullable: true
+    autoIncrement: false
+    name: jsonAdditionalData
 indexes:
   time:
     properties:

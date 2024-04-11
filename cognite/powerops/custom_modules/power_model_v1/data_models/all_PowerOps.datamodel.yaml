@@ -195,3 +195,23 @@ views:
     externalId: ShopFile
     version: "{{version}}"
     type: view
+  - externalId: BidMatrixSimple
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: BidMatrixInformation
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PartialBidMatrixInformation
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PartialBidMatrixInformationWithScenario
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: ShopPenaltyReport
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"

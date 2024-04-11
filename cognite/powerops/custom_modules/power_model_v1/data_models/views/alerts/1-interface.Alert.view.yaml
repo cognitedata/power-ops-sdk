@@ -13,13 +13,13 @@ filter:
           - node
           - space
         value: "{{power_ops_instance_space}}"
-    - equals:
-        property:
-          - node
-          - type
-        value:
-          externalId: Alert
-          space: "{{power_ops_type_space}}"
+        # - equals:
+        #     property:
+        #       - node
+        #       - type
+        #     value:
+        #       externalId: Alert
+        #       space: "{{power_ops_type_space}}"
 implements: []
 version: "{{version}}"
 properties:

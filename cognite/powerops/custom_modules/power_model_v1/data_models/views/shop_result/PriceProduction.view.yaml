@@ -23,6 +23,13 @@ filter:
 implements: []
 version: "{{version}}"
 properties:
+  name:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: PriceProduction
+      type: container
+    containerPropertyIdentifier: name
+    name: name
   price:
     container:
       space: "{{power_ops_models}}"

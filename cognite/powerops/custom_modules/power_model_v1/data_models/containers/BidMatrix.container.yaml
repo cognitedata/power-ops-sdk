@@ -3,13 +3,21 @@ externalId: BidMatrix
 name: BidMatrix
 usedFor: node
 properties:
-  matrix:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: state
+  bidMatrix:
     type:
       list: false
       type: sequence
     nullable: false
     autoIncrement: false
-    name: matrix
+    name: bidMatrix
   powerAsset:
     type:
       list: false
@@ -22,7 +30,7 @@ properties:
       list: false
       collation: ucs_basic
       type: text
-    nullable: false
+    nullable: true
     autoIncrement: false
     name: state
   partialBidConfiguration:
@@ -46,11 +54,10 @@ properties:
   #   nullable: true
   #   autoIncrement: false
   #   name: isProcessed
-  # resourceCost:
-  #   type:
-  #     list: false
-  #     collation: ucs_basic
-  #     type: text
-  #   nullable: true
-  #   autoIncrement: false
-  #   name: resourceCost
+  resourceCost:
+    type:
+      list: false
+      type: float32
+    nullable: true
+    autoIncrement: false
+    name: resourceCost
