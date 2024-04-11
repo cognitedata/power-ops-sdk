@@ -64,9 +64,3 @@ properties:
     autoIncrement: false
     name: aggregation
     description: How to aggregate time series data
-indexes:
-  shopPathIndex:
-    properties:
-      - shopPath
-    indexType: btree
-    cursorable: false

@@ -88,3 +88,7 @@ views:
     externalId: BidConfiguration
     version: "{{version}}"
     type: view
+  - space: "{{power_ops_models}}"
+    externalId: ShopFile
+    version: "{{version}}"
+    type: view
