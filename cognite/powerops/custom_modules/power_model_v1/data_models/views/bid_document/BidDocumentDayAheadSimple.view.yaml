@@ -1,60 +1,60 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: BidDocumentDayAheadSimple
 name: BidDocumentDayAheadSimple
 filter:
   and:
     - hasData:
         - type: container
-          space: "{{powerops_models}}"
+          space: "{{power_ops_models}}"
           externalId: BidDocument
         - type: container
-          space: "{{powerops_models}}"
+          space: "{{power_ops_models}}"
           externalId: BidDocumentDayAhead
     - equals:
         property:
           - node
           - space
-        value: "{{powerops_instance_space}}"
+        value: "{{power_ops_instance_space}}"
     - equals:
         property:
           - node
           - type
         value:
           externalId: DayAheadBidDocument
-          space: "{{powerops_type_space}}"
+          space: "{{power_ops_type_space}}"
 implements: []
 version: "{{version}}"
 properties:
   priceArea:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: BidDocument
       type: container
     containerPropertyIdentifier: priceArea
     name: priceArea
     source:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: PriceArea
       version: "{{version}}"
       type: view
   total:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: BidDocumentDayAhead
       type: container
     containerPropertyIdentifier: total
     name: total
     source:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: BidMatrix
       version: "{{version}}"
       type: view
   partials:
     type:
-      space: "{{powerops_type_space}}"
+      space: "{{power_ops_type_space}}"
       externalId: partialBid
     source:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: BidMatrix
       version: "{{version}}"
       type: view

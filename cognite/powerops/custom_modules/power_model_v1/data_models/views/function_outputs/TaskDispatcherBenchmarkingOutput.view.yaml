@@ -1,4 +1,4 @@
-space: '{{powerops_models}}'
+space: "{{power_ops_models}}"
 externalId: TaskDispatcherBenchmarkingOutput
 name: TaskDispatcherBenchmarkingOutput
 description: The task dispatcher output data for benchmarking
@@ -6,36 +6,36 @@ filter:
   and:
     - hasData:
         - type: container
-          space: '{{powerops_models}}'
+          space: "{{power_ops_models}}"
           externalId: FunctionMetadata
     - equals:
         property:
           - node
           - space
-        value: '{{powerops_instance_space}}'
+        value: "{{power_ops_instance_space}}"
     - equals:
         property:
           - node
           - type
         value:
           externalId: TaskDispatcherBenchmarkingOutput
-          space: '{{powerops_type_space}}'
+          space: "{{power_ops_type_space}}"
 implements:
-  - space: '{{powerops_models}}'
+  - space: "{{power_ops_models}}"
     externalId: FunctionOutput
-    version: '{{version}}'
+    version: "{{version}}"
     type: view
-version: '{{version}}'
+version: "{{version}}"
 properties:
   input:
     container:
-      space: '{{powerops_models}}'
+      space: "{{power_ops_models}}"
       externalId: FunctionMetadata
       type: container
     containerPropertyIdentifier: linkedStep
     name: input
     source:
-      space: '{{powerops_models}}'
+      space: "{{power_ops_models}}"
       externalId: TaskDispatcherBenchmarkingInput
-      version: '{{version}}'
+      version: "{{version}}"
       type: view

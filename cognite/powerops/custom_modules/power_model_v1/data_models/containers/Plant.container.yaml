@@ -1,4 +1,4 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: Plant
 name: Plant
 usedFor: node
@@ -109,7 +109,7 @@ properties:
 constraints:
   requiredAsset:
     require:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: Asset
       type: container
     constraintType: requires

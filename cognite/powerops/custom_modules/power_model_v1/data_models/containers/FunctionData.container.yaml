@@ -1,4 +1,4 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: FunctionData
 name: FunctionData
 usedFor: node

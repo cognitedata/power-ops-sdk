@@ -1,4 +1,4 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: PriceProduction
 name: PriceProduction
 description: TODO
@@ -6,44 +6,44 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{powerops_models}}"
+          space: "{{power_ops_models}}"
           externalId: PriceProduction
     - equals:
         property:
           - node
           - space
-        value: "{{powerops_instance_space}}"
+        value: "{{power_ops_instance_space}}"
     - equals:
         property:
           - node
           - type
         value:
           externalId: PriceProduction
-          space: "{{powerops_type_space}}"
+          space: "{{power_ops_type_space}}"
 implements: []
 version: "{{version}}"
 properties:
   price:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: PriceProduction
       type: container
     containerPropertyIdentifier: price
     name: price
   production:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: PriceProduction
       type: container
     containerPropertyIdentifier: production
     name: production
   shopResult:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: PriceProduction
       type: container
     source:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopResult
       version: "{{version}}"
       type: view

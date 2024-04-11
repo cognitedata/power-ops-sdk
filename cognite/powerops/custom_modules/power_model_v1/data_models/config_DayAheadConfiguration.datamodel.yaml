@@ -1,70 +1,70 @@
 externalId: config_DayAheadConfiguration
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 version: "1"
 name: DayAheadConfiguration
 description: "Settings for the day ahead bid process"
 views:
   - externalId: BidConfiguration
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: MarketConfiguration
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: PriceArea
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: PartialBidConfiguration
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: ShopBasedPartialBidConfiguration
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: WaterValueBasedPartialBidConfiguration
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: ShopScenario
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: ShopScenarioSet
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: ShopAttributeMapping
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: ShopModel
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: Generator
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: TurbineEfficiencyCurve
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: GeneratorEfficiencyCurve
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: ShopCommands
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: PowerAsset
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: Plant
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"

@@ -1,4 +1,4 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: ShopCase
 name: ShopCase
 description: A case that links a Scenario and shop dates to run shop with
@@ -6,39 +6,39 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{powerops_models}}"
+          space: "{{power_ops_models}}"
           externalId: ShopCase
     - equals:
         property:
           - node
           - space
-        value: "{{powerops_instance_space}}"
+        value: "{{power_ops_instance_space}}"
     - equals:
         property:
           - node
           - type
         value:
           externalId: ShopCase
-          space: "{{powerops_type_space}}"
+          space: "{{power_ops_type_space}}"
 implements: []
 version: "{{version}}"
 properties:
   scenario:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopCase
       type: container
     containerPropertyIdentifier: scenario
     name: scenario
     description: The Shop scenario that was used to produce this result
     source:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopScenario
       version: "{{version}}"
       type: view
   startTime:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopCase
       type: container
     containerPropertyIdentifier: startTime
@@ -46,7 +46,7 @@ properties:
     description: The start time of the case
   endTime:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopCase
       type: container
     containerPropertyIdentifier: endTime
@@ -55,10 +55,10 @@ properties:
   shopFiles:
     type:
       externalId: ShopCase.shopFiles
-      space: "{{powerops_type_space}}"
+      space: "{{power_ops_type_space}}"
     name: shopFiles
     source:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopFile
       version: "{{version}}"
       type: view

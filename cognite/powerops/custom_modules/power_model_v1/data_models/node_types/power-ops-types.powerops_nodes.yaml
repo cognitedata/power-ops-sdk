@@ -3,156 +3,154 @@
 # types here as we use them in validation of the data models.
 
 # Types of edges:
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: partialBid
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: calculationIssue
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: isSubAssetOf
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: isPlantOf
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: isWatercourseOf
 
 # Types of nodes:
 ## AFRR Types
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: AFRRBidDocument
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: AFRRBidRow
 
 ## Assets Types
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: PowerAsset
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: PriceArea
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: Generator
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: GeneratorEfficiencyCurve
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: Plant
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: PriceAreaAFRR
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: TurbineEfficiencyCurve
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: Alert
 
 ## CogShop types
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: ShopCase
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: ShopModel
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: ShopAttributeMapping
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: ShopScenario
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: PriceScenario
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: ShopResult
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: ShopResultPriceProd
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: ShopCommands
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: ShopTimeSeries
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: ShopResult.outputTimeSeries
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: PriceProduction
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: PartialBidMatrixCalculationOutput
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: ShopFile
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: ShopScenarioSet.scenarios
 
 ## DayAhead Types
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: DayAheadBidDocument
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: WaterValueBasedMethod
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: DayAheadWaterValueBased
 
 ## Dayahead Backend types
-- space: "{{powerops_type_space}}"
-  externalId: PreprocessorInput
-- space: "{{powerops_type_space}}"
-  externalId: PreprocessorOutput
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
+  externalId: ShopPreprocessorInput
+- space: "{{power_ops_type_space}}"
+  externalId: ShopPreprocessorOutput
+- space: "{{power_ops_type_space}}"
   externalId: TotalBidMatrixCalculationInput.partialBidMatrices
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: TotalBidMatrixCalculationInput
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: TotalBidMatrixCalculationOutput
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: BidConfiguration
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: partialBidMatrices
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: TaskDispatcherInput
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: TaskDispatcherOutput
-- space: "{{powerops_type_space}}"
-  externalId: PreprocessorInput
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: BidMatrix
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: ShopTriggerInput
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: ShopTriggerOutput
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: PartialBidMatrixCalculationInput
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: BidMatrixCalculationTask
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: ShopPartialBidMatrixCalculationInput
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: ShopPartialBidMatrixCalculationOutput
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: WaterValueBasedPartialBidMatrixCalculationInput
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: Water.partialBidMatrixCalculations
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: ShopModel.baseAttributeMappings
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: ShopBasedPartialBidConfiguration
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: ShopBasedPartialBidConfiguration.scenarios
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: WaterValueBasedPartialBidConfiguration
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: WaterValueBasedPartialBidConfiguration.generators
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: processSubTasks
 
 # Generic Types
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: BidRow
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: FunctionInput
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: FunctionOutput
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: MarketConfiguration
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: BidConfiguration
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: BidConfiguration.partials
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: BidDocument
 
 # Benchmarking Types
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: BenchmarkingCollectorInput
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: BenchmarkingCollectorOutput
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: TaskDispatcherBenchmarkingInput
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: TaskDispatcherBenchmarkingOutput
-- space: "{{powerops_type_space}}"
+- space: "{{power_ops_type_space}}"
   externalId: ShopObjectiveValue

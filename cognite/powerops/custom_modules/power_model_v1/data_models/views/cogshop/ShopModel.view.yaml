@@ -1,4 +1,4 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: ShopModel
 name: ShopModel
 description: The template for SHOP models
@@ -6,26 +6,26 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{powerops_models}}"
+          space: "{{power_ops_models}}"
           externalId: ShopModel
     - equals:
         property:
           - node
           - space
-        value: "{{powerops_instance_space}}"
+        value: "{{power_ops_instance_space}}"
     - equals:
         property:
           - node
           - type
         value:
           externalId: ShopModel
-          space: "{{powerops_type_space}}"
+          space: "{{power_ops_type_space}}"
 implements: []
 version: "{{version}}"
 properties:
   name:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopModel
       type: container
     containerPropertyIdentifier: name
@@ -33,7 +33,7 @@ properties:
     description: TODO
   version:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopModel
       type: container
     containerPropertyIdentifier: version
@@ -41,7 +41,7 @@ properties:
     description: The version of the model
   shopVersion:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopModel
       type: container
     containerPropertyIdentifier: shopVersion
@@ -49,7 +49,7 @@ properties:
     description: The version of SHOP to run
   penaltyLimit:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopModel
       type: container
     containerPropertyIdentifier: penaltyLimit
@@ -57,7 +57,7 @@ properties:
     description: TODO
   model:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopModel
       type: container
     containerPropertyIdentifier: model
@@ -65,7 +65,7 @@ properties:
     description: The shop model file to use as template before applying base mapping
   cogShopFilesConfig:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopModel
       type: container
     containerPropertyIdentifier: cogShopFilesConfig
@@ -73,7 +73,7 @@ properties:
     description: Configuration for in what order to load the various files into pyshop
   extraFiles:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopModel
       type: container
     containerPropertyIdentifier: extraFiles
@@ -81,10 +81,10 @@ properties:
     description: Extra files related to a model template
   baseAttributeMappings:
     type:
-      space: "{{powerops_type_space}}"
+      space: "{{power_ops_type_space}}"
       externalId: ShopModel.baseAttributeMappings
     source:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopAttributeMapping
       version: "{{version}}"
       type: view

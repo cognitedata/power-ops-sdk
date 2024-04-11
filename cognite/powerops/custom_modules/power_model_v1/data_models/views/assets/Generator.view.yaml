@@ -1,4 +1,4 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: Generator
 name: Generator
 description: A generator
@@ -6,22 +6,22 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{powerops_models}}"
+          space: "{{power_ops_models}}"
           externalId: Generator
     - equals:
         property:
           - node
           - space
-        value: "{{powerops_instance_space}}"
+        value: "{{power_ops_instance_space}}"
     - equals:
         property:
           - node
           - type
         value:
           externalId: Generator
-          space: "{{powerops_type_space}}"
+          space: "{{power_ops_type_space}}"
 implements:
-  - space: "{{powerops_models}}"
+  - space: "{{power_ops_models}}"
     externalId: PowerAsset
     version: "{{version}}"
     type: view
@@ -29,57 +29,57 @@ version: "{{version}}"
 properties:
   productionMin:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: Generator
       type: container
     containerPropertyIdentifier: productionMin
     name: productionMin
   penstockNumber:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: Generator
       type: container
     containerPropertyIdentifier: penstockNumber
     name: penstockNumber
   startCost:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: Generator
       type: container
     containerPropertyIdentifier: startCost
     name: startCost
   startStopCost:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: Generator
       type: container
     containerPropertyIdentifier: startStopCost
     name: startStopCost
   availabilityTimeSeries:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: Generator
       type: container
     containerPropertyIdentifier: availabilityTimeSeries
     name: availabilityTimeSeries
   generatorEfficiencyCurve:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: Generator
       type: container
     containerPropertyIdentifier: generatorEfficiencyCurve
     name: generatorEfficiencyCurve
     source:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: GeneratorEfficiencyCurve
       version: "{{version}}"
       type: view
   turbineEfficiencyCurves:
     type:
-      space: "{{powerops_type_space}}"
+      space: "{{power_ops_type_space}}"
       externalId: isSubAssetOf
     source:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: TurbineEfficiencyCurve
       version: "{{version}}"
       type: view

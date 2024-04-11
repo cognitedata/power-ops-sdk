@@ -1,4 +1,4 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: ShopScenario
 name: ShopScenario
 description: The Scenario to run shop with
@@ -6,19 +6,19 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{powerops_models}}"
+          space: "{{power_ops_models}}"
           externalId: ShopScenario
     - equals:
         property:
           - node
           - space
-        value: "{{powerops_instance_space}}"
+        value: "{{power_ops_instance_space}}"
 implements: []
 version: "{{version}}"
 properties:
   name:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopScenario
       type: container
     containerPropertyIdentifier: name
@@ -26,33 +26,33 @@ properties:
     description: The name of the scenario to run
   model:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopScenario
       type: container
     containerPropertyIdentifier: model
     name: model
     description: The model template to use when running the scenario
     source:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopModel
       version: "{{version}}"
       type: view
   commands:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopScenario
       type: container
     containerPropertyIdentifier: commands
     name: commands
     description: The commands to run
     source:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopCommands
       version: "{{version}}"
       type: view
   source:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopScenario
       type: container
     containerPropertyIdentifier: source
@@ -60,10 +60,10 @@ properties:
     description: The source of the scenario
   attributeMappingsOverride:
     type:
-      space: "{{powerops_type_space}}"
+      space: "{{power_ops_type_space}}"
       externalId: ShopAttributeMapping
     source:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopAttributeMapping
       version: "{{version}}"
       type: view

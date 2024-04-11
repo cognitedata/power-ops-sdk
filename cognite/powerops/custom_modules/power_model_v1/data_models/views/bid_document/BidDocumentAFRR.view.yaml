@@ -1,4 +1,4 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: BidDocumentAFRR
 name: BidDocumentAFRR
 description: Whole Bid (also usually referenced in industry as a Bid Document) containing multiple Bid Rows (which are usually referenced in industry as Bids)
@@ -6,22 +6,22 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{powerops_models}}"
+          space: "{{power_ops_models}}"
           externalId: BidDocument
     - equals:
         property:
           - node
           - space
-        value: "{{powerops_instance_space}}"
+        value: "{{power_ops_instance_space}}"
     - equals:
         property:
           - node
           - type
         value:
           externalId: AFRRBidDocument
-          space: "{{powerops_type_space}}"
+          space: "{{power_ops_type_space}}"
 implements:
-  - space: "{{powerops_models}}"
+  - space: "{{power_ops_models}}"
     externalId: BidDocument
     version: "{{version}}"
     type: view
@@ -29,22 +29,22 @@ version: "{{version}}"
 properties:
   priceArea:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: BidDocument
       type: container
     containerPropertyIdentifier: priceArea
     name: priceArea
     source:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: PriceAreaAFRR
       version: "{{version}}"
       type: view
   bids:
     type:
-      space: "{{powerops_type_space}}"
+      space: "{{power_ops_type_space}}"
       externalId: partialBid
     source:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: BidRow
       version: "{{version}}"
       type: view

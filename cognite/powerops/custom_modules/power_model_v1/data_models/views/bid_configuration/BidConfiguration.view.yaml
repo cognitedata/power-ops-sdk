@@ -1,4 +1,4 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: BidConfiguration
 name: BidConfiguration
 description: ""
@@ -6,26 +6,26 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{powerops_models}}"
+          space: "{{power_ops_models}}"
           externalId: BidConfiguration
     - equals:
         property:
           - node
           - space
-        value: "{{powerops_instance_space}}"
+        value: "{{power_ops_instance_space}}"
     - equals:
         property:
           - node
           - type
         value:
-          space: "{{powerops_type_space}}"
+          space: "{{power_ops_type_space}}"
           externalId: BidConfiguration
 implements: []
 version: "{{version}}"
 properties:
   name:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: BidConfiguration
       type: container
     containerPropertyIdentifier: name
@@ -33,36 +33,36 @@ properties:
     description: The name of the bid configuration
   marketConfiguration:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: BidConfiguration
       type: container
     containerPropertyIdentifier: marketConfiguration
     name: marketConfiguration
     description: The market configuration related to the bid configuration
     source:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: MarketConfiguration
       version: "{{version}}"
       type: view
   priceArea:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: BidConfiguration
       type: container
     containerPropertyIdentifier: priceArea
     name: priceArea
     description: The price area related to the bid calculation task
     source:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: PriceArea
       version: "{{version}}"
       type: view
   partials:
     type:
-      space: "{{powerops_type_space}}"
+      space: "{{power_ops_type_space}}"
       externalId: BidConfiguration.partials
     source:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: PartialBidConfiguration
       version: "{{version}}"
       type: view

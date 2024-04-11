@@ -1,4 +1,4 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: WaterValueBasedPartialBidConfiguration
 name: WaterValueBasedPartialBidConfiguration
 description: A description of the WaterValueBasedPartialBidConfiguration
@@ -6,22 +6,22 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{powerops_models}}"
+          space: "{{power_ops_models}}"
           externalId: PartialBidConfiguration
     - equals:
         property:
           - node
           - space
-        value: "{{powerops_instance_space}}"
+        value: "{{power_ops_instance_space}}"
     - equals:
         property:
           - node
           - type
         value:
           externalId: WaterValueBasedPartialBidConfiguration
-          space: "{{powerops_type_space}}"
+          space: "{{power_ops_type_space}}"
 implements:
-  - space: "{{powerops_models}}"
+  - space: "{{power_ops_models}}"
     externalId: PartialBidConfiguration
     version: "{{version}}"
     type: view
@@ -29,20 +29,20 @@ version: "{{version}}"
 properties:
   plant:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: PartialBidConfiguration
       type: container
     containerPropertyIdentifier: powerAsset
     name: plant
     description: TODO description
     source:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: Plant
       version: "{{version}}"
       type: view
   # headLossFactor:
   #   container:
-  #     space: "{{powerops_models}}"
+  #     space: "{{power_ops_models}}"
   #     externalId: PartialWaterValueBased
   #     type: container
   #   containerPropertyIdentifier: headLossFactor
@@ -50,7 +50,7 @@ properties:
   #   description: TODO definition
   # connectionLosses:
   #   container:
-  #     space: "{{powerops_models}}"
+  #     space: "{{power_ops_models}}"
   #     externalId: PartialWaterValueBased
   #     type: container
   #   containerPropertyIdentifier: connectionLosses
@@ -58,7 +58,7 @@ properties:
   #   description: TODO definition
   # outletLevel:
   #   container:
-  #     space: "{{powerops_models}}"
+  #     space: "{{power_ops_models}}"
   #     externalId: PartialWaterValueBased
   #     type: container
   #   containerPropertyIdentifier: outletLevel
@@ -66,7 +66,7 @@ properties:
   #   description: TODO definition
   # productionMax:
   #   container:
-  #     space: "{{powerops_models}}"
+  #     space: "{{power_ops_models}}"
   #     externalId: PartialWaterValueBased
   #     type: container
   #   containerPropertyIdentifier: productionMax
@@ -74,7 +74,7 @@ properties:
   #   description: TODO definition
   # productionMin:
   #   container:
-  #     space: "{{powerops_models}}"
+  #     space: "{{power_ops_models}}"
   #     externalId: PartialWaterValueBased
   #     type: container
   #   containerPropertyIdentifier: productionMin
@@ -82,7 +82,7 @@ properties:
   #   description: TODO definition
   # penstockHeadLossFactors:
   #   container:
-  #     space: "{{powerops_models}}"
+  #     space: "{{power_ops_models}}"
   #     externalId: PartialWaterValueBased
   #     type: container
   #   containerPropertyIdentifier: penstockHeadLossFactors
@@ -90,7 +90,7 @@ properties:
   #   description: TODO definition
   # productionMaxTimeSeries:
   #   container:
-  #     space: "{{powerops_models}}"
+  #     space: "{{power_ops_models}}"
   #     externalId: PartialWaterValueBased
   #     type: container
   #   containerPropertyIdentifier: productionMaxTimeSeries
@@ -98,7 +98,7 @@ properties:
   #   description: TODO definition
   # productionMinTimeSeries:
   #   container:
-  #     space: "{{powerops_models}}"
+  #     space: "{{power_ops_models}}"
   #     externalId: PartialWaterValueBased
   #     type: container
   #   containerPropertyIdentifier: productionMinTimeSeries
@@ -106,7 +106,7 @@ properties:
   #   description: TODO definition
   # waterValueTimeSeries:
   #   container:
-  #     space: "{{powerops_models}}"
+  #     space: "{{power_ops_models}}"
   #     externalId: PartialWaterValueBased
   #     type: container
   #   containerPropertyIdentifier: waterValueTimeSeries
@@ -114,7 +114,7 @@ properties:
   #   description: TODO definition
   # feedingFeeTimeSeries:
   #   container:
-  #     space: "{{powerops_models}}"
+  #     space: "{{power_ops_models}}"
   #     externalId: PartialWaterValueBased
   #     type: container
   #   containerPropertyIdentifier: feedingFeeTimeSeries
@@ -122,7 +122,7 @@ properties:
   #   description: TODO definition
   # outletLevelTimeSeries:
   #   container:
-  #     space: "{{powerops_models}}"
+  #     space: "{{power_ops_models}}"
   #     externalId: PartialWaterValueBased
   #     type: container
   #   containerPropertyIdentifier: outletLevelTimeSeries
@@ -130,7 +130,7 @@ properties:
   #   description: TODO definition
   # inletLevelTimeSeries:
   #   container:
-  #     space: "{{powerops_models}}"
+  #     space: "{{power_ops_models}}"
   #     externalId: PartialWaterValueBased
   #     type: container
   #   containerPropertyIdentifier: inletLevelTimeSeries
@@ -138,7 +138,7 @@ properties:
   #   description: TODO definition
   # headDirectTimeSeries:
   #   container:
-  #     space: "{{powerops_models}}"
+  #     space: "{{power_ops_models}}"
   #     externalId: PartialWaterValueBased
   #     type: container
   #   containerPropertyIdentifier: headDirectTimeSeries
@@ -146,10 +146,10 @@ properties:
   #   description: TODO definition
   # generators:
   #   type:
-  #     space: "{{powerops_type_space}}"
+  #     space: "{{power_ops_type_space}}"
   #     externalId: WaterValueBasedPartialBidConfiguration.generators
   #   source:
-  #     space: "{{powerops_models}}"
+  #     space: "{{power_ops_models}}"
   #     externalId: Generator
   #     version: "{{version}}"
   #     type: view

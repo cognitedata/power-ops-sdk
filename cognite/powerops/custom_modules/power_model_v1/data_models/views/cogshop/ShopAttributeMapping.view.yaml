@@ -1,4 +1,4 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: ShopAttributeMapping
 name: ShopAttributeMapping
 description: SHOP scenario that holds all data needed for a shop run. May be unprocessed or processed
@@ -6,26 +6,26 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{powerops_models}}"
+          space: "{{power_ops_models}}"
           externalId: ShopAttributeMapping
     - equals:
         property:
           - node
           - space
-        value: "{{powerops_instance_space}}"
+        value: "{{power_ops_instance_space}}"
     - equals:
         property:
           - node
           - type
         value:
           externalId: ShopAttributeMapping
-          space: "{{powerops_type_space}}"
+          space: "{{power_ops_type_space}}"
 implements: []
 version: "{{version}}"
 properties:
   objectType:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopAttributeMapping
       type: container
     containerPropertyIdentifier: objectType
@@ -33,7 +33,7 @@ properties:
     description: TODO description
   objectName:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopAttributeMapping
       type: container
     containerPropertyIdentifier: objectName
@@ -41,7 +41,7 @@ properties:
     description: TODO description
   attributeName:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopAttributeMapping
       type: container
     containerPropertyIdentifier: attributeName
@@ -49,7 +49,7 @@ properties:
     description: TODO description
   timeSeries:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopAttributeMapping
       type: container
     containerPropertyIdentifier: timeSeries
@@ -57,7 +57,7 @@ properties:
     description: The time series to map to
   transformations:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopAttributeMapping
       type: container
     containerPropertyIdentifier: transformations
@@ -65,7 +65,7 @@ properties:
     description: The transformations to apply to the time series
   retrieve:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopAttributeMapping
       type: container
     containerPropertyIdentifier: retrieve
@@ -73,7 +73,7 @@ properties:
     description: How to retrieve time series data
   aggregation:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopAttributeMapping
       type: container
     containerPropertyIdentifier: aggregation

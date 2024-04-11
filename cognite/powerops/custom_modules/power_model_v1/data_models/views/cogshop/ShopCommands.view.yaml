@@ -1,4 +1,4 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: ShopCommands
 name: ShopCommands
 description: The commands to use in the shop model file
@@ -6,26 +6,26 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{powerops_models}}"
+          space: "{{power_ops_models}}"
           externalId: ShopCommands
     - equals:
         property:
           - node
           - space
-        value: "{{powerops_instance_space}}"
+        value: "{{power_ops_instance_space}}"
     - equals:
         property:
           - node
           - type
         value:
           externalId: ShopCommands
-          space: "{{powerops_type_space}}"
+          space: "{{power_ops_type_space}}"
 implements: []
 version: "{{version}}"
 properties:
   name:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopCommands
       type: container
     containerPropertyIdentifier: name
@@ -33,7 +33,7 @@ properties:
     description: Name for the ShopCommands
   commands:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopCommands
       type: container
     containerPropertyIdentifier: commands

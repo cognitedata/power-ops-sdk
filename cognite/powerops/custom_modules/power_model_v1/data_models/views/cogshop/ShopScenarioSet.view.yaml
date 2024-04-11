@@ -1,4 +1,4 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: ShopScenarioSet
 name: ShopScenarioSet
 description: The Scenario Set to run shop with
@@ -6,19 +6,19 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{powerops_models}}"
+          space: "{{power_ops_models}}"
           externalId: ShopScenarioSet
     - equals:
         property:
           - node
           - space
-        value: "{{powerops_instance_space}}"
+        value: "{{power_ops_instance_space}}"
 implements: []
 version: "{{version}}"
 properties:
   name:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopScenarioSet
       type: container
     containerPropertyIdentifier: name
@@ -26,7 +26,7 @@ properties:
     description: The name of the scenario set to run
   startSpecification:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopScenarioSet
       type: container
     containerPropertyIdentifier: startSpecification
@@ -34,7 +34,7 @@ properties:
     description: TODO definition
   endSpecification:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopScenarioSet
       type: container
     containerPropertyIdentifier: endSpecification
@@ -42,7 +42,7 @@ properties:
     description: TODO definition
   bidDateSpecification:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopScenarioSet
       type: container
     containerPropertyIdentifier: bidDateSpecification
@@ -50,10 +50,10 @@ properties:
     description: TODO definition
   scenarios:
     type:
-      space: "{{powerops_type_space}}"
+      space: "{{power_ops_type_space}}"
       externalId: ShopScenarioSet.scenarios
     source:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopScenario
       version: "{{version}}"
       type: view

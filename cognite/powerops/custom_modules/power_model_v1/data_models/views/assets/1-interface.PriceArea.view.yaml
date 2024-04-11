@@ -1,4 +1,4 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: PriceArea
 name: PriceArea
 description: Information about the Price Area that is only relevant for AFRR
@@ -6,22 +6,22 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{powerops_models}}"
+          space: "{{power_ops_models}}"
           externalId: PriceArea
     - equals:
         property:
           - node
           - space
-        value: "{{powerops_instance_space}}"
+        value: "{{power_ops_instance_space}}"
     - equals:
         property:
           - node
           - type
         value:
           externalId: PriceArea
-          space: "{{powerops_type_space}}"
+          space: "{{power_ops_type_space}}"
 implements:
-  - space: "{{powerops_models}}"
+  - space: "{{power_ops_models}}"
     externalId: PowerAsset
     version: "{{version}}"
     type: view
@@ -29,7 +29,7 @@ version: "{{version}}"
 properties:
   timezone:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: PriceArea
       type: container
     containerPropertyIdentifier: timezone

@@ -1,4 +1,4 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: ShopPartialBidMatrixCalculationInput
 name: ShopPartialBidMatrixCalculationInput
 description: Input to the task dispatcher in the shop bid process
@@ -6,22 +6,22 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{powerops_models}}"
+          space: "{{power_ops_models}}"
           externalId: FunctionData
     - equals:
         property:
           - node
           - space
-        value: "{{powerops_instance_space}}"
+        value: "{{power_ops_instance_space}}"
     - equals:
         property:
           - node
           - type
         value:
           externalId: ShopPartialBidMatrixCalculationInput
-          space: "{{powerops_type_space}}"
+          space: "{{power_ops_type_space}}"
 implements:
-  - space: "{{powerops_models}}"
+  - space: "{{power_ops_models}}"
     externalId: PartialBidMatrixCalculationInput
     version: "{{version}}"
     type: view
@@ -29,10 +29,10 @@ version: "{{version}}"
 properties:
   priceProduction:
     type:
-      space: "{{powerops_type_space}}"
+      space: "{{power_ops_type_space}}"
       externalId: PriceProduction
     source:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: PriceProduction
       version: "{{version}}"
       type: view
@@ -42,14 +42,14 @@ properties:
     connectionType: multi_edge_connection
   partialBidConfiguration:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct3
     name: partialBidConfiguration
     description: The partial bid configuration related to the bid calculation task
     source:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopBasedPartialBidConfiguration
       version: "{{version}}"
       type: view

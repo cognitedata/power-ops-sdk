@@ -1,4 +1,4 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: ShopTimeSeries
 name: ShopTimeSeries
 description: A wrapper around a time series object from the output of a successful SHOP run
@@ -6,26 +6,26 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{powerops_models}}"
+          space: "{{power_ops_models}}"
           externalId: ShopTimeSeries
     - equals:
         property:
           - node
           - space
-        value: "{{powerops_instance_space}}"
+        value: "{{power_ops_instance_space}}"
     - equals:
         property:
           - node
           - type
         value:
           externalId: ShopTimeSeries
-          space: "{{powerops_type_space}}"
+          space: "{{power_ops_type_space}}"
 implements: []
 version: "{{version}}"
 properties:
   objectType:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopTimeSeries
       type: container
     containerPropertyIdentifier: objectType
@@ -33,7 +33,7 @@ properties:
     description: The type of the object
   objectName:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopTimeSeries
       type: container
     containerPropertyIdentifier: objectName
@@ -41,7 +41,7 @@ properties:
     description: The name of the object
   attributeName:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopTimeSeries
       type: container
     containerPropertyIdentifier: attributeName
@@ -49,7 +49,7 @@ properties:
     description: The name of the attribute
   timeSeries:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopTimeSeries
       type: container
     containerPropertyIdentifier: timeSeries
