@@ -48,11 +48,11 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: Scenario
+  - externalId: ShopScenario
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: ScenarioSet
+  - externalId: ShopScenarioSet
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"

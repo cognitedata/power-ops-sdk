@@ -47,7 +47,7 @@
 - space: "{{powerops_type_space}}"
   externalId: ShopAttributeMapping
 - space: "{{powerops_type_space}}"
-  externalId: Scenario
+  externalId: ShopScenario
 - space: "{{powerops_type_space}}"
   externalId: PriceScenario
 - space: "{{powerops_type_space}}"
@@ -67,7 +67,7 @@
 - space: "{{powerops_type_space}}"
   externalId: ShopFile
 - space: "{{powerops_type_space}}"
-  externalId: ScenarioSet.scenarios
+  externalId: ShopScenarioSet.scenarios
 
 ## DayAhead Types
 - space: "{{powerops_type_space}}"

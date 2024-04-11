@@ -37,7 +37,7 @@ properties:
     description: The scenario to run shop with
     source:
       space: "{{powerops_models}}"
-      externalId: Scenario
+      externalId: ShopScenario
       version: "{{version}}"
       type: view
   shopStart:

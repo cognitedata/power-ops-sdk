@@ -33,7 +33,7 @@ views:
     version: "{{version}}"
     type: view
   - space: "{{powerops_models}}"
-    externalId: Scenario
+    externalId: ShopScenario
     version: "{{version}}"
     type: view
   - space: "{{powerops_models}}"

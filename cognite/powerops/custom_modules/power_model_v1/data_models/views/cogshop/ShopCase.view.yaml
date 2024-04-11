@@ -33,7 +33,7 @@ properties:
     description: The Shop scenario that was used to produce this result
     source:
       space: "{{powerops_models}}"
-      externalId: Scenario
+      externalId: ShopScenario
       version: "{{version}}"
       type: view
   startTime:

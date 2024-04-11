@@ -49,6 +49,6 @@ properties:
     name: scenarioSet
     source:
       space: "{{powerops_models}}"
-      externalId: ScenarioSet
+      externalId: ShopScenarioSet
       version: "{{version}}"
       type: view

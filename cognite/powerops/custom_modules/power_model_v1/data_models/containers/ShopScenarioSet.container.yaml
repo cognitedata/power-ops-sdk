@@ -1,6 +1,6 @@
 space: "{{powerops_models}}"
-externalId: ScenarioSet
-name: ScenarioSet
+externalId: ShopScenarioSet
+name: ShopScenarioSet
 usedFor: node
 properties:
   name:
