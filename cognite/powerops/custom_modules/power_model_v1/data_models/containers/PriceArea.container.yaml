@@ -104,9 +104,9 @@ properties:
     autoIncrement: false
     name: dayAheadPrice
 constraints:
-  requiredAsset:
+  requiredPowerAsset:
     require:
       space: "{{power_ops_models}}"
-      externalId: Asset
+      externalId: PowerAsset
       type: container
     constraintType: requires

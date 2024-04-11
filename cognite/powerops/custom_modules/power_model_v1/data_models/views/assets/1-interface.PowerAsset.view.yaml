@@ -7,12 +7,7 @@ filter:
     - hasData:
         - type: container
           space: "{{power_ops_models}}"
-          externalId: Asset
-    - not:
-        hasData:
-          - type: container
-            space: "{{power_ops_models}}"
-            externalId: PriceArea
+          externalId: PowerAsset
     - equals:
         property:
           - node
@@ -24,23 +19,23 @@ properties:
   name:
     container:
       space: "{{power_ops_models}}"
-      externalId: Asset
+      externalId: PowerAsset
       type: container
     containerPropertyIdentifier: name
     name: name
-    description: Name for the Asset
+    description: Name for the PowerAsset
   displayName:
     container:
       space: "{{power_ops_models}}"
-      externalId: Asset
+      externalId: PowerAsset
       type: container
     containerPropertyIdentifier: displayName
     name: displayName
-    description: Display name for the Asset.
+    description: Display name for the PowerAsset.
   ordering:
     container:
       space: "{{power_ops_models}}"
-      externalId: Asset
+      externalId: PowerAsset
       type: container
     containerPropertyIdentifier: order
     name: ordering
@@ -48,7 +43,7 @@ properties:
   assetType:
     container:
       space: "{{power_ops_models}}"
-      externalId: Asset
+      externalId: PowerAsset
       type: container
     containerPropertyIdentifier: assetType
     name: assetType

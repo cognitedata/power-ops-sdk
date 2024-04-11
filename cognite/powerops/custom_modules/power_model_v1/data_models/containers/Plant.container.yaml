@@ -107,9 +107,9 @@ properties:
     #   autoIncrement: false
     #   name: inletReservoir
 constraints:
-  requiredAsset:
+  requiredPowerAsset:
     require:
       space: "{{power_ops_models}}"
-      externalId: Asset
+      externalId: PowerAsset
       type: container
     constraintType: requires

@@ -14,11 +14,24 @@ filter:
           - space
         value: "{{power_ops_instance_space}}"
         # - not:
-        #     in: or equals?
+        #     hasData:
+        #       - type: view
+        #         space: "{{power_ops_models}}"
+        #         externalId: FunctionOutput
+        #         version: "{{version}}"
+        # - equals:
+        #     property:
+        #       - node
+        #       - type
+        #     value:
+        #       externalId: FunctionInput
+        #       space: "{{power_ops_type_space}}"
+        # - not:
+        #     in:
         #       property:
         #         - node
         #         - type
-        #       value: FunctionOutput
+        #       values: [FunctionOutput]
 implements: []
 version: "{{version}}"
 properties:

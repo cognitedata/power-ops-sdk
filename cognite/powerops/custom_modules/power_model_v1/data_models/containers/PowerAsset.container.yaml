@@ -1,6 +1,6 @@
 space: "{{power_ops_models}}"
-externalId: Asset
-name: Asset
+externalId: PowerAsset
+name: PowerAsset
 usedFor: node
 properties:
   name:
@@ -11,7 +11,7 @@ properties:
     nullable: false
     autoIncrement: false
     name: name
-    description: The name of the Asset
+    description: The name of the PowerAsset
   displayName:
     type:
       list: false
@@ -20,7 +20,7 @@ properties:
     nullable: true
     autoIncrement: false
     name: displayName
-    description: The display name of the Asset
+    description: The display name of the PowerAsset
   description:
     type:
       list: false
@@ -36,7 +36,7 @@ properties:
     nullable: true
     autoIncrement: false
     name: order
-    description: The order of the Asset
+    description: The order of the PowerAsset
   assetType:
     type:
       list: false
@@ -45,7 +45,7 @@ properties:
     nullable: true
     autoIncrement: false
     name: assetType
-    description: The type of the Asset
+    description: The type of the PowerAsset
 indexes:
   time:
     properties:

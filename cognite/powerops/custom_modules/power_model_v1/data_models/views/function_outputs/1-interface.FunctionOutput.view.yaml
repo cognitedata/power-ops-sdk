@@ -18,6 +18,12 @@ filter:
         #       property:
         #         - node
         #         - type
+        #       values: [FunctionInput]
+        # - not:
+        #     in:
+        #       property:
+        #         - node
+        #         - type
         #       value: FunctionInput
 implements: []
 version: "{{version}}"
