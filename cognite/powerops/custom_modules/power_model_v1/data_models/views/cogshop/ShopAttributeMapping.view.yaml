@@ -23,14 +23,30 @@ filter:
 implements: []
 version: "{{version}}"
 properties:
-  shopPath:
+  objectType:
     container:
       space: "{{powerops_models}}"
       externalId: ShopAttributeMapping
       type: container
-    containerPropertyIdentifier: shopPath
-    name: shopPath
-    description: The key in shop file to map to
+    containerPropertyIdentifier: objectType
+    name: objectType
+    description: TODO description
+  objectName:
+    container:
+      space: "{{powerops_models}}"
+      externalId: ShopAttributeMapping
+      type: container
+    containerPropertyIdentifier: objectName
+    name: objectName
+    description: TODO description
+  attributeName:
+    container:
+      space: "{{powerops_models}}"
+      externalId: ShopAttributeMapping
+      type: container
+    containerPropertyIdentifier: attributeName
+    name: attributeName
+    description: TODO description
   timeSeries:
     container:
       space: "{{powerops_models}}"

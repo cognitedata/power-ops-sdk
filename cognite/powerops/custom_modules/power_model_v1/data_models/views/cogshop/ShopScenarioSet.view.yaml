@@ -24,29 +24,29 @@ properties:
     containerPropertyIdentifier: name
     name: name
     description: The name of the scenario set to run
-  shopStartSpecification:
+  startSpecification:
     container:
       space: "{{powerops_models}}"
       externalId: ShopScenarioSet
       type: container
-    containerPropertyIdentifier: shopStartSpecification
-    name: shopStartSpecification
+    containerPropertyIdentifier: startSpecification
+    name: startSpecification
     description: TODO definition
-  shopEndSpecification:
+  endSpecification:
     container:
       space: "{{powerops_models}}"
       externalId: ShopScenarioSet
       type: container
-    containerPropertyIdentifier: shopEndSpecification
-    name: shopEndSpecification
+    containerPropertyIdentifier: endSpecification
+    name: endSpecification
     description: TODO definition
-  shopBidDateSpecification:
+  bidDateSpecification:
     container:
       space: "{{powerops_models}}"
       externalId: ShopScenarioSet
       type: container
-    containerPropertyIdentifier: shopBidDateSpecification
-    name: shopBidDateSpecification
+    containerPropertyIdentifier: bidDateSpecification
+    name: bidDateSpecification
     description: TODO definition
   scenarios:
     type:

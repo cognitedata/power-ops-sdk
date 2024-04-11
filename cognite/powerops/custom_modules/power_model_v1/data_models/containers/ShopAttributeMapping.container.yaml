@@ -3,15 +3,33 @@ externalId: ShopAttributeMapping
 name: ShopAttributeMapping
 usedFor: node
 properties:
-  shopPath:
+  objectType:
     type:
       list: false
       collation: ucs_basic
       type: text
     nullable: false
     autoIncrement: false
-    name: shopPath
-    description: The key to apply mapping to in a shop file
+    name: objectType
+    description: TODO description
+  objectName:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: objectName
+    description: TODO description
+  attributeName:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: attributeName
+    description: TODO description
   timeSeries:
     type:
       list: false
