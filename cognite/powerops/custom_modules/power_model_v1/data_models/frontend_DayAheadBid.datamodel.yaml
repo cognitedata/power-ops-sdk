@@ -12,10 +12,6 @@ views:
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: BidMatrix
-    space: "{{power_ops_models}}"
-    type: view
-    version: "{{version}}"
   - externalId: PriceArea
     space: "{{power_ops_models}}"
     type: view
