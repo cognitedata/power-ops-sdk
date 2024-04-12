@@ -10,15 +10,15 @@ properties:
     nullable: false
     autoIncrement: false
     name: time
-  processId:
+  workflowExecutionId:
     type:
       list: false
       collation: ucs_basic
       type: text
-    nullable: false
+    nullable: true
     autoIncrement: false
-    name: processId
-    description: The process id
+    name: workflowExecutionId
+    description: The WorkflowExecutionId related to the alert
   title:
     type:
       list: false

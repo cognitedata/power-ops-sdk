@@ -21,22 +21,22 @@ properties:
     autoIncrement: false
     name: functionCallId
     description: The function call id
-  processId:
+  workflowExecutionId:
     type:
       list: false
       collation: ucs_basic
       type: text
     nullable: false
     autoIncrement: false
-    name: processId
+    name: workflowExecutionId
     description: The process id
-  processStep:
+  workflowStep:
     type:
       list: false
       type: int32
     nullable: false
     autoIncrement: false
-    name: processStep
+    name: workflowStep
     description: The process step
   linkedStep:
     type:
@@ -81,8 +81,8 @@ indexes:
       - functionCallId
     indexType: btree
     cursorable: false
-  processIdIndex:
+  workflowExecutionIdIndex:
     properties:
-      - processId
+      - workflowExecutionId
     indexType: btree
     cursorable: false

@@ -35,21 +35,21 @@ filter:
 implements: []
 version: "{{version}}"
 properties:
-  processId:
+  workflowExecutionId:
     container:
       space: "{{power_ops_models}}"
       externalId: FunctionMetadata
       type: container
-    containerPropertyIdentifier: processId
-    name: processId
+    containerPropertyIdentifier: workflowExecutionId
+    name: workflowExecutionId
     description: The process associated with the function execution
-  processStep:
+  workflowStep:
     container:
       space: "{{power_ops_models}}"
       externalId: FunctionMetadata
       type: container
-    containerPropertyIdentifier: processStep
-    name: processStep
+    containerPropertyIdentifier: workflowStep
+    name: workflowStep
     description: This is the step in the process.
   functionName:
     container:
