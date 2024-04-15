@@ -29,7 +29,7 @@ properties:
     nullable: true
     autoIncrement: false
     name: name
-  order:
+  ordering:
     type:
       list: false
       type: int32

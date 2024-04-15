@@ -14,17 +14,20 @@ filter:
           - space
         value: "{{power_ops_instance_space}}"
         # - not:
-        #     in:
+        #     equals:
         #       property:
         #         - node
         #         - type
-        #       values: [FunctionInput]
+        #       value: {
+        #           "space": "{{power_ops_instance_space}}",
+        #           "externalId": "FunctionInput",
+        #         } #FunctionInput
         # - not:
         #     in:
         #       property:
         #         - node
         #         - type
-        #       value: FunctionInput
+        #       values: [FunctionInput]
 implements: []
 version: "{{version}}"
 properties:

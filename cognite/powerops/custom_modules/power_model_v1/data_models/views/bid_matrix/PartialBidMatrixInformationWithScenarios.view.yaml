@@ -1,6 +1,6 @@
 space: "{{power_ops_models}}"
-externalId: PartialBidMatrixInformationWithScenario
-name: PartialBidMatrixInformationWithScenario
+externalId: PartialBidMatrixInformationWithScenarios
+name: PartialBidMatrixInformationWithScenarios
 filter:
   and:
     - hasData:

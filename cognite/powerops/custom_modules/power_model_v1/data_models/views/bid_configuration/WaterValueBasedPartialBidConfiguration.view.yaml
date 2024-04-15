@@ -27,13 +27,13 @@ implements:
     type: view
 version: "{{version}}"
 properties:
-  plant:
+  powerAsset:
     container:
       space: "{{power_ops_models}}"
       externalId: PartialBidConfiguration
       type: container
     containerPropertyIdentifier: powerAsset
-    name: plant
+    name: powerAsset
     description: TODO description
     source:
       space: "{{power_ops_models}}"

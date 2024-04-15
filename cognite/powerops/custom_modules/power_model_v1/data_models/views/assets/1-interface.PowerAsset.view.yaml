@@ -37,7 +37,7 @@ properties:
       space: "{{power_ops_models}}"
       externalId: PowerAsset
       type: container
-    containerPropertyIdentifier: order
+    containerPropertyIdentifier: ordering
     name: ordering
     description: The ordering of the asset
   assetType:

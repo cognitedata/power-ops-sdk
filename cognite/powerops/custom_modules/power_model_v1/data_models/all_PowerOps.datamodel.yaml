@@ -207,7 +207,7 @@ views:
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: PartialBidMatrixInformationWithScenario
+  - externalId: PartialBidMatrixInformationWithScenarios
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"

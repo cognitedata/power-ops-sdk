@@ -12,13 +12,6 @@ properties:
     autoIncrement: false
     name: name
     description: The timezone of the price area
-  priceScenarios: #not used
-    type:
-      list: true
-      type: timeseries
-    nullable: true
-    autoIncrement: false
-    name: timezone
   capacityPriceUp:
     type:
       list: false
@@ -89,7 +82,7 @@ properties:
     nullable: true
     autoIncrement: false
     name: defaultMethodDayAhead
-  mainScenarioDayAhead: #not used
+  mainPriceScenarioDayAhead: #not used
     type:
       list: false
       type: timeseries
@@ -103,6 +96,13 @@ properties:
     nullable: true
     autoIncrement: false
     name: dayAheadPrice
+  priceScenarios: #not used
+    type:
+      list: true
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: timezone
 constraints:
   requiredPowerAsset:
     require:

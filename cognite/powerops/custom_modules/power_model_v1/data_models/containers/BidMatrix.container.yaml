@@ -8,7 +8,7 @@ properties:
       list: false
       collation: ucs_basic
       type: text
-    nullable: true
+    nullable: false
     autoIncrement: false
     name: state
   bidMatrix:
@@ -25,14 +25,6 @@ properties:
     nullable: true
     autoIncrement: false
     name: powerAsset
-  state:
-    type:
-      list: false
-      collation: ucs_basic
-      type: text
-    nullable: true
-    autoIncrement: false
-    name: state
   partialBidConfiguration:
     type:
       list: false
@@ -40,20 +32,6 @@ properties:
     nullable: true
     autoIncrement: false
     name: partialBidConfiguration
-  # assetId:
-  #   type:
-  #     list: false
-  #     collation: ucs_basic
-  #     type: text
-  #   nullable: true
-  #   autoIncrement: false
-  #   name: assetId
-  # isProcessed:
-  #   type:
-  #     type: boolean
-  #   nullable: true
-  #   autoIncrement: false
-  #   name: isProcessed
   resourceCost:
     type:
       list: false

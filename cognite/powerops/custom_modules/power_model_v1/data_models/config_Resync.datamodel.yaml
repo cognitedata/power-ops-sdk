@@ -1,62 +1,10 @@
-externalId: frontend_DayAheadBid
+externalId: config_ResyncConfiguration
 space: "{{power_ops_models}}"
 version: "1"
-name: "DayAheadBid"
-description: "Stores results of Day Ahead bid calculations."
+name: ResyncConfiguration
+description: "Settings for the day ahead bid process"
 views:
-  - externalId: BidDocumentDayAhead
-    space: "{{power_ops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: BidDocument
-    space: "{{power_ops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: PriceArea
-    space: "{{power_ops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: Alert
-    space: "{{power_ops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: ShopScenario
-    space: "{{power_ops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: ShopModel
-    space: "{{power_ops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: ShopAttributeMapping
-    space: "{{power_ops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: PriceProduction
-    space: "{{power_ops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: ShopCommands
-    space: "{{power_ops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: ShopCase
-    space: "{{power_ops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: PowerAsset
-    space: "{{power_ops_models}}"
-    type: view
-    version: "{{version}}"
   - externalId: BidConfiguration
-    space: "{{power_ops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: PartialBidConfiguration
-    space: "{{power_ops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: ShopResult
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
@@ -64,31 +12,59 @@ views:
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: ShopTimeSeries
+  - externalId: PriceArea
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: ShopFile
+  - externalId: PartialBidConfiguration
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: BidMatrixSimple
+  - externalId: ShopBasedPartialBidConfiguration
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: BidMatrixInformation
+  - externalId: WaterValueBasedPartialBidConfiguration
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: PartialBidMatrixInformation
+  - externalId: ShopScenario
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: PartialBidMatrixInformationWithScenarios
+  - externalId: ShopScenarioSet
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: ShopPenaltyReport
+  - externalId: ShopAttributeMapping
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: ShopModel
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: Generator
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: TurbineEfficiencyCurve
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: GeneratorEfficiencyCurve
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: ShopCommands
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PowerAsset
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: Plant
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"

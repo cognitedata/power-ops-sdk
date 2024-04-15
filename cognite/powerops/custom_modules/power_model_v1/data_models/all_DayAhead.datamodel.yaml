@@ -160,3 +160,15 @@ views:
     externalId: ShopFile
     version: "{{version}}"
     type: view
+  - space: "{{power_ops_models}}"
+    externalId: BidMatrixInformation
+    version: "{{version}}"
+    type: view
+  - space: "{{power_ops_models}}"
+    externalId: PartialBidMatrixInformation
+    version: "{{version}}"
+    type: view
+  - space: "{{power_ops_models}}"
+    externalId: BidMatrixSimple
+    version: "{{version}}"
+    type: view

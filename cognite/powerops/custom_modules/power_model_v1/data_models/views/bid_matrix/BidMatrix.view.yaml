@@ -41,13 +41,13 @@ properties:
       type: view
     containerPropertyIdentifier: powerAsset
     name: powerAsset
-  state:
+  name:
     container:
       space: "{{power_ops_models}}"
       externalId: BidMatrix
       type: container
-    containerPropertyIdentifier: state
-    name: state
+    containerPropertyIdentifier: name
+    name: name
   partialBidConfiguration:
     container:
       space: "{{power_ops_models}}"
