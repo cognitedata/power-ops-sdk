@@ -1,0 +1,32 @@
+space: "{{power_ops_models}}"
+externalId: PriceAreaDayAhead
+name: PriceAreaDayAhead
+usedFor: node
+properties:
+  defaultBidConfiguration:
+    type:
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: defaultBidConfiguration
+  mainPriceScenario:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: mainPriceScenario
+  priceScenarios:
+    type:
+      list: true
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: priceScenarios
+constraints:
+  requiredPowerAsset:
+    require:
+      space: "{{power_ops_models}}"
+      externalId: PowerAsset
+      type: container
+    constraintType: requires
