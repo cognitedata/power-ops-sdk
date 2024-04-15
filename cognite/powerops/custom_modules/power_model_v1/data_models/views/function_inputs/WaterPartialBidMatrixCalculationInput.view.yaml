@@ -32,7 +32,7 @@ properties:
       space: "{{power_ops_models}}"
       externalId: FunctionData
       type: container
-    containerPropertyIdentifier: direct3
+    containerPropertyIdentifier: direct2
     name: partialBidConfiguration
     description: The partial bid configuration related to the bid calculation task
     source:

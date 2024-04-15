@@ -19,13 +19,6 @@ implements:
     type: view
 version: "{{version}}"
 properties:
-  # bidMatrix:
-  #   container:
-  #     space: "{{power_ops_models}}"
-  #     externalId: BidMatrix
-  #     type: container
-  #   containerPropertyIdentifier: matrix
-  #   name: bidMatrix
   intermediateBidMatrices:
     type:
       space: "{{power_ops_type_space}}"

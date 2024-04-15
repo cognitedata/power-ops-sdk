@@ -48,3 +48,16 @@ properties:
       externalId: BidConfiguration
       version: "{{version}}"
       type: view
+  partialBidConfiguration:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct2
+    name: partialBidConfiguration
+    description: The partial bid configuration related to the bid calculation task
+    source:
+      space: "{{power_ops_models}}"
+      externalId: PartialBidConfiguration
+      version: "{{version}}"
+      type: view
