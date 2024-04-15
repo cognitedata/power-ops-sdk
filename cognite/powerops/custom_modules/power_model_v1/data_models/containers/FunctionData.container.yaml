@@ -128,3 +128,10 @@ properties:
     nullable: true
     autoIncrement: false
     name: flag
+constraints:
+  requiredFunctionMetadata:
+    require:
+      space: "{{power_ops_models}}"
+      externalId: FunctionMetadata
+      type: container
+    constraintType: requires

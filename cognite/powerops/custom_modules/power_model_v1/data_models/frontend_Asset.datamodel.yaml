@@ -8,6 +8,30 @@ views:
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
+  - externalId: PriceAreaAFRR
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PriceAreaDayAhead
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PriceAreaConfiguration
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: BidConfiguration
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: MarketConfiguration
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PartialBidConfiguration
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
   - externalId: PowerAsset
     space: "{{power_ops_models}}"
     type: view

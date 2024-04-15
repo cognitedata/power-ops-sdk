@@ -47,13 +47,13 @@ properties:
     containerPropertyIdentifier: minPrice
     name: minPrice
     description: The lowest price allowed
-  timeZone:
+  timezone:
     container:
       space: "{{power_ops_models}}"
       externalId: MarketConfiguration
       type: container
-    containerPropertyIdentifier: timeZone
-    name: timeZone
+    containerPropertyIdentifier: timezone
+    name: timezone
   priceUnit:
     container:
       space: "{{power_ops_models}}"

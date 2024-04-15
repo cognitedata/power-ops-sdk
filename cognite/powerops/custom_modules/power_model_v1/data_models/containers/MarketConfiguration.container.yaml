@@ -27,15 +27,15 @@ properties:
     autoIncrement: false
     name: minPrice
     description: The lowest price allowed
-  timeZone:
+  timezone:
     type:
       list: false
       collation: ucs_basic
       type: text
     nullable: false
     autoIncrement: false
-    name: timeZone
-    description:
+    name: timezone
+    description: TODO
   priceUnit:
     type:
       list: false
