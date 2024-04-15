@@ -8,7 +8,7 @@ properties:
       list: false
       collation: ucs_basic
       type: text
-    nullable: true
+    nullable: false
     autoIncrement: false
     name: name
   maxPrice:

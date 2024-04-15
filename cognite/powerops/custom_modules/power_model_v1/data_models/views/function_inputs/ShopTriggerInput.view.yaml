@@ -40,7 +40,7 @@ properties:
       space: "{{power_ops_models}}"
       externalId: FunctionData
       type: container
-    containerPropertyIdentifier: direct2
+    containerPropertyIdentifier: direct1
     name: case
     description: The scenario that is used in the shop run
     source:
@@ -53,7 +53,7 @@ properties:
       space: "{{power_ops_models}}"
       externalId: FunctionData
       type: container
-    containerPropertyIdentifier: direct3
+    containerPropertyIdentifier: direct2
     name: preprocessorInput
     description: The preprocessor input to the shop run
     source:

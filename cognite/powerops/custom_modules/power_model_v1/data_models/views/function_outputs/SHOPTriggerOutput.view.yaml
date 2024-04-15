@@ -27,6 +27,18 @@ implements:
     type: view
 version: "{{version}}"
 properties:
+  input: # Overrides the view type from the FunctionOutput view
+    container:
+      space: "{{power_ops_models}}"
+      externalId: FunctionMetadata
+      type: container
+    containerPropertyIdentifier: linkedStep
+    name: input
+    source:
+      space: "{{power_ops_models}}"
+      externalId: ShopTriggerInput
+      version: "{{version}}"
+      type: view
   shopResult:
     container:
       space: "{{power_ops_models}}"
@@ -37,18 +49,5 @@ properties:
     source:
       space: "{{power_ops_models}}"
       externalId: ShopResult
-      version: "{{version}}"
-      type: view
-  input:
-    container:
-      space: "{{power_ops_models}}"
-      externalId: FunctionData
-      type: container
-    containerPropertyIdentifier: direct2
-    name: input
-    description: The prepped and processed scenario to send to shop trigger
-    source:
-      space: "{{power_ops_models}}"
-      externalId: ShopTriggerInput
       version: "{{version}}"
       type: view

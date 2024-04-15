@@ -7,7 +7,7 @@ filter:
     - hasData:
         - type: container
           space: "{{power_ops_models}}"
-          externalId: FunctionMetadata
+          externalId: FunctionData
     - equals:
         property:
           - node
@@ -30,9 +30,9 @@ properties:
   shopObjectiveValue:
     container:
       space: "{{power_ops_models}}"
-      externalId: FunctionMetadata
+      externalId: FunctionData
       type: container
-    containerPropertyIdentifier: data
+    containerPropertyIdentifier: direct1
     name: shopObjectiveValue
     source:
       space: "{{power_ops_models}}"

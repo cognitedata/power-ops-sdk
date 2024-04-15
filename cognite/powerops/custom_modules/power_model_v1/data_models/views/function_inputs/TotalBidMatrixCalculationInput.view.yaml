@@ -7,7 +7,7 @@ filter:
     - hasData:
         - type: container
           space: "{{power_ops_models}}"
-          externalId: FunctionMetadata
+          externalId: FunctionData
     - equals:
         property:
           - node

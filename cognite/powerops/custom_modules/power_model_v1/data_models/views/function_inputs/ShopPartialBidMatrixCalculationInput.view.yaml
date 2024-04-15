@@ -27,6 +27,19 @@ implements:
     type: view
 version: "{{version}}"
 properties:
+  partialBidConfiguration: # Overrides the view type from the PartialBidMatrixCalculationInput view
+    container:
+      space: "{{power_ops_models}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct2
+    name: partialBidConfiguration
+    description: The partial bid configuration related to the bid calculation task
+    source:
+      space: "{{power_ops_models}}"
+      externalId: ShopBasedPartialBidConfiguration
+      version: "{{version}}"
+      type: view
   priceProduction:
     type:
       space: "{{power_ops_type_space}}"
@@ -40,16 +53,3 @@ properties:
     name: priceProduction
     description: An array of shop results with price/prod time series pairs for all plants included in the respective shop scenario
     connectionType: multi_edge_connection
-  partialBidConfiguration:
-    container:
-      space: "{{power_ops_models}}"
-      externalId: FunctionData
-      type: container
-    containerPropertyIdentifier: direct2
-    name: partialBidConfiguration
-    description: The partial bid configuration related to the bid calculation task
-    source:
-      space: "{{power_ops_models}}"
-      externalId: ShopBasedPartialBidConfiguration
-      version: "{{version}}"
-      type: view

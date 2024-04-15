@@ -45,31 +45,7 @@ properties:
     nullable: true
     autoIncrement: false
     name: linkedStep
-    description: Typically the previous step
-  data:
-    type:
-      list: false
-      type: direct
-    nullable: true
-    autoIncrement: false
-    name: data
-    description: The data
-  data2:
-    type:
-      list: false
-      type: direct
-    nullable: true
-    autoIncrement: false
-    name: data2
-    description: The data
-  data3:
-    type:
-      list: false
-      type: direct
-    nullable: true
-    autoIncrement: false
-    name: data3
-    description: The data
+    description: Typically the input to the function
 indexes:
   functionNameIndex:
     properties:

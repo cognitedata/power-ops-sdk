@@ -27,7 +27,7 @@ implements:
     type: view
 version: "{{version}}"
 properties:
-  partialBidConfiguration:
+  partialBidConfiguration: # Overrides the view type from the PartialBidMatrixCalculationInput view
     container:
       space: "{{power_ops_models}}"
       externalId: FunctionData

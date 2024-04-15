@@ -4,10 +4,6 @@ name: TaskDispatcherOutput
 description: Input to the task dispatcher in the shop bid process
 filter:
   and:
-    - hasData:
-        - type: container
-          space: "{{power_ops_models}}"
-          externalId: FunctionData
     - equals:
         property:
           - node
@@ -27,14 +23,13 @@ implements:
     type: view
 version: "{{version}}"
 properties:
-  input:
+  input: # Overrides the view type from the FunctionOutput view
     container:
       space: "{{power_ops_models}}"
-      externalId: FunctionData
+      externalId: FunctionMetadata
       type: container
-    containerPropertyIdentifier: direct1
+    containerPropertyIdentifier: linkedStep
     name: input
-    description: The previous step in the process.
     source:
       space: "{{power_ops_models}}"
       externalId: TaskDispatcherInput

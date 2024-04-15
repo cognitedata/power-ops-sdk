@@ -4,10 +4,6 @@ name: BenchmarkingCollectorOutput
 description: The benchmarking collector output data.
 filter:
   and:
-    - hasData:
-        - type: container
-          space: "{{power_ops_models}}"
-          externalId: FunctionMetadata
     - equals:
         property:
           - node
@@ -27,7 +23,7 @@ implements:
     type: view
 version: "{{version}}"
 properties:
-  input:
+  input: # Overrides the view type from the FunctionOutput view
     container:
       space: "{{power_ops_models}}"
       externalId: FunctionMetadata
