@@ -1,0 +1,24 @@
+space: "{{power_ops_models}}"
+externalId: PlantInformation
+name: PlantInformation
+description: TODO interface for configuration population
+filter:
+  and:
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: PlantInformation
+          space: "{{power_ops_type_space}}"
+implements:
+  - space: "{{power_ops_models}}"
+    externalId: PlantWaterValueBased
+    version: "{{version}}"
+    type: view
+    # - space: "{{power_ops_models}}"
+    #   externalId: PlantShop
+    #   version: "{{version}}"
+    #   type: view
+version: "{{version}}"
+properties: {}

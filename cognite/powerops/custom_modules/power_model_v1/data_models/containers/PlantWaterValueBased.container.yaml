@@ -1,6 +1,6 @@
 space: "{{power_ops_models}}"
-externalId: Plant
-name: Plant
+externalId: PlantWaterValueBased
+name: PlantWaterValueBased
 usedFor: node
 properties:
   headLossFactor:

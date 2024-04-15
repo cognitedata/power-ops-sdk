@@ -37,6 +37,6 @@ properties:
     description: TODO description (has to be a Plant)
     source:
       space: "{{power_ops_models}}"
-      externalId: Plant
+      externalId: PlantWaterValueBased
       version: "{{version}}"
       type: view

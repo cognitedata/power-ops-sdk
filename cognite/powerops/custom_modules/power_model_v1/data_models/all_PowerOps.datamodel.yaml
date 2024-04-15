@@ -131,7 +131,19 @@ views:
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
+  - externalId: Watercourse
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
   - externalId: Plant
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PlantWaterValueBased
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PlantInformation
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
@@ -143,7 +155,7 @@ views:
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: PriceAreaConfiguration
+  - externalId: PriceAreaInformation
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"

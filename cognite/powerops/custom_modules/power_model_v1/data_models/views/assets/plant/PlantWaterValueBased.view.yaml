@@ -1,13 +1,13 @@
 space: "{{power_ops_models}}"
-externalId: Plant
-name: Plant
-description: Represent a plant
+externalId: PlantWaterValueBased
+name: PlantWaterValueBased
+description: Represent a plant TODO for WVB
 filter:
   and:
     - hasData:
         - type: container
           space: "{{power_ops_models}}"
-          externalId: Plant
+          externalId: PlantWaterValueBased
     - equals:
         property:
           - node
@@ -18,11 +18,11 @@ filter:
           - node
           - type
         value:
-          externalId: Plant
+          externalId: PlantWaterValueBased
           space: "{{power_ops_type_space}}"
 implements:
   - space: "{{power_ops_models}}"
-    externalId: PowerAsset
+    externalId: Plant
     version: "{{version}}"
     type: view
 version: "{{version}}"
@@ -30,42 +30,42 @@ properties:
   headLossFactor:
     container:
       space: "{{power_ops_models}}"
-      externalId: Plant
+      externalId: PlantWaterValueBased
       type: container
     containerPropertyIdentifier: headLossFactor
     name: headLossFactor
   outletLevel:
     container:
       space: "{{power_ops_models}}"
-      externalId: Plant
+      externalId: PlantWaterValueBased
       type: container
     containerPropertyIdentifier: outletLevel
     name: outletLevel
   productionMax:
     container:
       space: "{{power_ops_models}}"
-      externalId: Plant
+      externalId: PlantWaterValueBased
       type: container
     containerPropertyIdentifier: productionMax
     name: productionMax
   productionMin:
     container:
       space: "{{power_ops_models}}"
-      externalId: Plant
+      externalId: PlantWaterValueBased
       type: container
     containerPropertyIdentifier: productionMin
     name: productionMin
   penstockHeadLossFactors:
     container:
       space: "{{power_ops_models}}"
-      externalId: Plant
+      externalId: PlantWaterValueBased
       type: container
     containerPropertyIdentifier: penstockHeadLossFactors
     name: penstockHeadLossFactors
   # watercourse:
   #   container:
   #     space: "{{power_ops_models}}"
-  #     externalId: Plant
+  #     externalId: PlantWaterValueBased
   #     type: container
   #   containerPropertyIdentifier: watercourse
   #   name: watercourse
@@ -77,63 +77,63 @@ properties:
   connectionLosses:
     container:
       space: "{{power_ops_models}}"
-      externalId: Plant
+      externalId: PlantWaterValueBased
       type: container
     containerPropertyIdentifier: connectionLosses
     name: connectionLosses
   productionMaxTimeSeries:
     container:
       space: "{{power_ops_models}}"
-      externalId: Plant
+      externalId: PlantWaterValueBased
       type: container
     containerPropertyIdentifier: productionMaxTimeSeries
     name: productionMaxTimeSeries
   productionMinTimeSeries:
     container:
       space: "{{power_ops_models}}"
-      externalId: Plant
+      externalId: PlantWaterValueBased
       type: container
     containerPropertyIdentifier: productionMinTimeSeries
     name: productionMinTimeSeries
   waterValueTimeSeries:
     container:
       space: "{{power_ops_models}}"
-      externalId: Plant
+      externalId: PlantWaterValueBased
       type: container
     containerPropertyIdentifier: waterValueTimeSeries
     name: waterValueTimeSeries
   feedingFeeTimeSeries:
     container:
       space: "{{power_ops_models}}"
-      externalId: Plant
+      externalId: PlantWaterValueBased
       type: container
     containerPropertyIdentifier: feedingFeeTimeSeries
     name: feedingFeeTimeSeries
   outletLevelTimeSeries:
     container:
       space: "{{power_ops_models}}"
-      externalId: Plant
+      externalId: PlantWaterValueBased
       type: container
     containerPropertyIdentifier: outletLevelTimeSeries
     name: outletLevelTimeSeries
   inletLevelTimeSeries:
     container:
       space: "{{power_ops_models}}"
-      externalId: Plant
+      externalId: PlantWaterValueBased
       type: container
     containerPropertyIdentifier: inletLevelTimeSeries
     name: inletLevelTimeSeries
   headDirectTimeSeries:
     container:
       space: "{{power_ops_models}}"
-      externalId: Plant
+      externalId: PlantWaterValueBased
       type: container
     containerPropertyIdentifier: headDirectTimeSeries
     name: headDirectTimeSeries
   # inletReservoir:
   #   container:
   #     space: "{{power_ops_models}}"
-  #     externalId: Plant
+  #     externalId: PlantWaterValueBased
   #     type: container
   #   containerPropertyIdentifier: inletReservoir
   #   name: inletReservoir

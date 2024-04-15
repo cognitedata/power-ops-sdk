@@ -1,0 +1,21 @@
+space: "{{power_ops_models}}"
+externalId: Watercourse
+name: Watercourse
+description: TODO interface for typing
+# filter:
+#   or:
+#     - hasData:
+#         - type: container
+#           space: "{{power_ops_models}}"
+#           externalId: PlantWaterValueBased
+#     # - hasData:
+#     #     - type: container
+#     #       space: "{{power_ops_models}}"
+#     #       externalId: PlantShop
+implements:
+  - space: "{{power_ops_models}}"
+    externalId: PowerAsset
+    version: "{{version}}"
+    type: view
+version: "{{version}}"
+properties: {}
