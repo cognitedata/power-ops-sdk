@@ -14,7 +14,7 @@ filter:
         value: "{{power_ops_instance_space}}"
 implements:
   - space: "{{power_ops_models}}"
-    externalId: BidMatrixSimple
+    externalId: BidMatrix
     version: "{{version}}"
     type: view
 version: "{{version}}"
@@ -25,7 +25,7 @@ properties:
       externalId: intermediateBidMatrix
     source:
       space: "{{power_ops_models}}"
-      externalId: BidMatrixSimple
+      externalId: BidMatrix
       version: "{{version}}"
       type: view
     direction: outwards

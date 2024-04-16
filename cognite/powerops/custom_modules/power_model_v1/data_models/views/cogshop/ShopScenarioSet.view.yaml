@@ -40,14 +40,6 @@ properties:
     containerPropertyIdentifier: endSpecification
     name: endSpecification
     description: TODO definition
-  bidDateSpecification:
-    container:
-      space: "{{power_ops_models}}"
-      externalId: ShopScenarioSet
-      type: container
-    containerPropertyIdentifier: bidDateSpecification
-    name: bidDateSpecification
-    description: TODO definition
   scenarios:
     type:
       space: "{{power_ops_type_space}}"

@@ -23,14 +23,6 @@ filter:
 implements: []
 version: "{{version}}"
 properties:
-  ref:
-    container:
-      space: "{{power_ops_models}}"
-      externalId: EfficiencyCurve
-      type: container
-    containerPropertyIdentifier: ref
-    name: ref
-    description: The reference value
   power:
     container:
       space: "{{power_ops_models}}"

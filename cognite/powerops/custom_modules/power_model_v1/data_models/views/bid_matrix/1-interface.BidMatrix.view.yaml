@@ -1,6 +1,6 @@
 space: "{{power_ops_models}}"
-externalId: BidMatrixSimple
-name: BidMatrixSimple
+externalId: BidMatrix
+name: BidMatrix
 filter:
   and:
     - hasData:
@@ -15,13 +15,13 @@ filter:
 implements: []
 version: "{{version}}"
 properties:
-  name:
+  state:
     container:
       space: "{{power_ops_models}}"
       externalId: BidMatrix
       type: container
-    containerPropertyIdentifier: name
-    name: name
+    containerPropertyIdentifier: state
+    name: state
   bidMatrix:
     container:
       space: "{{power_ops_models}}"

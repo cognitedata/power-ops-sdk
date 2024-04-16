@@ -4,7 +4,7 @@ version: "1"
 name: DayAheadConfiguration
 description: "Settings for the day ahead bid process"
 views:
-  - externalId: BidConfiguration
+  - externalId: BidConfigurationDayAhead
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
@@ -13,6 +13,10 @@ views:
     type: view
     version: "{{version}}"
   - externalId: PriceArea
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PriceAreaDayAhead
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"

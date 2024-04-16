@@ -38,7 +38,7 @@ properties:
     name: bidConfiguration
     source:
       space: "{{power_ops_models}}"
-      externalId: BidConfiguration
+      externalId: BidConfigurationDayAhead
       version: "{{version}}"
       type: view
   total:

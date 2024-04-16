@@ -8,6 +8,14 @@ views:
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
+  - externalId: BidMatrixInformation
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PartialBidMatrixInformation
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
   - externalId: TotalBidMatrixCalculationInput
     space: "{{power_ops_models}}"
     type: view
@@ -21,6 +29,10 @@ views:
     type: view
     version: "{{version}}"
   - externalId: PriceArea
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PriceAreaDayAhead
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
@@ -85,7 +97,7 @@ views:
     version: "{{version}}"
     type: view
   - space: "{{power_ops_models}}"
-    externalId: BidConfiguration
+    externalId: BidConfigurationDayAhead
     version: "{{version}}"
     type: view
   - space: "{{power_ops_models}}"

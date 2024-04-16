@@ -3,7 +3,7 @@ externalId: BidMatrix
 name: BidMatrix
 usedFor: node
 properties:
-  name:
+  state:
     type:
       list: false
       collation: ucs_basic

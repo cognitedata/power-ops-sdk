@@ -20,7 +20,7 @@ views:
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: BidConfiguration
+  - externalId: BidConfigurationDayAhead
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"

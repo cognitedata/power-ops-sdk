@@ -27,7 +27,7 @@ views:
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: BidConfiguration
+  - externalId: BidConfigurationDayAhead
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
@@ -215,10 +215,6 @@ views:
     externalId: ShopFile
     version: "{{version}}"
     type: view
-  - externalId: BidMatrixSimple
-    space: "{{power_ops_models}}"
-    type: view
-    version: "{{version}}"
   - externalId: BidMatrixInformation
     space: "{{power_ops_models}}"
     type: view

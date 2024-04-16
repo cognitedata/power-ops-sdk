@@ -1,7 +1,7 @@
 space: "{{power_ops_models}}"
-externalId: BidConfiguration
-name: BidConfiguration
-description: ""
+externalId: BidConfigurationDayAhead
+name: BidConfigurationDayAhead
+description: TODO
 filter:
   and:
     - hasData:
@@ -19,7 +19,7 @@ filter:
           - type
         value:
           space: "{{power_ops_type_space}}"
-          externalId: BidConfiguration
+          externalId: BidConfigurationDayAhead
 implements: []
 version: "{{version}}"
 properties:
@@ -54,9 +54,17 @@ properties:
     description: The price area related to the bid calculation task
     source:
       space: "{{power_ops_models}}"
-      externalId: PriceArea
+      externalId: PriceAreaDayAhead
       version: "{{version}}"
       type: view
+  bidDateSpecification:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: BidConfiguration
+      type: container
+    containerPropertyIdentifier: bidDateSpecification
+    name: bidDateSpecification
+    description: TODO definition
   partials:
     type:
       space: "{{power_ops_type_space}}"

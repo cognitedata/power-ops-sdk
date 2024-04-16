@@ -25,6 +25,15 @@ properties:
     nullable: true
     autoIncrement: false
     name: priceArea
+  bidDateSpecification:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: bidDateSpecification
+    description: TODO
 indexes:
   priceAreaIndex:
     properties:
