@@ -35,16 +35,16 @@ __all__ = [
 ]
 
 
-MarketConfigurationTextFields = Literal["name", "time_zone", "price_unit", "time_unit"]
+MarketConfigurationTextFields = Literal["name", "timezone", "price_unit", "time_unit"]
 MarketConfigurationFields = Literal[
-    "name", "max_price", "min_price", "time_zone", "price_unit", "price_steps", "tick_size", "time_unit", "trade_lot"
+    "name", "max_price", "min_price", "timezone", "price_unit", "price_steps", "tick_size", "time_unit", "trade_lot"
 ]
 
 _MARKETCONFIGURATION_PROPERTIES_BY_FIELD = {
     "name": "name",
     "max_price": "maxPrice",
     "min_price": "minPrice",
-    "time_zone": "timeZone",
+    "timezone": "timezone",
     "price_unit": "priceUnit",
     "price_steps": "priceSteps",
     "tick_size": "tickSize",
@@ -66,7 +66,7 @@ class MarketConfigurationGraphQL(GraphQLCore):
         name: The name of the market
         max_price: The highest price allowed
         min_price: The lowest price allowed
-        time_zone: The time zone field.
+        timezone: The timezone field.
         price_unit: Unit of measurement for the price ('EUR/MWh')
         price_steps: The maximum number of price steps
         tick_size: 'Granularity' of the price; tick size = 0.1 means that prices must be 'rounded to nearest 0.1' (i. e. 66.43 is not allowed, but 66.4 is)
@@ -74,11 +74,11 @@ class MarketConfigurationGraphQL(GraphQLCore):
         trade_lot: 'Granularity' of the volumes; trade lot = 0.2 means that volumes must be 'rounded to nearest 0.2' (i. e. 66.5 is not allowed, but 66.4 is)
     """
 
-    view_id = dm.ViewId("sp_powerops_models_temp", "MarketConfiguration", "1")
+    view_id = dm.ViewId("sp_power_ops_models", "MarketConfiguration", "1")
     name: Optional[str] = None
     max_price: Optional[float] = Field(None, alias="maxPrice")
     min_price: Optional[float] = Field(None, alias="minPrice")
-    time_zone: Optional[str] = Field(None, alias="timeZone")
+    timezone: Optional[str] = None
     price_unit: Optional[str] = Field(None, alias="priceUnit")
     price_steps: Optional[int] = Field(None, alias="priceSteps")
     tick_size: Optional[float] = Field(None, alias="tickSize")
@@ -111,7 +111,7 @@ class MarketConfigurationGraphQL(GraphQLCore):
             name=self.name,
             max_price=self.max_price,
             min_price=self.min_price,
-            time_zone=self.time_zone,
+            timezone=self.timezone,
             price_unit=self.price_unit,
             price_steps=self.price_steps,
             tick_size=self.tick_size,
@@ -128,7 +128,7 @@ class MarketConfigurationGraphQL(GraphQLCore):
             name=self.name,
             max_price=self.max_price,
             min_price=self.min_price,
-            time_zone=self.time_zone,
+            timezone=self.timezone,
             price_unit=self.price_unit,
             price_steps=self.price_steps,
             tick_size=self.tick_size,
@@ -149,7 +149,7 @@ class MarketConfiguration(DomainModel):
         name: The name of the market
         max_price: The highest price allowed
         min_price: The lowest price allowed
-        time_zone: The time zone field.
+        timezone: The timezone field.
         price_unit: Unit of measurement for the price ('EUR/MWh')
         price_steps: The maximum number of price steps
         tick_size: 'Granularity' of the price; tick size = 0.1 means that prices must be 'rounded to nearest 0.1' (i. e. 66.43 is not allowed, but 66.4 is)
@@ -159,12 +159,12 @@ class MarketConfiguration(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types_temp", "MarketConfiguration"
+        "sp_power_ops_types", "MarketConfiguration"
     )
-    name: Optional[str] = None
+    name: str
     max_price: float = Field(alias="maxPrice")
     min_price: float = Field(alias="minPrice")
-    time_zone: str = Field(alias="timeZone")
+    timezone: str
     price_unit: str = Field(alias="priceUnit")
     price_steps: int = Field(alias="priceSteps")
     tick_size: float = Field(alias="tickSize")
@@ -180,7 +180,7 @@ class MarketConfiguration(DomainModel):
             name=self.name,
             max_price=self.max_price,
             min_price=self.min_price,
-            time_zone=self.time_zone,
+            timezone=self.timezone,
             price_unit=self.price_unit,
             price_steps=self.price_steps,
             tick_size=self.tick_size,
@@ -210,7 +210,7 @@ class MarketConfigurationWrite(DomainModelWrite):
         name: The name of the market
         max_price: The highest price allowed
         min_price: The lowest price allowed
-        time_zone: The time zone field.
+        timezone: The timezone field.
         price_unit: Unit of measurement for the price ('EUR/MWh')
         price_steps: The maximum number of price steps
         tick_size: 'Granularity' of the price; tick size = 0.1 means that prices must be 'rounded to nearest 0.1' (i. e. 66.43 is not allowed, but 66.4 is)
@@ -220,12 +220,12 @@ class MarketConfigurationWrite(DomainModelWrite):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types_temp", "MarketConfiguration"
+        "sp_power_ops_types", "MarketConfiguration"
     )
-    name: Optional[str] = None
+    name: str
     max_price: float = Field(alias="maxPrice")
     min_price: float = Field(alias="minPrice")
-    time_zone: str = Field(alias="timeZone")
+    timezone: str
     price_unit: str = Field(alias="priceUnit")
     price_steps: int = Field(alias="priceSteps")
     tick_size: float = Field(alias="tickSize")
@@ -244,12 +244,12 @@ class MarketConfigurationWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            MarketConfiguration, dm.ViewId("sp_powerops_models_temp", "MarketConfiguration", "1")
+            MarketConfiguration, dm.ViewId("sp_power_ops_models", "MarketConfiguration", "1")
         )
 
         properties: dict[str, Any] = {}
 
-        if self.name is not None or write_none:
+        if self.name is not None:
             properties["name"] = self.name
 
         if self.max_price is not None:
@@ -258,8 +258,8 @@ class MarketConfigurationWrite(DomainModelWrite):
         if self.min_price is not None:
             properties["minPrice"] = self.min_price
 
-        if self.time_zone is not None:
-            properties["timeZone"] = self.time_zone
+        if self.timezone is not None:
+            properties["timezone"] = self.timezone
 
         if self.price_unit is not None:
             properties["priceUnit"] = self.price_unit
@@ -343,8 +343,8 @@ def _create_market_configuration_filter(
     max_max_price: float | None = None,
     min_min_price: float | None = None,
     max_min_price: float | None = None,
-    time_zone: str | list[str] | None = None,
-    time_zone_prefix: str | None = None,
+    timezone: str | list[str] | None = None,
+    timezone_prefix: str | None = None,
     price_unit: str | list[str] | None = None,
     price_unit_prefix: str | None = None,
     min_price_steps: int | None = None,
@@ -370,12 +370,12 @@ def _create_market_configuration_filter(
         filters.append(dm.filters.Range(view_id.as_property_ref("maxPrice"), gte=min_max_price, lte=max_max_price))
     if min_min_price is not None or max_min_price is not None:
         filters.append(dm.filters.Range(view_id.as_property_ref("minPrice"), gte=min_min_price, lte=max_min_price))
-    if isinstance(time_zone, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("timeZone"), value=time_zone))
-    if time_zone and isinstance(time_zone, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("timeZone"), values=time_zone))
-    if time_zone_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("timeZone"), value=time_zone_prefix))
+    if isinstance(timezone, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("timezone"), value=timezone))
+    if timezone and isinstance(timezone, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("timezone"), values=timezone))
+    if timezone_prefix is not None:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("timezone"), value=timezone_prefix))
     if isinstance(price_unit, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("priceUnit"), value=price_unit))
     if price_unit and isinstance(price_unit, list):

@@ -25,7 +25,11 @@ from ._core import (
 from ._function_input import FunctionInput, FunctionInputWrite
 
 if TYPE_CHECKING:
-    from ._bid_configuration import BidConfiguration, BidConfigurationGraphQL, BidConfigurationWrite
+    from ._bid_configuration_day_ahead import (
+        BidConfigurationDayAhead,
+        BidConfigurationDayAheadGraphQL,
+        BidConfigurationDayAheadWrite,
+    )
 
 
 __all__ = [
@@ -40,12 +44,14 @@ __all__ = [
 ]
 
 
-TaskDispatcherInputTextFields = Literal["process_id", "function_name", "function_call_id"]
-TaskDispatcherInputFields = Literal["process_id", "process_step", "function_name", "function_call_id", "bid_date"]
+TaskDispatcherInputTextFields = Literal["workflow_execution_id", "function_name", "function_call_id"]
+TaskDispatcherInputFields = Literal[
+    "workflow_execution_id", "workflow_step", "function_name", "function_call_id", "bid_date"
+]
 
 _TASKDISPATCHERINPUT_PROPERTIES_BY_FIELD = {
-    "process_id": "processId",
-    "process_step": "processStep",
+    "workflow_execution_id": "workflowExecutionId",
+    "workflow_step": "workflowStep",
     "function_name": "functionName",
     "function_call_id": "functionCallId",
     "bid_date": "bidDate",
@@ -62,20 +68,20 @@ class TaskDispatcherInputGraphQL(GraphQLCore):
         space: The space where the node is located.
         external_id: The external id of the task dispatcher input.
         data_record: The data record of the task dispatcher input node.
-        process_id: The process associated with the function execution
-        process_step: This is the step in the process.
+        workflow_execution_id: The process associated with the function execution
+        workflow_step: This is the step in the process.
         function_name: The name of the function
         function_call_id: The function call id
         bid_configuration: The bid configuration field.
         bid_date: The bid date
     """
 
-    view_id = dm.ViewId("sp_powerops_models_temp", "TaskDispatcherInput", "1")
-    process_id: Optional[str] = Field(None, alias="processId")
-    process_step: Optional[int] = Field(None, alias="processStep")
+    view_id = dm.ViewId("sp_power_ops_models", "TaskDispatcherInput", "1")
+    workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
+    workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
     function_call_id: Optional[str] = Field(None, alias="functionCallId")
-    bid_configuration: Optional[BidConfigurationGraphQL] = Field(None, repr=False, alias="bidConfiguration")
+    bid_configuration: Optional[BidConfigurationDayAheadGraphQL] = Field(None, repr=False, alias="bidConfiguration")
     bid_date: Optional[datetime.date] = Field(None, alias="bidDate")
 
     @model_validator(mode="before")
@@ -109,8 +115,8 @@ class TaskDispatcherInputGraphQL(GraphQLCore):
                 last_updated_time=self.data_record.last_updated_time,
                 created_time=self.data_record.created_time,
             ),
-            process_id=self.process_id,
-            process_step=self.process_step,
+            workflow_execution_id=self.workflow_execution_id,
+            workflow_step=self.workflow_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
             bid_configuration=(
@@ -127,8 +133,8 @@ class TaskDispatcherInputGraphQL(GraphQLCore):
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
-            process_id=self.process_id,
-            process_step=self.process_step,
+            workflow_execution_id=self.workflow_execution_id,
+            workflow_step=self.workflow_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
             bid_configuration=(
@@ -149,8 +155,8 @@ class TaskDispatcherInput(FunctionInput):
         space: The space where the node is located.
         external_id: The external id of the task dispatcher input.
         data_record: The data record of the task dispatcher input node.
-        process_id: The process associated with the function execution
-        process_step: This is the step in the process.
+        workflow_execution_id: The process associated with the function execution
+        workflow_step: This is the step in the process.
         function_name: The name of the function
         function_call_id: The function call id
         bid_configuration: The bid configuration field.
@@ -158,9 +164,11 @@ class TaskDispatcherInput(FunctionInput):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types_temp", "TaskDispatcherInput"
+        "sp_power_ops_types", "TaskDispatcherInput"
     )
-    bid_configuration: Union[BidConfiguration, str, dm.NodeId, None] = Field(None, repr=False, alias="bidConfiguration")
+    bid_configuration: Union[BidConfigurationDayAhead, str, dm.NodeId, None] = Field(
+        None, repr=False, alias="bidConfiguration"
+    )
     bid_date: Optional[datetime.date] = Field(None, alias="bidDate")
 
     def as_write(self) -> TaskDispatcherInputWrite:
@@ -169,8 +177,8 @@ class TaskDispatcherInput(FunctionInput):
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
-            process_id=self.process_id,
-            process_step=self.process_step,
+            workflow_execution_id=self.workflow_execution_id,
+            workflow_step=self.workflow_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
             bid_configuration=(
@@ -200,8 +208,8 @@ class TaskDispatcherInputWrite(FunctionInputWrite):
         space: The space where the node is located.
         external_id: The external id of the task dispatcher input.
         data_record: The data record of the task dispatcher input node.
-        process_id: The process associated with the function execution
-        process_step: This is the step in the process.
+        workflow_execution_id: The process associated with the function execution
+        workflow_step: This is the step in the process.
         function_name: The name of the function
         function_call_id: The function call id
         bid_configuration: The bid configuration field.
@@ -209,9 +217,9 @@ class TaskDispatcherInputWrite(FunctionInputWrite):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types_temp", "TaskDispatcherInput"
+        "sp_power_ops_types", "TaskDispatcherInput"
     )
-    bid_configuration: Union[BidConfigurationWrite, str, dm.NodeId, None] = Field(
+    bid_configuration: Union[BidConfigurationDayAheadWrite, str, dm.NodeId, None] = Field(
         None, repr=False, alias="bidConfiguration"
     )
     bid_date: Optional[datetime.date] = Field(None, alias="bidDate")
@@ -228,16 +236,16 @@ class TaskDispatcherInputWrite(FunctionInputWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            TaskDispatcherInput, dm.ViewId("sp_powerops_models_temp", "TaskDispatcherInput", "1")
+            TaskDispatcherInput, dm.ViewId("sp_power_ops_models", "TaskDispatcherInput", "1")
         )
 
         properties: dict[str, Any] = {}
 
-        if self.process_id is not None:
-            properties["processId"] = self.process_id
+        if self.workflow_execution_id is not None:
+            properties["workflowExecutionId"] = self.workflow_execution_id
 
-        if self.process_step is not None:
-            properties["processStep"] = self.process_step
+        if self.workflow_step is not None:
+            properties["workflowStep"] = self.workflow_step
 
         if self.function_name is not None:
             properties["functionName"] = self.function_name
@@ -323,10 +331,10 @@ class TaskDispatcherInputApplyList(TaskDispatcherInputWriteList): ...
 
 def _create_task_dispatcher_input_filter(
     view_id: dm.ViewId,
-    process_id: str | list[str] | None = None,
-    process_id_prefix: str | None = None,
-    min_process_step: int | None = None,
-    max_process_step: int | None = None,
+    workflow_execution_id: str | list[str] | None = None,
+    workflow_execution_id_prefix: str | None = None,
+    min_workflow_step: int | None = None,
+    max_workflow_step: int | None = None,
     function_name: str | list[str] | None = None,
     function_name_prefix: str | None = None,
     function_call_id: str | list[str] | None = None,
@@ -339,15 +347,17 @@ def _create_task_dispatcher_input_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if isinstance(process_id, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("processId"), value=process_id))
-    if process_id and isinstance(process_id, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("processId"), values=process_id))
-    if process_id_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("processId"), value=process_id_prefix))
-    if min_process_step is not None or max_process_step is not None:
+    if isinstance(workflow_execution_id, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id))
+    if workflow_execution_id and isinstance(workflow_execution_id, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
+    if workflow_execution_id_prefix is not None:
         filters.append(
-            dm.filters.Range(view_id.as_property_ref("processStep"), gte=min_process_step, lte=max_process_step)
+            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
+        )
+    if min_workflow_step is not None or max_workflow_step is not None:
+        filters.append(
+            dm.filters.Range(view_id.as_property_ref("workflowStep"), gte=min_workflow_step, lte=max_workflow_step)
         )
     if isinstance(function_name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("functionName"), value=function_name))

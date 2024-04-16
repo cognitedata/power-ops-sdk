@@ -78,7 +78,7 @@ class BidRowGraphQL(GraphQLCore):
         alerts: An array of associated alerts.
     """
 
-    view_id = dm.ViewId("sp_powerops_models_temp", "BidRow", "1")
+    view_id = dm.ViewId("sp_power_ops_models", "BidRow", "1")
     price: Optional[float] = None
     quantity_per_hour: Optional[list[float]] = Field(None, alias="quantityPerHour")
     product: Optional[str] = None
@@ -174,7 +174,7 @@ class BidRow(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types_temp", "BidRow")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_power_ops_types", "BidRow")
     price: Optional[float] = None
     quantity_per_hour: Optional[list[float]] = Field(None, alias="quantityPerHour")
     product: Optional[str] = None
@@ -236,7 +236,7 @@ class BidRowWrite(DomainModelWrite):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types_temp", "BidRow")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_power_ops_types", "BidRow")
     price: Optional[float] = None
     quantity_per_hour: Optional[list[float]] = Field(None, alias="quantityPerHour")
     product: Optional[str] = None
@@ -259,7 +259,7 @@ class BidRowWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(BidRow, dm.ViewId("sp_powerops_models_temp", "BidRow", "1"))
+        write_view = (view_by_read_class or {}).get(BidRow, dm.ViewId("sp_power_ops_models", "BidRow", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -312,7 +312,7 @@ class BidRowWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue")
+        edge_type = dm.DirectRelationReference("sp_power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

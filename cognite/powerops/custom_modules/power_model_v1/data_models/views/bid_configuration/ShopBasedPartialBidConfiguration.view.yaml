@@ -1,54 +1,41 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: ShopBasedPartialBidConfiguration
 name: ShopBasedPartialBidConfiguration
-description: A description of the ShopBasedPartialBidConfiguration
+description: TODO
 filter:
   and:
     - hasData:
         - type: container
-          space: "{{powerops_models}}"
+          space: "{{power_ops_models}}"
           externalId: PartialBidConfiguration
     - equals:
         property:
           - node
           - space
-        value: "{{powerops_instance_space}}"
+        value: "{{power_ops_instance_space}}"
     - equals:
         property:
           - node
           - type
         value:
           externalId: ShopBasedPartialBidConfiguration
-          space: "{{powerops_type_space}}"
+          space: "{{power_ops_type_space}}"
 implements:
-  - space: "{{powerops_models}}"
+  - space: "{{power_ops_models}}"
     externalId: PartialBidConfiguration
     version: "{{version}}"
     type: view
 version: "{{version}}"
 properties:
-  powerAsset:
-    container:
-      space: "{{powerops_models}}"
-      externalId: PartialBidConfiguration
-      type: container
-    containerPropertyIdentifier: powerAsset
-    name: powerAsset
-    description: TODO description
-    source:
-      space: "{{powerops_models}}"
-      externalId: PowerAsset
-      version: "{{version}}"
-      type: view
   scenarioSet:
     container:
-      space: "{{powerops_models}}"
-      externalId: PartialShopBased
+      space: "{{power_ops_models}}"
+      externalId: ShopPartialBidConfiguration
       type: container
     containerPropertyIdentifier: scenarioSet
     name: scenarioSet
     source:
-      space: "{{powerops_models}}"
-      externalId: ScenarioSet
+      space: "{{power_ops_models}}"
+      externalId: ShopScenarioSet
       version: "{{version}}"
       type: view

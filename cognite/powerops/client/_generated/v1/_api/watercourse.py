@@ -33,8 +33,6 @@ from ._core import (
     QueryStep,
     QueryBuilder,
 )
-from .watercourse_plants import WatercoursePlantsAPI
-from .watercourse_production_obligation import WatercourseProductionObligationAPI
 from .watercourse_query import WatercourseQueryAPI
 
 
@@ -50,8 +48,6 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList]):
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
-        self.plants_edge = WatercoursePlantsAPI(client)
-        self.production_obligation = WatercourseProductionObligationAPI(client, view_id)
 
     def __call__(
         self,
@@ -61,8 +57,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList]):
         display_name_prefix: str | None = None,
         min_ordering: int | None = None,
         max_ordering: int | None = None,
-        min_penalty_limit: float | None = None,
-        max_penalty_limit: float | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -77,8 +73,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList]):
             display_name_prefix: The prefix of the display name to filter on.
             min_ordering: The minimum value of the ordering to filter on.
             max_ordering: The maximum value of the ordering to filter on.
-            min_penalty_limit: The minimum value of the penalty limit to filter on.
-            max_penalty_limit: The maximum value of the penalty limit to filter on.
+            asset_type: The asset type to filter on.
+            asset_type_prefix: The prefix of the asset type to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of watercourses to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -97,8 +93,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList]):
             display_name_prefix,
             min_ordering,
             max_ordering,
-            min_penalty_limit,
-            max_penalty_limit,
+            asset_type,
+            asset_type_prefix,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -113,10 +109,6 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList]):
         write_none: bool = False,
     ) -> ResourcesWriteResult:
         """Add or update (upsert) watercourses.
-
-        Note: This method iterates through all nodes and timeseries linked to watercourse and creates them including the edges
-        between the nodes. For example, if any of `plants` are set, then these
-        nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
             watercourse: Watercourse or sequence of watercourses to upsert.
@@ -208,20 +200,7 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList]):
                 >>> watercourse = client.watercourse.retrieve("my_watercourse")
 
         """
-        return self._retrieve(
-            external_id,
-            space,
-            retrieve_edges=True,
-            edge_api_name_type_direction_view_id_penta=[
-                (
-                    self.plants_edge,
-                    "plants",
-                    dm.DirectRelationReference("sp_powerops_types", "isSubAssetOf"),
-                    "outwards",
-                    dm.ViewId("sp_powerops_models", "Plant", "1"),
-                ),
-            ],
-        )
+        return self._retrieve(external_id, space)
 
     def search(
         self,
@@ -233,8 +212,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList]):
         display_name_prefix: str | None = None,
         min_ordering: int | None = None,
         max_ordering: int | None = None,
-        min_penalty_limit: float | None = None,
-        max_penalty_limit: float | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -251,8 +230,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList]):
             display_name_prefix: The prefix of the display name to filter on.
             min_ordering: The minimum value of the ordering to filter on.
             max_ordering: The maximum value of the ordering to filter on.
-            min_penalty_limit: The minimum value of the penalty limit to filter on.
-            max_penalty_limit: The maximum value of the penalty limit to filter on.
+            asset_type: The asset type to filter on.
+            asset_type_prefix: The prefix of the asset type to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of watercourses to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -278,8 +257,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList]):
             display_name_prefix,
             min_ordering,
             max_ordering,
-            min_penalty_limit,
-            max_penalty_limit,
+            asset_type,
+            asset_type_prefix,
             external_id_prefix,
             space,
             filter,
@@ -305,8 +284,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList]):
         display_name_prefix: str | None = None,
         min_ordering: int | None = None,
         max_ordering: int | None = None,
-        min_penalty_limit: float | None = None,
-        max_penalty_limit: float | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -332,8 +311,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList]):
         display_name_prefix: str | None = None,
         min_ordering: int | None = None,
         max_ordering: int | None = None,
-        min_penalty_limit: float | None = None,
-        max_penalty_limit: float | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -358,8 +337,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList]):
         display_name_prefix: str | None = None,
         min_ordering: int | None = None,
         max_ordering: int | None = None,
-        min_penalty_limit: float | None = None,
-        max_penalty_limit: float | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -379,8 +358,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList]):
             display_name_prefix: The prefix of the display name to filter on.
             min_ordering: The minimum value of the ordering to filter on.
             max_ordering: The maximum value of the ordering to filter on.
-            min_penalty_limit: The minimum value of the penalty limit to filter on.
-            max_penalty_limit: The maximum value of the penalty limit to filter on.
+            asset_type: The asset type to filter on.
+            asset_type_prefix: The prefix of the asset type to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of watercourses to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -407,8 +386,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList]):
             display_name_prefix,
             min_ordering,
             max_ordering,
-            min_penalty_limit,
-            max_penalty_limit,
+            asset_type,
+            asset_type_prefix,
             external_id_prefix,
             space,
             filter,
@@ -437,8 +416,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList]):
         display_name_prefix: str | None = None,
         min_ordering: int | None = None,
         max_ordering: int | None = None,
-        min_penalty_limit: float | None = None,
-        max_penalty_limit: float | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -457,8 +436,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList]):
             display_name_prefix: The prefix of the display name to filter on.
             min_ordering: The minimum value of the ordering to filter on.
             max_ordering: The maximum value of the ordering to filter on.
-            min_penalty_limit: The minimum value of the penalty limit to filter on.
-            max_penalty_limit: The maximum value of the penalty limit to filter on.
+            asset_type: The asset type to filter on.
+            asset_type_prefix: The prefix of the asset type to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of watercourses to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -476,8 +455,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList]):
             display_name_prefix,
             min_ordering,
             max_ordering,
-            min_penalty_limit,
-            max_penalty_limit,
+            asset_type,
+            asset_type_prefix,
             external_id_prefix,
             space,
             filter,
@@ -501,13 +480,12 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList]):
         display_name_prefix: str | None = None,
         min_ordering: int | None = None,
         max_ordering: int | None = None,
-        min_penalty_limit: float | None = None,
-        max_penalty_limit: float | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-        retrieve_edges: bool = True,
     ) -> WatercourseList:
         """List/filter watercourses
 
@@ -518,13 +496,12 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList]):
             display_name_prefix: The prefix of the display name to filter on.
             min_ordering: The minimum value of the ordering to filter on.
             max_ordering: The maximum value of the ordering to filter on.
-            min_penalty_limit: The minimum value of the penalty limit to filter on.
-            max_penalty_limit: The maximum value of the penalty limit to filter on.
+            asset_type: The asset type to filter on.
+            asset_type_prefix: The prefix of the asset type to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of watercourses to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            retrieve_edges: Whether to retrieve `plants` external ids for the watercourses. Defaults to True.
 
         Returns:
             List of requested watercourses
@@ -546,24 +523,10 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList]):
             display_name_prefix,
             min_ordering,
             max_ordering,
-            min_penalty_limit,
-            max_penalty_limit,
+            asset_type,
+            asset_type_prefix,
             external_id_prefix,
             space,
             filter,
         )
-
-        return self._list(
-            limit=limit,
-            filter=filter_,
-            retrieve_edges=retrieve_edges,
-            edge_api_name_type_direction_view_id_penta=[
-                (
-                    self.plants_edge,
-                    "plants",
-                    dm.DirectRelationReference("sp_powerops_types", "isSubAssetOf"),
-                    "outwards",
-                    dm.ViewId("sp_powerops_models", "Plant", "1"),
-                ),
-            ],
-        )
+        return self._list(limit=limit, filter=filter_)

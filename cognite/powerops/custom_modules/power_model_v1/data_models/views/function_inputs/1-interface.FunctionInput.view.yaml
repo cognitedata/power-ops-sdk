@@ -1,4 +1,4 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: FunctionInput
 name: FunctionInput
 description: Base class for all function inputs
@@ -6,41 +6,54 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{powerops_models}}"
+          space: "{{power_ops_models}}"
           externalId: FunctionMetadata
     - equals:
         property:
           - node
           - space
-        value: "{{powerops_instance_space}}"
+        value: "{{power_ops_instance_space}}"
+        # - not:
+        #     hasData:
+        #       - type: view
+        #         space: "{{power_ops_models}}"
+        #         externalId: FunctionOutput
+        #         version: "{{version}}"
+        # - equals:
+        #     property:
+        #       - node
+        #       - type
+        #     value:
+        #       externalId: FunctionInput
+        #       space: "{{power_ops_type_space}}"
         # - not:
         #     in:
         #       property:
         #         - node
         #         - type
-        #       value: FunctionOutput
+        #       values: [FunctionOutput]
 implements: []
 version: "{{version}}"
 properties:
-  processId:
+  workflowExecutionId:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: FunctionMetadata
       type: container
-    containerPropertyIdentifier: processId
-    name: processId
+    containerPropertyIdentifier: workflowExecutionId
+    name: workflowExecutionId
     description: The process associated with the function execution
-  processStep:
+  workflowStep:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: FunctionMetadata
       type: container
-    containerPropertyIdentifier: processStep
-    name: processStep
+    containerPropertyIdentifier: workflowStep
+    name: workflowStep
     description: This is the step in the process.
   functionName:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: FunctionMetadata
       type: container
     containerPropertyIdentifier: functionName
@@ -48,7 +61,7 @@ properties:
     description: The name of the function
   functionCallId:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: FunctionMetadata
       type: container
     containerPropertyIdentifier: functionCallId

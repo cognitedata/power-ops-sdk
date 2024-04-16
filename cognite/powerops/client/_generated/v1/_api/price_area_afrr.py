@@ -77,8 +77,6 @@ class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRL
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        timezone: str | list[str] | None = None,
-        timezone_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -95,8 +93,6 @@ class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRL
             max_ordering: The maximum value of the ordering to filter on.
             asset_type: The asset type to filter on.
             asset_type_prefix: The prefix of the asset type to filter on.
-            timezone: The timezone to filter on.
-            timezone_prefix: The prefix of the timezone to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of price area afrrs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -117,8 +113,6 @@ class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRL
             max_ordering,
             asset_type,
             asset_type_prefix,
-            timezone,
-            timezone_prefix,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -238,8 +232,6 @@ class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRL
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        timezone: str | list[str] | None = None,
-        timezone_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -258,8 +250,6 @@ class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRL
             max_ordering: The maximum value of the ordering to filter on.
             asset_type: The asset type to filter on.
             asset_type_prefix: The prefix of the asset type to filter on.
-            timezone: The timezone to filter on.
-            timezone_prefix: The prefix of the timezone to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of price area afrrs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -287,8 +277,6 @@ class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRL
             max_ordering,
             asset_type,
             asset_type_prefix,
-            timezone,
-            timezone_prefix,
             external_id_prefix,
             space,
             filter,
@@ -316,8 +304,6 @@ class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRL
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        timezone: str | list[str] | None = None,
-        timezone_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -345,8 +331,6 @@ class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRL
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        timezone: str | list[str] | None = None,
-        timezone_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -373,8 +357,6 @@ class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRL
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        timezone: str | list[str] | None = None,
-        timezone_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -396,8 +378,6 @@ class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRL
             max_ordering: The maximum value of the ordering to filter on.
             asset_type: The asset type to filter on.
             asset_type_prefix: The prefix of the asset type to filter on.
-            timezone: The timezone to filter on.
-            timezone_prefix: The prefix of the timezone to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of price area afrrs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -426,8 +406,6 @@ class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRL
             max_ordering,
             asset_type,
             asset_type_prefix,
-            timezone,
-            timezone_prefix,
             external_id_prefix,
             space,
             filter,
@@ -458,8 +436,6 @@ class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRL
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        timezone: str | list[str] | None = None,
-        timezone_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -480,8 +456,6 @@ class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRL
             max_ordering: The maximum value of the ordering to filter on.
             asset_type: The asset type to filter on.
             asset_type_prefix: The prefix of the asset type to filter on.
-            timezone: The timezone to filter on.
-            timezone_prefix: The prefix of the timezone to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of price area afrrs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -501,8 +475,6 @@ class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRL
             max_ordering,
             asset_type,
             asset_type_prefix,
-            timezone,
-            timezone_prefix,
             external_id_prefix,
             space,
             filter,
@@ -528,8 +500,6 @@ class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRL
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        timezone: str | list[str] | None = None,
-        timezone_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -546,8 +516,6 @@ class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRL
             max_ordering: The maximum value of the ordering to filter on.
             asset_type: The asset type to filter on.
             asset_type_prefix: The prefix of the asset type to filter on.
-            timezone: The timezone to filter on.
-            timezone_prefix: The prefix of the timezone to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of price area afrrs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -575,8 +543,6 @@ class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRL
             max_ordering,
             asset_type,
             asset_type_prefix,
-            timezone,
-            timezone_prefix,
             external_id_prefix,
             space,
             filter,

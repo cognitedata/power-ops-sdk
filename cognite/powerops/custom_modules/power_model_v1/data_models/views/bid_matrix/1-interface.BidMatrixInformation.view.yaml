@@ -1,0 +1,47 @@
+space: "{{power_ops_models}}"
+externalId: BidMatrixInformation
+name: BidMatrixInformation
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models}}"
+          externalId: BidMatrix
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+implements:
+  - space: "{{power_ops_models}}"
+    externalId: BidMatrix
+    version: "{{version}}"
+    type: view
+version: "{{version}}"
+properties:
+  intermediateBidMatrices:
+    type:
+      space: "{{power_ops_type_space}}"
+      externalId: intermediateBidMatrix
+    source:
+      space: "{{power_ops_models}}"
+      externalId: BidMatrix
+      version: "{{version}}"
+      type: view
+    direction: outwards
+    name: intermediateBidMatrices
+    description: An array of intermediate BidMatrices.
+    connectionType: multi_edge_connection
+  alerts:
+    type:
+      space: "{{power_ops_type_space}}"
+      externalId: calculationIssue
+    source:
+      space: "{{power_ops_models}}"
+      externalId: Alert
+      version: "{{version}}"
+      type: view
+    direction: outwards
+    name: alerts
+    description: An array of calculation level Alerts.
+    connectionType: multi_edge_connection

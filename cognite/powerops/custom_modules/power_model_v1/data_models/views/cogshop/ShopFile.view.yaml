@@ -1,4 +1,4 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: ShopFile
 name: ShopFile
 description: A wrapper around shop files that are sent to CogShop with metadata so that they are loaded into pyshop in the correct order
@@ -6,26 +6,26 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{powerops_models}}"
+          space: "{{power_ops_models}}"
           externalId: ShopFile
     - equals:
         property:
           - node
           - space
-        value: "{{powerops_instance_space}}"
+        value: "{{power_ops_instance_space}}"
     - equals:
         property:
           - node
           - type
         value:
           externalId: ShopFile
-          space: "{{powerops_type_space}}"
+          space: "{{power_ops_type_space}}"
 implements: []
 version: "{{version}}"
 properties:
   name:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopFile
       type: container
     containerPropertyIdentifier: name
@@ -33,7 +33,7 @@ properties:
     description: The name of the shop file
   label:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopFile
       type: container
     containerPropertyIdentifier: label
@@ -41,14 +41,14 @@ properties:
     description: The label of the shop file
   fileReference:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopFile
       type: container
     containerPropertyIdentifier: fileReference
     name: fileReference
   order:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopFile
       type: container
     containerPropertyIdentifier: order
@@ -56,7 +56,7 @@ properties:
     description: The order in which the file should be loaded into pyshop
   isAscii:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: ShopFile
       type: container
     containerPropertyIdentifier: isAscii

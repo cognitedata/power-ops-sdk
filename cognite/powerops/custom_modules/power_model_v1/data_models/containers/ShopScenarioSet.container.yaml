@@ -1,0 +1,32 @@
+space: "{{power_ops_models}}"
+externalId: ShopScenarioSet
+name: ShopScenarioSet
+usedFor: node
+properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+    description: TODO
+  startSpecification:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: startSpecification
+    description: The shop start specification
+  endSpecification:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: endSpecification
+    description: The shop end specification

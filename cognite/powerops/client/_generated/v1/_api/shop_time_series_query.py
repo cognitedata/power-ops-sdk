@@ -7,12 +7,12 @@ from cognite.client import data_modeling as dm, CogniteClient
 
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
-    SHOPTimeSeries,
+    ShopTimeSeries,
 )
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
 
-class SHOPTimeSeriesQueryAPI(QueryAPI[T_DomainModelList]):
+class ShopTimeSeriesQueryAPI(QueryAPI[T_DomainModelList]):
     def __init__(
         self,
         client: CogniteClient,
@@ -30,8 +30,8 @@ class SHOPTimeSeriesQueryAPI(QueryAPI[T_DomainModelList]):
                     from_=self._builder[-1].name if self._builder else None,
                     filter=filter_,
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(self._view_by_read_class[SHOPTimeSeries], ["*"])]),
-                result_cls=SHOPTimeSeries,
+                select=dm.query.Select([dm.query.SourceSelector(self._view_by_read_class[ShopTimeSeries], ["*"])]),
+                result_cls=ShopTimeSeries,
                 max_retrieve_limit=limit,
             )
         )

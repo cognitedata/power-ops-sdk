@@ -1,0 +1,22 @@
+space: "{{power_ops_models}}"
+externalId: ShopCommands
+name: ShopCommands
+usedFor: node
+properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+    description: The name of the commands config
+  commands:
+    type:
+      list: true
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: commands
+    description: The commands to use with the shop run

@@ -7,7 +7,7 @@ from ._core import DEFAULT_LIMIT_READ, EdgeAPI, _create_edge_filter
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 
 
-class SHOPTriggerOutputAlertsAPI(EdgeAPI):
+class ShopTriggerOutputAlertsAPI(EdgeAPI):
     def list(
         self,
         from_shop_trigger_output: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
@@ -43,7 +43,7 @@ class SHOPTriggerOutputAlertsAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
+            dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
             from_shop_trigger_output,
             from_shop_trigger_output_space,
             to_alert,

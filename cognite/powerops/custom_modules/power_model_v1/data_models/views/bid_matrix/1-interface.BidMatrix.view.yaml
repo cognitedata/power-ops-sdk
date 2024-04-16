@@ -1,0 +1,31 @@
+space: "{{power_ops_models}}"
+externalId: BidMatrix
+name: BidMatrix
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models}}"
+          externalId: BidMatrix
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+implements: []
+version: "{{version}}"
+properties:
+  state:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: BidMatrix
+      type: container
+    containerPropertyIdentifier: state
+    name: state
+  bidMatrix:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: BidMatrix
+      type: container
+    containerPropertyIdentifier: bidMatrix
+    name: bidMatrix

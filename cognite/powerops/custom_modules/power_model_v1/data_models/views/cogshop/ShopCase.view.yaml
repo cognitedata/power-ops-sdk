@@ -1,0 +1,67 @@
+space: "{{power_ops_models}}"
+externalId: ShopCase
+name: ShopCase
+description: A case that links a Scenario and shop dates to run shop with
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models}}"
+          externalId: ShopCase
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: ShopCase
+          space: "{{power_ops_type_space}}"
+implements: []
+version: "{{version}}"
+properties:
+  scenario:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopCase
+      type: container
+    containerPropertyIdentifier: scenario
+    name: scenario
+    description: The Shop scenario that was used to produce this result
+    source:
+      space: "{{power_ops_models}}"
+      externalId: ShopScenario
+      version: "{{version}}"
+      type: view
+  startTime:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopCase
+      type: container
+    containerPropertyIdentifier: startTime
+    name: startTime
+    description: The start time of the case
+  endTime:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopCase
+      type: container
+    containerPropertyIdentifier: endTime
+    name: endTime
+    description: The end time of the case
+  shopFiles:
+    type:
+      externalId: ShopCase.shopFiles
+      space: "{{power_ops_type_space}}"
+    name: shopFiles
+    source:
+      space: "{{power_ops_models}}"
+      externalId: ShopFile
+      version: "{{version}}"
+      type: view
+    direction: outwards
+    description: The list of shop files that are used in a shop run. This encompasses all shop files such as case, module series, cut files etc.
+    connectionType: multi_edge_connection

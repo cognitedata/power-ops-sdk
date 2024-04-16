@@ -1,4 +1,4 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: FunctionData
 name: FunctionData
 usedFor: node
@@ -101,20 +101,20 @@ properties:
     nullable: true
     autoIncrement: false
     name: number2
-  timeseries1:
+  timeSeries1:
     type:
       type: timeseries
       list: true
     nullable: true
     autoIncrement: false
-    name: timeseries1
-  timeseries2:
+    name: timeSeries1
+  timeSeries2:
     type:
       type: timeseries
       list: true
     nullable: true
     autoIncrement: false
-    name: timeseries2
+    name: timeSeries2
   sequence:
     type:
       list: false
@@ -128,3 +128,10 @@ properties:
     nullable: true
     autoIncrement: false
     name: flag
+constraints:
+  requiredFunctionMetadata:
+    require:
+      space: "{{power_ops_models}}"
+      externalId: FunctionMetadata
+      type: container
+    constraintType: requires

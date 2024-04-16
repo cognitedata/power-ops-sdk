@@ -72,8 +72,8 @@ class PriceAreaGraphQL(GraphQLCore):
     name: Optional[str] = None
     default_method: Optional[BidMethodGraphQL] = Field(None, repr=False, alias="defaultMethod")
     timezone: Optional[str] = None
-    main_scenario: Union[TimeSeries, str, None] = Field(None, alias="mainScenario")
-    price_scenarios: Union[list[TimeSeries], list[str], None] = Field(None, alias="priceScenarios")
+    main_scenario: Union[TimeSeries, dict, None] = Field(None, alias="mainScenario")
+    price_scenarios: Union[list[TimeSeries], list[dict], None] = Field(None, alias="priceScenarios")
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -85,6 +85,12 @@ class PriceAreaGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+    @field_validator("price_scenarios", mode="before")
+    def clean_list(cls, value: Any) -> Any:
+        if isinstance(value, list):
+            return [v for v in value if v is not None] or None
+        return value
 
     @field_validator("default_method", mode="before")
     def parse_graphql(cls, value: Any) -> Any:

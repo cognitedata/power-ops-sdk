@@ -13,12 +13,12 @@ from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
     ResourcesWriteResult,
-    SHOPTriggerInput,
-    SHOPTriggerInputWrite,
-    SHOPTriggerInputFields,
-    SHOPTriggerInputList,
-    SHOPTriggerInputWriteList,
-    SHOPTriggerInputTextFields,
+    ShopTriggerInput,
+    ShopTriggerInputWrite,
+    ShopTriggerInputFields,
+    ShopTriggerInputList,
+    ShopTriggerInputWriteList,
+    ShopTriggerInputTextFields,
 )
 from cognite.powerops.client._generated.v1.data_classes._shop_trigger_input import (
     _SHOPTRIGGERINPUT_PROPERTIES_BY_FIELD,
@@ -33,28 +33,28 @@ from ._core import (
     QueryStep,
     QueryBuilder,
 )
-from .shop_trigger_input_query import SHOPTriggerInputQueryAPI
+from .shop_trigger_input_query import ShopTriggerInputQueryAPI
 
 
-class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPTriggerInputList]):
+class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopTriggerInputList]):
     def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[SHOPTriggerInput]
+        view_id = view_by_read_class[ShopTriggerInput]
         super().__init__(
             client=client,
             sources=view_id,
-            class_type=SHOPTriggerInput,
-            class_list=SHOPTriggerInputList,
-            class_write_list=SHOPTriggerInputWriteList,
+            class_type=ShopTriggerInput,
+            class_list=ShopTriggerInputList,
+            class_write_list=ShopTriggerInputWriteList,
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
 
     def __call__(
         self,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
@@ -62,19 +62,19 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
         cog_shop_tag: str | list[str] | None = None,
         cog_shop_tag_prefix: str | None = None,
         case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        pre_processor_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        preprocessor_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
-    ) -> SHOPTriggerInputQueryAPI[SHOPTriggerInputList]:
+    ) -> ShopTriggerInputQueryAPI[ShopTriggerInputList]:
         """Query starting at shop trigger inputs.
 
         Args:
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
-            min_process_step: The minimum value of the process step to filter on.
-            max_process_step: The maximum value of the process step to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            min_workflow_step: The minimum value of the workflow step to filter on.
+            max_workflow_step: The maximum value of the workflow step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
@@ -82,7 +82,7 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
             cog_shop_tag: The cog shop tag to filter on.
             cog_shop_tag_prefix: The prefix of the cog shop tag to filter on.
             case: The case to filter on.
-            pre_processor_input: The pre processor input to filter on.
+            preprocessor_input: The preprocessor input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop trigger inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -95,10 +95,10 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_shop_trigger_input_filter(
             self._view_id,
-            process_id,
-            process_id_prefix,
-            min_process_step,
-            max_process_step,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            min_workflow_step,
+            max_workflow_step,
             function_name,
             function_name_prefix,
             function_call_id,
@@ -106,17 +106,17 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
             cog_shop_tag,
             cog_shop_tag_prefix,
             case,
-            pre_processor_input,
+            preprocessor_input,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(SHOPTriggerInputList)
-        return SHOPTriggerInputQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        builder = QueryBuilder(ShopTriggerInputList)
+        return ShopTriggerInputQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
 
     def apply(
         self,
-        shop_trigger_input: SHOPTriggerInputWrite | Sequence[SHOPTriggerInputWrite],
+        shop_trigger_input: ShopTriggerInputWrite | Sequence[ShopTriggerInputWrite],
         replace: bool = False,
         write_none: bool = False,
     ) -> ResourcesWriteResult:
@@ -136,9 +136,9 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
             Create a new shop_trigger_input:
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
-                >>> from cognite.powerops.client._generated.v1.data_classes import SHOPTriggerInputWrite
+                >>> from cognite.powerops.client._generated.v1.data_classes import ShopTriggerInputWrite
                 >>> client = PowerOpsModelsV1Client()
-                >>> shop_trigger_input = SHOPTriggerInputWrite(external_id="my_shop_trigger_input", ...)
+                >>> shop_trigger_input = ShopTriggerInputWrite(external_id="my_shop_trigger_input", ...)
                 >>> result = client.shop_trigger_input.apply(shop_trigger_input)
 
         """
@@ -186,16 +186,16 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> SHOPTriggerInput | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopTriggerInput | None: ...
 
     @overload
     def retrieve(
         self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> SHOPTriggerInputList: ...
+    ) -> ShopTriggerInputList: ...
 
     def retrieve(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> SHOPTriggerInput | SHOPTriggerInputList | None:
+    ) -> ShopTriggerInput | ShopTriggerInputList | None:
         """Retrieve one or more shop trigger inputs by id(s).
 
         Args:
@@ -219,11 +219,11 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
     def search(
         self,
         query: str,
-        properties: SHOPTriggerInputTextFields | Sequence[SHOPTriggerInputTextFields] | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        properties: ShopTriggerInputTextFields | Sequence[ShopTriggerInputTextFields] | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
@@ -231,21 +231,21 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
         cog_shop_tag: str | list[str] | None = None,
         cog_shop_tag_prefix: str | None = None,
         case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        pre_processor_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        preprocessor_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> SHOPTriggerInputList:
+    ) -> ShopTriggerInputList:
         """Search shop trigger inputs
 
         Args:
             query: The search query,
             properties: The property to search, if nothing is passed all text fields will be searched.
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
-            min_process_step: The minimum value of the process step to filter on.
-            max_process_step: The maximum value of the process step to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            min_workflow_step: The minimum value of the workflow step to filter on.
+            max_workflow_step: The maximum value of the workflow step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
@@ -253,7 +253,7 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
             cog_shop_tag: The cog shop tag to filter on.
             cog_shop_tag_prefix: The prefix of the cog shop tag to filter on.
             case: The case to filter on.
-            pre_processor_input: The pre processor input to filter on.
+            preprocessor_input: The preprocessor input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop trigger inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -273,10 +273,10 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
         """
         filter_ = _create_shop_trigger_input_filter(
             self._view_id,
-            process_id,
-            process_id_prefix,
-            min_process_step,
-            max_process_step,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            min_workflow_step,
+            max_workflow_step,
             function_name,
             function_name_prefix,
             function_call_id,
@@ -284,7 +284,7 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
             cog_shop_tag,
             cog_shop_tag_prefix,
             case,
-            pre_processor_input,
+            preprocessor_input,
             external_id_prefix,
             space,
             filter,
@@ -300,14 +300,14 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
             | Sequence[Aggregations]
             | Sequence[dm.aggregations.MetricAggregation]
         ),
-        property: SHOPTriggerInputFields | Sequence[SHOPTriggerInputFields] | None = None,
+        property: ShopTriggerInputFields | Sequence[ShopTriggerInputFields] | None = None,
         group_by: None = None,
         query: str | None = None,
-        search_properties: SHOPTriggerInputTextFields | Sequence[SHOPTriggerInputTextFields] | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        search_properties: ShopTriggerInputTextFields | Sequence[ShopTriggerInputTextFields] | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
@@ -315,7 +315,7 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
         cog_shop_tag: str | list[str] | None = None,
         cog_shop_tag_prefix: str | None = None,
         case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        pre_processor_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        preprocessor_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -331,14 +331,14 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
             | Sequence[Aggregations]
             | Sequence[dm.aggregations.MetricAggregation]
         ),
-        property: SHOPTriggerInputFields | Sequence[SHOPTriggerInputFields] | None = None,
-        group_by: SHOPTriggerInputFields | Sequence[SHOPTriggerInputFields] = None,
+        property: ShopTriggerInputFields | Sequence[ShopTriggerInputFields] | None = None,
+        group_by: ShopTriggerInputFields | Sequence[ShopTriggerInputFields] = None,
         query: str | None = None,
-        search_properties: SHOPTriggerInputTextFields | Sequence[SHOPTriggerInputTextFields] | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        search_properties: ShopTriggerInputTextFields | Sequence[ShopTriggerInputTextFields] | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
@@ -346,7 +346,7 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
         cog_shop_tag: str | list[str] | None = None,
         cog_shop_tag_prefix: str | None = None,
         case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        pre_processor_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        preprocessor_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -361,14 +361,14 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
             | Sequence[Aggregations]
             | Sequence[dm.aggregations.MetricAggregation]
         ),
-        property: SHOPTriggerInputFields | Sequence[SHOPTriggerInputFields] | None = None,
-        group_by: SHOPTriggerInputFields | Sequence[SHOPTriggerInputFields] | None = None,
+        property: ShopTriggerInputFields | Sequence[ShopTriggerInputFields] | None = None,
+        group_by: ShopTriggerInputFields | Sequence[ShopTriggerInputFields] | None = None,
         query: str | None = None,
-        search_property: SHOPTriggerInputTextFields | Sequence[SHOPTriggerInputTextFields] | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        search_property: ShopTriggerInputTextFields | Sequence[ShopTriggerInputTextFields] | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
@@ -376,7 +376,7 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
         cog_shop_tag: str | list[str] | None = None,
         cog_shop_tag_prefix: str | None = None,
         case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        pre_processor_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        preprocessor_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -390,10 +390,10 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
             group_by: The property to group by when doing the aggregation.
             query: The query to search for in the text field.
             search_property: The text field to search in.
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
-            min_process_step: The minimum value of the process step to filter on.
-            max_process_step: The maximum value of the process step to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            min_workflow_step: The minimum value of the workflow step to filter on.
+            max_workflow_step: The maximum value of the workflow step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
@@ -401,7 +401,7 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
             cog_shop_tag: The cog shop tag to filter on.
             cog_shop_tag_prefix: The prefix of the cog shop tag to filter on.
             case: The case to filter on.
-            pre_processor_input: The pre processor input to filter on.
+            preprocessor_input: The preprocessor input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop trigger inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -422,10 +422,10 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
 
         filter_ = _create_shop_trigger_input_filter(
             self._view_id,
-            process_id,
-            process_id_prefix,
-            min_process_step,
-            max_process_step,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            min_workflow_step,
+            max_workflow_step,
             function_name,
             function_name_prefix,
             function_call_id,
@@ -433,7 +433,7 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
             cog_shop_tag,
             cog_shop_tag_prefix,
             case,
-            pre_processor_input,
+            preprocessor_input,
             external_id_prefix,
             space,
             filter,
@@ -452,14 +452,14 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
 
     def histogram(
         self,
-        property: SHOPTriggerInputFields,
+        property: ShopTriggerInputFields,
         interval: float,
         query: str | None = None,
-        search_property: SHOPTriggerInputTextFields | Sequence[SHOPTriggerInputTextFields] | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        search_property: ShopTriggerInputTextFields | Sequence[ShopTriggerInputTextFields] | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
@@ -467,7 +467,7 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
         cog_shop_tag: str | list[str] | None = None,
         cog_shop_tag_prefix: str | None = None,
         case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        pre_processor_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        preprocessor_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -480,10 +480,10 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
             interval: The interval to use for the histogram bins.
             query: The query to search for in the text field.
             search_property: The text field to search in.
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
-            min_process_step: The minimum value of the process step to filter on.
-            max_process_step: The maximum value of the process step to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            min_workflow_step: The minimum value of the workflow step to filter on.
+            max_workflow_step: The maximum value of the workflow step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
@@ -491,7 +491,7 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
             cog_shop_tag: The cog shop tag to filter on.
             cog_shop_tag_prefix: The prefix of the cog shop tag to filter on.
             case: The case to filter on.
-            pre_processor_input: The pre processor input to filter on.
+            preprocessor_input: The preprocessor input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop trigger inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -503,10 +503,10 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
         """
         filter_ = _create_shop_trigger_input_filter(
             self._view_id,
-            process_id,
-            process_id_prefix,
-            min_process_step,
-            max_process_step,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            min_workflow_step,
+            max_workflow_step,
             function_name,
             function_name_prefix,
             function_call_id,
@@ -514,7 +514,7 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
             cog_shop_tag,
             cog_shop_tag_prefix,
             case,
-            pre_processor_input,
+            preprocessor_input,
             external_id_prefix,
             space,
             filter,
@@ -532,10 +532,10 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
 
     def list(
         self,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
@@ -543,19 +543,19 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
         cog_shop_tag: str | list[str] | None = None,
         cog_shop_tag_prefix: str | None = None,
         case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        pre_processor_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        preprocessor_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> SHOPTriggerInputList:
+    ) -> ShopTriggerInputList:
         """List/filter shop trigger inputs
 
         Args:
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
-            min_process_step: The minimum value of the process step to filter on.
-            max_process_step: The maximum value of the process step to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            min_workflow_step: The minimum value of the workflow step to filter on.
+            max_workflow_step: The maximum value of the workflow step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
@@ -563,7 +563,7 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
             cog_shop_tag: The cog shop tag to filter on.
             cog_shop_tag_prefix: The prefix of the cog shop tag to filter on.
             case: The case to filter on.
-            pre_processor_input: The pre processor input to filter on.
+            preprocessor_input: The preprocessor input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop trigger inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -583,10 +583,10 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
         """
         filter_ = _create_shop_trigger_input_filter(
             self._view_id,
-            process_id,
-            process_id_prefix,
-            min_process_step,
-            max_process_step,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            min_workflow_step,
+            max_workflow_step,
             function_name,
             function_name_prefix,
             function_call_id,
@@ -594,7 +594,7 @@ class SHOPTriggerInputAPI(NodeAPI[SHOPTriggerInput, SHOPTriggerInputWrite, SHOPT
             cog_shop_tag,
             cog_shop_tag_prefix,
             case,
-            pre_processor_input,
+            preprocessor_input,
             external_id_prefix,
             space,
             filter,

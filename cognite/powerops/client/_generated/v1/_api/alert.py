@@ -54,8 +54,8 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
         self,
         min_time: datetime.datetime | None = None,
         max_time: datetime.datetime | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
         title: str | list[str] | None = None,
         title_prefix: str | None = None,
         description: str | list[str] | None = None,
@@ -78,8 +78,8 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
         Args:
             min_time: The minimum value of the time to filter on.
             max_time: The maximum value of the time to filter on.
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
             title: The title to filter on.
             title_prefix: The prefix of the title to filter on.
             description: The description to filter on.
@@ -106,8 +106,8 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
             self._view_id,
             min_time,
             max_time,
-            process_id,
-            process_id_prefix,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
             title,
             title_prefix,
             description,
@@ -233,8 +233,8 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
         properties: AlertTextFields | Sequence[AlertTextFields] | None = None,
         min_time: datetime.datetime | None = None,
         max_time: datetime.datetime | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
         title: str | list[str] | None = None,
         title_prefix: str | None = None,
         description: str | list[str] | None = None,
@@ -259,8 +259,8 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
             properties: The property to search, if nothing is passed all text fields will be searched.
             min_time: The minimum value of the time to filter on.
             max_time: The maximum value of the time to filter on.
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
             title: The title to filter on.
             title_prefix: The prefix of the title to filter on.
             description: The description to filter on.
@@ -294,8 +294,8 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
             self._view_id,
             min_time,
             max_time,
-            process_id,
-            process_id_prefix,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
             title,
             title_prefix,
             description,
@@ -329,8 +329,8 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
         search_properties: AlertTextFields | Sequence[AlertTextFields] | None = None,
         min_time: datetime.datetime | None = None,
         max_time: datetime.datetime | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
         title: str | list[str] | None = None,
         title_prefix: str | None = None,
         description: str | list[str] | None = None,
@@ -364,8 +364,8 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
         search_properties: AlertTextFields | Sequence[AlertTextFields] | None = None,
         min_time: datetime.datetime | None = None,
         max_time: datetime.datetime | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
         title: str | list[str] | None = None,
         title_prefix: str | None = None,
         description: str | list[str] | None = None,
@@ -398,8 +398,8 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
         search_property: AlertTextFields | Sequence[AlertTextFields] | None = None,
         min_time: datetime.datetime | None = None,
         max_time: datetime.datetime | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
         title: str | list[str] | None = None,
         title_prefix: str | None = None,
         description: str | list[str] | None = None,
@@ -427,8 +427,8 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
             search_property: The text field to search in.
             min_time: The minimum value of the time to filter on.
             max_time: The maximum value of the time to filter on.
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
             title: The title to filter on.
             title_prefix: The prefix of the title to filter on.
             description: The description to filter on.
@@ -463,8 +463,8 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
             self._view_id,
             min_time,
             max_time,
-            process_id,
-            process_id_prefix,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
             title,
             title_prefix,
             description,
@@ -501,8 +501,8 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
         search_property: AlertTextFields | Sequence[AlertTextFields] | None = None,
         min_time: datetime.datetime | None = None,
         max_time: datetime.datetime | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
         title: str | list[str] | None = None,
         title_prefix: str | None = None,
         description: str | list[str] | None = None,
@@ -529,8 +529,8 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
             search_property: The text field to search in.
             min_time: The minimum value of the time to filter on.
             max_time: The maximum value of the time to filter on.
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
             title: The title to filter on.
             title_prefix: The prefix of the title to filter on.
             description: The description to filter on.
@@ -556,8 +556,8 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
             self._view_id,
             min_time,
             max_time,
-            process_id,
-            process_id_prefix,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
             title,
             title_prefix,
             description,
@@ -589,8 +589,8 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
         self,
         min_time: datetime.datetime | None = None,
         max_time: datetime.datetime | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
         title: str | list[str] | None = None,
         title_prefix: str | None = None,
         description: str | list[str] | None = None,
@@ -613,8 +613,8 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
         Args:
             min_time: The minimum value of the time to filter on.
             max_time: The maximum value of the time to filter on.
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
             title: The title to filter on.
             title_prefix: The prefix of the title to filter on.
             description: The description to filter on.
@@ -648,8 +648,8 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
             self._view_id,
             min_time,
             max_time,
-            process_id,
-            process_id_prefix,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
             title,
             title_prefix,
             description,

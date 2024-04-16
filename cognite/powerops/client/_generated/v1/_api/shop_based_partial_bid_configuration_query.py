@@ -9,7 +9,7 @@ from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     ShopBasedPartialBidConfiguration,
     PowerAsset,
-    ScenarioSet,
+    ShopScenarioSet,
 )
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
@@ -76,11 +76,12 @@ class ShopBasedPartialBidConfigurationQueryAPI(QueryAPI[T_DomainModelList]):
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
                 result_cls=PowerAsset,
+                is_single_direct_relation=True,
             ),
         )
 
     def _query_append_scenario_set(self, from_: str) -> None:
-        view_id = self._view_by_read_class[ScenarioSet]
+        view_id = self._view_by_read_class[ShopScenarioSet]
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("scenario_set"),
@@ -92,6 +93,7 @@ class ShopBasedPartialBidConfigurationQueryAPI(QueryAPI[T_DomainModelList]):
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
-                result_cls=ScenarioSet,
+                result_cls=ShopScenarioSet,
+                is_single_direct_relation=True,
             ),
         )

@@ -1,10 +1,9 @@
 from __future__ import annotations
 
 import warnings
-from typing import TYPE_CHECKING, Any, Literal, Optional, Union
+from typing import Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
 from pydantic import Field
 from pydantic import field_validator, model_validator
 
@@ -21,11 +20,8 @@ from ._core import (
     DomainRelationWrite,
     GraphQLCore,
     ResourcesWrite,
-    TimeSeries,
 )
-
-if TYPE_CHECKING:
-    from ._plant import Plant, PlantGraphQL, PlantWrite
+from ._power_asset import PowerAsset, PowerAssetWrite
 
 
 __all__ = [
@@ -40,15 +36,14 @@ __all__ = [
 ]
 
 
-WatercourseTextFields = Literal["name", "display_name", "production_obligation"]
-WatercourseFields = Literal["name", "display_name", "ordering", "production_obligation", "penalty_limit"]
+WatercourseTextFields = Literal["name", "display_name", "asset_type"]
+WatercourseFields = Literal["name", "display_name", "ordering", "asset_type"]
 
 _WATERCOURSE_PROPERTIES_BY_FIELD = {
     "name": "name",
     "display_name": "displayName",
     "ordering": "ordering",
-    "production_obligation": "productionObligation",
-    "penalty_limit": "penaltyLimit",
+    "asset_type": "assetType",
 }
 
 
@@ -62,21 +57,17 @@ class WatercourseGraphQL(GraphQLCore):
         space: The space where the node is located.
         external_id: The external id of the watercourse.
         data_record: The data record of the watercourse node.
-        name: Name for the Asset
-        display_name: Display name for the Asset.
+        name: Name for the PowerAsset
+        display_name: Display name for the PowerAsset.
         ordering: The ordering of the asset
-        production_obligation: The production obligation for the Watercourse.
-        penalty_limit: The penalty limit for the watercourse (used by SHOP).
-        plants: The plants that are connected to the Watercourse.
+        asset_type: The type of the asset
     """
 
-    view_id = dm.ViewId("sp_powerops_models", "Watercourse", "1")
+    view_id = dm.ViewId("sp_power_ops_models", "Watercourse", "1")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
-    production_obligation: Union[list[TimeSeries], list[str], None] = Field(None, alias="productionObligation")
-    penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
-    plants: Optional[list[PlantGraphQL]] = Field(default=None, repr=False)
+    asset_type: Optional[str] = Field(None, alias="assetType")
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -88,14 +79,6 @@ class WatercourseGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
-
-    @field_validator("plants", mode="before")
-    def parse_graphql(cls, value: Any) -> Any:
-        if not isinstance(value, dict):
-            return value
-        if "items" in value:
-            return value["items"]
-        return value
 
     def as_read(self) -> Watercourse:
         """Convert this GraphQL format of watercourse to the reading format."""
@@ -112,9 +95,7 @@ class WatercourseGraphQL(GraphQLCore):
             name=self.name,
             display_name=self.display_name,
             ordering=self.ordering,
-            production_obligation=self.production_obligation,
-            penalty_limit=self.penalty_limit,
-            plants=[plant.as_read() if isinstance(plant, GraphQLCore) else plant for plant in self.plants or []],
+            asset_type=self.asset_type,
         )
 
     def as_write(self) -> WatercourseWrite:
@@ -126,13 +107,11 @@ class WatercourseGraphQL(GraphQLCore):
             name=self.name,
             display_name=self.display_name,
             ordering=self.ordering,
-            production_obligation=self.production_obligation,
-            penalty_limit=self.penalty_limit,
-            plants=[plant.as_write() if isinstance(plant, DomainModel) else plant for plant in self.plants or []],
+            asset_type=self.asset_type,
         )
 
 
-class Watercourse(DomainModel):
+class Watercourse(PowerAsset):
     """This represents the reading version of watercourse.
 
     It is used to when data is retrieved from CDF.
@@ -141,22 +120,13 @@ class Watercourse(DomainModel):
         space: The space where the node is located.
         external_id: The external id of the watercourse.
         data_record: The data record of the watercourse node.
-        name: Name for the Asset
-        display_name: Display name for the Asset.
+        name: Name for the PowerAsset
+        display_name: Display name for the PowerAsset.
         ordering: The ordering of the asset
-        production_obligation: The production obligation for the Watercourse.
-        penalty_limit: The penalty limit for the watercourse (used by SHOP).
-        plants: The plants that are connected to the Watercourse.
+        asset_type: The type of the asset
     """
 
-    space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "Watercourse")
-    name: str
-    display_name: Optional[str] = Field(None, alias="displayName")
-    ordering: Optional[int] = None
-    production_obligation: Union[list[TimeSeries], list[str], None] = Field(None, alias="productionObligation")
-    penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
-    plants: Union[list[Plant], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
+    node_type: Union[dm.DirectRelationReference, None] = None
 
     def as_write(self) -> WatercourseWrite:
         """Convert this read version of watercourse to the writing version."""
@@ -167,9 +137,7 @@ class Watercourse(DomainModel):
             name=self.name,
             display_name=self.display_name,
             ordering=self.ordering,
-            production_obligation=self.production_obligation,
-            penalty_limit=self.penalty_limit,
-            plants=[plant.as_write() if isinstance(plant, DomainModel) else plant for plant in self.plants or []],
+            asset_type=self.asset_type,
         )
 
     def as_apply(self) -> WatercourseWrite:
@@ -182,7 +150,7 @@ class Watercourse(DomainModel):
         return self.as_write()
 
 
-class WatercourseWrite(DomainModelWrite):
+class WatercourseWrite(PowerAssetWrite):
     """This represents the writing version of watercourse.
 
     It is used to when data is sent to CDF.
@@ -191,22 +159,13 @@ class WatercourseWrite(DomainModelWrite):
         space: The space where the node is located.
         external_id: The external id of the watercourse.
         data_record: The data record of the watercourse node.
-        name: Name for the Asset
-        display_name: Display name for the Asset.
+        name: Name for the PowerAsset
+        display_name: Display name for the PowerAsset.
         ordering: The ordering of the asset
-        production_obligation: The production obligation for the Watercourse.
-        penalty_limit: The penalty limit for the watercourse (used by SHOP).
-        plants: The plants that are connected to the Watercourse.
+        asset_type: The type of the asset
     """
 
-    space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "Watercourse")
-    name: str
-    display_name: Optional[str] = Field(None, alias="displayName")
-    ordering: Optional[int] = None
-    production_obligation: Union[list[TimeSeries], list[str], None] = Field(None, alias="productionObligation")
-    penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
-    plants: Union[list[PlantWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
+    node_type: Union[dm.DirectRelationReference, None] = None
 
     def _to_instances_write(
         self,
@@ -219,7 +178,7 @@ class WatercourseWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(Watercourse, dm.ViewId("sp_powerops_models", "Watercourse", "1"))
+        write_view = (view_by_read_class or {}).get(Watercourse, dm.ViewId("sp_power_ops_models", "Watercourse", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -232,13 +191,8 @@ class WatercourseWrite(DomainModelWrite):
         if self.ordering is not None or write_none:
             properties["ordering"] = self.ordering
 
-        if self.production_obligation is not None or write_none:
-            properties["productionObligation"] = [
-                value if isinstance(value, str) else value.external_id for value in self.production_obligation or []
-            ] or None
-
-        if self.penalty_limit is not None or write_none:
-            properties["penaltyLimit"] = self.penalty_limit
+        if self.asset_type is not None or write_none:
+            properties["assetType"] = self.asset_type
 
         if properties:
             this_node = dm.NodeApply(
@@ -255,22 +209,6 @@ class WatercourseWrite(DomainModelWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-        edge_type = dm.DirectRelationReference("sp_powerops_types", "isSubAssetOf")
-        for plant in self.plants or []:
-            other_resources = DomainRelationWrite.from_edge_to_resources(
-                cache,
-                start_node=self,
-                end_node=plant,
-                edge_type=edge_type,
-                view_by_read_class=view_by_read_class,
-                write_none=write_none,
-                allow_version_increase=allow_version_increase,
-            )
-            resources.extend(other_resources)
-
-        if isinstance(self.production_obligation, CogniteTimeSeries):
-            resources.time_series.append(self.production_obligation)
 
         return resources
 
@@ -323,8 +261,8 @@ def _create_watercourse_filter(
     display_name_prefix: str | None = None,
     min_ordering: int | None = None,
     max_ordering: int | None = None,
-    min_penalty_limit: float | None = None,
-    max_penalty_limit: float | None = None,
+    asset_type: str | list[str] | None = None,
+    asset_type_prefix: str | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -344,10 +282,12 @@ def _create_watercourse_filter(
         filters.append(dm.filters.Prefix(view_id.as_property_ref("displayName"), value=display_name_prefix))
     if min_ordering is not None or max_ordering is not None:
         filters.append(dm.filters.Range(view_id.as_property_ref("ordering"), gte=min_ordering, lte=max_ordering))
-    if min_penalty_limit is not None or max_penalty_limit is not None:
-        filters.append(
-            dm.filters.Range(view_id.as_property_ref("penaltyLimit"), gte=min_penalty_limit, lte=max_penalty_limit)
-        )
+    if isinstance(asset_type, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("assetType"), value=asset_type))
+    if asset_type and isinstance(asset_type, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("assetType"), values=asset_type))
+    if asset_type_prefix is not None:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("assetType"), value=asset_type_prefix))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):

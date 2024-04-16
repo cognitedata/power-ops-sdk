@@ -1,0 +1,66 @@
+space: "{{power_ops_models}}"
+externalId: ShopAttributeMapping
+name: ShopAttributeMapping
+usedFor: node
+properties:
+  objectType:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: objectType
+    description: TODO description
+  objectName:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: objectName
+    description: TODO description
+  attributeName:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: attributeName
+    description: TODO description
+  timeSeries:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: timeSeries
+    description: The time series to apply mapping to
+  transformations:
+    type:
+      list: true
+      type: json
+    nullable: true
+    autoIncrement: false
+    name: transformations
+    description: The transformations to apply to the time series
+  retrieve:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: retrieve
+    description: How to retrieve time series data
+  aggregation:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: aggregation
+    description: How to aggregate time series data

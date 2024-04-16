@@ -1,0 +1,58 @@
+space: "{{power_ops_models}}"
+externalId: PriceAreaDayAhead
+name: PriceAreaDayAhead
+description: Information about the Price Area that is only relevant for AFRR
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models}}"
+          externalId: PriceAreaDayAhead
+          # - equals:
+          #     property:
+          #       - node
+          #       - space
+          #     value: "{{power_ops_instance_space}}"
+          # - equals:
+          #     property:
+          #       - node
+          #       - type
+          #     value:
+          #       externalId: PriceAreaDayAhead
+          #       space: "{{power_ops_type_space}}"
+implements:
+  - space: "{{power_ops_models}}"
+    externalId: PriceArea
+    version: "{{version}}"
+    type: view
+version: "{{version}}"
+properties:
+  defaultBidConfiguration:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: PriceAreaDayAhead
+      type: container
+    containerPropertyIdentifier: defaultBidConfiguration
+    name: defaultBidConfiguration
+    description: TODO
+    source:
+      space: "{{power_ops_models}}"
+      externalId: BidConfigurationDayAhead
+      version: "{{version}}"
+      type: view
+  mainPriceScenario:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: PriceAreaDayAhead
+      type: container
+    containerPropertyIdentifier: mainPriceScenario
+    name: mainPriceScenario
+    description: TODO
+  priceScenarios:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: PriceAreaDayAhead
+      type: container
+    containerPropertyIdentifier: priceScenarios
+    name: priceScenarios
+    description: TODO

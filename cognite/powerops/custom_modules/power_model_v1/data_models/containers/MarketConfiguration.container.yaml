@@ -1,4 +1,4 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: MarketConfiguration
 name: MarketConfiguration
 usedFor: node
@@ -8,7 +8,7 @@ properties:
       list: false
       collation: ucs_basic
       type: text
-    nullable: true
+    nullable: false
     autoIncrement: false
     name: name
   maxPrice:
@@ -27,15 +27,15 @@ properties:
     autoIncrement: false
     name: minPrice
     description: The lowest price allowed
-  timeZone:
+  timezone:
     type:
       list: false
       collation: ucs_basic
       type: text
     nullable: false
     autoIncrement: false
-    name: timeZone
-    description:
+    name: timezone
+    description: TODO
   priceUnit:
     type:
       list: false

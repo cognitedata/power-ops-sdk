@@ -61,7 +61,7 @@ class SHOPPriceScenarioGraphQL(GraphQLCore):
 
     view_id = dm.ViewId("power-ops-day-ahead-bid", "SHOPPriceScenario", "1")
     name: Optional[str] = None
-    price: Union[TimeSeries, str, None] = None
+    price: Union[TimeSeries, dict, None] = None
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:

@@ -43,7 +43,7 @@ class TaskDispatcherOutputAlertsAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
+            dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
             from_task_dispatcher_output,
             from_task_dispatcher_output_space,
             to_alert,

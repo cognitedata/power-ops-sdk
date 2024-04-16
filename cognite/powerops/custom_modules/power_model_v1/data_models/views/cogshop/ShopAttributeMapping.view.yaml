@@ -1,0 +1,81 @@
+space: "{{power_ops_models}}"
+externalId: ShopAttributeMapping
+name: ShopAttributeMapping
+description: SHOP scenario that holds all data needed for a shop run. May be unprocessed or processed
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models}}"
+          externalId: ShopAttributeMapping
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: ShopAttributeMapping
+          space: "{{power_ops_type_space}}"
+implements: []
+version: "{{version}}"
+properties:
+  objectType:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopAttributeMapping
+      type: container
+    containerPropertyIdentifier: objectType
+    name: objectType
+    description: TODO description
+  objectName:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopAttributeMapping
+      type: container
+    containerPropertyIdentifier: objectName
+    name: objectName
+    description: TODO description
+  attributeName:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopAttributeMapping
+      type: container
+    containerPropertyIdentifier: attributeName
+    name: attributeName
+    description: TODO description
+  timeSeries:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopAttributeMapping
+      type: container
+    containerPropertyIdentifier: timeSeries
+    name: timeSeries
+    description: The time series to map to
+  transformations:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopAttributeMapping
+      type: container
+    containerPropertyIdentifier: transformations
+    name: transformations
+    description: The transformations to apply to the time series
+  retrieve:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopAttributeMapping
+      type: container
+    containerPropertyIdentifier: retrieve
+    name: retrieve
+    description: How to retrieve time series data
+  aggregation:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopAttributeMapping
+      type: container
+    containerPropertyIdentifier: aggregation
+    name: aggregation
+    description: How to aggregate time series data

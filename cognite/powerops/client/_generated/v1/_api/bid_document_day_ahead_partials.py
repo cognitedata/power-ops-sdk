@@ -12,8 +12,8 @@ class BidDocumentDayAheadPartialsAPI(EdgeAPI):
         self,
         from_bid_document_day_ahead: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
         from_bid_document_day_ahead_space: str = DEFAULT_INSTANCE_SPACE,
-        to_bid_matrix: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        to_bid_matrix_space: str = DEFAULT_INSTANCE_SPACE,
+        to_partial_bid_matrix_information: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+        to_partial_bid_matrix_information_space: str = DEFAULT_INSTANCE_SPACE,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit=DEFAULT_LIMIT_READ,
@@ -23,8 +23,8 @@ class BidDocumentDayAheadPartialsAPI(EdgeAPI):
         Args:
             from_bid_document_day_ahead: ID of the source bid document day ahead.
             from_bid_document_day_ahead_space: Location of the bid document day aheads.
-            to_bid_matrix: ID of the target bid matrix.
-            to_bid_matrix_space: Location of the bid matrixes.
+            to_partial_bid_matrix_information: ID of the target partial bid matrix information.
+            to_partial_bid_matrix_information_space: Location of the partial bid matrix information.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of partial edges to return. Defaults to 25. Set to -1, float("inf") or None
@@ -43,11 +43,11 @@ class BidDocumentDayAheadPartialsAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("sp_powerops_types_temp", "partialBid"),
+            dm.DirectRelationReference("sp_power_ops_types", "partialBid"),
             from_bid_document_day_ahead,
             from_bid_document_day_ahead_space,
-            to_bid_matrix,
-            to_bid_matrix_space,
+            to_partial_bid_matrix_information,
+            to_partial_bid_matrix_information_space,
             external_id_prefix,
             space,
         )

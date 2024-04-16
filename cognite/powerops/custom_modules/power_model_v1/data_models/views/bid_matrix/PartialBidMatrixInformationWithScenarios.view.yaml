@@ -1,0 +1,34 @@
+space: "{{power_ops_models}}"
+externalId: PartialBidMatrixInformationWithScenarios
+name: PartialBidMatrixInformationWithScenarios
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models}}"
+          externalId: BidMatrix
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+implements:
+  - space: "{{power_ops_models}}"
+    externalId: PartialBidMatrixInformation
+    version: "{{version}}"
+    type: view
+version: "{{version}}"
+properties:
+  multiScenarioInput:
+    type:
+      space: "{{power_ops_type_space}}"
+      externalId: calculationIssue
+    source:
+      space: "{{power_ops_models}}"
+      externalId: PriceProduction
+      version: "{{version}}"
+      type: view
+    direction: outwards
+    name: multiScenarioInput
+    description: TODO
+    connectionType: multi_edge_connection

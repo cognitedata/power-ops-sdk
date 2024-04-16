@@ -8,7 +8,8 @@ from cognite.client import data_modeling as dm, CogniteClient
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     PartialBidMatrixCalculationInput,
-    BidConfiguration,
+    BidConfigurationDayAhead,
+    PartialBidConfiguration,
 )
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
@@ -42,11 +43,13 @@ class PartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
     def query(
         self,
         retrieve_bid_configuration: bool = False,
+        retrieve_partial_bid_configuration: bool = False,
     ) -> T_DomainModelList:
         """Execute query and return the result.
 
         Args:
             retrieve_bid_configuration: Whether to retrieve the bid configuration for each partial bid matrix calculation input or not.
+            retrieve_partial_bid_configuration: Whether to retrieve the partial bid configuration for each partial bid matrix calculation input or not.
 
         Returns:
             The list of the source nodes of the query.
@@ -55,10 +58,12 @@ class PartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = self._builder[-1].name
         if retrieve_bid_configuration:
             self._query_append_bid_configuration(from_)
+        if retrieve_partial_bid_configuration:
+            self._query_append_partial_bid_configuration(from_)
         return self._query()
 
     def _query_append_bid_configuration(self, from_: str) -> None:
-        view_id = self._view_by_read_class[BidConfiguration]
+        view_id = self._view_by_read_class[BidConfigurationDayAhead]
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("bid_configuration"),
@@ -72,6 +77,27 @@ class PartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
-                result_cls=BidConfiguration,
+                result_cls=BidConfigurationDayAhead,
+                is_single_direct_relation=True,
+            ),
+        )
+
+    def _query_append_partial_bid_configuration(self, from_: str) -> None:
+        view_id = self._view_by_read_class[PartialBidConfiguration]
+        self._builder.append(
+            QueryStep(
+                name=self._builder.next_name("partial_bid_configuration"),
+                expression=dm.query.NodeResultSetExpression(
+                    filter=dm.filters.HasData(views=[view_id]),
+                    from_=from_,
+                    through=self._view_by_read_class[PartialBidMatrixCalculationInput].as_property_ref(
+                        "partialBidConfiguration"
+                    ),
+                    direction="outwards",
+                ),
+                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
+                max_retrieve_limit=-1,
+                result_cls=PartialBidConfiguration,
+                is_single_direct_relation=True,
             ),
         )

@@ -1,0 +1,54 @@
+space: "{{power_ops_models}}"
+externalId: ShopPreprocessorOutput
+name: ShopPreprocessorOutput
+description: Input to the task dispatcher in the shop bid process
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models}}"
+          externalId: FunctionData
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: ShopPreprocessorOutput
+          space: "{{power_ops_type_space}}"
+implements:
+  - space: "{{power_ops_models}}"
+    externalId: FunctionOutput
+    version: "{{version}}"
+    type: view
+version: "{{version}}"
+properties:
+  input: # Overrides the view type from the FunctionOutput view
+    container:
+      space: "{{power_ops_models}}"
+      externalId: FunctionMetadata
+      type: container
+    containerPropertyIdentifier: linkedStep
+    name: input
+    source:
+      space: "{{power_ops_models}}"
+      externalId: ShopPreprocessorInput
+      version: "{{version}}"
+      type: view
+  case:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
+    name: case
+    description: The Case to trigger shop with
+    source:
+      space: "{{power_ops_models}}"
+      externalId: ShopCase
+      version: "{{version}}"
+      type: view

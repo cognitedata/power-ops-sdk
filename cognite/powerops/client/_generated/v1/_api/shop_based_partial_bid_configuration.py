@@ -59,8 +59,8 @@ class ShopBasedPartialBidConfigurationAPI(
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
-        add_steps: bool | None = None,
         power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        add_steps: bool | None = None,
         scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -74,8 +74,8 @@ class ShopBasedPartialBidConfigurationAPI(
             name_prefix: The prefix of the name to filter on.
             method: The method to filter on.
             method_prefix: The prefix of the method to filter on.
-            add_steps: The add step to filter on.
             power_asset: The power asset to filter on.
+            add_steps: The add step to filter on.
             scenario_set: The scenario set to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -93,8 +93,8 @@ class ShopBasedPartialBidConfigurationAPI(
             name_prefix,
             method,
             method_prefix,
-            add_steps,
             power_asset,
+            add_steps,
             scenario_set,
             external_id_prefix,
             space,
@@ -219,8 +219,8 @@ class ShopBasedPartialBidConfigurationAPI(
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
-        add_steps: bool | None = None,
         power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        add_steps: bool | None = None,
         scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -236,8 +236,8 @@ class ShopBasedPartialBidConfigurationAPI(
             name_prefix: The prefix of the name to filter on.
             method: The method to filter on.
             method_prefix: The prefix of the method to filter on.
-            add_steps: The add step to filter on.
             power_asset: The power asset to filter on.
+            add_steps: The add step to filter on.
             scenario_set: The scenario set to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -262,8 +262,8 @@ class ShopBasedPartialBidConfigurationAPI(
             name_prefix,
             method,
             method_prefix,
-            add_steps,
             power_asset,
+            add_steps,
             scenario_set,
             external_id_prefix,
             space,
@@ -294,8 +294,8 @@ class ShopBasedPartialBidConfigurationAPI(
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
-        add_steps: bool | None = None,
         power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        add_steps: bool | None = None,
         scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -324,8 +324,8 @@ class ShopBasedPartialBidConfigurationAPI(
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
-        add_steps: bool | None = None,
         power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        add_steps: bool | None = None,
         scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -355,8 +355,8 @@ class ShopBasedPartialBidConfigurationAPI(
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
-        add_steps: bool | None = None,
         power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        add_steps: bool | None = None,
         scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -375,8 +375,8 @@ class ShopBasedPartialBidConfigurationAPI(
             name_prefix: The prefix of the name to filter on.
             method: The method to filter on.
             method_prefix: The prefix of the method to filter on.
-            add_steps: The add step to filter on.
             power_asset: The power asset to filter on.
+            add_steps: The add step to filter on.
             scenario_set: The scenario set to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -402,8 +402,8 @@ class ShopBasedPartialBidConfigurationAPI(
             name_prefix,
             method,
             method_prefix,
-            add_steps,
             power_asset,
+            add_steps,
             scenario_set,
             external_id_prefix,
             space,
@@ -433,8 +433,8 @@ class ShopBasedPartialBidConfigurationAPI(
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
-        add_steps: bool | None = None,
         power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        add_steps: bool | None = None,
         scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -452,8 +452,8 @@ class ShopBasedPartialBidConfigurationAPI(
             name_prefix: The prefix of the name to filter on.
             method: The method to filter on.
             method_prefix: The prefix of the method to filter on.
-            add_steps: The add step to filter on.
             power_asset: The power asset to filter on.
+            add_steps: The add step to filter on.
             scenario_set: The scenario set to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -470,8 +470,8 @@ class ShopBasedPartialBidConfigurationAPI(
             name_prefix,
             method,
             method_prefix,
-            add_steps,
             power_asset,
+            add_steps,
             scenario_set,
             external_id_prefix,
             space,
@@ -494,8 +494,8 @@ class ShopBasedPartialBidConfigurationAPI(
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
-        add_steps: bool | None = None,
         power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        add_steps: bool | None = None,
         scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -509,8 +509,8 @@ class ShopBasedPartialBidConfigurationAPI(
             name_prefix: The prefix of the name to filter on.
             method: The method to filter on.
             method_prefix: The prefix of the method to filter on.
-            add_steps: The add step to filter on.
             power_asset: The power asset to filter on.
+            add_steps: The add step to filter on.
             scenario_set: The scenario set to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -535,8 +535,8 @@ class ShopBasedPartialBidConfigurationAPI(
             name_prefix,
             method,
             method_prefix,
-            add_steps,
             power_asset,
+            add_steps,
             scenario_set,
             external_id_prefix,
             space,

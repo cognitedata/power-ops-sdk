@@ -39,14 +39,14 @@ __all__ = [
 ]
 
 
-BidDocumentTextFields = Literal["name", "process_id"]
+BidDocumentTextFields = Literal["name", "workflow_execution_id"]
 BidDocumentFields = Literal[
-    "name", "process_id", "delivery_date", "start_calculation", "end_calculation", "is_complete"
+    "name", "workflow_execution_id", "delivery_date", "start_calculation", "end_calculation", "is_complete"
 ]
 
 _BIDDOCUMENT_PROPERTIES_BY_FIELD = {
     "name": "name",
-    "process_id": "processId",
+    "workflow_execution_id": "workflowExecutionId",
     "delivery_date": "deliveryDate",
     "start_calculation": "startCalculation",
     "end_calculation": "endCalculation",
@@ -65,7 +65,7 @@ class BidDocumentGraphQL(GraphQLCore):
         external_id: The external id of the bid document.
         data_record: The data record of the bid document node.
         name: Unique name for a given instance of a Bid Document. A combination of name, priceArea, date and startCalculation.
-        process_id: The process associated with the Bid calculation workflow.
+        workflow_execution_id: The process associated with the Bid calculation workflow.
         delivery_date: The date of the Bid.
         start_calculation: Timestamp of when the Bid calculation workflow started.
         end_calculation: Timestamp of when the Bid calculation workflow completed.
@@ -73,9 +73,9 @@ class BidDocumentGraphQL(GraphQLCore):
         alerts: An array of calculation level Alerts.
     """
 
-    view_id = dm.ViewId("sp_powerops_models_temp", "BidDocument", "1")
+    view_id = dm.ViewId("sp_power_ops_models", "BidDocument", "1")
     name: Optional[str] = None
-    process_id: Optional[str] = Field(None, alias="processId")
+    workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     delivery_date: Optional[datetime.date] = Field(None, alias="deliveryDate")
     start_calculation: Optional[datetime.datetime] = Field(None, alias="startCalculation")
     end_calculation: Optional[datetime.datetime] = Field(None, alias="endCalculation")
@@ -114,7 +114,7 @@ class BidDocumentGraphQL(GraphQLCore):
                 created_time=self.data_record.created_time,
             ),
             name=self.name,
-            process_id=self.process_id,
+            workflow_execution_id=self.workflow_execution_id,
             delivery_date=self.delivery_date,
             start_calculation=self.start_calculation,
             end_calculation=self.end_calculation,
@@ -129,7 +129,7 @@ class BidDocumentGraphQL(GraphQLCore):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,
-            process_id=self.process_id,
+            workflow_execution_id=self.workflow_execution_id,
             delivery_date=self.delivery_date,
             start_calculation=self.start_calculation,
             end_calculation=self.end_calculation,
@@ -148,7 +148,7 @@ class BidDocument(DomainModel):
         external_id: The external id of the bid document.
         data_record: The data record of the bid document node.
         name: Unique name for a given instance of a Bid Document. A combination of name, priceArea, date and startCalculation.
-        process_id: The process associated with the Bid calculation workflow.
+        workflow_execution_id: The process associated with the Bid calculation workflow.
         delivery_date: The date of the Bid.
         start_calculation: Timestamp of when the Bid calculation workflow started.
         end_calculation: Timestamp of when the Bid calculation workflow completed.
@@ -159,7 +159,7 @@ class BidDocument(DomainModel):
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
     name: Optional[str] = None
-    process_id: Optional[str] = Field(None, alias="processId")
+    workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     delivery_date: datetime.date = Field(alias="deliveryDate")
     start_calculation: Optional[datetime.datetime] = Field(None, alias="startCalculation")
     end_calculation: Optional[datetime.datetime] = Field(None, alias="endCalculation")
@@ -173,7 +173,7 @@ class BidDocument(DomainModel):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             name=self.name,
-            process_id=self.process_id,
+            workflow_execution_id=self.workflow_execution_id,
             delivery_date=self.delivery_date,
             start_calculation=self.start_calculation,
             end_calculation=self.end_calculation,
@@ -201,7 +201,7 @@ class BidDocumentWrite(DomainModelWrite):
         external_id: The external id of the bid document.
         data_record: The data record of the bid document node.
         name: Unique name for a given instance of a Bid Document. A combination of name, priceArea, date and startCalculation.
-        process_id: The process associated with the Bid calculation workflow.
+        workflow_execution_id: The process associated with the Bid calculation workflow.
         delivery_date: The date of the Bid.
         start_calculation: Timestamp of when the Bid calculation workflow started.
         end_calculation: Timestamp of when the Bid calculation workflow completed.
@@ -212,7 +212,7 @@ class BidDocumentWrite(DomainModelWrite):
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
     name: Optional[str] = None
-    process_id: Optional[str] = Field(None, alias="processId")
+    workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     delivery_date: datetime.date = Field(alias="deliveryDate")
     start_calculation: Optional[datetime.datetime] = Field(None, alias="startCalculation")
     end_calculation: Optional[datetime.datetime] = Field(None, alias="endCalculation")
@@ -230,17 +230,15 @@ class BidDocumentWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(
-            BidDocument, dm.ViewId("sp_powerops_models_temp", "BidDocument", "1")
-        )
+        write_view = (view_by_read_class or {}).get(BidDocument, dm.ViewId("sp_power_ops_models", "BidDocument", "1"))
 
         properties: dict[str, Any] = {}
 
         if self.name is not None or write_none:
             properties["name"] = self.name
 
-        if self.process_id is not None or write_none:
-            properties["processId"] = self.process_id
+        if self.workflow_execution_id is not None or write_none:
+            properties["workflowExecutionId"] = self.workflow_execution_id
 
         if self.delivery_date is not None:
             properties["deliveryDate"] = self.delivery_date.isoformat() if self.delivery_date else None
@@ -274,7 +272,7 @@ class BidDocumentWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue")
+        edge_type = dm.DirectRelationReference("sp_power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
@@ -334,8 +332,8 @@ def _create_bid_document_filter(
     view_id: dm.ViewId,
     name: str | list[str] | None = None,
     name_prefix: str | None = None,
-    process_id: str | list[str] | None = None,
-    process_id_prefix: str | None = None,
+    workflow_execution_id: str | list[str] | None = None,
+    workflow_execution_id_prefix: str | None = None,
     min_delivery_date: datetime.date | None = None,
     max_delivery_date: datetime.date | None = None,
     min_start_calculation: datetime.datetime | None = None,
@@ -354,12 +352,14 @@ def _create_bid_document_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
     if name_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
-    if isinstance(process_id, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("processId"), value=process_id))
-    if process_id and isinstance(process_id, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("processId"), values=process_id))
-    if process_id_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("processId"), value=process_id_prefix))
+    if isinstance(workflow_execution_id, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id))
+    if workflow_execution_id and isinstance(workflow_execution_id, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
+    if workflow_execution_id_prefix is not None:
+        filters.append(
+            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
+        )
     if min_delivery_date is not None or max_delivery_date is not None:
         filters.append(
             dm.filters.Range(

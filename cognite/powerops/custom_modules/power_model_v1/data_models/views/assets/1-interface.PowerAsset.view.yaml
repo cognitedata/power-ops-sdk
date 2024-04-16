@@ -1,4 +1,4 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: PowerAsset
 name: PowerAsset
 description: A super class for all power assets
@@ -6,49 +6,44 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{powerops_models}}"
-          externalId: Asset
-    - not:
-        hasData:
-          - type: container
-            space: "{{powerops_models}}"
-            externalId: PriceArea
+          space: "{{power_ops_models}}"
+          externalId: PowerAsset
     - equals:
         property:
           - node
           - space
-        value: "{{powerops_instance_space}}"
+        value: "{{power_ops_instance_space}}"
 implements: []
 version: "{{version}}"
 properties:
   name:
     container:
-      space: "{{powerops_models}}"
-      externalId: Asset
+      space: "{{power_ops_models}}"
+      externalId: PowerAsset
       type: container
     containerPropertyIdentifier: name
     name: name
-    description: Name for the Asset
+    description: Name for the PowerAsset
   displayName:
     container:
-      space: "{{powerops_models}}"
-      externalId: Asset
+      space: "{{power_ops_models}}"
+      externalId: PowerAsset
       type: container
     containerPropertyIdentifier: displayName
     name: displayName
-    description: Display name for the Asset.
+    description: Display name for the PowerAsset.
   ordering:
     container:
-      space: "{{powerops_models}}"
-      externalId: Asset
+      space: "{{power_ops_models}}"
+      externalId: PowerAsset
       type: container
-    containerPropertyIdentifier: order
+    containerPropertyIdentifier: ordering
     name: ordering
     description: The ordering of the asset
   assetType:
     container:
-      space: "{{powerops_models}}"
-      externalId: Asset
+      space: "{{power_ops_models}}"
+      externalId: PowerAsset
       type: container
     containerPropertyIdentifier: assetType
     name: assetType

@@ -1,6 +1,6 @@
-space: "{{powerops_models}}"
-externalId: SHOPObjectiveValue
-name: SHOPObjectiveValue
+space: "{{power_ops_models}}"
+externalId: ShopObjectiveValue
+name: ShopObjectiveValue
 usedFor: node
 properties:
   name:

@@ -1,0 +1,28 @@
+space: "{{power_ops_models}}"
+externalId: ShopCase
+name: ShopCase
+usedFor: node
+properties:
+  scenario:
+    type:
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: scenario
+    description: The scenario to use when running this case
+  startTime:
+    type:
+      list: false
+      type: timestamp
+    nullable: true
+    autoIncrement: false
+    name: startTime
+    description: The start of the optimisation period (for SHOP)
+  endTime:
+    type:
+      list: false
+      type: timestamp
+    nullable: true
+    autoIncrement: false
+    name: endTime
+    description: The end of the optimisation period (for SHOP)

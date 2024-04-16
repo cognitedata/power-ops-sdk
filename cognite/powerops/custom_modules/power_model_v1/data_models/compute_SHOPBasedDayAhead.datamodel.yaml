@@ -1,122 +1,126 @@
-externalId: compute_SHOPBasedDayAhead
-space: "{{powerops_models}}"
+externalId: compute_ShopBasedDayAhead
+space: "{{power_ops_models}}"
 version: "1"
-name: SHOPBasedDayAheadBidProcess
+name: ShopBasedDayAheadBidProcess
 description: "The process of going from BidConfig to a PartialBidMatrix"
 views:
   - externalId: TaskDispatcherInput
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: TaskDispatcherOutput
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: PreprocessorInput
-    space: "{{powerops_models}}"
+  - externalId: ShopPreprocessorInput
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: PreprocessorOutput
-    space: "{{powerops_models}}"
+  - externalId: ShopPreprocessorOutput
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: SHOPTriggerInput
-    space: "{{powerops_models}}"
+  - externalId: ShopTriggerInput
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: SHOPTriggerOutput
-    space: "{{powerops_models}}"
+  - externalId: ShopTriggerOutput
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: PartialBidMatrixCalculationInput
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: ShopPartialBidMatrixCalculationInput
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: PartialBidMatrixCalculationOutput
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: BidMatrix
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: MarketConfiguration
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: Scenario
-    space: "{{powerops_models}}"
+  - externalId: ShopScenario
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: ScenarioSet
-    space: "{{powerops_models}}"
+  - externalId: ShopScenarioSet
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: Mapping
-    space: "{{powerops_models}}"
+  - externalId: ShopAttributeMapping
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: ModelTemplate
-    space: "{{powerops_models}}"
+  - externalId: ShopModel
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: SHOPResult
-    space: "{{powerops_models}}"
+  - externalId: ShopResult
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: Case
-    space: "{{powerops_models}}"
+  - externalId: ShopCase
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: Alert
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: BidConfiguration
-    space: "{{powerops_models}}"
+  - externalId: BidConfigurationDayAhead
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: PriceArea
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PriceAreaDayAhead
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: PriceProduction
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: SHOPTimeSeries
-    space: "{{powerops_models}}"
+  - externalId: ShopTimeSeries
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: Commands
-    space: "{{powerops_models}}"
+  - externalId: ShopCommands
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - space: "{{powerops_models}}"
+  - space: "{{power_ops_models}}"
     externalId: FunctionInput
     version: "{{version}}"
     type: view
-  - space: "{{powerops_models}}"
+  - space: "{{power_ops_models}}"
     externalId: FunctionOutput
     version: "{{version}}"
     type: view
-  - space: "{{powerops_models}}"
+  - space: "{{power_ops_models}}"
     externalId: PowerAsset
     version: "{{version}}"
     type: view
-  - space: "{{powerops_models}}"
+  - space: "{{power_ops_models}}"
     externalId: PartialBidConfiguration
     version: "{{version}}"
     type: view
-  - space: "{{powerops_models}}"
+  - space: "{{power_ops_models}}"
     externalId: ShopBasedPartialBidConfiguration
     version: "{{version}}"
     type: view
-  - space: "{{powerops_models}}"
+  - space: "{{power_ops_models}}"
     externalId: ShopFile
     version: "{{version}}"
     type: view

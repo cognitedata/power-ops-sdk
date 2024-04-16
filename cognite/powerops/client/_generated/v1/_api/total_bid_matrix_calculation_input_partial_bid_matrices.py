@@ -43,7 +43,7 @@ class TotalBidMatrixCalculationInputPartialBidMatricesAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("sp_powerops_types_temp", "BidMatrix"),
+            dm.DirectRelationReference("sp_power_ops_types", "BidMatrix"),
             from_total_bid_matrix_calculation_input,
             from_total_bid_matrix_calculation_input_space,
             to_bid_matrix,

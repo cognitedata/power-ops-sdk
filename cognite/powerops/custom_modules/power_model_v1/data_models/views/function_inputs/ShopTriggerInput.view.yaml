@@ -1,27 +1,27 @@
-space: "{{powerops_models}}"
-externalId: SHOPTriggerInput
-name: SHOPTriggerInput
+space: "{{power_ops_models}}"
+externalId: ShopTriggerInput
+name: ShopTriggerInput
 description: Base class for all function inputs
 filter:
   and:
     - hasData:
         - type: container
-          space: "{{powerops_models}}"
+          space: "{{power_ops_models}}"
           externalId: FunctionData
     - equals:
         property:
           - node
           - space
-        value: "{{powerops_instance_space}}"
+        value: "{{power_ops_instance_space}}"
     - equals:
         property:
           - node
           - type
         value:
-          externalId: SHOPTriggerInput
-          space: "{{powerops_type_space}}"
+          externalId: ShopTriggerInput
+          space: "{{power_ops_type_space}}"
 implements:
-  - space: "{{powerops_models}}"
+  - space: "{{power_ops_models}}"
     externalId: FunctionInput
     version: "{{version}}"
     type: view
@@ -29,7 +29,7 @@ version: "{{version}}"
 properties:
   cogShopTag:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: text1
@@ -37,27 +37,27 @@ properties:
     description: Optionally specify cogshop tag to trigger
   case:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: FunctionData
       type: container
-    containerPropertyIdentifier: direct2
+    containerPropertyIdentifier: direct1
     name: case
     description: The scenario that is used in the shop run
     source:
-      space: "{{powerops_models}}"
-      externalId: Case
+      space: "{{power_ops_models}}"
+      externalId: ShopCase
       version: "{{version}}"
       type: view
-  preProcessorInput:
+  preprocessorInput:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: FunctionData
       type: container
-    containerPropertyIdentifier: direct3
-    name: preProcessorInput
+    containerPropertyIdentifier: direct2
+    name: preprocessorInput
     description: The preprocessor input to the shop run
     source:
-      space: "{{powerops_models}}"
-      externalId: PreprocessorInput
+      space: "{{power_ops_models}}"
+      externalId: ShopPreprocessorInput
       version: "{{version}}"
       type: view

@@ -1,0 +1,41 @@
+space: "{{power_ops_models}}"
+externalId: ShopCommands
+name: ShopCommands
+description: The commands to use in the shop model file
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models}}"
+          externalId: ShopCommands
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: ShopCommands
+          space: "{{power_ops_type_space}}"
+implements: []
+version: "{{version}}"
+properties:
+  name:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopCommands
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: Name for the ShopCommands
+  commands:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopCommands
+      type: container
+    containerPropertyIdentifier: commands
+    name: commands
+    description: The commands used in the shop model file

@@ -24,6 +24,7 @@ from ._core import (
 
 if TYPE_CHECKING:
     from ._alert import Alert, AlertGraphQL, AlertWrite
+    from ._function_input import FunctionInput, FunctionInputGraphQL, FunctionInputWrite
 
 
 __all__ = [
@@ -38,12 +39,12 @@ __all__ = [
 ]
 
 
-FunctionOutputTextFields = Literal["process_id", "function_name", "function_call_id"]
-FunctionOutputFields = Literal["process_id", "process_step", "function_name", "function_call_id"]
+FunctionOutputTextFields = Literal["workflow_execution_id", "function_name", "function_call_id"]
+FunctionOutputFields = Literal["workflow_execution_id", "workflow_step", "function_name", "function_call_id"]
 
 _FUNCTIONOUTPUT_PROPERTIES_BY_FIELD = {
-    "process_id": "processId",
-    "process_step": "processStep",
+    "workflow_execution_id": "workflowExecutionId",
+    "workflow_step": "workflowStep",
     "function_name": "functionName",
     "function_call_id": "functionCallId",
 }
@@ -59,18 +60,20 @@ class FunctionOutputGraphQL(GraphQLCore):
         space: The space where the node is located.
         external_id: The external id of the function output.
         data_record: The data record of the function output node.
-        process_id: The process associated with the function execution
-        process_step: This is the step in the process.
+        workflow_execution_id: The process associated with the function execution
+        workflow_step: This is the step in the process.
         function_name: The name of the function
         function_call_id: The function call id
+        input_: The input field.
         alerts: An array of calculation level Alerts.
     """
 
-    view_id = dm.ViewId("sp_powerops_models_temp", "FunctionOutput", "1")
-    process_id: Optional[str] = Field(None, alias="processId")
-    process_step: Optional[int] = Field(None, alias="processStep")
+    view_id = dm.ViewId("sp_power_ops_models", "FunctionOutput", "1")
+    workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
+    workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
     function_call_id: Optional[str] = Field(None, alias="functionCallId")
+    input_: Optional[FunctionInputGraphQL] = Field(None, repr=False, alias="input")
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
 
     @model_validator(mode="before")
@@ -84,7 +87,7 @@ class FunctionOutputGraphQL(GraphQLCore):
             )
         return values
 
-    @field_validator("alerts", mode="before")
+    @field_validator("input_", "alerts", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
             return value
@@ -104,10 +107,11 @@ class FunctionOutputGraphQL(GraphQLCore):
                 last_updated_time=self.data_record.last_updated_time,
                 created_time=self.data_record.created_time,
             ),
-            process_id=self.process_id,
-            process_step=self.process_step,
+            workflow_execution_id=self.workflow_execution_id,
+            workflow_step=self.workflow_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
+            input_=self.input_.as_read() if isinstance(self.input_, GraphQLCore) else self.input_,
             alerts=[alert.as_read() if isinstance(alert, GraphQLCore) else alert for alert in self.alerts or []],
         )
 
@@ -117,10 +121,11 @@ class FunctionOutputGraphQL(GraphQLCore):
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
-            process_id=self.process_id,
-            process_step=self.process_step,
+            workflow_execution_id=self.workflow_execution_id,
+            workflow_step=self.workflow_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
+            input_=self.input_.as_write() if isinstance(self.input_, DomainModel) else self.input_,
             alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
         )
 
@@ -134,19 +139,21 @@ class FunctionOutput(DomainModel):
         space: The space where the node is located.
         external_id: The external id of the function output.
         data_record: The data record of the function output node.
-        process_id: The process associated with the function execution
-        process_step: This is the step in the process.
+        workflow_execution_id: The process associated with the function execution
+        workflow_step: This is the step in the process.
         function_name: The name of the function
         function_call_id: The function call id
+        input_: The input field.
         alerts: An array of calculation level Alerts.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
-    process_id: str = Field(alias="processId")
-    process_step: int = Field(alias="processStep")
+    workflow_execution_id: str = Field(alias="workflowExecutionId")
+    workflow_step: int = Field(alias="workflowStep")
     function_name: str = Field(alias="functionName")
     function_call_id: str = Field(alias="functionCallId")
+    input_: Union[FunctionInput, str, dm.NodeId, None] = Field(None, repr=False, alias="input")
     alerts: Union[list[Alert], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
     def as_write(self) -> FunctionOutputWrite:
@@ -155,10 +162,11 @@ class FunctionOutput(DomainModel):
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
-            process_id=self.process_id,
-            process_step=self.process_step,
+            workflow_execution_id=self.workflow_execution_id,
+            workflow_step=self.workflow_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
+            input_=self.input_.as_write() if isinstance(self.input_, DomainModel) else self.input_,
             alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
         )
 
@@ -181,19 +189,21 @@ class FunctionOutputWrite(DomainModelWrite):
         space: The space where the node is located.
         external_id: The external id of the function output.
         data_record: The data record of the function output node.
-        process_id: The process associated with the function execution
-        process_step: This is the step in the process.
+        workflow_execution_id: The process associated with the function execution
+        workflow_step: This is the step in the process.
         function_name: The name of the function
         function_call_id: The function call id
+        input_: The input field.
         alerts: An array of calculation level Alerts.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
-    process_id: str = Field(alias="processId")
-    process_step: int = Field(alias="processStep")
+    workflow_execution_id: str = Field(alias="workflowExecutionId")
+    workflow_step: int = Field(alias="workflowStep")
     function_name: str = Field(alias="functionName")
     function_call_id: str = Field(alias="functionCallId")
+    input_: Union[FunctionInputWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="input")
     alerts: Union[list[AlertWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
     def _to_instances_write(
@@ -208,22 +218,28 @@ class FunctionOutputWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            FunctionOutput, dm.ViewId("sp_powerops_models_temp", "FunctionOutput", "1")
+            FunctionOutput, dm.ViewId("sp_power_ops_models", "FunctionOutput", "1")
         )
 
         properties: dict[str, Any] = {}
 
-        if self.process_id is not None:
-            properties["processId"] = self.process_id
+        if self.workflow_execution_id is not None:
+            properties["workflowExecutionId"] = self.workflow_execution_id
 
-        if self.process_step is not None:
-            properties["processStep"] = self.process_step
+        if self.workflow_step is not None:
+            properties["workflowStep"] = self.workflow_step
 
         if self.function_name is not None:
             properties["functionName"] = self.function_name
 
         if self.function_call_id is not None:
             properties["functionCallId"] = self.function_call_id
+
+        if self.input_ is not None:
+            properties["input"] = {
+                "space": self.space if isinstance(self.input_, str) else self.input_.space,
+                "externalId": self.input_ if isinstance(self.input_, str) else self.input_.external_id,
+            }
 
         if properties:
             this_node = dm.NodeApply(
@@ -241,7 +257,7 @@ class FunctionOutputWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue")
+        edge_type = dm.DirectRelationReference("sp_power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
@@ -252,6 +268,10 @@ class FunctionOutputWrite(DomainModelWrite):
                 write_none=write_none,
                 allow_version_increase=allow_version_increase,
             )
+            resources.extend(other_resources)
+
+        if isinstance(self.input_, DomainModelWrite):
+            other_resources = self.input_._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
 
         return resources
@@ -299,28 +319,31 @@ class FunctionOutputApplyList(FunctionOutputWriteList): ...
 
 def _create_function_output_filter(
     view_id: dm.ViewId,
-    process_id: str | list[str] | None = None,
-    process_id_prefix: str | None = None,
-    min_process_step: int | None = None,
-    max_process_step: int | None = None,
+    workflow_execution_id: str | list[str] | None = None,
+    workflow_execution_id_prefix: str | None = None,
+    min_workflow_step: int | None = None,
+    max_workflow_step: int | None = None,
     function_name: str | list[str] | None = None,
     function_name_prefix: str | None = None,
     function_call_id: str | list[str] | None = None,
     function_call_id_prefix: str | None = None,
+    input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if isinstance(process_id, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("processId"), value=process_id))
-    if process_id and isinstance(process_id, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("processId"), values=process_id))
-    if process_id_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("processId"), value=process_id_prefix))
-    if min_process_step is not None or max_process_step is not None:
+    if isinstance(workflow_execution_id, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id))
+    if workflow_execution_id and isinstance(workflow_execution_id, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
+    if workflow_execution_id_prefix is not None:
         filters.append(
-            dm.filters.Range(view_id.as_property_ref("processStep"), gte=min_process_step, lte=max_process_step)
+            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
+        )
+    if min_workflow_step is not None or max_workflow_step is not None:
+        filters.append(
+            dm.filters.Range(view_id.as_property_ref("workflowStep"), gte=min_workflow_step, lte=max_workflow_step)
         )
     if isinstance(function_name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("functionName"), value=function_name))
@@ -334,6 +357,29 @@ def _create_function_output_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("functionCallId"), values=function_call_id))
     if function_call_id_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("functionCallId"), value=function_call_id_prefix))
+    if input_ and isinstance(input_, str):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("input"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": input_}
+            )
+        )
+    if input_ and isinstance(input_, tuple):
+        filters.append(
+            dm.filters.Equals(view_id.as_property_ref("input"), value={"space": input_[0], "externalId": input_[1]})
+        )
+    if input_ and isinstance(input_, list) and isinstance(input_[0], str):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("input"),
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in input_],
+            )
+        )
+    if input_ and isinstance(input_, list) and isinstance(input_[0], tuple):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("input"), values=[{"space": item[0], "externalId": item[1]} for item in input_]
+            )
+        )
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):

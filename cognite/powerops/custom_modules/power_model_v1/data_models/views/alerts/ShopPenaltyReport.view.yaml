@@ -1,0 +1,37 @@
+space: "{{power_ops_models}}"
+externalId: ShopPenaltyReport
+name: ShopPenaltyReport
+description: ShopPenaltyReport TODO
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models}}"
+          externalId: Alert
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: ShopPenaltyReport
+          space: "{{power_ops_type_space}}"
+implements:
+  - space: "{{power_ops_models}}"
+    externalId: Alert
+    version: "{{version}}"
+    type: view
+version: "{{version}}"
+properties:
+  penalties:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: Alert
+      type: container
+    containerPropertyIdentifier: jsonAdditionalData
+    name: penalties
+    description: TODO

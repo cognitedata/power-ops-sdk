@@ -1,4 +1,4 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: PartialBidMatrixCalculationInput
 name: PartialBidMatrixCalculation
 description: The data for a bid calculation for water value based method
@@ -6,13 +6,13 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{powerops_models}}"
+          space: "{{power_ops_models}}"
           externalId: FunctionData
     - equals:
         property:
           - node
           - space
-        value: "{{powerops_instance_space}}"
+        value: "{{power_ops_instance_space}}"
         # - in:
         #     property:
         #       - node
@@ -21,7 +21,7 @@ filter:
         #       - WaterValueBasedPartialBidMatrixCalculationInput
         #       - ShopPartialBidMatrixCalculationInput
 implements:
-  - space: "{{powerops_models}}"
+  - space: "{{power_ops_models}}"
     externalId: FunctionInput
     version: "{{version}}"
     type: view
@@ -29,7 +29,7 @@ version: "{{version}}"
 properties:
   bidDate:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: date1
@@ -37,14 +37,27 @@ properties:
     description: The bid date
   bidConfiguration:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct1
     name: bidConfiguration
     description: TODO description
     source:
-      space: "{{powerops_models}}"
-      externalId: BidConfiguration
+      space: "{{power_ops_models}}"
+      externalId: BidConfigurationDayAhead
+      version: "{{version}}"
+      type: view
+  partialBidConfiguration:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct2
+    name: partialBidConfiguration
+    description: The partial bid configuration related to the bid calculation task
+    source:
+      space: "{{power_ops_models}}"
+      externalId: PartialBidConfiguration
       version: "{{version}}"
       type: view

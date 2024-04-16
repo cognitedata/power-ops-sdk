@@ -92,8 +92,8 @@ class GeneratorGraphQL(GraphQLCore):
     p_min: Optional[float] = Field(None, alias="pMin")
     penstock: Optional[int] = None
     start_cost: Optional[float] = Field(None, alias="startCost")
-    start_stop_cost: Union[TimeSeries, str, None] = Field(None, alias="startStopCost")
-    is_available_time_series: Union[TimeSeries, str, None] = Field(None, alias="isAvailableTimeSeries")
+    start_stop_cost: Union[TimeSeries, dict, None] = Field(None, alias="startStopCost")
+    is_available_time_series: Union[TimeSeries, dict, None] = Field(None, alias="isAvailableTimeSeries")
     efficiency_curve: Optional[GeneratorEfficiencyCurveGraphQL] = Field(None, repr=False, alias="efficiencyCurve")
     turbine_curves: Optional[list[TurbineEfficiencyCurveGraphQL]] = Field(
         default=None, repr=False, alias="turbineCurves"

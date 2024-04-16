@@ -26,8 +26,17 @@ from ._bid_document import BidDocument, BidDocumentWrite
 
 if TYPE_CHECKING:
     from ._alert import Alert, AlertGraphQL, AlertWrite
-    from ._bid_configuration import BidConfiguration, BidConfigurationGraphQL, BidConfigurationWrite
-    from ._bid_matrix import BidMatrix, BidMatrixGraphQL, BidMatrixWrite
+    from ._bid_configuration_day_ahead import (
+        BidConfigurationDayAhead,
+        BidConfigurationDayAheadGraphQL,
+        BidConfigurationDayAheadWrite,
+    )
+    from ._bid_matrix_information import BidMatrixInformation, BidMatrixInformationGraphQL, BidMatrixInformationWrite
+    from ._partial_bid_matrix_information import (
+        PartialBidMatrixInformation,
+        PartialBidMatrixInformationGraphQL,
+        PartialBidMatrixInformationWrite,
+    )
 
 
 __all__ = [
@@ -42,14 +51,14 @@ __all__ = [
 ]
 
 
-BidDocumentDayAheadTextFields = Literal["name", "process_id"]
+BidDocumentDayAheadTextFields = Literal["name", "workflow_execution_id"]
 BidDocumentDayAheadFields = Literal[
-    "name", "process_id", "delivery_date", "start_calculation", "end_calculation", "is_complete"
+    "name", "workflow_execution_id", "delivery_date", "start_calculation", "end_calculation", "is_complete"
 ]
 
 _BIDDOCUMENTDAYAHEAD_PROPERTIES_BY_FIELD = {
     "name": "name",
-    "process_id": "processId",
+    "workflow_execution_id": "workflowExecutionId",
     "delivery_date": "deliveryDate",
     "start_calculation": "startCalculation",
     "end_calculation": "endCalculation",
@@ -68,7 +77,7 @@ class BidDocumentDayAheadGraphQL(GraphQLCore):
         external_id: The external id of the bid document day ahead.
         data_record: The data record of the bid document day ahead node.
         name: Unique name for a given instance of a Bid Document. A combination of name, priceArea, date and startCalculation.
-        process_id: The process associated with the Bid calculation workflow.
+        workflow_execution_id: The process associated with the Bid calculation workflow.
         delivery_date: The date of the Bid.
         start_calculation: Timestamp of when the Bid calculation workflow started.
         end_calculation: Timestamp of when the Bid calculation workflow completed.
@@ -79,17 +88,17 @@ class BidDocumentDayAheadGraphQL(GraphQLCore):
         partials: The partial field.
     """
 
-    view_id = dm.ViewId("sp_powerops_models_temp", "BidDocumentDayAhead", "1")
+    view_id = dm.ViewId("sp_power_ops_models", "BidDocumentDayAhead", "1")
     name: Optional[str] = None
-    process_id: Optional[str] = Field(None, alias="processId")
+    workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     delivery_date: Optional[datetime.date] = Field(None, alias="deliveryDate")
     start_calculation: Optional[datetime.datetime] = Field(None, alias="startCalculation")
     end_calculation: Optional[datetime.datetime] = Field(None, alias="endCalculation")
     is_complete: Optional[bool] = Field(None, alias="isComplete")
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
-    bid_configuration: Optional[BidConfigurationGraphQL] = Field(None, repr=False, alias="bidConfiguration")
-    total: Optional[BidMatrixGraphQL] = Field(None, repr=False)
-    partials: Optional[list[BidMatrixGraphQL]] = Field(default=None, repr=False)
+    bid_configuration: Optional[BidConfigurationDayAheadGraphQL] = Field(None, repr=False, alias="bidConfiguration")
+    total: Optional[BidMatrixInformationGraphQL] = Field(None, repr=False)
+    partials: Optional[list[PartialBidMatrixInformationGraphQL]] = Field(default=None, repr=False)
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -123,7 +132,7 @@ class BidDocumentDayAheadGraphQL(GraphQLCore):
                 created_time=self.data_record.created_time,
             ),
             name=self.name,
-            process_id=self.process_id,
+            workflow_execution_id=self.workflow_execution_id,
             delivery_date=self.delivery_date,
             start_calculation=self.start_calculation,
             end_calculation=self.end_calculation,
@@ -147,7 +156,7 @@ class BidDocumentDayAheadGraphQL(GraphQLCore):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,
-            process_id=self.process_id,
+            workflow_execution_id=self.workflow_execution_id,
             delivery_date=self.delivery_date,
             start_calculation=self.start_calculation,
             end_calculation=self.end_calculation,
@@ -175,7 +184,7 @@ class BidDocumentDayAhead(BidDocument):
         external_id: The external id of the bid document day ahead.
         data_record: The data record of the bid document day ahead node.
         name: Unique name for a given instance of a Bid Document. A combination of name, priceArea, date and startCalculation.
-        process_id: The process associated with the Bid calculation workflow.
+        workflow_execution_id: The process associated with the Bid calculation workflow.
         delivery_date: The date of the Bid.
         start_calculation: Timestamp of when the Bid calculation workflow started.
         end_calculation: Timestamp of when the Bid calculation workflow completed.
@@ -187,11 +196,15 @@ class BidDocumentDayAhead(BidDocument):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types_temp", "DayAheadBidDocument"
+        "sp_power_ops_types", "DayAheadBidDocument"
     )
-    bid_configuration: Union[BidConfiguration, str, dm.NodeId, None] = Field(None, repr=False, alias="bidConfiguration")
-    total: Union[BidMatrix, str, dm.NodeId, None] = Field(None, repr=False)
-    partials: Union[list[BidMatrix], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
+    bid_configuration: Union[BidConfigurationDayAhead, str, dm.NodeId, None] = Field(
+        None, repr=False, alias="bidConfiguration"
+    )
+    total: Union[BidMatrixInformation, str, dm.NodeId, None] = Field(None, repr=False)
+    partials: Union[list[PartialBidMatrixInformation], list[str], list[dm.NodeId], None] = Field(
+        default=None, repr=False
+    )
 
     def as_write(self) -> BidDocumentDayAheadWrite:
         """Convert this read version of bid document day ahead to the writing version."""
@@ -200,7 +213,7 @@ class BidDocumentDayAhead(BidDocument):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             name=self.name,
-            process_id=self.process_id,
+            workflow_execution_id=self.workflow_execution_id,
             delivery_date=self.delivery_date,
             start_calculation=self.start_calculation,
             end_calculation=self.end_calculation,
@@ -237,7 +250,7 @@ class BidDocumentDayAheadWrite(BidDocumentWrite):
         external_id: The external id of the bid document day ahead.
         data_record: The data record of the bid document day ahead node.
         name: Unique name for a given instance of a Bid Document. A combination of name, priceArea, date and startCalculation.
-        process_id: The process associated with the Bid calculation workflow.
+        workflow_execution_id: The process associated with the Bid calculation workflow.
         delivery_date: The date of the Bid.
         start_calculation: Timestamp of when the Bid calculation workflow started.
         end_calculation: Timestamp of when the Bid calculation workflow completed.
@@ -249,13 +262,15 @@ class BidDocumentDayAheadWrite(BidDocumentWrite):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types_temp", "DayAheadBidDocument"
+        "sp_power_ops_types", "DayAheadBidDocument"
     )
-    bid_configuration: Union[BidConfigurationWrite, str, dm.NodeId, None] = Field(
+    bid_configuration: Union[BidConfigurationDayAheadWrite, str, dm.NodeId, None] = Field(
         None, repr=False, alias="bidConfiguration"
     )
-    total: Union[BidMatrixWrite, str, dm.NodeId, None] = Field(None, repr=False)
-    partials: Union[list[BidMatrixWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
+    total: Union[BidMatrixInformationWrite, str, dm.NodeId, None] = Field(None, repr=False)
+    partials: Union[list[PartialBidMatrixInformationWrite], list[str], list[dm.NodeId], None] = Field(
+        default=None, repr=False
+    )
 
     def _to_instances_write(
         self,
@@ -269,7 +284,7 @@ class BidDocumentDayAheadWrite(BidDocumentWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            BidDocumentDayAhead, dm.ViewId("sp_powerops_models_temp", "BidDocumentDayAhead", "1")
+            BidDocumentDayAhead, dm.ViewId("sp_power_ops_models", "BidDocumentDayAhead", "1")
         )
 
         properties: dict[str, Any] = {}
@@ -277,8 +292,8 @@ class BidDocumentDayAheadWrite(BidDocumentWrite):
         if self.name is not None or write_none:
             properties["name"] = self.name
 
-        if self.process_id is not None or write_none:
-            properties["processId"] = self.process_id
+        if self.workflow_execution_id is not None or write_none:
+            properties["workflowExecutionId"] = self.workflow_execution_id
 
         if self.delivery_date is not None:
             properties["deliveryDate"] = self.delivery_date.isoformat() if self.delivery_date else None
@@ -328,7 +343,7 @@ class BidDocumentDayAheadWrite(BidDocumentWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue")
+        edge_type = dm.DirectRelationReference("sp_power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
@@ -341,7 +356,7 @@ class BidDocumentDayAheadWrite(BidDocumentWrite):
             )
             resources.extend(other_resources)
 
-        edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "partialBid")
+        edge_type = dm.DirectRelationReference("sp_power_ops_types", "partialBid")
         for partial in self.partials or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
@@ -409,8 +424,8 @@ def _create_bid_document_day_ahead_filter(
     view_id: dm.ViewId,
     name: str | list[str] | None = None,
     name_prefix: str | None = None,
-    process_id: str | list[str] | None = None,
-    process_id_prefix: str | None = None,
+    workflow_execution_id: str | list[str] | None = None,
+    workflow_execution_id_prefix: str | None = None,
     min_delivery_date: datetime.date | None = None,
     max_delivery_date: datetime.date | None = None,
     min_start_calculation: datetime.datetime | None = None,
@@ -431,12 +446,14 @@ def _create_bid_document_day_ahead_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
     if name_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
-    if isinstance(process_id, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("processId"), value=process_id))
-    if process_id and isinstance(process_id, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("processId"), values=process_id))
-    if process_id_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("processId"), value=process_id_prefix))
+    if isinstance(workflow_execution_id, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id))
+    if workflow_execution_id and isinstance(workflow_execution_id, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
+    if workflow_execution_id_prefix is not None:
+        filters.append(
+            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
+        )
     if min_delivery_date is not None or max_delivery_date is not None:
         filters.append(
             dm.filters.Range(

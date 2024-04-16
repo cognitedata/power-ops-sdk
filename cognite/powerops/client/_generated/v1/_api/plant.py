@@ -33,14 +33,6 @@ from ._core import (
     QueryStep,
     QueryBuilder,
 )
-from .plant_generators import PlantGeneratorsAPI
-from .plant_production_max_time_series import PlantProductionMaxTimeSeriesAPI
-from .plant_production_min_time_series import PlantProductionMinTimeSeriesAPI
-from .plant_water_value_time_series import PlantWaterValueTimeSeriesAPI
-from .plant_feeding_fee_time_series import PlantFeedingFeeTimeSeriesAPI
-from .plant_outlet_level_time_series import PlantOutletLevelTimeSeriesAPI
-from .plant_inlet_level_time_series import PlantInletLevelTimeSeriesAPI
-from .plant_head_direct_time_series import PlantHeadDirectTimeSeriesAPI
 from .plant_query import PlantQueryAPI
 
 
@@ -56,14 +48,6 @@ class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList]):
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
-        self.generators_edge = PlantGeneratorsAPI(client)
-        self.production_max_time_series = PlantProductionMaxTimeSeriesAPI(client, view_id)
-        self.production_min_time_series = PlantProductionMinTimeSeriesAPI(client, view_id)
-        self.water_value_time_series = PlantWaterValueTimeSeriesAPI(client, view_id)
-        self.feeding_fee_time_series = PlantFeedingFeeTimeSeriesAPI(client, view_id)
-        self.outlet_level_time_series = PlantOutletLevelTimeSeriesAPI(client, view_id)
-        self.inlet_level_time_series = PlantInletLevelTimeSeriesAPI(client, view_id)
-        self.head_direct_time_series = PlantHeadDirectTimeSeriesAPI(client, view_id)
 
     def __call__(
         self,
@@ -75,16 +59,6 @@ class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList]):
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        min_head_loss_factor: float | None = None,
-        max_head_loss_factor: float | None = None,
-        min_outlet_level: float | None = None,
-        max_outlet_level: float | None = None,
-        min_production_max: float | None = None,
-        max_production_max: float | None = None,
-        min_production_min: float | None = None,
-        max_production_min: float | None = None,
-        min_connection_losses: float | None = None,
-        max_connection_losses: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -101,16 +75,6 @@ class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList]):
             max_ordering: The maximum value of the ordering to filter on.
             asset_type: The asset type to filter on.
             asset_type_prefix: The prefix of the asset type to filter on.
-            min_head_loss_factor: The minimum value of the head loss factor to filter on.
-            max_head_loss_factor: The maximum value of the head loss factor to filter on.
-            min_outlet_level: The minimum value of the outlet level to filter on.
-            max_outlet_level: The maximum value of the outlet level to filter on.
-            min_production_max: The minimum value of the production max to filter on.
-            max_production_max: The maximum value of the production max to filter on.
-            min_production_min: The minimum value of the production min to filter on.
-            max_production_min: The maximum value of the production min to filter on.
-            min_connection_losses: The minimum value of the connection loss to filter on.
-            max_connection_losses: The maximum value of the connection loss to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of plants to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -131,16 +95,6 @@ class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList]):
             max_ordering,
             asset_type,
             asset_type_prefix,
-            min_head_loss_factor,
-            max_head_loss_factor,
-            min_outlet_level,
-            max_outlet_level,
-            min_production_max,
-            max_production_max,
-            min_production_min,
-            max_production_min,
-            min_connection_losses,
-            max_connection_losses,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -155,10 +109,6 @@ class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList]):
         write_none: bool = False,
     ) -> ResourcesWriteResult:
         """Add or update (upsert) plants.
-
-        Note: This method iterates through all nodes and timeseries linked to plant and creates them including the edges
-        between the nodes. For example, if any of `generators` are set, then these
-        nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
             plant: Plant or sequence of plants to upsert.
@@ -250,20 +200,7 @@ class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList]):
                 >>> plant = client.plant.retrieve("my_plant")
 
         """
-        return self._retrieve(
-            external_id,
-            space,
-            retrieve_edges=True,
-            edge_api_name_type_direction_view_id_penta=[
-                (
-                    self.generators_edge,
-                    "generators",
-                    dm.DirectRelationReference("sp_powerops_types_temp", "isSubAssetOf"),
-                    "outwards",
-                    dm.ViewId("sp_powerops_models_temp", "Generator", "1"),
-                ),
-            ],
-        )
+        return self._retrieve(external_id, space)
 
     def search(
         self,
@@ -277,16 +214,6 @@ class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList]):
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        min_head_loss_factor: float | None = None,
-        max_head_loss_factor: float | None = None,
-        min_outlet_level: float | None = None,
-        max_outlet_level: float | None = None,
-        min_production_max: float | None = None,
-        max_production_max: float | None = None,
-        min_production_min: float | None = None,
-        max_production_min: float | None = None,
-        min_connection_losses: float | None = None,
-        max_connection_losses: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -305,16 +232,6 @@ class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList]):
             max_ordering: The maximum value of the ordering to filter on.
             asset_type: The asset type to filter on.
             asset_type_prefix: The prefix of the asset type to filter on.
-            min_head_loss_factor: The minimum value of the head loss factor to filter on.
-            max_head_loss_factor: The maximum value of the head loss factor to filter on.
-            min_outlet_level: The minimum value of the outlet level to filter on.
-            max_outlet_level: The maximum value of the outlet level to filter on.
-            min_production_max: The minimum value of the production max to filter on.
-            max_production_max: The maximum value of the production max to filter on.
-            min_production_min: The minimum value of the production min to filter on.
-            max_production_min: The maximum value of the production min to filter on.
-            min_connection_losses: The minimum value of the connection loss to filter on.
-            max_connection_losses: The maximum value of the connection loss to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of plants to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -342,16 +259,6 @@ class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList]):
             max_ordering,
             asset_type,
             asset_type_prefix,
-            min_head_loss_factor,
-            max_head_loss_factor,
-            min_outlet_level,
-            max_outlet_level,
-            min_production_max,
-            max_production_max,
-            min_production_min,
-            max_production_min,
-            min_connection_losses,
-            max_connection_losses,
             external_id_prefix,
             space,
             filter,
@@ -379,16 +286,6 @@ class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList]):
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        min_head_loss_factor: float | None = None,
-        max_head_loss_factor: float | None = None,
-        min_outlet_level: float | None = None,
-        max_outlet_level: float | None = None,
-        min_production_max: float | None = None,
-        max_production_max: float | None = None,
-        min_production_min: float | None = None,
-        max_production_min: float | None = None,
-        min_connection_losses: float | None = None,
-        max_connection_losses: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -416,16 +313,6 @@ class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList]):
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        min_head_loss_factor: float | None = None,
-        max_head_loss_factor: float | None = None,
-        min_outlet_level: float | None = None,
-        max_outlet_level: float | None = None,
-        min_production_max: float | None = None,
-        max_production_max: float | None = None,
-        min_production_min: float | None = None,
-        max_production_min: float | None = None,
-        min_connection_losses: float | None = None,
-        max_connection_losses: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -452,16 +339,6 @@ class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList]):
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        min_head_loss_factor: float | None = None,
-        max_head_loss_factor: float | None = None,
-        min_outlet_level: float | None = None,
-        max_outlet_level: float | None = None,
-        min_production_max: float | None = None,
-        max_production_max: float | None = None,
-        min_production_min: float | None = None,
-        max_production_min: float | None = None,
-        min_connection_losses: float | None = None,
-        max_connection_losses: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -483,16 +360,6 @@ class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList]):
             max_ordering: The maximum value of the ordering to filter on.
             asset_type: The asset type to filter on.
             asset_type_prefix: The prefix of the asset type to filter on.
-            min_head_loss_factor: The minimum value of the head loss factor to filter on.
-            max_head_loss_factor: The maximum value of the head loss factor to filter on.
-            min_outlet_level: The minimum value of the outlet level to filter on.
-            max_outlet_level: The maximum value of the outlet level to filter on.
-            min_production_max: The minimum value of the production max to filter on.
-            max_production_max: The maximum value of the production max to filter on.
-            min_production_min: The minimum value of the production min to filter on.
-            max_production_min: The maximum value of the production min to filter on.
-            min_connection_losses: The minimum value of the connection loss to filter on.
-            max_connection_losses: The maximum value of the connection loss to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of plants to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -521,16 +388,6 @@ class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList]):
             max_ordering,
             asset_type,
             asset_type_prefix,
-            min_head_loss_factor,
-            max_head_loss_factor,
-            min_outlet_level,
-            max_outlet_level,
-            min_production_max,
-            max_production_max,
-            min_production_min,
-            max_production_min,
-            min_connection_losses,
-            max_connection_losses,
             external_id_prefix,
             space,
             filter,
@@ -561,16 +418,6 @@ class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList]):
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        min_head_loss_factor: float | None = None,
-        max_head_loss_factor: float | None = None,
-        min_outlet_level: float | None = None,
-        max_outlet_level: float | None = None,
-        min_production_max: float | None = None,
-        max_production_max: float | None = None,
-        min_production_min: float | None = None,
-        max_production_min: float | None = None,
-        min_connection_losses: float | None = None,
-        max_connection_losses: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -591,16 +438,6 @@ class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList]):
             max_ordering: The maximum value of the ordering to filter on.
             asset_type: The asset type to filter on.
             asset_type_prefix: The prefix of the asset type to filter on.
-            min_head_loss_factor: The minimum value of the head loss factor to filter on.
-            max_head_loss_factor: The maximum value of the head loss factor to filter on.
-            min_outlet_level: The minimum value of the outlet level to filter on.
-            max_outlet_level: The maximum value of the outlet level to filter on.
-            min_production_max: The minimum value of the production max to filter on.
-            max_production_max: The maximum value of the production max to filter on.
-            min_production_min: The minimum value of the production min to filter on.
-            max_production_min: The maximum value of the production min to filter on.
-            min_connection_losses: The minimum value of the connection loss to filter on.
-            max_connection_losses: The maximum value of the connection loss to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of plants to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -620,16 +457,6 @@ class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList]):
             max_ordering,
             asset_type,
             asset_type_prefix,
-            min_head_loss_factor,
-            max_head_loss_factor,
-            min_outlet_level,
-            max_outlet_level,
-            min_production_max,
-            max_production_max,
-            min_production_min,
-            max_production_min,
-            min_connection_losses,
-            max_connection_losses,
             external_id_prefix,
             space,
             filter,
@@ -655,21 +482,10 @@ class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList]):
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        min_head_loss_factor: float | None = None,
-        max_head_loss_factor: float | None = None,
-        min_outlet_level: float | None = None,
-        max_outlet_level: float | None = None,
-        min_production_max: float | None = None,
-        max_production_max: float | None = None,
-        min_production_min: float | None = None,
-        max_production_min: float | None = None,
-        min_connection_losses: float | None = None,
-        max_connection_losses: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-        retrieve_edges: bool = True,
     ) -> PlantList:
         """List/filter plants
 
@@ -682,21 +498,10 @@ class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList]):
             max_ordering: The maximum value of the ordering to filter on.
             asset_type: The asset type to filter on.
             asset_type_prefix: The prefix of the asset type to filter on.
-            min_head_loss_factor: The minimum value of the head loss factor to filter on.
-            max_head_loss_factor: The maximum value of the head loss factor to filter on.
-            min_outlet_level: The minimum value of the outlet level to filter on.
-            max_outlet_level: The maximum value of the outlet level to filter on.
-            min_production_max: The minimum value of the production max to filter on.
-            max_production_max: The maximum value of the production max to filter on.
-            min_production_min: The minimum value of the production min to filter on.
-            max_production_min: The maximum value of the production min to filter on.
-            min_connection_losses: The minimum value of the connection loss to filter on.
-            max_connection_losses: The maximum value of the connection loss to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of plants to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            retrieve_edges: Whether to retrieve `generators` external ids for the plants. Defaults to True.
 
         Returns:
             List of requested plants
@@ -720,32 +525,8 @@ class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList]):
             max_ordering,
             asset_type,
             asset_type_prefix,
-            min_head_loss_factor,
-            max_head_loss_factor,
-            min_outlet_level,
-            max_outlet_level,
-            min_production_max,
-            max_production_max,
-            min_production_min,
-            max_production_min,
-            min_connection_losses,
-            max_connection_losses,
             external_id_prefix,
             space,
             filter,
         )
-
-        return self._list(
-            limit=limit,
-            filter=filter_,
-            retrieve_edges=retrieve_edges,
-            edge_api_name_type_direction_view_id_penta=[
-                (
-                    self.generators_edge,
-                    "generators",
-                    dm.DirectRelationReference("sp_powerops_types_temp", "isSubAssetOf"),
-                    "outwards",
-                    dm.ViewId("sp_powerops_models_temp", "Generator", "1"),
-                ),
-            ],
-        )
+        return self._list(limit=limit, filter=filter_)

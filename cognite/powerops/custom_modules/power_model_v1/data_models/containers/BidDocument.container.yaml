@@ -1,4 +1,4 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: BidDocument
 name: BidDocument
 usedFor: node
@@ -46,15 +46,15 @@ properties:
     autoIncrement: false
     name: priceArea
     description: The price area of the bid document.
-  processId:
+  workflowExecutionId:
     type:
       list: false
       collation: ucs_basic
       type: text
     nullable: true
     autoIncrement: false
-    name: processId
-    description: The process associated with the Bid calculation workflow.
+    name: workflowExecutionId
+    description: The workflowExecutionId associated with the Bid calculation workflow.
 indexes:
   deliveryDate:
     properties:

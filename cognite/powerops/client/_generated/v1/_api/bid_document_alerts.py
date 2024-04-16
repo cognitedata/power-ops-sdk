@@ -43,7 +43,7 @@ class BidDocumentAlertsAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
+            dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
             from_bid_document,
             from_bid_document_space,
             to_alert,

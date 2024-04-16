@@ -44,7 +44,7 @@ TimeSeries = Annotated[
 ]
 
 
-DEFAULT_INSTANCE_SPACE = "sp_powerops_instance_temp"
+DEFAULT_INSTANCE_SPACE = "sp_power_ops_instance"
 
 
 @dataclass
@@ -75,6 +75,18 @@ class Core(BaseModel, arbitrary_types_allowed=True, populate_by_name=True):
         """Returns HTML representation of DomainModel."""
         return self.to_pandas().to_frame("value")._repr_html_()  # type: ignore[operator]
 
+    def dump(self, by_alias: bool = True) -> dict[str, Any]:
+        """Returns the item as a dictionary.
+
+        Args:
+            by_alias: Whether to use the alias names in the dictionary.
+
+        Returns:
+            The item as a dictionary.
+
+        """
+        return self.model_dump(by_alias=by_alias)
+
 
 class DataRecordGraphQL(Core):
     last_updated_time: Optional[datetime.datetime] = Field(None, alias="lastUpdatedTime")
@@ -88,9 +100,21 @@ class GraphQLCore(Core, ABC):
     data_record: Optional[DataRecordGraphQL] = Field(None, alias="dataRecord")
 
 
+class PageInfo(BaseModel):
+    has_next_page: Optional[bool] = Field(None, alias="hasNextPage")
+    has_previous_page: Optional[bool] = Field(None, alias="hasPreviousPage")
+    start_cursor: Optional[str] = Field(None, alias="startCursor")
+    end_cursor: Optional[str] = Field(None, alias="endCursor")
+
+    @classmethod
+    def load(cls, data: dict[str, Any]) -> PageInfo:
+        return cls.model_validate(data)
+
+
 class GraphQLList(UserList):
     def __init__(self, nodes: Collection[GraphQLCore] = None):
         super().__init__(nodes or [])
+        self.page_info: PageInfo | None = None
 
     # The dunder implementations are to get proper type hints
     def __iter__(self) -> Iterator[GraphQLCore]:
@@ -466,7 +490,9 @@ T_DomainRelation = TypeVar("T_DomainRelation", bound=DomainRelation)
 
 
 def default_edge_external_id_factory(
-    start_node: DomainModelWrite | str, end_node: DomainModelWrite | str, edge_type: dm.DirectRelationReference
+    start_node: DomainModelWrite | str | dm.NodeId,
+    end_node: DomainModelWrite | str | dm.NodeId,
+    edge_type: dm.DirectRelationReference,
 ) -> str:
     start = start_node if isinstance(start_node, str) else start_node.external_id
     end = end_node if isinstance(end_node, str) else end_node.external_id
@@ -475,14 +501,17 @@ def default_edge_external_id_factory(
 
 class DomainRelationWrite(BaseModel, extra=Extra.forbid, populate_by_name=True):
     external_id_factory: ClassVar[
-        Callable[[Union[DomainModelWrite, str], Union[DomainModelWrite, str], dm.DirectRelationReference], str]
+        Callable[
+            [
+                Union[DomainModelWrite, str, dm.NodeId],
+                Union[DomainModelWrite, str, dm.NodeId],
+                dm.DirectRelationReference,
+            ],
+            str,
+        ]
     ] = default_edge_external_id_factory
     data_record: DataRecordWrite = Field(default_factory=DataRecordWrite)
     external_id: Optional[str] = Field(None, min_length=1, max_length=255)
-
-    @property
-    def data_records(self) -> DataRecordWriteList:
-        return DataRecordWriteList([node.data_record for node in self])
 
     @abstractmethod
     def _to_instances_write(
@@ -573,6 +602,10 @@ class DomainRelationWrite(BaseModel, extra=Extra.forbid, populate_by_name=True):
 
         return resources
 
+    @classmethod
+    def reset_external_id_factory(cls) -> None:
+        cls.external_id_factory = default_edge_external_id_factory
+
 
 T_DomainRelationWrite = TypeVar("T_DomainRelationWrite", bound=DomainRelationWrite)
 
@@ -582,6 +615,10 @@ class DomainRelationList(CoreList[T_DomainRelation]):
 
     def as_edge_ids(self) -> list[dm.EdgeId]:
         return [edge.as_id() for edge in self]
+
+    @property
+    def data_records(self) -> DataRecordWriteList:
+        return DataRecordWriteList([connection.data_record for connection in self])
 
 
 T_DomainRelationList = TypeVar("T_DomainRelationList", bound=DomainRelationList)

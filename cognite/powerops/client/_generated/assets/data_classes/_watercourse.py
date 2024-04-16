@@ -71,7 +71,7 @@ class WatercourseGraphQL(GraphQLCore):
     view_id = dm.ViewId("power-ops-assets", "Watercourse", "1")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
-    production_obligation: Union[list[TimeSeries], list[str], None] = Field(None, alias="productionObligation")
+    production_obligation: Union[list[TimeSeries], list[dict], None] = Field(None, alias="productionObligation")
     penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
     plants: Optional[list[PlantGraphQL]] = Field(default=None, repr=False)
 
@@ -85,6 +85,12 @@ class WatercourseGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+    @field_validator("production_obligation", mode="before")
+    def clean_list(cls, value: Any) -> Any:
+        if isinstance(value, list):
+            return [v for v in value if v is not None] or None
+        return value
 
     @field_validator("plants", mode="before")
     def parse_graphql(cls, value: Any) -> Any:

@@ -1,4 +1,4 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: BidDocument
 name: BidDocument
 description: Whole Bid (also usually referenced in industry as a Bid Document) containing multiple Bid Rows (which are usually referenced in industry as Bids)
@@ -6,35 +6,35 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{powerops_models}}"
+          space: "{{power_ops_models}}"
           externalId: BidDocument
     - equals:
         property:
           - node
           - space
-        value: "{{powerops_instance_space}}"
+        value: "{{power_ops_instance_space}}"
 implements: []
 version: "{{version}}"
 properties:
   name:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: BidDocument
       type: container
     containerPropertyIdentifier: name
     name: name
     description: Unique name for a given instance of a Bid Document. A combination of name, priceArea, date and startCalculation.
-  processId:
+  workflowExecutionId:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: BidDocument
       type: container
-    containerPropertyIdentifier: processId
-    name: processId
+    containerPropertyIdentifier: workflowExecutionId
+    name: workflowExecutionId
     description: The process associated with the Bid calculation workflow.
   deliveryDate:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: BidDocument
       type: container
     containerPropertyIdentifier: deliveryDate
@@ -42,7 +42,7 @@ properties:
     description: The date of the Bid.
   startCalculation:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: BidDocument
       type: container
     containerPropertyIdentifier: startCalculation
@@ -50,7 +50,7 @@ properties:
     description: Timestamp of when the Bid calculation workflow started.
   endCalculation:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: BidDocument
       type: container
     containerPropertyIdentifier: endCalculation
@@ -58,7 +58,7 @@ properties:
     description: Timestamp of when the Bid calculation workflow completed.
   isComplete:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: BidDocument
       type: container
     containerPropertyIdentifier: isComplete
@@ -66,10 +66,10 @@ properties:
     description: Indicates that the Bid calculation workflow has completed (although has not necessarily succeeded).
   alerts:
     type:
-      space: "{{powerops_type_space}}"
+      space: "{{power_ops_type_space}}"
       externalId: calculationIssue
     source:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: Alert
       version: "{{version}}"
       type: view

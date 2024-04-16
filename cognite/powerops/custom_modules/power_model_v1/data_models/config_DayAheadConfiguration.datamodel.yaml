@@ -1,70 +1,82 @@
 externalId: config_DayAheadConfiguration
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 version: "1"
 name: DayAheadConfiguration
 description: "Settings for the day ahead bid process"
 views:
-  - externalId: BidConfiguration
-    space: "{{powerops_models}}"
+  - externalId: BidConfigurationDayAhead
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: MarketConfiguration
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: PriceArea
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PriceAreaDayAhead
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: PartialBidConfiguration
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: ShopBasedPartialBidConfiguration
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: WaterValueBasedPartialBidConfiguration
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: Scenario
-    space: "{{powerops_models}}"
+  - externalId: ShopScenario
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: ScenarioSet
-    space: "{{powerops_models}}"
+  - externalId: ShopScenarioSet
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: Mapping
-    space: "{{powerops_models}}"
+  - externalId: ShopAttributeMapping
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: ModelTemplate
-    space: "{{powerops_models}}"
+  - externalId: ShopModel
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: Generator
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: TurbineEfficiencyCurve
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: GeneratorEfficiencyCurve
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: Commands
-    space: "{{powerops_models}}"
+  - externalId: ShopCommands
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: PowerAsset
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
   - externalId: Plant
-    space: "{{powerops_models}}"
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PlantInformation
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PlantWaterValueBased
+    space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"

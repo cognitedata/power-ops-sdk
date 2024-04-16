@@ -1,0 +1,63 @@
+space: "{{power_ops_models}}"
+externalId: ShopModel
+name: ShopModel
+usedFor: node
+properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+    description: The name of the model template
+  version:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: version
+    description: The version of the model file (in case  of multiple versions of the same model file)
+  shopVersion:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: shopVersion
+    description: The version of SHOP to run
+  penaltyLimit:
+    type:
+      type: float64
+      list: false
+    nullable: true
+    autoIncrement: false
+    name: penaltyLimit
+  model:
+    type:
+      list: false
+      type: file
+    nullable: false
+    autoIncrement: false
+    name: model
+    description: The shop model file to use as template before mapping
+  cogShopFilesConfig:
+    type:
+      list: true
+      type: json
+    nullable: true
+    autoIncrement: false
+    name: cogShopFilesConfig
+    description: Configuration for in what order to load the various files into pyshop
+  extraFiles:
+    type:
+      list: true
+      type: file
+    nullable: true
+    autoIncrement: false
+    name: extraFiles
+    description: Extra files to include in the model

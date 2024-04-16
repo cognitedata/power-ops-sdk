@@ -1,0 +1,13 @@
+space: "{{power_ops_models}}"
+externalId: ShopPartialBidConfiguration
+name: ShopPartialBidConfiguration
+usedFor: node
+properties:
+  scenarioSet:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: scenarioSet
+    description: TODO

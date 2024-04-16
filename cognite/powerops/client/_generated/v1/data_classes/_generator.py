@@ -86,8 +86,8 @@ class GeneratorGraphQL(GraphQLCore):
         space: The space where the node is located.
         external_id: The external id of the generator.
         data_record: The data record of the generator node.
-        name: Name for the Asset
-        display_name: Display name for the Asset.
+        name: Name for the PowerAsset
+        display_name: Display name for the PowerAsset.
         ordering: The ordering of the asset
         asset_type: The type of the asset
         production_min: The production min field.
@@ -99,7 +99,7 @@ class GeneratorGraphQL(GraphQLCore):
         turbine_efficiency_curves: TODO description
     """
 
-    view_id = dm.ViewId("sp_powerops_models_temp", "Generator", "1")
+    view_id = dm.ViewId("sp_power_ops_models", "Generator", "1")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
@@ -107,8 +107,8 @@ class GeneratorGraphQL(GraphQLCore):
     production_min: Optional[float] = Field(None, alias="productionMin")
     penstock_number: Optional[int] = Field(None, alias="penstockNumber")
     start_cost: Optional[float] = Field(None, alias="startCost")
-    start_stop_cost: Union[TimeSeries, str, None] = Field(None, alias="startStopCost")
-    availability_time_series: Union[TimeSeries, str, None] = Field(None, alias="availabilityTimeSeries")
+    start_stop_cost: Union[TimeSeries, dict, None] = Field(None, alias="startStopCost")
+    availability_time_series: Union[TimeSeries, dict, None] = Field(None, alias="availabilityTimeSeries")
     generator_efficiency_curve: Optional[GeneratorEfficiencyCurveGraphQL] = Field(
         None, repr=False, alias="generatorEfficiencyCurve"
     )
@@ -211,8 +211,8 @@ class Generator(PowerAsset):
         space: The space where the node is located.
         external_id: The external id of the generator.
         data_record: The data record of the generator node.
-        name: Name for the Asset
-        display_name: Display name for the Asset.
+        name: Name for the PowerAsset
+        display_name: Display name for the PowerAsset.
         ordering: The ordering of the asset
         asset_type: The type of the asset
         production_min: The production min field.
@@ -224,9 +224,7 @@ class Generator(PowerAsset):
         turbine_efficiency_curves: TODO description
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types_temp", "Generator"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_power_ops_types", "Generator")
     production_min: float = Field(alias="productionMin")
     penstock_number: int = Field(alias="penstockNumber")
     start_cost: float = Field(alias="startCost")
@@ -288,8 +286,8 @@ class GeneratorWrite(PowerAssetWrite):
         space: The space where the node is located.
         external_id: The external id of the generator.
         data_record: The data record of the generator node.
-        name: Name for the Asset
-        display_name: Display name for the Asset.
+        name: Name for the PowerAsset
+        display_name: Display name for the PowerAsset.
         ordering: The ordering of the asset
         asset_type: The type of the asset
         production_min: The production min field.
@@ -301,9 +299,7 @@ class GeneratorWrite(PowerAssetWrite):
         turbine_efficiency_curves: TODO description
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types_temp", "Generator"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_power_ops_types", "Generator")
     production_min: float = Field(alias="productionMin")
     penstock_number: int = Field(alias="penstockNumber")
     start_cost: float = Field(alias="startCost")
@@ -327,7 +323,7 @@ class GeneratorWrite(PowerAssetWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(Generator, dm.ViewId("sp_powerops_models_temp", "Generator", "1"))
+        write_view = (view_by_read_class or {}).get(Generator, dm.ViewId("sp_power_ops_models", "Generator", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -394,7 +390,7 @@ class GeneratorWrite(PowerAssetWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "isSubAssetOf")
+        edge_type = dm.DirectRelationReference("sp_power_ops_types", "isSubAssetOf")
         for turbine_efficiency_curve in self.turbine_efficiency_curves or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

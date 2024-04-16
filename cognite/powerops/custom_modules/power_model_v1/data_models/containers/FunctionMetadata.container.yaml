@@ -1,4 +1,4 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: FunctionMetadata
 name: FunctionMetadata
 usedFor: node
@@ -21,22 +21,22 @@ properties:
     autoIncrement: false
     name: functionCallId
     description: The function call id
-  processId:
+  workflowExecutionId:
     type:
       list: false
       collation: ucs_basic
       type: text
     nullable: false
     autoIncrement: false
-    name: processId
+    name: workflowExecutionId
     description: The process id
-  processStep:
+  workflowStep:
     type:
       list: false
       type: int32
     nullable: false
     autoIncrement: false
-    name: processStep
+    name: workflowStep
     description: The process step
   linkedStep:
     type:
@@ -45,31 +45,7 @@ properties:
     nullable: true
     autoIncrement: false
     name: linkedStep
-    description: Typically the previous step
-  data:
-    type:
-      list: false
-      type: direct
-    nullable: true
-    autoIncrement: false
-    name: data
-    description: The data
-  data2:
-    type:
-      list: false
-      type: direct
-    nullable: true
-    autoIncrement: false
-    name: data2
-    description: The data
-  data3:
-    type:
-      list: false
-      type: direct
-    nullable: true
-    autoIncrement: false
-    name: data3
-    description: The data
+    description: Typically the input to the function
 indexes:
   functionNameIndex:
     properties:
@@ -81,8 +57,8 @@ indexes:
       - functionCallId
     indexType: btree
     cursorable: false
-  processIdIndex:
+  workflowExecutionIdIndex:
     properties:
-      - processId
+      - workflowExecutionId
     indexType: btree
     cursorable: false

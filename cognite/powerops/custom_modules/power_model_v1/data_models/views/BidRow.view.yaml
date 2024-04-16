@@ -1,4 +1,4 @@
-space: "{{powerops_models}}"
+space: "{{power_ops_models}}"
 externalId: BidRow
 name: BidRow
 description: One row in the BidDocument (usually referenced in industry as a Bid).
@@ -6,26 +6,26 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{powerops_models}}"
+          space: "{{power_ops_models}}"
           externalId: BidRow
     - equals:
         property:
           - node
           - space
-        value: "{{powerops_instance_space}}"
+        value: "{{power_ops_instance_space}}"
     - equals:
         property:
           - node
           - type
         value:
           externalId: BidRow
-          space: "{{powerops_type_space}}"
+          space: "{{power_ops_type_space}}"
 implements: []
 version: "{{version}}"
 properties:
   price:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: BidRow
       type: container
     containerPropertyIdentifier: price
@@ -33,7 +33,7 @@ properties:
     description: Price in EUR/MW/h, rounded to nearest price step (0.1?)
   quantityPerHour:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: BidRow
       type: container
     containerPropertyIdentifier: quantityPerHour
@@ -41,21 +41,21 @@ properties:
     description: The capacity offered, per hour, in MW, rounded to nearest step size (5?)
   product:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: BidRow
       type: container
     containerPropertyIdentifier: product
     name: product
   isDivisible:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: BidRow
       type: container
     containerPropertyIdentifier: isDivisible
     name: isDivisible
   minQuantity:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: BidRow
       type: container
     containerPropertyIdentifier: minQuantity
@@ -63,7 +63,7 @@ properties:
     description: Min quantity, per hour. Only relevant for divisible Bids. The minimum capacity that must be accepted; this must be lower than capacityPerHour and is rounded to the nearest step (5 MW?)).
   isBlock:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: BidRow
       type: container
     containerPropertyIdentifier: isBlock
@@ -71,7 +71,7 @@ properties:
     description: "Indication if the row is part of a Block bid. If true: quantityPerHour must have the same value for consecutive hours (and no breaks). Block bids must be accepted for all hours or none."
   exclusiveGroupId:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: BidRow
       type: container
     containerPropertyIdentifier: exclusiveGroupId
@@ -79,36 +79,36 @@ properties:
     description: Other bids with the same ID are part of an exclusive group - only one of them can be accepted, and they must have the same direction (product). Not allowed for block bids.
   linkedBid:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: BidRow
       type: container
     containerPropertyIdentifier: linkedBid
     name: linkedBid
     description: The linked bid must have the opposite direction (link means that both or none must be accepted). Should be bi-directional.
     source:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: BidRow
       version: "{{version}}"
       type: view
   powerAsset:
     container:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: BidRow
       type: container
     containerPropertyIdentifier: powerAsset
     name: powerAsset
     description: TODO description
     source:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: PowerAsset
       version: "{{version}}"
       type: view
   alerts:
     type:
-      space: "{{powerops_type_space}}"
+      space: "{{power_ops_type_space}}"
       externalId: calculationIssue
     source:
-      space: "{{powerops_models}}"
+      space: "{{power_ops_models}}"
       externalId: Alert
       version: "{{version}}"
       type: view

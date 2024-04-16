@@ -8,7 +8,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     WaterValueBasedPartialBidMatrixCalculationInput,
-    BidConfiguration,
+    BidConfigurationDayAhead,
     WaterValueBasedPartialBidConfiguration,
 )
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
@@ -67,7 +67,7 @@ class WaterValueBasedPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainM
         return self._query()
 
     def _query_append_bid_configuration(self, from_: str) -> None:
-        view_id = self._view_by_read_class[BidConfiguration]
+        view_id = self._view_by_read_class[BidConfigurationDayAhead]
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("bid_configuration"),
@@ -81,7 +81,8 @@ class WaterValueBasedPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainM
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
-                result_cls=BidConfiguration,
+                result_cls=BidConfigurationDayAhead,
+                is_single_direct_relation=True,
             ),
         )
 
@@ -101,5 +102,6 @@ class WaterValueBasedPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainM
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
                 result_cls=WaterValueBasedPartialBidConfiguration,
+                is_single_direct_relation=True,
             ),
         )

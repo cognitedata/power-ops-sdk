@@ -1,0 +1,156 @@
+space: "{{power_ops_models}}"
+externalId: PlantWaterValueBased
+name: PlantWaterValueBased
+description: Represent a plant TODO for WVB
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models}}"
+          externalId: PlantWaterValueBased
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: PlantWaterValueBased
+          space: "{{power_ops_type_space}}"
+implements:
+  - space: "{{power_ops_models}}"
+    externalId: Plant
+    version: "{{version}}"
+    type: view
+version: "{{version}}"
+properties:
+  headLossFactor:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: PlantWaterValueBased
+      type: container
+    containerPropertyIdentifier: headLossFactor
+    name: headLossFactor
+  outletLevel:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: PlantWaterValueBased
+      type: container
+    containerPropertyIdentifier: outletLevel
+    name: outletLevel
+  productionMax:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: PlantWaterValueBased
+      type: container
+    containerPropertyIdentifier: productionMax
+    name: productionMax
+  productionMin:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: PlantWaterValueBased
+      type: container
+    containerPropertyIdentifier: productionMin
+    name: productionMin
+  penstockHeadLossFactors:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: PlantWaterValueBased
+      type: container
+    containerPropertyIdentifier: penstockHeadLossFactors
+    name: penstockHeadLossFactors
+  # watercourse:
+  #   container:
+  #     space: "{{power_ops_models}}"
+  #     externalId: PlantWaterValueBased
+  #     type: container
+  #   containerPropertyIdentifier: watercourse
+  #   name: watercourse
+  #   source:
+  #     space: "{{power_ops_models}}"
+  #     externalId: Watercourse
+  #     version: "{{version}}"
+  #     type: view
+  connectionLosses:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: PlantWaterValueBased
+      type: container
+    containerPropertyIdentifier: connectionLosses
+    name: connectionLosses
+  productionMaxTimeSeries:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: PlantWaterValueBased
+      type: container
+    containerPropertyIdentifier: productionMaxTimeSeries
+    name: productionMaxTimeSeries
+  productionMinTimeSeries:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: PlantWaterValueBased
+      type: container
+    containerPropertyIdentifier: productionMinTimeSeries
+    name: productionMinTimeSeries
+  waterValueTimeSeries:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: PlantWaterValueBased
+      type: container
+    containerPropertyIdentifier: waterValueTimeSeries
+    name: waterValueTimeSeries
+  feedingFeeTimeSeries:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: PlantWaterValueBased
+      type: container
+    containerPropertyIdentifier: feedingFeeTimeSeries
+    name: feedingFeeTimeSeries
+  outletLevelTimeSeries:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: PlantWaterValueBased
+      type: container
+    containerPropertyIdentifier: outletLevelTimeSeries
+    name: outletLevelTimeSeries
+  inletLevelTimeSeries:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: PlantWaterValueBased
+      type: container
+    containerPropertyIdentifier: inletLevelTimeSeries
+    name: inletLevelTimeSeries
+  headDirectTimeSeries:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: PlantWaterValueBased
+      type: container
+    containerPropertyIdentifier: headDirectTimeSeries
+    name: headDirectTimeSeries
+  # inletReservoir:
+  #   container:
+  #     space: "{{power_ops_models}}"
+  #     externalId: PlantWaterValueBased
+  #     type: container
+  #   containerPropertyIdentifier: inletReservoir
+  #   name: inletReservoir
+  #   source:
+  #     space: "{{power_ops_models}}"
+  #     externalId: Reservoir
+  #     version: "{{version}}"
+  #     type: view
+  generators:
+    type:
+      space: "{{power_ops_type_space}}"
+      externalId: isSubAssetOf
+    source:
+      space: "{{power_ops_models}}"
+      externalId: Generator
+      version: "{{version}}"
+      type: view
+    direction: outwards
+    name: generators
+    connectionType: multi_edge_connection

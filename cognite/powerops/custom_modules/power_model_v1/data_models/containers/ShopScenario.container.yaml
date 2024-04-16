@@ -1,0 +1,50 @@
+space: "{{power_ops_models}}"
+externalId: ShopScenario
+name: ShopScenario
+usedFor: node
+properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+    description: The name of the Shop Scenario
+  model:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: model
+    description: The model template
+  commands:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: commands
+    description: The commands to run shop with
+  source:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: source
+    description: The source of the scenario
+indexes:
+  nameIndex:
+    properties:
+      - name
+    indexType: btree
+    cursorable: false
+  sourceIndex:
+    properties:
+      - source
+    indexType: btree
+    cursorable: false

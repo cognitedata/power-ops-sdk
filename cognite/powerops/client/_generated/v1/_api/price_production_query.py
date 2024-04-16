@@ -8,7 +8,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     PriceProduction,
-    SHOPResult,
+    ShopResult,
 )
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
@@ -56,7 +56,7 @@ class PriceProductionQueryAPI(QueryAPI[T_DomainModelList]):
         return self._query()
 
     def _query_append_shop_result(self, from_: str) -> None:
-        view_id = self._view_by_read_class[SHOPResult]
+        view_id = self._view_by_read_class[ShopResult]
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("shop_result"),
@@ -68,6 +68,7 @@ class PriceProductionQueryAPI(QueryAPI[T_DomainModelList]):
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
-                result_cls=SHOPResult,
+                result_cls=ShopResult,
+                is_single_direct_relation=True,
             ),
         )

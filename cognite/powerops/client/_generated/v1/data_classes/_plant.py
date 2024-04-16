@@ -1,10 +1,9 @@
 from __future__ import annotations
 
 import warnings
-from typing import TYPE_CHECKING, Any, Literal, Optional, Union
+from typing import Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
 from pydantic import Field
 from pydantic import field_validator, model_validator
 
@@ -21,12 +20,8 @@ from ._core import (
     DomainRelationWrite,
     GraphQLCore,
     ResourcesWrite,
-    TimeSeries,
 )
 from ._power_asset import PowerAsset, PowerAssetWrite
-
-if TYPE_CHECKING:
-    from ._generator import Generator, GeneratorGraphQL, GeneratorWrite
 
 
 __all__ = [
@@ -41,56 +36,14 @@ __all__ = [
 ]
 
 
-PlantTextFields = Literal[
-    "name",
-    "display_name",
-    "asset_type",
-    "production_max_time_series",
-    "production_min_time_series",
-    "water_value_time_series",
-    "feeding_fee_time_series",
-    "outlet_level_time_series",
-    "inlet_level_time_series",
-    "head_direct_time_series",
-]
-PlantFields = Literal[
-    "name",
-    "display_name",
-    "ordering",
-    "asset_type",
-    "head_loss_factor",
-    "outlet_level",
-    "production_max",
-    "production_min",
-    "penstock_head_loss_factors",
-    "connection_losses",
-    "production_max_time_series",
-    "production_min_time_series",
-    "water_value_time_series",
-    "feeding_fee_time_series",
-    "outlet_level_time_series",
-    "inlet_level_time_series",
-    "head_direct_time_series",
-]
+PlantTextFields = Literal["name", "display_name", "asset_type"]
+PlantFields = Literal["name", "display_name", "ordering", "asset_type"]
 
 _PLANT_PROPERTIES_BY_FIELD = {
     "name": "name",
     "display_name": "displayName",
     "ordering": "ordering",
     "asset_type": "assetType",
-    "head_loss_factor": "headLossFactor",
-    "outlet_level": "outletLevel",
-    "production_max": "productionMax",
-    "production_min": "productionMin",
-    "penstock_head_loss_factors": "penstockHeadLossFactors",
-    "connection_losses": "connectionLosses",
-    "production_max_time_series": "productionMaxTimeSeries",
-    "production_min_time_series": "productionMinTimeSeries",
-    "water_value_time_series": "waterValueTimeSeries",
-    "feeding_fee_time_series": "feedingFeeTimeSeries",
-    "outlet_level_time_series": "outletLevelTimeSeries",
-    "inlet_level_time_series": "inletLevelTimeSeries",
-    "head_direct_time_series": "headDirectTimeSeries",
 }
 
 
@@ -104,45 +57,17 @@ class PlantGraphQL(GraphQLCore):
         space: The space where the node is located.
         external_id: The external id of the plant.
         data_record: The data record of the plant node.
-        name: Name for the Asset
-        display_name: Display name for the Asset.
+        name: Name for the PowerAsset
+        display_name: Display name for the PowerAsset.
         ordering: The ordering of the asset
         asset_type: The type of the asset
-        head_loss_factor: The head loss factor field.
-        outlet_level: The outlet level field.
-        production_max: The production max field.
-        production_min: The production min field.
-        penstock_head_loss_factors: The penstock head loss factor field.
-        connection_losses: The connection loss field.
-        production_max_time_series: The production max time series field.
-        production_min_time_series: The production min time series field.
-        water_value_time_series: The water value time series field.
-        feeding_fee_time_series: The feeding fee time series field.
-        outlet_level_time_series: The outlet level time series field.
-        inlet_level_time_series: The inlet level time series field.
-        head_direct_time_series: The head direct time series field.
-        generators: The generator field.
     """
 
-    view_id = dm.ViewId("sp_powerops_models_temp", "Plant", "1")
+    view_id = dm.ViewId("sp_power_ops_models", "Plant", "1")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
     asset_type: Optional[str] = Field(None, alias="assetType")
-    head_loss_factor: Optional[float] = Field(None, alias="headLossFactor")
-    outlet_level: Optional[float] = Field(None, alias="outletLevel")
-    production_max: Optional[float] = Field(None, alias="productionMax")
-    production_min: Optional[float] = Field(None, alias="productionMin")
-    penstock_head_loss_factors: Optional[dict] = Field(None, alias="penstockHeadLossFactors")
-    connection_losses: Optional[float] = Field(None, alias="connectionLosses")
-    production_max_time_series: Union[TimeSeries, str, None] = Field(None, alias="productionMaxTimeSeries")
-    production_min_time_series: Union[TimeSeries, str, None] = Field(None, alias="productionMinTimeSeries")
-    water_value_time_series: Union[TimeSeries, str, None] = Field(None, alias="waterValueTimeSeries")
-    feeding_fee_time_series: Union[TimeSeries, str, None] = Field(None, alias="feedingFeeTimeSeries")
-    outlet_level_time_series: Union[TimeSeries, str, None] = Field(None, alias="outletLevelTimeSeries")
-    inlet_level_time_series: Union[TimeSeries, str, None] = Field(None, alias="inletLevelTimeSeries")
-    head_direct_time_series: Union[TimeSeries, str, None] = Field(None, alias="headDirectTimeSeries")
-    generators: Optional[list[GeneratorGraphQL]] = Field(default=None, repr=False)
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -154,14 +79,6 @@ class PlantGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
-
-    @field_validator("generators", mode="before")
-    def parse_graphql(cls, value: Any) -> Any:
-        if not isinstance(value, dict):
-            return value
-        if "items" in value:
-            return value["items"]
-        return value
 
     def as_read(self) -> Plant:
         """Convert this GraphQL format of plant to the reading format."""
@@ -179,23 +96,6 @@ class PlantGraphQL(GraphQLCore):
             display_name=self.display_name,
             ordering=self.ordering,
             asset_type=self.asset_type,
-            head_loss_factor=self.head_loss_factor,
-            outlet_level=self.outlet_level,
-            production_max=self.production_max,
-            production_min=self.production_min,
-            penstock_head_loss_factors=self.penstock_head_loss_factors,
-            connection_losses=self.connection_losses,
-            production_max_time_series=self.production_max_time_series,
-            production_min_time_series=self.production_min_time_series,
-            water_value_time_series=self.water_value_time_series,
-            feeding_fee_time_series=self.feeding_fee_time_series,
-            outlet_level_time_series=self.outlet_level_time_series,
-            inlet_level_time_series=self.inlet_level_time_series,
-            head_direct_time_series=self.head_direct_time_series,
-            generators=[
-                generator.as_read() if isinstance(generator, GraphQLCore) else generator
-                for generator in self.generators or []
-            ],
         )
 
     def as_write(self) -> PlantWrite:
@@ -208,23 +108,6 @@ class PlantGraphQL(GraphQLCore):
             display_name=self.display_name,
             ordering=self.ordering,
             asset_type=self.asset_type,
-            head_loss_factor=self.head_loss_factor,
-            outlet_level=self.outlet_level,
-            production_max=self.production_max,
-            production_min=self.production_min,
-            penstock_head_loss_factors=self.penstock_head_loss_factors,
-            connection_losses=self.connection_losses,
-            production_max_time_series=self.production_max_time_series,
-            production_min_time_series=self.production_min_time_series,
-            water_value_time_series=self.water_value_time_series,
-            feeding_fee_time_series=self.feeding_fee_time_series,
-            outlet_level_time_series=self.outlet_level_time_series,
-            inlet_level_time_series=self.inlet_level_time_series,
-            head_direct_time_series=self.head_direct_time_series,
-            generators=[
-                generator.as_write() if isinstance(generator, DomainModel) else generator
-                for generator in self.generators or []
-            ],
         )
 
 
@@ -237,41 +120,13 @@ class Plant(PowerAsset):
         space: The space where the node is located.
         external_id: The external id of the plant.
         data_record: The data record of the plant node.
-        name: Name for the Asset
-        display_name: Display name for the Asset.
+        name: Name for the PowerAsset
+        display_name: Display name for the PowerAsset.
         ordering: The ordering of the asset
         asset_type: The type of the asset
-        head_loss_factor: The head loss factor field.
-        outlet_level: The outlet level field.
-        production_max: The production max field.
-        production_min: The production min field.
-        penstock_head_loss_factors: The penstock head loss factor field.
-        connection_losses: The connection loss field.
-        production_max_time_series: The production max time series field.
-        production_min_time_series: The production min time series field.
-        water_value_time_series: The water value time series field.
-        feeding_fee_time_series: The feeding fee time series field.
-        outlet_level_time_series: The outlet level time series field.
-        inlet_level_time_series: The inlet level time series field.
-        head_direct_time_series: The head direct time series field.
-        generators: The generator field.
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types_temp", "Plant")
-    head_loss_factor: Optional[float] = Field(None, alias="headLossFactor")
-    outlet_level: Optional[float] = Field(None, alias="outletLevel")
-    production_max: Optional[float] = Field(None, alias="productionMax")
-    production_min: Optional[float] = Field(None, alias="productionMin")
-    penstock_head_loss_factors: Optional[dict] = Field(None, alias="penstockHeadLossFactors")
-    connection_losses: Optional[float] = Field(None, alias="connectionLosses")
-    production_max_time_series: Union[TimeSeries, str, None] = Field(None, alias="productionMaxTimeSeries")
-    production_min_time_series: Union[TimeSeries, str, None] = Field(None, alias="productionMinTimeSeries")
-    water_value_time_series: Union[TimeSeries, str, None] = Field(None, alias="waterValueTimeSeries")
-    feeding_fee_time_series: Union[TimeSeries, str, None] = Field(None, alias="feedingFeeTimeSeries")
-    outlet_level_time_series: Union[TimeSeries, str, None] = Field(None, alias="outletLevelTimeSeries")
-    inlet_level_time_series: Union[TimeSeries, str, None] = Field(None, alias="inletLevelTimeSeries")
-    head_direct_time_series: Union[TimeSeries, str, None] = Field(None, alias="headDirectTimeSeries")
-    generators: Union[list[Generator], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
+    node_type: Union[dm.DirectRelationReference, None] = None
 
     def as_write(self) -> PlantWrite:
         """Convert this read version of plant to the writing version."""
@@ -283,23 +138,6 @@ class Plant(PowerAsset):
             display_name=self.display_name,
             ordering=self.ordering,
             asset_type=self.asset_type,
-            head_loss_factor=self.head_loss_factor,
-            outlet_level=self.outlet_level,
-            production_max=self.production_max,
-            production_min=self.production_min,
-            penstock_head_loss_factors=self.penstock_head_loss_factors,
-            connection_losses=self.connection_losses,
-            production_max_time_series=self.production_max_time_series,
-            production_min_time_series=self.production_min_time_series,
-            water_value_time_series=self.water_value_time_series,
-            feeding_fee_time_series=self.feeding_fee_time_series,
-            outlet_level_time_series=self.outlet_level_time_series,
-            inlet_level_time_series=self.inlet_level_time_series,
-            head_direct_time_series=self.head_direct_time_series,
-            generators=[
-                generator.as_write() if isinstance(generator, DomainModel) else generator
-                for generator in self.generators or []
-            ],
         )
 
     def as_apply(self) -> PlantWrite:
@@ -321,41 +159,13 @@ class PlantWrite(PowerAssetWrite):
         space: The space where the node is located.
         external_id: The external id of the plant.
         data_record: The data record of the plant node.
-        name: Name for the Asset
-        display_name: Display name for the Asset.
+        name: Name for the PowerAsset
+        display_name: Display name for the PowerAsset.
         ordering: The ordering of the asset
         asset_type: The type of the asset
-        head_loss_factor: The head loss factor field.
-        outlet_level: The outlet level field.
-        production_max: The production max field.
-        production_min: The production min field.
-        penstock_head_loss_factors: The penstock head loss factor field.
-        connection_losses: The connection loss field.
-        production_max_time_series: The production max time series field.
-        production_min_time_series: The production min time series field.
-        water_value_time_series: The water value time series field.
-        feeding_fee_time_series: The feeding fee time series field.
-        outlet_level_time_series: The outlet level time series field.
-        inlet_level_time_series: The inlet level time series field.
-        head_direct_time_series: The head direct time series field.
-        generators: The generator field.
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types_temp", "Plant")
-    head_loss_factor: Optional[float] = Field(None, alias="headLossFactor")
-    outlet_level: Optional[float] = Field(None, alias="outletLevel")
-    production_max: Optional[float] = Field(None, alias="productionMax")
-    production_min: Optional[float] = Field(None, alias="productionMin")
-    penstock_head_loss_factors: Optional[dict] = Field(None, alias="penstockHeadLossFactors")
-    connection_losses: Optional[float] = Field(None, alias="connectionLosses")
-    production_max_time_series: Union[TimeSeries, str, None] = Field(None, alias="productionMaxTimeSeries")
-    production_min_time_series: Union[TimeSeries, str, None] = Field(None, alias="productionMinTimeSeries")
-    water_value_time_series: Union[TimeSeries, str, None] = Field(None, alias="waterValueTimeSeries")
-    feeding_fee_time_series: Union[TimeSeries, str, None] = Field(None, alias="feedingFeeTimeSeries")
-    outlet_level_time_series: Union[TimeSeries, str, None] = Field(None, alias="outletLevelTimeSeries")
-    inlet_level_time_series: Union[TimeSeries, str, None] = Field(None, alias="inletLevelTimeSeries")
-    head_direct_time_series: Union[TimeSeries, str, None] = Field(None, alias="headDirectTimeSeries")
-    generators: Union[list[GeneratorWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
+    node_type: Union[dm.DirectRelationReference, None] = None
 
     def _to_instances_write(
         self,
@@ -368,7 +178,7 @@ class PlantWrite(PowerAssetWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(Plant, dm.ViewId("sp_powerops_models_temp", "Plant", "1"))
+        write_view = (view_by_read_class or {}).get(Plant, dm.ViewId("sp_power_ops_models", "Plant", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -383,66 +193,6 @@ class PlantWrite(PowerAssetWrite):
 
         if self.asset_type is not None or write_none:
             properties["assetType"] = self.asset_type
-
-        if self.head_loss_factor is not None or write_none:
-            properties["headLossFactor"] = self.head_loss_factor
-
-        if self.outlet_level is not None or write_none:
-            properties["outletLevel"] = self.outlet_level
-
-        if self.production_max is not None or write_none:
-            properties["productionMax"] = self.production_max
-
-        if self.production_min is not None or write_none:
-            properties["productionMin"] = self.production_min
-
-        if self.penstock_head_loss_factors is not None or write_none:
-            properties["penstockHeadLossFactors"] = self.penstock_head_loss_factors
-
-        if self.connection_losses is not None or write_none:
-            properties["connectionLosses"] = self.connection_losses
-
-        if self.production_max_time_series is not None or write_none:
-            if isinstance(self.production_max_time_series, str) or self.production_max_time_series is None:
-                properties["productionMaxTimeSeries"] = self.production_max_time_series
-            else:
-                properties["productionMaxTimeSeries"] = self.production_max_time_series.external_id
-
-        if self.production_min_time_series is not None or write_none:
-            if isinstance(self.production_min_time_series, str) or self.production_min_time_series is None:
-                properties["productionMinTimeSeries"] = self.production_min_time_series
-            else:
-                properties["productionMinTimeSeries"] = self.production_min_time_series.external_id
-
-        if self.water_value_time_series is not None or write_none:
-            if isinstance(self.water_value_time_series, str) or self.water_value_time_series is None:
-                properties["waterValueTimeSeries"] = self.water_value_time_series
-            else:
-                properties["waterValueTimeSeries"] = self.water_value_time_series.external_id
-
-        if self.feeding_fee_time_series is not None or write_none:
-            if isinstance(self.feeding_fee_time_series, str) or self.feeding_fee_time_series is None:
-                properties["feedingFeeTimeSeries"] = self.feeding_fee_time_series
-            else:
-                properties["feedingFeeTimeSeries"] = self.feeding_fee_time_series.external_id
-
-        if self.outlet_level_time_series is not None or write_none:
-            if isinstance(self.outlet_level_time_series, str) or self.outlet_level_time_series is None:
-                properties["outletLevelTimeSeries"] = self.outlet_level_time_series
-            else:
-                properties["outletLevelTimeSeries"] = self.outlet_level_time_series.external_id
-
-        if self.inlet_level_time_series is not None or write_none:
-            if isinstance(self.inlet_level_time_series, str) or self.inlet_level_time_series is None:
-                properties["inletLevelTimeSeries"] = self.inlet_level_time_series
-            else:
-                properties["inletLevelTimeSeries"] = self.inlet_level_time_series.external_id
-
-        if self.head_direct_time_series is not None or write_none:
-            if isinstance(self.head_direct_time_series, str) or self.head_direct_time_series is None:
-                properties["headDirectTimeSeries"] = self.head_direct_time_series
-            else:
-                properties["headDirectTimeSeries"] = self.head_direct_time_series.external_id
 
         if properties:
             this_node = dm.NodeApply(
@@ -459,40 +209,6 @@ class PlantWrite(PowerAssetWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-        edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "isSubAssetOf")
-        for generator in self.generators or []:
-            other_resources = DomainRelationWrite.from_edge_to_resources(
-                cache,
-                start_node=self,
-                end_node=generator,
-                edge_type=edge_type,
-                view_by_read_class=view_by_read_class,
-                write_none=write_none,
-                allow_version_increase=allow_version_increase,
-            )
-            resources.extend(other_resources)
-
-        if isinstance(self.production_max_time_series, CogniteTimeSeries):
-            resources.time_series.append(self.production_max_time_series)
-
-        if isinstance(self.production_min_time_series, CogniteTimeSeries):
-            resources.time_series.append(self.production_min_time_series)
-
-        if isinstance(self.water_value_time_series, CogniteTimeSeries):
-            resources.time_series.append(self.water_value_time_series)
-
-        if isinstance(self.feeding_fee_time_series, CogniteTimeSeries):
-            resources.time_series.append(self.feeding_fee_time_series)
-
-        if isinstance(self.outlet_level_time_series, CogniteTimeSeries):
-            resources.time_series.append(self.outlet_level_time_series)
-
-        if isinstance(self.inlet_level_time_series, CogniteTimeSeries):
-            resources.time_series.append(self.inlet_level_time_series)
-
-        if isinstance(self.head_direct_time_series, CogniteTimeSeries):
-            resources.time_series.append(self.head_direct_time_series)
 
         return resources
 
@@ -547,16 +263,6 @@ def _create_plant_filter(
     max_ordering: int | None = None,
     asset_type: str | list[str] | None = None,
     asset_type_prefix: str | None = None,
-    min_head_loss_factor: float | None = None,
-    max_head_loss_factor: float | None = None,
-    min_outlet_level: float | None = None,
-    max_outlet_level: float | None = None,
-    min_production_max: float | None = None,
-    max_production_max: float | None = None,
-    min_production_min: float | None = None,
-    max_production_min: float | None = None,
-    min_connection_losses: float | None = None,
-    max_connection_losses: float | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -582,30 +288,6 @@ def _create_plant_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("assetType"), values=asset_type))
     if asset_type_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("assetType"), value=asset_type_prefix))
-    if min_head_loss_factor is not None or max_head_loss_factor is not None:
-        filters.append(
-            dm.filters.Range(
-                view_id.as_property_ref("headLossFactor"), gte=min_head_loss_factor, lte=max_head_loss_factor
-            )
-        )
-    if min_outlet_level is not None or max_outlet_level is not None:
-        filters.append(
-            dm.filters.Range(view_id.as_property_ref("outletLevel"), gte=min_outlet_level, lte=max_outlet_level)
-        )
-    if min_production_max is not None or max_production_max is not None:
-        filters.append(
-            dm.filters.Range(view_id.as_property_ref("productionMax"), gte=min_production_max, lte=max_production_max)
-        )
-    if min_production_min is not None or max_production_min is not None:
-        filters.append(
-            dm.filters.Range(view_id.as_property_ref("productionMin"), gte=min_production_min, lte=max_production_min)
-        )
-    if min_connection_losses is not None or max_connection_losses is not None:
-        filters.append(
-            dm.filters.Range(
-                view_id.as_property_ref("connectionLosses"), gte=min_connection_losses, lte=max_connection_losses
-            )
-        )
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):

@@ -4,10 +4,14 @@ import warnings
 from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
+from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
 from pydantic import Field
+from pydantic import field_validator, model_validator
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
@@ -15,12 +19,18 @@ from ._core import (
     DomainModelWriteList,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
     ResourcesWrite,
+    TimeSeries,
 )
 from ._price_area import PriceArea, PriceAreaWrite
 
 if TYPE_CHECKING:
-    from ._bid_method_day_ahead import BidMethodDayAhead, BidMethodDayAheadWrite
+    from ._bid_configuration_day_ahead import (
+        BidConfigurationDayAhead,
+        BidConfigurationDayAheadGraphQL,
+        BidConfigurationDayAheadWrite,
+    )
 
 
 __all__ = [
@@ -35,13 +45,119 @@ __all__ = [
 ]
 
 
-PriceAreaDayAheadTextFields = Literal["name", "timezone"]
-PriceAreaDayAheadFields = Literal["name", "timezone"]
+PriceAreaDayAheadTextFields = Literal["name", "display_name", "asset_type", "main_price_scenario", "price_scenarios"]
+PriceAreaDayAheadFields = Literal[
+    "name", "display_name", "ordering", "asset_type", "main_price_scenario", "price_scenarios"
+]
 
 _PRICEAREADAYAHEAD_PROPERTIES_BY_FIELD = {
     "name": "name",
-    "timezone": "timezone",
+    "display_name": "displayName",
+    "ordering": "ordering",
+    "asset_type": "assetType",
+    "main_price_scenario": "mainPriceScenario",
+    "price_scenarios": "priceScenarios",
 }
+
+
+class PriceAreaDayAheadGraphQL(GraphQLCore):
+    """This represents the reading version of price area day ahead, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the price area day ahead.
+        data_record: The data record of the price area day ahead node.
+        name: Name for the PowerAsset
+        display_name: Display name for the PowerAsset.
+        ordering: The ordering of the asset
+        asset_type: The type of the asset
+        default_bid_configuration: TODO
+        main_price_scenario: TODO
+        price_scenarios: TODO
+    """
+
+    view_id = dm.ViewId("sp_power_ops_models", "PriceAreaDayAhead", "1")
+    name: Optional[str] = None
+    display_name: Optional[str] = Field(None, alias="displayName")
+    ordering: Optional[int] = None
+    asset_type: Optional[str] = Field(None, alias="assetType")
+    default_bid_configuration: Optional[BidConfigurationDayAheadGraphQL] = Field(
+        None, repr=False, alias="defaultBidConfiguration"
+    )
+    main_price_scenario: Union[TimeSeries, dict, None] = Field(None, alias="mainPriceScenario")
+    price_scenarios: Union[list[TimeSeries], list[dict], None] = Field(None, alias="priceScenarios")
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+    @field_validator("price_scenarios", mode="before")
+    def clean_list(cls, value: Any) -> Any:
+        if isinstance(value, list):
+            return [v for v in value if v is not None] or None
+        return value
+
+    @field_validator("default_bid_configuration", mode="before")
+    def parse_graphql(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        if "items" in value:
+            return value["items"]
+        return value
+
+    def as_read(self) -> PriceAreaDayAhead:
+        """Convert this GraphQL format of price area day ahead to the reading format."""
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return PriceAreaDayAhead(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            name=self.name,
+            display_name=self.display_name,
+            ordering=self.ordering,
+            asset_type=self.asset_type,
+            default_bid_configuration=(
+                self.default_bid_configuration.as_read()
+                if isinstance(self.default_bid_configuration, GraphQLCore)
+                else self.default_bid_configuration
+            ),
+            main_price_scenario=self.main_price_scenario,
+            price_scenarios=self.price_scenarios,
+        )
+
+    def as_write(self) -> PriceAreaDayAheadWrite:
+        """Convert this GraphQL format of price area day ahead to the writing format."""
+        return PriceAreaDayAheadWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            name=self.name,
+            display_name=self.display_name,
+            ordering=self.ordering,
+            asset_type=self.asset_type,
+            default_bid_configuration=(
+                self.default_bid_configuration.as_write()
+                if isinstance(self.default_bid_configuration, DomainModel)
+                else self.default_bid_configuration
+            ),
+            main_price_scenario=self.main_price_scenario,
+            price_scenarios=self.price_scenarios,
+        )
 
 
 class PriceAreaDayAhead(PriceArea):
@@ -53,15 +169,21 @@ class PriceAreaDayAhead(PriceArea):
         space: The space where the node is located.
         external_id: The external id of the price area day ahead.
         data_record: The data record of the price area day ahead node.
-        name: The name of the price area
-        timezone: The timezone of the price area
-        default_method: The default method field.
+        name: Name for the PowerAsset
+        display_name: Display name for the PowerAsset.
+        ordering: The ordering of the asset
+        asset_type: The type of the asset
+        default_bid_configuration: TODO
+        main_price_scenario: TODO
+        price_scenarios: TODO
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "PriceAreaDayAhead"
+    node_type: Union[dm.DirectRelationReference, None] = None
+    default_bid_configuration: Union[BidConfigurationDayAhead, str, dm.NodeId, None] = Field(
+        None, repr=False, alias="defaultBidConfiguration"
     )
-    default_method: Union[BidMethodDayAhead, str, dm.NodeId, None] = Field(None, repr=False, alias="defaultMethod")
+    main_price_scenario: Union[TimeSeries, str, None] = Field(None, alias="mainPriceScenario")
+    price_scenarios: Union[list[TimeSeries], list[str], None] = Field(None, alias="priceScenarios")
 
     def as_write(self) -> PriceAreaDayAheadWrite:
         """Convert this read version of price area day ahead to the writing version."""
@@ -70,10 +192,16 @@ class PriceAreaDayAhead(PriceArea):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             name=self.name,
-            timezone=self.timezone,
-            default_method=(
-                self.default_method.as_write() if isinstance(self.default_method, DomainModel) else self.default_method
+            display_name=self.display_name,
+            ordering=self.ordering,
+            asset_type=self.asset_type,
+            default_bid_configuration=(
+                self.default_bid_configuration.as_write()
+                if isinstance(self.default_bid_configuration, DomainModel)
+                else self.default_bid_configuration
             ),
+            main_price_scenario=self.main_price_scenario,
+            price_scenarios=self.price_scenarios,
         )
 
     def as_apply(self) -> PriceAreaDayAheadWrite:
@@ -95,28 +223,35 @@ class PriceAreaDayAheadWrite(PriceAreaWrite):
         space: The space where the node is located.
         external_id: The external id of the price area day ahead.
         data_record: The data record of the price area day ahead node.
-        name: The name of the price area
-        timezone: The timezone of the price area
-        default_method: The default method field.
+        name: Name for the PowerAsset
+        display_name: Display name for the PowerAsset.
+        ordering: The ordering of the asset
+        asset_type: The type of the asset
+        default_bid_configuration: TODO
+        main_price_scenario: TODO
+        price_scenarios: TODO
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "PriceAreaDayAhead"
+    node_type: Union[dm.DirectRelationReference, None] = None
+    default_bid_configuration: Union[BidConfigurationDayAheadWrite, str, dm.NodeId, None] = Field(
+        None, repr=False, alias="defaultBidConfiguration"
     )
-    default_method: Union[BidMethodDayAheadWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="defaultMethod")
+    main_price_scenario: Union[TimeSeries, str, None] = Field(None, alias="mainPriceScenario")
+    price_scenarios: Union[list[TimeSeries], list[str], None] = Field(None, alias="priceScenarios")
 
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            PriceAreaDayAhead, dm.ViewId("sp_powerops_models", "PriceAreaDayAhead", "1")
+            PriceAreaDayAhead, dm.ViewId("sp_power_ops_models", "PriceAreaDayAhead", "1")
         )
 
         properties: dict[str, Any] = {}
@@ -124,22 +259,45 @@ class PriceAreaDayAheadWrite(PriceAreaWrite):
         if self.name is not None:
             properties["name"] = self.name
 
-        if self.timezone is not None:
-            properties["timezone"] = self.timezone
+        if self.display_name is not None or write_none:
+            properties["displayName"] = self.display_name
 
-        if self.default_method is not None:
-            properties["defaultMethod"] = {
-                "space": self.space if isinstance(self.default_method, str) else self.default_method.space,
+        if self.ordering is not None or write_none:
+            properties["ordering"] = self.ordering
+
+        if self.asset_type is not None or write_none:
+            properties["assetType"] = self.asset_type
+
+        if self.default_bid_configuration is not None:
+            properties["defaultBidConfiguration"] = {
+                "space": (
+                    self.space
+                    if isinstance(self.default_bid_configuration, str)
+                    else self.default_bid_configuration.space
+                ),
                 "externalId": (
-                    self.default_method if isinstance(self.default_method, str) else self.default_method.external_id
+                    self.default_bid_configuration
+                    if isinstance(self.default_bid_configuration, str)
+                    else self.default_bid_configuration.external_id
                 ),
             }
+
+        if self.main_price_scenario is not None or write_none:
+            if isinstance(self.main_price_scenario, str) or self.main_price_scenario is None:
+                properties["mainPriceScenario"] = self.main_price_scenario
+            else:
+                properties["mainPriceScenario"] = self.main_price_scenario.external_id
+
+        if self.price_scenarios is not None or write_none:
+            properties["priceScenarios"] = [
+                value if isinstance(value, str) else value.external_id for value in self.price_scenarios or []
+            ] or None
 
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.data_record.existing_version,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
@@ -151,9 +309,15 @@ class PriceAreaDayAheadWrite(PriceAreaWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        if isinstance(self.default_method, DomainModelWrite):
-            other_resources = self.default_method._to_instances_write(cache, view_by_read_class)
+        if isinstance(self.default_bid_configuration, DomainModelWrite):
+            other_resources = self.default_bid_configuration._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
+
+        if isinstance(self.main_price_scenario, CogniteTimeSeries):
+            resources.time_series.append(self.main_price_scenario)
+
+        if isinstance(self.price_scenarios, CogniteTimeSeries):
+            resources.time_series.append(self.price_scenarios)
 
         return resources
 
@@ -202,9 +366,13 @@ def _create_price_area_day_ahead_filter(
     view_id: dm.ViewId,
     name: str | list[str] | None = None,
     name_prefix: str | None = None,
-    timezone: str | list[str] | None = None,
-    timezone_prefix: str | None = None,
-    default_method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    display_name: str | list[str] | None = None,
+    display_name_prefix: str | None = None,
+    min_ordering: int | None = None,
+    max_ordering: int | None = None,
+    asset_type: str | list[str] | None = None,
+    asset_type_prefix: str | None = None,
+    default_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -216,38 +384,54 @@ def _create_price_area_day_ahead_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
     if name_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
-    if isinstance(timezone, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("timezone"), value=timezone))
-    if timezone and isinstance(timezone, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("timezone"), values=timezone))
-    if timezone_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("timezone"), value=timezone_prefix))
-    if default_method and isinstance(default_method, str):
+    if isinstance(display_name, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("displayName"), value=display_name))
+    if display_name and isinstance(display_name, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("displayName"), values=display_name))
+    if display_name_prefix is not None:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("displayName"), value=display_name_prefix))
+    if min_ordering is not None or max_ordering is not None:
+        filters.append(dm.filters.Range(view_id.as_property_ref("ordering"), gte=min_ordering, lte=max_ordering))
+    if isinstance(asset_type, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("assetType"), value=asset_type))
+    if asset_type and isinstance(asset_type, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("assetType"), values=asset_type))
+    if asset_type_prefix is not None:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("assetType"), value=asset_type_prefix))
+    if default_bid_configuration and isinstance(default_bid_configuration, str):
         filters.append(
             dm.filters.Equals(
-                view_id.as_property_ref("defaultMethod"),
-                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": default_method},
+                view_id.as_property_ref("defaultBidConfiguration"),
+                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": default_bid_configuration},
             )
         )
-    if default_method and isinstance(default_method, tuple):
+    if default_bid_configuration and isinstance(default_bid_configuration, tuple):
         filters.append(
             dm.filters.Equals(
-                view_id.as_property_ref("defaultMethod"),
-                value={"space": default_method[0], "externalId": default_method[1]},
+                view_id.as_property_ref("defaultBidConfiguration"),
+                value={"space": default_bid_configuration[0], "externalId": default_bid_configuration[1]},
             )
         )
-    if default_method and isinstance(default_method, list) and isinstance(default_method[0], str):
+    if (
+        default_bid_configuration
+        and isinstance(default_bid_configuration, list)
+        and isinstance(default_bid_configuration[0], str)
+    ):
         filters.append(
             dm.filters.In(
-                view_id.as_property_ref("defaultMethod"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in default_method],
+                view_id.as_property_ref("defaultBidConfiguration"),
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in default_bid_configuration],
             )
         )
-    if default_method and isinstance(default_method, list) and isinstance(default_method[0], tuple):
+    if (
+        default_bid_configuration
+        and isinstance(default_bid_configuration, list)
+        and isinstance(default_bid_configuration[0], tuple)
+    ):
         filters.append(
             dm.filters.In(
-                view_id.as_property_ref("defaultMethod"),
-                values=[{"space": item[0], "externalId": item[1]} for item in default_method],
+                view_id.as_property_ref("defaultBidConfiguration"),
+                values=[{"space": item[0], "externalId": item[1]} for item in default_bid_configuration],
             )
         )
     if external_id_prefix is not None:

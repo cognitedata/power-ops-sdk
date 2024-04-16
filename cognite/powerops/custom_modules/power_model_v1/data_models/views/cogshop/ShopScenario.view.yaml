@@ -1,0 +1,73 @@
+space: "{{power_ops_models}}"
+externalId: ShopScenario
+name: ShopScenario
+description: The Scenario to run shop with
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models}}"
+          externalId: ShopScenario
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+implements: []
+version: "{{version}}"
+properties:
+  name:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopScenario
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: The name of the scenario to run
+  model:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopScenario
+      type: container
+    containerPropertyIdentifier: model
+    name: model
+    description: The model template to use when running the scenario
+    source:
+      space: "{{power_ops_models}}"
+      externalId: ShopModel
+      version: "{{version}}"
+      type: view
+  commands:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopScenario
+      type: container
+    containerPropertyIdentifier: commands
+    name: commands
+    description: The commands to run
+    source:
+      space: "{{power_ops_models}}"
+      externalId: ShopCommands
+      version: "{{version}}"
+      type: view
+  source:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopScenario
+      type: container
+    containerPropertyIdentifier: source
+    name: source
+    description: The source of the scenario
+  attributeMappingsOverride:
+    type:
+      space: "{{power_ops_type_space}}"
+      externalId: ShopAttributeMapping
+    source:
+      space: "{{power_ops_models}}"
+      externalId: ShopAttributeMapping
+      version: "{{version}}"
+      type: view
+    direction: outwards
+    name: attributeMappingsOverride
+    description: An array of base mappings to override in shop model file
+    connectionType: multi_edge_connection

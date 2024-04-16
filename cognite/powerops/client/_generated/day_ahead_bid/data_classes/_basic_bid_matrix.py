@@ -71,7 +71,7 @@ class BasicBidMatrixGraphQL(GraphQLCore):
 
     view_id = dm.ViewId("power-ops-day-ahead-bid", "BasicBidMatrix", "1")
     resource_cost: Optional[str] = Field(None, alias="resourceCost")
-    matrix: Union[str, None] = None
+    matrix: Union[dict, None] = None
     asset_type: Optional[str] = Field(None, alias="assetType")
     asset_id: Optional[str] = Field(None, alias="assetId")
     method: Optional[BidMethodGraphQL] = Field(None, repr=False)

@@ -42,7 +42,6 @@ PriceAreaAFRRTextFields = Literal[
     "name",
     "display_name",
     "asset_type",
-    "timezone",
     "capacity_price_up",
     "capacity_price_down",
     "activation_price_up",
@@ -58,7 +57,6 @@ PriceAreaAFRRFields = Literal[
     "display_name",
     "ordering",
     "asset_type",
-    "timezone",
     "capacity_price_up",
     "capacity_price_down",
     "activation_price_up",
@@ -75,7 +73,6 @@ _PRICEAREAAFRR_PROPERTIES_BY_FIELD = {
     "display_name": "displayName",
     "ordering": "ordering",
     "asset_type": "assetType",
-    "timezone": "timezone",
     "capacity_price_up": "capacityPriceUp",
     "capacity_price_down": "capacityPriceDown",
     "activation_price_up": "activationPriceUp",
@@ -98,11 +95,10 @@ class PriceAreaAFRRGraphQL(GraphQLCore):
         space: The space where the node is located.
         external_id: The external id of the price area afrr.
         data_record: The data record of the price area afrr node.
-        name: Name for the Asset
-        display_name: Display name for the Asset.
+        name: Name for the PowerAsset
+        display_name: Display name for the PowerAsset.
         ordering: The ordering of the asset
         asset_type: The type of the asset
-        timezone: The timezone of the price area
         capacity_price_up: The capacity price up field.
         capacity_price_down: The capacity price down field.
         activation_price_up: The mFRR activation price (TBC)
@@ -114,21 +110,20 @@ class PriceAreaAFRRGraphQL(GraphQLCore):
         own_capacity_allocation_down: The own capacity allocation down field.
     """
 
-    view_id = dm.ViewId("sp_powerops_models_temp", "PriceAreaAFRR", "1")
+    view_id = dm.ViewId("sp_power_ops_models", "PriceAreaAFRR", "1")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
     asset_type: Optional[str] = Field(None, alias="assetType")
-    timezone: Optional[str] = None
-    capacity_price_up: Union[TimeSeries, str, None] = Field(None, alias="capacityPriceUp")
-    capacity_price_down: Union[TimeSeries, str, None] = Field(None, alias="capacityPriceDown")
-    activation_price_up: Union[TimeSeries, str, None] = Field(None, alias="activationPriceUp")
-    activation_price_down: Union[TimeSeries, str, None] = Field(None, alias="activationPriceDown")
-    relative_activation: Union[TimeSeries, str, None] = Field(None, alias="relativeActivation")
-    total_capacity_allocation_up: Union[TimeSeries, str, None] = Field(None, alias="totalCapacityAllocationUp")
-    total_capacity_allocation_down: Union[TimeSeries, str, None] = Field(None, alias="totalCapacityAllocationDown")
-    own_capacity_allocation_up: Union[TimeSeries, str, None] = Field(None, alias="ownCapacityAllocationUp")
-    own_capacity_allocation_down: Union[TimeSeries, str, None] = Field(None, alias="ownCapacityAllocationDown")
+    capacity_price_up: Union[TimeSeries, dict, None] = Field(None, alias="capacityPriceUp")
+    capacity_price_down: Union[TimeSeries, dict, None] = Field(None, alias="capacityPriceDown")
+    activation_price_up: Union[TimeSeries, dict, None] = Field(None, alias="activationPriceUp")
+    activation_price_down: Union[TimeSeries, dict, None] = Field(None, alias="activationPriceDown")
+    relative_activation: Union[TimeSeries, dict, None] = Field(None, alias="relativeActivation")
+    total_capacity_allocation_up: Union[TimeSeries, dict, None] = Field(None, alias="totalCapacityAllocationUp")
+    total_capacity_allocation_down: Union[TimeSeries, dict, None] = Field(None, alias="totalCapacityAllocationDown")
+    own_capacity_allocation_up: Union[TimeSeries, dict, None] = Field(None, alias="ownCapacityAllocationUp")
+    own_capacity_allocation_down: Union[TimeSeries, dict, None] = Field(None, alias="ownCapacityAllocationDown")
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -157,7 +152,6 @@ class PriceAreaAFRRGraphQL(GraphQLCore):
             display_name=self.display_name,
             ordering=self.ordering,
             asset_type=self.asset_type,
-            timezone=self.timezone,
             capacity_price_up=self.capacity_price_up,
             capacity_price_down=self.capacity_price_down,
             activation_price_up=self.activation_price_up,
@@ -179,7 +173,6 @@ class PriceAreaAFRRGraphQL(GraphQLCore):
             display_name=self.display_name,
             ordering=self.ordering,
             asset_type=self.asset_type,
-            timezone=self.timezone,
             capacity_price_up=self.capacity_price_up,
             capacity_price_down=self.capacity_price_down,
             activation_price_up=self.activation_price_up,
@@ -201,11 +194,10 @@ class PriceAreaAFRR(PriceArea):
         space: The space where the node is located.
         external_id: The external id of the price area afrr.
         data_record: The data record of the price area afrr node.
-        name: Name for the Asset
-        display_name: Display name for the Asset.
+        name: Name for the PowerAsset
+        display_name: Display name for the PowerAsset.
         ordering: The ordering of the asset
         asset_type: The type of the asset
-        timezone: The timezone of the price area
         capacity_price_up: The capacity price up field.
         capacity_price_down: The capacity price down field.
         activation_price_up: The mFRR activation price (TBC)
@@ -217,9 +209,7 @@ class PriceAreaAFRR(PriceArea):
         own_capacity_allocation_down: The own capacity allocation down field.
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types_temp", "PriceArea"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = None
     capacity_price_up: Union[TimeSeries, str, None] = Field(None, alias="capacityPriceUp")
     capacity_price_down: Union[TimeSeries, str, None] = Field(None, alias="capacityPriceDown")
     activation_price_up: Union[TimeSeries, str, None] = Field(None, alias="activationPriceUp")
@@ -240,7 +230,6 @@ class PriceAreaAFRR(PriceArea):
             display_name=self.display_name,
             ordering=self.ordering,
             asset_type=self.asset_type,
-            timezone=self.timezone,
             capacity_price_up=self.capacity_price_up,
             capacity_price_down=self.capacity_price_down,
             activation_price_up=self.activation_price_up,
@@ -271,11 +260,10 @@ class PriceAreaAFRRWrite(PriceAreaWrite):
         space: The space where the node is located.
         external_id: The external id of the price area afrr.
         data_record: The data record of the price area afrr node.
-        name: Name for the Asset
-        display_name: Display name for the Asset.
+        name: Name for the PowerAsset
+        display_name: Display name for the PowerAsset.
         ordering: The ordering of the asset
         asset_type: The type of the asset
-        timezone: The timezone of the price area
         capacity_price_up: The capacity price up field.
         capacity_price_down: The capacity price down field.
         activation_price_up: The mFRR activation price (TBC)
@@ -287,9 +275,7 @@ class PriceAreaAFRRWrite(PriceAreaWrite):
         own_capacity_allocation_down: The own capacity allocation down field.
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types_temp", "PriceArea"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = None
     capacity_price_up: Union[TimeSeries, str, None] = Field(None, alias="capacityPriceUp")
     capacity_price_down: Union[TimeSeries, str, None] = Field(None, alias="capacityPriceDown")
     activation_price_up: Union[TimeSeries, str, None] = Field(None, alias="activationPriceUp")
@@ -312,7 +298,7 @@ class PriceAreaAFRRWrite(PriceAreaWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            PriceAreaAFRR, dm.ViewId("sp_powerops_models_temp", "PriceAreaAFRR", "1")
+            PriceAreaAFRR, dm.ViewId("sp_power_ops_models", "PriceAreaAFRR", "1")
         )
 
         properties: dict[str, Any] = {}
@@ -328,9 +314,6 @@ class PriceAreaAFRRWrite(PriceAreaWrite):
 
         if self.asset_type is not None or write_none:
             properties["assetType"] = self.asset_type
-
-        if self.timezone is not None:
-            properties["timezone"] = self.timezone
 
         if self.capacity_price_up is not None or write_none:
             if isinstance(self.capacity_price_up, str) or self.capacity_price_up is None:
@@ -482,8 +465,6 @@ def _create_price_area_afrr_filter(
     max_ordering: int | None = None,
     asset_type: str | list[str] | None = None,
     asset_type_prefix: str | None = None,
-    timezone: str | list[str] | None = None,
-    timezone_prefix: str | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -509,12 +490,6 @@ def _create_price_area_afrr_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("assetType"), values=asset_type))
     if asset_type_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("assetType"), value=asset_type_prefix))
-    if isinstance(timezone, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("timezone"), value=timezone))
-    if timezone and isinstance(timezone, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("timezone"), values=timezone))
-    if timezone_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("timezone"), value=timezone_prefix))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):

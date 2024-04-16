@@ -1,0 +1,49 @@
+space: "{{power_ops_models}}"
+externalId: TurbineEfficiencyCurve
+name: TurbineEfficiencyCurve
+description: Describes the efficiency curve for a turbine
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models}}"
+          externalId: EfficiencyCurve
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: TurbineEfficiencyCurve
+          space: "{{power_ops_type_space}}"
+implements: []
+version: "{{version}}"
+properties:
+  head:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: EfficiencyCurve
+      type: container
+    containerPropertyIdentifier: ref
+    name: head
+    description: The reference head values
+  flow:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: EfficiencyCurve
+      type: container
+    containerPropertyIdentifier: x
+    name: flow
+    description: The flow values
+  efficiency:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: EfficiencyCurve
+      type: container
+    containerPropertyIdentifier: efficiency
+    name: efficiency
+    description: The turbine efficiency values

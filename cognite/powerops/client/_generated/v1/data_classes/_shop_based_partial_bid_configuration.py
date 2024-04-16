@@ -25,7 +25,7 @@ from ._partial_bid_configuration import PartialBidConfiguration, PartialBidConfi
 
 if TYPE_CHECKING:
     from ._power_asset import PowerAsset, PowerAssetGraphQL, PowerAssetWrite
-    from ._scenario_set import ScenarioSet, ScenarioSetGraphQL, ScenarioSetWrite
+    from ._shop_scenario_set import ShopScenarioSet, ShopScenarioSetGraphQL, ShopScenarioSetWrite
 
 
 __all__ = [
@@ -62,17 +62,17 @@ class ShopBasedPartialBidConfigurationGraphQL(GraphQLCore):
         data_record: The data record of the shop based partial bid configuration node.
         name: Name for the PartialBidConfiguration
         method: Name of the method used for the bid calculation
-        add_steps: TODO definition
         power_asset: TODO description
+        add_steps: TODO definition
         scenario_set: The scenario set field.
     """
 
-    view_id = dm.ViewId("sp_powerops_models_temp", "ShopBasedPartialBidConfiguration", "1")
+    view_id = dm.ViewId("sp_power_ops_models", "ShopBasedPartialBidConfiguration", "1")
     name: Optional[str] = None
     method: Optional[str] = None
-    add_steps: Optional[bool] = Field(None, alias="addSteps")
     power_asset: Optional[PowerAssetGraphQL] = Field(None, repr=False, alias="powerAsset")
-    scenario_set: Optional[ScenarioSetGraphQL] = Field(None, repr=False, alias="scenarioSet")
+    add_steps: Optional[bool] = Field(None, alias="addSteps")
+    scenario_set: Optional[ShopScenarioSetGraphQL] = Field(None, repr=False, alias="scenarioSet")
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -107,8 +107,8 @@ class ShopBasedPartialBidConfigurationGraphQL(GraphQLCore):
             ),
             name=self.name,
             method=self.method,
-            add_steps=self.add_steps,
             power_asset=self.power_asset.as_read() if isinstance(self.power_asset, GraphQLCore) else self.power_asset,
+            add_steps=self.add_steps,
             scenario_set=(
                 self.scenario_set.as_read() if isinstance(self.scenario_set, GraphQLCore) else self.scenario_set
             ),
@@ -122,8 +122,8 @@ class ShopBasedPartialBidConfigurationGraphQL(GraphQLCore):
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,
             method=self.method,
-            add_steps=self.add_steps,
             power_asset=self.power_asset.as_write() if isinstance(self.power_asset, DomainModel) else self.power_asset,
+            add_steps=self.add_steps,
             scenario_set=(
                 self.scenario_set.as_write() if isinstance(self.scenario_set, DomainModel) else self.scenario_set
             ),
@@ -141,16 +141,15 @@ class ShopBasedPartialBidConfiguration(PartialBidConfiguration):
         data_record: The data record of the shop based partial bid configuration node.
         name: Name for the PartialBidConfiguration
         method: Name of the method used for the bid calculation
-        add_steps: TODO definition
         power_asset: TODO description
+        add_steps: TODO definition
         scenario_set: The scenario set field.
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types_temp", "ShopBasedPartialBidConfiguration"
+        "sp_power_ops_types", "ShopBasedPartialBidConfiguration"
     )
-    power_asset: Union[PowerAsset, str, dm.NodeId, None] = Field(None, repr=False, alias="powerAsset")
-    scenario_set: Union[ScenarioSet, str, dm.NodeId, None] = Field(None, repr=False, alias="scenarioSet")
+    scenario_set: Union[ShopScenarioSet, str, dm.NodeId, None] = Field(None, repr=False, alias="scenarioSet")
 
     def as_write(self) -> ShopBasedPartialBidConfigurationWrite:
         """Convert this read version of shop based partial bid configuration to the writing version."""
@@ -160,8 +159,8 @@ class ShopBasedPartialBidConfiguration(PartialBidConfiguration):
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             name=self.name,
             method=self.method,
-            add_steps=self.add_steps,
             power_asset=self.power_asset.as_write() if isinstance(self.power_asset, DomainModel) else self.power_asset,
+            add_steps=self.add_steps,
             scenario_set=(
                 self.scenario_set.as_write() if isinstance(self.scenario_set, DomainModel) else self.scenario_set
             ),
@@ -188,16 +187,15 @@ class ShopBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
         data_record: The data record of the shop based partial bid configuration node.
         name: Name for the PartialBidConfiguration
         method: Name of the method used for the bid calculation
-        add_steps: TODO definition
         power_asset: TODO description
+        add_steps: TODO definition
         scenario_set: The scenario set field.
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types_temp", "ShopBasedPartialBidConfiguration"
+        "sp_power_ops_types", "ShopBasedPartialBidConfiguration"
     )
-    power_asset: Union[PowerAssetWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="powerAsset")
-    scenario_set: Union[ScenarioSetWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="scenarioSet")
+    scenario_set: Union[ShopScenarioSetWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="scenarioSet")
 
     def _to_instances_write(
         self,
@@ -211,8 +209,7 @@ class ShopBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            ShopBasedPartialBidConfiguration,
-            dm.ViewId("sp_powerops_models_temp", "ShopBasedPartialBidConfiguration", "1"),
+            ShopBasedPartialBidConfiguration, dm.ViewId("sp_power_ops_models", "ShopBasedPartialBidConfiguration", "1")
         )
 
         properties: dict[str, Any] = {}
@@ -223,14 +220,14 @@ class ShopBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
         if self.method is not None or write_none:
             properties["method"] = self.method
 
-        if self.add_steps is not None:
-            properties["addSteps"] = self.add_steps
-
         if self.power_asset is not None:
             properties["powerAsset"] = {
                 "space": self.space if isinstance(self.power_asset, str) else self.power_asset.space,
                 "externalId": self.power_asset if isinstance(self.power_asset, str) else self.power_asset.external_id,
             }
+
+        if self.add_steps is not None:
+            properties["addSteps"] = self.add_steps
 
         if self.scenario_set is not None:
             properties["scenarioSet"] = {
@@ -313,8 +310,8 @@ def _create_shop_based_partial_bid_configuration_filter(
     name_prefix: str | None = None,
     method: str | list[str] | None = None,
     method_prefix: str | None = None,
-    add_steps: bool | None = None,
     power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    add_steps: bool | None = None,
     scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
@@ -333,8 +330,6 @@ def _create_shop_based_partial_bid_configuration_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("method"), values=method))
     if method_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("method"), value=method_prefix))
-    if isinstance(add_steps, bool):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("addSteps"), value=add_steps))
     if power_asset and isinstance(power_asset, str):
         filters.append(
             dm.filters.Equals(
@@ -362,6 +357,8 @@ def _create_shop_based_partial_bid_configuration_filter(
                 values=[{"space": item[0], "externalId": item[1]} for item in power_asset],
             )
         )
+    if isinstance(add_steps, bool):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("addSteps"), value=add_steps))
     if scenario_set and isinstance(scenario_set, str):
         filters.append(
             dm.filters.Equals(

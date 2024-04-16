@@ -18,6 +18,7 @@ from cognite.powerops.client._generated.v1.data_classes import (
     PriceProductionFields,
     PriceProductionList,
     PriceProductionWriteList,
+    PriceProductionTextFields,
 )
 from cognite.powerops.client._generated.v1.data_classes._price_production import (
     _PRICEPRODUCTION_PROPERTIES_BY_FIELD,
@@ -54,6 +55,8 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
 
     def __call__(
         self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -63,6 +66,8 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         """Query starting at price productions.
 
         Args:
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             shop_result: The shop result to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -76,6 +81,8 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_price_production_filter(
             self._view_id,
+            name,
+            name_prefix,
             shop_result,
             external_id_prefix,
             space,
@@ -186,6 +193,54 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         """
         return self._retrieve(external_id, space)
 
+    def search(
+        self,
+        query: str,
+        properties: PriceProductionTextFields | Sequence[PriceProductionTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int | None = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> PriceProductionList:
+        """Search price productions
+
+        Args:
+            query: The search query,
+            properties: The property to search, if nothing is passed all text fields will be searched.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
+            shop_result: The shop result to filter on.
+            external_id_prefix: The prefix of the external ID to filter on.
+            space: The space to filter on.
+            limit: Maximum number of price productions to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+
+        Returns:
+            Search results price productions matching the query.
+
+        Examples:
+
+           Search for 'my_price_production' in all text properties:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> price_productions = client.price_production.search('my_price_production')
+
+        """
+        filter_ = _create_price_production_filter(
+            self._view_id,
+            name,
+            name_prefix,
+            shop_result,
+            external_id_prefix,
+            space,
+            filter,
+        )
+        return self._search(self._view_id, query, _PRICEPRODUCTION_PROPERTIES_BY_FIELD, properties, filter_, limit)
+
     @overload
     def aggregate(
         self,
@@ -197,6 +252,10 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         ),
         property: PriceProductionFields | Sequence[PriceProductionFields] | None = None,
         group_by: None = None,
+        query: str | None = None,
+        search_properties: PriceProductionTextFields | Sequence[PriceProductionTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -215,6 +274,10 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         ),
         property: PriceProductionFields | Sequence[PriceProductionFields] | None = None,
         group_by: PriceProductionFields | Sequence[PriceProductionFields] = None,
+        query: str | None = None,
+        search_properties: PriceProductionTextFields | Sequence[PriceProductionTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -232,6 +295,10 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         ),
         property: PriceProductionFields | Sequence[PriceProductionFields] | None = None,
         group_by: PriceProductionFields | Sequence[PriceProductionFields] | None = None,
+        query: str | None = None,
+        search_property: PriceProductionTextFields | Sequence[PriceProductionTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -244,6 +311,10 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
             aggregate: The aggregation to perform.
             property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            query: The query to search for in the text field.
+            search_property: The text field to search in.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             shop_result: The shop result to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -265,6 +336,8 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
 
         filter_ = _create_price_production_filter(
             self._view_id,
+            name,
+            name_prefix,
             shop_result,
             external_id_prefix,
             space,
@@ -276,8 +349,8 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
             _PRICEPRODUCTION_PROPERTIES_BY_FIELD,
             property,
             group_by,
-            None,
-            None,
+            query,
+            search_property,
             limit,
             filter_,
         )
@@ -286,6 +359,10 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         self,
         property: PriceProductionFields,
         interval: float,
+        query: str | None = None,
+        search_property: PriceProductionTextFields | Sequence[PriceProductionTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -297,6 +374,10 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         Args:
             property: The property to use as the value in the histogram.
             interval: The interval to use for the histogram bins.
+            query: The query to search for in the text field.
+            search_property: The text field to search in.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             shop_result: The shop result to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -309,6 +390,8 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         """
         filter_ = _create_price_production_filter(
             self._view_id,
+            name,
+            name_prefix,
             shop_result,
             external_id_prefix,
             space,
@@ -319,14 +402,16 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
             property,
             interval,
             _PRICEPRODUCTION_PROPERTIES_BY_FIELD,
-            None,
-            None,
+            query,
+            search_property,
             limit,
             filter_,
         )
 
     def list(
         self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -336,6 +421,8 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         """List/filter price productions
 
         Args:
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             shop_result: The shop result to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -356,6 +443,8 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         """
         filter_ = _create_price_production_filter(
             self._view_id,
+            name,
+            name_prefix,
             shop_result,
             external_id_prefix,
             space,
