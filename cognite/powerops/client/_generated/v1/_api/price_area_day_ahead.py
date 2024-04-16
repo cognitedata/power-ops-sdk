@@ -33,6 +33,8 @@ from ._core import (
     QueryStep,
     QueryBuilder,
 )
+from .price_area_day_ahead_main_price_scenario import PriceAreaDayAheadMainPriceScenarioAPI
+from .price_area_day_ahead_price_scenarios import PriceAreaDayAheadPriceScenariosAPI
 from .price_area_day_ahead_query import PriceAreaDayAheadQueryAPI
 
 
@@ -48,14 +50,20 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
+        self.main_price_scenario = PriceAreaDayAheadMainPriceScenarioAPI(client, view_id)
+        self.price_scenarios = PriceAreaDayAheadPriceScenariosAPI(client, view_id)
 
     def __call__(
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        timezone: str | list[str] | None = None,
-        timezone_prefix: str | None = None,
-        default_method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
+        default_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -66,9 +74,13 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            timezone: The timezone to filter on.
-            timezone_prefix: The prefix of the timezone to filter on.
-            default_method: The default method to filter on.
+            display_name: The display name to filter on.
+            display_name_prefix: The prefix of the display name to filter on.
+            min_ordering: The minimum value of the ordering to filter on.
+            max_ordering: The maximum value of the ordering to filter on.
+            asset_type: The asset type to filter on.
+            asset_type_prefix: The prefix of the asset type to filter on.
+            default_bid_configuration: The default bid configuration to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of price area day aheads to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -83,9 +95,13 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
             self._view_id,
             name,
             name_prefix,
-            timezone,
-            timezone_prefix,
-            default_method,
+            display_name,
+            display_name_prefix,
+            min_ordering,
+            max_ordering,
+            asset_type,
+            asset_type_prefix,
+            default_bid_configuration,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -201,9 +217,13 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
         properties: PriceAreaDayAheadTextFields | Sequence[PriceAreaDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        timezone: str | list[str] | None = None,
-        timezone_prefix: str | None = None,
-        default_method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
+        default_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -216,9 +236,13 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
             properties: The property to search, if nothing is passed all text fields will be searched.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            timezone: The timezone to filter on.
-            timezone_prefix: The prefix of the timezone to filter on.
-            default_method: The default method to filter on.
+            display_name: The display name to filter on.
+            display_name_prefix: The prefix of the display name to filter on.
+            min_ordering: The minimum value of the ordering to filter on.
+            max_ordering: The maximum value of the ordering to filter on.
+            asset_type: The asset type to filter on.
+            asset_type_prefix: The prefix of the asset type to filter on.
+            default_bid_configuration: The default bid configuration to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of price area day aheads to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -240,9 +264,13 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
             self._view_id,
             name,
             name_prefix,
-            timezone,
-            timezone_prefix,
-            default_method,
+            display_name,
+            display_name_prefix,
+            min_ordering,
+            max_ordering,
+            asset_type,
+            asset_type_prefix,
+            default_bid_configuration,
             external_id_prefix,
             space,
             filter,
@@ -264,9 +292,13 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
         search_properties: PriceAreaDayAheadTextFields | Sequence[PriceAreaDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        timezone: str | list[str] | None = None,
-        timezone_prefix: str | None = None,
-        default_method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
+        default_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -288,9 +320,13 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
         search_properties: PriceAreaDayAheadTextFields | Sequence[PriceAreaDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        timezone: str | list[str] | None = None,
-        timezone_prefix: str | None = None,
-        default_method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
+        default_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -311,9 +347,13 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
         search_property: PriceAreaDayAheadTextFields | Sequence[PriceAreaDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        timezone: str | list[str] | None = None,
-        timezone_prefix: str | None = None,
-        default_method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
+        default_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -329,9 +369,13 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
             search_property: The text field to search in.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            timezone: The timezone to filter on.
-            timezone_prefix: The prefix of the timezone to filter on.
-            default_method: The default method to filter on.
+            display_name: The display name to filter on.
+            display_name_prefix: The prefix of the display name to filter on.
+            min_ordering: The minimum value of the ordering to filter on.
+            max_ordering: The maximum value of the ordering to filter on.
+            asset_type: The asset type to filter on.
+            asset_type_prefix: The prefix of the asset type to filter on.
+            default_bid_configuration: The default bid configuration to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of price area day aheads to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -354,9 +398,13 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
             self._view_id,
             name,
             name_prefix,
-            timezone,
-            timezone_prefix,
-            default_method,
+            display_name,
+            display_name_prefix,
+            min_ordering,
+            max_ordering,
+            asset_type,
+            asset_type_prefix,
+            default_bid_configuration,
             external_id_prefix,
             space,
             filter,
@@ -381,9 +429,13 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
         search_property: PriceAreaDayAheadTextFields | Sequence[PriceAreaDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        timezone: str | list[str] | None = None,
-        timezone_prefix: str | None = None,
-        default_method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
+        default_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -398,9 +450,13 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
             search_property: The text field to search in.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            timezone: The timezone to filter on.
-            timezone_prefix: The prefix of the timezone to filter on.
-            default_method: The default method to filter on.
+            display_name: The display name to filter on.
+            display_name_prefix: The prefix of the display name to filter on.
+            min_ordering: The minimum value of the ordering to filter on.
+            max_ordering: The maximum value of the ordering to filter on.
+            asset_type: The asset type to filter on.
+            asset_type_prefix: The prefix of the asset type to filter on.
+            default_bid_configuration: The default bid configuration to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of price area day aheads to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -414,9 +470,13 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
             self._view_id,
             name,
             name_prefix,
-            timezone,
-            timezone_prefix,
-            default_method,
+            display_name,
+            display_name_prefix,
+            min_ordering,
+            max_ordering,
+            asset_type,
+            asset_type_prefix,
+            default_bid_configuration,
             external_id_prefix,
             space,
             filter,
@@ -436,9 +496,13 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        timezone: str | list[str] | None = None,
-        timezone_prefix: str | None = None,
-        default_method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
+        default_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -449,9 +513,13 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            timezone: The timezone to filter on.
-            timezone_prefix: The prefix of the timezone to filter on.
-            default_method: The default method to filter on.
+            display_name: The display name to filter on.
+            display_name_prefix: The prefix of the display name to filter on.
+            min_ordering: The minimum value of the ordering to filter on.
+            max_ordering: The maximum value of the ordering to filter on.
+            asset_type: The asset type to filter on.
+            asset_type_prefix: The prefix of the asset type to filter on.
+            default_bid_configuration: The default bid configuration to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of price area day aheads to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -473,9 +541,13 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
             self._view_id,
             name,
             name_prefix,
-            timezone,
-            timezone_prefix,
-            default_method,
+            display_name,
+            display_name_prefix,
+            min_ordering,
+            max_ordering,
+            asset_type,
+            asset_type_prefix,
+            default_bid_configuration,
             external_id_prefix,
             space,
             filter,

@@ -58,8 +58,8 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
@@ -78,8 +78,8 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
             min_delivery_date: The minimum value of the delivery date to filter on.
             max_delivery_date: The maximum value of the delivery date to filter on.
             min_start_calculation: The minimum value of the start calculation to filter on.
@@ -102,8 +102,8 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
             self._view_id,
             name,
             name_prefix,
-            process_id,
-            process_id_prefix,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
             min_delivery_date,
             max_delivery_date,
             min_start_calculation,
@@ -231,16 +231,16 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
+                    dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models_temp", "Alert", "1"),
+                    dm.ViewId("sp_power_ops_models", "Alert", "1"),
                 ),
                 (
                     self.bids_edge,
                     "bids",
-                    dm.DirectRelationReference("sp_powerops_types_temp", "partialBid"),
+                    dm.DirectRelationReference("sp_power_ops_types", "partialBid"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models_temp", "BidRow", "1"),
+                    dm.ViewId("sp_power_ops_models", "BidRow", "1"),
                 ),
             ],
         )
@@ -251,8 +251,8 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
         properties: BidDocumentAFRRTextFields | Sequence[BidDocumentAFRRTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
@@ -273,8 +273,8 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
             properties: The property to search, if nothing is passed all text fields will be searched.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
             min_delivery_date: The minimum value of the delivery date to filter on.
             max_delivery_date: The maximum value of the delivery date to filter on.
             min_start_calculation: The minimum value of the start calculation to filter on.
@@ -304,8 +304,8 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
             self._view_id,
             name,
             name_prefix,
-            process_id,
-            process_id_prefix,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
             min_delivery_date,
             max_delivery_date,
             min_start_calculation,
@@ -335,8 +335,8 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
         search_properties: BidDocumentAFRRTextFields | Sequence[BidDocumentAFRRTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
@@ -366,8 +366,8 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
         search_properties: BidDocumentAFRRTextFields | Sequence[BidDocumentAFRRTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
@@ -396,8 +396,8 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
         search_property: BidDocumentAFRRTextFields | Sequence[BidDocumentAFRRTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
@@ -421,8 +421,8 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
             search_property: The text field to search in.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
             min_delivery_date: The minimum value of the delivery date to filter on.
             max_delivery_date: The maximum value of the delivery date to filter on.
             min_start_calculation: The minimum value of the start calculation to filter on.
@@ -453,8 +453,8 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
             self._view_id,
             name,
             name_prefix,
-            process_id,
-            process_id_prefix,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
             min_delivery_date,
             max_delivery_date,
             min_start_calculation,
@@ -487,8 +487,8 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
         search_property: BidDocumentAFRRTextFields | Sequence[BidDocumentAFRRTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
@@ -511,8 +511,8 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
             search_property: The text field to search in.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
             min_delivery_date: The minimum value of the delivery date to filter on.
             max_delivery_date: The maximum value of the delivery date to filter on.
             min_start_calculation: The minimum value of the start calculation to filter on.
@@ -534,8 +534,8 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
             self._view_id,
             name,
             name_prefix,
-            process_id,
-            process_id_prefix,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
             min_delivery_date,
             max_delivery_date,
             min_start_calculation,
@@ -563,8 +563,8 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
@@ -584,8 +584,8 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
             min_delivery_date: The minimum value of the delivery date to filter on.
             max_delivery_date: The maximum value of the delivery date to filter on.
             min_start_calculation: The minimum value of the start calculation to filter on.
@@ -616,8 +616,8 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
             self._view_id,
             name,
             name_prefix,
-            process_id,
-            process_id_prefix,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
             min_delivery_date,
             max_delivery_date,
             min_start_calculation,
@@ -639,16 +639,16 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
+                    dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models_temp", "Alert", "1"),
+                    dm.ViewId("sp_power_ops_models", "Alert", "1"),
                 ),
                 (
                     self.bids_edge,
                     "bids",
-                    dm.DirectRelationReference("sp_powerops_types_temp", "partialBid"),
+                    dm.DirectRelationReference("sp_power_ops_types", "partialBid"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models_temp", "BidRow", "1"),
+                    dm.ViewId("sp_power_ops_models", "BidRow", "1"),
                 ),
             ],
         )

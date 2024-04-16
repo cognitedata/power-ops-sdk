@@ -21,6 +21,7 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     DomainModelCore,
     DomainModelWrite,
     DomainRelationWrite,
+    PageInfo,
     GraphQLList,
     ResourcesWriteResult,
     T_DomainModel,
@@ -482,6 +483,7 @@ class QueryStep:
     max_retrieve_limit: int
     select: dm.query.Select
     result_cls: type[DomainModelCore] | None = None
+    is_single_direct_relation: bool = False
 
     # Query Variables
     cursor: str | None = None
@@ -498,6 +500,17 @@ class QueryStep:
     @property
     def is_unlimited(self) -> bool:
         return self.max_retrieve_limit in {None, -1, math.inf}
+
+    @property
+    def is_finished(self) -> bool:
+        return (
+            (not self.is_unlimited and self.total_retrieved >= self.max_retrieve_limit)
+            or self.cursor is None
+            or self.last_batch_count == 0
+            # Single direct relations are dependent on the parent node,
+            # so we assume that the parent node is the limiting factor.
+            or self.is_single_direct_relation
+        )
 
 
 class QueryBuilder(UserList, Generic[T_DomainModelList]):
@@ -569,12 +582,7 @@ class QueryBuilder(UserList, Generic[T_DomainModelList]):
 
     @property
     def is_finished(self):
-        return all(
-            (not expression.is_unlimited and expression.total_retrieved >= expression.max_retrieve_limit)
-            or expression.cursor is None
-            or expression.last_batch_count == 0
-            for expression in self
-        )
+        return all(expression.is_finished for expression in self)
 
     def unpack(self) -> T_DomainModelList:
         nodes_by_type: dict[str | None, dict[tuple[str, str], DomainModel]] = defaultdict(dict)
@@ -766,6 +774,8 @@ class GraphQLQueryResponse:
             raise RuntimeError(response["errors"])
         _, data = list(response.items())[0]
         self._parse_item(data)
+        if "pageInfo" in data:
+            self._output.page_info = PageInfo.load(data["pageInfo"])
         return self._output
 
     def _parse_item(self, data: dict[str, Any]) -> None:
@@ -784,30 +794,31 @@ class GraphQLQueryResponse:
 
 
 _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE = {
-    dm.DataModelId("sp_powerops_models_temp", "compute_SHOPBasedDayAhead", "1"): {
+    dm.DataModelId("sp_power_ops_models", "compute_ShopBasedDayAhead", "1"): {
         "TaskDispatcherInput": data_classes.TaskDispatcherInputGraphQL,
         "TaskDispatcherOutput": data_classes.TaskDispatcherOutputGraphQL,
-        "PreprocessorInput": data_classes.PreprocessorInputGraphQL,
-        "PreprocessorOutput": data_classes.PreprocessorOutputGraphQL,
-        "SHOPTriggerInput": data_classes.SHOPTriggerInputGraphQL,
-        "SHOPTriggerOutput": data_classes.SHOPTriggerOutputGraphQL,
+        "ShopPreprocessorInput": data_classes.ShopPreprocessorInputGraphQL,
+        "ShopPreprocessorOutput": data_classes.ShopPreprocessorOutputGraphQL,
+        "ShopTriggerInput": data_classes.ShopTriggerInputGraphQL,
+        "ShopTriggerOutput": data_classes.ShopTriggerOutputGraphQL,
         "PartialBidMatrixCalculationInput": data_classes.PartialBidMatrixCalculationInputGraphQL,
         "ShopPartialBidMatrixCalculationInput": data_classes.ShopPartialBidMatrixCalculationInputGraphQL,
         "PartialBidMatrixCalculationOutput": data_classes.PartialBidMatrixCalculationOutputGraphQL,
         "BidMatrix": data_classes.BidMatrixGraphQL,
         "MarketConfiguration": data_classes.MarketConfigurationGraphQL,
-        "Scenario": data_classes.ScenarioGraphQL,
-        "ScenarioSet": data_classes.ScenarioSetGraphQL,
-        "Mapping": data_classes.MappingGraphQL,
-        "ModelTemplate": data_classes.ModelTemplateGraphQL,
-        "SHOPResult": data_classes.SHOPResultGraphQL,
-        "Case": data_classes.CaseGraphQL,
+        "ShopScenario": data_classes.ShopScenarioGraphQL,
+        "ShopScenarioSet": data_classes.ShopScenarioSetGraphQL,
+        "ShopAttributeMapping": data_classes.ShopAttributeMappingGraphQL,
+        "ShopModel": data_classes.ShopModelGraphQL,
+        "ShopResult": data_classes.ShopResultGraphQL,
+        "ShopCase": data_classes.ShopCaseGraphQL,
         "Alert": data_classes.AlertGraphQL,
-        "BidConfiguration": data_classes.BidConfigurationGraphQL,
+        "BidConfigurationDayAhead": data_classes.BidConfigurationDayAheadGraphQL,
         "PriceArea": data_classes.PriceAreaGraphQL,
+        "PriceAreaDayAhead": data_classes.PriceAreaDayAheadGraphQL,
         "PriceProduction": data_classes.PriceProductionGraphQL,
-        "SHOPTimeSeries": data_classes.SHOPTimeSeriesGraphQL,
-        "Commands": data_classes.CommandsGraphQL,
+        "ShopTimeSeries": data_classes.ShopTimeSeriesGraphQL,
+        "ShopCommands": data_classes.ShopCommandsGraphQL,
         "FunctionInput": data_classes.FunctionInputGraphQL,
         "FunctionOutput": data_classes.FunctionOutputGraphQL,
         "PowerAsset": data_classes.PowerAssetGraphQL,
@@ -815,39 +826,45 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE = {
         "ShopBasedPartialBidConfiguration": data_classes.ShopBasedPartialBidConfigurationGraphQL,
         "ShopFile": data_classes.ShopFileGraphQL,
     },
-    dm.DataModelId("sp_powerops_models_temp", "compute_TotalBidMatrixCalculation", "1"): {
+    dm.DataModelId("sp_power_ops_models", "compute_TotalBidMatrixCalculation", "1"): {
         "BidMatrix": data_classes.BidMatrixGraphQL,
+        "BidMatrixInformation": data_classes.BidMatrixInformationGraphQL,
+        "PartialBidMatrixInformation": data_classes.PartialBidMatrixInformationGraphQL,
         "TotalBidMatrixCalculationInput": data_classes.TotalBidMatrixCalculationInputGraphQL,
         "TotalBidMatrixCalculationOutput": data_classes.TotalBidMatrixCalculationOutputGraphQL,
         "BidDocumentDayAhead": data_classes.BidDocumentDayAheadGraphQL,
         "PriceArea": data_classes.PriceAreaGraphQL,
+        "PriceAreaDayAhead": data_classes.PriceAreaDayAheadGraphQL,
         "Alert": data_classes.AlertGraphQL,
-        "SHOPResult": data_classes.SHOPResultGraphQL,
+        "ShopResult": data_classes.ShopResultGraphQL,
         "MarketConfiguration": data_classes.MarketConfigurationGraphQL,
-        "Scenario": data_classes.ScenarioGraphQL,
-        "ModelTemplate": data_classes.ModelTemplateGraphQL,
-        "Mapping": data_classes.MappingGraphQL,
+        "ShopScenario": data_classes.ShopScenarioGraphQL,
+        "ShopModel": data_classes.ShopModelGraphQL,
+        "ShopAttributeMapping": data_classes.ShopAttributeMappingGraphQL,
         "PriceProduction": data_classes.PriceProductionGraphQL,
-        "Case": data_classes.CaseGraphQL,
-        "SHOPTimeSeries": data_classes.SHOPTimeSeriesGraphQL,
-        "Commands": data_classes.CommandsGraphQL,
+        "ShopCase": data_classes.ShopCaseGraphQL,
+        "ShopTimeSeries": data_classes.ShopTimeSeriesGraphQL,
+        "ShopCommands": data_classes.ShopCommandsGraphQL,
         "FunctionInput": data_classes.FunctionInputGraphQL,
         "FunctionOutput": data_classes.FunctionOutputGraphQL,
         "BidDocument": data_classes.BidDocumentGraphQL,
         "PowerAsset": data_classes.PowerAssetGraphQL,
         "PartialBidConfiguration": data_classes.PartialBidConfigurationGraphQL,
-        "BidConfiguration": data_classes.BidConfigurationGraphQL,
+        "BidConfigurationDayAhead": data_classes.BidConfigurationDayAheadGraphQL,
+        "ShopFile": data_classes.ShopFileGraphQL,
     },
-    dm.DataModelId("sp_powerops_models_temp", "compute_WaterValueBasedDayAheadBid", "1"): {
+    dm.DataModelId("sp_power_ops_models", "compute_WaterValueBasedDayAheadBid", "1"): {
         "TaskDispatcherInput": data_classes.TaskDispatcherInputGraphQL,
         "TaskDispatcherOutput": data_classes.TaskDispatcherOutputGraphQL,
         "PartialBidMatrixCalculationInput": data_classes.PartialBidMatrixCalculationInputGraphQL,
         "WaterValueBasedPartialBidMatrixCalculationInput": data_classes.WaterValueBasedPartialBidMatrixCalculationInputGraphQL,
         "PartialBidMatrixCalculationOutput": data_classes.PartialBidMatrixCalculationOutputGraphQL,
         "Plant": data_classes.PlantGraphQL,
+        "PlantWaterValueBased": data_classes.PlantWaterValueBasedGraphQL,
         "Alert": data_classes.AlertGraphQL,
-        "BidConfiguration": data_classes.BidConfigurationGraphQL,
+        "BidConfigurationDayAhead": data_classes.BidConfigurationDayAheadGraphQL,
         "PriceArea": data_classes.PriceAreaGraphQL,
+        "PriceAreaDayAhead": data_classes.PriceAreaDayAheadGraphQL,
         "MarketConfiguration": data_classes.MarketConfigurationGraphQL,
         "Generator": data_classes.GeneratorGraphQL,
         "GeneratorEfficiencyCurve": data_classes.GeneratorEfficiencyCurveGraphQL,
@@ -859,25 +876,28 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE = {
         "PartialBidConfiguration": data_classes.PartialBidConfigurationGraphQL,
         "WaterValueBasedPartialBidConfiguration": data_classes.WaterValueBasedPartialBidConfigurationGraphQL,
     },
-    dm.DataModelId("sp_powerops_models_temp", "config_DayAheadConfiguration", "1"): {
-        "BidConfiguration": data_classes.BidConfigurationGraphQL,
+    dm.DataModelId("sp_power_ops_models", "config_DayAheadConfiguration", "1"): {
+        "BidConfigurationDayAhead": data_classes.BidConfigurationDayAheadGraphQL,
         "MarketConfiguration": data_classes.MarketConfigurationGraphQL,
         "PriceArea": data_classes.PriceAreaGraphQL,
+        "PriceAreaDayAhead": data_classes.PriceAreaDayAheadGraphQL,
         "PartialBidConfiguration": data_classes.PartialBidConfigurationGraphQL,
         "ShopBasedPartialBidConfiguration": data_classes.ShopBasedPartialBidConfigurationGraphQL,
         "WaterValueBasedPartialBidConfiguration": data_classes.WaterValueBasedPartialBidConfigurationGraphQL,
-        "Scenario": data_classes.ScenarioGraphQL,
-        "ScenarioSet": data_classes.ScenarioSetGraphQL,
-        "Mapping": data_classes.MappingGraphQL,
-        "ModelTemplate": data_classes.ModelTemplateGraphQL,
+        "ShopScenario": data_classes.ShopScenarioGraphQL,
+        "ShopScenarioSet": data_classes.ShopScenarioSetGraphQL,
+        "ShopAttributeMapping": data_classes.ShopAttributeMappingGraphQL,
+        "ShopModel": data_classes.ShopModelGraphQL,
         "Generator": data_classes.GeneratorGraphQL,
         "TurbineEfficiencyCurve": data_classes.TurbineEfficiencyCurveGraphQL,
         "GeneratorEfficiencyCurve": data_classes.GeneratorEfficiencyCurveGraphQL,
-        "Commands": data_classes.CommandsGraphQL,
+        "ShopCommands": data_classes.ShopCommandsGraphQL,
         "PowerAsset": data_classes.PowerAssetGraphQL,
         "Plant": data_classes.PlantGraphQL,
+        "PlantInformation": data_classes.PlantInformationGraphQL,
+        "PlantWaterValueBased": data_classes.PlantWaterValueBasedGraphQL,
     },
-    dm.DataModelId("sp_powerops_models_temp", "frontend_AFRRBid", "1"): {
+    dm.DataModelId("sp_power_ops_models", "frontend_AFRRBid", "1"): {
         "BidDocumentAFRR": data_classes.BidDocumentAFRRGraphQL,
         "BidDocument": data_classes.BidDocumentGraphQL,
         "BidRow": data_classes.BidRowGraphQL,
@@ -886,31 +906,46 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE = {
         "Alert": data_classes.AlertGraphQL,
         "PowerAsset": data_classes.PowerAssetGraphQL,
     },
-    dm.DataModelId("sp_powerops_models_temp", "frontend_Asset", "1"): {
+    dm.DataModelId("sp_power_ops_models", "frontend_Asset", "1"): {
         "PriceArea": data_classes.PriceAreaGraphQL,
+        "PriceAreaAFRR": data_classes.PriceAreaAFRRGraphQL,
+        "PriceAreaDayAhead": data_classes.PriceAreaDayAheadGraphQL,
+        "PriceAreaInformation": data_classes.PriceAreaInformationGraphQL,
+        "BidConfigurationDayAhead": data_classes.BidConfigurationDayAheadGraphQL,
+        "MarketConfiguration": data_classes.MarketConfigurationGraphQL,
+        "PartialBidConfiguration": data_classes.PartialBidConfigurationGraphQL,
         "PowerAsset": data_classes.PowerAssetGraphQL,
         "Plant": data_classes.PlantGraphQL,
+        "PlantWaterValueBased": data_classes.PlantWaterValueBasedGraphQL,
+        "PlantInformation": data_classes.PlantInformationGraphQL,
+        "Watercourse": data_classes.WatercourseGraphQL,
         "Generator": data_classes.GeneratorGraphQL,
         "TurbineEfficiencyCurve": data_classes.TurbineEfficiencyCurveGraphQL,
         "GeneratorEfficiencyCurve": data_classes.GeneratorEfficiencyCurveGraphQL,
     },
-    dm.DataModelId("sp_powerops_models_temp", "frontend_DayAheadBid", "1"): {
+    dm.DataModelId("sp_power_ops_models", "frontend_DayAheadBid", "1"): {
         "BidDocumentDayAhead": data_classes.BidDocumentDayAheadGraphQL,
         "BidDocument": data_classes.BidDocumentGraphQL,
-        "BidMatrix": data_classes.BidMatrixGraphQL,
         "PriceArea": data_classes.PriceAreaGraphQL,
+        "PriceAreaDayAhead": data_classes.PriceAreaDayAheadGraphQL,
         "Alert": data_classes.AlertGraphQL,
-        "Scenario": data_classes.ScenarioGraphQL,
-        "ModelTemplate": data_classes.ModelTemplateGraphQL,
-        "Mapping": data_classes.MappingGraphQL,
+        "ShopScenario": data_classes.ShopScenarioGraphQL,
+        "ShopModel": data_classes.ShopModelGraphQL,
+        "ShopAttributeMapping": data_classes.ShopAttributeMappingGraphQL,
         "PriceProduction": data_classes.PriceProductionGraphQL,
-        "Commands": data_classes.CommandsGraphQL,
-        "Case": data_classes.CaseGraphQL,
+        "ShopCommands": data_classes.ShopCommandsGraphQL,
+        "ShopCase": data_classes.ShopCaseGraphQL,
         "PowerAsset": data_classes.PowerAssetGraphQL,
-        "BidConfiguration": data_classes.BidConfigurationGraphQL,
+        "BidConfigurationDayAhead": data_classes.BidConfigurationDayAheadGraphQL,
         "PartialBidConfiguration": data_classes.PartialBidConfigurationGraphQL,
-        "SHOPResult": data_classes.SHOPResultGraphQL,
+        "ShopResult": data_classes.ShopResultGraphQL,
         "MarketConfiguration": data_classes.MarketConfigurationGraphQL,
-        "SHOPTimeSeries": data_classes.SHOPTimeSeriesGraphQL,
+        "ShopTimeSeries": data_classes.ShopTimeSeriesGraphQL,
+        "ShopFile": data_classes.ShopFileGraphQL,
+        "BidMatrix": data_classes.BidMatrixGraphQL,
+        "BidMatrixInformation": data_classes.BidMatrixInformationGraphQL,
+        "PartialBidMatrixInformation": data_classes.PartialBidMatrixInformationGraphQL,
+        "PartialBidMatrixInformationWithScenarios": data_classes.PartialBidMatrixInformationWithScenariosGraphQL,
+        "ShopPenaltyReport": data_classes.ShopPenaltyReportGraphQL,
     },
 }

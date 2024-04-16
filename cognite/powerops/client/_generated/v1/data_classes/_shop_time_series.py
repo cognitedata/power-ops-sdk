@@ -26,29 +26,29 @@ from ._core import (
 
 
 __all__ = [
-    "SHOPTimeSeries",
-    "SHOPTimeSeriesWrite",
-    "SHOPTimeSeriesApply",
-    "SHOPTimeSeriesList",
-    "SHOPTimeSeriesWriteList",
-    "SHOPTimeSeriesApplyList",
-    "SHOPTimeSeriesFields",
-    "SHOPTimeSeriesTextFields",
+    "ShopTimeSeries",
+    "ShopTimeSeriesWrite",
+    "ShopTimeSeriesApply",
+    "ShopTimeSeriesList",
+    "ShopTimeSeriesWriteList",
+    "ShopTimeSeriesApplyList",
+    "ShopTimeSeriesFields",
+    "ShopTimeSeriesTextFields",
 ]
 
 
-SHOPTimeSeriesTextFields = Literal["object_type", "object_name", "attribute_name", "timeseries"]
-SHOPTimeSeriesFields = Literal["object_type", "object_name", "attribute_name", "timeseries"]
+ShopTimeSeriesTextFields = Literal["object_type", "object_name", "attribute_name", "time_series"]
+ShopTimeSeriesFields = Literal["object_type", "object_name", "attribute_name", "time_series"]
 
 _SHOPTIMESERIES_PROPERTIES_BY_FIELD = {
     "object_type": "objectType",
     "object_name": "objectName",
     "attribute_name": "attributeName",
-    "timeseries": "timeseries",
+    "time_series": "timeSeries",
 }
 
 
-class SHOPTimeSeriesGraphQL(GraphQLCore):
+class ShopTimeSeriesGraphQL(GraphQLCore):
     """This represents the reading version of shop time series, used
     when data is retrieved from CDF using GraphQL.
 
@@ -61,14 +61,14 @@ class SHOPTimeSeriesGraphQL(GraphQLCore):
         object_type: The type of the object
         object_name: The name of the object
         attribute_name: The name of the attribute
-        timeseries: Timeseries object from output of SHOP stored as a timeseries in cdf
+        time_series: Time series object from output of SHOP stored as a time series in cdf
     """
 
-    view_id = dm.ViewId("sp_powerops_models_temp", "SHOPTimeSeries", "1")
+    view_id = dm.ViewId("sp_power_ops_models", "ShopTimeSeries", "1")
     object_type: Optional[str] = Field(None, alias="objectType")
     object_name: Optional[str] = Field(None, alias="objectName")
     attribute_name: Optional[str] = Field(None, alias="attributeName")
-    timeseries: Union[TimeSeries, str, None] = None
+    time_series: Union[TimeSeries, dict, None] = Field(None, alias="timeSeries")
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -81,11 +81,11 @@ class SHOPTimeSeriesGraphQL(GraphQLCore):
             )
         return values
 
-    def as_read(self) -> SHOPTimeSeries:
+    def as_read(self) -> ShopTimeSeries:
         """Convert this GraphQL format of shop time series to the reading format."""
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
-        return SHOPTimeSeries(
+        return ShopTimeSeries(
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecord(
@@ -96,23 +96,23 @@ class SHOPTimeSeriesGraphQL(GraphQLCore):
             object_type=self.object_type,
             object_name=self.object_name,
             attribute_name=self.attribute_name,
-            timeseries=self.timeseries,
+            time_series=self.time_series,
         )
 
-    def as_write(self) -> SHOPTimeSeriesWrite:
+    def as_write(self) -> ShopTimeSeriesWrite:
         """Convert this GraphQL format of shop time series to the writing format."""
-        return SHOPTimeSeriesWrite(
+        return ShopTimeSeriesWrite(
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             object_type=self.object_type,
             object_name=self.object_name,
             attribute_name=self.attribute_name,
-            timeseries=self.timeseries,
+            time_series=self.time_series,
         )
 
 
-class SHOPTimeSeries(DomainModel):
+class ShopTimeSeries(DomainModel):
     """This represents the reading version of shop time series.
 
     It is used to when data is retrieved from CDF.
@@ -124,31 +124,31 @@ class SHOPTimeSeries(DomainModel):
         object_type: The type of the object
         object_name: The name of the object
         attribute_name: The name of the attribute
-        timeseries: Timeseries object from output of SHOP stored as a timeseries in cdf
+        time_series: Time series object from output of SHOP stored as a time series in cdf
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types_temp", "SHOPTimeSeries"
+        "sp_power_ops_types", "ShopTimeSeries"
     )
     object_type: Optional[str] = Field(None, alias="objectType")
     object_name: Optional[str] = Field(None, alias="objectName")
     attribute_name: Optional[str] = Field(None, alias="attributeName")
-    timeseries: Union[TimeSeries, str, None] = None
+    time_series: Union[TimeSeries, str, None] = Field(None, alias="timeSeries")
 
-    def as_write(self) -> SHOPTimeSeriesWrite:
+    def as_write(self) -> ShopTimeSeriesWrite:
         """Convert this read version of shop time series to the writing version."""
-        return SHOPTimeSeriesWrite(
+        return ShopTimeSeriesWrite(
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             object_type=self.object_type,
             object_name=self.object_name,
             attribute_name=self.attribute_name,
-            timeseries=self.timeseries,
+            time_series=self.time_series,
         )
 
-    def as_apply(self) -> SHOPTimeSeriesWrite:
+    def as_apply(self) -> ShopTimeSeriesWrite:
         """Convert this read version of shop time series to the writing version."""
         warnings.warn(
             "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
@@ -158,7 +158,7 @@ class SHOPTimeSeries(DomainModel):
         return self.as_write()
 
 
-class SHOPTimeSeriesWrite(DomainModelWrite):
+class ShopTimeSeriesWrite(DomainModelWrite):
     """This represents the writing version of shop time series.
 
     It is used to when data is sent to CDF.
@@ -170,17 +170,17 @@ class SHOPTimeSeriesWrite(DomainModelWrite):
         object_type: The type of the object
         object_name: The name of the object
         attribute_name: The name of the attribute
-        timeseries: Timeseries object from output of SHOP stored as a timeseries in cdf
+        time_series: Time series object from output of SHOP stored as a time series in cdf
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types_temp", "SHOPTimeSeries"
+        "sp_power_ops_types", "ShopTimeSeries"
     )
     object_type: Optional[str] = Field(None, alias="objectType")
     object_name: Optional[str] = Field(None, alias="objectName")
     attribute_name: Optional[str] = Field(None, alias="attributeName")
-    timeseries: Union[TimeSeries, str, None] = None
+    time_series: Union[TimeSeries, str, None] = Field(None, alias="timeSeries")
 
     def _to_instances_write(
         self,
@@ -194,7 +194,7 @@ class SHOPTimeSeriesWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            SHOPTimeSeries, dm.ViewId("sp_powerops_models_temp", "SHOPTimeSeries", "1")
+            ShopTimeSeries, dm.ViewId("sp_power_ops_models", "ShopTimeSeries", "1")
         )
 
         properties: dict[str, Any] = {}
@@ -208,11 +208,11 @@ class SHOPTimeSeriesWrite(DomainModelWrite):
         if self.attribute_name is not None or write_none:
             properties["attributeName"] = self.attribute_name
 
-        if self.timeseries is not None or write_none:
-            if isinstance(self.timeseries, str) or self.timeseries is None:
-                properties["timeseries"] = self.timeseries
+        if self.time_series is not None or write_none:
+            if isinstance(self.time_series, str) or self.time_series is None:
+                properties["timeSeries"] = self.time_series
             else:
-                properties["timeseries"] = self.timeseries.external_id
+                properties["timeSeries"] = self.time_series.external_id
 
         if properties:
             this_node = dm.NodeApply(
@@ -230,34 +230,34 @@ class SHOPTimeSeriesWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        if isinstance(self.timeseries, CogniteTimeSeries):
-            resources.time_series.append(self.timeseries)
+        if isinstance(self.time_series, CogniteTimeSeries):
+            resources.time_series.append(self.time_series)
 
         return resources
 
 
-class SHOPTimeSeriesApply(SHOPTimeSeriesWrite):
-    def __new__(cls, *args, **kwargs) -> SHOPTimeSeriesApply:
+class ShopTimeSeriesApply(ShopTimeSeriesWrite):
+    def __new__(cls, *args, **kwargs) -> ShopTimeSeriesApply:
         warnings.warn(
-            "SHOPTimeSeriesApply is deprecated and will be removed in v1.0. Use SHOPTimeSeriesWrite instead."
+            "ShopTimeSeriesApply is deprecated and will be removed in v1.0. Use ShopTimeSeriesWrite instead."
             "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "SHOPTimeSeries.",
+            "ShopTimeSeries.",
             UserWarning,
             stacklevel=2,
         )
         return super().__new__(cls)
 
 
-class SHOPTimeSeriesList(DomainModelList[SHOPTimeSeries]):
+class ShopTimeSeriesList(DomainModelList[ShopTimeSeries]):
     """List of shop time series in the read version."""
 
-    _INSTANCE = SHOPTimeSeries
+    _INSTANCE = ShopTimeSeries
 
-    def as_write(self) -> SHOPTimeSeriesWriteList:
+    def as_write(self) -> ShopTimeSeriesWriteList:
         """Convert these read versions of shop time series to the writing versions."""
-        return SHOPTimeSeriesWriteList([node.as_write() for node in self.data])
+        return ShopTimeSeriesWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> SHOPTimeSeriesWriteList:
+    def as_apply(self) -> ShopTimeSeriesWriteList:
         """Convert these read versions of primitive nullable to the writing versions."""
         warnings.warn(
             "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
@@ -267,13 +267,13 @@ class SHOPTimeSeriesList(DomainModelList[SHOPTimeSeries]):
         return self.as_write()
 
 
-class SHOPTimeSeriesWriteList(DomainModelWriteList[SHOPTimeSeriesWrite]):
+class ShopTimeSeriesWriteList(DomainModelWriteList[ShopTimeSeriesWrite]):
     """List of shop time series in the writing version."""
 
-    _INSTANCE = SHOPTimeSeriesWrite
+    _INSTANCE = ShopTimeSeriesWrite
 
 
-class SHOPTimeSeriesApplyList(SHOPTimeSeriesWriteList): ...
+class ShopTimeSeriesApplyList(ShopTimeSeriesWriteList): ...
 
 
 def _create_shop_time_series_filter(

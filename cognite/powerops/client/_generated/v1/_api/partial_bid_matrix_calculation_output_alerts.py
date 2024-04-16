@@ -43,7 +43,7 @@ class PartialBidMatrixCalculationOutputAlertsAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
+            dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
             from_partial_bid_matrix_calculation_output,
             from_partial_bid_matrix_calculation_output_space,
             to_alert,

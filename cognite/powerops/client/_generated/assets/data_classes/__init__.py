@@ -11,6 +11,7 @@ from ._core import (
     GraphQLList,
     ResourcesWrite,
     ResourcesWriteResult,
+    PageInfo,
 )
 from ._bid_method import (
     BidMethod,
@@ -130,6 +131,7 @@ __all__ = [
     "GraphQLCore",
     "GraphQLList",
     "ResourcesWriteResult",
+    "PageInfo",
     "BidMethod",
     "BidMethodGraphQL",
     "BidMethodWrite",

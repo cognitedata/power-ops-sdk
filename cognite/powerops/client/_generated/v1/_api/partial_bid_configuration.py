@@ -57,6 +57,7 @@ class PartialBidConfigurationAPI(
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
+        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         add_steps: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -70,6 +71,7 @@ class PartialBidConfigurationAPI(
             name_prefix: The prefix of the name to filter on.
             method: The method to filter on.
             method_prefix: The prefix of the method to filter on.
+            power_asset: The power asset to filter on.
             add_steps: The add step to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -87,6 +89,7 @@ class PartialBidConfigurationAPI(
             name_prefix,
             method,
             method_prefix,
+            power_asset,
             add_steps,
             external_id_prefix,
             space,
@@ -205,6 +208,7 @@ class PartialBidConfigurationAPI(
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
+        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         add_steps: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -220,6 +224,7 @@ class PartialBidConfigurationAPI(
             name_prefix: The prefix of the name to filter on.
             method: The method to filter on.
             method_prefix: The prefix of the method to filter on.
+            power_asset: The power asset to filter on.
             add_steps: The add step to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -244,6 +249,7 @@ class PartialBidConfigurationAPI(
             name_prefix,
             method,
             method_prefix,
+            power_asset,
             add_steps,
             external_id_prefix,
             space,
@@ -272,6 +278,7 @@ class PartialBidConfigurationAPI(
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
+        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         add_steps: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -298,6 +305,7 @@ class PartialBidConfigurationAPI(
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
+        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         add_steps: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -321,6 +329,7 @@ class PartialBidConfigurationAPI(
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
+        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         add_steps: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -339,6 +348,7 @@ class PartialBidConfigurationAPI(
             name_prefix: The prefix of the name to filter on.
             method: The method to filter on.
             method_prefix: The prefix of the method to filter on.
+            power_asset: The power asset to filter on.
             add_steps: The add step to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -364,6 +374,7 @@ class PartialBidConfigurationAPI(
             name_prefix,
             method,
             method_prefix,
+            power_asset,
             add_steps,
             external_id_prefix,
             space,
@@ -391,6 +402,7 @@ class PartialBidConfigurationAPI(
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
+        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         add_steps: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -408,6 +420,7 @@ class PartialBidConfigurationAPI(
             name_prefix: The prefix of the name to filter on.
             method: The method to filter on.
             method_prefix: The prefix of the method to filter on.
+            power_asset: The power asset to filter on.
             add_steps: The add step to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -424,6 +437,7 @@ class PartialBidConfigurationAPI(
             name_prefix,
             method,
             method_prefix,
+            power_asset,
             add_steps,
             external_id_prefix,
             space,
@@ -446,6 +460,7 @@ class PartialBidConfigurationAPI(
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
+        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         add_steps: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -459,6 +474,7 @@ class PartialBidConfigurationAPI(
             name_prefix: The prefix of the name to filter on.
             method: The method to filter on.
             method_prefix: The prefix of the method to filter on.
+            power_asset: The power asset to filter on.
             add_steps: The add step to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -483,6 +499,7 @@ class PartialBidConfigurationAPI(
             name_prefix,
             method,
             method_prefix,
+            power_asset,
             add_steps,
             external_id_prefix,
             space,

@@ -24,7 +24,7 @@ from ._core import (
 from ._partial_bid_configuration import PartialBidConfiguration, PartialBidConfigurationWrite
 
 if TYPE_CHECKING:
-    from ._plant import Plant, PlantGraphQL, PlantWrite
+    from ._plant_water_value_based import PlantWaterValueBased, PlantWaterValueBasedGraphQL, PlantWaterValueBasedWrite
 
 
 __all__ = [
@@ -61,15 +61,15 @@ class WaterValueBasedPartialBidConfigurationGraphQL(GraphQLCore):
         data_record: The data record of the water value based partial bid configuration node.
         name: Name for the PartialBidConfiguration
         method: Name of the method used for the bid calculation
+        power_asset: TODO description (has to be a Plant)
         add_steps: TODO definition
-        plant: TODO description
     """
 
-    view_id = dm.ViewId("sp_powerops_models_temp", "WaterValueBasedPartialBidConfiguration", "1")
+    view_id = dm.ViewId("sp_power_ops_models", "WaterValueBasedPartialBidConfiguration", "1")
     name: Optional[str] = None
     method: Optional[str] = None
+    power_asset: Optional[PlantWaterValueBasedGraphQL] = Field(None, repr=False, alias="powerAsset")
     add_steps: Optional[bool] = Field(None, alias="addSteps")
-    plant: Optional[PlantGraphQL] = Field(None, repr=False)
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -82,7 +82,7 @@ class WaterValueBasedPartialBidConfigurationGraphQL(GraphQLCore):
             )
         return values
 
-    @field_validator("plant", mode="before")
+    @field_validator("power_asset", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
             return value
@@ -104,8 +104,8 @@ class WaterValueBasedPartialBidConfigurationGraphQL(GraphQLCore):
             ),
             name=self.name,
             method=self.method,
+            power_asset=self.power_asset.as_read() if isinstance(self.power_asset, GraphQLCore) else self.power_asset,
             add_steps=self.add_steps,
-            plant=self.plant.as_read() if isinstance(self.plant, GraphQLCore) else self.plant,
         )
 
     def as_write(self) -> WaterValueBasedPartialBidConfigurationWrite:
@@ -116,8 +116,8 @@ class WaterValueBasedPartialBidConfigurationGraphQL(GraphQLCore):
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,
             method=self.method,
+            power_asset=self.power_asset.as_write() if isinstance(self.power_asset, DomainModel) else self.power_asset,
             add_steps=self.add_steps,
-            plant=self.plant.as_write() if isinstance(self.plant, DomainModel) else self.plant,
         )
 
 
@@ -132,14 +132,13 @@ class WaterValueBasedPartialBidConfiguration(PartialBidConfiguration):
         data_record: The data record of the water value based partial bid configuration node.
         name: Name for the PartialBidConfiguration
         method: Name of the method used for the bid calculation
+        power_asset: TODO description (has to be a Plant)
         add_steps: TODO definition
-        plant: TODO description
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types_temp", "WaterValueBasedPartialBidConfiguration"
+        "sp_power_ops_types", "WaterValueBasedPartialBidConfiguration"
     )
-    plant: Union[Plant, str, dm.NodeId, None] = Field(None, repr=False)
 
     def as_write(self) -> WaterValueBasedPartialBidConfigurationWrite:
         """Convert this read version of water value based partial bid configuration to the writing version."""
@@ -149,8 +148,8 @@ class WaterValueBasedPartialBidConfiguration(PartialBidConfiguration):
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             name=self.name,
             method=self.method,
+            power_asset=self.power_asset.as_write() if isinstance(self.power_asset, DomainModel) else self.power_asset,
             add_steps=self.add_steps,
-            plant=self.plant.as_write() if isinstance(self.plant, DomainModel) else self.plant,
         )
 
     def as_apply(self) -> WaterValueBasedPartialBidConfigurationWrite:
@@ -174,14 +173,13 @@ class WaterValueBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
         data_record: The data record of the water value based partial bid configuration node.
         name: Name for the PartialBidConfiguration
         method: Name of the method used for the bid calculation
+        power_asset: TODO description (has to be a Plant)
         add_steps: TODO definition
-        plant: TODO description
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types_temp", "WaterValueBasedPartialBidConfiguration"
+        "sp_power_ops_types", "WaterValueBasedPartialBidConfiguration"
     )
-    plant: Union[PlantWrite, str, dm.NodeId, None] = Field(None, repr=False)
 
     def _to_instances_write(
         self,
@@ -196,7 +194,7 @@ class WaterValueBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
 
         write_view = (view_by_read_class or {}).get(
             WaterValueBasedPartialBidConfiguration,
-            dm.ViewId("sp_powerops_models_temp", "WaterValueBasedPartialBidConfiguration", "1"),
+            dm.ViewId("sp_power_ops_models", "WaterValueBasedPartialBidConfiguration", "1"),
         )
 
         properties: dict[str, Any] = {}
@@ -207,14 +205,14 @@ class WaterValueBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
         if self.method is not None or write_none:
             properties["method"] = self.method
 
+        if self.power_asset is not None:
+            properties["powerAsset"] = {
+                "space": self.space if isinstance(self.power_asset, str) else self.power_asset.space,
+                "externalId": self.power_asset if isinstance(self.power_asset, str) else self.power_asset.external_id,
+            }
+
         if self.add_steps is not None:
             properties["addSteps"] = self.add_steps
-
-        if self.plant is not None:
-            properties["plant"] = {
-                "space": self.space if isinstance(self.plant, str) else self.plant.space,
-                "externalId": self.plant if isinstance(self.plant, str) else self.plant.external_id,
-            }
 
         if properties:
             this_node = dm.NodeApply(
@@ -232,8 +230,8 @@ class WaterValueBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        if isinstance(self.plant, DomainModelWrite):
-            other_resources = self.plant._to_instances_write(cache, view_by_read_class)
+        if isinstance(self.power_asset, DomainModelWrite):
+            other_resources = self.power_asset._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
 
         return resources
@@ -287,8 +285,8 @@ def _create_water_value_based_partial_bid_configuration_filter(
     name_prefix: str | None = None,
     method: str | list[str] | None = None,
     method_prefix: str | None = None,
+    power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     add_steps: bool | None = None,
-    plant: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -306,31 +304,35 @@ def _create_water_value_based_partial_bid_configuration_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("method"), values=method))
     if method_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("method"), value=method_prefix))
-    if isinstance(add_steps, bool):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("addSteps"), value=add_steps))
-    if plant and isinstance(plant, str):
+    if power_asset and isinstance(power_asset, str):
         filters.append(
             dm.filters.Equals(
-                view_id.as_property_ref("plant"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": plant}
+                view_id.as_property_ref("powerAsset"),
+                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": power_asset},
             )
         )
-    if plant and isinstance(plant, tuple):
+    if power_asset and isinstance(power_asset, tuple):
         filters.append(
-            dm.filters.Equals(view_id.as_property_ref("plant"), value={"space": plant[0], "externalId": plant[1]})
-        )
-    if plant and isinstance(plant, list) and isinstance(plant[0], str):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("plant"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in plant],
+            dm.filters.Equals(
+                view_id.as_property_ref("powerAsset"), value={"space": power_asset[0], "externalId": power_asset[1]}
             )
         )
-    if plant and isinstance(plant, list) and isinstance(plant[0], tuple):
+    if power_asset and isinstance(power_asset, list) and isinstance(power_asset[0], str):
         filters.append(
             dm.filters.In(
-                view_id.as_property_ref("plant"), values=[{"space": item[0], "externalId": item[1]} for item in plant]
+                view_id.as_property_ref("powerAsset"),
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in power_asset],
             )
         )
+    if power_asset and isinstance(power_asset, list) and isinstance(power_asset[0], tuple):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("powerAsset"),
+                values=[{"space": item[0], "externalId": item[1]} for item in power_asset],
+            )
+        )
+    if isinstance(add_steps, bool):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("addSteps"), value=add_steps))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):

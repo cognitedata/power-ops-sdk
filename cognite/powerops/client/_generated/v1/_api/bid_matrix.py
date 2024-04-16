@@ -33,7 +33,6 @@ from ._core import (
     QueryStep,
     QueryBuilder,
 )
-from .bid_matrix_alerts import BidMatrixAlertsAPI
 from .bid_matrix_query import BidMatrixQueryAPI
 
 
@@ -49,14 +48,11 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
-        self.alerts_edge = BidMatrixAlertsAPI(client)
 
     def __call__(
         self,
-        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
-        partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -65,10 +61,8 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
         """Query starting at bid matrixes.
 
         Args:
-            power_asset: The power asset to filter on.
             state: The state to filter on.
             state_prefix: The prefix of the state to filter on.
-            partial_bid_configuration: The partial bid configuration to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -81,10 +75,8 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_bid_matrix_filter(
             self._view_id,
-            power_asset,
             state,
             state_prefix,
-            partial_bid_configuration,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -99,10 +91,6 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
         write_none: bool = False,
     ) -> ResourcesWriteResult:
         """Add or update (upsert) bid matrixes.
-
-        Note: This method iterates through all nodes and timeseries linked to bid_matrix and creates them including the edges
-        between the nodes. For example, if any of `alerts` are set, then these
-        nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
             bid_matrix: Bid matrix or sequence of bid matrixes to upsert.
@@ -194,29 +182,14 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
                 >>> bid_matrix = client.bid_matrix.retrieve("my_bid_matrix")
 
         """
-        return self._retrieve(
-            external_id,
-            space,
-            retrieve_edges=True,
-            edge_api_name_type_direction_view_id_penta=[
-                (
-                    self.alerts_edge,
-                    "alerts",
-                    dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
-                    "outwards",
-                    dm.ViewId("sp_powerops_models_temp", "Alert", "1"),
-                ),
-            ],
-        )
+        return self._retrieve(external_id, space)
 
     def search(
         self,
         query: str,
         properties: BidMatrixTextFields | Sequence[BidMatrixTextFields] | None = None,
-        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
-        partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -227,10 +200,8 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
         Args:
             query: The search query,
             properties: The property to search, if nothing is passed all text fields will be searched.
-            power_asset: The power asset to filter on.
             state: The state to filter on.
             state_prefix: The prefix of the state to filter on.
-            partial_bid_configuration: The partial bid configuration to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -250,10 +221,8 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
         """
         filter_ = _create_bid_matrix_filter(
             self._view_id,
-            power_asset,
             state,
             state_prefix,
-            partial_bid_configuration,
             external_id_prefix,
             space,
             filter,
@@ -273,10 +242,8 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
         group_by: None = None,
         query: str | None = None,
         search_properties: BidMatrixTextFields | Sequence[BidMatrixTextFields] | None = None,
-        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
-        partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -296,10 +263,8 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
         group_by: BidMatrixFields | Sequence[BidMatrixFields] = None,
         query: str | None = None,
         search_properties: BidMatrixTextFields | Sequence[BidMatrixTextFields] | None = None,
-        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
-        partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -318,10 +283,8 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
         group_by: BidMatrixFields | Sequence[BidMatrixFields] | None = None,
         query: str | None = None,
         search_property: BidMatrixTextFields | Sequence[BidMatrixTextFields] | None = None,
-        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
-        partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -335,10 +298,8 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
             group_by: The property to group by when doing the aggregation.
             query: The query to search for in the text field.
             search_property: The text field to search in.
-            power_asset: The power asset to filter on.
             state: The state to filter on.
             state_prefix: The prefix of the state to filter on.
-            partial_bid_configuration: The partial bid configuration to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -359,10 +320,8 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
 
         filter_ = _create_bid_matrix_filter(
             self._view_id,
-            power_asset,
             state,
             state_prefix,
-            partial_bid_configuration,
             external_id_prefix,
             space,
             filter,
@@ -385,10 +344,8 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
         interval: float,
         query: str | None = None,
         search_property: BidMatrixTextFields | Sequence[BidMatrixTextFields] | None = None,
-        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
-        partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -401,10 +358,8 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
             interval: The interval to use for the histogram bins.
             query: The query to search for in the text field.
             search_property: The text field to search in.
-            power_asset: The power asset to filter on.
             state: The state to filter on.
             state_prefix: The prefix of the state to filter on.
-            partial_bid_configuration: The partial bid configuration to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -416,10 +371,8 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
         """
         filter_ = _create_bid_matrix_filter(
             self._view_id,
-            power_asset,
             state,
             state_prefix,
-            partial_bid_configuration,
             external_id_prefix,
             space,
             filter,
@@ -437,28 +390,22 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
 
     def list(
         self,
-        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
-        partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-        retrieve_edges: bool = True,
     ) -> BidMatrixList:
         """List/filter bid matrixes
 
         Args:
-            power_asset: The power asset to filter on.
             state: The state to filter on.
             state_prefix: The prefix of the state to filter on.
-            partial_bid_configuration: The partial bid configuration to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            retrieve_edges: Whether to retrieve `alerts` external ids for the bid matrixes. Defaults to True.
 
         Returns:
             List of requested bid matrixes
@@ -474,26 +421,10 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
         """
         filter_ = _create_bid_matrix_filter(
             self._view_id,
-            power_asset,
             state,
             state_prefix,
-            partial_bid_configuration,
             external_id_prefix,
             space,
             filter,
         )
-
-        return self._list(
-            limit=limit,
-            filter=filter_,
-            retrieve_edges=retrieve_edges,
-            edge_api_name_type_direction_view_id_penta=[
-                (
-                    self.alerts_edge,
-                    "alerts",
-                    dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
-                    "outwards",
-                    dm.ViewId("sp_powerops_models_temp", "Alert", "1"),
-                ),
-            ],
-        )
+        return self._list(limit=limit, filter=filter_)

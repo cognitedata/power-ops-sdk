@@ -60,10 +60,10 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
 
     def __call__(
         self,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
@@ -80,10 +80,10 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
         """Query starting at water value based partial bid matrix calculation inputs.
 
         Args:
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
-            min_process_step: The minimum value of the process step to filter on.
-            max_process_step: The maximum value of the process step to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            min_workflow_step: The minimum value of the workflow step to filter on.
+            max_workflow_step: The maximum value of the workflow step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
@@ -104,10 +104,10 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_water_value_based_partial_bid_matrix_calculation_input_filter(
             self._view_id,
-            process_id,
-            process_id_prefix,
-            min_process_step,
-            max_process_step,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            min_workflow_step,
+            max_workflow_step,
             function_name,
             function_name_prefix,
             function_call_id,
@@ -240,10 +240,10 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
             | Sequence[WaterValueBasedPartialBidMatrixCalculationInputTextFields]
             | None
         ) = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
@@ -262,10 +262,10 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
         Args:
             query: The search query,
             properties: The property to search, if nothing is passed all text fields will be searched.
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
-            min_process_step: The minimum value of the process step to filter on.
-            max_process_step: The maximum value of the process step to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            min_workflow_step: The minimum value of the workflow step to filter on.
+            max_workflow_step: The maximum value of the workflow step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
@@ -293,10 +293,10 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
         """
         filter_ = _create_water_value_based_partial_bid_matrix_calculation_input_filter(
             self._view_id,
-            process_id,
-            process_id_prefix,
-            min_process_step,
-            max_process_step,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            min_workflow_step,
+            max_workflow_step,
             function_name,
             function_name_prefix,
             function_call_id,
@@ -339,10 +339,10 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
             | Sequence[WaterValueBasedPartialBidMatrixCalculationInputTextFields]
             | None
         ) = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
@@ -381,10 +381,10 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
             | Sequence[WaterValueBasedPartialBidMatrixCalculationInputTextFields]
             | None
         ) = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
@@ -423,10 +423,10 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
             | Sequence[WaterValueBasedPartialBidMatrixCalculationInputTextFields]
             | None
         ) = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
@@ -448,10 +448,10 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
             group_by: The property to group by when doing the aggregation.
             query: The query to search for in the text field.
             search_property: The text field to search in.
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
-            min_process_step: The minimum value of the process step to filter on.
-            max_process_step: The maximum value of the process step to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            min_workflow_step: The minimum value of the workflow step to filter on.
+            max_workflow_step: The maximum value of the workflow step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
@@ -480,10 +480,10 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
 
         filter_ = _create_water_value_based_partial_bid_matrix_calculation_input_filter(
             self._view_id,
-            process_id,
-            process_id_prefix,
-            min_process_step,
-            max_process_step,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            min_workflow_step,
+            max_workflow_step,
             function_name,
             function_name_prefix,
             function_call_id,
@@ -518,10 +518,10 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
             | Sequence[WaterValueBasedPartialBidMatrixCalculationInputTextFields]
             | None
         ) = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
@@ -542,10 +542,10 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
             interval: The interval to use for the histogram bins.
             query: The query to search for in the text field.
             search_property: The text field to search in.
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
-            min_process_step: The minimum value of the process step to filter on.
-            max_process_step: The maximum value of the process step to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            min_workflow_step: The minimum value of the workflow step to filter on.
+            max_workflow_step: The maximum value of the workflow step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
@@ -565,10 +565,10 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
         """
         filter_ = _create_water_value_based_partial_bid_matrix_calculation_input_filter(
             self._view_id,
-            process_id,
-            process_id_prefix,
-            min_process_step,
-            max_process_step,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            min_workflow_step,
+            max_workflow_step,
             function_name,
             function_name_prefix,
             function_call_id,
@@ -594,10 +594,10 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
 
     def list(
         self,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
@@ -614,10 +614,10 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
         """List/filter water value based partial bid matrix calculation inputs
 
         Args:
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
-            min_process_step: The minimum value of the process step to filter on.
-            max_process_step: The maximum value of the process step to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            min_workflow_step: The minimum value of the workflow step to filter on.
+            max_workflow_step: The maximum value of the workflow step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
@@ -645,10 +645,10 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
         """
         filter_ = _create_water_value_based_partial_bid_matrix_calculation_input_filter(
             self._view_id,
-            process_id,
-            process_id_prefix,
-            min_process_step,
-            max_process_step,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            min_workflow_step,
+            max_workflow_step,
             function_name,
             function_name_prefix,
             function_call_id,

@@ -36,10 +36,10 @@ __all__ = [
 ]
 
 
-AlertTextFields = Literal["process_id", "title", "description", "severity", "alert_type", "calculation_run"]
+AlertTextFields = Literal["workflow_execution_id", "title", "description", "severity", "alert_type", "calculation_run"]
 AlertFields = Literal[
     "time",
-    "process_id",
+    "workflow_execution_id",
     "title",
     "description",
     "severity",
@@ -51,7 +51,7 @@ AlertFields = Literal[
 
 _ALERT_PROPERTIES_BY_FIELD = {
     "time": "time",
-    "process_id": "processId",
+    "workflow_execution_id": "workflowExecutionId",
     "title": "title",
     "description": "description",
     "severity": "severity",
@@ -73,7 +73,7 @@ class AlertGraphQL(GraphQLCore):
         external_id: The external id of the alert.
         data_record: The data record of the alert node.
         time: Timestamp that the alert occurred (within the workflow)
-        process_id: Process ID in the workflow that the alert is related to
+        workflow_execution_id: Process ID in the workflow that the alert is related to
         title: Summary description of the alert
         description: Detailed description of the alert
         severity: CRITICAL (calculation could not completed) WARNING  (calculation completed, with major issue) INFO     (calculation completed, with minor issues)
@@ -83,9 +83,9 @@ class AlertGraphQL(GraphQLCore):
         calculation_run: The identifier of the parent Bid Calculation (required so tha alerts can be created befor the BidDocument)
     """
 
-    view_id = dm.ViewId("sp_powerops_models_temp", "Alert", "1")
+    view_id = dm.ViewId("sp_power_ops_models", "Alert", "1")
     time: Optional[datetime.datetime] = None
-    process_id: Optional[str] = Field(None, alias="processId")
+    workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     title: Optional[str] = None
     description: Optional[str] = None
     severity: Optional[str] = None
@@ -118,7 +118,7 @@ class AlertGraphQL(GraphQLCore):
                 created_time=self.data_record.created_time,
             ),
             time=self.time,
-            process_id=self.process_id,
+            workflow_execution_id=self.workflow_execution_id,
             title=self.title,
             description=self.description,
             severity=self.severity,
@@ -135,7 +135,7 @@ class AlertGraphQL(GraphQLCore):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             time=self.time,
-            process_id=self.process_id,
+            workflow_execution_id=self.workflow_execution_id,
             title=self.title,
             description=self.description,
             severity=self.severity,
@@ -156,7 +156,7 @@ class Alert(DomainModel):
         external_id: The external id of the alert.
         data_record: The data record of the alert node.
         time: Timestamp that the alert occurred (within the workflow)
-        process_id: Process ID in the workflow that the alert is related to
+        workflow_execution_id: Process ID in the workflow that the alert is related to
         title: Summary description of the alert
         description: Detailed description of the alert
         severity: CRITICAL (calculation could not completed) WARNING  (calculation completed, with major issue) INFO     (calculation completed, with minor issues)
@@ -167,9 +167,9 @@ class Alert(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types_temp", "Alert")
+    node_type: Union[dm.DirectRelationReference, None] = None
     time: datetime.datetime
-    process_id: str = Field(alias="processId")
+    workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     title: str
     description: Optional[str] = None
     severity: Optional[str] = None
@@ -185,7 +185,7 @@ class Alert(DomainModel):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             time=self.time,
-            process_id=self.process_id,
+            workflow_execution_id=self.workflow_execution_id,
             title=self.title,
             description=self.description,
             severity=self.severity,
@@ -215,7 +215,7 @@ class AlertWrite(DomainModelWrite):
         external_id: The external id of the alert.
         data_record: The data record of the alert node.
         time: Timestamp that the alert occurred (within the workflow)
-        process_id: Process ID in the workflow that the alert is related to
+        workflow_execution_id: Process ID in the workflow that the alert is related to
         title: Summary description of the alert
         description: Detailed description of the alert
         severity: CRITICAL (calculation could not completed) WARNING  (calculation completed, with major issue) INFO     (calculation completed, with minor issues)
@@ -226,9 +226,9 @@ class AlertWrite(DomainModelWrite):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types_temp", "Alert")
+    node_type: Union[dm.DirectRelationReference, None] = None
     time: datetime.datetime
-    process_id: str = Field(alias="processId")
+    workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     title: str
     description: Optional[str] = None
     severity: Optional[str] = None
@@ -248,15 +248,15 @@ class AlertWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(Alert, dm.ViewId("sp_powerops_models_temp", "Alert", "1"))
+        write_view = (view_by_read_class or {}).get(Alert, dm.ViewId("sp_power_ops_models", "Alert", "1"))
 
         properties: dict[str, Any] = {}
 
         if self.time is not None:
             properties["time"] = self.time.isoformat(timespec="milliseconds") if self.time else None
 
-        if self.process_id is not None:
-            properties["processId"] = self.process_id
+        if self.workflow_execution_id is not None or write_none:
+            properties["workflowExecutionId"] = self.workflow_execution_id
 
         if self.title is not None:
             properties["title"] = self.title
@@ -342,8 +342,8 @@ def _create_alert_filter(
     view_id: dm.ViewId,
     min_time: datetime.datetime | None = None,
     max_time: datetime.datetime | None = None,
-    process_id: str | list[str] | None = None,
-    process_id_prefix: str | None = None,
+    workflow_execution_id: str | list[str] | None = None,
+    workflow_execution_id_prefix: str | None = None,
     title: str | list[str] | None = None,
     title_prefix: str | None = None,
     description: str | list[str] | None = None,
@@ -369,12 +369,14 @@ def _create_alert_filter(
                 lte=max_time.isoformat(timespec="milliseconds") if max_time else None,
             )
         )
-    if isinstance(process_id, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("processId"), value=process_id))
-    if process_id and isinstance(process_id, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("processId"), values=process_id))
-    if process_id_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("processId"), value=process_id_prefix))
+    if isinstance(workflow_execution_id, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id))
+    if workflow_execution_id and isinstance(workflow_execution_id, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
+    if workflow_execution_id_prefix is not None:
+        filters.append(
+            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
+        )
     if isinstance(title, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("title"), value=title))
     if title and isinstance(title, list):

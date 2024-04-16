@@ -91,15 +91,15 @@ class PriceAreaGraphQL(GraphQLCore):
 
     view_id = dm.ViewId("power-ops-afrr-bid", "PriceArea", "1")
     name: Optional[str] = None
-    capacity_price_up: Union[TimeSeries, str, None] = Field(None, alias="capacityPriceUp")
-    capacity_price_down: Union[TimeSeries, str, None] = Field(None, alias="capacityPriceDown")
-    activation_price_up: Union[TimeSeries, str, None] = Field(None, alias="activationPriceUp")
-    activation_price_down: Union[TimeSeries, str, None] = Field(None, alias="activationPriceDown")
-    relative_activation: Union[TimeSeries, str, None] = Field(None, alias="relativeActivation")
-    total_capacity_allocation_up: Union[TimeSeries, str, None] = Field(None, alias="totalCapacityAllocationUp")
-    total_capacity_allocation_down: Union[TimeSeries, str, None] = Field(None, alias="totalCapacityAllocationDown")
-    own_capacity_allocation_up: Union[TimeSeries, str, None] = Field(None, alias="ownCapacityAllocationUp")
-    own_capacity_allocation_down: Union[TimeSeries, str, None] = Field(None, alias="ownCapacityAllocationDown")
+    capacity_price_up: Union[TimeSeries, dict, None] = Field(None, alias="capacityPriceUp")
+    capacity_price_down: Union[TimeSeries, dict, None] = Field(None, alias="capacityPriceDown")
+    activation_price_up: Union[TimeSeries, dict, None] = Field(None, alias="activationPriceUp")
+    activation_price_down: Union[TimeSeries, dict, None] = Field(None, alias="activationPriceDown")
+    relative_activation: Union[TimeSeries, dict, None] = Field(None, alias="relativeActivation")
+    total_capacity_allocation_up: Union[TimeSeries, dict, None] = Field(None, alias="totalCapacityAllocationUp")
+    total_capacity_allocation_down: Union[TimeSeries, dict, None] = Field(None, alias="totalCapacityAllocationDown")
+    own_capacity_allocation_up: Union[TimeSeries, dict, None] = Field(None, alias="ownCapacityAllocationUp")
+    own_capacity_allocation_down: Union[TimeSeries, dict, None] = Field(None, alias="ownCapacityAllocationDown")
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:

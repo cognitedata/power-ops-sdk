@@ -11,6 +11,7 @@ from ._core import (
     GraphQLList,
     ResourcesWrite,
     ResourcesWriteResult,
+    PageInfo,
 )
 from ._alert import (
     Alert,
@@ -81,6 +82,7 @@ __all__ = [
     "GraphQLCore",
     "GraphQLList",
     "ResourcesWriteResult",
+    "PageInfo",
     "Alert",
     "AlertGraphQL",
     "AlertWrite",

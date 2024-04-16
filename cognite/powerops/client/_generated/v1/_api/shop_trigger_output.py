@@ -13,12 +13,12 @@ from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
     ResourcesWriteResult,
-    SHOPTriggerOutput,
-    SHOPTriggerOutputWrite,
-    SHOPTriggerOutputFields,
-    SHOPTriggerOutputList,
-    SHOPTriggerOutputWriteList,
-    SHOPTriggerOutputTextFields,
+    ShopTriggerOutput,
+    ShopTriggerOutputWrite,
+    ShopTriggerOutputFields,
+    ShopTriggerOutputList,
+    ShopTriggerOutputWriteList,
+    ShopTriggerOutputTextFields,
 )
 from cognite.powerops.client._generated.v1.data_classes._shop_trigger_output import (
     _SHOPTRIGGEROUTPUT_PROPERTIES_BY_FIELD,
@@ -33,54 +33,54 @@ from ._core import (
     QueryStep,
     QueryBuilder,
 )
-from .shop_trigger_output_alerts import SHOPTriggerOutputAlertsAPI
-from .shop_trigger_output_query import SHOPTriggerOutputQueryAPI
+from .shop_trigger_output_alerts import ShopTriggerOutputAlertsAPI
+from .shop_trigger_output_query import ShopTriggerOutputQueryAPI
 
 
-class SHOPTriggerOutputAPI(NodeAPI[SHOPTriggerOutput, SHOPTriggerOutputWrite, SHOPTriggerOutputList]):
+class ShopTriggerOutputAPI(NodeAPI[ShopTriggerOutput, ShopTriggerOutputWrite, ShopTriggerOutputList]):
     def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[SHOPTriggerOutput]
+        view_id = view_by_read_class[ShopTriggerOutput]
         super().__init__(
             client=client,
             sources=view_id,
-            class_type=SHOPTriggerOutput,
-            class_list=SHOPTriggerOutputList,
-            class_write_list=SHOPTriggerOutputWriteList,
+            class_type=ShopTriggerOutput,
+            class_list=ShopTriggerOutputList,
+            class_write_list=ShopTriggerOutputWriteList,
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
-        self.alerts_edge = SHOPTriggerOutputAlertsAPI(client)
+        self.alerts_edge = ShopTriggerOutputAlertsAPI(client)
 
     def __call__(
         self,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
-    ) -> SHOPTriggerOutputQueryAPI[SHOPTriggerOutputList]:
+    ) -> ShopTriggerOutputQueryAPI[ShopTriggerOutputList]:
         """Query starting at shop trigger outputs.
 
         Args:
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
-            min_process_step: The minimum value of the process step to filter on.
-            max_process_step: The maximum value of the process step to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            min_workflow_step: The minimum value of the workflow step to filter on.
+            max_workflow_step: The maximum value of the workflow step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            shop_result: The shop result to filter on.
             input_: The input to filter on.
+            shop_result: The shop result to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop trigger outputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -93,26 +93,26 @@ class SHOPTriggerOutputAPI(NodeAPI[SHOPTriggerOutput, SHOPTriggerOutputWrite, SH
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_shop_trigger_output_filter(
             self._view_id,
-            process_id,
-            process_id_prefix,
-            min_process_step,
-            max_process_step,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            min_workflow_step,
+            max_workflow_step,
             function_name,
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            shop_result,
             input_,
+            shop_result,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(SHOPTriggerOutputList)
-        return SHOPTriggerOutputQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        builder = QueryBuilder(ShopTriggerOutputList)
+        return ShopTriggerOutputQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
 
     def apply(
         self,
-        shop_trigger_output: SHOPTriggerOutputWrite | Sequence[SHOPTriggerOutputWrite],
+        shop_trigger_output: ShopTriggerOutputWrite | Sequence[ShopTriggerOutputWrite],
         replace: bool = False,
         write_none: bool = False,
     ) -> ResourcesWriteResult:
@@ -136,9 +136,9 @@ class SHOPTriggerOutputAPI(NodeAPI[SHOPTriggerOutput, SHOPTriggerOutputWrite, SH
             Create a new shop_trigger_output:
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
-                >>> from cognite.powerops.client._generated.v1.data_classes import SHOPTriggerOutputWrite
+                >>> from cognite.powerops.client._generated.v1.data_classes import ShopTriggerOutputWrite
                 >>> client = PowerOpsModelsV1Client()
-                >>> shop_trigger_output = SHOPTriggerOutputWrite(external_id="my_shop_trigger_output", ...)
+                >>> shop_trigger_output = ShopTriggerOutputWrite(external_id="my_shop_trigger_output", ...)
                 >>> result = client.shop_trigger_output.apply(shop_trigger_output)
 
         """
@@ -186,16 +186,16 @@ class SHOPTriggerOutputAPI(NodeAPI[SHOPTriggerOutput, SHOPTriggerOutputWrite, SH
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> SHOPTriggerOutput | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopTriggerOutput | None: ...
 
     @overload
     def retrieve(
         self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> SHOPTriggerOutputList: ...
+    ) -> ShopTriggerOutputList: ...
 
     def retrieve(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> SHOPTriggerOutput | SHOPTriggerOutputList | None:
+    ) -> ShopTriggerOutput | ShopTriggerOutputList | None:
         """Retrieve one or more shop trigger outputs by id(s).
 
         Args:
@@ -222,9 +222,9 @@ class SHOPTriggerOutputAPI(NodeAPI[SHOPTriggerOutput, SHOPTriggerOutputWrite, SH
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
+                    dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models_temp", "Alert", "1"),
+                    dm.ViewId("sp_power_ops_models", "Alert", "1"),
                 ),
             ],
         )
@@ -232,37 +232,37 @@ class SHOPTriggerOutputAPI(NodeAPI[SHOPTriggerOutput, SHOPTriggerOutputWrite, SH
     def search(
         self,
         query: str,
-        properties: SHOPTriggerOutputTextFields | Sequence[SHOPTriggerOutputTextFields] | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        properties: ShopTriggerOutputTextFields | Sequence[ShopTriggerOutputTextFields] | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> SHOPTriggerOutputList:
+    ) -> ShopTriggerOutputList:
         """Search shop trigger outputs
 
         Args:
             query: The search query,
             properties: The property to search, if nothing is passed all text fields will be searched.
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
-            min_process_step: The minimum value of the process step to filter on.
-            max_process_step: The maximum value of the process step to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            min_workflow_step: The minimum value of the workflow step to filter on.
+            max_workflow_step: The maximum value of the workflow step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            shop_result: The shop result to filter on.
             input_: The input to filter on.
+            shop_result: The shop result to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop trigger outputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -282,16 +282,16 @@ class SHOPTriggerOutputAPI(NodeAPI[SHOPTriggerOutput, SHOPTriggerOutputWrite, SH
         """
         filter_ = _create_shop_trigger_output_filter(
             self._view_id,
-            process_id,
-            process_id_prefix,
-            min_process_step,
-            max_process_step,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            min_workflow_step,
+            max_workflow_step,
             function_name,
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            shop_result,
             input_,
+            shop_result,
             external_id_prefix,
             space,
             filter,
@@ -307,20 +307,20 @@ class SHOPTriggerOutputAPI(NodeAPI[SHOPTriggerOutput, SHOPTriggerOutputWrite, SH
             | Sequence[Aggregations]
             | Sequence[dm.aggregations.MetricAggregation]
         ),
-        property: SHOPTriggerOutputFields | Sequence[SHOPTriggerOutputFields] | None = None,
+        property: ShopTriggerOutputFields | Sequence[ShopTriggerOutputFields] | None = None,
         group_by: None = None,
         query: str | None = None,
-        search_properties: SHOPTriggerOutputTextFields | Sequence[SHOPTriggerOutputTextFields] | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        search_properties: ShopTriggerOutputTextFields | Sequence[ShopTriggerOutputTextFields] | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -336,20 +336,20 @@ class SHOPTriggerOutputAPI(NodeAPI[SHOPTriggerOutput, SHOPTriggerOutputWrite, SH
             | Sequence[Aggregations]
             | Sequence[dm.aggregations.MetricAggregation]
         ),
-        property: SHOPTriggerOutputFields | Sequence[SHOPTriggerOutputFields] | None = None,
-        group_by: SHOPTriggerOutputFields | Sequence[SHOPTriggerOutputFields] = None,
+        property: ShopTriggerOutputFields | Sequence[ShopTriggerOutputFields] | None = None,
+        group_by: ShopTriggerOutputFields | Sequence[ShopTriggerOutputFields] = None,
         query: str | None = None,
-        search_properties: SHOPTriggerOutputTextFields | Sequence[SHOPTriggerOutputTextFields] | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        search_properties: ShopTriggerOutputTextFields | Sequence[ShopTriggerOutputTextFields] | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -364,20 +364,20 @@ class SHOPTriggerOutputAPI(NodeAPI[SHOPTriggerOutput, SHOPTriggerOutputWrite, SH
             | Sequence[Aggregations]
             | Sequence[dm.aggregations.MetricAggregation]
         ),
-        property: SHOPTriggerOutputFields | Sequence[SHOPTriggerOutputFields] | None = None,
-        group_by: SHOPTriggerOutputFields | Sequence[SHOPTriggerOutputFields] | None = None,
+        property: ShopTriggerOutputFields | Sequence[ShopTriggerOutputFields] | None = None,
+        group_by: ShopTriggerOutputFields | Sequence[ShopTriggerOutputFields] | None = None,
         query: str | None = None,
-        search_property: SHOPTriggerOutputTextFields | Sequence[SHOPTriggerOutputTextFields] | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        search_property: ShopTriggerOutputTextFields | Sequence[ShopTriggerOutputTextFields] | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -391,16 +391,16 @@ class SHOPTriggerOutputAPI(NodeAPI[SHOPTriggerOutput, SHOPTriggerOutputWrite, SH
             group_by: The property to group by when doing the aggregation.
             query: The query to search for in the text field.
             search_property: The text field to search in.
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
-            min_process_step: The minimum value of the process step to filter on.
-            max_process_step: The maximum value of the process step to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            min_workflow_step: The minimum value of the workflow step to filter on.
+            max_workflow_step: The maximum value of the workflow step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            shop_result: The shop result to filter on.
             input_: The input to filter on.
+            shop_result: The shop result to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop trigger outputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -421,16 +421,16 @@ class SHOPTriggerOutputAPI(NodeAPI[SHOPTriggerOutput, SHOPTriggerOutputWrite, SH
 
         filter_ = _create_shop_trigger_output_filter(
             self._view_id,
-            process_id,
-            process_id_prefix,
-            min_process_step,
-            max_process_step,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            min_workflow_step,
+            max_workflow_step,
             function_name,
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            shop_result,
             input_,
+            shop_result,
             external_id_prefix,
             space,
             filter,
@@ -449,20 +449,20 @@ class SHOPTriggerOutputAPI(NodeAPI[SHOPTriggerOutput, SHOPTriggerOutputWrite, SH
 
     def histogram(
         self,
-        property: SHOPTriggerOutputFields,
+        property: ShopTriggerOutputFields,
         interval: float,
         query: str | None = None,
-        search_property: SHOPTriggerOutputTextFields | Sequence[SHOPTriggerOutputTextFields] | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        search_property: ShopTriggerOutputTextFields | Sequence[ShopTriggerOutputTextFields] | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -475,16 +475,16 @@ class SHOPTriggerOutputAPI(NodeAPI[SHOPTriggerOutput, SHOPTriggerOutputWrite, SH
             interval: The interval to use for the histogram bins.
             query: The query to search for in the text field.
             search_property: The text field to search in.
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
-            min_process_step: The minimum value of the process step to filter on.
-            max_process_step: The maximum value of the process step to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            min_workflow_step: The minimum value of the workflow step to filter on.
+            max_workflow_step: The maximum value of the workflow step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            shop_result: The shop result to filter on.
             input_: The input to filter on.
+            shop_result: The shop result to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop trigger outputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -496,16 +496,16 @@ class SHOPTriggerOutputAPI(NodeAPI[SHOPTriggerOutput, SHOPTriggerOutputWrite, SH
         """
         filter_ = _create_shop_trigger_output_filter(
             self._view_id,
-            process_id,
-            process_id_prefix,
-            min_process_step,
-            max_process_step,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            min_workflow_step,
+            max_workflow_step,
             function_name,
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            shop_result,
             input_,
+            shop_result,
             external_id_prefix,
             space,
             filter,
@@ -523,35 +523,35 @@ class SHOPTriggerOutputAPI(NodeAPI[SHOPTriggerOutput, SHOPTriggerOutputWrite, SH
 
     def list(
         self,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         retrieve_edges: bool = True,
-    ) -> SHOPTriggerOutputList:
+    ) -> ShopTriggerOutputList:
         """List/filter shop trigger outputs
 
         Args:
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
-            min_process_step: The minimum value of the process step to filter on.
-            max_process_step: The maximum value of the process step to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            min_workflow_step: The minimum value of the workflow step to filter on.
+            max_workflow_step: The maximum value of the workflow step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            shop_result: The shop result to filter on.
             input_: The input to filter on.
+            shop_result: The shop result to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop trigger outputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -572,16 +572,16 @@ class SHOPTriggerOutputAPI(NodeAPI[SHOPTriggerOutput, SHOPTriggerOutputWrite, SH
         """
         filter_ = _create_shop_trigger_output_filter(
             self._view_id,
-            process_id,
-            process_id_prefix,
-            min_process_step,
-            max_process_step,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            min_workflow_step,
+            max_workflow_step,
             function_name,
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            shop_result,
             input_,
+            shop_result,
             external_id_prefix,
             space,
             filter,
@@ -595,9 +595,9 @@ class SHOPTriggerOutputAPI(NodeAPI[SHOPTriggerOutput, SHOPTriggerOutputWrite, SH
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
+                    dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models_temp", "Alert", "1"),
+                    dm.ViewId("sp_power_ops_models", "Alert", "1"),
                 ),
             ],
         )

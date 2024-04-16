@@ -55,10 +55,10 @@ class TaskDispatcherOutputAPI(NodeAPI[TaskDispatcherOutput, TaskDispatcherOutput
 
     def __call__(
         self,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
@@ -72,10 +72,10 @@ class TaskDispatcherOutputAPI(NodeAPI[TaskDispatcherOutput, TaskDispatcherOutput
         """Query starting at task dispatcher outputs.
 
         Args:
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
-            min_process_step: The minimum value of the process step to filter on.
-            max_process_step: The maximum value of the process step to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            min_workflow_step: The minimum value of the workflow step to filter on.
+            max_workflow_step: The maximum value of the workflow step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
@@ -93,10 +93,10 @@ class TaskDispatcherOutputAPI(NodeAPI[TaskDispatcherOutput, TaskDispatcherOutput
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_task_dispatcher_output_filter(
             self._view_id,
-            process_id,
-            process_id_prefix,
-            min_process_step,
-            max_process_step,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            min_workflow_step,
+            max_workflow_step,
             function_name,
             function_name_prefix,
             function_call_id,
@@ -221,16 +221,16 @@ class TaskDispatcherOutputAPI(NodeAPI[TaskDispatcherOutput, TaskDispatcherOutput
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
+                    dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models_temp", "Alert", "1"),
+                    dm.ViewId("sp_power_ops_models", "Alert", "1"),
                 ),
                 (
                     self.process_sub_tasks_edge,
                     "process_sub_tasks",
-                    dm.DirectRelationReference("sp_powerops_types_temp", "processSubTasks"),
+                    dm.DirectRelationReference("sp_power_ops_types", "processSubTasks"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models_temp", "FunctionInput", "1"),
+                    dm.ViewId("sp_power_ops_models", "FunctionInput", "1"),
                 ),
             ],
         )
@@ -239,10 +239,10 @@ class TaskDispatcherOutputAPI(NodeAPI[TaskDispatcherOutput, TaskDispatcherOutput
         self,
         query: str,
         properties: TaskDispatcherOutputTextFields | Sequence[TaskDispatcherOutputTextFields] | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
@@ -258,10 +258,10 @@ class TaskDispatcherOutputAPI(NodeAPI[TaskDispatcherOutput, TaskDispatcherOutput
         Args:
             query: The search query,
             properties: The property to search, if nothing is passed all text fields will be searched.
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
-            min_process_step: The minimum value of the process step to filter on.
-            max_process_step: The maximum value of the process step to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            min_workflow_step: The minimum value of the workflow step to filter on.
+            max_workflow_step: The maximum value of the workflow step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
@@ -286,10 +286,10 @@ class TaskDispatcherOutputAPI(NodeAPI[TaskDispatcherOutput, TaskDispatcherOutput
         """
         filter_ = _create_task_dispatcher_output_filter(
             self._view_id,
-            process_id,
-            process_id_prefix,
-            min_process_step,
-            max_process_step,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            min_workflow_step,
+            max_workflow_step,
             function_name,
             function_name_prefix,
             function_call_id,
@@ -314,10 +314,10 @@ class TaskDispatcherOutputAPI(NodeAPI[TaskDispatcherOutput, TaskDispatcherOutput
         group_by: None = None,
         query: str | None = None,
         search_properties: TaskDispatcherOutputTextFields | Sequence[TaskDispatcherOutputTextFields] | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
@@ -342,10 +342,10 @@ class TaskDispatcherOutputAPI(NodeAPI[TaskDispatcherOutput, TaskDispatcherOutput
         group_by: TaskDispatcherOutputFields | Sequence[TaskDispatcherOutputFields] = None,
         query: str | None = None,
         search_properties: TaskDispatcherOutputTextFields | Sequence[TaskDispatcherOutputTextFields] | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
@@ -369,10 +369,10 @@ class TaskDispatcherOutputAPI(NodeAPI[TaskDispatcherOutput, TaskDispatcherOutput
         group_by: TaskDispatcherOutputFields | Sequence[TaskDispatcherOutputFields] | None = None,
         query: str | None = None,
         search_property: TaskDispatcherOutputTextFields | Sequence[TaskDispatcherOutputTextFields] | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
@@ -391,10 +391,10 @@ class TaskDispatcherOutputAPI(NodeAPI[TaskDispatcherOutput, TaskDispatcherOutput
             group_by: The property to group by when doing the aggregation.
             query: The query to search for in the text field.
             search_property: The text field to search in.
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
-            min_process_step: The minimum value of the process step to filter on.
-            max_process_step: The maximum value of the process step to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            min_workflow_step: The minimum value of the workflow step to filter on.
+            max_workflow_step: The maximum value of the workflow step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
@@ -420,10 +420,10 @@ class TaskDispatcherOutputAPI(NodeAPI[TaskDispatcherOutput, TaskDispatcherOutput
 
         filter_ = _create_task_dispatcher_output_filter(
             self._view_id,
-            process_id,
-            process_id_prefix,
-            min_process_step,
-            max_process_step,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            min_workflow_step,
+            max_workflow_step,
             function_name,
             function_name_prefix,
             function_call_id,
@@ -451,10 +451,10 @@ class TaskDispatcherOutputAPI(NodeAPI[TaskDispatcherOutput, TaskDispatcherOutput
         interval: float,
         query: str | None = None,
         search_property: TaskDispatcherOutputTextFields | Sequence[TaskDispatcherOutputTextFields] | None = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
@@ -472,10 +472,10 @@ class TaskDispatcherOutputAPI(NodeAPI[TaskDispatcherOutput, TaskDispatcherOutput
             interval: The interval to use for the histogram bins.
             query: The query to search for in the text field.
             search_property: The text field to search in.
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
-            min_process_step: The minimum value of the process step to filter on.
-            max_process_step: The maximum value of the process step to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            min_workflow_step: The minimum value of the workflow step to filter on.
+            max_workflow_step: The maximum value of the workflow step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
@@ -492,10 +492,10 @@ class TaskDispatcherOutputAPI(NodeAPI[TaskDispatcherOutput, TaskDispatcherOutput
         """
         filter_ = _create_task_dispatcher_output_filter(
             self._view_id,
-            process_id,
-            process_id_prefix,
-            min_process_step,
-            max_process_step,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            min_workflow_step,
+            max_workflow_step,
             function_name,
             function_name_prefix,
             function_call_id,
@@ -518,10 +518,10 @@ class TaskDispatcherOutputAPI(NodeAPI[TaskDispatcherOutput, TaskDispatcherOutput
 
     def list(
         self,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
@@ -536,10 +536,10 @@ class TaskDispatcherOutputAPI(NodeAPI[TaskDispatcherOutput, TaskDispatcherOutput
         """List/filter task dispatcher outputs
 
         Args:
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
-            min_process_step: The minimum value of the process step to filter on.
-            max_process_step: The maximum value of the process step to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            min_workflow_step: The minimum value of the workflow step to filter on.
+            max_workflow_step: The maximum value of the workflow step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
@@ -565,10 +565,10 @@ class TaskDispatcherOutputAPI(NodeAPI[TaskDispatcherOutput, TaskDispatcherOutput
         """
         filter_ = _create_task_dispatcher_output_filter(
             self._view_id,
-            process_id,
-            process_id_prefix,
-            min_process_step,
-            max_process_step,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            min_workflow_step,
+            max_workflow_step,
             function_name,
             function_name_prefix,
             function_call_id,
@@ -587,16 +587,16 @@ class TaskDispatcherOutputAPI(NodeAPI[TaskDispatcherOutput, TaskDispatcherOutput
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
+                    dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models_temp", "Alert", "1"),
+                    dm.ViewId("sp_power_ops_models", "Alert", "1"),
                 ),
                 (
                     self.process_sub_tasks_edge,
                     "process_sub_tasks",
-                    dm.DirectRelationReference("sp_powerops_types_temp", "processSubTasks"),
+                    dm.DirectRelationReference("sp_power_ops_types", "processSubTasks"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models_temp", "FunctionInput", "1"),
+                    dm.ViewId("sp_power_ops_models", "FunctionInput", "1"),
                 ),
             ],
         )

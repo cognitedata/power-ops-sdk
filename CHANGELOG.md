@@ -13,6 +13,13 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.94.0] - 2024-04-16
+### Changed
+* Updated BidDocument to provide needed context to frontend data model
+* Standardized naming
+  * SHOP -> Shop or shop
+  * Timeseries -> TimeSeries
+
 ## [0.93.0] - 2024-04-09
 ### Changed
 * Added ShopFile type as wrapper for shop files to be used in a Case in CogShop. Changes name from property shopScenarios to

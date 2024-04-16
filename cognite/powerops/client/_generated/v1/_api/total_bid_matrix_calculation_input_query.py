@@ -8,7 +8,11 @@ from cognite.client import data_modeling as dm, CogniteClient
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     TotalBidMatrixCalculationInput,
-    BidConfiguration,
+    BidConfigurationDayAhead,
+)
+from cognite.powerops.client._generated.v1.data_classes._bid_matrix import (
+    BidMatrix,
+    _create_bid_matrix_filter,
 )
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
@@ -44,17 +48,27 @@ class TotalBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
 
     def partial_bid_matrices(
         self,
+        state: str | list[str] | None = None,
+        state_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
+        external_id_prefix_edge: str | None = None,
+        space_edge: str | list[str] | None = None,
+        filter: dm.Filter | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
         retrieve_bid_configuration: bool = False,
     ) -> BidMatrixQueryAPI[T_DomainModelList]:
         """Query along the partial bid matrice edges of the total bid matrix calculation input.
 
         Args:
+            state: The state to filter on.
+            state_prefix: The prefix of the state to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of partial bid matrice edges to return. Defaults to 25. Set to -1, float("inf") or None
+            external_id_prefix_edge: The prefix of the external ID to filter on.
+            space_edge: The space to filter on.
+            filter: (Advanced) Filter applied to node. If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of partial bid matrice edges to return. Defaults to 3. Set to -1, float("inf") or None
                 to return all items.
             retrieve_bid_configuration: Whether to retrieve the bid configuration for each total bid matrix calculation input or not.
 
@@ -64,11 +78,10 @@ class TotalBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
         from .bid_matrix_query import BidMatrixQueryAPI
 
         from_ = self._builder[-1].name
-
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("sp_powerops_types_temp", "BidMatrix"),
-            external_id_prefix=external_id_prefix,
-            space=space,
+            dm.DirectRelationReference("sp_power_ops_types", "BidMatrix"),
+            external_id_prefix=external_id_prefix_edge,
+            space=space_edge,
         )
         self._builder.append(
             QueryStep(
@@ -82,9 +95,20 @@ class TotalBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
+
+        view_id = self._view_by_read_class[BidMatrix]
+        has_data = dm.filters.HasData(views=[view_id])
+        node_filer = _create_bid_matrix_filter(
+            view_id,
+            state,
+            state_prefix,
+            external_id_prefix,
+            space,
+            (filter and dm.filters.And(filter, has_data)) or has_data,
+        )
         if retrieve_bid_configuration:
             self._query_append_bid_configuration(from_)
-        return BidMatrixQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
+        return BidMatrixQueryAPI(self._client, self._builder, self._view_by_read_class, node_filer, limit)
 
     def query(
         self,
@@ -105,7 +129,7 @@ class TotalBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
         return self._query()
 
     def _query_append_bid_configuration(self, from_: str) -> None:
-        view_id = self._view_by_read_class[BidConfiguration]
+        view_id = self._view_by_read_class[BidConfigurationDayAhead]
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("bid_configuration"),
@@ -119,6 +143,7 @@ class TotalBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
-                result_cls=BidConfiguration,
+                result_cls=BidConfigurationDayAhead,
+                is_single_direct_relation=True,
             ),
         )

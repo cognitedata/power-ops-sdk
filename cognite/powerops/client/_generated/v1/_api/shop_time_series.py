@@ -13,12 +13,12 @@ from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
     ResourcesWriteResult,
-    SHOPTimeSeries,
-    SHOPTimeSeriesWrite,
-    SHOPTimeSeriesFields,
-    SHOPTimeSeriesList,
-    SHOPTimeSeriesWriteList,
-    SHOPTimeSeriesTextFields,
+    ShopTimeSeries,
+    ShopTimeSeriesWrite,
+    ShopTimeSeriesFields,
+    ShopTimeSeriesList,
+    ShopTimeSeriesWriteList,
+    ShopTimeSeriesTextFields,
 )
 from cognite.powerops.client._generated.v1.data_classes._shop_time_series import (
     _SHOPTIMESERIES_PROPERTIES_BY_FIELD,
@@ -33,23 +33,23 @@ from ._core import (
     QueryStep,
     QueryBuilder,
 )
-from .shop_time_series_timeseries import SHOPTimeSeriesTimeseriesAPI
-from .shop_time_series_query import SHOPTimeSeriesQueryAPI
+from .shop_time_series_time_series import ShopTimeSeriesTimeSeriesAPI
+from .shop_time_series_query import ShopTimeSeriesQueryAPI
 
 
-class SHOPTimeSeriesAPI(NodeAPI[SHOPTimeSeries, SHOPTimeSeriesWrite, SHOPTimeSeriesList]):
+class ShopTimeSeriesAPI(NodeAPI[ShopTimeSeries, ShopTimeSeriesWrite, ShopTimeSeriesList]):
     def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[SHOPTimeSeries]
+        view_id = view_by_read_class[ShopTimeSeries]
         super().__init__(
             client=client,
             sources=view_id,
-            class_type=SHOPTimeSeries,
-            class_list=SHOPTimeSeriesList,
-            class_write_list=SHOPTimeSeriesWriteList,
+            class_type=ShopTimeSeries,
+            class_list=ShopTimeSeriesList,
+            class_write_list=ShopTimeSeriesWriteList,
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
-        self.timeseries = SHOPTimeSeriesTimeseriesAPI(client, view_id)
+        self.time_series = ShopTimeSeriesTimeSeriesAPI(client, view_id)
 
     def __call__(
         self,
@@ -63,7 +63,7 @@ class SHOPTimeSeriesAPI(NodeAPI[SHOPTimeSeries, SHOPTimeSeriesWrite, SHOPTimeSer
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
-    ) -> SHOPTimeSeriesQueryAPI[SHOPTimeSeriesList]:
+    ) -> ShopTimeSeriesQueryAPI[ShopTimeSeriesList]:
         """Query starting at shop time series.
 
         Args:
@@ -95,12 +95,12 @@ class SHOPTimeSeriesAPI(NodeAPI[SHOPTimeSeries, SHOPTimeSeriesWrite, SHOPTimeSer
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(SHOPTimeSeriesList)
-        return SHOPTimeSeriesQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        builder = QueryBuilder(ShopTimeSeriesList)
+        return ShopTimeSeriesQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
 
     def apply(
         self,
-        shop_time_series: SHOPTimeSeriesWrite | Sequence[SHOPTimeSeriesWrite],
+        shop_time_series: ShopTimeSeriesWrite | Sequence[ShopTimeSeriesWrite],
         replace: bool = False,
         write_none: bool = False,
     ) -> ResourcesWriteResult:
@@ -120,9 +120,9 @@ class SHOPTimeSeriesAPI(NodeAPI[SHOPTimeSeries, SHOPTimeSeriesWrite, SHOPTimeSer
             Create a new shop_time_series:
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
-                >>> from cognite.powerops.client._generated.v1.data_classes import SHOPTimeSeriesWrite
+                >>> from cognite.powerops.client._generated.v1.data_classes import ShopTimeSeriesWrite
                 >>> client = PowerOpsModelsV1Client()
-                >>> shop_time_series = SHOPTimeSeriesWrite(external_id="my_shop_time_series", ...)
+                >>> shop_time_series = ShopTimeSeriesWrite(external_id="my_shop_time_series", ...)
                 >>> result = client.shop_time_series.apply(shop_time_series)
 
         """
@@ -170,14 +170,14 @@ class SHOPTimeSeriesAPI(NodeAPI[SHOPTimeSeries, SHOPTimeSeriesWrite, SHOPTimeSer
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> SHOPTimeSeries | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopTimeSeries | None: ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> SHOPTimeSeriesList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopTimeSeriesList: ...
 
     def retrieve(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> SHOPTimeSeries | SHOPTimeSeriesList | None:
+    ) -> ShopTimeSeries | ShopTimeSeriesList | None:
         """Retrieve one or more shop time series by id(s).
 
         Args:
@@ -201,7 +201,7 @@ class SHOPTimeSeriesAPI(NodeAPI[SHOPTimeSeries, SHOPTimeSeriesWrite, SHOPTimeSer
     def search(
         self,
         query: str,
-        properties: SHOPTimeSeriesTextFields | Sequence[SHOPTimeSeriesTextFields] | None = None,
+        properties: ShopTimeSeriesTextFields | Sequence[ShopTimeSeriesTextFields] | None = None,
         object_type: str | list[str] | None = None,
         object_type_prefix: str | None = None,
         object_name: str | list[str] | None = None,
@@ -212,7 +212,7 @@ class SHOPTimeSeriesAPI(NodeAPI[SHOPTimeSeries, SHOPTimeSeriesWrite, SHOPTimeSer
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> SHOPTimeSeriesList:
+    ) -> ShopTimeSeriesList:
         """Search shop time series
 
         Args:
@@ -264,10 +264,10 @@ class SHOPTimeSeriesAPI(NodeAPI[SHOPTimeSeries, SHOPTimeSeriesWrite, SHOPTimeSer
             | Sequence[Aggregations]
             | Sequence[dm.aggregations.MetricAggregation]
         ),
-        property: SHOPTimeSeriesFields | Sequence[SHOPTimeSeriesFields] | None = None,
+        property: ShopTimeSeriesFields | Sequence[ShopTimeSeriesFields] | None = None,
         group_by: None = None,
         query: str | None = None,
-        search_properties: SHOPTimeSeriesTextFields | Sequence[SHOPTimeSeriesTextFields] | None = None,
+        search_properties: ShopTimeSeriesTextFields | Sequence[ShopTimeSeriesTextFields] | None = None,
         object_type: str | list[str] | None = None,
         object_type_prefix: str | None = None,
         object_name: str | list[str] | None = None,
@@ -289,10 +289,10 @@ class SHOPTimeSeriesAPI(NodeAPI[SHOPTimeSeries, SHOPTimeSeriesWrite, SHOPTimeSer
             | Sequence[Aggregations]
             | Sequence[dm.aggregations.MetricAggregation]
         ),
-        property: SHOPTimeSeriesFields | Sequence[SHOPTimeSeriesFields] | None = None,
-        group_by: SHOPTimeSeriesFields | Sequence[SHOPTimeSeriesFields] = None,
+        property: ShopTimeSeriesFields | Sequence[ShopTimeSeriesFields] | None = None,
+        group_by: ShopTimeSeriesFields | Sequence[ShopTimeSeriesFields] = None,
         query: str | None = None,
-        search_properties: SHOPTimeSeriesTextFields | Sequence[SHOPTimeSeriesTextFields] | None = None,
+        search_properties: ShopTimeSeriesTextFields | Sequence[ShopTimeSeriesTextFields] | None = None,
         object_type: str | list[str] | None = None,
         object_type_prefix: str | None = None,
         object_name: str | list[str] | None = None,
@@ -313,10 +313,10 @@ class SHOPTimeSeriesAPI(NodeAPI[SHOPTimeSeries, SHOPTimeSeriesWrite, SHOPTimeSer
             | Sequence[Aggregations]
             | Sequence[dm.aggregations.MetricAggregation]
         ),
-        property: SHOPTimeSeriesFields | Sequence[SHOPTimeSeriesFields] | None = None,
-        group_by: SHOPTimeSeriesFields | Sequence[SHOPTimeSeriesFields] | None = None,
+        property: ShopTimeSeriesFields | Sequence[ShopTimeSeriesFields] | None = None,
+        group_by: ShopTimeSeriesFields | Sequence[ShopTimeSeriesFields] | None = None,
         query: str | None = None,
-        search_property: SHOPTimeSeriesTextFields | Sequence[SHOPTimeSeriesTextFields] | None = None,
+        search_property: ShopTimeSeriesTextFields | Sequence[ShopTimeSeriesTextFields] | None = None,
         object_type: str | list[str] | None = None,
         object_type_prefix: str | None = None,
         object_name: str | list[str] | None = None,
@@ -386,10 +386,10 @@ class SHOPTimeSeriesAPI(NodeAPI[SHOPTimeSeries, SHOPTimeSeriesWrite, SHOPTimeSer
 
     def histogram(
         self,
-        property: SHOPTimeSeriesFields,
+        property: ShopTimeSeriesFields,
         interval: float,
         query: str | None = None,
-        search_property: SHOPTimeSeriesTextFields | Sequence[SHOPTimeSeriesTextFields] | None = None,
+        search_property: ShopTimeSeriesTextFields | Sequence[ShopTimeSeriesTextFields] | None = None,
         object_type: str | list[str] | None = None,
         object_type_prefix: str | None = None,
         object_name: str | list[str] | None = None,
@@ -458,7 +458,7 @@ class SHOPTimeSeriesAPI(NodeAPI[SHOPTimeSeries, SHOPTimeSeriesWrite, SHOPTimeSer
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> SHOPTimeSeriesList:
+    ) -> ShopTimeSeriesList:
         """List/filter shop time series
 
         Args:

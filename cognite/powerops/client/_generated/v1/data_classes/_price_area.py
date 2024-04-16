@@ -36,15 +36,14 @@ __all__ = [
 ]
 
 
-PriceAreaTextFields = Literal["name", "display_name", "asset_type", "timezone"]
-PriceAreaFields = Literal["name", "display_name", "ordering", "asset_type", "timezone"]
+PriceAreaTextFields = Literal["name", "display_name", "asset_type"]
+PriceAreaFields = Literal["name", "display_name", "ordering", "asset_type"]
 
 _PRICEAREA_PROPERTIES_BY_FIELD = {
     "name": "name",
     "display_name": "displayName",
     "ordering": "ordering",
     "asset_type": "assetType",
-    "timezone": "timezone",
 }
 
 
@@ -58,19 +57,17 @@ class PriceAreaGraphQL(GraphQLCore):
         space: The space where the node is located.
         external_id: The external id of the price area.
         data_record: The data record of the price area node.
-        name: Name for the Asset
-        display_name: Display name for the Asset.
+        name: Name for the PowerAsset
+        display_name: Display name for the PowerAsset.
         ordering: The ordering of the asset
         asset_type: The type of the asset
-        timezone: The timezone of the price area
     """
 
-    view_id = dm.ViewId("sp_powerops_models_temp", "PriceArea", "1")
+    view_id = dm.ViewId("sp_power_ops_models", "PriceArea", "1")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
     asset_type: Optional[str] = Field(None, alias="assetType")
-    timezone: Optional[str] = None
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -99,7 +96,6 @@ class PriceAreaGraphQL(GraphQLCore):
             display_name=self.display_name,
             ordering=self.ordering,
             asset_type=self.asset_type,
-            timezone=self.timezone,
         )
 
     def as_write(self) -> PriceAreaWrite:
@@ -112,7 +108,6 @@ class PriceAreaGraphQL(GraphQLCore):
             display_name=self.display_name,
             ordering=self.ordering,
             asset_type=self.asset_type,
-            timezone=self.timezone,
         )
 
 
@@ -125,17 +120,13 @@ class PriceArea(PowerAsset):
         space: The space where the node is located.
         external_id: The external id of the price area.
         data_record: The data record of the price area node.
-        name: Name for the Asset
-        display_name: Display name for the Asset.
+        name: Name for the PowerAsset
+        display_name: Display name for the PowerAsset.
         ordering: The ordering of the asset
         asset_type: The type of the asset
-        timezone: The timezone of the price area
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types_temp", "PriceArea"
-    )
-    timezone: str
+    node_type: Union[dm.DirectRelationReference, None] = None
 
     def as_write(self) -> PriceAreaWrite:
         """Convert this read version of price area to the writing version."""
@@ -147,7 +138,6 @@ class PriceArea(PowerAsset):
             display_name=self.display_name,
             ordering=self.ordering,
             asset_type=self.asset_type,
-            timezone=self.timezone,
         )
 
     def as_apply(self) -> PriceAreaWrite:
@@ -169,17 +159,13 @@ class PriceAreaWrite(PowerAssetWrite):
         space: The space where the node is located.
         external_id: The external id of the price area.
         data_record: The data record of the price area node.
-        name: Name for the Asset
-        display_name: Display name for the Asset.
+        name: Name for the PowerAsset
+        display_name: Display name for the PowerAsset.
         ordering: The ordering of the asset
         asset_type: The type of the asset
-        timezone: The timezone of the price area
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types_temp", "PriceArea"
-    )
-    timezone: str
+    node_type: Union[dm.DirectRelationReference, None] = None
 
     def _to_instances_write(
         self,
@@ -192,7 +178,7 @@ class PriceAreaWrite(PowerAssetWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(PriceArea, dm.ViewId("sp_powerops_models_temp", "PriceArea", "1"))
+        write_view = (view_by_read_class or {}).get(PriceArea, dm.ViewId("sp_power_ops_models", "PriceArea", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -207,9 +193,6 @@ class PriceAreaWrite(PowerAssetWrite):
 
         if self.asset_type is not None or write_none:
             properties["assetType"] = self.asset_type
-
-        if self.timezone is not None:
-            properties["timezone"] = self.timezone
 
         if properties:
             this_node = dm.NodeApply(
@@ -280,8 +263,6 @@ def _create_price_area_filter(
     max_ordering: int | None = None,
     asset_type: str | list[str] | None = None,
     asset_type_prefix: str | None = None,
-    timezone: str | list[str] | None = None,
-    timezone_prefix: str | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -307,12 +288,6 @@ def _create_price_area_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("assetType"), values=asset_type))
     if asset_type_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("assetType"), value=asset_type_prefix))
-    if isinstance(timezone, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("timezone"), value=timezone))
-    if timezone and isinstance(timezone, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("timezone"), values=timezone))
-    if timezone_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("timezone"), value=timezone_prefix))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):

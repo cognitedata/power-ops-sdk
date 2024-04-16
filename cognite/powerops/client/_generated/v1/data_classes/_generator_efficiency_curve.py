@@ -32,10 +32,9 @@ __all__ = [
     "GeneratorEfficiencyCurveFields",
 ]
 
-GeneratorEfficiencyCurveFields = Literal["ref", "power", "efficiency"]
+GeneratorEfficiencyCurveFields = Literal["power", "efficiency"]
 
 _GENERATOREFFICIENCYCURVE_PROPERTIES_BY_FIELD = {
-    "ref": "ref",
     "power": "power",
     "efficiency": "efficiency",
 }
@@ -51,13 +50,11 @@ class GeneratorEfficiencyCurveGraphQL(GraphQLCore):
         space: The space where the node is located.
         external_id: The external id of the generator efficiency curve.
         data_record: The data record of the generator efficiency curve node.
-        ref: The reference value
         power: The generator power values
         efficiency: The generator efficiency values
     """
 
-    view_id = dm.ViewId("sp_powerops_models_temp", "GeneratorEfficiencyCurve", "1")
-    ref: Optional[float] = None
+    view_id = dm.ViewId("sp_power_ops_models", "GeneratorEfficiencyCurve", "1")
     power: Optional[list[float]] = None
     efficiency: Optional[list[float]] = None
 
@@ -84,7 +81,6 @@ class GeneratorEfficiencyCurveGraphQL(GraphQLCore):
                 last_updated_time=self.data_record.last_updated_time,
                 created_time=self.data_record.created_time,
             ),
-            ref=self.ref,
             power=self.power,
             efficiency=self.efficiency,
         )
@@ -95,7 +91,6 @@ class GeneratorEfficiencyCurveGraphQL(GraphQLCore):
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
-            ref=self.ref,
             power=self.power,
             efficiency=self.efficiency,
         )
@@ -110,16 +105,14 @@ class GeneratorEfficiencyCurve(DomainModel):
         space: The space where the node is located.
         external_id: The external id of the generator efficiency curve.
         data_record: The data record of the generator efficiency curve node.
-        ref: The reference value
         power: The generator power values
         efficiency: The generator efficiency values
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types_temp", "GeneratorEfficiencyCurve"
+        "sp_power_ops_types", "GeneratorEfficiencyCurve"
     )
-    ref: Optional[float] = None
     power: Optional[list[float]] = None
     efficiency: Optional[list[float]] = None
 
@@ -129,7 +122,6 @@ class GeneratorEfficiencyCurve(DomainModel):
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
-            ref=self.ref,
             power=self.power,
             efficiency=self.efficiency,
         )
@@ -153,16 +145,14 @@ class GeneratorEfficiencyCurveWrite(DomainModelWrite):
         space: The space where the node is located.
         external_id: The external id of the generator efficiency curve.
         data_record: The data record of the generator efficiency curve node.
-        ref: The reference value
         power: The generator power values
         efficiency: The generator efficiency values
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types_temp", "GeneratorEfficiencyCurve"
+        "sp_power_ops_types", "GeneratorEfficiencyCurve"
     )
-    ref: Optional[float] = None
     power: list[float]
     efficiency: list[float]
 
@@ -178,13 +168,10 @@ class GeneratorEfficiencyCurveWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            GeneratorEfficiencyCurve, dm.ViewId("sp_powerops_models_temp", "GeneratorEfficiencyCurve", "1")
+            GeneratorEfficiencyCurve, dm.ViewId("sp_power_ops_models", "GeneratorEfficiencyCurve", "1")
         )
 
         properties: dict[str, Any] = {}
-
-        if self.ref is not None or write_none:
-            properties["ref"] = self.ref
 
         if self.power is not None:
             properties["power"] = self.power
@@ -253,15 +240,11 @@ class GeneratorEfficiencyCurveApplyList(GeneratorEfficiencyCurveWriteList): ...
 
 def _create_generator_efficiency_curve_filter(
     view_id: dm.ViewId,
-    min_ref: float | None = None,
-    max_ref: float | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if min_ref is not None or max_ref is not None:
-        filters.append(dm.filters.Range(view_id.as_property_ref("ref"), gte=min_ref, lte=max_ref))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):

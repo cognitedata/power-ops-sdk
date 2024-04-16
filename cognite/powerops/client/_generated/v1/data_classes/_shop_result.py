@@ -24,35 +24,35 @@ from ._core import (
 
 if TYPE_CHECKING:
     from ._alert import Alert, AlertGraphQL, AlertWrite
-    from ._case import Case, CaseGraphQL, CaseWrite
-    from ._shop_time_series import SHOPTimeSeries, SHOPTimeSeriesGraphQL, SHOPTimeSeriesWrite
+    from ._shop_case import ShopCase, ShopCaseGraphQL, ShopCaseWrite
+    from ._shop_time_series import ShopTimeSeries, ShopTimeSeriesGraphQL, ShopTimeSeriesWrite
 
 
 __all__ = [
-    "SHOPResult",
-    "SHOPResultWrite",
-    "SHOPResultApply",
-    "SHOPResultList",
-    "SHOPResultWriteList",
-    "SHOPResultApplyList",
-    "SHOPResultFields",
-    "SHOPResultTextFields",
+    "ShopResult",
+    "ShopResultWrite",
+    "ShopResultApply",
+    "ShopResultList",
+    "ShopResultWriteList",
+    "ShopResultApplyList",
+    "ShopResultFields",
+    "ShopResultTextFields",
 ]
 
 
-SHOPResultTextFields = Literal["objective_sequence", "pre_run", "post_run", "shop_messages", "cplex_logs"]
-SHOPResultFields = Literal["objective_sequence", "pre_run", "post_run", "shop_messages", "cplex_logs"]
+ShopResultTextFields = Literal["objective_sequence", "pre_run", "post_run", "messages", "cplex_logs"]
+ShopResultFields = Literal["objective_sequence", "pre_run", "post_run", "messages", "cplex_logs"]
 
 _SHOPRESULT_PROPERTIES_BY_FIELD = {
     "objective_sequence": "objectiveSequence",
     "pre_run": "preRun",
     "post_run": "postRun",
-    "shop_messages": "shopMessages",
+    "messages": "messages",
     "cplex_logs": "cplexLogs",
 }
 
 
-class SHOPResultGraphQL(GraphQLCore):
+class ShopResultGraphQL(GraphQLCore):
     """This represents the reading version of shop result, used
     when data is retrieved from CDF using GraphQL.
 
@@ -66,21 +66,23 @@ class SHOPResultGraphQL(GraphQLCore):
         objective_sequence: The sequence of the objective function
         pre_run: The pre-run data for the SHOP run
         post_run: The post-run data for the SHOP run
-        shop_messages: The messages from the SHOP run
+        messages: The messages from the SHOP run
         cplex_logs: The logs from CPLEX
         alerts: An array of calculation level Alerts.
-        output_timeseries: TODO
+        output_time_series: TODO
     """
 
-    view_id = dm.ViewId("sp_powerops_models_temp", "SHOPResult", "1")
-    case: Optional[CaseGraphQL] = Field(None, repr=False)
-    objective_sequence: Union[str, None] = Field(None, alias="objectiveSequence")
-    pre_run: Union[str, None] = Field(None, alias="preRun")
-    post_run: Union[str, None] = Field(None, alias="postRun")
-    shop_messages: Union[str, None] = Field(None, alias="shopMessages")
-    cplex_logs: Union[str, None] = Field(None, alias="cplexLogs")
+    view_id = dm.ViewId("sp_power_ops_models", "ShopResult", "1")
+    case: Optional[ShopCaseGraphQL] = Field(None, repr=False)
+    objective_sequence: Union[dict, None] = Field(None, alias="objectiveSequence")
+    pre_run: Union[dict, None] = Field(None, alias="preRun")
+    post_run: Union[dict, None] = Field(None, alias="postRun")
+    messages: Union[dict, None] = None
+    cplex_logs: Union[dict, None] = Field(None, alias="cplexLogs")
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
-    output_timeseries: Optional[list[SHOPTimeSeriesGraphQL]] = Field(default=None, repr=False, alias="outputTimeseries")
+    output_time_series: Optional[list[ShopTimeSeriesGraphQL]] = Field(
+        default=None, repr=False, alias="outputTimeSeries"
+    )
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -93,7 +95,7 @@ class SHOPResultGraphQL(GraphQLCore):
             )
         return values
 
-    @field_validator("case", "alerts", "output_timeseries", mode="before")
+    @field_validator("case", "alerts", "output_time_series", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
             return value
@@ -101,11 +103,11 @@ class SHOPResultGraphQL(GraphQLCore):
             return value["items"]
         return value
 
-    def as_read(self) -> SHOPResult:
+    def as_read(self) -> ShopResult:
         """Convert this GraphQL format of shop result to the reading format."""
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
-        return SHOPResult(
+        return ShopResult(
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecord(
@@ -117,18 +119,18 @@ class SHOPResultGraphQL(GraphQLCore):
             objective_sequence=self.objective_sequence,
             pre_run=self.pre_run,
             post_run=self.post_run,
-            shop_messages=self.shop_messages,
+            messages=self.messages,
             cplex_logs=self.cplex_logs,
             alerts=[alert.as_read() if isinstance(alert, GraphQLCore) else alert for alert in self.alerts or []],
-            output_timeseries=[
-                output_timesery.as_read() if isinstance(output_timesery, GraphQLCore) else output_timesery
-                for output_timesery in self.output_timeseries or []
+            output_time_series=[
+                output_time_series.as_read() if isinstance(output_time_series, GraphQLCore) else output_time_series
+                for output_time_series in self.output_time_series or []
             ],
         )
 
-    def as_write(self) -> SHOPResultWrite:
+    def as_write(self) -> ShopResultWrite:
         """Convert this GraphQL format of shop result to the writing format."""
-        return SHOPResultWrite(
+        return ShopResultWrite(
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
@@ -136,17 +138,17 @@ class SHOPResultGraphQL(GraphQLCore):
             objective_sequence=self.objective_sequence,
             pre_run=self.pre_run,
             post_run=self.post_run,
-            shop_messages=self.shop_messages,
+            messages=self.messages,
             cplex_logs=self.cplex_logs,
             alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            output_timeseries=[
-                output_timesery.as_write() if isinstance(output_timesery, DomainModel) else output_timesery
-                for output_timesery in self.output_timeseries or []
+            output_time_series=[
+                output_time_series.as_write() if isinstance(output_time_series, DomainModel) else output_time_series
+                for output_time_series in self.output_time_series or []
             ],
         )
 
 
-class SHOPResult(DomainModel):
+class ShopResult(DomainModel):
     """This represents the reading version of shop result.
 
     It is used to when data is retrieved from CDF.
@@ -159,28 +161,28 @@ class SHOPResult(DomainModel):
         objective_sequence: The sequence of the objective function
         pre_run: The pre-run data for the SHOP run
         post_run: The post-run data for the SHOP run
-        shop_messages: The messages from the SHOP run
+        messages: The messages from the SHOP run
         cplex_logs: The logs from CPLEX
         alerts: An array of calculation level Alerts.
-        output_timeseries: TODO
+        output_time_series: TODO
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
-    case: Union[Case, str, dm.NodeId, None] = Field(None, repr=False)
+    case: Union[ShopCase, str, dm.NodeId, None] = Field(None, repr=False)
     objective_sequence: Union[str, None] = Field(None, alias="objectiveSequence")
     pre_run: Union[str, None] = Field(None, alias="preRun")
     post_run: Union[str, None] = Field(None, alias="postRun")
-    shop_messages: Union[str, None] = Field(None, alias="shopMessages")
+    messages: Union[str, None] = None
     cplex_logs: Union[str, None] = Field(None, alias="cplexLogs")
     alerts: Union[list[Alert], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
-    output_timeseries: Union[list[SHOPTimeSeries], list[str], list[dm.NodeId], None] = Field(
-        default=None, repr=False, alias="outputTimeseries"
+    output_time_series: Union[list[ShopTimeSeries], list[str], list[dm.NodeId], None] = Field(
+        default=None, repr=False, alias="outputTimeSeries"
     )
 
-    def as_write(self) -> SHOPResultWrite:
+    def as_write(self) -> ShopResultWrite:
         """Convert this read version of shop result to the writing version."""
-        return SHOPResultWrite(
+        return ShopResultWrite(
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
@@ -188,16 +190,16 @@ class SHOPResult(DomainModel):
             objective_sequence=self.objective_sequence,
             pre_run=self.pre_run,
             post_run=self.post_run,
-            shop_messages=self.shop_messages,
+            messages=self.messages,
             cplex_logs=self.cplex_logs,
             alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            output_timeseries=[
-                output_timesery.as_write() if isinstance(output_timesery, DomainModel) else output_timesery
-                for output_timesery in self.output_timeseries or []
+            output_time_series=[
+                output_time_series.as_write() if isinstance(output_time_series, DomainModel) else output_time_series
+                for output_time_series in self.output_time_series or []
             ],
         )
 
-    def as_apply(self) -> SHOPResultWrite:
+    def as_apply(self) -> ShopResultWrite:
         """Convert this read version of shop result to the writing version."""
         warnings.warn(
             "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
@@ -207,7 +209,7 @@ class SHOPResult(DomainModel):
         return self.as_write()
 
 
-class SHOPResultWrite(DomainModelWrite):
+class ShopResultWrite(DomainModelWrite):
     """This represents the writing version of shop result.
 
     It is used to when data is sent to CDF.
@@ -220,23 +222,23 @@ class SHOPResultWrite(DomainModelWrite):
         objective_sequence: The sequence of the objective function
         pre_run: The pre-run data for the SHOP run
         post_run: The post-run data for the SHOP run
-        shop_messages: The messages from the SHOP run
+        messages: The messages from the SHOP run
         cplex_logs: The logs from CPLEX
         alerts: An array of calculation level Alerts.
-        output_timeseries: TODO
+        output_time_series: TODO
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
-    case: Union[CaseWrite, str, dm.NodeId, None] = Field(None, repr=False)
+    case: Union[ShopCaseWrite, str, dm.NodeId, None] = Field(None, repr=False)
     objective_sequence: Union[str, None] = Field(None, alias="objectiveSequence")
     pre_run: Union[str, None] = Field(None, alias="preRun")
     post_run: Union[str, None] = Field(None, alias="postRun")
-    shop_messages: Union[str, None] = Field(None, alias="shopMessages")
+    messages: Union[str, None] = None
     cplex_logs: Union[str, None] = Field(None, alias="cplexLogs")
     alerts: Union[list[AlertWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
-    output_timeseries: Union[list[SHOPTimeSeriesWrite], list[str], list[dm.NodeId], None] = Field(
-        default=None, repr=False, alias="outputTimeseries"
+    output_time_series: Union[list[ShopTimeSeriesWrite], list[str], list[dm.NodeId], None] = Field(
+        default=None, repr=False, alias="outputTimeSeries"
     )
 
     def _to_instances_write(
@@ -250,7 +252,7 @@ class SHOPResultWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(SHOPResult, dm.ViewId("sp_powerops_models_temp", "SHOPResult", "1"))
+        write_view = (view_by_read_class or {}).get(ShopResult, dm.ViewId("sp_power_ops_models", "ShopResult", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -269,8 +271,8 @@ class SHOPResultWrite(DomainModelWrite):
         if self.post_run is not None or write_none:
             properties["postRun"] = self.post_run
 
-        if self.shop_messages is not None or write_none:
-            properties["shopMessages"] = self.shop_messages
+        if self.messages is not None or write_none:
+            properties["messages"] = self.messages
 
         if self.cplex_logs is not None or write_none:
             properties["cplexLogs"] = self.cplex_logs
@@ -291,7 +293,7 @@ class SHOPResultWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue")
+        edge_type = dm.DirectRelationReference("sp_power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
@@ -304,12 +306,12 @@ class SHOPResultWrite(DomainModelWrite):
             )
             resources.extend(other_resources)
 
-        edge_type = dm.DirectRelationReference("sp_powerops_types_temp", "SHOPResult.outputTimeseries")
-        for output_timesery in self.output_timeseries or []:
+        edge_type = dm.DirectRelationReference("sp_power_ops_types", "ShopResult.outputTimeSeries")
+        for output_time_series in self.output_time_series or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
                 start_node=self,
-                end_node=output_timesery,
+                end_node=output_time_series,
                 edge_type=edge_type,
                 view_by_read_class=view_by_read_class,
                 write_none=write_none,
@@ -324,28 +326,28 @@ class SHOPResultWrite(DomainModelWrite):
         return resources
 
 
-class SHOPResultApply(SHOPResultWrite):
-    def __new__(cls, *args, **kwargs) -> SHOPResultApply:
+class ShopResultApply(ShopResultWrite):
+    def __new__(cls, *args, **kwargs) -> ShopResultApply:
         warnings.warn(
-            "SHOPResultApply is deprecated and will be removed in v1.0. Use SHOPResultWrite instead."
+            "ShopResultApply is deprecated and will be removed in v1.0. Use ShopResultWrite instead."
             "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "SHOPResult.",
+            "ShopResult.",
             UserWarning,
             stacklevel=2,
         )
         return super().__new__(cls)
 
 
-class SHOPResultList(DomainModelList[SHOPResult]):
+class ShopResultList(DomainModelList[ShopResult]):
     """List of shop results in the read version."""
 
-    _INSTANCE = SHOPResult
+    _INSTANCE = ShopResult
 
-    def as_write(self) -> SHOPResultWriteList:
+    def as_write(self) -> ShopResultWriteList:
         """Convert these read versions of shop result to the writing versions."""
-        return SHOPResultWriteList([node.as_write() for node in self.data])
+        return ShopResultWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> SHOPResultWriteList:
+    def as_apply(self) -> ShopResultWriteList:
         """Convert these read versions of primitive nullable to the writing versions."""
         warnings.warn(
             "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
@@ -355,13 +357,13 @@ class SHOPResultList(DomainModelList[SHOPResult]):
         return self.as_write()
 
 
-class SHOPResultWriteList(DomainModelWriteList[SHOPResultWrite]):
+class ShopResultWriteList(DomainModelWriteList[ShopResultWrite]):
     """List of shop results in the writing version."""
 
-    _INSTANCE = SHOPResultWrite
+    _INSTANCE = ShopResultWrite
 
 
-class SHOPResultApplyList(SHOPResultWriteList): ...
+class ShopResultApplyList(ShopResultWriteList): ...
 
 
 def _create_shop_result_filter(

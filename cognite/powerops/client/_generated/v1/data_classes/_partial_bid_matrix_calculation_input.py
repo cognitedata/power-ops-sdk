@@ -25,7 +25,16 @@ from ._core import (
 from ._function_input import FunctionInput, FunctionInputWrite
 
 if TYPE_CHECKING:
-    from ._bid_configuration import BidConfiguration, BidConfigurationGraphQL, BidConfigurationWrite
+    from ._bid_configuration_day_ahead import (
+        BidConfigurationDayAhead,
+        BidConfigurationDayAheadGraphQL,
+        BidConfigurationDayAheadWrite,
+    )
+    from ._partial_bid_configuration import (
+        PartialBidConfiguration,
+        PartialBidConfigurationGraphQL,
+        PartialBidConfigurationWrite,
+    )
 
 
 __all__ = [
@@ -40,14 +49,14 @@ __all__ = [
 ]
 
 
-PartialBidMatrixCalculationInputTextFields = Literal["process_id", "function_name", "function_call_id"]
+PartialBidMatrixCalculationInputTextFields = Literal["workflow_execution_id", "function_name", "function_call_id"]
 PartialBidMatrixCalculationInputFields = Literal[
-    "process_id", "process_step", "function_name", "function_call_id", "bid_date"
+    "workflow_execution_id", "workflow_step", "function_name", "function_call_id", "bid_date"
 ]
 
 _PARTIALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD = {
-    "process_id": "processId",
-    "process_step": "processStep",
+    "workflow_execution_id": "workflowExecutionId",
+    "workflow_step": "workflowStep",
     "function_name": "functionName",
     "function_call_id": "functionCallId",
     "bid_date": "bidDate",
@@ -64,21 +73,25 @@ class PartialBidMatrixCalculationInputGraphQL(GraphQLCore):
         space: The space where the node is located.
         external_id: The external id of the partial bid matrix calculation input.
         data_record: The data record of the partial bid matrix calculation input node.
-        process_id: The process associated with the function execution
-        process_step: This is the step in the process.
+        workflow_execution_id: The process associated with the function execution
+        workflow_step: This is the step in the process.
         function_name: The name of the function
         function_call_id: The function call id
         bid_date: The bid date
         bid_configuration: TODO description
+        partial_bid_configuration: The partial bid configuration related to the bid calculation task
     """
 
-    view_id = dm.ViewId("sp_powerops_models_temp", "PartialBidMatrixCalculationInput", "1")
-    process_id: Optional[str] = Field(None, alias="processId")
-    process_step: Optional[int] = Field(None, alias="processStep")
+    view_id = dm.ViewId("sp_power_ops_models", "PartialBidMatrixCalculationInput", "1")
+    workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
+    workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
     function_call_id: Optional[str] = Field(None, alias="functionCallId")
     bid_date: Optional[datetime.date] = Field(None, alias="bidDate")
-    bid_configuration: Optional[BidConfigurationGraphQL] = Field(None, repr=False, alias="bidConfiguration")
+    bid_configuration: Optional[BidConfigurationDayAheadGraphQL] = Field(None, repr=False, alias="bidConfiguration")
+    partial_bid_configuration: Optional[PartialBidConfigurationGraphQL] = Field(
+        None, repr=False, alias="partialBidConfiguration"
+    )
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -91,7 +104,7 @@ class PartialBidMatrixCalculationInputGraphQL(GraphQLCore):
             )
         return values
 
-    @field_validator("bid_configuration", mode="before")
+    @field_validator("bid_configuration", "partial_bid_configuration", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
             return value
@@ -111,8 +124,8 @@ class PartialBidMatrixCalculationInputGraphQL(GraphQLCore):
                 last_updated_time=self.data_record.last_updated_time,
                 created_time=self.data_record.created_time,
             ),
-            process_id=self.process_id,
-            process_step=self.process_step,
+            workflow_execution_id=self.workflow_execution_id,
+            workflow_step=self.workflow_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
             bid_date=self.bid_date,
@@ -120,6 +133,11 @@ class PartialBidMatrixCalculationInputGraphQL(GraphQLCore):
                 self.bid_configuration.as_read()
                 if isinstance(self.bid_configuration, GraphQLCore)
                 else self.bid_configuration
+            ),
+            partial_bid_configuration=(
+                self.partial_bid_configuration.as_read()
+                if isinstance(self.partial_bid_configuration, GraphQLCore)
+                else self.partial_bid_configuration
             ),
         )
 
@@ -129,8 +147,8 @@ class PartialBidMatrixCalculationInputGraphQL(GraphQLCore):
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
-            process_id=self.process_id,
-            process_step=self.process_step,
+            workflow_execution_id=self.workflow_execution_id,
+            workflow_step=self.workflow_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
             bid_date=self.bid_date,
@@ -138,6 +156,11 @@ class PartialBidMatrixCalculationInputGraphQL(GraphQLCore):
                 self.bid_configuration.as_write()
                 if isinstance(self.bid_configuration, DomainModel)
                 else self.bid_configuration
+            ),
+            partial_bid_configuration=(
+                self.partial_bid_configuration.as_write()
+                if isinstance(self.partial_bid_configuration, DomainModel)
+                else self.partial_bid_configuration
             ),
         )
 
@@ -151,17 +174,23 @@ class PartialBidMatrixCalculationInput(FunctionInput):
         space: The space where the node is located.
         external_id: The external id of the partial bid matrix calculation input.
         data_record: The data record of the partial bid matrix calculation input node.
-        process_id: The process associated with the function execution
-        process_step: This is the step in the process.
+        workflow_execution_id: The process associated with the function execution
+        workflow_step: This is the step in the process.
         function_name: The name of the function
         function_call_id: The function call id
         bid_date: The bid date
         bid_configuration: TODO description
+        partial_bid_configuration: The partial bid configuration related to the bid calculation task
     """
 
     node_type: Union[dm.DirectRelationReference, None] = None
     bid_date: Optional[datetime.date] = Field(None, alias="bidDate")
-    bid_configuration: Union[BidConfiguration, str, dm.NodeId, None] = Field(None, repr=False, alias="bidConfiguration")
+    bid_configuration: Union[BidConfigurationDayAhead, str, dm.NodeId, None] = Field(
+        None, repr=False, alias="bidConfiguration"
+    )
+    partial_bid_configuration: Union[PartialBidConfiguration, str, dm.NodeId, None] = Field(
+        None, repr=False, alias="partialBidConfiguration"
+    )
 
     def as_write(self) -> PartialBidMatrixCalculationInputWrite:
         """Convert this read version of partial bid matrix calculation input to the writing version."""
@@ -169,8 +198,8 @@ class PartialBidMatrixCalculationInput(FunctionInput):
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
-            process_id=self.process_id,
-            process_step=self.process_step,
+            workflow_execution_id=self.workflow_execution_id,
+            workflow_step=self.workflow_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
             bid_date=self.bid_date,
@@ -178,6 +207,11 @@ class PartialBidMatrixCalculationInput(FunctionInput):
                 self.bid_configuration.as_write()
                 if isinstance(self.bid_configuration, DomainModel)
                 else self.bid_configuration
+            ),
+            partial_bid_configuration=(
+                self.partial_bid_configuration.as_write()
+                if isinstance(self.partial_bid_configuration, DomainModel)
+                else self.partial_bid_configuration
             ),
         )
 
@@ -200,18 +234,22 @@ class PartialBidMatrixCalculationInputWrite(FunctionInputWrite):
         space: The space where the node is located.
         external_id: The external id of the partial bid matrix calculation input.
         data_record: The data record of the partial bid matrix calculation input node.
-        process_id: The process associated with the function execution
-        process_step: This is the step in the process.
+        workflow_execution_id: The process associated with the function execution
+        workflow_step: This is the step in the process.
         function_name: The name of the function
         function_call_id: The function call id
         bid_date: The bid date
         bid_configuration: TODO description
+        partial_bid_configuration: The partial bid configuration related to the bid calculation task
     """
 
     node_type: Union[dm.DirectRelationReference, None] = None
     bid_date: Optional[datetime.date] = Field(None, alias="bidDate")
-    bid_configuration: Union[BidConfigurationWrite, str, dm.NodeId, None] = Field(
+    bid_configuration: Union[BidConfigurationDayAheadWrite, str, dm.NodeId, None] = Field(
         None, repr=False, alias="bidConfiguration"
+    )
+    partial_bid_configuration: Union[PartialBidConfigurationWrite, str, dm.NodeId, None] = Field(
+        None, repr=False, alias="partialBidConfiguration"
     )
 
     def _to_instances_write(
@@ -226,17 +264,16 @@ class PartialBidMatrixCalculationInputWrite(FunctionInputWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            PartialBidMatrixCalculationInput,
-            dm.ViewId("sp_powerops_models_temp", "PartialBidMatrixCalculationInput", "1"),
+            PartialBidMatrixCalculationInput, dm.ViewId("sp_power_ops_models", "PartialBidMatrixCalculationInput", "1")
         )
 
         properties: dict[str, Any] = {}
 
-        if self.process_id is not None:
-            properties["processId"] = self.process_id
+        if self.workflow_execution_id is not None:
+            properties["workflowExecutionId"] = self.workflow_execution_id
 
-        if self.process_step is not None:
-            properties["processStep"] = self.process_step
+        if self.workflow_step is not None:
+            properties["workflowStep"] = self.workflow_step
 
         if self.function_name is not None:
             properties["functionName"] = self.function_name
@@ -254,6 +291,20 @@ class PartialBidMatrixCalculationInputWrite(FunctionInputWrite):
                     self.bid_configuration
                     if isinstance(self.bid_configuration, str)
                     else self.bid_configuration.external_id
+                ),
+            }
+
+        if self.partial_bid_configuration is not None:
+            properties["partialBidConfiguration"] = {
+                "space": (
+                    self.space
+                    if isinstance(self.partial_bid_configuration, str)
+                    else self.partial_bid_configuration.space
+                ),
+                "externalId": (
+                    self.partial_bid_configuration
+                    if isinstance(self.partial_bid_configuration, str)
+                    else self.partial_bid_configuration.external_id
                 ),
             }
 
@@ -275,6 +326,10 @@ class PartialBidMatrixCalculationInputWrite(FunctionInputWrite):
 
         if isinstance(self.bid_configuration, DomainModelWrite):
             other_resources = self.bid_configuration._to_instances_write(cache, view_by_read_class)
+            resources.extend(other_resources)
+
+        if isinstance(self.partial_bid_configuration, DomainModelWrite):
+            other_resources = self.partial_bid_configuration._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
 
         return resources
@@ -322,10 +377,10 @@ class PartialBidMatrixCalculationInputApplyList(PartialBidMatrixCalculationInput
 
 def _create_partial_bid_matrix_calculation_input_filter(
     view_id: dm.ViewId,
-    process_id: str | list[str] | None = None,
-    process_id_prefix: str | None = None,
-    min_process_step: int | None = None,
-    max_process_step: int | None = None,
+    workflow_execution_id: str | list[str] | None = None,
+    workflow_execution_id_prefix: str | None = None,
+    min_workflow_step: int | None = None,
+    max_workflow_step: int | None = None,
     function_name: str | list[str] | None = None,
     function_name_prefix: str | None = None,
     function_call_id: str | list[str] | None = None,
@@ -333,20 +388,23 @@ def _create_partial_bid_matrix_calculation_input_filter(
     min_bid_date: datetime.date | None = None,
     max_bid_date: datetime.date | None = None,
     bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if isinstance(process_id, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("processId"), value=process_id))
-    if process_id and isinstance(process_id, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("processId"), values=process_id))
-    if process_id_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("processId"), value=process_id_prefix))
-    if min_process_step is not None or max_process_step is not None:
+    if isinstance(workflow_execution_id, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id))
+    if workflow_execution_id and isinstance(workflow_execution_id, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
+    if workflow_execution_id_prefix is not None:
         filters.append(
-            dm.filters.Range(view_id.as_property_ref("processStep"), gte=min_process_step, lte=max_process_step)
+            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
+        )
+    if min_workflow_step is not None or max_workflow_step is not None:
+        filters.append(
+            dm.filters.Range(view_id.as_property_ref("workflowStep"), gte=min_workflow_step, lte=max_workflow_step)
         )
     if isinstance(function_name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("functionName"), value=function_name))
@@ -394,6 +452,42 @@ def _create_partial_bid_matrix_calculation_input_filter(
             dm.filters.In(
                 view_id.as_property_ref("bidConfiguration"),
                 values=[{"space": item[0], "externalId": item[1]} for item in bid_configuration],
+            )
+        )
+    if partial_bid_configuration and isinstance(partial_bid_configuration, str):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("partialBidConfiguration"),
+                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": partial_bid_configuration},
+            )
+        )
+    if partial_bid_configuration and isinstance(partial_bid_configuration, tuple):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("partialBidConfiguration"),
+                value={"space": partial_bid_configuration[0], "externalId": partial_bid_configuration[1]},
+            )
+        )
+    if (
+        partial_bid_configuration
+        and isinstance(partial_bid_configuration, list)
+        and isinstance(partial_bid_configuration[0], str)
+    ):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("partialBidConfiguration"),
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in partial_bid_configuration],
+            )
+        )
+    if (
+        partial_bid_configuration
+        and isinstance(partial_bid_configuration, list)
+        and isinstance(partial_bid_configuration[0], tuple)
+    ):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("partialBidConfiguration"),
+                values=[{"space": item[0], "externalId": item[1]} for item in partial_bid_configuration],
             )
         )
     if external_id_prefix is not None:

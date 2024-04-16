@@ -56,13 +56,13 @@ class PowerAssetGraphQL(GraphQLCore):
         space: The space where the node is located.
         external_id: The external id of the power asset.
         data_record: The data record of the power asset node.
-        name: Name for the Asset
-        display_name: Display name for the Asset.
+        name: Name for the PowerAsset
+        display_name: Display name for the PowerAsset.
         ordering: The ordering of the asset
         asset_type: The type of the asset
     """
 
-    view_id = dm.ViewId("sp_powerops_models_temp", "PowerAsset", "1")
+    view_id = dm.ViewId("sp_power_ops_models", "PowerAsset", "1")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
@@ -119,8 +119,8 @@ class PowerAsset(DomainModel):
         space: The space where the node is located.
         external_id: The external id of the power asset.
         data_record: The data record of the power asset node.
-        name: Name for the Asset
-        display_name: Display name for the Asset.
+        name: Name for the PowerAsset
+        display_name: Display name for the PowerAsset.
         ordering: The ordering of the asset
         asset_type: The type of the asset
     """
@@ -163,8 +163,8 @@ class PowerAssetWrite(DomainModelWrite):
         space: The space where the node is located.
         external_id: The external id of the power asset.
         data_record: The data record of the power asset node.
-        name: Name for the Asset
-        display_name: Display name for the Asset.
+        name: Name for the PowerAsset
+        display_name: Display name for the PowerAsset.
         ordering: The ordering of the asset
         asset_type: The type of the asset
     """
@@ -187,7 +187,7 @@ class PowerAssetWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(PowerAsset, dm.ViewId("sp_powerops_models_temp", "PowerAsset", "1"))
+        write_view = (view_by_read_class or {}).get(PowerAsset, dm.ViewId("sp_power_ops_models", "PowerAsset", "1"))
 
         properties: dict[str, Any] = {}
 

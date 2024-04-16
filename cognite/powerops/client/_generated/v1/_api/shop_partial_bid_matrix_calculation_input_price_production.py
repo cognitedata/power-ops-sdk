@@ -43,7 +43,7 @@ class ShopPartialBidMatrixCalculationInputPriceProductionAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("sp_powerops_types_temp", "PriceProduction"),
+            dm.DirectRelationReference("sp_power_ops_types", "PriceProduction"),
             from_shop_partial_bid_matrix_calculation_input,
             from_shop_partial_bid_matrix_calculation_input_space,
             to_price_production,

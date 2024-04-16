@@ -239,9 +239,9 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList]):
                 (
                     self.turbine_efficiency_curves_edge,
                     "turbine_efficiency_curves",
-                    dm.DirectRelationReference("sp_powerops_types_temp", "isSubAssetOf"),
+                    dm.DirectRelationReference("sp_power_ops_types", "isSubAssetOf"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models_temp", "TurbineEfficiencyCurve", "1"),
+                    dm.ViewId("sp_power_ops_models", "TurbineEfficiencyCurve", "1"),
                 ),
             ],
         )
@@ -682,9 +682,9 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList]):
                 (
                     self.turbine_efficiency_curves_edge,
                     "turbine_efficiency_curves",
-                    dm.DirectRelationReference("sp_powerops_types_temp", "isSubAssetOf"),
+                    dm.DirectRelationReference("sp_power_ops_types", "isSubAssetOf"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models_temp", "TurbineEfficiencyCurve", "1"),
+                    dm.ViewId("sp_power_ops_models", "TurbineEfficiencyCurve", "1"),
                 ),
             ],
         )

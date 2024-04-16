@@ -26,9 +26,9 @@ class PowerAssetAPI:
     PowerAssetAPI
 
     Generated with:
-        pygen = 0.99.14
+        pygen = 0.99.19
         cognite-sdk = 7.26.2
-        pydantic = 2.6.4
+        pydantic = 2.7.0
 
     Data Model:
         space: power-ops-assets
@@ -44,7 +44,7 @@ class PowerAssetAPI:
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
         # The client name is used for aggregated logging of Pygen Usage
-        client.config.client_name = "CognitePygen:0.99.14"
+        client.config.client_name = "CognitePygen:0.99.19"
 
         view_by_read_class = {
             data_classes.BidMethod: dm.ViewId("power-ops-shared", "BidMethod", "1"),
@@ -160,8 +160,8 @@ class PowerAssetAPI:
 
             Delete item by id:
 
-                >>> from omni import OmniClient
-                >>> client = OmniClient()
+                >>> from cognite.powerops.client._generated.assets import PowerAssetAPI
+                >>> client = PowerAssetAPI()
                 >>> client.delete("my_node_external_id")
         """
         if isinstance(external_id, str):

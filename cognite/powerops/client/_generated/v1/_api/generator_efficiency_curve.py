@@ -52,8 +52,6 @@ class GeneratorEfficiencyCurveAPI(
 
     def __call__(
         self,
-        min_ref: float | None = None,
-        max_ref: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -62,8 +60,6 @@ class GeneratorEfficiencyCurveAPI(
         """Query starting at generator efficiency curves.
 
         Args:
-            min_ref: The minimum value of the ref to filter on.
-            max_ref: The maximum value of the ref to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of generator efficiency curves to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -76,8 +72,6 @@ class GeneratorEfficiencyCurveAPI(
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_generator_efficiency_curve_filter(
             self._view_id,
-            min_ref,
-            max_ref,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -198,8 +192,6 @@ class GeneratorEfficiencyCurveAPI(
         ),
         property: GeneratorEfficiencyCurveFields | Sequence[GeneratorEfficiencyCurveFields] | None = None,
         group_by: None = None,
-        min_ref: float | None = None,
-        max_ref: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -217,8 +209,6 @@ class GeneratorEfficiencyCurveAPI(
         ),
         property: GeneratorEfficiencyCurveFields | Sequence[GeneratorEfficiencyCurveFields] | None = None,
         group_by: GeneratorEfficiencyCurveFields | Sequence[GeneratorEfficiencyCurveFields] = None,
-        min_ref: float | None = None,
-        max_ref: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -235,8 +225,6 @@ class GeneratorEfficiencyCurveAPI(
         ),
         property: GeneratorEfficiencyCurveFields | Sequence[GeneratorEfficiencyCurveFields] | None = None,
         group_by: GeneratorEfficiencyCurveFields | Sequence[GeneratorEfficiencyCurveFields] | None = None,
-        min_ref: float | None = None,
-        max_ref: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -248,8 +236,6 @@ class GeneratorEfficiencyCurveAPI(
             aggregate: The aggregation to perform.
             property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
-            min_ref: The minimum value of the ref to filter on.
-            max_ref: The maximum value of the ref to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of generator efficiency curves to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -270,8 +256,6 @@ class GeneratorEfficiencyCurveAPI(
 
         filter_ = _create_generator_efficiency_curve_filter(
             self._view_id,
-            min_ref,
-            max_ref,
             external_id_prefix,
             space,
             filter,
@@ -292,8 +276,6 @@ class GeneratorEfficiencyCurveAPI(
         self,
         property: GeneratorEfficiencyCurveFields,
         interval: float,
-        min_ref: float | None = None,
-        max_ref: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -304,8 +286,6 @@ class GeneratorEfficiencyCurveAPI(
         Args:
             property: The property to use as the value in the histogram.
             interval: The interval to use for the histogram bins.
-            min_ref: The minimum value of the ref to filter on.
-            max_ref: The maximum value of the ref to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of generator efficiency curves to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -317,8 +297,6 @@ class GeneratorEfficiencyCurveAPI(
         """
         filter_ = _create_generator_efficiency_curve_filter(
             self._view_id,
-            min_ref,
-            max_ref,
             external_id_prefix,
             space,
             filter,
@@ -336,8 +314,6 @@ class GeneratorEfficiencyCurveAPI(
 
     def list(
         self,
-        min_ref: float | None = None,
-        max_ref: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -346,8 +322,6 @@ class GeneratorEfficiencyCurveAPI(
         """List/filter generator efficiency curves
 
         Args:
-            min_ref: The minimum value of the ref to filter on.
-            max_ref: The maximum value of the ref to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of generator efficiency curves to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -367,8 +341,6 @@ class GeneratorEfficiencyCurveAPI(
         """
         filter_ = _create_generator_efficiency_curve_filter(
             self._view_id,
-            min_ref,
-            max_ref,
             external_id_prefix,
             space,
             filter,

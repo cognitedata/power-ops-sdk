@@ -13,11 +13,11 @@ from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
     ResourcesWriteResult,
-    SHOPResult,
-    SHOPResultWrite,
-    SHOPResultFields,
-    SHOPResultList,
-    SHOPResultWriteList,
+    ShopResult,
+    ShopResultWrite,
+    ShopResultFields,
+    ShopResultList,
+    ShopResultWriteList,
 )
 from cognite.powerops.client._generated.v1.data_classes._shop_result import (
     _SHOPRESULT_PROPERTIES_BY_FIELD,
@@ -32,25 +32,25 @@ from ._core import (
     QueryStep,
     QueryBuilder,
 )
-from .shop_result_alerts import SHOPResultAlertsAPI
-from .shop_result_output_timeseries import SHOPResultOutputTimeseriesAPI
-from .shop_result_query import SHOPResultQueryAPI
+from .shop_result_alerts import ShopResultAlertsAPI
+from .shop_result_output_time_series import ShopResultOutputTimeSeriesAPI
+from .shop_result_query import ShopResultQueryAPI
 
 
-class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
+class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList]):
     def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[SHOPResult]
+        view_id = view_by_read_class[ShopResult]
         super().__init__(
             client=client,
             sources=view_id,
-            class_type=SHOPResult,
-            class_list=SHOPResultList,
-            class_write_list=SHOPResultWriteList,
+            class_type=ShopResult,
+            class_list=ShopResultList,
+            class_write_list=ShopResultWriteList,
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
-        self.alerts_edge = SHOPResultAlertsAPI(client)
-        self.output_timeseries_edge = SHOPResultOutputTimeseriesAPI(client)
+        self.alerts_edge = ShopResultAlertsAPI(client)
+        self.output_time_series_edge = ShopResultOutputTimeSeriesAPI(client)
 
     def __call__(
         self,
@@ -59,7 +59,7 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
-    ) -> SHOPResultQueryAPI[SHOPResultList]:
+    ) -> ShopResultQueryAPI[ShopResultList]:
         """Query starting at shop results.
 
         Args:
@@ -81,19 +81,19 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(SHOPResultList)
-        return SHOPResultQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        builder = QueryBuilder(ShopResultList)
+        return ShopResultQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
 
     def apply(
         self,
-        shop_result: SHOPResultWrite | Sequence[SHOPResultWrite],
+        shop_result: ShopResultWrite | Sequence[ShopResultWrite],
         replace: bool = False,
         write_none: bool = False,
     ) -> ResourcesWriteResult:
         """Add or update (upsert) shop results.
 
         Note: This method iterates through all nodes and timeseries linked to shop_result and creates them including the edges
-        between the nodes. For example, if any of `alerts` or `output_timeseries` are set, then these
+        between the nodes. For example, if any of `alerts` or `output_time_series` are set, then these
         nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
@@ -110,9 +110,9 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
             Create a new shop_result:
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
-                >>> from cognite.powerops.client._generated.v1.data_classes import SHOPResultWrite
+                >>> from cognite.powerops.client._generated.v1.data_classes import ShopResultWrite
                 >>> client = PowerOpsModelsV1Client()
-                >>> shop_result = SHOPResultWrite(external_id="my_shop_result", ...)
+                >>> shop_result = ShopResultWrite(external_id="my_shop_result", ...)
                 >>> result = client.shop_result.apply(shop_result)
 
         """
@@ -160,14 +160,14 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> SHOPResult | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopResult | None: ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> SHOPResultList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopResultList: ...
 
     def retrieve(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> SHOPResult | SHOPResultList | None:
+    ) -> ShopResult | ShopResultList | None:
         """Retrieve one or more shop results by id(s).
 
         Args:
@@ -194,16 +194,16 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
+                    dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models_temp", "Alert", "1"),
+                    dm.ViewId("sp_power_ops_models", "Alert", "1"),
                 ),
                 (
-                    self.output_timeseries_edge,
-                    "output_timeseries",
-                    dm.DirectRelationReference("sp_powerops_types_temp", "SHOPResult.outputTimeseries"),
+                    self.output_time_series_edge,
+                    "output_time_series",
+                    dm.DirectRelationReference("sp_power_ops_types", "ShopResult.outputTimeSeries"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models_temp", "SHOPTimeSeries", "1"),
+                    dm.ViewId("sp_power_ops_models", "ShopTimeSeries", "1"),
                 ),
             ],
         )
@@ -217,7 +217,7 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
             | Sequence[Aggregations]
             | Sequence[dm.aggregations.MetricAggregation]
         ),
-        property: SHOPResultFields | Sequence[SHOPResultFields] | None = None,
+        property: ShopResultFields | Sequence[ShopResultFields] | None = None,
         group_by: None = None,
         case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
@@ -235,8 +235,8 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
             | Sequence[Aggregations]
             | Sequence[dm.aggregations.MetricAggregation]
         ),
-        property: SHOPResultFields | Sequence[SHOPResultFields] | None = None,
-        group_by: SHOPResultFields | Sequence[SHOPResultFields] = None,
+        property: ShopResultFields | Sequence[ShopResultFields] | None = None,
+        group_by: ShopResultFields | Sequence[ShopResultFields] = None,
         case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -252,8 +252,8 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
             | Sequence[Aggregations]
             | Sequence[dm.aggregations.MetricAggregation]
         ),
-        property: SHOPResultFields | Sequence[SHOPResultFields] | None = None,
-        group_by: SHOPResultFields | Sequence[SHOPResultFields] | None = None,
+        property: ShopResultFields | Sequence[ShopResultFields] | None = None,
+        group_by: ShopResultFields | Sequence[ShopResultFields] | None = None,
         case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -306,7 +306,7 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
 
     def histogram(
         self,
-        property: SHOPResultFields,
+        property: ShopResultFields,
         interval: float,
         case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
@@ -355,7 +355,7 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
         limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         retrieve_edges: bool = True,
-    ) -> SHOPResultList:
+    ) -> ShopResultList:
         """List/filter shop results
 
         Args:
@@ -364,7 +364,7 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
             space: The space to filter on.
             limit: Maximum number of shop results to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            retrieve_edges: Whether to retrieve `alerts` or `output_timeseries` external ids for the shop results. Defaults to True.
+            retrieve_edges: Whether to retrieve `alerts` or `output_time_series` external ids for the shop results. Defaults to True.
 
         Returns:
             List of requested shop results
@@ -394,16 +394,16 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
+                    dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models_temp", "Alert", "1"),
+                    dm.ViewId("sp_power_ops_models", "Alert", "1"),
                 ),
                 (
-                    self.output_timeseries_edge,
-                    "output_timeseries",
-                    dm.DirectRelationReference("sp_powerops_types_temp", "SHOPResult.outputTimeseries"),
+                    self.output_time_series_edge,
+                    "output_time_series",
+                    dm.DirectRelationReference("sp_power_ops_types", "ShopResult.outputTimeSeries"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models_temp", "SHOPTimeSeries", "1"),
+                    dm.ViewId("sp_power_ops_models", "ShopTimeSeries", "1"),
                 ),
             ],
         )

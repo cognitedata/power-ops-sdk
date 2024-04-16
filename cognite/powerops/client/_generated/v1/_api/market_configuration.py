@@ -57,8 +57,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         max_max_price: float | None = None,
         min_min_price: float | None = None,
         max_min_price: float | None = None,
-        time_zone: str | list[str] | None = None,
-        time_zone_prefix: str | None = None,
+        timezone: str | list[str] | None = None,
+        timezone_prefix: str | None = None,
         price_unit: str | list[str] | None = None,
         price_unit_prefix: str | None = None,
         min_price_steps: int | None = None,
@@ -83,8 +83,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             max_max_price: The maximum value of the max price to filter on.
             min_min_price: The minimum value of the min price to filter on.
             max_min_price: The maximum value of the min price to filter on.
-            time_zone: The time zone to filter on.
-            time_zone_prefix: The prefix of the time zone to filter on.
+            timezone: The timezone to filter on.
+            timezone_prefix: The prefix of the timezone to filter on.
             price_unit: The price unit to filter on.
             price_unit_prefix: The prefix of the price unit to filter on.
             min_price_steps: The minimum value of the price step to filter on.
@@ -113,8 +113,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             max_max_price,
             min_min_price,
             max_min_price,
-            time_zone,
-            time_zone_prefix,
+            timezone,
+            timezone_prefix,
             price_unit,
             price_unit_prefix,
             min_price_steps,
@@ -244,8 +244,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         max_max_price: float | None = None,
         min_min_price: float | None = None,
         max_min_price: float | None = None,
-        time_zone: str | list[str] | None = None,
-        time_zone_prefix: str | None = None,
+        timezone: str | list[str] | None = None,
+        timezone_prefix: str | None = None,
         price_unit: str | list[str] | None = None,
         price_unit_prefix: str | None = None,
         min_price_steps: int | None = None,
@@ -272,8 +272,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             max_max_price: The maximum value of the max price to filter on.
             min_min_price: The minimum value of the min price to filter on.
             max_min_price: The maximum value of the min price to filter on.
-            time_zone: The time zone to filter on.
-            time_zone_prefix: The prefix of the time zone to filter on.
+            timezone: The timezone to filter on.
+            timezone_prefix: The prefix of the timezone to filter on.
             price_unit: The price unit to filter on.
             price_unit_prefix: The prefix of the price unit to filter on.
             min_price_steps: The minimum value of the price step to filter on.
@@ -309,8 +309,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             max_max_price,
             min_min_price,
             max_min_price,
-            time_zone,
-            time_zone_prefix,
+            timezone,
+            timezone_prefix,
             price_unit,
             price_unit_prefix,
             min_price_steps,
@@ -346,8 +346,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         max_max_price: float | None = None,
         min_min_price: float | None = None,
         max_min_price: float | None = None,
-        time_zone: str | list[str] | None = None,
-        time_zone_prefix: str | None = None,
+        timezone: str | list[str] | None = None,
+        timezone_prefix: str | None = None,
         price_unit: str | list[str] | None = None,
         price_unit_prefix: str | None = None,
         min_price_steps: int | None = None,
@@ -383,8 +383,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         max_max_price: float | None = None,
         min_min_price: float | None = None,
         max_min_price: float | None = None,
-        time_zone: str | list[str] | None = None,
-        time_zone_prefix: str | None = None,
+        timezone: str | list[str] | None = None,
+        timezone_prefix: str | None = None,
         price_unit: str | list[str] | None = None,
         price_unit_prefix: str | None = None,
         min_price_steps: int | None = None,
@@ -419,8 +419,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         max_max_price: float | None = None,
         min_min_price: float | None = None,
         max_min_price: float | None = None,
-        time_zone: str | list[str] | None = None,
-        time_zone_prefix: str | None = None,
+        timezone: str | list[str] | None = None,
+        timezone_prefix: str | None = None,
         price_unit: str | list[str] | None = None,
         price_unit_prefix: str | None = None,
         min_price_steps: int | None = None,
@@ -450,8 +450,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             max_max_price: The maximum value of the max price to filter on.
             min_min_price: The minimum value of the min price to filter on.
             max_min_price: The maximum value of the min price to filter on.
-            time_zone: The time zone to filter on.
-            time_zone_prefix: The prefix of the time zone to filter on.
+            timezone: The timezone to filter on.
+            timezone_prefix: The prefix of the timezone to filter on.
             price_unit: The price unit to filter on.
             price_unit_prefix: The prefix of the price unit to filter on.
             min_price_steps: The minimum value of the price step to filter on.
@@ -488,8 +488,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             max_max_price,
             min_min_price,
             max_min_price,
-            time_zone,
-            time_zone_prefix,
+            timezone,
+            timezone_prefix,
             price_unit,
             price_unit_prefix,
             min_price_steps,
@@ -528,8 +528,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         max_max_price: float | None = None,
         min_min_price: float | None = None,
         max_min_price: float | None = None,
-        time_zone: str | list[str] | None = None,
-        time_zone_prefix: str | None = None,
+        timezone: str | list[str] | None = None,
+        timezone_prefix: str | None = None,
         price_unit: str | list[str] | None = None,
         price_unit_prefix: str | None = None,
         min_price_steps: int | None = None,
@@ -558,8 +558,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             max_max_price: The maximum value of the max price to filter on.
             min_min_price: The minimum value of the min price to filter on.
             max_min_price: The maximum value of the min price to filter on.
-            time_zone: The time zone to filter on.
-            time_zone_prefix: The prefix of the time zone to filter on.
+            timezone: The timezone to filter on.
+            timezone_prefix: The prefix of the timezone to filter on.
             price_unit: The price unit to filter on.
             price_unit_prefix: The prefix of the price unit to filter on.
             min_price_steps: The minimum value of the price step to filter on.
@@ -587,8 +587,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             max_max_price,
             min_min_price,
             max_min_price,
-            time_zone,
-            time_zone_prefix,
+            timezone,
+            timezone_prefix,
             price_unit,
             price_unit_prefix,
             min_price_steps,
@@ -622,8 +622,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         max_max_price: float | None = None,
         min_min_price: float | None = None,
         max_min_price: float | None = None,
-        time_zone: str | list[str] | None = None,
-        time_zone_prefix: str | None = None,
+        timezone: str | list[str] | None = None,
+        timezone_prefix: str | None = None,
         price_unit: str | list[str] | None = None,
         price_unit_prefix: str | None = None,
         min_price_steps: int | None = None,
@@ -648,8 +648,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             max_max_price: The maximum value of the max price to filter on.
             min_min_price: The minimum value of the min price to filter on.
             max_min_price: The maximum value of the min price to filter on.
-            time_zone: The time zone to filter on.
-            time_zone_prefix: The prefix of the time zone to filter on.
+            timezone: The timezone to filter on.
+            timezone_prefix: The prefix of the timezone to filter on.
             price_unit: The price unit to filter on.
             price_unit_prefix: The prefix of the price unit to filter on.
             min_price_steps: The minimum value of the price step to filter on.
@@ -685,8 +685,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             max_max_price,
             min_min_price,
             max_min_price,
-            time_zone,
-            time_zone_prefix,
+            timezone,
+            timezone_prefix,
             price_unit,
             price_unit_prefix,
             min_price_steps,

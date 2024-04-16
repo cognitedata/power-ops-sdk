@@ -65,8 +65,8 @@ class SHOPPriceScenarioResultGraphQL(GraphQLCore):
     """
 
     view_id = dm.ViewId("power-ops-day-ahead-bid", "SHOPPriceScenarioResult", "1")
-    price: Union[TimeSeries, str, None] = None
-    production: Union[TimeSeries, str, None] = None
+    price: Union[TimeSeries, dict, None] = None
+    production: Union[TimeSeries, dict, None] = None
     price_scenario: Optional[SHOPPriceScenarioGraphQL] = Field(None, repr=False, alias="priceScenario")
 
     @model_validator(mode="before")

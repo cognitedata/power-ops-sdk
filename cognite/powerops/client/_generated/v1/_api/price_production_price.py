@@ -12,7 +12,7 @@ from cognite.client.data_classes.datapoints import Aggregate
 from cognite.powerops.client._generated.v1.data_classes._price_production import _create_price_production_filter
 from ._core import DEFAULT_LIMIT_READ, INSTANCE_QUERY_LIMIT
 
-ColumnNames = Literal["price", "production"]
+ColumnNames = Literal["name", "price", "production"]
 
 
 class PriceProductionPriceQuery:
@@ -359,6 +359,8 @@ class PriceProductionPriceAPI:
 
     def __call__(
         self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -368,6 +370,8 @@ class PriceProductionPriceAPI:
         """Query timeseries `price_production.price`
 
         Args:
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             shop_result: The shop result to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -389,6 +393,8 @@ class PriceProductionPriceAPI:
         """
         filter_ = _create_price_production_filter(
             self._view_id,
+            name,
+            name_prefix,
             shop_result,
             external_id_prefix,
             space,
@@ -404,6 +410,8 @@ class PriceProductionPriceAPI:
 
     def list(
         self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -413,6 +421,8 @@ class PriceProductionPriceAPI:
         """List timeseries `price_production.price`
 
         Args:
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             shop_result: The shop result to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -433,6 +443,8 @@ class PriceProductionPriceAPI:
         """
         filter_ = _create_price_production_filter(
             self._view_id,
+            name,
+            name_prefix,
             shop_result,
             external_id_prefix,
             space,

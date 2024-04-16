@@ -55,16 +55,16 @@ class TotalBidMatrixCalculationOutputAPI(
 
     def __call__(
         self,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_document: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_document: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -73,16 +73,16 @@ class TotalBidMatrixCalculationOutputAPI(
         """Query starting at total bid matrix calculation outputs.
 
         Args:
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
-            min_process_step: The minimum value of the process step to filter on.
-            max_process_step: The maximum value of the process step to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            min_workflow_step: The minimum value of the workflow step to filter on.
+            max_workflow_step: The maximum value of the workflow step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            bid_document: The bid document to filter on.
             input_: The input to filter on.
+            bid_document: The bid document to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of total bid matrix calculation outputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -95,16 +95,16 @@ class TotalBidMatrixCalculationOutputAPI(
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_total_bid_matrix_calculation_output_filter(
             self._view_id,
-            process_id,
-            process_id_prefix,
-            min_process_step,
-            max_process_step,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            min_workflow_step,
+            max_workflow_step,
             function_name,
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            bid_document,
             input_,
+            bid_document,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -228,9 +228,9 @@ class TotalBidMatrixCalculationOutputAPI(
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
+                    dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models_temp", "Alert", "1"),
+                    dm.ViewId("sp_power_ops_models", "Alert", "1"),
                 ),
             ],
         )
@@ -241,16 +241,16 @@ class TotalBidMatrixCalculationOutputAPI(
         properties: (
             TotalBidMatrixCalculationOutputTextFields | Sequence[TotalBidMatrixCalculationOutputTextFields] | None
         ) = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_document: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_document: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -261,16 +261,16 @@ class TotalBidMatrixCalculationOutputAPI(
         Args:
             query: The search query,
             properties: The property to search, if nothing is passed all text fields will be searched.
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
-            min_process_step: The minimum value of the process step to filter on.
-            max_process_step: The maximum value of the process step to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            min_workflow_step: The minimum value of the workflow step to filter on.
+            max_workflow_step: The maximum value of the workflow step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            bid_document: The bid document to filter on.
             input_: The input to filter on.
+            bid_document: The bid document to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of total bid matrix calculation outputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -290,16 +290,16 @@ class TotalBidMatrixCalculationOutputAPI(
         """
         filter_ = _create_total_bid_matrix_calculation_output_filter(
             self._view_id,
-            process_id,
-            process_id_prefix,
-            min_process_step,
-            max_process_step,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            min_workflow_step,
+            max_workflow_step,
             function_name,
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            bid_document,
             input_,
+            bid_document,
             external_id_prefix,
             space,
             filter,
@@ -323,16 +323,16 @@ class TotalBidMatrixCalculationOutputAPI(
         search_properties: (
             TotalBidMatrixCalculationOutputTextFields | Sequence[TotalBidMatrixCalculationOutputTextFields] | None
         ) = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_document: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_document: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -354,16 +354,16 @@ class TotalBidMatrixCalculationOutputAPI(
         search_properties: (
             TotalBidMatrixCalculationOutputTextFields | Sequence[TotalBidMatrixCalculationOutputTextFields] | None
         ) = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_document: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_document: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -384,16 +384,16 @@ class TotalBidMatrixCalculationOutputAPI(
         search_property: (
             TotalBidMatrixCalculationOutputTextFields | Sequence[TotalBidMatrixCalculationOutputTextFields] | None
         ) = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_document: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_document: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -407,16 +407,16 @@ class TotalBidMatrixCalculationOutputAPI(
             group_by: The property to group by when doing the aggregation.
             query: The query to search for in the text field.
             search_property: The text field to search in.
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
-            min_process_step: The minimum value of the process step to filter on.
-            max_process_step: The maximum value of the process step to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            min_workflow_step: The minimum value of the workflow step to filter on.
+            max_workflow_step: The maximum value of the workflow step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            bid_document: The bid document to filter on.
             input_: The input to filter on.
+            bid_document: The bid document to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of total bid matrix calculation outputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -437,16 +437,16 @@ class TotalBidMatrixCalculationOutputAPI(
 
         filter_ = _create_total_bid_matrix_calculation_output_filter(
             self._view_id,
-            process_id,
-            process_id_prefix,
-            min_process_step,
-            max_process_step,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            min_workflow_step,
+            max_workflow_step,
             function_name,
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            bid_document,
             input_,
+            bid_document,
             external_id_prefix,
             space,
             filter,
@@ -471,16 +471,16 @@ class TotalBidMatrixCalculationOutputAPI(
         search_property: (
             TotalBidMatrixCalculationOutputTextFields | Sequence[TotalBidMatrixCalculationOutputTextFields] | None
         ) = None,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_document: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_document: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -493,16 +493,16 @@ class TotalBidMatrixCalculationOutputAPI(
             interval: The interval to use for the histogram bins.
             query: The query to search for in the text field.
             search_property: The text field to search in.
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
-            min_process_step: The minimum value of the process step to filter on.
-            max_process_step: The maximum value of the process step to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            min_workflow_step: The minimum value of the workflow step to filter on.
+            max_workflow_step: The maximum value of the workflow step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            bid_document: The bid document to filter on.
             input_: The input to filter on.
+            bid_document: The bid document to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of total bid matrix calculation outputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -514,16 +514,16 @@ class TotalBidMatrixCalculationOutputAPI(
         """
         filter_ = _create_total_bid_matrix_calculation_output_filter(
             self._view_id,
-            process_id,
-            process_id_prefix,
-            min_process_step,
-            max_process_step,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            min_workflow_step,
+            max_workflow_step,
             function_name,
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            bid_document,
             input_,
+            bid_document,
             external_id_prefix,
             space,
             filter,
@@ -541,16 +541,16 @@ class TotalBidMatrixCalculationOutputAPI(
 
     def list(
         self,
-        process_id: str | list[str] | None = None,
-        process_id_prefix: str | None = None,
-        min_process_step: int | None = None,
-        max_process_step: int | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_document: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_document: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -560,16 +560,16 @@ class TotalBidMatrixCalculationOutputAPI(
         """List/filter total bid matrix calculation outputs
 
         Args:
-            process_id: The process id to filter on.
-            process_id_prefix: The prefix of the process id to filter on.
-            min_process_step: The minimum value of the process step to filter on.
-            max_process_step: The maximum value of the process step to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            min_workflow_step: The minimum value of the workflow step to filter on.
+            max_workflow_step: The maximum value of the workflow step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            bid_document: The bid document to filter on.
             input_: The input to filter on.
+            bid_document: The bid document to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of total bid matrix calculation outputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -590,16 +590,16 @@ class TotalBidMatrixCalculationOutputAPI(
         """
         filter_ = _create_total_bid_matrix_calculation_output_filter(
             self._view_id,
-            process_id,
-            process_id_prefix,
-            min_process_step,
-            max_process_step,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            min_workflow_step,
+            max_workflow_step,
             function_name,
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            bid_document,
             input_,
+            bid_document,
             external_id_prefix,
             space,
             filter,
@@ -613,9 +613,9 @@ class TotalBidMatrixCalculationOutputAPI(
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_powerops_types_temp", "calculationIssue"),
+                    dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models_temp", "Alert", "1"),
+                    dm.ViewId("sp_power_ops_models", "Alert", "1"),
                 ),
             ],
         )

@@ -23,9 +23,9 @@ class AFRRBidAPI:
     AFRRBidAPI
 
     Generated with:
-        pygen = 0.99.14
+        pygen = 0.99.19
         cognite-sdk = 7.26.2
-        pydantic = 2.6.4
+        pydantic = 2.7.0
 
     Data Model:
         space: power-ops-afrr-bid
@@ -41,7 +41,7 @@ class AFRRBidAPI:
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
         # The client name is used for aggregated logging of Pygen Usage
-        client.config.client_name = "CognitePygen:0.99.14"
+        client.config.client_name = "CognitePygen:0.99.19"
 
         view_by_read_class = {
             data_classes.Alert: dm.ViewId("power-ops-shared", "Alert", "1"),
@@ -151,8 +151,8 @@ class AFRRBidAPI:
 
             Delete item by id:
 
-                >>> from omni import OmniClient
-                >>> client = OmniClient()
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
+                >>> client = AFRRBidAPI()
                 >>> client.delete("my_node_external_id")
         """
         if isinstance(external_id, str):
