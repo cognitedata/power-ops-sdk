@@ -1,0 +1,6 @@
+- name: XX
+  market_configuration: market_configuration_nord_pool_day_ahead
+  price_area: price_area_information_no2
+  bid_date_specification: bid_date_specification_day_ahead
+  partials:
+    - shop_based_partial_bid_configuration_plant_a_set_a

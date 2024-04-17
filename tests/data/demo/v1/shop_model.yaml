@@ -1,0 +1,13 @@
+- name: model X
+  version: "1"
+  shop_version: "1"
+  penalty_limit: 0.0
+  model: ext_id_model_file
+  cog_shop_files_config:
+    - foo: bar
+    - bar: foo
+  extra_files:
+    - ext_id_file
+  base_attributeMappings:
+    - mapping_1
+    - mapping_2

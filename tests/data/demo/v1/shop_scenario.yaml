@@ -1,0 +1,7 @@
+- name: "1"
+  model: ext_id_model
+  commands: default
+  source: XXX
+  attribute_mappings_override:
+    - mapping_3
+    - mapping_4

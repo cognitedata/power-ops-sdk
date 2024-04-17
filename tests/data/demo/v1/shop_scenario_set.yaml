@@ -1,0 +1,5 @@
+- name: A
+  start_specification: XX
+  end_specification: XX
+  scenarios:
+    - shop_scenario_1

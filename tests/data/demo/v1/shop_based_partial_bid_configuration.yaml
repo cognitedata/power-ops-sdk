@@ -1,0 +1,5 @@
+- name: plant A set A
+  method: multi scenario??
+  power_asset: ext_id_power_asset
+  add_steps: false
+  scenario_set: shop_scenario_set_A

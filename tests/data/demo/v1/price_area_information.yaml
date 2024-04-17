@@ -1,0 +1,34 @@
+- name: NO1
+  display_name: "Østlandet (NO1)"
+  ordering: 1
+  asset_type: price_area
+  capacity_price_up: ext_id_ts
+  capacity_price_down: ext_id_ts
+  activation_price_up: ext_id_ts
+  activation_price_down: ext_id_ts
+  relative_activation: ext_id_ts
+  total_capacity_allocation_up: ext_id_ts
+  total_capacity_allocation_down: ext_id_ts
+  own_capacity_allocation_up: ext_id_ts
+  own_capacity_allocation_down: ext_id_ts
+  default_bid_configuration: ext_id_bid_config
+  main_price_scenario: ext_id_ts
+  price_scenarios:
+    - ext_id_ts
+- name: NO2
+  display_name: "Sørlandet (NO2)"
+  ordering: 2
+  asset_type: price_area
+  capacity_price_up: ext_id_ts
+  capacity_price_down: ext_id_ts
+  activation_price_up: ext_id_ts
+  activation_price_down: ext_id_ts
+  relative_activation: ext_id_ts
+  total_capacity_allocation_up: ext_id_ts
+  total_capacity_allocation_down: ext_id_ts
+  own_capacity_allocation_up: ext_id_ts
+  own_capacity_allocation_down: ext_id_ts
+  default_bid_configuration: ext_id_bid_config
+  main_price_scenario: "6694" #??
+  price_scenarios:
+    - ext_id_ts
