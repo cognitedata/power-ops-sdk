@@ -23,9 +23,7 @@ class Scenario:
             "transformations": [
                 {
                     "kwargs": {rdp.offset_minute: int(rdp.offset_value) for rdp in rpds},
-                    "transformation": "".join(["_" + c.lower() if c.isupper() else c for c in trans])
-                    .lstrip("_")
-                    .upper(),
+                    "transformation": trans
                 }
                 for trans, rpds in self.tranformations.items()
             ],
@@ -53,8 +51,7 @@ class BidProcess:
 
 
 def generate_price_scenarios(num_scenarios: int) -> list[Scenario]:
-    price_area = "NO2"
-    transformation = "AddFromOffset"
+    transformation = "ADD_FROM_OFFSET"
     range_start, range_end = -500, 2000
 
     step_size = (range_end - range_start) / (num_scenarios - 1)
