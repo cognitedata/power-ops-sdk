@@ -412,322 +412,350 @@ transformations:
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
+            offset_value: -500.0
+          - offset_minute: 1440.0
+            offset_value: 0.0
+  - AddFromOffset:
+      parameters:
+        relative_datapoints:
+          - offset_minute: 50.0
             offset_value: -448.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: -397.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: -346.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: -295.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: -244.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: -193.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: -142.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: -91.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
+            offset_value: -40.0
+          - offset_minute: 1440.0
+            offset_value: 0.0
+  - AddFromOffset:
+      parameters:
+        relative_datapoints:
+          - offset_minute: 50.0
+            offset_value: 10.0
+          - offset_minute: 1440.0
+            offset_value: 0.0
+  - AddFromOffset:
+      parameters:
+        relative_datapoints:
+          - offset_minute: 50.0
             offset_value: 61.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 112.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 163.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 214.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 265.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 316.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 367.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 418.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 469.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 520.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 571.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 622.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 673.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 724.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 775.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 826.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 877.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 928.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 979.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 1030.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 1081.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 1132.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 1183.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 1234.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 1285.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 1336.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 1387.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 1438.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 1489.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 1540.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 1591.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 1642.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 1693.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 1744.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 1795.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 1846.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 1897.0
           - offset_minute: 1440.0
             offset_value: 0.0
   - AddFromOffset:
       parameters:
         relative_datapoints:
-          - offset_minute: 0.0
+          - offset_minute: 50.0
             offset_value: 1948.0
+          - offset_minute: 1440.0
+            offset_value: 0.0
+  - AddFromOffset:
+      parameters:
+        relative_datapoints:
+          - offset_minute: 50.0
+            offset_value: 2000.0
           - offset_minute: 1440.0
             offset_value: 0.0
