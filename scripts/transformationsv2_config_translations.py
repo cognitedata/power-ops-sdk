@@ -130,4 +130,3 @@ def create_transformationsV2_file(configs_path: Path, write_path: Path, cdf_proj
     _create_transformations_file(
         old_time_series_mappings, old_price_scenario_mappings, write_path / "transformations_v2.yaml"
     )
-
