@@ -131,11 +131,3 @@ def create_transformationsV2_file(configs_path: Path, write_path: Path, cdf_proj
         old_time_series_mappings, old_price_scenario_mappings, write_path / "transformations_v2.yaml"
     )
 
-
-if __name__ == "__main__":
-
-    configs_path = Path.cwd().parent / "tests" / "data" / "demo"
-    cdf_project = "power-ops-staging"
-
-    create_new_config_files_with_transformations_v2(configs_path, cdf_project)
-    create_transformationsV2_file(configs_path, configs_path, cdf_project)
