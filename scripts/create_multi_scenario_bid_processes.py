@@ -6,8 +6,8 @@ import yaml
 
 @dataclass
 class RelativeDatapoint:
-    offset_minute: float
-    offset_value: float
+    offset_minute: int
+    offset_value: int
 
 
 @dataclass
@@ -21,7 +21,7 @@ class Scenario:
             "name": self.name,
             "time_series_external_id": self.time_series_external_id,
             "transformations": [
-                {"kwargs": {rdp.offset_minute: int(rdp.offset_value) for rdp in rpds}, "transformation": trans}
+                {"kwargs": {str(rdp.offset_minute): rdp.offset_value for rdp in rpds}, "transformation": trans}
                 for trans, rpds in self.tranformations.items()
             ],
         }
@@ -60,9 +60,10 @@ def generate_price_scenarios(num_scenarios: int) -> list[Scenario]:
     for offset in offsets:
         scenario_id = f"ms_{num_scenarios}_{offset}"
 
+        # using start offset as num_scenarios to by-pass duplicate check
         relative_datapoints = [
-            RelativeDatapoint(offset_minute=0.0, offset_value=float(offset)),
-            RelativeDatapoint(offset_minute=1440.0, offset_value=0.0),
+            RelativeDatapoint(offset_minute=num_scenarios, offset_value=offset),
+            RelativeDatapoint(offset_minute=1440, offset_value=0),
         ]
 
         scenario = Scenario(
