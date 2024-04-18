@@ -193,400 +193,400 @@ multi_scenario_50_NO2_-500:
   name: multi_scenario_50_NO2_-500
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: -500
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: -500
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_-448:
   name: multi_scenario_50_NO2_-448
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: -448
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: -448
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_-397:
   name: multi_scenario_50_NO2_-397
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: -397
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: -397
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_-346:
   name: multi_scenario_50_NO2_-346
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: -346
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: -346
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_-295:
   name: multi_scenario_50_NO2_-295
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: -295
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: -295
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_-244:
   name: multi_scenario_50_NO2_-244
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: -244
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: -244
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_-193:
   name: multi_scenario_50_NO2_-193
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: -193
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: -193
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_-142:
   name: multi_scenario_50_NO2_-142
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: -142
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: -142
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_-91:
   name: multi_scenario_50_NO2_-91
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: -91
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: -91
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_-40:
   name: multi_scenario_50_NO2_-40
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: -40
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: -40
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_10:
   name: multi_scenario_50_NO2_10
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 10
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 10
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_61:
   name: multi_scenario_50_NO2_61
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 61
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 61
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_112:
   name: multi_scenario_50_NO2_112
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 112
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 112
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_163:
   name: multi_scenario_50_NO2_163
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 163
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 163
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_214:
   name: multi_scenario_50_NO2_214
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 214
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 214
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_265:
   name: multi_scenario_50_NO2_265
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 265
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 265
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_316:
   name: multi_scenario_50_NO2_316
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 316
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 316
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_367:
   name: multi_scenario_50_NO2_367
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 367
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 367
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_418:
   name: multi_scenario_50_NO2_418
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 418
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 418
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_469:
   name: multi_scenario_50_NO2_469
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 469
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 469
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_520:
   name: multi_scenario_50_NO2_520
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 520
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 520
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_571:
   name: multi_scenario_50_NO2_571
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 571
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 571
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_622:
   name: multi_scenario_50_NO2_622
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 622
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 622
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_673:
   name: multi_scenario_50_NO2_673
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 673
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 673
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_724:
   name: multi_scenario_50_NO2_724
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 724
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 724
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_775:
   name: multi_scenario_50_NO2_775
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 775
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 775
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_826:
   name: multi_scenario_50_NO2_826
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 826
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 826
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_877:
   name: multi_scenario_50_NO2_877
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 877
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 877
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_928:
   name: multi_scenario_50_NO2_928
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 928
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 928
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_979:
   name: multi_scenario_50_NO2_979
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 979
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 979
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_1030:
   name: multi_scenario_50_NO2_1030
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 1030
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 1030
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_1081:
   name: multi_scenario_50_NO2_1081
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 1081
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 1081
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_1132:
   name: multi_scenario_50_NO2_1132
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 1132
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 1132
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_1183:
   name: multi_scenario_50_NO2_1183
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 1183
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 1183
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_1234:
   name: multi_scenario_50_NO2_1234
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 1234
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 1234
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_1285:
   name: multi_scenario_50_NO2_1285
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 1285
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 1285
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_1336:
   name: multi_scenario_50_NO2_1336
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 1336
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 1336
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_1387:
   name: multi_scenario_50_NO2_1387
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 1387
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 1387
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_1438:
   name: multi_scenario_50_NO2_1438
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 1438
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 1438
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_1489:
   name: multi_scenario_50_NO2_1489
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 1489
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 1489
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_1540:
   name: multi_scenario_50_NO2_1540
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 1540
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 1540
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_1591:
   name: multi_scenario_50_NO2_1591
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 1591
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 1591
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_1642:
   name: multi_scenario_50_NO2_1642
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 1642
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 1642
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_1693:
   name: multi_scenario_50_NO2_1693
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 1693
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 1693
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_1744:
   name: multi_scenario_50_NO2_1744
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 1744
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 1744
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_1795:
   name: multi_scenario_50_NO2_1795
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 1795
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 1795
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_1846:
   name: multi_scenario_50_NO2_1846
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 1846
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 1846
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_1897:
   name: multi_scenario_50_NO2_1897
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 1897
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 1897
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_1948:
   name: multi_scenario_50_NO2_1948
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 1948
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 1948
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 multi_scenario_50_NO2_2000:
   name: multi_scenario_50_NO2_2000
   time_series_external_id: '907677'
   transformations:
-    - kwargs:
-        0.0: 2000
-        1440.0: 0
-      transformation: ADD_FROM_OFFSET
+  - kwargs:
+      0.0: 2000
+      1440.0: 0
+    transformation: ADD_FROM_OFFSET
 # END: Generated by /scripts/create_multi_scenario_bid_processes.py
