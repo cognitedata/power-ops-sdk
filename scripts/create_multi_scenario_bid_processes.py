@@ -16,7 +16,7 @@ class Scenario:
     time_series_external_id: str
     tranformations: dict[str, list[RelativeDatapoint]]
 
-    def to_dict_v1(self) -> dict:
+    def to_dict(self) -> dict:
         return {
             "name": self.name,
             "time_series_external_id": self.time_series_external_id,
@@ -28,19 +28,6 @@ class Scenario:
                     .upper(),
                 }
                 for trans, rpds in self.tranformations.items()
-            ],
-        }
-
-    def to_dict_v2(self) -> dict:
-
-        return {
-            "name": self.name,
-            "time_series_external_id": self.time_series_external_id,
-            "transformations": [
-                {
-                    trans: {"parameters": {"relative_datapoints": [rdp.__dict__ for rdp in rpds]}}
-                    for trans, rpds in self.tranformations.items()
-                }
             ],
         }
 
@@ -156,7 +143,7 @@ def create_multi_scenario_demo_configs(num_scenarios_list: list[int], scenarios_
         bid_processes.append(bid_process)
         scenarios.extend(scenario)
 
-    price_scenarios_dict = {scenario.name: scenario.to_dict_v1() for scenario in scenarios}
+    price_scenarios_dict = {scenario.name: scenario.to_dict() for scenario in scenarios}
     bid_process_list = [bid_process.to_dict() for bid_process in bid_processes]
 
     write_between_comments(scenarios_file, yaml.dump(price_scenarios_dict, sort_keys=False))
