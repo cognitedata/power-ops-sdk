@@ -39,7 +39,7 @@ class BidProcess:
     price_area_name: str
     price_scenarios: list[Scenario]
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             "bid_matrix_generator": self.bid_matrix_generator,
             "main_scenario": self.main_scenario.name,
