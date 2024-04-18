@@ -176,6 +176,7 @@ if __name__ == "__main__":
     scenarios_v2_file = Path.cwd().parent / "tests" / "data" / "demo" / "market" / "price_scenario_by_id_v2.yaml"
     bid_process_file = Path.cwd().parent / "tests" / "data" / "demo" / "market" / "dayahead" / "bidprocess.yaml"
 
-    num_scenarios_list = [50, 100, 200, 400, 800]
+    num_scenarios_list = [50]
+    # num_scenarios_list = [50, 100, 200, 400, 800]
 
     create_multi_scenario_demo_configs(num_scenarios_list, scenarios_file, scenarios_v2_file, bid_process_file)
