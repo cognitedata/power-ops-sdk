@@ -77,7 +77,7 @@ def generate_price_scenarios(num_scenarios: int) -> list[Scenario]:
     scenarios = []
 
     for offset in offsets:
-        scenario_id = f"multi_scenario_{num_scenarios}_{price_area}_{offset}"
+        scenario_id = f"ms_{num_scenarios}_{offset}"
 
         relative_datapoints = [
             RelativeDatapoint(offset_minute=0.0, offset_value=float(offset)),
@@ -146,9 +146,7 @@ def create_multi_scenario_demo_config(num_scenarios: int) -> tuple[BidProcess, l
     return bid_process, price_scenarios
 
 
-def create_multi_scenario_demo_configs(
-    num_scenarios_list: list[int], scenarios_file: Path, bid_process_file: Path
-):
+def create_multi_scenario_demo_configs(num_scenarios_list: list[int], scenarios_file: Path, bid_process_file: Path):
 
     bid_processes: list[BidProcess] = []
     scenarios: list[Scenario] = []
