@@ -147,7 +147,7 @@ def create_multi_scenario_demo_config(num_scenarios: int) -> tuple[BidProcess, l
 
 
 def create_multi_scenario_demo_configs(
-    num_scenarios_list: list[int], scenarios_file: Path, scenarios_file_v2: Path, bid_process_file: Path
+    num_scenarios_list: list[int], scenarios_file: Path, bid_process_file: Path
 ):
 
     bid_processes: list[BidProcess] = []
@@ -159,11 +159,9 @@ def create_multi_scenario_demo_configs(
         scenarios.extend(scenario)
 
     price_scenarios_dict = {scenario.name: scenario.to_dict_v1() for scenario in scenarios}
-    price_scenarios_dict_v2 = {scenario.name: scenario.to_dict_v2() for scenario in scenarios}
     bid_process_list = [bid_process.to_dict() for bid_process in bid_processes]
 
     write_between_comments(scenarios_file, yaml.dump(price_scenarios_dict, sort_keys=False))
-    write_between_comments(scenarios_file_v2, yaml.dump(price_scenarios_dict_v2, sort_keys=False))
     write_between_comments(bid_process_file, yaml.dump(bid_process_list, sort_keys=False))
 
 
@@ -173,10 +171,9 @@ if __name__ == "__main__":
     # This is primarily used for testing SHOP As A Service
 
     scenarios_file = Path.cwd().parent / "tests" / "data" / "demo" / "market" / "price_scenario_by_id.yaml"
-    scenarios_v2_file = Path.cwd().parent / "tests" / "data" / "demo" / "market" / "price_scenario_by_id_v2.yaml"
     bid_process_file = Path.cwd().parent / "tests" / "data" / "demo" / "market" / "dayahead" / "bidprocess.yaml"
 
     num_scenarios_list = [50]
     # num_scenarios_list = [50, 100, 200, 400, 800]
 
-    create_multi_scenario_demo_configs(num_scenarios_list, scenarios_file, scenarios_v2_file, bid_process_file)
+    create_multi_scenario_demo_configs(num_scenarios_list, scenarios_file, bid_process_file)
