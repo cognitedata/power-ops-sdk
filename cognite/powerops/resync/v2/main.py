@@ -8,7 +8,6 @@ from cognite.powerops import PowerOpsClient
 from cognite.powerops.client._generated.v1.data_classes import (
     BidConfigurationDayAheadWrite,
     MarketConfigurationWrite,
-    PlantInformationWrite,
     PriceAreaInformationWrite,
     ShopAttributeMappingWrite,
     ShopBasedPartialBidConfigurationWrite,
@@ -35,7 +34,7 @@ def apply2(config_dir: Path, client: PowerOpsClient | None = None) -> None:
         ShopBasedPartialBidConfigurationWrite,
         BidConfigurationDayAheadWrite,
         WaterValueBasedPartialBidConfigurationWrite,
-        PlantInformationWrite,
+        # PlantInformationWrite,
     ]
     day_ahead_importer = ConfigImporter.from_directory(config_dir / "v1", expected_types)
     day_ahead_config = day_ahead_importer.config_to_fdm()
