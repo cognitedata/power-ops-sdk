@@ -16,7 +16,7 @@ properties:
     type:
       list: false
       type: timeseries
-    nullable: false
+    nullable: true
     autoIncrement: false
     name: price
     description: TODO
@@ -24,7 +24,7 @@ properties:
     type:
       list: false
       type: timeseries
-    nullable: false
+    nullable: true
     autoIncrement: false
     name: production
     description: TODO

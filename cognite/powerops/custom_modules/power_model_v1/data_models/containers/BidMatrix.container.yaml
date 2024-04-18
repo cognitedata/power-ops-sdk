@@ -15,7 +15,7 @@ properties:
     type:
       list: false
       type: sequence
-    nullable: false
+    nullable: true
     autoIncrement: false
     name: bidMatrix
   powerAsset:

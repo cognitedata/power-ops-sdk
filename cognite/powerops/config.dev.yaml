@@ -9,9 +9,9 @@ modules:
   custom_modules:
     power_model_v1:
       # TODO: update space to not be temp
-      power_ops_type_space: "sp_power_ops_types"
-      power_ops_instance_space: "sp_power_ops_instance"
-      power_ops_models: "sp_power_ops_models"
+      power_ops_type_space: "nina2_sp_power_ops_types"
+      power_ops_instance_space: "nina2_sp_power_ops_instance"
+      power_ops_models: "nina2_sp_power_ops_models"
       version: "1"
     power_model_v0:
       # variables used for substitution in other files in this directory
