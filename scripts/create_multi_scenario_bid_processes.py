@@ -21,10 +21,7 @@ class Scenario:
             "name": self.name,
             "time_series_external_id": self.time_series_external_id,
             "transformations": [
-                {
-                    "kwargs": {rdp.offset_minute: int(rdp.offset_value) for rdp in rpds},
-                    "transformation": trans
-                }
+                {"kwargs": {rdp.offset_minute: int(rdp.offset_value) for rdp in rpds}, "transformation": trans}
                 for trans, rpds in self.tranformations.items()
             ],
         }
