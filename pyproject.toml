@@ -56,7 +56,6 @@ PyYAML = "^6.0"
 cognite-sdk = {version = ">=7.13.8", extras = ["pandas"]}
 pydantic = "^2.0"
 pydantic-settings = "^2.0"
-cachelib = "^0.10.2"
 loguru = "^0.7.0"
 deepdiff = "^6.3.0"
 matplotlib = "^3.7.1"
@@ -68,9 +67,7 @@ tomli = {version = "^2.0.1", python = "<3.11"}
 StrEnum = {version = "^0.4.15", python = "<3.11"}
 tomli-w = "^1.0.0"
 tabulate = "^0.9"
-cognite-toolkit = {version="0.1.1"}
 cognite-pygen = {version = ">=0.99.19", extras = ["all"]}
-
 mkdocs =  {version="*", optional=true}
 mkdocs-jupyter = {version="*", optional=true}
 mkdocs-material = {version="*", optional=true}
@@ -81,6 +78,8 @@ mkdocs-gitbook = {version="*", optional=true}
 mkdocs-glightbox = {version="*", optional=true}
 pymdown-extensions = {version="*", optional=true}
 mkdocstrings = {version="*", optional=true, extras=["python"]}
+cachelib = "^0.13.0"
+cognite-toolkit = "^0.1.2"
 
 [tool.poetry.extras]
 docs = ["mkdocs", "mkdocs-jupyter", "mkdocs-material", "mkdocs-material-extensions", "mkdocs-git-revision-date-localized-plugin",
@@ -92,16 +91,16 @@ powerops = "cognite.powerops.cli:main"
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.2.2"
 profilehooks = "^1.12.0"
-pytest = "^7.3.1"
-pytest-cov = "^4.0.0"
 pytest-mock = "^3.10.0"
 pytest-regressions = "^2.4.2"
 ipykernel="6.24.0"
-twine = "^4.0.2"
 jupyter = "^1.0.0"
 mypy = "^1.4"
 pandas-stubs = "^2"
 types-PyYAML = "^6"
+pytest = "^8.1.1"
+pytest-cov = "^5.0.0"
+twine = "^5.0.0"
 
 [build-system]
 requires = ["poetry-core"]
