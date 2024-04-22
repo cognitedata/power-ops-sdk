@@ -7,34 +7,22 @@ filter:
     - hasData:
         - type: container
           space: "{{power_ops_models}}"
-          externalId: FunctionMetadata
+          externalId: FunctionData
     - equals:
         property:
           - node
           - space
         value: "{{power_ops_instance_space}}"
-        # - not:
-        #     equals:
-        #       property:
-        #         - node
-        #         - type
-        #       value: {
-        #           "space": "{{power_ops_instance_space}}",
-        #           "externalId": "FunctionInput",
-        #         } #FunctionInput
-        # - not:
-        #     in:
-        #       property:
-        #         - node
-        #         - type
-        #       values: [FunctionInput]
+        # - exists:
+        #     property:
+        #       - input
 implements: []
 version: "{{version}}"
 properties:
   workflowExecutionId:
     container:
       space: "{{power_ops_models}}"
-      externalId: FunctionMetadata
+      externalId: FunctionData
       type: container
     containerPropertyIdentifier: workflowExecutionId
     name: workflowExecutionId
@@ -42,7 +30,7 @@ properties:
   workflowStep:
     container:
       space: "{{power_ops_models}}"
-      externalId: FunctionMetadata
+      externalId: FunctionData
       type: container
     containerPropertyIdentifier: workflowStep
     name: workflowStep
@@ -50,7 +38,7 @@ properties:
   functionName:
     container:
       space: "{{power_ops_models}}"
-      externalId: FunctionMetadata
+      externalId: FunctionData
       type: container
     containerPropertyIdentifier: functionName
     name: functionName
@@ -58,7 +46,7 @@ properties:
   functionCallId:
     container:
       space: "{{power_ops_models}}"
-      externalId: FunctionMetadata
+      externalId: FunctionData
       type: container
     containerPropertyIdentifier: functionCallId
     name: functionCallId
@@ -66,7 +54,7 @@ properties:
   input:
     container:
       space: "{{power_ops_models}}"
-      externalId: FunctionMetadata
+      externalId: FunctionData
       type: container
     containerPropertyIdentifier: linkedStep
     name: input

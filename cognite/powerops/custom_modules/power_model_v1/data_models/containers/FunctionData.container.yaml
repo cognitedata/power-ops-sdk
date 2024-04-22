@@ -3,6 +3,49 @@ externalId: FunctionData
 name: FunctionData
 usedFor: node
 properties:
+  functionName:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: functionName
+    description: The name of the function
+  functionCallId:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: functionCallId
+    description: The function call id
+  workflowExecutionId:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: workflowExecutionId
+    description: The process id
+  workflowStep:
+    type:
+      list: false
+      type: int32
+    nullable: false
+    autoIncrement: false
+    name: workflowStep
+    description: The process step
+  linkedStep:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: linkedStep
+    description: Typically the input to the function
   direct1:
     type:
       list: false
@@ -128,10 +171,19 @@ properties:
     nullable: true
     autoIncrement: false
     name: flag
-constraints:
-  requiredFunctionMetadata:
-    require:
-      space: "{{power_ops_models}}"
-      externalId: FunctionMetadata
-      type: container
-    constraintType: requires
+indexes:
+  functionNameIndex:
+    properties:
+      - functionName
+    indexType: btree
+    cursorable: false
+  functionCallIdIndex:
+    properties:
+      - functionCallId
+    indexType: btree
+    cursorable: false
+  workflowExecutionIdIndex:
+    properties:
+      - workflowExecutionId
+    indexType: btree
+    cursorable: false

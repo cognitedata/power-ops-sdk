@@ -348,13 +348,13 @@ class GeneratorWrite(PowerAssetWrite):
         if self.start_cost is not None:
             properties["startCost"] = self.start_cost
 
-        if self.start_stop_cost is not None:
+        if self.start_stop_cost is not None or write_none:
             if isinstance(self.start_stop_cost, str) or self.start_stop_cost is None:
                 properties["startStopCost"] = self.start_stop_cost
             else:
                 properties["startStopCost"] = self.start_stop_cost.external_id
 
-        if self.availability_time_series is not None:
+        if self.availability_time_series is not None or write_none:
             if isinstance(self.availability_time_series, str) or self.availability_time_series is None:
                 properties["availabilityTimeSeries"] = self.availability_time_series
             else:
