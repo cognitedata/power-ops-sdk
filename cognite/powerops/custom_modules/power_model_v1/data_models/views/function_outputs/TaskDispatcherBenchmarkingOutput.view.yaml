@@ -26,7 +26,7 @@ properties:
   input: # Overrides the view type from the FunctionOutput view
     container:
       space: "{{power_ops_models}}"
-      externalId: FunctionMetadata
+      externalId: FunctionData
       type: container
     containerPropertyIdentifier: linkedStep
     name: input
