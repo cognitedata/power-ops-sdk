@@ -212,13 +212,13 @@ class PriceProductionWrite(DomainModelWrite):
         if self.name is not None:
             properties["name"] = self.name
 
-        if self.price is not None:
+        if self.price is not None or write_none:
             if isinstance(self.price, str) or self.price is None:
                 properties["price"] = self.price
             else:
                 properties["price"] = self.price.external_id
 
-        if self.production is not None:
+        if self.production is not None or write_none:
             if isinstance(self.production, str) or self.production is None:
                 properties["production"] = self.production
             else:

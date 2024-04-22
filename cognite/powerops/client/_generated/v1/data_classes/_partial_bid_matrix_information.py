@@ -272,7 +272,7 @@ class PartialBidMatrixInformationWrite(BidMatrixInformationWrite):
         if self.state is not None:
             properties["state"] = self.state
 
-        if self.bid_matrix is not None:
+        if self.bid_matrix is not None or write_none:
             properties["bidMatrix"] = self.bid_matrix
 
         if self.power_asset is not None:

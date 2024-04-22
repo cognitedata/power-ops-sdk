@@ -28,14 +28,14 @@ properties:
     type:
       type: timeseries
       list: false
-    nullable: false
+    nullable: true
     autoIncrement: false
     name: startStopCost
   availabilityTimeSeries:
     type:
       type: timeseries
       list: false
-    nullable: false
+    nullable: true
     autoIncrement: false
     name: availabilityTimeSeries
   generatorEfficiencyCurve:

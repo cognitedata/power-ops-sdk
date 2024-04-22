@@ -89,6 +89,40 @@ assets:
   parent_external_id: bid_process_configurations
 - description: Bid process configuration defining how to run a bid matrix generation
     process
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  labels:
+  - external_id: bid_process_configuration
+  metadata:
+    bid:bid_matrix_generator_config_external_id: POWEROPS_bid_matrix_generator_config_multi_scenario_50_NO2
+    bid:bid_process_configuration_name: multi_scenario_50_NO2
+    bid:date: '[["shift", {"days": -400}], ["floor", "day"]]'
+    bid:is_default_config_for_price_area: 'False'
+    bid:main_scenario: ms_50_775
+    bid:market_config_external_id: market_configuration_nordpool_dayahead
+    bid:no_shop: 'False'
+    bid:price_area: price_area_NO2
+    bid:price_scenarios: '{"ms_50_-500": "907677", "ms_50_-448": "907677", "ms_50_-397":
+      "907677", "ms_50_-346": "907677", "ms_50_-295": "907677", "ms_50_-244": "907677",
+      "ms_50_-193": "907677", "ms_50_-142": "907677", "ms_50_-91": "907677", "ms_50_-40":
+      "907677", "ms_50_10": "907677", "ms_50_61": "907677", "ms_50_112": "907677",
+      "ms_50_163": "907677", "ms_50_214": "907677", "ms_50_265": "907677", "ms_50_316":
+      "907677", "ms_50_367": "907677", "ms_50_418": "907677", "ms_50_469": "907677",
+      "ms_50_520": "907677", "ms_50_571": "907677", "ms_50_622": "907677", "ms_50_673":
+      "907677", "ms_50_724": "907677", "ms_50_775": "907677", "ms_50_826": "907677",
+      "ms_50_877": "907677", "ms_50_928": "907677", "ms_50_979": "907677", "ms_50_1030":
+      "907677", "ms_50_1081": "907677", "ms_50_1132": "907677", "ms_50_1183": "907677",
+      "ms_50_1234": "907677", "ms_50_1285": "907677", "ms_50_1336": "907677", "ms_50_1387":
+      "907677", "ms_50_1438": "907677", "ms_50_1489": "907677", "ms_50_1540": "907677",
+      "ms_50_1591": "907677", "ms_50_1642": "907677", "ms_50_1693": "907677", "ms_50_1744":
+      "907677", "ms_50_1795": "907677", "ms_50_1846": "907677", "ms_50_1897": "907677",
+      "ms_50_1948": "907677", "ms_50_2000": "907677"}'
+    shop:endtime: '[["shift", {"days": -400}], ["floor", "week"], ["shift", {"weeks":
+      2}]]'
+    shop:starttime: '[["shift", {"days": -400}], ["floor", "day"]]'
+  name: Bid process configuration multi_scenario_50_NO2
+  parent_external_id: bid_process_configurations
+- description: Bid process configuration defining how to run a bid matrix generation
+    process
   external_id: POWEROPS_bid_process_configuration_price_independent_NO2
   labels:
   - external_id: bid_process_configuration
@@ -572,6 +606,312 @@ relationships:
   source_external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2
   source_type: Asset
   target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_2_NO2_scenario_2
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.POWEROPS_bid_matrix_generator_config_multi_scenario_50_NO2
+  labels: '[{''external_id'': ''relationship_to.bid_matrix_generator_config_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: POWEROPS_bid_matrix_generator_config_multi_scenario_50_NO2
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_-142
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_-142
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_-193
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_-193
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_-244
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_-244
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_-295
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_-295
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_-346
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_-346
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_-397
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_-397
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_-40
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_-40
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_-448
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_-448
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_-500
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_-500
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_-91
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_-91
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_10
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_10
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1030
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1030
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1081
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1081
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_112
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_112
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1132
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1132
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1183
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1183
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1234
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1234
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1285
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1285
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1336
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1336
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1387
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1387
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1438
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1438
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1489
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1489
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1540
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1540
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1591
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1591
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_163
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_163
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1642
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1642
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1693
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1693
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1744
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1744
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1795
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1795
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1846
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1846
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1897
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1897
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1948
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_1948
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_2000
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_2000
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_214
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_214
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_265
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_265
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_316
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_316
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_367
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_367
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_418
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_418
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_469
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_469
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_520
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_520
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_571
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_571
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_61
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_61
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_622
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_622
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_673
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_673
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_724
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_724
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_775
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_775
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_826
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_826
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_877
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_877
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_928
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_928
+  target_type: Sequence
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2.SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_979
+  labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'
+  source_external_id: POWEROPS_bid_process_configuration_multi_scenario_50_NO2
+  source_type: Asset
+  target_external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_50_NO2_ms_50_979
   target_type: Sequence
 - external_id: POWEROPS_bid_process_configuration_price_independent_NO2.POWEROPS_bid_matrix_generator_config_price_independent_NO2
   labels: '[{''external_id'': ''relationship_to.bid_matrix_generator_config_sequence''}]'

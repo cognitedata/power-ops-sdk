@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.94.1] - 2024-04-22
+### Changed
+* Updated all relations to sequences and time series to be nullable
+
 ## [0.94.0] - 2024-04-16
 ### Changed
 * Updated BidDocument to provide needed context to frontend data model
