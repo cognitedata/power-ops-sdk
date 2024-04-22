@@ -110,19 +110,23 @@ def clean_instances():
         os.environ["SETTINGS_FILES"] = "settings.toml;.secrets.toml"
         client = get_cognite_client()
     t0 = time.perf_counter()
-    for edges in client.data_modeling.instances(instance_type="edge", space=INSTANCE_SPACE, limit=-1, chunk_size=100):
-        deleted = client.data_modeling.instances.delete(edges.as_ids())
-        print(f"Deleted {len(deleted.edges)} edges. Elapsed time {time.perf_counter() - t0:.2f} seconds")
-    else:
-        print("Done deleting edges")
+    spaces = [MODEL_SPACE, INSTANCE_SPACE, TYPE_SPACE]
 
-    for nodes in client.data_modeling.instances(instance_type="node", space=INSTANCE_SPACE, limit=-1, chunk_size=500):
-        deleted = client.data_modeling.instances.delete(nodes.as_ids())
-        print(f"Deleted {len(deleted.nodes)} nodes. Elapsed time {time.perf_counter() - t0:.2f} seconds")
-    else:
-        print("Done deleting nodes")
+    for space in spaces:
 
-    is_mock_generator = filters.Equals(["metadata", "source"], "PygenMockGenerator")
+        for edges in client.data_modeling.instances(instance_type="edge", space=space, limit=-1, chunk_size=100):
+            deleted = client.data_modeling.instances.delete(edges.as_ids())
+            print(f"Deleted {len(deleted.edges)} edges. Elapsed time {time.perf_counter() - t0:.2f} seconds")
+        else:
+            print("Done deleting edges")
+
+        for nodes in client.data_modeling.instances(instance_type="node", space=space, limit=-1, chunk_size=500):
+            deleted = client.data_modeling.instances.delete(nodes.as_ids())
+            print(f"Deleted {len(deleted.nodes)} nodes. Elapsed time {time.perf_counter() - t0:.2f} seconds")
+        else:
+            print("Done deleting nodes")
+
+        is_mock_generator = filters.Equals(["metadata", "source"], "PygenMockGenerator")
 
     timeseries = client.time_series.filter(limit=-1, filter=is_mock_generator)
     if timeseries:
