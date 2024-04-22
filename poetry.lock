@@ -640,13 +640,13 @@ format = ["black (>=24.1.0)"]
 
 [[package]]
 name = "cognite-sdk"
-version = "7.37.3"
+version = "7.37.4"
 description = "Cognite Python SDK"
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "cognite_sdk-7.37.3-py3-none-any.whl", hash = "sha256:1a118eac621ba6d31ab4f8e5d4dc8710fff23c94a257accd1a160010ebfd239c"},
-    {file = "cognite_sdk-7.37.3.tar.gz", hash = "sha256:da20f6aec63fa5bdd8bc2f71c0e4c499e6668a080f5761f202fb62b155dcd808"},
+    {file = "cognite_sdk-7.37.4-py3-none-any.whl", hash = "sha256:7ba588f242a16397a7bc9ac52befe886756b1b84ea4f84481c8e9d10d7c4f5bc"},
+    {file = "cognite_sdk-7.37.4.tar.gz", hash = "sha256:156e392faca07390f1be5cc673718329c1c4f83c201596e924f9def77b4ce03b"},
 ]
 
 [package.dependencies]
@@ -1277,13 +1277,13 @@ socks = ["socksio (==1.*)"]
 
 [[package]]
 name = "identify"
-version = "2.5.35"
+version = "2.5.36"
 description = "File identification library for Python"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "identify-2.5.35-py2.py3-none-any.whl", hash = "sha256:c4de0081837b211594f8e877a6b4fad7ca32bbfc1a9307fdd61c28bfe923f13e"},
-    {file = "identify-2.5.35.tar.gz", hash = "sha256:10a7ca245cfcd756a554a7288159f72ff105ad233c7c4b9c6f0f4d108f5f6791"},
+    {file = "identify-2.5.36-py2.py3-none-any.whl", hash = "sha256:37d93f380f4de590500d9dba7db359d0d3da95ffe7f9de1753faa159e71e7dfa"},
+    {file = "identify-2.5.36.tar.gz", hash = "sha256:e5e00f54165f9047fbebeb4a560f9acfb8af4c88232be60a488e9b68d122745d"},
 ]
 
 [package.extras]
@@ -3175,13 +3175,13 @@ test = ["appdirs (==1.4.4)", "covdefaults (>=2.3)", "pytest (>=7.4.3)", "pytest-
 
 [[package]]
 name = "pluggy"
-version = "1.4.0"
+version = "1.5.0"
 description = "plugin and hook calling mechanisms for python"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pluggy-1.4.0-py3-none-any.whl", hash = "sha256:7db9f7b503d67d1c5b95f59773ebb58a8c1c288129a88665838012cfb07b8981"},
-    {file = "pluggy-1.4.0.tar.gz", hash = "sha256:8c85c2876142a764e5b7548e7d9a0e0ddb46f5185161049a79b7e974454223be"},
+    {file = "pluggy-1.5.0-py3-none-any.whl", hash = "sha256:44e1ad92c8ca002de6377e165f3e0f1be63266ab4d554740532335b9d75ea669"},
+    {file = "pluggy-1.5.0.tar.gz", hash = "sha256:2cffa88e94fdc978c4c574f15f9e59b7f4201d439195c3715ca9e2486f1d0cf1"},
 ]
 
 [package.extras]
@@ -4935,4 +4935,4 @@ docs = ["mkdocs", "mkdocs-git-authors-plugin", "mkdocs-git-revision-date-localiz
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.13"
-content-hash = "1f024b89d6b458a314f8dfc372cd2e03b9f03d04b83e76fde83ca39b4cd2570d"
+content-hash = "a327212f57ce97f4708c8ed2fa35b40826b7c26ae5d3ce43e6c76359840a47a6"
