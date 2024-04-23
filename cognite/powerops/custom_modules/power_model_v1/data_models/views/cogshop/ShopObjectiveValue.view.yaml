@@ -1,0 +1,64 @@
+space: "{{power_ops_models}}"
+externalId: ShopObjectiveValue
+name: ShopObjectiveValue
+description: The objective value from a Shop optimisation - using this type to store a breakdown of the different parts of the value, in addition to the value itself (grand_total)
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models}}"
+          externalId: ShopFile
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: ShopFile
+          space: "{{power_ops_type_space}}"
+implements: []
+version: "{{version}}"
+properties:
+  name:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopFile
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: The name of the shop file
+  label:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopFile
+      type: container
+    containerPropertyIdentifier: label
+    name: label
+    description: The label of the shop file
+  fileReference:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopFile
+      type: container
+    containerPropertyIdentifier: fileReference
+    name: fileReference
+  order:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopFile
+      type: container
+    containerPropertyIdentifier: order
+    name: order
+    description: The order in which the file should be loaded into pyshop
+  isAscii:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopFile
+      type: container
+    containerPropertyIdentifier: isAscii
+    name: isAscii
+    description: The file extension of the file

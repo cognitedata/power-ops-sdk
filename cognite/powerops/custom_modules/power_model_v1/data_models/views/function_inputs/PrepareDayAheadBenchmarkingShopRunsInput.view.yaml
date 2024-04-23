@@ -1,9 +1,14 @@
+# TODO: Update
 space: "{{power_ops_models}}"
-externalId: TaskDispatcherBenchmarkingOutput
-name: TaskDispatcherBenchmarkingOutput
-description: The task dispatcher output data for benchmarking
+externalId: TaskDispatcherBenchmarkingInput
+name: TaskDispatcherBenchmarkingInput
+description: The task dispatcher input data for benchmarking
 filter:
   and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models}}"
+          externalId: FunctionData
     - equals:
         property:
           - node
@@ -14,24 +19,24 @@ filter:
           - node
           - type
         value:
-          externalId: TaskDispatcherBenchmarkingOutput
+          externalId: TaskDispatcherBenchmarkingInput
           space: "{{power_ops_type_space}}"
 implements:
   - space: "{{power_ops_models}}"
-    externalId: FunctionOutput
+    externalId: FunctionInput
     version: "{{version}}"
     type: view
 version: "{{version}}"
 properties:
-  input: # Overrides the view type from the FunctionOutput view
+  bidDocument:
     container:
       space: "{{power_ops_models}}"
-      externalId: FunctionMetadata
+      externalId: FunctionData
       type: container
-    containerPropertyIdentifier: linkedStep
-    name: input
+    containerPropertyIdentifier: direct1
+    name: bidDocument
     source:
       space: "{{power_ops_models}}"
-      externalId: TaskDispatcherBenchmarkingInput
+      externalId: BidDocumentDayAheadSimple
       version: "{{version}}"
       type: view

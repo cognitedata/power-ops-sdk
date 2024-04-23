@@ -3,14 +3,7 @@ externalId: ShopObjectiveValue
 name: ShopObjectiveValue
 usedFor: node
 properties:
-  name:
-    type:
-      list: false
-      type: text
-    nullable: true
-    autoIncrement: false
-    name: name
-  value:
+  grand_total:
     type:
       list: false
       type: float64
@@ -19,7 +12,7 @@ properties:
     name: value
   parts:
     type:
-      list: true
+      list: false
       type: json
     nullable: true
     autoIncrement: false

@@ -4,71 +4,55 @@ version: "1"
 name: DayAheadBenchmarking
 description: "The process of benchmarking day-ahead bids"
 views:
-  - externalId: TaskDispatcherBenchmarkingInput
+  - externalId: DayAheadBenchmarkingConfiguration
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - externalId: TaskDispatcherBenchmarkingOutput
+  - externalId: ShopModelToAssets
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - externalId: BenchmarkingCollectorInput
+  - externalId: TimeSeriesWithLabel
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - externalId: BenchmarkingCollectorOutput
+  - externalId: BidConfigurationDayAhead
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - externalId: BidDocumentDayAheadSimple
+  - externalId: ShopModel
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
-    externalId: BidMatrix
+  - externalId: PowerAsset
+    space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
-    externalId: Alert
+  - externalId: PriceAreaDayAhead
+    space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
-    externalId: ShopScenario
+  - externalId: PrepareDayAheadBenchmarkingShopRunsInput
+    space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
-    externalId: ShopObjectiveValue
+  - externalId: PrepareDayAheadBenchmarkingShopRunsOutput
+    space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
-    externalId: FunctionInput
+  - externalId: DayAheadBenchmarkingShopRunInput
+    space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
-    externalId: FunctionOutput
+  - externalId: ShopScenario
+    space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
-    externalId: PriceArea
+  - externalId: DayAheadBenchmarkingShopRunOutput
+    space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
-    externalId: ShopModel
-    version: "{{version}}"
-    type: view
-  - space: "{{power_ops_models}}"
-    externalId: ShopCommands
-    version: "{{version}}"
-    type: view
-  - space: "{{power_ops_models}}"
-    externalId: ShopAttributeMapping
-    version: "{{version}}"
-    type: view
-  - space: "{{power_ops_models}}"
-    externalId: PowerAsset
-    version: "{{version}}"
-    type: view
-  - space: "{{power_ops_models}}"
-    externalId: PartialBidConfiguration
+  - externalId: ShopObjectiveValue
+    space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
