@@ -1,5 +1,5 @@
 changes:
-- added: 14
+- added: 18
   changed: 0
   field_name: assets
   group: CDF
@@ -17,13 +17,13 @@ changes:
   group: CDF
   removed: 0
   unchanged: 0
-- added: 215
+- added: 2069
   changed: 0
   field_name: relationships
   group: CDF
   removed: 0
   unchanged: 0
-- added: 211
+- added: 2065
   changed: 0
   field_name: sequences
   group: CDF
