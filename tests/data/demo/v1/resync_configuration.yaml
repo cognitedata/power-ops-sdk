@@ -1,0 +1,26 @@
+# data_set_external_id: "uc:000:powerops"
+# overwrite_data: True
+# organization_subdomain: "cog-power-ops"
+# tenant_id: "431fcc8b-74b8-4171-b7c9-e6fab253913b"
+# shop_version: "15.4.1.1"
+# logging_level: "DEBUG"
+
+generator:
+  source_file: "files/model.yaml"
+  production_min: "model.generator.[name].p_min"
+  penstock_number: "model.generator.[name].penstock"
+  start_cost: "model.generator.[name].startcost.value"
+# generator_efficiency_curve:
+#   power: "[SOURCE:files/model.yaml]model.generator.[name].gen_eff_curve.x"
+#   efficiency: "[SOURCE:files/model.yaml]model.generator.[name].gen_eff_curve.y"
+# turbine_efficiency_curve: # from model file??
+#   - head: "[SOURCE:files/model.yaml]model.generator.Lund_G1.turb_eff_curves.y"
+#   - "y"
+plant_information:
+  source_file: "files/model.yaml"
+  head_loss_factor: "model.plant.[name].main_loss.[0]"
+  outlet_level: "model.plant.[name].outlet_line"
+  production_max: "model.plant.[name].p_max"
+  production_min: "model.plant.[name].p_min"
+  # penstock_head_loss_factors: "model.plant.[name].penstock_loss"
+  # connection_losses: "???" # from model file??
