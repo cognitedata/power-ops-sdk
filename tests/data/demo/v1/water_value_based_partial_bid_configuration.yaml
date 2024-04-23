@@ -1,8 +1,8 @@
-- name: YY
-  method: water
-  power_asset: plant_information_lund
-  add_steps: true
-- name: YY
-  method: water
-  power_asset: plant_information_lund
+- name: Plant Lund
+  method: Water Value Based Bid Generation (WVBBG)
+  power_asset: plant_water_value_based_lund
+  add_steps: false
+- name: Plant Lund Step
+  method: Water Value Based Bid Generation (WVBBG)
+  power_asset: plant_water_value_based_lund
   add_steps: true

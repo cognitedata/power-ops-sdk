@@ -16,8 +16,9 @@ from cognite.powerops.client._generated.v1.data_classes import (
     GeneratorEfficiencyCurveWrite,
     GeneratorFields,
     GeneratorWrite,
-    PlantInformationFields,
-    PlantInformationWrite,
+    PlantWaterValueBasedFields,
+    PlantWaterValueBasedWrite,
+    TurbineEfficiencyCurveWrite,
 )
 from cognite.powerops.utils.serialization import load_yaml
 
@@ -76,8 +77,8 @@ class ResyncConfiguration:
         data: dict,
     ) -> None:
         self.generator = GeneratorConfiguration(**data["generator"]) if "generator" in data else None
-        self.plant_information = (
-            PlantConfiguration(**data["plant_information"]) if "plant_information" in data else None
+        self.plant_water_value_based = (
+            PlantConfiguration(**data["plant_water_value_based"]) if "plant_water_value_based" in data else None
         )
         self.file_path = Path(data["file_path"]) if "file_path" in data else Path("files")
 
@@ -162,7 +163,6 @@ class ConfigImporter:
     ) -> Any:
         if instance_data is None:
             instance_data = {}
-        print(dictionary_path)
         keys = dictionary_path.split(".")
 
         try:
@@ -181,8 +181,6 @@ class ConfigImporter:
                     source_data = source_data[key]
         except KeyError:
             return None
-
-        print(source_data)
 
         return source_data
 
@@ -205,25 +203,83 @@ class ConfigImporter:
         print(type_prefix)
 
         # TODO: make this more generic
-        type_configuration = getattr(self.configuration, type_prefix)
+        type_configuration = getattr(self.configuration, type_prefix, None)
         print(type_configuration)
 
-        type_fields = [field.name for field in fields(type(type_configuration))]
-        default_file = load_yaml(self.directory / type_configuration.source_file, "dict")
+        if type_configuration:
+            type_fields = [field.name for field in fields(type(type_configuration))]
+            default_file = load_yaml(self.directory / type_configuration.source_file, "dict")
 
         if domain_model_type is GeneratorEfficiencyCurveWrite:
             domain_model_type_fields = get_args(GeneratorEfficiencyCurveFields)
-        elif domain_model_type is PlantInformationWrite:
-            domain_model_type_fields = get_args(PlantInformationFields)
+        elif domain_model_type is PlantWaterValueBasedWrite:
+            domain_model_type_fields = get_args(PlantWaterValueBasedFields)
+
+            raw_penstock_head_loss_factor = self._get_value_from_dictionary(
+                default_file, "model.plant.[name].penstock_loss", data
+            )
+
+            data["penstock_head_loss_factors"] = {
+                str(index): float(loss_factor)
+                for index, loss_factor in enumerate(raw_penstock_head_loss_factor, start=1)
+            }
+
+            data["production_max"] = (
+                10_000_000_000_000_000_000.0 if "production_max" not in data else data["production_max"]
+            )
+            data["production_min"] = 0.0 if "production_min" not in data else data["production_min"]
+
+            all_connections = self._get_value_from_dictionary(default_file, "connections", data)
+            plant_generator_names = []
+            for connection in all_connections:
+                if (
+                    connection.get("from_type") == "plant"
+                    and connection["from"] == data["name"]
+                    # and (gen := plant_generator_names.get(connection["to"]))
+                ):
+                    plant_generator_names.append(connection["to"])
+                elif (
+                    connection.get("to_type") == "plant"
+                    and connection["to"] == data["name"]
+                    # and (gen := plant_generator_names.get(connection["from"]))
+                ):
+                    plant_generator_names.append(connection["from"])
+
+            data["generators"] = [f"generator_{gen}".lower() for gen in set(plant_generator_names)]
+            data["connection_losses"] = 0.0 if "connection_losses" not in data else data["connection_losses"]
+
+            print(data["generators"])
+
+        elif domain_model_type is GeneratorWrite:
+            domain_model_type_fields = get_args(GeneratorFields)
+
             data["generator_efficiency_curve"] = GeneratorEfficiencyCurveWrite(
-                external_id=f"{type_prefix}_foo",
+                external_id=f"generator_efficiency_curve_{data['name']}",
                 power=self._get_value_from_dictionary(default_file, "model.generator.[name].gen_eff_curve.x", data),
                 efficiency=self._get_value_from_dictionary(
                     default_file, "model.generator.[name].gen_eff_curve.y", data
                 ),
             )
-        elif domain_model_type is GeneratorWrite:
-            domain_model_type_fields = get_args(GeneratorFields)
+
+            print(data["generator_efficiency_curve"])
+
+            turbine_data_unparsed = self._get_value_from_dictionary(
+                default_file, "model.generator.[name].turb_eff_curves", data
+            )
+
+            print(turbine_data_unparsed)
+
+            data["turbine_efficiency_curves"] = [
+                TurbineEfficiencyCurveWrite(
+                    external_id=f"turbine_efficiency_curve_{data['name']}_{turbine_data['ref']}",
+                    head=self._get_value_from_dictionary(turbine_data, "ref", data),
+                    flow=self._get_value_from_dictionary(turbine_data, "x", data),
+                    efficiency=self._get_value_from_dictionary(turbine_data, "y", data),
+                )
+                for turbine_data in turbine_data_unparsed
+            ]
+
+            print(data["turbine_efficiency_curves"])
         else:
             domain_model_type_fields = ()
 
@@ -233,7 +289,7 @@ class ConfigImporter:
             print(field_name)
             if field_name in extracted_data:
                 data[field_name] = extracted_data[field_name]
-            elif field_name in type_fields:
+            elif type_configuration and field_name in type_fields:
                 data[field_name] = self._get_value_from_dictionary(
                     default_file, getattr(type_configuration, field_name), data
                 )
@@ -243,7 +299,18 @@ class ConfigImporter:
         except ValidationError as exc:
             raise ValueError(f"Missing/invalid field for {domain_model_type.__name__} in data {data}") from exc
 
-        if fdm_object.external_id in fdm_objects:
-            raise ValueError(f"{domain_model_type.__name__} with external id {fdm_object.external_id} already exists")
+        all_new_objects = [fdm_object]
+        if domain_model_type is GeneratorWrite:
+            all_new_objects = [
+                *all_new_objects,
+                fdm_object.generator_efficiency_curve,
+                *fdm_object.turbine_efficiency_curves,
+            ]
+        elif domain_model_type is PlantWaterValueBasedWrite:
+            print(fdm_object.generators)
 
-        fdm_objects[fdm_object.external_id] = fdm_object
+        for object in all_new_objects:
+            if object.external_id in fdm_objects:
+                raise ValueError(f"{domain_model_type.__name__} with external id {object.external_id} already exists")
+            else:
+                fdm_objects[object.external_id] = object

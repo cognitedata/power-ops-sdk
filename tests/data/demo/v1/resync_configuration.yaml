@@ -16,11 +16,12 @@ generator:
 # turbine_efficiency_curve: # from model file??
 #   - head: "[SOURCE:files/model.yaml]model.generator.Lund_G1.turb_eff_curves.y"
 #   - "y"
-plant_information:
+plant_water_value_based:
   source_file: "files/model.yaml"
   head_loss_factor: "model.plant.[name].main_loss.[0]"
   outlet_level: "model.plant.[name].outlet_line"
   production_max: "model.plant.[name].p_max"
   production_min: "model.plant.[name].p_min"
+  # generators: "connections"
   # penstock_head_loss_factors: "model.plant.[name].penstock_loss"
   # connection_losses: "???" # from model file??

@@ -8,18 +8,18 @@ filter:
         - type: container
           space: "{{power_ops_models}}"
           externalId: PlantWaterValueBased
-    - equals:
-        property:
-          - node
-          - space
-        value: "{{power_ops_instance_space}}"
-    - equals:
-        property:
-          - node
-          - type
-        value:
-          externalId: PlantWaterValueBased
-          space: "{{power_ops_type_space}}"
+          # - equals:
+          #     property:
+          #       - node
+          #       - space
+          #     value: "{{power_ops_instance_space}}"
+          # - equals:
+          #     property:
+          #       - node
+          #       - type
+          #     value:
+          #       externalId: PlantWaterValueBased
+          #       space: "{{power_ops_type_space}}"
 implements:
   - space: "{{power_ops_models}}"
     externalId: Plant
