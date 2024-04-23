@@ -130,12 +130,3 @@ def create_transformationsV2_file(configs_path: Path, write_path: Path, cdf_proj
     _create_transformations_file(
         old_time_series_mappings, old_price_scenario_mappings, write_path / "transformations_v2.yaml"
     )
-
-path = Path.cwd().parent / "tests" / "data"
-generated_path = path / "generated"
-config_path = path / "demo"
-project = "power-ops-staging"
-
-create_new_config_files_with_transformations_v2(config_path, project)
-print("Done")
-create_transformationsV2_file(config_path, generated_path, project)

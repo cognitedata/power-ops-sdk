@@ -46,10 +46,11 @@ class BidProcess:
             "price_scenarios": [{"id": scenario.name} for scenario in self.price_scenarios],
         }
 
+
 @dataclass
 class BidProcessGenerator:
     num_scenarios: int
-    offset_mins: int # This is just to ensure uniqueness of the scenarios
+    offset_mins: int  # This is just to ensure uniqueness of the scenarios
 
 
 def generate_price_scenarios(bid_process_generator: BidProcessGenerator) -> list[Scenario]:
@@ -133,7 +134,9 @@ def create_multi_scenario_demo_config(bid_process_generator: BidProcessGenerator
     return bid_process, price_scenarios
 
 
-def create_multi_scenario_demo_configs(bid_process_generators: list[BidProcessGenerator], scenarios_file: Path, bid_process_file: Path):
+def create_multi_scenario_demo_configs(
+    bid_process_generators: list[BidProcessGenerator], scenarios_file: Path, bid_process_file: Path
+):
 
     bid_processes: list[BidProcess] = []
     scenarios: list[Scenario] = []
@@ -163,7 +166,7 @@ if __name__ == "__main__":
         BidProcessGenerator(100, 120),
         BidProcessGenerator(250, 180),
         BidProcessGenerator(500, 240),
-        BidProcessGenerator(1000, 300)
+        BidProcessGenerator(1000, 300),
     ]
 
     create_multi_scenario_demo_configs(bid_process_generators, scenarios_file, bid_process_file)
