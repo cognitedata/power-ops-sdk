@@ -47,22 +47,28 @@ class BidProcess:
         }
 
 
-def generate_price_scenarios(num_scenarios: int) -> list[Scenario]:
+@dataclass
+class BidProcessGenerator:
+    num_scenarios: int
+    offset_mins: int  # This is just to ensure uniqueness of the scenarios
+
+
+def generate_price_scenarios(bid_process_generator: BidProcessGenerator) -> list[Scenario]:
     transformation = "ADD_FROM_OFFSET"
     range_start, range_end = -500, 2000
 
-    step_size = (range_end - range_start) / (num_scenarios - 1)
-    offsets = [int(range_start + i * step_size) for i in range(1, num_scenarios - 1)]
+    step_size = (range_end - range_start) / (bid_process_generator.num_scenarios - 1)
+    offsets = [int(range_start + i * step_size) for i in range(1, bid_process_generator.num_scenarios - 1)]
     offsets = [range_start] + offsets + [range_end]
 
     scenarios = []
 
     for offset in offsets:
-        scenario_id = f"ms_{num_scenarios}_{offset}"
+        scenario_id = f"{bid_process_generator.num_scenarios}_{offset}"
 
         # using start offset as num_scenarios to by-pass duplicate check
         relative_datapoints = [
-            RelativeDatapoint(offset_minute=num_scenarios, offset_value=offset),
+            RelativeDatapoint(offset_minute=bid_process_generator.offset_mins, offset_value=offset),
             RelativeDatapoint(offset_minute=1440, offset_value=0),
         ]
 
@@ -120,21 +126,23 @@ def write_between_comments(file_path: Path, data: str):
         file.writelines(lines)
 
 
-def create_multi_scenario_demo_config(num_scenarios: int) -> tuple[BidProcess, list[Scenario]]:
+def create_multi_scenario_demo_config(bid_process_generator: BidProcessGenerator) -> tuple[BidProcess, list[Scenario]]:
 
-    price_scenarios: list[Scenario] = generate_price_scenarios(num_scenarios)
+    price_scenarios: list[Scenario] = generate_price_scenarios(bid_process_generator)
     bid_process: BidProcess = generate_bid_process(price_scenarios)
 
     return bid_process, price_scenarios
 
 
-def create_multi_scenario_demo_configs(num_scenarios_list: list[int], scenarios_file: Path, bid_process_file: Path):
+def create_multi_scenario_demo_configs(
+    bid_process_generators: list[BidProcessGenerator], scenarios_file: Path, bid_process_file: Path
+):
 
     bid_processes: list[BidProcess] = []
     scenarios: list[Scenario] = []
 
-    for num_scenarios in num_scenarios_list:
-        bid_process, scenario = create_multi_scenario_demo_config(num_scenarios)
+    for bid_process_generator in bid_process_generators:
+        bid_process, scenario = create_multi_scenario_demo_config(bid_process_generator)
         bid_processes.append(bid_process)
         scenarios.extend(scenario)
 
@@ -153,7 +161,6 @@ if __name__ == "__main__":
     scenarios_file = Path.cwd().parent / "tests" / "data" / "demo" / "market" / "price_scenario_by_id.yaml"
     bid_process_file = Path.cwd().parent / "tests" / "data" / "demo" / "market" / "dayahead" / "bidprocess.yaml"
 
-    num_scenarios_list = [50]
-    # num_scenarios_list = [50, 100, 200, 400, 800]
+    bid_process_generators = [BidProcessGenerator(50, 60), BidProcessGenerator(100, 120), BidProcessGenerator(250, 180)]
 
-    create_multi_scenario_demo_configs(num_scenarios_list, scenarios_file, bid_process_file)
+    create_multi_scenario_demo_configs(bid_process_generators, scenarios_file, bid_process_file)
