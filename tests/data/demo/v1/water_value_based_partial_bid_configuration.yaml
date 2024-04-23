@@ -2,3 +2,7 @@
   method: water
   power_asset: plant_information_lund
   add_steps: true
+- name: YY
+  method: water
+  power_asset: plant_information_lund
+  add_steps: true

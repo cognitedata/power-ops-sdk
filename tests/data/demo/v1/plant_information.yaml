@@ -2,19 +2,10 @@
   display_name: Lund
   ordering: 1
   asset_type: plant
-  head_loss_factor: "???" # from model file??
-  outlet_level: "???" # from model file??
-  production_max: "???" # from model file??
-  production_min: "???" # from model file??
-  penstock_head_loss_factors: "???" # from model file??
-  connection_losses: "???" # from model file??
   production_max_time_series: "???" # from model file??
   production_min_time_series: "???" # from model file??
   water_value_time_series: "136120"
-  feeding_value_time_series: "9626"
+  feeding_fee_time_series: "9626"
   outlet_level_time_series: "907223"
   inlet_level_time_series: "907230"
-  head_direct_time_series: "???" # from model file??
-  generators: # from model file?? connections dictionary
-    - x
-    - y??
+  head_direct_time_series: "???"
