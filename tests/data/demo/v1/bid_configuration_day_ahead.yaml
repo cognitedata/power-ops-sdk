@@ -4,15 +4,29 @@
   bid_date_specification: "[['shift', {'days': -400}], ['floor', 'day']]"
   partials:
     - shop_based_partial_bid_configuration_plant_a_set_a
-- name: Water Value NO2
+- name: Water Value NO2 Lund
   market_configuration: market_configuration_nord_pool_day_ahead
   price_area: price_area_information_no2
   bid_date_specification: "[['shift', {'days': -400}], ['floor', 'day']]"
   partials:
     - water_value_based_partial_bid_configuration_plant_lund
-- name: Water Value NO2 Step
+- name: Water Value NO2 Lund Step
   market_configuration: market_configuration_nord_pool_day_ahead
   price_area: price_area_information_no2
   bid_date_specification: "[['shift', {'days': -400}], ['floor', 'day']]"
   partials:
     - water_value_based_partial_bid_configuration_plant_lund_step
+- name: Water Value NO2 Full
+  market_configuration: market_configuration_nord_pool_day_ahead
+  price_area: price_area_information_no2
+  bid_date_specification: "[['shift', {'days': -400}], ['floor', 'day']]"
+  partials:
+    - water_value_based_partial_bid_configuration_plant_lund
+    - water_value_based_partial_bid_configuration_plant_dalby_step
+    - water_value_based_partial_bid_configuration_plant_holen
+    - water_value_based_partial_bid_configuration_plant_landet_step
+    - water_value_based_partial_bid_configuration_plant_lien_krv
+    - water_value_based_partial_bid_configuration_plant_rull1_step
+    - water_value_based_partial_bid_configuration_plant_rull2
+    - water_value_based_partial_bid_configuration_plant_scott_step
+    - water_value_based_partial_bid_configuration_plant_strand_krv

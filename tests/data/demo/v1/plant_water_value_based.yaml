@@ -16,10 +16,10 @@
   asset_type: plant
   # production_max_time_series: "???" # from model file??
   # production_min_time_series: "???" # from model file??
-  # water_value_time_series: "136120"
-  # feeding_fee_time_series: "9626"
+  water_value_time_series: "136120"
+  feeding_fee_time_series: "9626"
   # outlet_level_time_series: "907223"
-  # inlet_level_time_series: "907230"
+  inlet_level_time_series: "inlet_level_Dalby"
   # head_direct_time_series: "???"
 
 - name: Holen
@@ -28,10 +28,10 @@
   asset_type: plant
   # production_max_time_series: "???" # from model file??
   # production_min_time_series: "???" # from model file??
-  # water_value_time_series: "136120"
-  # feeding_fee_time_series: "9626"
+  water_value_time_series: "136120"
+  feeding_fee_time_series: "9626"
   # outlet_level_time_series: "907223"
-  # inlet_level_time_series: "907230"
+  inlet_level_time_series: "inlet_level_Holen"
   # head_direct_time_series: "???"
 
 - name: Landet
@@ -40,10 +40,10 @@
   asset_type: plant
   # production_max_time_series: "???" # from model file??
   # production_min_time_series: "???" # from model file??
-  # water_value_time_series: "136120"
-  # feeding_fee_time_series: "9626"
+  water_value_time_series: "136120"
+  feeding_fee_time_series: "9626"
   # outlet_level_time_series: "907223"
-  # inlet_level_time_series: "907230"
+  inlet_level_time_series: "inlet_level_Landet"
   # head_direct_time_series: "???"
 
 - name: Lien_krv
@@ -52,10 +52,10 @@
   asset_type: plant
   # production_max_time_series: "???" # from model file??
   # production_min_time_series: "???" # from model file??
-  # water_value_time_series: "136120"
-  # feeding_fee_time_series: "9626"
+  water_value_time_series: "136120"
+  feeding_fee_time_series: "9626"
   # outlet_level_time_series: "907223"
-  # inlet_level_time_series: "907230"
+  inlet_level_time_series: "inlet_level_Lien_krv"
   # head_direct_time_series: "???"
 
 - name: Rull1
@@ -64,10 +64,10 @@
   asset_type: plant
   # production_max_time_series: "???" # from model file??
   # production_min_time_series: "???" # from model file??
-  # water_value_time_series: "136120"
-  # feeding_fee_time_series: "9626"
+  water_value_time_series: "136120"
+  feeding_fee_time_series: "9626"
   # outlet_level_time_series: "907223"
-  # inlet_level_time_series: "907230"
+  inlet_level_time_series: "inlet_level_Rull1"
   # head_direct_time_series: "???"
 
 - name: Rull2
@@ -76,10 +76,10 @@
   asset_type: plant
   # production_max_time_series: "???" # from model file??
   # production_min_time_series: "???" # from model file??
-  # water_value_time_series: "136120"
-  # feeding_fee_time_series: "9626"
+  water_value_time_series: "136120"
+  feeding_fee_time_series: "9626"
   # outlet_level_time_series: "907223"
-  # inlet_level_time_series: "907230"
+  inlet_level_time_series: "inlet_level_Rull2"
   # head_direct_time_series: "???"
 
 - name: Scott
@@ -88,10 +88,10 @@
   asset_type: plant
   # production_max_time_series: "???" # from model file??
   # production_min_time_series: "???" # from model file??
-  # water_value_time_series: "136120"
-  # feeding_fee_time_series: "9626"
+  water_value_time_series: "136120"
+  feeding_fee_time_series: "9626"
   # outlet_level_time_series: "907223"
-  # inlet_level_time_series: "907230"
+  inlet_level_time_series: "inlet_level_Scott"
   # head_direct_time_series: "???"
 
 - name: Strand_krv
@@ -100,8 +100,8 @@
   asset_type: plant
   # production_max_time_series: "???" # from model file??
   # production_min_time_series: "???" # from model file??
-  # water_value_time_series: "136120"
-  # feeding_fee_time_series: "9626"
+  water_value_time_series: "136120"
+  feeding_fee_time_series: "9626"
   # outlet_level_time_series: "907223"
-  # inlet_level_time_series: "907230"
+  inlet_level_time_series: "inlet_level_Strand_krv"
   # head_direct_time_series: "???"

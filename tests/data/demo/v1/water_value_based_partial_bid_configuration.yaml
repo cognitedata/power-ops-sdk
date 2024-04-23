@@ -6,3 +6,35 @@
   method: Water Value Based Bid Generation (WVBBG)
   power_asset: plant_water_value_based_lund
   add_steps: true
+- name: Plant Dalby Step
+  method: Water Value Based Bid Generation (WVBBG)
+  power_asset: plant_water_value_based_dalby
+  add_steps: true
+- name: Plant Holen
+  method: Water Value Based Bid Generation (WVBBG)
+  power_asset: plant_water_value_based_holen
+  add_steps: false
+- name: Plant Landet Step
+  method: Water Value Based Bid Generation (WVBBG)
+  power_asset: plant_water_value_based_landet
+  add_steps: true
+- name: Plant Lien_krv
+  method: Water Value Based Bid Generation (WVBBG)
+  power_asset: plant_water_value_based_lien_krv
+  add_steps: false
+- name: Plant Rull1 Step
+  method: Water Value Based Bid Generation (WVBBG)
+  power_asset: plant_water_value_based_rull1
+  add_steps: true
+- name: Plant Rull2
+  method: Water Value Based Bid Generation (WVBBG)
+  power_asset: plant_water_value_based_rull2
+  add_steps: false
+- name: Plant Scott Step
+  method: Water Value Based Bid Generation (WVBBG)
+  power_asset: plant_water_value_based_scott
+  add_steps: true
+- name: Plant Strand_krv
+  method: Water Value Based Bid Generation (WVBBG)
+  power_asset: plant_water_value_based_strand_krv
+  add_steps: false
