@@ -44,7 +44,7 @@ def apply2(config_dir: Path, client: PowerOpsClient | None = None) -> None:
 
     print(day_ahead_config)
 
-    client.v1.upsert(day_ahead_config)
+    client.v1.upsert(day_ahead_config, replace=True)
 
     print(f"Upserted {len(day_ahead_config)} bid configurations")
 

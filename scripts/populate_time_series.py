@@ -48,7 +48,7 @@ def main():
         "Strand_krv": [893, 908],
     }
 
-    start_date = "2024-01-01"
+    start_date = "2022-01-01"
     end_date = datetime.now().strftime("%Y-%m-%d")
 
     for plant, min_max in plants_inlet.items():
@@ -63,13 +63,13 @@ def main():
         # production_max_time_series = client.time_series.create(TimeSeriesWrite(external_id=f"{plant_name_prefix}production_max", data_set_id=data_set_id))
         # production_min_time_series = client.time_series.create(TimeSeriesWrite(external_id=f"{plant_name_prefix}production_min", data_set_id=data_set_id))
         # outlet_level_time_series = client.time_series.create(TimeSeriesWrite(external_id=f"{plant_name_prefix}outlet_level", data_set_id=data_set_id))
-        inlet_level_time_series = client.time_series.create(
-            TimeSeriesWrite(external_id=f"inlet_level_{plant}", data_set_id=data_set_id)
-        )
+        # inlet_level_time_series = client.time_series.create(
+        #     TimeSeriesWrite(external_id=f"inlet_level_{plant}", data_set_id=data_set_id)
+        # )
         min_value = min_max[0]
         max_value = min_max[1]
 
-        dates = pd.date_range(start=start_date, end=end_date, freq="D")
+        dates = pd.date_range(start=start_date, end=end_date, freq="h")
         values = np.random.uniform(low=min_value, high=max_value, size=len(dates))
 
         df = pd.DataFrame({f"inlet_level_{plant}": values}, index=dates)

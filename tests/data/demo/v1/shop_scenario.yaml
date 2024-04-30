@@ -1,7 +1,14 @@
 - name: "1"
-  model: ext_id_model
-  commands: default
+  model: shop_model_fornebu
+  commands: shop_commands_default
   source: XXX
   attribute_mappings_override:
     - mapping_3
     - mapping_4
+- name: "2"
+  model: shop_model_fornebu
+  commands: shop_commands_default
+  source: XXX
+  attribute_mappings_override:
+    - mapping_5
+    - mapping_6
