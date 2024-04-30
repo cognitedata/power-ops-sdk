@@ -23,8 +23,8 @@ class AFRRBidAPI:
     AFRRBidAPI
 
     Generated with:
-        pygen = 0.99.20
-        cognite-sdk = 7.37.1
+        pygen = 0.99.19
+        cognite-sdk = 7.26.2
         pydantic = 2.7.0
 
     Data Model:
@@ -41,7 +41,7 @@ class AFRRBidAPI:
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
         # The client name is used for aggregated logging of Pygen Usage
-        client.config.client_name = "CognitePygen:0.99.20"
+        client.config.client_name = "CognitePygen:0.99.19"
 
         view_by_read_class = {
             data_classes.Alert: dm.ViewId("power-ops-shared", "Alert", "1"),
