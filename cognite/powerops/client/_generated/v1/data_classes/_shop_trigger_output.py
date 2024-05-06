@@ -104,7 +104,7 @@ class ShopTriggerOutputGraphQL(GraphQLCore):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return ShopTriggerOutput(
-            space=self.space,
+            space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
@@ -123,7 +123,7 @@ class ShopTriggerOutputGraphQL(GraphQLCore):
     def as_write(self) -> ShopTriggerOutputWrite:
         """Convert this GraphQL format of shop trigger output to the writing format."""
         return ShopTriggerOutputWrite(
-            space=self.space,
+            space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             workflow_execution_id=self.workflow_execution_id,

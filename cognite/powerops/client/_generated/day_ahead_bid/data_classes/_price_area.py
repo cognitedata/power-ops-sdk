@@ -105,7 +105,7 @@ class PriceAreaGraphQL(GraphQLCore):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return PriceArea(
-            space=self.space,
+            space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
@@ -124,7 +124,7 @@ class PriceAreaGraphQL(GraphQLCore):
     def as_write(self) -> PriceAreaWrite:
         """Convert this GraphQL format of price area to the writing format."""
         return PriceAreaWrite(
-            space=self.space,
+            space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,

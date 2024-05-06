@@ -116,7 +116,7 @@ class ShopModelGraphQL(GraphQLCore, protected_namespaces=()):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return ShopModel(
-            space=self.space,
+            space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
@@ -127,9 +127,9 @@ class ShopModelGraphQL(GraphQLCore, protected_namespaces=()):
             version_=self.version_,
             shop_version=self.shop_version,
             penalty_limit=self.penalty_limit,
-            model=self.model,
+            model=self.model["externalId"] if self.model and "externalId" in self.model else None,
             cog_shop_files_config=self.cog_shop_files_config,
-            extra_files=self.extra_files,
+            extra_files=[item["externalId"] for item in self.extra_files or [] if "externalId" in item] or None,
             base_attribute_mappings=[
                 (
                     base_attribute_mapping.as_read()
@@ -143,16 +143,16 @@ class ShopModelGraphQL(GraphQLCore, protected_namespaces=()):
     def as_write(self) -> ShopModelWrite:
         """Convert this GraphQL format of shop model to the writing format."""
         return ShopModelWrite(
-            space=self.space,
+            space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,
             version_=self.version_,
             shop_version=self.shop_version,
             penalty_limit=self.penalty_limit,
-            model=self.model,
+            model=self.model["externalId"] if self.model and "externalId" in self.model else None,
             cog_shop_files_config=self.cog_shop_files_config,
-            extra_files=self.extra_files,
+            extra_files=[item["externalId"] for item in self.extra_files or [] if "externalId" in item] or None,
             base_attribute_mappings=[
                 (
                     base_attribute_mapping.as_write()

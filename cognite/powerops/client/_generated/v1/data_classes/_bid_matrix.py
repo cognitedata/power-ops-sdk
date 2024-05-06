@@ -78,7 +78,7 @@ class BidMatrixGraphQL(GraphQLCore):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return BidMatrix(
-            space=self.space,
+            space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
@@ -86,17 +86,17 @@ class BidMatrixGraphQL(GraphQLCore):
                 created_time=self.data_record.created_time,
             ),
             state=self.state,
-            bid_matrix=self.bid_matrix,
+            bid_matrix=self.bid_matrix["externalId"] if self.bid_matrix and "externalId" in self.bid_matrix else None,
         )
 
     def as_write(self) -> BidMatrixWrite:
         """Convert this GraphQL format of bid matrix to the writing format."""
         return BidMatrixWrite(
-            space=self.space,
+            space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             state=self.state,
-            bid_matrix=self.bid_matrix,
+            bid_matrix=self.bid_matrix["externalId"] if self.bid_matrix and "externalId" in self.bid_matrix else None,
         )
 
 
