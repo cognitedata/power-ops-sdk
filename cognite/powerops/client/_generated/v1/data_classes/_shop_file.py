@@ -87,7 +87,7 @@ class ShopFileGraphQL(GraphQLCore):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return ShopFile(
-            space=self.space,
+            space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
@@ -96,7 +96,11 @@ class ShopFileGraphQL(GraphQLCore):
             ),
             name=self.name,
             label=self.label,
-            file_reference=self.file_reference,
+            file_reference=(
+                self.file_reference["externalId"]
+                if self.file_reference and "externalId" in self.file_reference
+                else None
+            ),
             order=self.order,
             is_ascii=self.is_ascii,
         )
@@ -104,12 +108,16 @@ class ShopFileGraphQL(GraphQLCore):
     def as_write(self) -> ShopFileWrite:
         """Convert this GraphQL format of shop file to the writing format."""
         return ShopFileWrite(
-            space=self.space,
+            space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,
             label=self.label,
-            file_reference=self.file_reference,
+            file_reference=(
+                self.file_reference["externalId"]
+                if self.file_reference and "externalId" in self.file_reference
+                else None
+            ),
             order=self.order,
             is_ascii=self.is_ascii,
         )

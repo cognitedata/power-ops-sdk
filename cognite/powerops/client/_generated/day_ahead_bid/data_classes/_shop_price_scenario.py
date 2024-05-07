@@ -79,7 +79,7 @@ class SHOPPriceScenarioGraphQL(GraphQLCore):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return SHOPPriceScenario(
-            space=self.space,
+            space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
@@ -93,7 +93,7 @@ class SHOPPriceScenarioGraphQL(GraphQLCore):
     def as_write(self) -> SHOPPriceScenarioWrite:
         """Convert this GraphQL format of shop price scenario to the writing format."""
         return SHOPPriceScenarioWrite(
-            space=self.space,
+            space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,

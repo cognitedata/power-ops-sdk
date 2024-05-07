@@ -77,7 +77,7 @@ class TurbineEfficiencyCurveGraphQL(GraphQLCore):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return TurbineEfficiencyCurve(
-            space=self.space,
+            space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
@@ -92,7 +92,7 @@ class TurbineEfficiencyCurveGraphQL(GraphQLCore):
     def as_write(self) -> TurbineEfficiencyCurveWrite:
         """Convert this GraphQL format of turbine efficiency curve to the writing format."""
         return TurbineEfficiencyCurveWrite(
-            space=self.space,
+            space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             head=self.head,
