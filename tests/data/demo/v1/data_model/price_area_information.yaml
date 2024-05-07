@@ -1,0 +1,34 @@
+- name: NO1
+  display_name: "Østlandet (NO1)"
+  ordering: 1
+  asset_type: price_area
+  capacity_price_up: "[external_id]ext_id_ts"
+  capacity_price_down: "[external_id]ext_id_ts"
+  activation_price_up: "[external_id]ext_id_ts"
+  activation_price_down: "[external_id]ext_id_ts"
+  relative_activation: "[external_id]ext_id_ts"
+  total_capacity_allocation_up: "[external_id]ext_id_ts"
+  total_capacity_allocation_down: "[external_id]ext_id_ts"
+  own_capacity_allocation_up: "[external_id]ext_id_ts"
+  own_capacity_allocation_down: "[external_id]ext_id_ts"
+  default_bid_configuration: "[name]Multi Scenario NO1" # TODO: doesn't exist yet
+  main_price_scenario: "[external_id]ext_id_ts"
+  price_scenarios:
+    - "[external_id]ext_id_ts"
+- name: NO2
+  display_name: "Sørlandet (NO2)"
+  ordering: 2
+  asset_type: price_area
+  capacity_price_up: "[external_id]ext_id_ts"
+  capacity_price_down: "[external_id]ext_id_ts"
+  activation_price_up: "[external_id]ext_id_ts"
+  activation_price_down: "[external_id]ext_id_ts"
+  relative_activation: "[external_id]ext_id_ts"
+  total_capacity_allocation_up: "[external_id]ext_id_ts"
+  total_capacity_allocation_down: "[external_id]ext_id_ts"
+  own_capacity_allocation_up: "[external_id]ext_id_ts"
+  own_capacity_allocation_down: "[external_id]ext_id_ts"
+  default_bid_configuration: "[name]Multi Scenario 2 NO2"
+  main_price_scenario: "[external_id]6694" # TODO: check if this is right
+  price_scenarios:
+    - "[external_id]ext_id_ts"

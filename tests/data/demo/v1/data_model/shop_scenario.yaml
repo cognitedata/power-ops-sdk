@@ -1,13 +1,13 @@
 - name: "1"
   model: shop_model_fornebu
-  commands: shop_commands_default
+  commands: "[name]default"
   source: XXX
   attribute_mappings_override:
     - mapping_3
     - mapping_4
 - name: "2"
   model: shop_model_fornebu
-  commands: shop_commands_default
+  commands: "[name|type:ShopCommands]default"
   source: XXX
   attribute_mappings_override:
     - mapping_5

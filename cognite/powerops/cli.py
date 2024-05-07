@@ -162,12 +162,6 @@ def apply(
         echo(changed.as_github_markdown())
 
 
-@app.command("apply2", help="Apply the changes from the configuration files to the data model in CDF")
-def apply2(path: Annotated[Path, typer.Argument(help="Path to configuration files")]):
-    logging.info(f"Running apply on configuration files located in {path}")
-    cognite.powerops.resync.v2.main.apply2(path)
-
-
 @app.command("destroy", help="Destroy all the data models created by resync and remove all the data.")
 def destroy(
     models: list[str] = typer.Option(
@@ -187,6 +181,18 @@ def destroy(
     destroyed = resync.destroy(client, model_names=models, auto_yes=auto_yes, dry_run=dry_run)
     if format == "markdown":
         echo(destroyed.as_github_markdown())
+
+
+@app.command("plan2", help="Plan the changes from the configuration files to the data model in CDF")
+def plan2(path: Annotated[Path, typer.Argument(help="Path to configuration files")]):
+    logging.info(f"Running plan on configuration files located in {path}")
+    cognite.powerops.resync.v2.main.plan(path)
+
+
+@app.command("apply2", help="Apply the changes from the configuration files to the data model in CDF")
+def apply2(path: Annotated[Path, typer.Argument(help="Path to configuration files")]):
+    logging.info(f"Running apply on configuration files located in {path}")
+    cognite.powerops.resync.v2.main.apply(path)
 
 
 def main():

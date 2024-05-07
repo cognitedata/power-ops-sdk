@@ -1,8 +1,8 @@
 - name: Fornebu
-  version: "1"
+  version_: "1"
   shop_version: "15.4.1.1"
   penalty_limit: 0.0
-  model: SHOP_Fornebu_model
+  model: "[external_id]SHOP_Fornebu_model"
   cog_shop_files_config:
     - name: "water_value_cut_file_reservoir_mapping"
       label: "water_value_cut_file_reservoir_mapping"
@@ -15,5 +15,5 @@
       is_ascii: True
       file_reference: "SHOP_Fornebu_water_value_cut_file"
   base_attribute_mappings:
-    - mapping_1
-    - mapping_2
+    - "[external_id]mapping_1"
+    - "[external_id]mapping_2"

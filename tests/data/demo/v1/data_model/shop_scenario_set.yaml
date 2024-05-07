@@ -2,10 +2,10 @@
   start_specification: '[["shift", {"days": -400}], ["floor", "day"]]'
   end_specification: '[["shift", {"days": -400}], ["floor", "week"], ["shift", {"weeks": 2}]]'
   scenarios:
-    - shop_scenario_1
+    - "[external_id]shop_scenario_1"
 - name: 2 scenarios
   start_specification: '[["shift", {"days": -400}], ["floor", "day"]]'
   end_specification: '[["shift", {"days": -400}], ["floor", "week"], ["shift", {"weeks": 2}]]'
   scenarios:
-    - shop_scenario_1
-    - shop_scenario_2
+    - "[name]1"
+    - "[name|type:ShopScenario]2"

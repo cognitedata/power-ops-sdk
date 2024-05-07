@@ -1,27 +1,28 @@
-# data_set_external_id: "uc:000:powerops"
-# overwrite_data: True
-# organization_subdomain: "cog-power-ops"
-# tenant_id: "431fcc8b-74b8-4171-b7c9-e6fab253913b"
-# shop_version: "15.4.1.1"
-# logging_level: "DEBUG"
+# Path to the data model configuration file
+data_model_configuration_file: "/Users/nina.odegard@cognitedata.com/Documents/GitHub/Cognite/PowerOps/power-ops-sdk/tests/data/demo/v1/data_model_configuration.yaml"
+# Path to the working directory where the data model and files are stored
+working_directory: "/Users/nina.odegard@cognitedata.com/Documents/GitHub/Cognite/PowerOps/power-ops-sdk/tests/data/demo/v1"
+# The logging level for the resyncing process
+logging_level: "DEBUG"
+# Whether to overwrite the data if it already exists, note this refers to the "replace" logic from the API for instances
+overwrite_data: True
+# The data set ID to resync the data to
+data_set_id: 7333821056338063
 
-generator:
-  source_file: "files/model.yaml"
-  production_min: "model.generator.[name].p_min"
-  penstock_number: "model.generator.[name].penstock"
-  start_cost: "model.generator.[name].startcost.value"
-# generator_efficiency_curve:
-#   power: "[SOURCE:files/model.yaml]model.generator.[name].gen_eff_curve.x"
-#   efficiency: "[SOURCE:files/model.yaml]model.generator.[name].gen_eff_curve.y"
-# turbine_efficiency_curve: # from model file??
-#   - head: "[SOURCE:files/model.yaml]model.generator.Lund_G1.turb_eff_curves.y"
-#   - "y"
-plant_water_value_based:
-  source_file: "files/model.yaml"
-  head_loss_factor: "model.plant.[name].main_loss.[0]"
-  outlet_level: "model.plant.[name].outlet_line"
-  production_max: "model.plant.[name].p_max"
-  production_min: "model.plant.[name].p_min"
-  # generators: "connections"
-  # penstock_head_loss_factors: "model.plant.[name].penstock_loss"
-  # connection_losses: "???" # from model file??
+file_configuration:
+  # Whether to overwrite the files if they already exist
+  overwrite: True
+  # The folder path to the files, the default is working_directory/files
+  # folder_path: "files" # must be full path if used
+  # A list of file metadata to be added to the files, this is optional for each file
+  # If not provided the name of the file will be used as the external_id and the above data_set_id will be used
+  file_metadata:
+    # Any valid file metadata can be added here in a list of dictionary format
+    - name: "model.yaml"
+      external_id: "model"
+      source: "resync"
+      mime_type: "application/yaml"
+      metadata: # metadata to be added to the file
+        key1: "value1"
+        key2: "value2"
+      directory: "/files" # needs to be unix style path

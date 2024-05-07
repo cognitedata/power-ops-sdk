@@ -2,7 +2,7 @@
   object_type: XX
   object_name: XX
   attribute_name: XX
-  time_series: "907677"
+  time_series: "[external_id]907677"
   transformations:
     - MultiplyFromOffset:
         parameters:
@@ -24,7 +24,7 @@
   object_type: XX
   object_name: XX
   attribute_name: XX
-  time_series: "907677"
+  time_series: "[external_id]907677"
   transformations:
     - MultiplyFromOffset:
         parameters:
@@ -39,7 +39,7 @@
   object_type: XX
   object_name: XX
   attribute_name: XX
-  time_series: "907677"
+  time_series: "[external_id]907677"
   transformations:
     - AddFromOffset:
       parameters:
@@ -54,7 +54,7 @@
   object_type: XX
   object_name: XX
   attribute_name: XX
-  time_series: "907677"
+  time_series: "[external_id]907677"
   transformations:
     - AddFromOffset:
         parameters:
@@ -69,7 +69,7 @@
   object_type: XX
   object_name: XX
   attribute_name: XX
-  time_series: "907677"
+  time_series: "[external_id]907677"
   transformations:
     - AddFromOffset:
         parameters:
@@ -84,7 +84,7 @@
   object_type: XX
   object_name: XX
   attribute_name: XX
-  time_series: "907677"
+  time_series: "[external_id]907677"
   transformations:
     - AddFromOffset:
         parameters:
@@ -99,7 +99,7 @@
   object_type: XX
   object_name: XX
   attribute_name: XX
-  time_series: "907677"
+  time_series: "[external_id]907677"
   transformations:
     - AddFromOffset:
         parameters:
@@ -114,7 +114,7 @@
   object_type: XX
   object_name: XX
   attribute_name: XX
-  time_series: "907677"
+  time_series: "[external_id]907677"
   transformations:
     - AddFromOffset:
         parameters:
@@ -129,7 +129,7 @@
   object_type: XX
   object_name: XX
   attribute_name: XX
-  time_series: "907677"
+  time_series: "[external_id]907677"
   transformations:
     - AddFromOffset:
         parameters:
@@ -144,7 +144,7 @@
   object_type: XX
   object_name: XX
   attribute_name: XX
-  time_series: "907677"
+  time_series: "[external_id]907677"
   # transformations:
   retrieve: "???"
   aggregation: "???"
@@ -152,7 +152,7 @@
   object_type: XX
   object_name: XX
   attribute_name: XX
-  time_series: "907677"
+  time_series: "[external_id]907677"
   transformations:
     - AddFromOffset:
         parameters:
@@ -167,7 +167,7 @@
   object_type: XX
   object_name: XX
   attribute_name: XX
-  time_series: "907677"
+  time_series: "[external_id]907677"
   transformations:
     - AddFromOffset:
         parameters:
@@ -182,7 +182,7 @@
   object_type: XX
   object_name: XX
   attribute_name: XX
-  time_series: "907677"
+  time_series: "[external_id]907677"
   transformations:
     - AddFromOffset:
         parameters:
@@ -197,7 +197,7 @@
   object_type: XX
   object_name: XX
   attribute_name: XX
-  time_series: "907677"
+  time_series: "[external_id]907677"
   transformations:
     - AddFromOffset:
         parameters:
@@ -212,7 +212,7 @@
   object_type: XX
   object_name: XX
   attribute_name: XX
-  time_series: "907677"
+  time_series: "[external_id]907677"
   transformations:
     - AddFromOffset:
         parameters:
@@ -227,7 +227,7 @@
   object_type: XX
   object_name: XX
   attribute_name: XX
-  time_series: "907677"
+  time_series: "[external_id]907677"
   transformations:
     - AddFromOffset:
         parameters:
@@ -242,7 +242,7 @@
   object_type: XX
   object_name: XX
   attribute_name: XX
-  time_series: "907677"
+  time_series: "[external_id]907677"
   transformations:
     - AddFromOffset:
         parameters:
@@ -257,7 +257,7 @@
   object_type: XX
   object_name: XX
   attribute_name: XX
-  time_series: "907677"
+  time_series: "[external_id]907677"
   transformations:
     - AddFromOffset:
         parameters:
@@ -272,7 +272,7 @@
   object_type: XX
   object_name: XX
   attribute_name: XX
-  time_series: "907677"
+  time_series: "[external_id]907677"
   transformations:
     - AddFromOffset:
         parameters:
@@ -287,7 +287,7 @@
   object_type: XX
   object_name: XX
   attribute_name: XX
-  time_series: "907677"
+  time_series: "[external_id]907677"
   transformations:
     - AddFromOffset:
         parameters:
@@ -302,7 +302,7 @@
   object_type: XX
   object_name: XX
   attribute_name: XX
-  time_series: "907678"
+  time_series: "[external_id]907678"
   # transformations:
   retrieve: "???"
   aggregation: "???"
@@ -310,7 +310,7 @@
   object_type: XX
   object_name: XX
   attribute_name: XX
-  time_series: "907748"
+  time_series: "[external_id]907748"
   # transformations:
   retrieve: "???"
   aggregation: "???"
@@ -318,7 +318,7 @@
   object_type: XX
   object_name: XX
   attribute_name: XX
-  time_series: "907748"
+  time_series: "[external_id]907748"
   transformations:
     - MultiplyConstant:
       parameters:
@@ -329,7 +329,7 @@
   object_type: XX
   object_name: XX
   attribute_name: XX
-  time_series: "907748"
+  time_series: "[external_id]907748"
   transformations:
     - MultiplyConstant:
         parameters:
@@ -340,7 +340,7 @@
   object_type: XX
   object_name: XX
   attribute_name: XX
-  time_series: "907748"
+  time_series: "[external_id]907748"
   transformations:
     - MultiplyConstant:
         parameters:
