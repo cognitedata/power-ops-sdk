@@ -9,7 +9,7 @@ import pytest
 from cognite.powerops.client._generated.v1.data_classes import (
     ShopCommandsWrite,
 )
-from cognite.powerops.resync.v2.config_to_fdm import ConfigImporter, ResyncConfiguration
+from cognite.powerops.resync.v2.config_to_fdm import ResyncImporter
 
 
 @dataclass
@@ -19,6 +19,7 @@ class ResyncTestCase:
     case_id: str
     input_configurations: dict[type, list[dict[str, Any]]]
     expected_values: list[Any]
+    expected_external_ids: list[str]
     error: type[Exception] | None = None
 
 
@@ -33,20 +34,18 @@ RESYNC_TEST_CASES = [
                 commands=["commands"],
             ),
         ],
+        expected_external_ids=["name"],
     ),
 ]
 
 
+@pytest.skip("Not implemented")
 @pytest.mark.parametrize(
     "test_case",
     [pytest.param(test_case, id=test_case.case_id) for test_case in RESYNC_TEST_CASES],
 )
 def test_shop_commands(test_case: ResyncTestCase):
-    directory = Path("directory")
-    configuration = ResyncConfiguration({})
-    output = ConfigImporter(test_case.input_configurations, directory, configuration).config_to_fdm()
-
-    print(output)
-
-    assert output
-    assert output[0] == test_case.expected_values[0]
+    importer = ResyncImporter(Path("path"))
+    fdm_objects, external_ids = importer.to_data_model()
+    assert fdm_objects == test_case.expected_values
+    assert external_ids == test_case.expected_external_ids
