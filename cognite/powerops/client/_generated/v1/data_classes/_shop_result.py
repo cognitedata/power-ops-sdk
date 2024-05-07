@@ -108,7 +108,7 @@ class ShopResultGraphQL(GraphQLCore):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return ShopResult(
-            space=self.space,
+            space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
@@ -116,11 +116,15 @@ class ShopResultGraphQL(GraphQLCore):
                 created_time=self.data_record.created_time,
             ),
             case=self.case.as_read() if isinstance(self.case, GraphQLCore) else self.case,
-            objective_sequence=self.objective_sequence,
-            pre_run=self.pre_run,
-            post_run=self.post_run,
-            messages=self.messages,
-            cplex_logs=self.cplex_logs,
+            objective_sequence=(
+                self.objective_sequence["externalId"]
+                if self.objective_sequence and "externalId" in self.objective_sequence
+                else None
+            ),
+            pre_run=self.pre_run["externalId"] if self.pre_run and "externalId" in self.pre_run else None,
+            post_run=self.post_run["externalId"] if self.post_run and "externalId" in self.post_run else None,
+            messages=self.messages["externalId"] if self.messages and "externalId" in self.messages else None,
+            cplex_logs=self.cplex_logs["externalId"] if self.cplex_logs and "externalId" in self.cplex_logs else None,
             alerts=[alert.as_read() if isinstance(alert, GraphQLCore) else alert for alert in self.alerts or []],
             output_time_series=[
                 output_time_series.as_read() if isinstance(output_time_series, GraphQLCore) else output_time_series
@@ -131,15 +135,19 @@ class ShopResultGraphQL(GraphQLCore):
     def as_write(self) -> ShopResultWrite:
         """Convert this GraphQL format of shop result to the writing format."""
         return ShopResultWrite(
-            space=self.space,
+            space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             case=self.case.as_write() if isinstance(self.case, DomainModel) else self.case,
-            objective_sequence=self.objective_sequence,
-            pre_run=self.pre_run,
-            post_run=self.post_run,
-            messages=self.messages,
-            cplex_logs=self.cplex_logs,
+            objective_sequence=(
+                self.objective_sequence["externalId"]
+                if self.objective_sequence and "externalId" in self.objective_sequence
+                else None
+            ),
+            pre_run=self.pre_run["externalId"] if self.pre_run and "externalId" in self.pre_run else None,
+            post_run=self.post_run["externalId"] if self.post_run and "externalId" in self.post_run else None,
+            messages=self.messages["externalId"] if self.messages and "externalId" in self.messages else None,
+            cplex_logs=self.cplex_logs["externalId"] if self.cplex_logs and "externalId" in self.cplex_logs else None,
             alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
             output_time_series=[
                 output_time_series.as_write() if isinstance(output_time_series, DomainModel) else output_time_series

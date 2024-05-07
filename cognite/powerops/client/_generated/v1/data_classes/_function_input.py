@@ -84,7 +84,7 @@ class FunctionInputGraphQL(GraphQLCore):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return FunctionInput(
-            space=self.space,
+            space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
@@ -100,7 +100,7 @@ class FunctionInputGraphQL(GraphQLCore):
     def as_write(self) -> FunctionInputWrite:
         """Convert this GraphQL format of function input to the writing format."""
         return FunctionInputWrite(
-            space=self.space,
+            space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             workflow_execution_id=self.workflow_execution_id,

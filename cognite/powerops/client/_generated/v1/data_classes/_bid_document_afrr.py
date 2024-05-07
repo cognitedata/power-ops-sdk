@@ -113,7 +113,7 @@ class BidDocumentAFRRGraphQL(GraphQLCore):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return BidDocumentAFRR(
-            space=self.space,
+            space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
@@ -134,7 +134,7 @@ class BidDocumentAFRRGraphQL(GraphQLCore):
     def as_write(self) -> BidDocumentAFRRWrite:
         """Convert this GraphQL format of bid document afrr to the writing format."""
         return BidDocumentAFRRWrite(
-            space=self.space,
+            space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,

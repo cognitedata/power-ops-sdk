@@ -99,7 +99,7 @@ class AlertGraphQL(GraphQLCore):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return Alert(
-            space=self.space,
+            space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
@@ -119,7 +119,7 @@ class AlertGraphQL(GraphQLCore):
     def as_write(self) -> AlertWrite:
         """Convert this GraphQL format of alert to the writing format."""
         return AlertWrite(
-            space=self.space,
+            space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             time=self.time,
