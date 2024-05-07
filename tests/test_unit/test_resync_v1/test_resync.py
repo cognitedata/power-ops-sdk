@@ -39,7 +39,7 @@ RESYNC_TEST_CASES = [
 ]
 
 
-@pytest.skip("Not implemented")
+@pytest.mark.skip("Not implemented")
 @pytest.mark.parametrize(
     "test_case",
     [pytest.param(test_case, id=test_case.case_id) for test_case in RESYNC_TEST_CASES],
