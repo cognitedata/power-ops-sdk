@@ -26,11 +26,11 @@ def main():
 
     plants_generators = {
         "Lund": ["Lund_G1"],
-        "Dalby": ["Dalby_G1"],
+        "Dalby": ["Dalby_G1", "Dalby_G2"],
         "Holen": ["Holen_G1"],
         "Landet": ["Landet_G1"],
         "Lien_krv": ["Lien_krv_G1"],
-        "Rull1": ["Rull1_G1"],
+        "Rull1": ["Rull1_G1", "Rull1_G2"],
         "Rull2": ["Rull2_G1", "Rull2_G2"],
         "Scott": ["Scott_G1"],
         "Strand_krv": ["Strand_krv_G1"],
@@ -69,10 +69,10 @@ def main():
         min_value = min_max[0]
         max_value = min_max[1]
 
-        dates = pd.date_range(start=start_date, end=end_date, freq="h")
-        values = np.random.uniform(low=min_value, high=max_value, size=len(dates))
+        timestamps = pd.date_range(start=start_date, end=end_date, freq="h")
+        values = np.random.uniform(low=min_value, high=max_value, size=len(timestamps))
 
-        df = pd.DataFrame({f"inlet_level_{plant}": values}, index=dates)
+        df = pd.DataFrame({f"inlet_level_{plant}": values}, index=timestamps)
         client.time_series.data.insert_dataframe(df)
         # head_direct_time_series = client.time_series.create(TimeSeriesWrite(external_id=f"{plant_name_prefix}head_direct", data_set_id=data_set_id))
 

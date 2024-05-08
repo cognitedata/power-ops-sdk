@@ -37,7 +37,8 @@ Resource Sync, `resync`, used to sync configuration files with CDF through the C
 │  ├─ bid_configuration_day_ahead.yaml
 │  ├─ water_value_based_partial_bid_configuration.yaml
 │  ├─ price_area_information.yaml
-│  └─ market_configuration.yaml
+│  ├─ market_configuration.yaml
+│  └─ ... (all types)
 ├─ files
 │  ├─ model.yaml
 │  └─ other_files.yaml
@@ -55,7 +56,7 @@ The below example configuration will populate every `production_min` property of
 by using the data from the `source_file` and navigating to the value in the dictionary that corresponds to the
 `extraction_path`.
 
-Any string keys contained inside `[]` will be substituted by that instances field by that name, ie. the below
+Any string keys contained inside `[]` will be substituted by that instance's field by that name, ie. the below
 example would use the path `model.generator.Holen_G1.p_min` in order to populate the generator with name *Holen_G1*.
 
 Any integer keys contained inside `[]` will fetch the value at that index, ie. like for example this
@@ -104,8 +105,8 @@ name of an instance of the expected type for that field as the expected external
 inferred type and name. For example, the expected type is price_area so the generated external_id would be
 `price_area_no2`
 
-When using `[name|type:DataModelType]` as the prefix like the *partials* below, then it will handle it the same as
-`[name]` except instead of inferring the type it will use the provided type in order to generate the external_id.
+When using `[name|type:DataModelType]` as the prefix like the *partials* below, then it will handle in the same way as
+for `[name]` except instead of inferring the type it will use the provided type in order to generate the external_id.
 For example, the two *partials* external_ids would become `water_value_based_partial_bid_configuration_plant_lund` and
 `shop_based_partial_bid_configuration_plant_lund_set_a`
 
@@ -127,17 +128,17 @@ See available commands:
 $ powerops --help
 ```
 
-Example of showing plan changes:
+Example of showing plan changes provided the configuration file path `resync_v1/resync_configuration.yaml`:
 
 ```bash
-$ powerops plan2 resync_v1/resync_configuration.yaml
+$ powerops plan_v1 resync_v1/resync_configuration.yaml
 ```
 
-Example of showing apply changes:
+Example of showing apply changes provided the configuration file path `resync_v1/resync_configuration.yaml`:
 
 ```bash
-$ powerops apply2 resync_v1/resync_configuration.yaml
+$ powerops apply_v1 resync_v1/resync_configuration.yaml
 ```
 
 [!NOTE]
-Current implementation requires suffixing every command with "2" in order to use the FDM v1 compatible resources.
+Current implementation requires suffixing every command with "v1" in order to use the FDM v1 compatible resources.

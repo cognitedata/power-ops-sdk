@@ -2,9 +2,9 @@
   display_name: Lund G1
   ordering: 1
   asset_type: generator
-  # production_min: "[SOURCE:files/model.yaml]model.generator.Holen_G1.p_min"
-  # penstock_number: "[SOURCE:files/model.yaml]model.generator.Lund_G1.penstock"
-  # start_cost: "[SOURCE:files/model.yaml]model.generator.Lund_G1.startcost.value"
+  production_min: "[SOURCE:files/model.yaml]model.generator.Lund_G1.p_min"
+  penstock_number: "[SOURCE:files/model.yaml]model.generator.Lund_G1.penstock"
+  start_cost: "[SOURCE:files/model.yaml]model.generator.Lund_G1.startcost.value"
   start_stop_cost: "[external_id]start_stop_cost_Lund_G1"
   availability_time_series: "[external_id]is_available_Lund_G1"
 

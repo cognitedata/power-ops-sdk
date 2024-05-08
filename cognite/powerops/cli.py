@@ -8,7 +8,7 @@ import typer
 from rich.logging import Console, RichHandler
 
 import cognite.powerops.resync.core.echo
-import cognite.powerops.resync.v2.main
+import cognite.powerops.resync.v2.main as resync_v1
 from cognite import powerops
 from cognite.powerops import resync
 from cognite.powerops.client import PowerOpsClient
@@ -183,16 +183,16 @@ def destroy(
         echo(destroyed.as_github_markdown())
 
 
-@app.command("plan2", help="Plan the changes from the configuration files to the data model in CDF")
-def plan2(path: Annotated[Path, typer.Argument(help="Path to configuration files")]):
+@app.command("plan_v1", help="Plan the changes from the configuration files to the data model in CDF")
+def plan_v1(path: Annotated[Path, typer.Argument(help="Path to configuration files")]):
     logging.info(f"Running plan on configuration files located in {path}")
-    cognite.powerops.resync.v2.main.plan(path)
+    resync_v1.plan(path)
 
 
-@app.command("apply2", help="Apply the changes from the configuration files to the data model in CDF")
-def apply2(path: Annotated[Path, typer.Argument(help="Path to configuration files")]):
+@app.command("apply_v1", help="Apply the changes from the configuration files to the data model in CDF")
+def apply_v1(path: Annotated[Path, typer.Argument(help="Path to configuration files")]):
     logging.info(f"Running apply on configuration files located in {path}")
-    cognite.powerops.resync.v2.main.apply(path)
+    resync_v1.apply(path)
 
 
 def main():
