@@ -4,7 +4,7 @@ from pathlib import Path
 
 from rich import print
 
-from cognite.powerops import PowerOpsClient
+from cognite.powerops.client import PowerOpsClient
 from cognite.powerops.resync.v1.config_to_fdm import ResyncImporter
 from cognite.powerops.resync.v1.utils import check_all_linked_sources_exist, upload_files_to_cdf
 
