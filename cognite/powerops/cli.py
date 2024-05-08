@@ -7,8 +7,6 @@ from typing import Annotated, Optional
 import typer
 from rich.logging import Console, RichHandler
 
-import cognite.powerops.resync.core.echo
-import cognite.powerops.resync.v2.main as resync_v1
 from cognite import powerops
 from cognite.powerops import resync
 from cognite.powerops.client import PowerOpsClient
@@ -186,22 +184,20 @@ def destroy(
 @app.command("plan_v1", help="Plan the changes from the configuration files to the data model in CDF")
 def plan_v1(path: Annotated[Path, typer.Argument(help="Path to configuration files")]):
     logging.info(f"Running plan on configuration files located in {path}")
-    resync_v1.plan(path)
+    resync.plan_v1(path)
 
 
 @app.command("apply_v1", help="Apply the changes from the configuration files to the data model in CDF")
 def apply_v1(path: Annotated[Path, typer.Argument(help="Path to configuration files")]):
     logging.info(f"Running apply on configuration files located in {path}")
-    resync_v1.apply(path)
+    resync.apply_v1(path)
 
 
 def main():
     app()
 
 
-def _setup_echo(
-    verbose: bool, echo_func: Optional[cognite.powerops.resync.core.echo.Echo] = None
-) -> cognite.powerops.resync.core.echo.Echo:
+def _setup_echo(verbose: bool, echo_func: Optional[resync.Echo] = None) -> resync.Echo:
     if not verbose:
         logging.disable(logging.INFO)  # disable logs for INFO and below
 
