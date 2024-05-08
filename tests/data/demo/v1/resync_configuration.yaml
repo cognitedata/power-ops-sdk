@@ -2,8 +2,6 @@
 data_model_configuration_file: "/Users/nina.odegard@cognitedata.com/Documents/GitHub/Cognite/PowerOps/power-ops-sdk/tests/data/demo/v1/data_model_configuration.yaml"
 # Path to the working directory where the data model and files are stored
 working_directory: "/Users/nina.odegard@cognitedata.com/Documents/GitHub/Cognite/PowerOps/power-ops-sdk/tests/data/demo/v1"
-# The logging level for the resyncing process
-logging_level: "DEBUG"
 # Whether to overwrite the data if it already exists, note this refers to the "replace" logic from the API for instances
 overwrite_data: True
 # The data set ID to resync the data to

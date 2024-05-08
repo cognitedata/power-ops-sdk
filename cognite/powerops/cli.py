@@ -8,8 +8,6 @@ import typer
 from rich.logging import Console, RichHandler
 
 from cognite import powerops
-from cognite.powerops import resync
-from cognite.powerops.client import PowerOpsClient
 from cognite.powerops.utils.cdf.extraction_pipelines import ExtractionPipelineCreate, RunStatus
 
 for third_party in ["cognite-sdk", "requests", "urllib3", "msal", "requests_oauthlib"]:
@@ -51,9 +49,9 @@ def init(
     ),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Whether to print verbose output"),
 ):
-    client = PowerOpsClient.from_settings()
+    client = powerops.PowerOpsClient.from_settings()
 
-    resync.init(client, is_dev=dev, dry_run=dry_run, verbose=verbose)
+    powerops.resync.init(client, is_dev=dev, dry_run=dry_run, verbose=verbose)
 
 
 @app.command("validate", help="Validate the configuration files and timeseries")
@@ -68,7 +66,7 @@ def validate(
 ):
     echo = _setup_echo(verbose, typer.echo)
     log.info(f"Running validate on configuration files located in {path}")
-    validation_results = resync.validate(path, market)
+    validation_results = powerops.resync.validate(path, market)
 
     if format == "markdown":
         echo(validation_results.as_markdown(include_valid=verbose))
@@ -87,8 +85,8 @@ def plan(
     path: Annotated[Path, typer.Argument(help="Path to configuration files")],
     market: Annotated[str, typer.Argument(help="Selected power market")],
     models: list[str] = typer.Option(
-        default=sorted(resync.MODELS_BY_NAME),
-        help=f"The models to run the plan. Available models: {', '.join(resync.MODELS_BY_NAME)}",
+        default=sorted(powerops.resync.MODELS_BY_NAME),
+        help=f"The models to run the plan. Available models: {', '.join(powerops.resync.MODELS_BY_NAME)}",
     ),
     dump_folder: Optional[Path] = typer.Option(
         default=None, help="If present, the local and cdf changes will be dumped to this directory."
@@ -106,9 +104,9 @@ def plan(
 
     echo = _setup_echo(verbose, typer.echo)
     log.info(f"Running plan on configuration files located in {path}")
-    power = PowerOpsClient.from_settings()
+    power = powerops.PowerOpsClient.from_settings()
 
-    changes = resync.plan(path, market, model_names=models, dump_folder=dump_folder, client=power)
+    changes = powerops.resync.plan(path, market, model_names=models, dump_folder=dump_folder, client=power)
 
     if format == "markdown":
         echo(changes.as_github_markdown())
@@ -144,18 +142,18 @@ def apply(
     path: Annotated[Path, typer.Argument(help="Path to configuration files")],
     market: Annotated[str, typer.Argument(help="Selected power market")],
     models: list[str] = typer.Option(
-        default=sorted(resync.MODELS_BY_NAME),
-        help=f"The models to run apply. Available models: {', '.join(resync.MODELS_BY_NAME)}",
+        default=sorted(powerops.resync.MODELS_BY_NAME),
+        help=f"The models to run apply. Available models: {', '.join(powerops.resync.MODELS_BY_NAME)}",
     ),
     auto_yes: bool = typer.Option(False, "--yes", "-y", help="Auto confirm all prompts"),
     format: str = typer.Option(default=None, help="The format of the output. Available formats: markdown"),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Whether to print verbose output"),
 ):
     echo = _setup_echo(verbose, typer.echo)
-    client = PowerOpsClient.from_settings()
+    client = powerops.PowerOpsClient.from_settings()
 
     logging.info(f"Running apply on configuration files located in {path}")
-    changed = resync.apply(path, market, client, model_names=models, auto_yes=auto_yes)
+    changed = powerops.resync.apply(path, market, client, model_names=models, auto_yes=auto_yes)
     if format == "markdown":
         echo(changed.as_github_markdown())
 
@@ -163,8 +161,8 @@ def apply(
 @app.command("destroy", help="Destroy all the data models created by resync and remove all the data.")
 def destroy(
     models: list[str] = typer.Option(
-        default=sorted(resync.MODELS_BY_NAME),
-        help=f"The models to destroy. Available models: {', '.join(resync.MODELS_BY_NAME)}",
+        default=sorted(powerops.resync.MODELS_BY_NAME),
+        help=f"The models to destroy. Available models: {', '.join(powerops.resync.MODELS_BY_NAME)}",
     ),
     dry_run: bool = typer.Option(
         False, "--dry-run", help="Whether to run the command as a dry run, meaning no resources will be destroyed."
@@ -174,9 +172,9 @@ def destroy(
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Whether to print verbose output"),
 ):
     echo = _setup_echo(verbose, typer.echo)
-    client = PowerOpsClient.from_settings()
+    client = powerops.PowerOpsClient.from_settings()
 
-    destroyed = resync.destroy(client, model_names=models, auto_yes=auto_yes, dry_run=dry_run)
+    destroyed = powerops.resync.destroy(client, model_names=models, auto_yes=auto_yes, dry_run=dry_run)
     if format == "markdown":
         echo(destroyed.as_github_markdown())
 
@@ -184,20 +182,20 @@ def destroy(
 @app.command("plan_v1", help="Plan the changes from the configuration files to the data model in CDF")
 def plan_v1(path: Annotated[Path, typer.Argument(help="Path to configuration files")]):
     logging.info(f"Running plan on configuration files located in {path}")
-    resync.plan_v1(path)
+    powerops.resync.plan_v1(path)
 
 
 @app.command("apply_v1", help="Apply the changes from the configuration files to the data model in CDF")
 def apply_v1(path: Annotated[Path, typer.Argument(help="Path to configuration files")]):
     logging.info(f"Running apply on configuration files located in {path}")
-    resync.apply_v1(path)
+    powerops.resync.apply_v1(path)
 
 
 def main():
     app()
 
 
-def _setup_echo(verbose: bool, echo_func: Optional[resync.Echo] = None) -> resync.Echo:
+def _setup_echo(verbose: bool, echo_func: Optional[powerops.resync.Echo] = None) -> powerops.resync.Echo:
     if not verbose:
         logging.disable(logging.INFO)  # disable logs for INFO and below
 
