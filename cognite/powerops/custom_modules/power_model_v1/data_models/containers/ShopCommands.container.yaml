@@ -15,6 +15,7 @@ properties:
   commands:
     type:
       list: true
+      collation: ucs_basic
       type: text
     nullable: false
     autoIncrement: false

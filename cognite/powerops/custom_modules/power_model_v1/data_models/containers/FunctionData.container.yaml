@@ -98,6 +98,7 @@ properties:
   text1:
     type:
       list: false
+      collation: ucs_basic
       type: text
     nullable: true
     autoIncrement: false
@@ -105,6 +106,7 @@ properties:
   text2:
     type:
       list: false
+      collation: ucs_basic
       type: text
     nullable: true
     autoIncrement: false
@@ -167,6 +169,7 @@ properties:
     name: sequence
   flag:
     type:
+      list: false
       type: boolean
     nullable: true
     autoIncrement: false
