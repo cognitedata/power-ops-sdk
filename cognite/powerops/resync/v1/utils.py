@@ -6,7 +6,6 @@ from __future__ import annotations
 import logging
 import random
 import re
-from pathlib import Path
 from typing import Optional, Union
 
 from cognite.client import CogniteClient
@@ -231,7 +230,7 @@ def parse_external_ids(
 
 
 def upload_files_to_cdf(
-    cdf_client: CogniteClient, file_configuration: FileUploadConfiguration, directory_path: Path, data_set_id: int
+    cdf_client: CogniteClient, file_configuration: FileUploadConfiguration, data_set_id: int
 ) -> list[str]:
     """Upload files to CDF.
 

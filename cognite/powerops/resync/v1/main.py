@@ -49,7 +49,6 @@ def apply(configuration: Path, client: PowerOpsClient | None = None) -> None:
         file_external_ids = upload_files_to_cdf(
             client.cdf,
             resync_importer.resync_configuration.file_configuration,
-            resync_importer.resync_configuration.working_directory,
             resync_importer.resync_configuration.data_set_id,
         )
 
