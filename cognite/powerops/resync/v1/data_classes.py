@@ -3,85 +3,20 @@
 # mypy: disable-error-code="call-arg"
 from __future__ import annotations
 
-import inspect
 import logging
 import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Optional, Union
 
+from cognite.client import CogniteClient
 from cognite.client.data_classes import FileMetadataWrite
+from cognite.client.exceptions import CogniteAPIError
 
-import cognite.powerops.client._generated.v1.data_classes as v1_data_classes
+from cognite.powerops.resync.v1.utils import ext_id_factory
 from cognite.powerops.utils.serialization import load_yaml
 
 logger = logging.getLogger(__name__)
-
-
-# TODO: clean up remove duplicate
-def get_type_prefix(domain_model_type: Union[type | str]) -> str:
-    """Get the type prefix for a domain model type.
-
-    Given the domain model type, this function returns the type prefix as a snake case string. Also strips the "Write"
-    suffix from the type name to get the root type name.
-
-    Args:
-        domain_model_type: The domain model type to get the prefix for.
-
-    Returns:
-        The type prefix as a snake case string.
-    """
-
-    if isinstance(domain_model_type, str):
-        type_name = domain_model_type
-    else:
-        type_name = domain_model_type.__name__
-
-    # Convert the type name to snake case
-    external_id_prefix = re.sub(r"(?<!^)(?=[A-Z])", "_", type_name.replace("Write", "")).lower()
-    return external_id_prefix
-
-
-# TODO: clean up remove?
-def get_data_model_write_classes() -> dict[str, type]:
-    """Get all domain model write classes.
-
-    This function returns a dictionary with the type prefix as the key and the domain model write class as the value
-    for all domain model write classes.
-
-    Returns:
-        A dictionary with the type prefix as the key and the domain model write class as the value.
-    """
-
-    parent_class = v1_data_classes.DomainModelWrite
-    expected_types_mapping = {}
-    for name, obj in inspect.getmembers(v1_data_classes):
-        if name.endswith("Write") and inspect.isclass(obj) and issubclass(obj, parent_class) and obj != parent_class:
-            expected_types_mapping[get_type_prefix(obj)] = obj
-
-    return expected_types_mapping
-
-
-def get_properties_for_type(domain_model_type: type) -> dict[str, str]:
-    """Get all properties for a domain model write class.
-
-    Given a domain model write class, this function returns a dictionary with the property name as the key and the type
-    as the value.
-
-    Args:
-        domain_model_type: The domain model write class to get the properties for.
-
-    Returns:
-        A dictionary with the property name as the key and the type as the value.
-    """
-
-    annotations = {"external_id": "str"}
-
-    for domain_class in domain_model_type.__mro__:
-        if domain_class.__name__.endswith("Write"):
-            annotations.update(domain_class.__annotations__)
-
-    return annotations
 
 
 @dataclass
@@ -97,13 +32,16 @@ class FileUploadConfiguration:
     folder_path: Path
     overwrite: bool
     file_metadata: dict[str, FileMetadataWrite]
+    data_set_id: Optional[int] = None
 
     def __init__(
         self,
+        data_set_id: Union[int, str],
         working_directory: Optional[Path] = None,
         folder_path: Optional[str] = None,
         overwrite: bool = True,
         file_metadata: Optional[list[dict[str, Any]]] = None,
+        cdf_client: Optional[CogniteClient] = None,
     ) -> None:
         """Initializes the FileUploadConfiguration with the provided values and processes some of the values."""
 
@@ -114,6 +52,15 @@ class FileUploadConfiguration:
         else:
             raise ValueError("Either folder_path or working_directory must be provided")
         self.overwrite = overwrite
+
+        if isinstance(data_set_id, str) and cdf_client:
+            ds = cdf_client.data_sets.retrieve(external_id=data_set_id)
+
+            self.data_set_id = ds.id if ds else None
+        elif isinstance(data_set_id, int):
+            self.data_set_id = data_set_id
+        else:
+            raise ValueError(f"Invalid data_set type {type(data_set_id)}")
 
         self.file_metadata = {}
         if file_metadata:
@@ -135,6 +82,64 @@ class FileUploadConfiguration:
 
         return path if path.startswith("/") else f"/{path}"
 
+    def upload_files_to_cdf(
+        self,
+        cdf_client: CogniteClient,
+    ) -> list[str]:
+        """Upload files to CDF.
+
+        Given a file upload configuration, this function uploads the files to CDF. The function iterates over all files
+        in the file configuration and uploads them to CDF. The function also checks if the file already exists in CDF
+        and updates the file if it does. The function returns a list of all external ids for the uploaded files.
+
+        Args:
+            cdf_client: The Cognite client to use for file upload.
+            file_configuration: The file upload configuration to use for file upload.
+            directory_path: The directory path to the files to upload.
+            data_set_id: The data set id to use for the files.
+
+        Returns:
+            file_external_ids: A list of all external ids for the uploaded files.
+
+        Raises:
+            CogniteAPIError: If the file already exists in CDF.
+            ValueError: External id is required for file upload.
+        """
+        full_path = self.folder_path
+
+        file_list = [file.name for file in full_path.iterdir() if file.is_file()]
+
+        file_external_ids = []
+        for file_name in file_list:
+            file_metadata = self.file_metadata.get(
+                file_name,
+                FileMetadataWrite(
+                    name=file_name,
+                    external_id=ext_id_factory(FileMetadataWrite, {"name": file_name}),
+                ),
+            )
+
+            file_metadata.data_set_id = file_metadata.data_set_id or self.data_set_id
+            try:
+                if file_metadata.external_id:
+                    cdf_client.files.upload(
+                        path=str(full_path / file_name),
+                        overwrite=self.overwrite,
+                        **file_metadata.dump(camel_case=False),
+                    )
+                    if self.overwrite:
+                        cdf_client.files.update(file_metadata)
+                    file_external_ids.append(file_metadata.external_id)
+                else:
+                    raise ValueError("External id is required for file upload")
+            except CogniteAPIError as exc:
+                if exc.code == 409:
+                    logger.warning(f"File with external_id {file_metadata.external_id} already exists in CDF")
+                else:
+                    raise exc
+
+        return file_external_ids
+
 
 @dataclass
 class PropertyConfiguration:
@@ -147,8 +152,7 @@ class PropertyConfiguration:
         default_value: The default value if the property is not found.
         is_subtype: Whether the property is a subtype.
         is_list: Whether the property is a list.
-        cast_type: The type to cast the property to.
-        cast_type_str: The string representation of the cast type.
+        cast_type: The string representation of the cast type.
     """
 
     property: str
@@ -157,8 +161,7 @@ class PropertyConfiguration:
     default_value: Optional[Any]
     is_subtype: bool
     is_list: bool
-    cast_type: Optional[type]
-    cast_type_str: Optional[str]
+    cast_type: Optional[str]
 
     def __init__(
         self,
@@ -173,44 +176,12 @@ class PropertyConfiguration:
         """Initializes the PropertyConfiguration with the provided values and processes some of the values."""
 
         self.property = property
-
-        type_mapping = self.generate_string_type_mapping()
-
-        if cast_type:
-            if cast_type in type_mapping:
-                self.cast_type = type_mapping[cast_type]
-            else:
-                raise ValueError(f"Invalid type string: {cast_type}")
-        else:
-            self.cast_type = None
-
-        self.cast_type_str = cast_type
-
         self.source_file = source_file
         self.extraction_path = extraction_path.split(".") if extraction_path else None
         self.default_value = default_value
         self.is_subtype = is_subtype
         self.is_list = is_list
-
-    @staticmethod
-    def generate_string_type_mapping() -> dict[str, type]:
-        """Generate a type mapping from string to type.
-
-        This function generates a dictionary mapping string type names to type objects. The mapping includes the basic
-        types int, float, and str, as well as all domain model write classes.
-
-        Returns:
-            A dictionary mapping string type names to type objects.
-        """
-        type_mapping = {
-            "int": int,
-            "float": float,
-            "str": str,
-        }
-
-        type_mapping.update(get_data_model_write_classes())
-
-        return type_mapping
+        self.cast_type = cast_type
 
     @classmethod
     def from_dictionary(cls, property_configurations: dict[str, Any]) -> list[PropertyConfiguration]:
@@ -336,19 +307,28 @@ class DataModelConfiguration:
         self,
         name: str,
         type_: type,
-        properties: dict[str, str],
+        properties: Optional[dict[str, str]] = None,
         property_configurations: Optional[list[PropertyConfiguration]] = None,
     ) -> None:
         """Initializes the DataModelConfiguration with the provided values."""
         if property_configurations is None:
             property_configurations = []
+        if property_configurations is None:
+            property_configurations = []
         self.name = name
         self.type_ = type_
-        self.properties = properties
+
+        if properties:
+            self.properties = properties
+        else:
+            self.properties = self._get_properties_for_type(self.type_)
+
         self.property_configurations = property_configurations
 
     @classmethod
-    def from_yaml(cls, configuration_path: Path) -> dict[str, DataModelConfiguration]:
+    def from_yaml(
+        cls, configuration_path: Path, all_write_classes: dict[str, type]
+    ) -> dict[str, DataModelConfiguration]:
         """Generate a dictionary of DataModelConfiguration objects from a YAML file.
 
         Given a path to a YAML file containing data model configurations, this function generates a dictionary of
@@ -365,14 +345,12 @@ class DataModelConfiguration:
         """
         raw_data_model_configuration = load_yaml(configuration_path, expected_return_type="dict")
 
-        all_write_classes = get_data_model_write_classes()
-
         all_data_model_configurations = {}
         for name, type_ in all_write_classes.items():
-            properties = get_properties_for_type(type_)
-            property_configurations = PropertyConfiguration.from_dictionary(raw_data_model_configuration.get(name, {}))
+            data = raw_data_model_configuration.get(name, {})
+            properties = cls._get_properties_for_type(type_)
+            property_configurations = PropertyConfiguration.from_dictionary(data)
 
-            # check if all property configurations are valid properties
             for property_configuration in property_configurations:
                 if property_configuration.property not in properties:
                     # TODO: make logging??
@@ -386,64 +364,24 @@ class DataModelConfiguration:
 
         return all_data_model_configurations
 
+    @staticmethod
+    def _get_properties_for_type(domain_model_type: type) -> dict[str, str]:
+        """Get all properties for a domain model write class.
 
-@dataclass
-class ResyncConfiguration:
-    """Data class for resync configuration.
-
-    Attributes:
-        data_model_configuration_file: The path to the data model configuration file.
-        working_directory: The working directory for the resync importer.
-        logging_level: The logging level for the resync importer.
-        overwrite_data: Whether to overwrite existing data in CDF.
-        data_set_id: The data set id to use for the resync importer.
-        all_write_classes: A dictionary of all domain model write classes.
-        file_configuration: A FileUploadConfiguration object detailing the file upload configuration.
-    """
-
-    data_model_configuration_file: Path
-    working_directory: Path
-    overwrite_data: bool
-    data_set_id: int
-    all_write_classes: dict[str, type]
-    file_configuration: Optional[FileUploadConfiguration]
-
-    def __init__(
-        self,
-        data_model_configuration_file: str,
-        working_directory: str,
-        data_set_id: int,
-        overwrite_data: bool = True,
-        file_configuration: Optional[dict[str, Any]] = None,
-    ) -> None:
-        """Initializes the ResyncConfiguration with the provided values and converts some of them."""
-
-        self.data_model_configuration_file = Path(data_model_configuration_file)
-        self.working_directory = Path(working_directory)
-        self.file_configuration = (
-            FileUploadConfiguration(working_directory=self.working_directory, **file_configuration)
-            if file_configuration
-            else None
-        )
-        self.all_write_classes = get_data_model_write_classes()
-
-        self.overwrite_data = overwrite_data
-        self.data_set_id = data_set_id
-
-    @classmethod
-    def from_yaml(cls, configuration_path: Path) -> ResyncConfiguration:
-        """Generate a ResyncConfiguration object from a YAML file.
-
-        Given a path to a YAML file containing resync configurations, this function generates a ResyncConfiguration
-        object.
+        Given a domain model write class, this function returns a dictionary with the property name as the key and the
+        type as the value.
 
         Args:
-            configuration_path: The path to the YAML file containing resync configurations.
+            domain_model_type: The domain model write class to get the properties for.
 
         Returns:
-            A ResyncConfiguration object.
+            A dictionary with the property name as the key and the type as the value.
         """
 
-        configuration = load_yaml(configuration_path, expected_return_type="dict")
+        annotations = {"external_id": "str"}
 
-        return cls(**configuration)
+        for domain_class in domain_model_type.__mro__:
+            if domain_class.__name__.endswith("Write"):
+                annotations.update(domain_class.__annotations__)
+
+        return annotations

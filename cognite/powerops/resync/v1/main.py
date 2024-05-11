@@ -1,12 +1,13 @@
 from __future__ import annotations
 
+import logging
 from pathlib import Path
-
-from rich import print
 
 from cognite.powerops.client import PowerOpsClient
 from cognite.powerops.resync.v1.config_to_fdm import ResyncImporter
-from cognite.powerops.resync.v1.utils import check_all_linked_sources_exist, upload_files_to_cdf
+from cognite.powerops.resync.v1.utils import check_all_linked_sources_exist, get_data_model_write_classes
+
+logger = logging.getLogger(__name__)
 
 
 def plan(configuration: Path) -> None:
@@ -18,12 +19,16 @@ def plan(configuration: Path) -> None:
     Args:
         configuration: Path to the resync configuration file.
     """
-    resync_importer = ResyncImporter(configuration)
+    client = PowerOpsClient.from_settings()
+
+    data_model_classes = get_data_model_write_classes(client.v1)
+
+    resync_importer = ResyncImporter.from_yaml(configuration, data_model_classes, client.cdf)
     resync_data_model_objects, external_ids = resync_importer.to_data_model()
 
-    print(resync_data_model_objects)
-    print(f"Generated {len(resync_data_model_objects)} bid configurations")
-    print(f"External IDs: {external_ids}")
+    logger.info(resync_data_model_objects)
+    logger.info(f"Generated {len(resync_data_model_objects)} bid configurations")
+    logger.info(f"External IDs: {external_ids}")
 
 
 def apply(configuration: Path, client: PowerOpsClient | None = None) -> None:
@@ -42,20 +47,18 @@ def apply(configuration: Path, client: PowerOpsClient | None = None) -> None:
     """
     client = client or PowerOpsClient.from_settings()
 
-    resync_importer = ResyncImporter(configuration)
+    data_model_classes = get_data_model_write_classes(client.v1)
+
+    resync_importer = ResyncImporter.from_yaml(configuration, data_model_classes, client.cdf)
     resync_data_model_objects, external_ids = resync_importer.to_data_model()
 
-    if resync_importer.resync_configuration.file_configuration:
-        file_external_ids = upload_files_to_cdf(
-            client.cdf,
-            resync_importer.resync_configuration.file_configuration,
-            resync_importer.resync_configuration.data_set_id,
-        )
+    if resync_importer.file_configuration:
+        file_external_ids = resync_importer.file_configuration.upload_files_to_cdf(client.cdf)
 
     # TODO: check all linked sources exist
     check_all_linked_sources_exist(resync_data_model_objects, file_external_ids, [], external_ids)
 
-    print(resync_data_model_objects)
-    client.v1.upsert(resync_data_model_objects, replace=resync_importer.resync_configuration.overwrite_data)
+    logger.info(resync_data_model_objects)
+    client.v1.upsert(resync_data_model_objects, replace=resync_importer.overwrite_data)
 
-    print(f"Upserted {len(resync_data_model_objects)} bid configurations")
+    logger.info(f"Upserted {len(resync_data_model_objects)} bid configurations")

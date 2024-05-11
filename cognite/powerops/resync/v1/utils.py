@@ -6,21 +6,16 @@ from __future__ import annotations
 import logging
 import random
 import re
-from typing import Optional, Union
+from typing import Any, Optional
 
-from cognite.client import CogniteClient
-from cognite.client.data_classes import FileMetadataWrite
-from cognite.client.exceptions import CogniteAPIError
+from pydantic.alias_generators import to_snake
 
 import cognite.powerops.client._generated.v1.data_classes as v1_data_classes
-from cognite.powerops.resync.v1.data_classes import (
-    FileUploadConfiguration,
-)
 
 logger = logging.getLogger(__name__)
 
 
-def get_type_prefix(domain_model_type: Union[type | str]) -> str:
+def get_prefix_from_type(domain_model_type: type) -> str:
     """Get the type prefix for a domain model type.
 
     Given the domain model type, this function returns the type prefix as a snake case string. Also strips the "Write"
@@ -33,14 +28,62 @@ def get_type_prefix(domain_model_type: Union[type | str]) -> str:
         The type prefix as a snake case string.
     """
 
-    if isinstance(domain_model_type, str):
-        type_name = domain_model_type
+    if issubclass(domain_model_type, v1_data_classes.DomainModelWrite):
+        type_name = domain_model_type.__name__.removesuffix("Write")
     else:
+        # TODO: should check if it's in the non write classes
         type_name = domain_model_type.__name__
+        logger.warning(f"Type {type_name} is not a subclass of DomainModelWrite")
 
     # Convert the type name to snake case
-    external_id_prefix = re.sub(r"(?<!^)(?=[A-Z])", "_", type_name.replace("Write", "")).lower()
+    external_id_prefix = to_snake(type_name).lower()
     return external_id_prefix
+
+
+def get_type_prefix_from_string(type_string: str) -> str:
+    """Get the type prefix from a string.
+
+    Given a string, this function returns the type prefix as a snake case string. The function converts the string to
+    snake case and returns it.
+
+    Args:
+        type_string: The string to get the type prefix for.
+
+    Returns:
+        The type prefix as a snake case string.
+    """
+
+    # Convert the type name to snake case
+    type_prefix = to_snake(type_string).lower()
+    return type_prefix
+
+
+# TODO: clean up remove?
+def get_data_model_write_classes(data_model_client: Any) -> dict[str, type]:
+    """Get all domain model write classes.
+
+    This function returns a dictionary with the type prefix as the key and the domain model write class as the value
+    for all domain model write classes.
+
+    Args:
+        data_model_client: The pygen data model client to get the domain model write classes from.
+
+    Returns:
+        A dictionary with the type prefix as the key and the domain model write class as the value.
+    """
+
+    data_model_read_classes = data_model_client._view_by_read_class
+    all_data_model_classes = v1_data_classes.__dict__
+
+    expected_types_mapping = {}
+    for read_class in data_model_read_classes.keys():
+
+        write_class_name = read_class.__name__ + "Write"
+
+        read_name = to_snake(read_class.__name__)
+        expected_types_mapping[read_name] = all_data_model_classes[write_class_name]
+
+    return expected_types_mapping
 
 
 def ext_id_factory(domain_model_type: type, data: dict) -> str:
@@ -62,7 +105,7 @@ def ext_id_factory(domain_model_type: type, data: dict) -> str:
         ValueError: If the name field is missing in the data input.
     """
     # TODO: get better external ids
-    type_prefix = get_type_prefix(domain_model_type)
+    type_prefix = get_prefix_from_type(domain_model_type)
 
     if "external_id" in data:
         return data["external_id"]
@@ -84,7 +127,10 @@ def ext_id_factory(domain_model_type: type, data: dict) -> str:
 
 
 def get_external_id_from_field(
-    key: str, value: str, all_domain_type_properties_types: dict[str, str], all_write_classes: dict[str, type]
+    key: str,
+    value: str,
+    all_domain_type_properties_types: dict[str, str],
+    all_write_classes: dict[str, type],
 ) -> Optional[str]:
     """Get the external id for a field based on the input value being a reference.
 
@@ -117,7 +163,7 @@ def get_external_id_from_field(
         pattern = r"\[name\|type:(.*?)\](.*)"
         match = re.match(pattern, value)
         if match:
-            type_prefix = get_type_prefix(match.group(1))
+            type_prefix = get_type_prefix_from_string(match.group(1))
             reference_type = all_write_classes[type_prefix]
             name_reference = match.group(2).strip()
         else:
@@ -180,7 +226,9 @@ def check_input_keys(data: dict, all_domain_type_properties: list[str]) -> None:
 
 
 def parse_external_ids(
-    data: dict, all_domain_type_properties_types: dict[str, str], all_write_classes: dict[str, type]
+    data: dict,
+    all_domain_type_properties_types: dict[str, str],
+    all_write_classes: dict[str, type],
 ) -> tuple[dict, list[str]]:
     """Parse external id references from the input data.
 
@@ -227,64 +275,6 @@ def parse_external_ids(
             data[key] = sub_data
 
     return data, reference_external_ids
-
-
-def upload_files_to_cdf(
-    cdf_client: CogniteClient, file_configuration: FileUploadConfiguration, data_set_id: int
-) -> list[str]:
-    """Upload files to CDF.
-
-    Given a file upload configuration, this function uploads the files to CDF. The function iterates over all files in
-    the file configuration and uploads them to CDF. The function also checks if the file already exists in CDF and
-    updates the file if it does. The function returns a list of all external ids for the uploaded files.
-
-    Args:
-        cdf_client: The Cognite client to use for file upload.
-        file_configuration: The file upload configuration to use for file upload.
-        directory_path: The directory path to the files to upload.
-        data_set_id: The data set id to use for the files.
-
-    Returns:
-        file_external_ids: A list of all external ids for the uploaded files.
-
-    Raises:
-        CogniteAPIError: If the file already exists in CDF.
-        ValueError: External id is required for file upload.
-    """
-    full_path = file_configuration.folder_path
-
-    file_list = [file.name for file in full_path.iterdir() if file.is_file()]
-
-    file_external_ids = []
-    for file_name in file_list:
-        file_metadata = file_configuration.file_metadata.get(
-            file_name,
-            FileMetadataWrite(
-                name=file_name,
-                external_id=ext_id_factory(FileMetadataWrite, {"name": file_name}),
-            ),
-        )
-
-        file_metadata.data_set_id = file_metadata.data_set_id or data_set_id
-        try:
-            if file_metadata.external_id:
-                cdf_client.files.upload(
-                    path=str(full_path / file_name),
-                    overwrite=file_configuration.overwrite,
-                    **file_metadata.dump(camel_case=False),
-                )
-                if file_configuration.overwrite:
-                    cdf_client.files.update(file_metadata)
-                file_external_ids.append(file_metadata.external_id)
-            else:
-                raise ValueError("External id is required for file upload")
-        except CogniteAPIError as exc:
-            if exc.code == 409:
-                logger.warning(f"File with external_id {file_metadata.external_id} already exists in CDF")
-            else:
-                raise exc
-
-    return file_external_ids
 
 
 def check_all_linked_sources_exist(

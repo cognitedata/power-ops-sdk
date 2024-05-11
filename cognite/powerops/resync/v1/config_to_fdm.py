@@ -9,11 +9,15 @@ from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any, Optional
 
+from cognite.client import CogniteClient
 from pydantic import ValidationError
-from rich import print
 
 import cognite.powerops.client._generated.v1.data_classes as v1_data_classes
-from cognite.powerops.resync.v1.data_classes import DataModelConfiguration, PropertyConfiguration, ResyncConfiguration
+from cognite.powerops.resync.v1.data_classes import (
+    DataModelConfiguration,
+    FileUploadConfiguration,
+    PropertyConfiguration,
+)
 from cognite.powerops.resync.v1.utils import (
     check_input_keys,
     ext_id_factory,
@@ -30,26 +34,89 @@ class ResyncImporter:
     """Importer class for resync to populate the data model from yaml configuration files.
 
     Attributes:
+        data_model_configuration_file: Path to the data model configuration file.
+        working_directory: Path to the working directory.
+        overwrite_data: A boolean to determine if data should be overwritten.
+        data_set_id: An integer of the data set id.
+        file_configuration: A FileUploadConfiguration object detailing the configuration of file uploads.
         data_model_configuration: A dictionary of types to DataModelConfiguration detailing all configuration
                                   properties of the data model type.
-        resync_configuration: A ResyncConfiguration object detailing the configuration of resync.
+        data_model_classes: A dictionary of types to DomainModelWrite classes detailing all data model classes to be
+                            used for the resync configuration.
     """
 
+    data_model_configuration_file: Path
+    working_directory: Path
+    overwrite_data: bool
     data_model_configuration: dict[str, DataModelConfiguration]
-    resync_configuration: ResyncConfiguration
+    data_model_classes: dict[str, type]
+    file_configuration: Optional[FileUploadConfiguration] = None
 
     def __init__(
         self,
-        resync_configuration_path: Path,
+        data_model_configuration_file: Path,
+        working_directory: Path,
+        overwrite_data: Optional[bool],
+        file_configuration: Optional[FileUploadConfiguration],
+        data_model_configuration: dict[str, DataModelConfiguration],
+        data_model_classes: dict[str, type],
     ) -> None:
-        """Initializes the ResyncImporter with the provided configuration file and sets the external_id_factory."""
+        """Initializes the ResyncImporter"""
 
-        self.resync_configuration = ResyncConfiguration.from_yaml(resync_configuration_path)
-        self.data_model_configuration = DataModelConfiguration.from_yaml(
-            self.resync_configuration.data_model_configuration_file
-        )
+        self.data_model_configuration_file = data_model_configuration_file
+        self.working_directory = working_directory
+        self.overwrite_data = overwrite_data or False
+        self.file_configuration = file_configuration
+        self.data_model_configuration = data_model_configuration
+        self.data_model_classes = data_model_classes
 
         v1_data_classes.DomainModelWrite.external_id_factory = ext_id_factory
+
+    @classmethod
+    def from_yaml(
+        cls,
+        configuration_path: Path,
+        data_model_classes: dict[str, type],
+        cdf_client: CogniteClient,
+    ) -> ResyncImporter:
+        """Creates a ResyncImporter object from a resync configuration file.
+
+        Args:
+            configuration_path: Path to the resync configuration file.
+            data_model_classes: A dictionary of all data model classes to be used for the resync configuration.
+
+        Returns:
+            A ResyncImporter object.
+        """
+        configuration = load_yaml(configuration_path, expected_return_type="dict")
+
+        working_directory = Path(configuration.get("working_directory", Path.cwd()))
+
+        if "file_configuration" in configuration:
+            file_configuration_dict = configuration.get("file_configuration", {})
+
+            data_set_id = file_configuration_dict.pop("data_set")
+
+            file_configuration = FileUploadConfiguration(
+                working_directory=working_directory,
+                data_set_id=data_set_id,
+                cdf_client=cdf_client,
+                **file_configuration_dict if file_configuration_dict else {},
+            )
+
+        if "data_model_configuration_file" not in configuration:
+            raise ValueError("data_model_configuration_file is required in the configuration file")
+        data_model_configuration_file = Path(configuration["data_model_configuration_file"])
+        data_model_configuration = DataModelConfiguration.from_yaml(data_model_configuration_file, data_model_classes)
+
+        return cls(
+            data_model_configuration_file=data_model_configuration_file,
+            working_directory=working_directory,
+            overwrite_data=configuration.get("overwrite_data"),
+            file_configuration=file_configuration,
+            data_model_configuration=data_model_configuration,
+            data_model_classes=data_model_classes,
+        )
 
     def to_data_model(self) -> tuple[list[v1_data_classes.DomainModelWrite], list[str]]:
         """Converts configuration files to data model objects based on provided resync configuration.
@@ -65,7 +132,7 @@ class ResyncImporter:
         data_model_objects: dict[str, v1_data_classes.DomainModelWrite] = {}
         external_ids: list[str] = []
 
-        all_data_model_files = (self.resync_configuration.working_directory / "data_model").glob("*.yaml")
+        all_data_model_files = (self.working_directory / "data_model").glob("*.yaml")
 
         for data_model_file in all_data_model_files:
             # TODO: allow using prefix of file name to match type and add extra context to rest of file name?
@@ -80,7 +147,9 @@ class ResyncImporter:
             logger.info(f"Processing {data_model_file} as type {type_configuration.name}")
 
             for unprocessed_object in raw_data_model_objects:
-                self._dict_to_type_object(unprocessed_object, type_configuration, data_model_objects, external_ids)
+                results = self._dict_to_type_object(unprocessed_object, type_configuration)
+                data_model_objects.update(results[0])
+                external_ids.extend(results[1])
 
         return list(data_model_objects.values()), external_ids
 
@@ -88,9 +157,7 @@ class ResyncImporter:
         self,
         raw_data: dict,
         type_configuration: DataModelConfiguration,
-        data_model_objects: dict,
-        external_ids: list[str],
-    ):
+    ) -> tuple[dict[str, v1_data_classes.DomainModelWrite], list[str]]:
         """Converts a dictionary object into the specified data type.
 
         Provided the data input and type configuration the dictionary will be updated with properties to be overridden
@@ -99,12 +166,10 @@ class ResyncImporter:
         Args:
             data: A dictionary of data to be converted into the specified data type.
             type_configuration: A DataModelConfiguration object detailing the configuration of the data type.
-            data_model_objects: A dictionary of all data model objects created from the configuration files.
-            external_ids: A list of all external ids created and referenced from the data model objects.
 
         Returns:
-            Updates in place the data_model_objects dictionary with the new data model object created from the data
-            along with the list of external ids created and referenced from the data model object.
+            data_model_objects: A dictionary of all data model objects created from the input data.
+            reference_external_ids: A list of all external ids created and referenced from the data model objects.
 
         Raises:
             ValueError: If any required fields are missing or invalid for the specified data type.
@@ -122,13 +187,11 @@ class ResyncImporter:
         parsed_properties, generated_data_model_objects = self._populate_properties_from_configurations(
             property_configuration_data, type_configuration.property_configurations, raw_data
         )
-        data_model_objects.update(generated_data_model_objects)
 
         # populate all external id references
         parsed_reference_data, reference_external_ids = parse_external_ids(
-            reference_data, type_configuration.properties, self.resync_configuration.all_write_classes
+            reference_data, type_configuration.properties, self.data_model_classes
         )
-        external_ids.extend(reference_external_ids)
 
         # join all dictionaries together in priority order
         parsed_data = self._join_data_by_parsing_method(immutable_data, parsed_properties, parsed_reference_data)
@@ -156,14 +219,18 @@ class ResyncImporter:
         # TODO: extract all sub objects into the data_model_objects list
         try:
             fdm_object = type_configuration.type_(**parsed_data)
-            data_model_objects[fdm_object.external_id] = fdm_object
+            generated_data_model_objects[fdm_object.external_id] = fdm_object
         except ValidationError as exc:
             raise ValueError(
                 f"Missing/invalid field for {type_configuration.type_.__name__} in data {parsed_data}"
             ) from exc
 
+        return generated_data_model_objects, reference_external_ids
+
     @staticmethod
-    def _split_data_by_parsing_method(raw_data: dict) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+    def _split_data_by_parsing_method(
+        raw_data: dict[str, Any]
+    ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
         """Splits an unparsed dictionary into a dictionary for each type of parsing should be applied.
 
         Provided the data input the dictionary will be split into immutable data, property configuration data and
@@ -208,8 +275,8 @@ class ResyncImporter:
 
     @staticmethod
     def _join_data_by_parsing_method(
-        immutable_data: dict, property_configuration_data: dict, reference_data: dict
-    ) -> dict:
+        immutable_data: dict[str, Any], property_configuration_data: dict[str, Any], reference_data: dict[str, Any]
+    ) -> dict[str, Any]:
         """Joins dictionaries together in a prioritized order based on the parsing method.
 
         Provided the data input the dictionaries will be joined together in a prioritized order based on the parsing
@@ -292,7 +359,8 @@ class ResyncImporter:
 
         return parsed_properties, generated_data_model_objects
 
-    # TODO: check if this is the correct way to handle connections
+    # TODO: check if this is the correct way to handle connections, update to not use from_type/to_type?
+    # https://github.com/cognitedata/power-ops-sdk/pull/347#discussion_r1594731007
     def _get_all_connections(self, data: dict, power_asset_type_a: str, power_asset_type_b: str) -> list[str]:
         """Creates a list of all connections based on the provided data and asset types.
 
@@ -390,7 +458,7 @@ class ResyncImporter:
             instance_data = {}
         if not source_data:
             if property_configuration.source_file:
-                path = self.resync_configuration.working_directory / Path(property_configuration.source_file)
+                path = self.working_directory / Path(property_configuration.source_file)
                 source_data = load_yaml(path, "dict")
             else:
                 raise ValueError("No source data provided for property configuration")
@@ -427,8 +495,8 @@ class ResyncImporter:
         elif property_configuration.is_list:
             return source_data
 
-        if property_configuration.cast_type:
-            return property_configuration.cast_type(source_data)
+        if property_configuration.cast_type and source_data:
+            return self.cast_into_type(source_data, property_configuration.cast_type)
         else:
             return source_data
 
@@ -458,9 +526,9 @@ class ResyncImporter:
 
         if instance_data is None:
             instance_data = {}
-        if property_configuration.cast_type_str not in self.data_model_configuration:
-            raise ValueError(f"Type {property_configuration.cast_type_str} is not supported, add import to type")
-        subtype_data_model_configuration = self.data_model_configuration[property_configuration.cast_type_str]
+        if property_configuration.cast_type not in self.data_model_configuration:
+            raise ValueError(f"Type {property_configuration.cast_type} is not supported, add import to type")
+        subtype_data_model_configuration = self.data_model_configuration[property_configuration.cast_type]
 
         subtype_data = {}
         for subtype_property_configuration in subtype_data_model_configuration.property_configurations:
@@ -470,10 +538,10 @@ class ResyncImporter:
                 )
             else:
                 # TODO: handle this scenario???
-                print("can't process ")
+                logger.error("can't process")
 
         if property_configuration.cast_type:
-            return property_configuration.cast_type(**subtype_data)
+            return self.cast_into_type(subtype_data, property_configuration.cast_type)
         else:
             raise ValueError(f"Property configuration {property_configuration} requires a cast_type")
 
@@ -505,9 +573,9 @@ class ResyncImporter:
             instance_data = {}
         list_data = self._get_property_value_from_source(property_configuration, instance_data)
 
-        if property_configuration.cast_type_str not in self.data_model_configuration:
-            raise ValueError(f"Type {property_configuration.cast_type_str} is not supported, add import to type")
-        subtype_data_model_configuration = self.data_model_configuration[property_configuration.cast_type_str]
+        if property_configuration.cast_type not in self.data_model_configuration:
+            raise ValueError(f"Type {property_configuration.cast_type} is not supported, add import to type")
+        subtype_data_model_configuration = self.data_model_configuration[property_configuration.cast_type]
 
         parsed_list_data = []
         for source_data in list_data:
@@ -521,8 +589,35 @@ class ResyncImporter:
                     # TODO: handle this scenario???
                     pass
             if property_configuration.cast_type:
-                parsed_list_data.append(property_configuration.cast_type(**subtype_data))
+                parsed_list_data.append(self.cast_into_type(subtype_data, property_configuration.cast_type))
             else:
                 raise ValueError(f"Property configuration {property_configuration} requires a cast_type")
 
         return parsed_list_data
+
+    def cast_into_type(self, data: dict[str, Any], cast_type: str) -> type:
+        """Casts a dictionary into a type.
+
+        Provided the data input and type the dictionary will be cast into the specified type.
+
+        Args:
+            data: A dictionary of data to be cast into the specified type.
+            type_: A DomainModelWrite object detailing the type to cast the data into.
+
+        Returns:
+            fdm_object: A DomainModelWrite object cast from the data input.
+        """
+        primitive_type_mapping = {
+            "int": int,
+            "float": float,
+            "str": str,
+        }
+
+        if cast_type in primitive_type_mapping:
+            return primitive_type_mapping[cast_type](data)
+
+        if cast_type not in self.data_model_classes:
+            raise ValueError(f"Type {cast_type} is not supported")
+        type_ = self.data_model_classes[cast_type]
+
+        return type_(**data)

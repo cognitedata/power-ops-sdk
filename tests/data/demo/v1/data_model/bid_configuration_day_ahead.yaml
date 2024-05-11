@@ -3,7 +3,7 @@
   price_area: "[external_id]price_area_information_no2"
   bid_date_specification: '[["shift", {"days": -400}], ["floor", "day"]]'
   partials:
-    - "[name|type:ShopBasedPartialBidConfigurationWrite]plant A set A"
+    - "[name|type:ShopBasedPartialBidConfiguration]plant A set A"
 - name: Multi Scenario 2 NO2
   market_configuration: "[external_id]market_configuration_nord_pool_day_ahead"
   price_area: "[external_id]price_area_information_no2"

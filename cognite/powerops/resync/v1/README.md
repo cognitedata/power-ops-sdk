@@ -2,6 +2,18 @@
 
 Resource Sync, `resync`, used to sync configuration files with CDF through the CLI tool `powerops`.
 
+[!NOTE]
+The current implementation does not support calculating the `connection_losses` so a value must be provided if the
+bid generation method requires it.
+
+[!NOTE]
+The current implementation requires that "from_type/to_type" is provided in order to find the generator connections to
+plants.
+
+[!WARNING]
+All generators/plants must be listed in the configuration in order to be processed by resync. A configuration to include
+all assets in a model file is in the backlog to be implemented.
+
 ## Configuration
 
 ### Required configuration files

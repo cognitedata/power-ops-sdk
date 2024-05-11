@@ -33,13 +33,13 @@ generator_efficiency_curve:
     source_file: "files/model.yaml"
     extraction_path: "model.generator.[name].gen_eff_curve.x"
     is_list: True
-    default_value: [0.0] # TODO: Check if this is correct
+    default_value: [0.0, 10000.0] # Defining it for a wide range (from 0 to a lot)
     cast_type: float
   efficiency:
     source_file: "files/model.yaml"
     extraction_path: "model.generator.[name].gen_eff_curve.y"
     is_list: True
-    default_value: [0.0] # TODO: Check if this is correct
+    default_value: [100.0, 100.0] # 100 % efficiency
     cast_type: float
 
 turbine_efficiency_curve:
@@ -47,19 +47,19 @@ turbine_efficiency_curve:
     source_file: "files/model.yaml"
     extraction_path: "ref"
     is_list: False
-    default_value: 0.0 # TODO: Check if this is correct
+    default_value: 0.0
     cast_type: float
   flow:
     source_file: "files/model.yaml"
     extraction_path: "x"
     is_list: True
-    default_value: [0.0] # TODO: Check if this is correct
+    default_value: [0.0, 10000.0] # Defining it for a wide range (from 0 to a lot)
     cast_type: float
   efficiency:
     source_file: "files/model.yaml"
     extraction_path: "y"
     is_list: True
-    default_value: [0.0] # TODO: Check if this is correct
+    default_value: [100.0, 100.0] # 100 % efficiency
     cast_type: float
 
 plant_water_value_based:
