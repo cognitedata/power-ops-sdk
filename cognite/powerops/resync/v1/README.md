@@ -23,10 +23,11 @@ all assets in a model file is in the backlog to be implemented.
    - Refer to `power-ops-sdk/tests/data/demo/v1/resync_configuration.yaml` as an example
 2. data model configuration
    - Contains data type specific configurations
-   - Refer to `power-ops-sdk/tests/data/demo/v1/data_model_configuration.yaml` as an example
+   - One per subfolder in order to have different configurations per subfolder
+   - Refer to `power-ops-sdk/tests/data/demo/v1/fornebu/data_model_configuration.yaml` as an example
 3. data model population
    - Contains configuration of specific instances
-   - Refer to type examples in `power-ops-sdk/tests/data/demo/v1/data_model` as an example
+   - Refer to type examples in `power-ops-sdk/tests/data/demo/v1/fornebu` and `power-ops-sdk/tests/data/demo/v1/shared` as an example
    - Currently recommendation is to only use resync for the below types but these can be expanded
      - market_configuration
      - price_area_information
@@ -45,21 +46,27 @@ all assets in a model file is in the backlog to be implemented.
 
 ```
 📦 resync_v1
-├─ data_model
+├─ fornebu
+│  ├─ data_model_configuration.yaml
 │  ├─ bid_configuration_day_ahead.yaml
 │  ├─ water_value_based_partial_bid_configuration.yaml
+│  ├─ shop_based_partial_bid_configuration.yaml
+│  ├─ generator.yaml
+│  └─ ... (all types)
+├─ shared
+│  ├─ data_model_configuration.yaml
 │  ├─ price_area_information.yaml
 │  ├─ market_configuration.yaml
+│  ├─ shop_commands.yaml
 │  └─ ... (all types)
 ├─ files
 │  ├─ model.yaml
 │  └─ other_files.yaml
-├─ resync_configuration.yaml
-└─ data_model_configuration.yaml
+└─ resync_configuration.yaml
 ```
 
 [!WARNING]
-All data model files need to be located in a subfolder called  `data_model` but the root folder is specified inside
+All data model files need to be located in subfolders from the root folder that is specified inside
 the `resync_configuration.yaml` in the `working_directory` field.
 
 ### Data Model Configuration

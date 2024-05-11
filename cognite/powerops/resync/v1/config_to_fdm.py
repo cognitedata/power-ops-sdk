@@ -45,29 +45,31 @@ class ResyncImporter:
                             used for the resync configuration.
     """
 
-    data_model_configuration_file: Path
     working_directory: Path
     overwrite_data: bool
-    data_model_configuration: dict[str, DataModelConfiguration]
+    folders_to_process: list[Path]
     data_model_classes: dict[str, type]
-    file_configuration: Optional[FileUploadConfiguration] = None
+    data_model_configuration: dict[str, DataModelConfiguration]
+    file_configuration: Optional[FileUploadConfiguration]
 
     def __init__(
         self,
-        data_model_configuration_file: Path,
         working_directory: Path,
         overwrite_data: Optional[bool],
-        file_configuration: Optional[FileUploadConfiguration],
-        data_model_configuration: dict[str, DataModelConfiguration],
         data_model_classes: dict[str, type],
+        file_configuration: Optional[FileUploadConfiguration],
+        data_model_configuration: Optional[dict[str, DataModelConfiguration]] = None,
     ) -> None:
         """Initializes the ResyncImporter"""
 
-        self.data_model_configuration_file = data_model_configuration_file
         self.working_directory = working_directory
+        self.folders_to_process = [p for p in self.working_directory.iterdir() if p.is_dir()]
+        if Path(self.working_directory / "files") in self.folders_to_process:
+            self.folders_to_process.remove(self.working_directory / "files")
+
         self.overwrite_data = overwrite_data or False
         self.file_configuration = file_configuration
-        self.data_model_configuration = data_model_configuration
+        self.data_model_configuration = data_model_configuration or {}
         self.data_model_classes = data_model_classes
 
         v1_data_classes.DomainModelWrite.external_id_factory = ext_id_factory
@@ -104,17 +106,10 @@ class ResyncImporter:
                 **file_configuration_dict if file_configuration_dict else {},
             )
 
-        if "data_model_configuration_file" not in configuration:
-            raise ValueError("data_model_configuration_file is required in the configuration file")
-        data_model_configuration_file = Path(configuration["data_model_configuration_file"])
-        data_model_configuration = DataModelConfiguration.from_yaml(data_model_configuration_file, data_model_classes)
-
         return cls(
-            data_model_configuration_file=data_model_configuration_file,
             working_directory=working_directory,
             overwrite_data=configuration.get("overwrite_data"),
             file_configuration=file_configuration,
-            data_model_configuration=data_model_configuration,
             data_model_classes=data_model_classes,
         )
 
@@ -132,24 +127,36 @@ class ResyncImporter:
         data_model_objects: dict[str, v1_data_classes.DomainModelWrite] = {}
         external_ids: list[str] = []
 
-        all_data_model_files = (self.working_directory / "data_model").glob("*.yaml")
+        for folder in self.folders_to_process:
 
-        for data_model_file in all_data_model_files:
-            # TODO: allow using prefix of file name to match type and add extra context to rest of file name?
-            if data_model_file.stem not in self.data_model_configuration:
-                logger.warning(f"Skipping {data_model_file} as it is not in the supported types")
-                continue
+            all_data_model_files = list((folder).glob("*.yaml"))
 
-            type_configuration = self.data_model_configuration[data_model_file.stem]
+            data_model_configuration_file = folder / "data_model_configuration.yaml"
+            if data_model_configuration_file in all_data_model_files:
+                all_data_model_files.remove(data_model_configuration_file)
+            else:
+                raise ValueError(f"Missing data model configuration file in {folder}")
 
-            raw_data_model_objects = load_yaml(data_model_file, "list")
+            self.data_model_configuration = DataModelConfiguration.from_yaml(
+                data_model_configuration_file, self.data_model_classes
+            )
 
-            logger.info(f"Processing {data_model_file} as type {type_configuration.name}")
+            for data_model_file in all_data_model_files:
+                # TODO: allow using prefix of file name to match type and add extra context to rest of file name?
+                if data_model_file.stem not in self.data_model_configuration:
+                    logger.warning(f"Skipping {data_model_file} as it is not in the supported types")
+                    continue
 
-            for unprocessed_object in raw_data_model_objects:
-                results = self._dict_to_type_object(unprocessed_object, type_configuration)
-                data_model_objects.update(results[0])
-                external_ids.extend(results[1])
+                type_configuration = self.data_model_configuration[data_model_file.stem]
+
+                raw_data_model_objects = load_yaml(data_model_file, "list")
+
+                logger.info(f"Processing {data_model_file} as type {type_configuration.name}")
+
+                for unprocessed_object in raw_data_model_objects:
+                    results = self._dict_to_type_object(unprocessed_object, type_configuration)
+                    data_model_objects.update(results[0])
+                    external_ids.extend(results[1])
 
         return list(data_model_objects.values()), external_ids
 
