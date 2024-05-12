@@ -1,3 +1,21 @@
+# PriceAreaInformation view definition
+# - name: String!
+#   display_name: String
+#   ordering: Int
+#   asset_type: String
+#   capacity_price_up: TimeSeries
+#   capacity_price_down: TimeSeries
+#   activation_price_up: TimeSeries
+#   activation_price_down: TimeSeries
+#   relative_activation: TimeSeries
+#   total_capacity_allocation_up: TimeSeries
+#   total_capacity_allocation_down: TimeSeries
+#   own_capacity_allocation_up: TimeSeries
+#   own_capacity_allocation_down: TimeSeries
+#   default_bid_configuration: BidConfigurationDayAhead
+#   main_price_scenario: TimeSeries
+#   price_scenarios: [TimeSeries]
+
 - name: NO1
   display_name: "Østlandet (NO1)"
   ordering: 1

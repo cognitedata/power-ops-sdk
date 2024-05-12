@@ -1,3 +1,13 @@
+# ShopModel view definition
+# - name: String!
+#   version: String
+#   shopVersion: String!
+#   penaltyLimit: Float
+#   model: File!
+#   cogShopFilesConfig: [JSONObject]
+#   extraFiles: [File]
+#   baseAttributeMappings: [ShopAttributeMapping]
+
 - name: Fornebu
   version_: "1"
   shop_version: "15.4.1.1"

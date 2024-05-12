@@ -1,3 +1,10 @@
+# ShopBasedPartialBidConfiguration view definition
+# - name: String!
+#   method: String
+#   power_asset: PowerAsset
+#   add_steps: Boolean!
+#   scenario_set: ShopScenarioSet
+
 - name: plant A set A
   method: multi scenario??
   power_asset: "[name|type:PlantWaterValueBased]Lund"

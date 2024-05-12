@@ -1,3 +1,14 @@
+# MarketConfiguration view definition
+# - name: String!
+#   max_price: Float!
+#   min_price: Float!
+#   timezone: String
+#   price_unit: String!
+#   price_steps: Int64!
+#   tick_size: Float!
+#   time_unit: String!
+#   trade_lot: Float!
+
 - name: "Nord Pool Day-Ahead"
   max_price: 4000.0
   min_price: -500.0

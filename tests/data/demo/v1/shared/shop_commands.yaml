@@ -1,3 +1,7 @@
+# ShopCommands view definition
+# - name: String!
+#   commands: [String!]!
+
 - name: default
   commands:
     - set time_delay_unit MINUTE

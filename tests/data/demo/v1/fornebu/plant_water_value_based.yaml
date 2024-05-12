@@ -1,3 +1,23 @@
+# PlantWaterValueBased view definition
+# - name: String!
+#   display_name: String
+#   ordering: Int
+#   asset_type: String
+#   head_loss_factor: Float
+#   outlet_level: Float
+#   production_max: Float
+#   production_min: Float
+#   penstock_head_loss_factors: JSONObject
+#   connection_losses: Float
+#   production_max_time_series: TimeSeries
+#   production_min_time_series: TimeSeries
+#   water_value_time_series: TimeSeries
+#   feeding_fee_time_series: TimeSeries
+#   outlet_level_time_series: TimeSeries
+#   inlet_level_time_series: TimeSeries
+#   head_direct_time_series: TimeSeries
+#   generators: [Generator]
+
 - name: Lund
   display_name: Lund
   ordering: 1

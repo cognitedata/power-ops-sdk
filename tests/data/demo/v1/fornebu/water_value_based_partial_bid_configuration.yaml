@@ -1,3 +1,9 @@
+# WaterValueBasedPartialBidConfiguration view definition
+# - name: String!
+#   method: String
+#   power_asset: PlantWaterValueBased
+#   add_steps: Boolean!
+
 - name: Plant Lund
   method: Water Value Based Bid Generation (WVBBG)
   power_asset: "[name|type:PlantWaterValueBased]Lund"

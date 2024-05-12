@@ -1,3 +1,16 @@
+# Generator view definition
+# - name: String!
+#   display_name: String
+#   ordering: Int
+#   asset_type: String
+#   production_min: Float!
+#   penstock_number: Int64!
+#   start_cost: Float!
+#   start_stop_cost: TimeSeries
+#   availability_time_series: TimeSeries
+#   generator_efficiency_curve: GeneratorEfficiencyCurve
+#   turbine_efficiency_curves: [TurbineEfficiencyCurve]
+
 - name: Lund_G1
   display_name: Lund G1
   ordering: 1

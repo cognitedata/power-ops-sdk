@@ -1,3 +1,10 @@
+# BidConfigurationDayAhead view definition
+# - name: String!
+#   market_configuration: MarketConfiguration
+#   price_area: PriceAreaDayAhead
+#   bid_date_specification: String!
+#   partials: [PartialBidConfiguration]
+
 - name: Price Independent NO2
   market_configuration: "[name]Nord Pool Day-Ahead"
   price_area: "[external_id]price_area_information_no2"

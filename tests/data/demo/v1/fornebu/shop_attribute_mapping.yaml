@@ -1,3 +1,13 @@
+# ShopAttributeMapping view definition
+# - name: String!
+#   objectType: String!
+#   object_name: String!
+#   attribute_name: String!
+#   time_series: TimeSeries
+#   transformations: [JSONObject]
+#   retrieve: String
+#   aggregation: String
+
 - external_id: mapping_1
   object_type: XX
   object_name: XX
