@@ -327,7 +327,7 @@ class DataModelConfiguration:
 
     @classmethod
     def from_yaml(
-        cls, configuration_path: Path, all_write_classes: dict[str, type]
+        cls, all_write_classes: dict[str, type], configuration_path: Optional[Path] = None
     ) -> dict[str, DataModelConfiguration]:
         """Generate a dictionary of DataModelConfiguration objects from a YAML file.
 
@@ -343,7 +343,10 @@ class DataModelConfiguration:
         Raises:
             ValueError: If a property configuration is not a valid property for the domain model type.
         """
-        raw_data_model_configuration = load_yaml(configuration_path, expected_return_type="dict")
+        if configuration_path:
+            raw_data_model_configuration = load_yaml(configuration_path, expected_return_type="dict")
+        else:
+            raw_data_model_configuration = {}
 
         all_data_model_configurations = {}
         for name, type_ in all_write_classes.items():

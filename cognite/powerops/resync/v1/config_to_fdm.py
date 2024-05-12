@@ -134,12 +134,12 @@ class ResyncImporter:
             data_model_configuration_file = folder / "data_model_configuration.yaml"
             if data_model_configuration_file in all_data_model_files:
                 all_data_model_files.remove(data_model_configuration_file)
+                self.data_model_configuration = DataModelConfiguration.from_yaml(
+                    self.data_model_classes, data_model_configuration_file
+                )
             else:
-                raise ValueError(f"Missing data model configuration file in {folder}")
-
-            self.data_model_configuration = DataModelConfiguration.from_yaml(
-                data_model_configuration_file, self.data_model_classes
-            )
+                self.data_model_configuration = DataModelConfiguration.from_yaml(self.data_model_classes)
+                logger.info(f"No data model configuration file found in {folder}, using default configuration")
 
             for data_model_file in all_data_model_files:
                 # TODO: allow using prefix of file name to match type and add extra context to rest of file name?

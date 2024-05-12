@@ -14,21 +14,25 @@ plants.
 All generators/plants must be listed in the configuration in order to be processed by resync. A configuration to include
 all assets in a model file is in the backlog to be implemented.
 
+[!WARNING]
+Current implementation does not clean up any edges that were removed from the configurations, but will only append new
+edges to the existing references.
+
 ## Configuration
 
-### Required configuration files
+### Configuration files
 
 1. resync configuration
    - Contains all general configuration regarding resync
    - Refer to `power-ops-sdk/tests/data/demo/v1/resync_configuration.yaml` as an example
-2. data model configuration
+2. data model configuration [Optional]
    - Contains data type specific configurations
    - One per subfolder in order to have different configurations per subfolder
    - Refer to `power-ops-sdk/tests/data/demo/v1/fornebu/data_model_configuration.yaml` as an example
 3. data model population
    - Contains configuration of specific instances
    - Refer to type examples in `power-ops-sdk/tests/data/demo/v1/fornebu` and `power-ops-sdk/tests/data/demo/v1/shared` as an example
-   - Currently recommendation is to only use resync for the below types but these can be expanded
+   - Currently recommendation is to only use resync for the below types but these can be expanded with further testing
      - market_configuration
      - price_area_information
      - bid_configuration_day_ahead
