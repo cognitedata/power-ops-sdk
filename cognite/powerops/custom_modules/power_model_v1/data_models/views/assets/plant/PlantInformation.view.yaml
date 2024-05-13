@@ -4,13 +4,10 @@ name: PlantInformation
 description: TODO interface for configuration population
 filter:
   and:
-    - equals:
-        property:
-          - node
-          - type
-        value:
-          externalId: PlantInformation
-          space: "{{power_ops_type_space}}"
+    - hasData:
+        - type: container
+          space: "{{power_ops_models}}"
+          externalId: PlantWaterValueBased
 implements:
   - space: "{{power_ops_models}}"
     externalId: PlantWaterValueBased
