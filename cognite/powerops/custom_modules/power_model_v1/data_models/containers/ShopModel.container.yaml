@@ -41,23 +41,7 @@ properties:
     type:
       list: false
       type: file
-    nullable: false
+    nullable: true
     autoIncrement: false
     name: model
     description: The shop model file to use as template before mapping
-  # cogShopFilesConfig:
-  #   type:
-  #     list: true
-  #     type: json
-  #   nullable: true
-  #   autoIncrement: false
-  #   name: cogShopFilesConfig
-  #   description: Configuration for in what order to load the various files into pyshop
-  extraFiles:
-    type:
-      list: true
-      type: file
-    nullable: true
-    autoIncrement: false
-    name: extraFiles
-    description: Extra files to include in the model

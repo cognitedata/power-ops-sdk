@@ -76,14 +76,6 @@ properties:
     name: cogShopFilesConfig
     description: Configuration for in what order to load the various files into pyshop
     connectionType: multi_edge_connection
-  extraFiles:
-    container:
-      space: "{{power_ops_models}}"
-      externalId: ShopModel
-      type: container
-    containerPropertyIdentifier: extraFiles
-    name: extraFiles
-    description: Extra files related to a model template
   baseAttributeMappings:
     type:
       space: "{{power_ops_type_space}}"

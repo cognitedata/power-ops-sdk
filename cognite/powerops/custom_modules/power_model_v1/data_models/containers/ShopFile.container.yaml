@@ -25,7 +25,7 @@ properties:
     type:
       list: false
       type: file
-    nullable: false
+    nullable: true
     autoIncrement: false
     name: model
     description: The file reference of the shop file in cdf
