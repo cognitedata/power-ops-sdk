@@ -140,7 +140,7 @@ class GeneratorGraphQL(GraphQLCore):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return Generator(
-            space=self.space,
+            space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
@@ -174,7 +174,7 @@ class GeneratorGraphQL(GraphQLCore):
     def as_write(self) -> GeneratorWrite:
         """Convert this GraphQL format of generator to the writing format."""
         return GeneratorWrite(
-            space=self.space,
+            space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,
@@ -348,13 +348,13 @@ class GeneratorWrite(PowerAssetWrite):
         if self.start_cost is not None:
             properties["startCost"] = self.start_cost
 
-        if self.start_stop_cost is not None:
+        if self.start_stop_cost is not None or write_none:
             if isinstance(self.start_stop_cost, str) or self.start_stop_cost is None:
                 properties["startStopCost"] = self.start_stop_cost
             else:
                 properties["startStopCost"] = self.start_stop_cost.external_id
 
-        if self.availability_time_series is not None:
+        if self.availability_time_series is not None or write_none:
             if isinstance(self.availability_time_series, str) or self.availability_time_series is None:
                 properties["availabilityTimeSeries"] = self.availability_time_series
             else:

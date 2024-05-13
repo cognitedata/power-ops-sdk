@@ -96,7 +96,7 @@ class PriceProductionGraphQL(GraphQLCore):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return PriceProduction(
-            space=self.space,
+            space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
@@ -112,7 +112,7 @@ class PriceProductionGraphQL(GraphQLCore):
     def as_write(self) -> PriceProductionWrite:
         """Convert this GraphQL format of price production to the writing format."""
         return PriceProductionWrite(
-            space=self.space,
+            space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,
@@ -212,13 +212,13 @@ class PriceProductionWrite(DomainModelWrite):
         if self.name is not None:
             properties["name"] = self.name
 
-        if self.price is not None:
+        if self.price is not None or write_none:
             if isinstance(self.price, str) or self.price is None:
                 properties["price"] = self.price
             else:
                 properties["price"] = self.price.external_id
 
-        if self.production is not None:
+        if self.production is not None or write_none:
             if isinstance(self.production, str) or self.production is None:
                 properties["production"] = self.production
             else:

@@ -1,3 +1,4403 @@
+100_-121:
+  name: 100_-121
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: -121.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+100_-146:
+  name: 100_-146
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: -146.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+100_-171:
+  name: 100_-171
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: -171.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+100_-196:
+  name: 100_-196
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: -196.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+100_-20:
+  name: 100_-20
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: -20.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+100_-222:
+  name: 100_-222
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: -222.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+100_-247:
+  name: 100_-247
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: -247.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+100_-272:
+  name: 100_-272
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: -272.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+100_-297:
+  name: 100_-297
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: -297.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+100_-323:
+  name: 100_-323
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: -323.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+100_-348:
+  name: 100_-348
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: -348.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+100_-373:
+  name: 100_-373
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: -373.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+100_-398:
+  name: 100_-398
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: -398.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+100_-424:
+  name: 100_-424
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: -424.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+100_-449:
+  name: 100_-449
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: -449.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+100_-45:
+  name: 100_-45
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: -45.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+100_-474:
+  name: 100_-474
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: -474.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+100_-500:
+  name: 100_-500
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: -500.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+100_-70:
+  name: 100_-70
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: -70.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+100_-95:
+  name: 100_-95
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: -95.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1015':
+  name: '100_1015'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1015.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1040':
+  name: '100_1040'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1040.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_106':
+  name: '100_106'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 106.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1065':
+  name: '100_1065'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1065.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1090':
+  name: '100_1090'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1090.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1116':
+  name: '100_1116'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1116.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1141':
+  name: '100_1141'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1141.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1166':
+  name: '100_1166'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1166.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1191':
+  name: '100_1191'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1191.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1217':
+  name: '100_1217'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1217.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1242':
+  name: '100_1242'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1242.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1267':
+  name: '100_1267'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1267.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1292':
+  name: '100_1292'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1292.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_131':
+  name: '100_131'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 131.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1318':
+  name: '100_1318'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1318.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1343':
+  name: '100_1343'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1343.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1368':
+  name: '100_1368'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1368.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1393':
+  name: '100_1393'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1393.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1419':
+  name: '100_1419'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1419.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1444':
+  name: '100_1444'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1444.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1469':
+  name: '100_1469'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1469.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1494':
+  name: '100_1494'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1494.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1520':
+  name: '100_1520'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1520.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1545':
+  name: '100_1545'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1545.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_156':
+  name: '100_156'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 156.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1570':
+  name: '100_1570'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1570.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1595':
+  name: '100_1595'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1595.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1621':
+  name: '100_1621'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1621.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1646':
+  name: '100_1646'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1646.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1671':
+  name: '100_1671'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1671.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1696':
+  name: '100_1696'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1696.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1722':
+  name: '100_1722'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1722.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1747':
+  name: '100_1747'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1747.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1772':
+  name: '100_1772'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1772.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1797':
+  name: '100_1797'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1797.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_181':
+  name: '100_181'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 181.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1823':
+  name: '100_1823'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1823.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1848':
+  name: '100_1848'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1848.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1873':
+  name: '100_1873'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1873.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1898':
+  name: '100_1898'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1898.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1924':
+  name: '100_1924'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1924.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1949':
+  name: '100_1949'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1949.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_1974':
+  name: '100_1974'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 1974.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_2000':
+  name: '100_2000'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 2000.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_207':
+  name: '100_207'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 207.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_232':
+  name: '100_232'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 232.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_257':
+  name: '100_257'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 257.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_282':
+  name: '100_282'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 282.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_30':
+  name: '100_30'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 30.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_308':
+  name: '100_308'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 308.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_333':
+  name: '100_333'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 333.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_358':
+  name: '100_358'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 358.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_383':
+  name: '100_383'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 383.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_409':
+  name: '100_409'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 409.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_434':
+  name: '100_434'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 434.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_459':
+  name: '100_459'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 459.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_484':
+  name: '100_484'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 484.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_5':
+  name: '100_5'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 5.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_510':
+  name: '100_510'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 510.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_535':
+  name: '100_535'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 535.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_55':
+  name: '100_55'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 55.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_560':
+  name: '100_560'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 560.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_585':
+  name: '100_585'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 585.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_611':
+  name: '100_611'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 611.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_636':
+  name: '100_636'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 636.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_661':
+  name: '100_661'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 661.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_686':
+  name: '100_686'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 686.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_712':
+  name: '100_712'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 712.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_737':
+  name: '100_737'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 737.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_762':
+  name: '100_762'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 762.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_787':
+  name: '100_787'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 787.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_80':
+  name: '100_80'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 80.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_813':
+  name: '100_813'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 813.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_838':
+  name: '100_838'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 838.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_863':
+  name: '100_863'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 863.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_888':
+  name: '100_888'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 888.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_914':
+  name: '100_914'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 914.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_939':
+  name: '100_939'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 939.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_964':
+  name: '100_964'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 964.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'100_989':
+  name: '100_989'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 120.0
+              offset_value: 989.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-108:
+  name: 250_-108
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -108.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-118:
+  name: 250_-118
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -118.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-128:
+  name: 250_-128
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -128.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-138:
+  name: 250_-138
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -138.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-148:
+  name: 250_-148
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -148.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-158:
+  name: 250_-158
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -158.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-168:
+  name: 250_-168
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -168.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-178:
+  name: 250_-178
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -178.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-18:
+  name: 250_-18
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -18.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-188:
+  name: 250_-188
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -188.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-198:
+  name: 250_-198
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -198.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-208:
+  name: 250_-208
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -208.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-218:
+  name: 250_-218
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -218.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-228:
+  name: 250_-228
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -228.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-238:
+  name: 250_-238
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -238.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-248:
+  name: 250_-248
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -248.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-259:
+  name: 250_-259
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -259.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-269:
+  name: 250_-269
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -269.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-279:
+  name: 250_-279
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -279.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-28:
+  name: 250_-28
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -28.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-289:
+  name: 250_-289
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -289.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-299:
+  name: 250_-299
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -299.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-309:
+  name: 250_-309
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -309.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-319:
+  name: 250_-319
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -319.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-329:
+  name: 250_-329
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -329.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-339:
+  name: 250_-339
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -339.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-349:
+  name: 250_-349
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -349.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-359:
+  name: 250_-359
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -359.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-369:
+  name: 250_-369
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -369.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-379:
+  name: 250_-379
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -379.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-38:
+  name: 250_-38
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -38.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-389:
+  name: 250_-389
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -389.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-399:
+  name: 250_-399
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -399.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-409:
+  name: 250_-409
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -409.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-419:
+  name: 250_-419
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -419.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-429:
+  name: 250_-429
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -429.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-439:
+  name: 250_-439
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -439.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-449:
+  name: 250_-449
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -449.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-459:
+  name: 250_-459
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -459.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-469:
+  name: 250_-469
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -469.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-479:
+  name: 250_-479
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -479.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-48:
+  name: 250_-48
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -48.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-489:
+  name: 250_-489
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -489.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-500:
+  name: 250_-500
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -500.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-58:
+  name: 250_-58
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -58.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-68:
+  name: 250_-68
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -68.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-78:
+  name: 250_-78
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -78.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-8:
+  name: 250_-8
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -8.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-88:
+  name: 250_-88
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -88.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+250_-98:
+  name: 250_-98
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: -98.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1006':
+  name: '250_1006'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1006.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1016':
+  name: '250_1016'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1016.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_102':
+  name: '250_102'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 102.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1026':
+  name: '250_1026'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1026.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1036':
+  name: '250_1036'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1036.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1046':
+  name: '250_1046'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1046.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1056':
+  name: '250_1056'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1056.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1066':
+  name: '250_1066'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1066.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1076':
+  name: '250_1076'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1076.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1086':
+  name: '250_1086'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1086.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1096':
+  name: '250_1096'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1096.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1106':
+  name: '250_1106'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1106.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1116':
+  name: '250_1116'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1116.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_112':
+  name: '250_112'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 112.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1126':
+  name: '250_1126'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1126.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1136':
+  name: '250_1136'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1136.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1146':
+  name: '250_1146'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1146.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1156':
+  name: '250_1156'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1156.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1166':
+  name: '250_1166'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1166.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1176':
+  name: '250_1176'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1176.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1186':
+  name: '250_1186'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1186.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1196':
+  name: '250_1196'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1196.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_12':
+  name: '250_12'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 12.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1206':
+  name: '250_1206'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1206.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1216':
+  name: '250_1216'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1216.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_122':
+  name: '250_122'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 122.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1226':
+  name: '250_1226'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1226.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1236':
+  name: '250_1236'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1236.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1246':
+  name: '250_1246'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1246.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1257':
+  name: '250_1257'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1257.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1267':
+  name: '250_1267'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1267.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1277':
+  name: '250_1277'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1277.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1287':
+  name: '250_1287'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1287.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1297':
+  name: '250_1297'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1297.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1307':
+  name: '250_1307'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1307.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1317':
+  name: '250_1317'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1317.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_132':
+  name: '250_132'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 132.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1327':
+  name: '250_1327'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1327.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1337':
+  name: '250_1337'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1337.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1347':
+  name: '250_1347'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1347.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1357':
+  name: '250_1357'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1357.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1367':
+  name: '250_1367'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1367.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1377':
+  name: '250_1377'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1377.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1387':
+  name: '250_1387'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1387.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1397':
+  name: '250_1397'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1397.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1407':
+  name: '250_1407'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1407.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1417':
+  name: '250_1417'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1417.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_142':
+  name: '250_142'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 142.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1427':
+  name: '250_1427'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1427.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1437':
+  name: '250_1437'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1437.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1447':
+  name: '250_1447'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1447.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1457':
+  name: '250_1457'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1457.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1467':
+  name: '250_1467'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1467.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1477':
+  name: '250_1477'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1477.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1487':
+  name: '250_1487'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1487.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1497':
+  name: '250_1497'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1497.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1508':
+  name: '250_1508'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1508.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1518':
+  name: '250_1518'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1518.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_152':
+  name: '250_152'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 152.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1528':
+  name: '250_1528'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1528.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1538':
+  name: '250_1538'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1538.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1548':
+  name: '250_1548'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1548.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1558':
+  name: '250_1558'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1558.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1568':
+  name: '250_1568'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1568.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1578':
+  name: '250_1578'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1578.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1588':
+  name: '250_1588'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1588.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1598':
+  name: '250_1598'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1598.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1608':
+  name: '250_1608'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1608.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1618':
+  name: '250_1618'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1618.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_162':
+  name: '250_162'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 162.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1628':
+  name: '250_1628'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1628.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1638':
+  name: '250_1638'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1638.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1648':
+  name: '250_1648'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1648.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1658':
+  name: '250_1658'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1658.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1668':
+  name: '250_1668'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1668.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1678':
+  name: '250_1678'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1678.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1688':
+  name: '250_1688'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1688.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1698':
+  name: '250_1698'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1698.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1708':
+  name: '250_1708'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1708.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1718':
+  name: '250_1718'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1718.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_172':
+  name: '250_172'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 172.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1728':
+  name: '250_1728'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1728.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1738':
+  name: '250_1738'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1738.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1748':
+  name: '250_1748'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1748.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1759':
+  name: '250_1759'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1759.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1769':
+  name: '250_1769'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1769.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1779':
+  name: '250_1779'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1779.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1789':
+  name: '250_1789'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1789.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1799':
+  name: '250_1799'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1799.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1809':
+  name: '250_1809'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1809.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1819':
+  name: '250_1819'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1819.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_182':
+  name: '250_182'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 182.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1829':
+  name: '250_1829'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1829.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1839':
+  name: '250_1839'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1839.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1849':
+  name: '250_1849'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1849.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1859':
+  name: '250_1859'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1859.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1869':
+  name: '250_1869'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1869.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1879':
+  name: '250_1879'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1879.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1889':
+  name: '250_1889'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1889.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1899':
+  name: '250_1899'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1899.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1909':
+  name: '250_1909'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1909.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1919':
+  name: '250_1919'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1919.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_192':
+  name: '250_192'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 192.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1929':
+  name: '250_1929'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1929.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1939':
+  name: '250_1939'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1939.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1949':
+  name: '250_1949'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1949.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1959':
+  name: '250_1959'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1959.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1969':
+  name: '250_1969'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1969.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1979':
+  name: '250_1979'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1979.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_1989':
+  name: '250_1989'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 1989.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_2':
+  name: '250_2'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 2.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_2000':
+  name: '250_2000'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 2000.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_202':
+  name: '250_202'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 202.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_212':
+  name: '250_212'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 212.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_22':
+  name: '250_22'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 22.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_222':
+  name: '250_222'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 222.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_232':
+  name: '250_232'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 232.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_242':
+  name: '250_242'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 242.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_253':
+  name: '250_253'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 253.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_263':
+  name: '250_263'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 263.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_273':
+  name: '250_273'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 273.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_283':
+  name: '250_283'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 283.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_293':
+  name: '250_293'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 293.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_303':
+  name: '250_303'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 303.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_313':
+  name: '250_313'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 313.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_32':
+  name: '250_32'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 32.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_323':
+  name: '250_323'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 323.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_333':
+  name: '250_333'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 333.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_343':
+  name: '250_343'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 343.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_353':
+  name: '250_353'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 353.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_363':
+  name: '250_363'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 363.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_373':
+  name: '250_373'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 373.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_383':
+  name: '250_383'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 383.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_393':
+  name: '250_393'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 393.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_403':
+  name: '250_403'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 403.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_413':
+  name: '250_413'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 413.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_42':
+  name: '250_42'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 42.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_423':
+  name: '250_423'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 423.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_433':
+  name: '250_433'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 433.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_443':
+  name: '250_443'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 443.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_453':
+  name: '250_453'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 453.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_463':
+  name: '250_463'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 463.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_473':
+  name: '250_473'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 473.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_483':
+  name: '250_483'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 483.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_493':
+  name: '250_493'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 493.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_504':
+  name: '250_504'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 504.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_514':
+  name: '250_514'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 514.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_52':
+  name: '250_52'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 52.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_524':
+  name: '250_524'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 524.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_534':
+  name: '250_534'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 534.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_544':
+  name: '250_544'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 544.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_554':
+  name: '250_554'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 554.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_564':
+  name: '250_564'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 564.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_574':
+  name: '250_574'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 574.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_584':
+  name: '250_584'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 584.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_594':
+  name: '250_594'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 594.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_604':
+  name: '250_604'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 604.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_614':
+  name: '250_614'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 614.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_62':
+  name: '250_62'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 62.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_624':
+  name: '250_624'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 624.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_634':
+  name: '250_634'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 634.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_644':
+  name: '250_644'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 644.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_654':
+  name: '250_654'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 654.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_664':
+  name: '250_664'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 664.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_674':
+  name: '250_674'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 674.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_684':
+  name: '250_684'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 684.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_694':
+  name: '250_694'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 694.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_704':
+  name: '250_704'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 704.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_714':
+  name: '250_714'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 714.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_72':
+  name: '250_72'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 72.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_724':
+  name: '250_724'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 724.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_734':
+  name: '250_734'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 734.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_744':
+  name: '250_744'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 744.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_755':
+  name: '250_755'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 755.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_765':
+  name: '250_765'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 765.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_775':
+  name: '250_775'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 775.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_785':
+  name: '250_785'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 785.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_795':
+  name: '250_795'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 795.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_805':
+  name: '250_805'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 805.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_815':
+  name: '250_815'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 815.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_82':
+  name: '250_82'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 82.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_825':
+  name: '250_825'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 825.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_835':
+  name: '250_835'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 835.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_845':
+  name: '250_845'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 845.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_855':
+  name: '250_855'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 855.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_865':
+  name: '250_865'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 865.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_875':
+  name: '250_875'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 875.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_885':
+  name: '250_885'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 885.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_895':
+  name: '250_895'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 895.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_905':
+  name: '250_905'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 905.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_915':
+  name: '250_915'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 915.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_92':
+  name: '250_92'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 92.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_925':
+  name: '250_925'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 925.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_935':
+  name: '250_935'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 935.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_945':
+  name: '250_945'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 945.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_955':
+  name: '250_955'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 955.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_965':
+  name: '250_965'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 965.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_975':
+  name: '250_975'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 975.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_985':
+  name: '250_985'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 985.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'250_995':
+  name: '250_995'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 180.0
+              offset_value: 995.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+50_-142:
+  name: 50_-142
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: -142.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+50_-193:
+  name: 50_-193
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: -193.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+50_-244:
+  name: 50_-244
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: -244.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+50_-295:
+  name: 50_-295
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: -295.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+50_-346:
+  name: 50_-346
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: -346.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+50_-397:
+  name: 50_-397
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: -397.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+50_-40:
+  name: 50_-40
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: -40.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+50_-448:
+  name: 50_-448
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: -448.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+50_-500:
+  name: 50_-500
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: -500.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+50_-91:
+  name: 50_-91
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: -91.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_10':
+  name: '50_10'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 10.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_1030':
+  name: '50_1030'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 1030.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_1081':
+  name: '50_1081'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 1081.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_112':
+  name: '50_112'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 112.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_1132':
+  name: '50_1132'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 1132.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_1183':
+  name: '50_1183'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 1183.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_1234':
+  name: '50_1234'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 1234.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_1285':
+  name: '50_1285'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 1285.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_1336':
+  name: '50_1336'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 1336.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_1387':
+  name: '50_1387'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 1387.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_1438':
+  name: '50_1438'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 1438.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_1489':
+  name: '50_1489'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 1489.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_1540':
+  name: '50_1540'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 1540.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_1591':
+  name: '50_1591'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 1591.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_163':
+  name: '50_163'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 163.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_1642':
+  name: '50_1642'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 1642.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_1693':
+  name: '50_1693'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 1693.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_1744':
+  name: '50_1744'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 1744.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_1795':
+  name: '50_1795'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 1795.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_1846':
+  name: '50_1846'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 1846.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_1897':
+  name: '50_1897'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 1897.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_1948':
+  name: '50_1948'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 1948.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_2000':
+  name: '50_2000'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 2000.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_214':
+  name: '50_214'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 214.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_265':
+  name: '50_265'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 265.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_316':
+  name: '50_316'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 316.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_367':
+  name: '50_367'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 367.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_418':
+  name: '50_418'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 418.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_469':
+  name: '50_469'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 469.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_520':
+  name: '50_520'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 520.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_571':
+  name: '50_571'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 571.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_61':
+  name: '50_61'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 61.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_622':
+  name: '50_622'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 622.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_673':
+  name: '50_673'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 673.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_724':
+  name: '50_724'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 724.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_775':
+  name: '50_775'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 775.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_826':
+  name: '50_826'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 826.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_877':
+  name: '50_877'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 877.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_928':
+  name: '50_928'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 928.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
+'50_979':
+  name: '50_979'
+  time_series_external_id: '907677'
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 60.0
+              offset_value: 979.0
+            - offset_minute: 1440.0
+              offset_value: 0.0
 scenario_1:
   name: scenario_1
   time_series_external_id: '907677'

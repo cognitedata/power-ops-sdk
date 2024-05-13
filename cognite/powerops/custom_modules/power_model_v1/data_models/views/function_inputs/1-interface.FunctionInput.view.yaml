@@ -7,38 +7,19 @@ filter:
     - hasData:
         - type: container
           space: "{{power_ops_models}}"
-          externalId: FunctionMetadata
+          externalId: FunctionData
     - equals:
         property:
           - node
           - space
         value: "{{power_ops_instance_space}}"
-        # - not:
-        #     hasData:
-        #       - type: view
-        #         space: "{{power_ops_models}}"
-        #         externalId: FunctionOutput
-        #         version: "{{version}}"
-        # - equals:
-        #     property:
-        #       - node
-        #       - type
-        #     value:
-        #       externalId: FunctionInput
-        #       space: "{{power_ops_type_space}}"
-        # - not:
-        #     in:
-        #       property:
-        #         - node
-        #         - type
-        #       values: [FunctionOutput]
 implements: []
 version: "{{version}}"
 properties:
   workflowExecutionId:
     container:
       space: "{{power_ops_models}}"
-      externalId: FunctionMetadata
+      externalId: FunctionData
       type: container
     containerPropertyIdentifier: workflowExecutionId
     name: workflowExecutionId
@@ -46,7 +27,7 @@ properties:
   workflowStep:
     container:
       space: "{{power_ops_models}}"
-      externalId: FunctionMetadata
+      externalId: FunctionData
       type: container
     containerPropertyIdentifier: workflowStep
     name: workflowStep
@@ -54,7 +35,7 @@ properties:
   functionName:
     container:
       space: "{{power_ops_models}}"
-      externalId: FunctionMetadata
+      externalId: FunctionData
       type: container
     containerPropertyIdentifier: functionName
     name: functionName
@@ -62,7 +43,7 @@ properties:
   functionCallId:
     container:
       space: "{{power_ops_models}}"
-      externalId: FunctionMetadata
+      externalId: FunctionData
       type: container
     containerPropertyIdentifier: functionCallId
     name: functionCallId
