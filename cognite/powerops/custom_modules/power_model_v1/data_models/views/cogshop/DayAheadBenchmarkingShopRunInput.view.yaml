@@ -1,0 +1,8 @@
+# Should probably add fields processId, processStep and functionName (?)
+    "The SHOP Scenario (with all details like model and time series)"
+    case: ShopCase # Do we want ShopCase or ShopScenario+shopStartTime+shopEndTime?
+
+    # A BidConfiguration, or DayAheadProductionObligationForBenchmarking, or a simple instance of BidSource for "upper bound"
+    bidSource: BidSource
+    deliveryDate: Date
+    bidGenerated: Timestamp # We don't have this for the "external" bids with the current structure (we could add deliveryDate and bidGenerated timestamp to type DayAheadProductionObligationForBenchmarking, but then we would need a lot of instances of it, instead of letting this be a "stable" config)

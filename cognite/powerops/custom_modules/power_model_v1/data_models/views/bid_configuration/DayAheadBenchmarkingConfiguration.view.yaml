@@ -1,0 +1,54 @@
+space: "{{power_ops_models}}"
+externalId: DayAheadBenchmarkingConfiguration
+name: DayAheadBenchmarkingConfiguration
+description: TODO
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models}}"
+          externalId: BidConfiguration  # TODO: yes?
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          space: "{{power_ops_type_space}}"
+          externalId: DayAheadBenchmarkingConfiguration
+implements: []
+version: "{{version}}"
+properties:
+  name:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: BidConfiguration
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: The name of the benchmarking configuration
+  bidConfigurations:
+    # TODO
+  assetsPerShopModel:
+    # TODO
+  priceArea:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: BidConfiguration
+      type: container
+    containerPropertyIdentifier: priceArea
+    name: priceArea
+    description: The price area related to the bid calculation task
+    source:
+      space: "{{power_ops_models}}"
+      externalId: PriceAreaDayAhead
+      version: "{{version}}"
+      type: view
+  shopStartSpecification:
+    # TODO
+  shopEndSpecification:
+    # TODO

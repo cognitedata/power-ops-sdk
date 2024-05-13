@@ -1,0 +1,50 @@
+space: "{{power_ops_models}}"
+externalId: BidConfigurationDayAhead_benchmarking
+name: BidConfigurationDayAhead_benchmarking
+description: TODO
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models}}"
+          externalId: BidConfiguration
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          space: "{{power_ops_type_space}}"
+          externalId: BidConfigurationDayAhead_benchmarking
+implements:
+- space: 'sp_powerops_models'
+  externalId: BidSource
+  version: '1'
+  type: view
+version: "{{version}}"
+properties:
+  name:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: BidConfiguration
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: The name of the bid configuration specifically for benchmarking
+  priceArea:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: BidConfiguration
+      type: container
+    containerPropertyIdentifier: priceArea
+    name: priceArea
+    description: The price area related to the bid calculation task
+    source:
+      space: "{{power_ops_models}}"
+      externalId: PriceAreaDayAhead
+      version: "{{version}}"
+      type: view
