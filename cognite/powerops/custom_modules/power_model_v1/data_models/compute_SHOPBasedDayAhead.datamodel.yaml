@@ -32,7 +32,7 @@ views:
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: ShopPartialBidMatrixCalculationInput
+  - externalId: MultiScenarioPartialBidMatrixCalculationInput
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"

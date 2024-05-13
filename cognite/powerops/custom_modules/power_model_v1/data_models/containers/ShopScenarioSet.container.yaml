@@ -14,18 +14,16 @@ properties:
     description: TODO
   startSpecification:
     type:
+      type: direct
       list: false
-      collation: ucs_basic
-      type: text
     nullable: false
     autoIncrement: false
     name: startSpecification
     description: The shop start specification
   endSpecification:
     type:
+      type: direct
       list: false
-      collation: ucs_basic
-      type: text
     nullable: false
     autoIncrement: false
     name: endSpecification

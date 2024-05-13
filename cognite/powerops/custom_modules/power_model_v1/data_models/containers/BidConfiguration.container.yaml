@@ -27,9 +27,8 @@ properties:
     name: priceArea
   bidDateSpecification:
     type:
+      type: direct
       list: false
-      collation: ucs_basic
-      type: text
     nullable: false
     autoIncrement: false
     name: bidDateSpecification
