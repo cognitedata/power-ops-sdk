@@ -13,7 +13,20 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.94.4] - 2024-05-13
+### Changed
+* Renamed ShopPartialBidMatrixCalculationInput to MultiScenarioPartialBidMatrixCalculationInput
+* Replaced "date specification" properties as a string JSON type with a new type DateSpecification
+* Type of property cogShopFilesConfig in ShopModel to be a list of ShopFile
+* Type of property penstockHeadLossFactors to a list of float instead of JSON
 
+### Removed
+* Removed property extraFiles from ShopModel
+
+### Fixed
+* All file/sequence/timeseries references to be nullable
+* Filters on PlantInformation
+* Filters on Watercourse
 
 ## [0.94.3] - 2024-05-11
 ### Added

@@ -1,20 +1,20 @@
 # DateSpecification view definition
 # - name: String!
-#   processingTimezone: String
-#   resultingTimezone: String
-#   floorFrame: String
-#   shiftDefinition: JSONObject
+#   processing_timezone: String
+#   resulting_timezone: String
+#   floor_frame: String
+#   shift_definition: JSONObject
 
 - name: Default Start
-  processingTimezone: local
-  resultingTimezone: UTC
-  floorFrame: day
-  shiftDefinition:
+  processing_timezone: local
+  resulting_timezone: UTC
+  floor_frame: day
+  shift_definition:
     days: -400
 - name: Default End
-  processingTimezone: local
-  resultingTimezone: UTC
-  floorFrame: week
-  shiftDefinition:
+  processing_timezone: local
+  resulting_timezone: UTC
+  floor_frame: week
+  shift_definition:
     days: -400
     weeks: 2

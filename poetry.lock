@@ -1131,13 +1131,13 @@ test = ["coverage[toml]", "ddt (>=1.1.1,!=1.4.3)", "mock", "mypy", "pre-commit",
 
 [[package]]
 name = "griffe"
-version = "0.44.0"
+version = "0.45.0"
 description = "Signatures for entire Python programs. Extract the structure, the frame, the skeleton of your project, to generate API documentation or find breaking changes in your API."
 optional = true
 python-versions = ">=3.8"
 files = [
-    {file = "griffe-0.44.0-py3-none-any.whl", hash = "sha256:8a4471c469ba980b87c843f1168850ce39d0c1d0c7be140dca2480f76c8e5446"},
-    {file = "griffe-0.44.0.tar.gz", hash = "sha256:34aee1571042f9bf00529bc715de4516fb6f482b164e90d030300601009e0223"},
+    {file = "griffe-0.45.0-py3-none-any.whl", hash = "sha256:90fe5c90e1b0ca7dd6fee78f9009f4e01b37dbc9ab484a9b2c1578915db1e571"},
+    {file = "griffe-0.45.0.tar.gz", hash = "sha256:85cb2868d026ea51c89bdd589ad3ccc94abc5bd8d5d948e3d4450778a2a05b4a"},
 ]
 
 [package.dependencies]
@@ -2206,13 +2206,13 @@ traitlets = "*"
 
 [[package]]
 name = "mdit-py-plugins"
-version = "0.4.0"
+version = "0.4.1"
 description = "Collection of plugins for markdown-it-py"
 optional = true
 python-versions = ">=3.8"
 files = [
-    {file = "mdit_py_plugins-0.4.0-py3-none-any.whl", hash = "sha256:b51b3bb70691f57f974e257e367107857a93b36f322a9e6d44ca5bf28ec2def9"},
-    {file = "mdit_py_plugins-0.4.0.tar.gz", hash = "sha256:d8ab27e9aed6c38aa716819fedfde15ca275715955f8a185a8e1cf90fb1d2c1b"},
+    {file = "mdit_py_plugins-0.4.1-py3-none-any.whl", hash = "sha256:1020dfe4e6bfc2c79fb49ae4e3f5b297f5ccd20f010187acc52af2921e27dc6a"},
+    {file = "mdit_py_plugins-0.4.1.tar.gz", hash = "sha256:834b8ac23d1cd60cec703646ffd22ae97b7955a6d596eb1d304be1e251ae499c"},
 ]
 
 [package.dependencies]
@@ -2393,13 +2393,13 @@ pygments = ">2.12.0"
 
 [[package]]
 name = "mkdocs-material"
-version = "9.5.21"
+version = "9.5.22"
 description = "Documentation that simply works"
 optional = true
 python-versions = ">=3.8"
 files = [
-    {file = "mkdocs_material-9.5.21-py3-none-any.whl", hash = "sha256:210e1f179682cd4be17d5c641b2f4559574b9dea2f589c3f0e7c17c5bd1959bc"},
-    {file = "mkdocs_material-9.5.21.tar.gz", hash = "sha256:049f82770f40559d3c2aa2259c562ea7257dbb4aaa9624323b5ef27b2d95a450"},
+    {file = "mkdocs_material-9.5.22-py3-none-any.whl", hash = "sha256:8c7a377d323567934e6cd46915e64dc209efceaec0dec1cf2202184f5649862c"},
+    {file = "mkdocs_material-9.5.22.tar.gz", hash = "sha256:22a853a456ae8c581c4628159574d6fc7c71b2c7569dc9c3a82cc70432219599"},
 ]
 
 [package.dependencies]
@@ -3151,13 +3151,13 @@ tests = ["pytest (>=5.4.1)", "pytest-cov (>=2.8.1)", "pytest-mypy (>=0.8.0)", "p
 
 [[package]]
 name = "pre-commit"
-version = "3.7.0"
+version = "3.7.1"
 description = "A framework for managing and maintaining multi-language pre-commit hooks."
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "pre_commit-3.7.0-py2.py3-none-any.whl", hash = "sha256:5eae9e10c2b5ac51577c3452ec0a490455c45a0533f7960f993a0d01e59decab"},
-    {file = "pre_commit-3.7.0.tar.gz", hash = "sha256:e209d61b8acdcf742404408531f0c37d49d2c734fd7cff2d6076083d191cb060"},
+    {file = "pre_commit-3.7.1-py2.py3-none-any.whl", hash = "sha256:fae36fd1d7ad7d6a5a1c0b0d5adb2ed1a3bda5a21bf6c3e5372073d7a11cd4c5"},
+    {file = "pre_commit-3.7.1.tar.gz", hash = "sha256:8ca3ad567bc78a4972a3f1a477e94a79d4597e8140a6e0b651c5e33899c3654a"},
 ]
 
 [package.dependencies]
@@ -4471,6 +4471,17 @@ doc = ["sphinx", "sphinx_rtd_theme"]
 test = ["pytest", "ruff"]
 
 [[package]]
+name = "toml"
+version = "0.10.2"
+description = "Python Library for Tom's Obvious, Minimal Language"
+optional = false
+python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
+files = [
+    {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},
+    {file = "toml-0.10.2.tar.gz", hash = "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"},
+]
+
+[[package]]
 name = "tomli"
 version = "2.0.1"
 description = "A lil' TOML parser"
@@ -4838,4 +4849,4 @@ docs = ["mkdocs", "mkdocs-git-authors-plugin", "mkdocs-git-revision-date-localiz
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.13"
-content-hash = "9403b3c70e7c35fee5944e00cbd56fc6f3b344c6292ab18625836ebfed1af86d"
+content-hash = "b5dab0b55fe21a9d6748c5bc30d17670056eb643d6db172f4dbcf3e1ec256da3"

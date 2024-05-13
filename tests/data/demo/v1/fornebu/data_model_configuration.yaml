@@ -62,7 +62,7 @@ turbine_efficiency_curve:
     default_value: [100.0, 100.0] # 100 % efficiency
     cast_type: float
 
-plant_water_value_based:
+plant_information:
   head_loss_factor:
     source_file: "files/model.yaml"
     extraction_path: "model.plant.[name].main_loss.[0]"

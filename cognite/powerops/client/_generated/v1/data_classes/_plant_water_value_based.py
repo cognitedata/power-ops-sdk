@@ -133,7 +133,7 @@ class PlantWaterValueBasedGraphQL(GraphQLCore):
     outlet_level: Optional[float] = Field(None, alias="outletLevel")
     production_max: Optional[float] = Field(None, alias="productionMax")
     production_min: Optional[float] = Field(None, alias="productionMin")
-    penstock_head_loss_factors: Optional[dict] = Field(None, alias="penstockHeadLossFactors")
+    penstock_head_loss_factors: Optional[list[float]] = Field(None, alias="penstockHeadLossFactors")
     connection_losses: Optional[float] = Field(None, alias="connectionLosses")
     production_max_time_series: Union[TimeSeries, dict, None] = Field(None, alias="productionMaxTimeSeries")
     production_min_time_series: Union[TimeSeries, dict, None] = Field(None, alias="productionMinTimeSeries")
@@ -257,14 +257,12 @@ class PlantWaterValueBased(Plant):
         generators: The generator field.
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "PlantWaterValueBased"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = None
     head_loss_factor: Optional[float] = Field(None, alias="headLossFactor")
     outlet_level: Optional[float] = Field(None, alias="outletLevel")
     production_max: Optional[float] = Field(None, alias="productionMax")
     production_min: Optional[float] = Field(None, alias="productionMin")
-    penstock_head_loss_factors: Optional[dict] = Field(None, alias="penstockHeadLossFactors")
+    penstock_head_loss_factors: Optional[list[float]] = Field(None, alias="penstockHeadLossFactors")
     connection_losses: Optional[float] = Field(None, alias="connectionLosses")
     production_max_time_series: Union[TimeSeries, str, None] = Field(None, alias="productionMaxTimeSeries")
     production_min_time_series: Union[TimeSeries, str, None] = Field(None, alias="productionMinTimeSeries")
@@ -343,14 +341,12 @@ class PlantWaterValueBasedWrite(PlantWrite):
         generators: The generator field.
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "PlantWaterValueBased"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = None
     head_loss_factor: Optional[float] = Field(None, alias="headLossFactor")
     outlet_level: Optional[float] = Field(None, alias="outletLevel")
     production_max: Optional[float] = Field(None, alias="productionMax")
     production_min: Optional[float] = Field(None, alias="productionMin")
-    penstock_head_loss_factors: Optional[dict] = Field(None, alias="penstockHeadLossFactors")
+    penstock_head_loss_factors: Optional[list[float]] = Field(None, alias="penstockHeadLossFactors")
     connection_losses: Optional[float] = Field(None, alias="connectionLosses")
     production_max_time_series: Union[TimeSeries, str, None] = Field(None, alias="productionMaxTimeSeries")
     production_min_time_series: Union[TimeSeries, str, None] = Field(None, alias="productionMinTimeSeries")

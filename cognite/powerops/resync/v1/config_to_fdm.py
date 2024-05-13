@@ -204,7 +204,7 @@ class ResyncImporter:
         parsed_data = self._join_data_by_parsing_method(immutable_data, parsed_properties, parsed_reference_data)
 
         # TODO: handle these special cases in a better way
-        if type_configuration.type_ is v1_data_classes.PlantWaterValueBasedWrite:
+        if type_configuration.type_ is v1_data_classes.PlantInformationWrite:
             parsed_data["generators"] = (
                 self._get_all_connections(parsed_data, "plant", "generator")
                 if "generators" not in parsed_data

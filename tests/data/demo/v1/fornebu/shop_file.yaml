@@ -1,0 +1,17 @@
+# DateSpecification view definition
+# - name: String!
+#   label: String!
+#   file_reference: File
+#   order: Int!
+#   is_ascii: Boolean!
+
+- name: "water_value_cut_file_reservoir_mapping"
+  label: "water_value_cut_file_reservoir_mapping"
+  file_reference: "SHOP_Fornebu_water_value_cut_file_reservoir_mapping"
+  order: 1
+  is_ascii: True
+- name: "water_value_cut_file"
+  label: "water_value_cut_file"
+  file_reference: "SHOP_Fornebu_water_value_cut_file"
+  order: 2
+  is_ascii: True

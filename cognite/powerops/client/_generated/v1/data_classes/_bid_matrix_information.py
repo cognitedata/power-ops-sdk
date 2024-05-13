@@ -62,15 +62,15 @@ class BidMatrixInformationGraphQL(GraphQLCore):
         state: The state field.
         bid_matrix: The bid matrix field.
         alerts: An array of calculation level Alerts.
-        intermediate_bid_matrices: An array of intermediate BidMatrices.
+        underlying_bid_matrices: An array of intermediate BidMatrices.
     """
 
     view_id = dm.ViewId("sp_power_ops_models", "BidMatrixInformation", "1")
     state: Optional[str] = None
     bid_matrix: Union[dict, None] = Field(None, alias="bidMatrix")
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
-    intermediate_bid_matrices: Optional[list[BidMatrixGraphQL]] = Field(
-        default=None, repr=False, alias="intermediateBidMatrices"
+    underlying_bid_matrices: Optional[list[BidMatrixGraphQL]] = Field(
+        default=None, repr=False, alias="underlyingBidMatrices"
     )
 
     @model_validator(mode="before")
@@ -84,7 +84,7 @@ class BidMatrixInformationGraphQL(GraphQLCore):
             )
         return values
 
-    @field_validator("alerts", "intermediate_bid_matrices", mode="before")
+    @field_validator("alerts", "underlying_bid_matrices", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
             return value
@@ -107,13 +107,13 @@ class BidMatrixInformationGraphQL(GraphQLCore):
             state=self.state,
             bid_matrix=self.bid_matrix["externalId"] if self.bid_matrix and "externalId" in self.bid_matrix else None,
             alerts=[alert.as_read() if isinstance(alert, GraphQLCore) else alert for alert in self.alerts or []],
-            intermediate_bid_matrices=[
+            underlying_bid_matrices=[
                 (
-                    intermediate_bid_matrice.as_read()
-                    if isinstance(intermediate_bid_matrice, GraphQLCore)
-                    else intermediate_bid_matrice
+                    underlying_bid_matrice.as_read()
+                    if isinstance(underlying_bid_matrice, GraphQLCore)
+                    else underlying_bid_matrice
                 )
-                for intermediate_bid_matrice in self.intermediate_bid_matrices or []
+                for underlying_bid_matrice in self.underlying_bid_matrices or []
             ],
         )
 
@@ -126,13 +126,13 @@ class BidMatrixInformationGraphQL(GraphQLCore):
             state=self.state,
             bid_matrix=self.bid_matrix["externalId"] if self.bid_matrix and "externalId" in self.bid_matrix else None,
             alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            intermediate_bid_matrices=[
+            underlying_bid_matrices=[
                 (
-                    intermediate_bid_matrice.as_write()
-                    if isinstance(intermediate_bid_matrice, DomainModel)
-                    else intermediate_bid_matrice
+                    underlying_bid_matrice.as_write()
+                    if isinstance(underlying_bid_matrice, DomainModel)
+                    else underlying_bid_matrice
                 )
-                for intermediate_bid_matrice in self.intermediate_bid_matrices or []
+                for underlying_bid_matrice in self.underlying_bid_matrices or []
             ],
         )
 
@@ -149,13 +149,13 @@ class BidMatrixInformation(BidMatrix):
         state: The state field.
         bid_matrix: The bid matrix field.
         alerts: An array of calculation level Alerts.
-        intermediate_bid_matrices: An array of intermediate BidMatrices.
+        underlying_bid_matrices: An array of intermediate BidMatrices.
     """
 
     node_type: Union[dm.DirectRelationReference, None] = None
     alerts: Union[list[Alert], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
-    intermediate_bid_matrices: Union[list[BidMatrix], list[str], list[dm.NodeId], None] = Field(
-        default=None, repr=False, alias="intermediateBidMatrices"
+    underlying_bid_matrices: Union[list[BidMatrix], list[str], list[dm.NodeId], None] = Field(
+        default=None, repr=False, alias="underlyingBidMatrices"
     )
 
     def as_write(self) -> BidMatrixInformationWrite:
@@ -167,13 +167,13 @@ class BidMatrixInformation(BidMatrix):
             state=self.state,
             bid_matrix=self.bid_matrix,
             alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            intermediate_bid_matrices=[
+            underlying_bid_matrices=[
                 (
-                    intermediate_bid_matrice.as_write()
-                    if isinstance(intermediate_bid_matrice, DomainModel)
-                    else intermediate_bid_matrice
+                    underlying_bid_matrice.as_write()
+                    if isinstance(underlying_bid_matrice, DomainModel)
+                    else underlying_bid_matrice
                 )
-                for intermediate_bid_matrice in self.intermediate_bid_matrices or []
+                for underlying_bid_matrice in self.underlying_bid_matrices or []
             ],
         )
 
@@ -199,13 +199,13 @@ class BidMatrixInformationWrite(BidMatrixWrite):
         state: The state field.
         bid_matrix: The bid matrix field.
         alerts: An array of calculation level Alerts.
-        intermediate_bid_matrices: An array of intermediate BidMatrices.
+        underlying_bid_matrices: An array of intermediate BidMatrices.
     """
 
     node_type: Union[dm.DirectRelationReference, None] = None
     alerts: Union[list[AlertWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
-    intermediate_bid_matrices: Union[list[BidMatrixWrite], list[str], list[dm.NodeId], None] = Field(
-        default=None, repr=False, alias="intermediateBidMatrices"
+    underlying_bid_matrices: Union[list[BidMatrixWrite], list[str], list[dm.NodeId], None] = Field(
+        default=None, repr=False, alias="underlyingBidMatrices"
     )
 
     def _to_instances_write(
@@ -261,11 +261,11 @@ class BidMatrixInformationWrite(BidMatrixWrite):
             resources.extend(other_resources)
 
         edge_type = dm.DirectRelationReference("sp_power_ops_types", "intermediateBidMatrix")
-        for intermediate_bid_matrice in self.intermediate_bid_matrices or []:
+        for underlying_bid_matrice in self.underlying_bid_matrices or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
                 start_node=self,
-                end_node=intermediate_bid_matrice,
+                end_node=underlying_bid_matrice,
                 edge_type=edge_type,
                 view_by_read_class=view_by_read_class,
                 write_none=write_none,

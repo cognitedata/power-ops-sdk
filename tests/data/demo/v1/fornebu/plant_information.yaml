@@ -1,4 +1,4 @@
-# PlantWaterValueBased view definition
+# PlantInformation view definition
 # - name: String!
 #   display_name: String
 #   ordering: Int

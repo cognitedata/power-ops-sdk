@@ -16,11 +16,13 @@ from ._api.bid_document_day_ahead import BidDocumentDayAheadAPI
 from ._api.bid_matrix import BidMatrixAPI
 from ._api.bid_matrix_information import BidMatrixInformationAPI
 from ._api.bid_row import BidRowAPI
+from ._api.date_specification import DateSpecificationAPI
 from ._api.function_input import FunctionInputAPI
 from ._api.function_output import FunctionOutputAPI
 from ._api.generator import GeneratorAPI
 from ._api.generator_efficiency_curve import GeneratorEfficiencyCurveAPI
 from ._api.market_configuration import MarketConfigurationAPI
+from ._api.multi_scenario_partial_bid_matrix_calculation_input import MultiScenarioPartialBidMatrixCalculationInputAPI
 from ._api.partial_bid_configuration import PartialBidConfigurationAPI
 from ._api.partial_bid_matrix_calculation_input import PartialBidMatrixCalculationInputAPI
 from ._api.partial_bid_matrix_calculation_output import PartialBidMatrixCalculationOutputAPI
@@ -41,7 +43,6 @@ from ._api.shop_case import ShopCaseAPI
 from ._api.shop_commands import ShopCommandsAPI
 from ._api.shop_file import ShopFileAPI
 from ._api.shop_model import ShopModelAPI
-from ._api.shop_partial_bid_matrix_calculation_input import ShopPartialBidMatrixCalculationInputAPI
 from ._api.shop_penalty_report import ShopPenaltyReportAPI
 from ._api.shop_preprocessor_input import ShopPreprocessorInputAPI
 from ._api.shop_preprocessor_output import ShopPreprocessorOutputAPI
@@ -82,9 +83,13 @@ class ShopBasedDayAheadBidProcesAPIs:
             data_classes.Alert: dm.ViewId("sp_power_ops_models", "Alert", "1"),
             data_classes.BidConfigurationDayAhead: dm.ViewId("sp_power_ops_models", "BidConfigurationDayAhead", "1"),
             data_classes.BidMatrix: dm.ViewId("sp_power_ops_models", "BidMatrix", "1"),
+            data_classes.DateSpecification: dm.ViewId("sp_power_ops_models", "DateSpecification", "1"),
             data_classes.FunctionInput: dm.ViewId("sp_power_ops_models", "FunctionInput", "1"),
             data_classes.FunctionOutput: dm.ViewId("sp_power_ops_models", "FunctionOutput", "1"),
             data_classes.MarketConfiguration: dm.ViewId("sp_power_ops_models", "MarketConfiguration", "1"),
+            data_classes.MultiScenarioPartialBidMatrixCalculationInput: dm.ViewId(
+                "sp_power_ops_models", "MultiScenarioPartialBidMatrixCalculationInput", "1"
+            ),
             data_classes.PartialBidConfiguration: dm.ViewId("sp_power_ops_models", "PartialBidConfiguration", "1"),
             data_classes.PartialBidMatrixCalculationInput: dm.ViewId(
                 "sp_power_ops_models", "PartialBidMatrixCalculationInput", "1"
@@ -104,9 +109,6 @@ class ShopBasedDayAheadBidProcesAPIs:
             data_classes.ShopCommands: dm.ViewId("sp_power_ops_models", "ShopCommands", "1"),
             data_classes.ShopFile: dm.ViewId("sp_power_ops_models", "ShopFile", "1"),
             data_classes.ShopModel: dm.ViewId("sp_power_ops_models", "ShopModel", "1"),
-            data_classes.ShopPartialBidMatrixCalculationInput: dm.ViewId(
-                "sp_power_ops_models", "ShopPartialBidMatrixCalculationInput", "1"
-            ),
             data_classes.ShopPreprocessorInput: dm.ViewId("sp_power_ops_models", "ShopPreprocessorInput", "1"),
             data_classes.ShopPreprocessorOutput: dm.ViewId("sp_power_ops_models", "ShopPreprocessorOutput", "1"),
             data_classes.ShopResult: dm.ViewId("sp_power_ops_models", "ShopResult", "1"),
@@ -124,9 +126,13 @@ class ShopBasedDayAheadBidProcesAPIs:
         self.alert = AlertAPI(client, view_by_read_class)
         self.bid_configuration_day_ahead = BidConfigurationDayAheadAPI(client, view_by_read_class)
         self.bid_matrix = BidMatrixAPI(client, view_by_read_class)
+        self.date_specification = DateSpecificationAPI(client, view_by_read_class)
         self.function_input = FunctionInputAPI(client, view_by_read_class)
         self.function_output = FunctionOutputAPI(client, view_by_read_class)
         self.market_configuration = MarketConfigurationAPI(client, view_by_read_class)
+        self.multi_scenario_partial_bid_matrix_calculation_input = MultiScenarioPartialBidMatrixCalculationInputAPI(
+            client, view_by_read_class
+        )
         self.partial_bid_configuration = PartialBidConfigurationAPI(client, view_by_read_class)
         self.partial_bid_matrix_calculation_input = PartialBidMatrixCalculationInputAPI(client, view_by_read_class)
         self.partial_bid_matrix_calculation_output = PartialBidMatrixCalculationOutputAPI(client, view_by_read_class)
@@ -140,9 +146,6 @@ class ShopBasedDayAheadBidProcesAPIs:
         self.shop_commands = ShopCommandsAPI(client, view_by_read_class)
         self.shop_file = ShopFileAPI(client, view_by_read_class)
         self.shop_model = ShopModelAPI(client, view_by_read_class)
-        self.shop_partial_bid_matrix_calculation_input = ShopPartialBidMatrixCalculationInputAPI(
-            client, view_by_read_class
-        )
         self.shop_preprocessor_input = ShopPreprocessorInputAPI(client, view_by_read_class)
         self.shop_preprocessor_output = ShopPreprocessorOutputAPI(client, view_by_read_class)
         self.shop_result = ShopResultAPI(client, view_by_read_class)
@@ -185,6 +188,7 @@ class TotalBidMatrixCalculationAPIs:
             data_classes.BidDocumentDayAhead: dm.ViewId("sp_power_ops_models", "BidDocumentDayAhead", "1"),
             data_classes.BidMatrix: dm.ViewId("sp_power_ops_models", "BidMatrix", "1"),
             data_classes.BidMatrixInformation: dm.ViewId("sp_power_ops_models", "BidMatrixInformation", "1"),
+            data_classes.DateSpecification: dm.ViewId("sp_power_ops_models", "DateSpecification", "1"),
             data_classes.FunctionInput: dm.ViewId("sp_power_ops_models", "FunctionInput", "1"),
             data_classes.FunctionOutput: dm.ViewId("sp_power_ops_models", "FunctionOutput", "1"),
             data_classes.MarketConfiguration: dm.ViewId("sp_power_ops_models", "MarketConfiguration", "1"),
@@ -220,6 +224,7 @@ class TotalBidMatrixCalculationAPIs:
         self.bid_document_day_ahead = BidDocumentDayAheadAPI(client, view_by_read_class)
         self.bid_matrix = BidMatrixAPI(client, view_by_read_class)
         self.bid_matrix_information = BidMatrixInformationAPI(client, view_by_read_class)
+        self.date_specification = DateSpecificationAPI(client, view_by_read_class)
         self.function_input = FunctionInputAPI(client, view_by_read_class)
         self.function_output = FunctionOutputAPI(client, view_by_read_class)
         self.market_configuration = MarketConfigurationAPI(client, view_by_read_class)
@@ -268,6 +273,7 @@ class WaterValueBasedDayAheadBidProcesAPIs:
             data_classes.Alert: dm.ViewId("sp_power_ops_models", "Alert", "1"),
             data_classes.BidConfigurationDayAhead: dm.ViewId("sp_power_ops_models", "BidConfigurationDayAhead", "1"),
             data_classes.BidMatrix: dm.ViewId("sp_power_ops_models", "BidMatrix", "1"),
+            data_classes.DateSpecification: dm.ViewId("sp_power_ops_models", "DateSpecification", "1"),
             data_classes.FunctionInput: dm.ViewId("sp_power_ops_models", "FunctionInput", "1"),
             data_classes.FunctionOutput: dm.ViewId("sp_power_ops_models", "FunctionOutput", "1"),
             data_classes.Generator: dm.ViewId("sp_power_ops_models", "Generator", "1"),
@@ -301,6 +307,7 @@ class WaterValueBasedDayAheadBidProcesAPIs:
         self.alert = AlertAPI(client, view_by_read_class)
         self.bid_configuration_day_ahead = BidConfigurationDayAheadAPI(client, view_by_read_class)
         self.bid_matrix = BidMatrixAPI(client, view_by_read_class)
+        self.date_specification = DateSpecificationAPI(client, view_by_read_class)
         self.function_input = FunctionInputAPI(client, view_by_read_class)
         self.function_output = FunctionOutputAPI(client, view_by_read_class)
         self.generator = GeneratorAPI(client, view_by_read_class)
@@ -350,6 +357,7 @@ class DayAheadConfigurationAPIs:
     def __init__(self, client: CogniteClient):
         view_by_read_class = {
             data_classes.BidConfigurationDayAhead: dm.ViewId("sp_power_ops_models", "BidConfigurationDayAhead", "1"),
+            data_classes.DateSpecification: dm.ViewId("sp_power_ops_models", "DateSpecification", "1"),
             data_classes.Generator: dm.ViewId("sp_power_ops_models", "Generator", "1"),
             data_classes.GeneratorEfficiencyCurve: dm.ViewId("sp_power_ops_models", "GeneratorEfficiencyCurve", "1"),
             data_classes.MarketConfiguration: dm.ViewId("sp_power_ops_models", "MarketConfiguration", "1"),
@@ -377,6 +385,7 @@ class DayAheadConfigurationAPIs:
         self._client = client
 
         self.bid_configuration_day_ahead = BidConfigurationDayAheadAPI(client, view_by_read_class)
+        self.date_specification = DateSpecificationAPI(client, view_by_read_class)
         self.generator = GeneratorAPI(client, view_by_read_class)
         self.generator_efficiency_curve = GeneratorEfficiencyCurveAPI(client, view_by_read_class)
         self.market_configuration = MarketConfigurationAPI(client, view_by_read_class)
@@ -533,6 +542,7 @@ class DayAheadBidAPIs:
             data_classes.BidDocumentDayAhead: dm.ViewId("sp_power_ops_models", "BidDocumentDayAhead", "1"),
             data_classes.BidMatrix: dm.ViewId("sp_power_ops_models", "BidMatrix", "1"),
             data_classes.BidMatrixInformation: dm.ViewId("sp_power_ops_models", "BidMatrixInformation", "1"),
+            data_classes.DateSpecification: dm.ViewId("sp_power_ops_models", "DateSpecification", "1"),
             data_classes.MarketConfiguration: dm.ViewId("sp_power_ops_models", "MarketConfiguration", "1"),
             data_classes.PartialBidConfiguration: dm.ViewId("sp_power_ops_models", "PartialBidConfiguration", "1"),
             data_classes.PartialBidMatrixInformation: dm.ViewId(
@@ -564,6 +574,7 @@ class DayAheadBidAPIs:
         self.bid_document_day_ahead = BidDocumentDayAheadAPI(client, view_by_read_class)
         self.bid_matrix = BidMatrixAPI(client, view_by_read_class)
         self.bid_matrix_information = BidMatrixInformationAPI(client, view_by_read_class)
+        self.date_specification = DateSpecificationAPI(client, view_by_read_class)
         self.market_configuration = MarketConfigurationAPI(client, view_by_read_class)
         self.partial_bid_configuration = PartialBidConfigurationAPI(client, view_by_read_class)
         self.partial_bid_matrix_information = PartialBidMatrixInformationAPI(client, view_by_read_class)
@@ -602,8 +613,8 @@ class PowerOpsModelsV1Client:
 
     Generated with:
         pygen = 0.99.22
-        cognite-sdk = 7.37.4
-        pydantic = 2.7.0
+        cognite-sdk = 7.43.1
+        pydantic = 2.7.1
 
     """
 

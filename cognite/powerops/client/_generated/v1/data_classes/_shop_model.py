@@ -24,6 +24,7 @@ from ._core import (
 
 if TYPE_CHECKING:
     from ._shop_attribute_mapping import ShopAttributeMapping, ShopAttributeMappingGraphQL, ShopAttributeMappingWrite
+    from ._shop_file import ShopFile, ShopFileGraphQL, ShopFileWrite
 
 
 __all__ = [
@@ -38,10 +39,8 @@ __all__ = [
 ]
 
 
-ShopModelTextFields = Literal["name", "version_", "shop_version", "model", "extra_files"]
-ShopModelFields = Literal[
-    "name", "version_", "shop_version", "penalty_limit", "model", "cog_shop_files_config", "extra_files"
-]
+ShopModelTextFields = Literal["name", "version_", "shop_version", "model"]
+ShopModelFields = Literal["name", "version_", "shop_version", "penalty_limit", "model"]
 
 _SHOPMODEL_PROPERTIES_BY_FIELD = {
     "name": "name",
@@ -49,8 +48,6 @@ _SHOPMODEL_PROPERTIES_BY_FIELD = {
     "shop_version": "shopVersion",
     "penalty_limit": "penaltyLimit",
     "model": "model",
-    "cog_shop_files_config": "cogShopFilesConfig",
-    "extra_files": "extraFiles",
 }
 
 
@@ -70,7 +67,6 @@ class ShopModelGraphQL(GraphQLCore, protected_namespaces=()):
         penalty_limit: TODO
         model: The shop model file to use as template before applying base mapping
         cog_shop_files_config: Configuration for in what order to load the various files into pyshop
-        extra_files: Extra files related to a model template
         base_attribute_mappings: The base mappings for the model
     """
 
@@ -80,8 +76,7 @@ class ShopModelGraphQL(GraphQLCore, protected_namespaces=()):
     shop_version: Optional[str] = Field(None, alias="shopVersion")
     penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
     model: Union[dict, None] = None
-    cog_shop_files_config: Optional[list[dict]] = Field(None, alias="cogShopFilesConfig")
-    extra_files: Optional[list[dict]] = Field(None, alias="extraFiles")
+    cog_shop_files_config: Optional[list[ShopFileGraphQL]] = Field(default=None, repr=False, alias="cogShopFilesConfig")
     base_attribute_mappings: Optional[list[ShopAttributeMappingGraphQL]] = Field(
         default=None, repr=False, alias="baseAttributeMappings"
     )
@@ -97,13 +92,7 @@ class ShopModelGraphQL(GraphQLCore, protected_namespaces=()):
             )
         return values
 
-    @field_validator("extra_files", mode="before")
-    def clean_list(cls, value: Any) -> Any:
-        if isinstance(value, list):
-            return [v for v in value if v is not None] or None
-        return value
-
-    @field_validator("base_attribute_mappings", mode="before")
+    @field_validator("cog_shop_files_config", "base_attribute_mappings", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
             return value
@@ -128,8 +117,14 @@ class ShopModelGraphQL(GraphQLCore, protected_namespaces=()):
             shop_version=self.shop_version,
             penalty_limit=self.penalty_limit,
             model=self.model["externalId"] if self.model and "externalId" in self.model else None,
-            cog_shop_files_config=self.cog_shop_files_config,
-            extra_files=[item["externalId"] for item in self.extra_files or [] if "externalId" in item] or None,
+            cog_shop_files_config=[
+                (
+                    cog_shop_files_config.as_read()
+                    if isinstance(cog_shop_files_config, GraphQLCore)
+                    else cog_shop_files_config
+                )
+                for cog_shop_files_config in self.cog_shop_files_config or []
+            ],
             base_attribute_mappings=[
                 (
                     base_attribute_mapping.as_read()
@@ -151,8 +146,14 @@ class ShopModelGraphQL(GraphQLCore, protected_namespaces=()):
             shop_version=self.shop_version,
             penalty_limit=self.penalty_limit,
             model=self.model["externalId"] if self.model and "externalId" in self.model else None,
-            cog_shop_files_config=self.cog_shop_files_config,
-            extra_files=[item["externalId"] for item in self.extra_files or [] if "externalId" in item] or None,
+            cog_shop_files_config=[
+                (
+                    cog_shop_files_config.as_write()
+                    if isinstance(cog_shop_files_config, DomainModel)
+                    else cog_shop_files_config
+                )
+                for cog_shop_files_config in self.cog_shop_files_config or []
+            ],
             base_attribute_mappings=[
                 (
                     base_attribute_mapping.as_write()
@@ -179,7 +180,6 @@ class ShopModel(DomainModel, protected_namespaces=()):
         penalty_limit: TODO
         model: The shop model file to use as template before applying base mapping
         cog_shop_files_config: Configuration for in what order to load the various files into pyshop
-        extra_files: Extra files related to a model template
         base_attribute_mappings: The base mappings for the model
     """
 
@@ -190,8 +190,9 @@ class ShopModel(DomainModel, protected_namespaces=()):
     shop_version: str = Field(alias="shopVersion")
     penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
     model: Union[str, None] = None
-    cog_shop_files_config: Optional[list[dict]] = Field(None, alias="cogShopFilesConfig")
-    extra_files: Optional[list[str]] = Field(None, alias="extraFiles")
+    cog_shop_files_config: Union[list[ShopFile], list[str], list[dm.NodeId], None] = Field(
+        default=None, repr=False, alias="cogShopFilesConfig"
+    )
     base_attribute_mappings: Union[list[ShopAttributeMapping], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="baseAttributeMappings"
     )
@@ -207,8 +208,14 @@ class ShopModel(DomainModel, protected_namespaces=()):
             shop_version=self.shop_version,
             penalty_limit=self.penalty_limit,
             model=self.model,
-            cog_shop_files_config=self.cog_shop_files_config,
-            extra_files=self.extra_files,
+            cog_shop_files_config=[
+                (
+                    cog_shop_files_config.as_write()
+                    if isinstance(cog_shop_files_config, DomainModel)
+                    else cog_shop_files_config
+                )
+                for cog_shop_files_config in self.cog_shop_files_config or []
+            ],
             base_attribute_mappings=[
                 (
                     base_attribute_mapping.as_write()
@@ -244,7 +251,6 @@ class ShopModelWrite(DomainModelWrite, protected_namespaces=()):
         penalty_limit: TODO
         model: The shop model file to use as template before applying base mapping
         cog_shop_files_config: Configuration for in what order to load the various files into pyshop
-        extra_files: Extra files related to a model template
         base_attribute_mappings: The base mappings for the model
     """
 
@@ -255,8 +261,9 @@ class ShopModelWrite(DomainModelWrite, protected_namespaces=()):
     shop_version: str = Field(alias="shopVersion")
     penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
     model: Union[str, None] = None
-    cog_shop_files_config: Optional[list[dict]] = Field(None, alias="cogShopFilesConfig")
-    extra_files: Optional[list[str]] = Field(None, alias="extraFiles")
+    cog_shop_files_config: Union[list[ShopFileWrite], list[str], list[dm.NodeId], None] = Field(
+        default=None, repr=False, alias="cogShopFilesConfig"
+    )
     base_attribute_mappings: Union[list[ShopAttributeMappingWrite], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="baseAttributeMappings"
     )
@@ -288,14 +295,8 @@ class ShopModelWrite(DomainModelWrite, protected_namespaces=()):
         if self.penalty_limit is not None or write_none:
             properties["penaltyLimit"] = self.penalty_limit
 
-        if self.model is not None:
+        if self.model is not None or write_none:
             properties["model"] = self.model
-
-        if self.cog_shop_files_config is not None or write_none:
-            properties["cogShopFilesConfig"] = self.cog_shop_files_config
-
-        if self.extra_files is not None or write_none:
-            properties["extraFiles"] = self.extra_files
 
         if properties:
             this_node = dm.NodeApply(
@@ -312,6 +313,19 @@ class ShopModelWrite(DomainModelWrite, protected_namespaces=()):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
+
+        edge_type = dm.DirectRelationReference("sp_power_ops_types", "ShopModel.cogShopFilesConfig")
+        for cog_shop_files_config in self.cog_shop_files_config or []:
+            other_resources = DomainRelationWrite.from_edge_to_resources(
+                cache,
+                start_node=self,
+                end_node=cog_shop_files_config,
+                edge_type=edge_type,
+                view_by_read_class=view_by_read_class,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
+            )
+            resources.extend(other_resources)
 
         edge_type = dm.DirectRelationReference("sp_power_ops_types", "ShopModel.baseAttributeMappings")
         for base_attribute_mapping in self.base_attribute_mappings or []:

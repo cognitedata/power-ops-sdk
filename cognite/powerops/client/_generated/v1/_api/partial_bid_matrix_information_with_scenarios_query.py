@@ -167,7 +167,7 @@ class PartialBidMatrixInformationWithScenariosQueryAPI(QueryAPI[T_DomainModelLis
             self._query_append_partial_bid_configuration(from_)
         return AlertQueryAPI(self._client, self._builder, self._view_by_read_class, node_filer, limit)
 
-    def intermediate_bid_matrices(
+    def underlying_bid_matrices(
         self,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
@@ -180,7 +180,7 @@ class PartialBidMatrixInformationWithScenariosQueryAPI(QueryAPI[T_DomainModelLis
         retrieve_power_asset: bool = False,
         retrieve_partial_bid_configuration: bool = False,
     ) -> BidMatrixQueryAPI[T_DomainModelList]:
-        """Query along the intermediate bid matrice edges of the partial bid matrix information with scenario.
+        """Query along the underlying bid matrice edges of the partial bid matrix information with scenario.
 
         Args:
             state: The state to filter on.
@@ -190,7 +190,7 @@ class PartialBidMatrixInformationWithScenariosQueryAPI(QueryAPI[T_DomainModelLis
             external_id_prefix_edge: The prefix of the external ID to filter on.
             space_edge: The space to filter on.
             filter: (Advanced) Filter applied to node. If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            limit: Maximum number of intermediate bid matrice edges to return. Defaults to 3. Set to -1, float("inf") or None
+            limit: Maximum number of underlying bid matrice edges to return. Defaults to 3. Set to -1, float("inf") or None
                 to return all items.
             retrieve_power_asset: Whether to retrieve the power asset for each partial bid matrix information with scenario or not.
             retrieve_partial_bid_configuration: Whether to retrieve the partial bid configuration for each partial bid matrix information with scenario or not.
@@ -208,7 +208,7 @@ class PartialBidMatrixInformationWithScenariosQueryAPI(QueryAPI[T_DomainModelLis
         )
         self._builder.append(
             QueryStep(
-                name=self._builder.next_name("intermediate_bid_matrices"),
+                name=self._builder.next_name("underlying_bid_matrices"),
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,

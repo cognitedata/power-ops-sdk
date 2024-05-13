@@ -42,23 +42,25 @@ if TYPE_CHECKING:
 
 
 __all__ = [
-    "ShopPartialBidMatrixCalculationInput",
-    "ShopPartialBidMatrixCalculationInputWrite",
-    "ShopPartialBidMatrixCalculationInputApply",
-    "ShopPartialBidMatrixCalculationInputList",
-    "ShopPartialBidMatrixCalculationInputWriteList",
-    "ShopPartialBidMatrixCalculationInputApplyList",
-    "ShopPartialBidMatrixCalculationInputFields",
-    "ShopPartialBidMatrixCalculationInputTextFields",
+    "MultiScenarioPartialBidMatrixCalculationInput",
+    "MultiScenarioPartialBidMatrixCalculationInputWrite",
+    "MultiScenarioPartialBidMatrixCalculationInputApply",
+    "MultiScenarioPartialBidMatrixCalculationInputList",
+    "MultiScenarioPartialBidMatrixCalculationInputWriteList",
+    "MultiScenarioPartialBidMatrixCalculationInputApplyList",
+    "MultiScenarioPartialBidMatrixCalculationInputFields",
+    "MultiScenarioPartialBidMatrixCalculationInputTextFields",
 ]
 
 
-ShopPartialBidMatrixCalculationInputTextFields = Literal["workflow_execution_id", "function_name", "function_call_id"]
-ShopPartialBidMatrixCalculationInputFields = Literal[
+MultiScenarioPartialBidMatrixCalculationInputTextFields = Literal[
+    "workflow_execution_id", "function_name", "function_call_id"
+]
+MultiScenarioPartialBidMatrixCalculationInputFields = Literal[
     "workflow_execution_id", "workflow_step", "function_name", "function_call_id", "bid_date"
 ]
 
-_SHOPPARTIALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD = {
+_MULTISCENARIOPARTIALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD = {
     "workflow_execution_id": "workflowExecutionId",
     "workflow_step": "workflowStep",
     "function_name": "functionName",
@@ -67,16 +69,16 @@ _SHOPPARTIALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD = {
 }
 
 
-class ShopPartialBidMatrixCalculationInputGraphQL(GraphQLCore):
-    """This represents the reading version of shop partial bid matrix calculation input, used
+class MultiScenarioPartialBidMatrixCalculationInputGraphQL(GraphQLCore):
+    """This represents the reading version of multi scenario partial bid matrix calculation input, used
     when data is retrieved from CDF using GraphQL.
 
     It is used when retrieving data from CDF using GraphQL.
 
     Args:
         space: The space where the node is located.
-        external_id: The external id of the shop partial bid matrix calculation input.
-        data_record: The data record of the shop partial bid matrix calculation input node.
+        external_id: The external id of the multi scenario partial bid matrix calculation input.
+        data_record: The data record of the multi scenario partial bid matrix calculation input node.
         workflow_execution_id: The process associated with the function execution
         workflow_step: This is the step in the process.
         function_name: The name of the function
@@ -87,7 +89,7 @@ class ShopPartialBidMatrixCalculationInputGraphQL(GraphQLCore):
         price_production: An array of shop results with price/prod time series pairs for all plants included in the respective shop scenario
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "ShopPartialBidMatrixCalculationInput", "1")
+    view_id = dm.ViewId("sp_power_ops_models", "MultiScenarioPartialBidMatrixCalculationInput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
@@ -118,11 +120,11 @@ class ShopPartialBidMatrixCalculationInputGraphQL(GraphQLCore):
             return value["items"]
         return value
 
-    def as_read(self) -> ShopPartialBidMatrixCalculationInput:
-        """Convert this GraphQL format of shop partial bid matrix calculation input to the reading format."""
+    def as_read(self) -> MultiScenarioPartialBidMatrixCalculationInput:
+        """Convert this GraphQL format of multi scenario partial bid matrix calculation input to the reading format."""
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
-        return ShopPartialBidMatrixCalculationInput(
+        return MultiScenarioPartialBidMatrixCalculationInput(
             space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecord(
@@ -151,9 +153,9 @@ class ShopPartialBidMatrixCalculationInputGraphQL(GraphQLCore):
             ],
         )
 
-    def as_write(self) -> ShopPartialBidMatrixCalculationInputWrite:
-        """Convert this GraphQL format of shop partial bid matrix calculation input to the writing format."""
-        return ShopPartialBidMatrixCalculationInputWrite(
+    def as_write(self) -> MultiScenarioPartialBidMatrixCalculationInputWrite:
+        """Convert this GraphQL format of multi scenario partial bid matrix calculation input to the writing format."""
+        return MultiScenarioPartialBidMatrixCalculationInputWrite(
             space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
@@ -179,15 +181,15 @@ class ShopPartialBidMatrixCalculationInputGraphQL(GraphQLCore):
         )
 
 
-class ShopPartialBidMatrixCalculationInput(PartialBidMatrixCalculationInput):
-    """This represents the reading version of shop partial bid matrix calculation input.
+class MultiScenarioPartialBidMatrixCalculationInput(PartialBidMatrixCalculationInput):
+    """This represents the reading version of multi scenario partial bid matrix calculation input.
 
     It is used to when data is retrieved from CDF.
 
     Args:
         space: The space where the node is located.
-        external_id: The external id of the shop partial bid matrix calculation input.
-        data_record: The data record of the shop partial bid matrix calculation input node.
+        external_id: The external id of the multi scenario partial bid matrix calculation input.
+        data_record: The data record of the multi scenario partial bid matrix calculation input node.
         workflow_execution_id: The process associated with the function execution
         workflow_step: This is the step in the process.
         function_name: The name of the function
@@ -199,15 +201,15 @@ class ShopPartialBidMatrixCalculationInput(PartialBidMatrixCalculationInput):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "ShopPartialBidMatrixCalculationInput"
+        "sp_power_ops_types", "MultiScenarioPartialBidMatrixCalculationInput"
     )
     price_production: Union[list[PriceProduction], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="priceProduction"
     )
 
-    def as_write(self) -> ShopPartialBidMatrixCalculationInputWrite:
-        """Convert this read version of shop partial bid matrix calculation input to the writing version."""
-        return ShopPartialBidMatrixCalculationInputWrite(
+    def as_write(self) -> MultiScenarioPartialBidMatrixCalculationInputWrite:
+        """Convert this read version of multi scenario partial bid matrix calculation input to the writing version."""
+        return MultiScenarioPartialBidMatrixCalculationInputWrite(
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
@@ -232,8 +234,8 @@ class ShopPartialBidMatrixCalculationInput(PartialBidMatrixCalculationInput):
             ],
         )
 
-    def as_apply(self) -> ShopPartialBidMatrixCalculationInputWrite:
-        """Convert this read version of shop partial bid matrix calculation input to the writing version."""
+    def as_apply(self) -> MultiScenarioPartialBidMatrixCalculationInputWrite:
+        """Convert this read version of multi scenario partial bid matrix calculation input to the writing version."""
         warnings.warn(
             "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
             UserWarning,
@@ -242,15 +244,15 @@ class ShopPartialBidMatrixCalculationInput(PartialBidMatrixCalculationInput):
         return self.as_write()
 
 
-class ShopPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalculationInputWrite):
-    """This represents the writing version of shop partial bid matrix calculation input.
+class MultiScenarioPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalculationInputWrite):
+    """This represents the writing version of multi scenario partial bid matrix calculation input.
 
     It is used to when data is sent to CDF.
 
     Args:
         space: The space where the node is located.
-        external_id: The external id of the shop partial bid matrix calculation input.
-        data_record: The data record of the shop partial bid matrix calculation input node.
+        external_id: The external id of the multi scenario partial bid matrix calculation input.
+        data_record: The data record of the multi scenario partial bid matrix calculation input node.
         workflow_execution_id: The process associated with the function execution
         workflow_step: This is the step in the process.
         function_name: The name of the function
@@ -262,7 +264,7 @@ class ShopPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalculationInput
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "ShopPartialBidMatrixCalculationInput"
+        "sp_power_ops_types", "MultiScenarioPartialBidMatrixCalculationInput"
     )
     price_production: Union[list[PriceProductionWrite], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="priceProduction"
@@ -280,8 +282,8 @@ class ShopPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalculationInput
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            ShopPartialBidMatrixCalculationInput,
-            dm.ViewId("sp_power_ops_models", "ShopPartialBidMatrixCalculationInput", "1"),
+            MultiScenarioPartialBidMatrixCalculationInput,
+            dm.ViewId("sp_power_ops_models", "MultiScenarioPartialBidMatrixCalculationInput", "1"),
         )
 
         properties: dict[str, Any] = {}
@@ -365,28 +367,28 @@ class ShopPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalculationInput
         return resources
 
 
-class ShopPartialBidMatrixCalculationInputApply(ShopPartialBidMatrixCalculationInputWrite):
-    def __new__(cls, *args, **kwargs) -> ShopPartialBidMatrixCalculationInputApply:
+class MultiScenarioPartialBidMatrixCalculationInputApply(MultiScenarioPartialBidMatrixCalculationInputWrite):
+    def __new__(cls, *args, **kwargs) -> MultiScenarioPartialBidMatrixCalculationInputApply:
         warnings.warn(
-            "ShopPartialBidMatrixCalculationInputApply is deprecated and will be removed in v1.0. Use ShopPartialBidMatrixCalculationInputWrite instead."
+            "MultiScenarioPartialBidMatrixCalculationInputApply is deprecated and will be removed in v1.0. Use MultiScenarioPartialBidMatrixCalculationInputWrite instead."
             "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "ShopPartialBidMatrixCalculationInput.",
+            "MultiScenarioPartialBidMatrixCalculationInput.",
             UserWarning,
             stacklevel=2,
         )
         return super().__new__(cls)
 
 
-class ShopPartialBidMatrixCalculationInputList(DomainModelList[ShopPartialBidMatrixCalculationInput]):
-    """List of shop partial bid matrix calculation inputs in the read version."""
+class MultiScenarioPartialBidMatrixCalculationInputList(DomainModelList[MultiScenarioPartialBidMatrixCalculationInput]):
+    """List of multi scenario partial bid matrix calculation inputs in the read version."""
 
-    _INSTANCE = ShopPartialBidMatrixCalculationInput
+    _INSTANCE = MultiScenarioPartialBidMatrixCalculationInput
 
-    def as_write(self) -> ShopPartialBidMatrixCalculationInputWriteList:
-        """Convert these read versions of shop partial bid matrix calculation input to the writing versions."""
-        return ShopPartialBidMatrixCalculationInputWriteList([node.as_write() for node in self.data])
+    def as_write(self) -> MultiScenarioPartialBidMatrixCalculationInputWriteList:
+        """Convert these read versions of multi scenario partial bid matrix calculation input to the writing versions."""
+        return MultiScenarioPartialBidMatrixCalculationInputWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> ShopPartialBidMatrixCalculationInputWriteList:
+    def as_apply(self) -> MultiScenarioPartialBidMatrixCalculationInputWriteList:
         """Convert these read versions of primitive nullable to the writing versions."""
         warnings.warn(
             "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
@@ -396,16 +398,20 @@ class ShopPartialBidMatrixCalculationInputList(DomainModelList[ShopPartialBidMat
         return self.as_write()
 
 
-class ShopPartialBidMatrixCalculationInputWriteList(DomainModelWriteList[ShopPartialBidMatrixCalculationInputWrite]):
-    """List of shop partial bid matrix calculation inputs in the writing version."""
+class MultiScenarioPartialBidMatrixCalculationInputWriteList(
+    DomainModelWriteList[MultiScenarioPartialBidMatrixCalculationInputWrite]
+):
+    """List of multi scenario partial bid matrix calculation inputs in the writing version."""
 
-    _INSTANCE = ShopPartialBidMatrixCalculationInputWrite
+    _INSTANCE = MultiScenarioPartialBidMatrixCalculationInputWrite
 
 
-class ShopPartialBidMatrixCalculationInputApplyList(ShopPartialBidMatrixCalculationInputWriteList): ...
+class MultiScenarioPartialBidMatrixCalculationInputApplyList(
+    MultiScenarioPartialBidMatrixCalculationInputWriteList
+): ...
 
 
-def _create_shop_partial_bid_matrix_calculation_input_filter(
+def _create_multi_scenario_partial_bid_matrix_calculation_input_filter(
     view_id: dm.ViewId,
     workflow_execution_id: str | list[str] | None = None,
     workflow_execution_id_prefix: str | None = None,

@@ -181,5 +181,5 @@ def clean_containers_views_data_models():
 
 if __name__ == "__main__":
     clean_instances()
-    clean_containers_views_data_models()
+    # clean_containers_views_data_models()
     # main()

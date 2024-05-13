@@ -133,7 +133,7 @@ class PlantInformationGraphQL(GraphQLCore):
     outlet_level: Optional[float] = Field(None, alias="outletLevel")
     production_max: Optional[float] = Field(None, alias="productionMax")
     production_min: Optional[float] = Field(None, alias="productionMin")
-    penstock_head_loss_factors: Optional[dict] = Field(None, alias="penstockHeadLossFactors")
+    penstock_head_loss_factors: Optional[list[float]] = Field(None, alias="penstockHeadLossFactors")
     connection_losses: Optional[float] = Field(None, alias="connectionLosses")
     production_max_time_series: Union[TimeSeries, dict, None] = Field(None, alias="productionMaxTimeSeries")
     production_min_time_series: Union[TimeSeries, dict, None] = Field(None, alias="productionMinTimeSeries")
@@ -257,9 +257,7 @@ class PlantInformation(PlantWaterValueBased):
         generators: The generator field.
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "PlantInformation"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = None
 
     def as_write(self) -> PlantInformationWrite:
         """Convert this read version of plant information to the writing version."""
@@ -329,9 +327,7 @@ class PlantInformationWrite(PlantWaterValueBasedWrite):
         generators: The generator field.
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "PlantInformation"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = None
 
     def _to_instances_write(
         self,

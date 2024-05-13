@@ -215,7 +215,7 @@ class ShopFileWrite(DomainModelWrite):
         if self.label is not None:
             properties["label"] = self.label
 
-        if self.file_reference is not None:
+        if self.file_reference is not None or write_none:
             properties["fileReference"] = self.file_reference
 
         if self.order is not None:
