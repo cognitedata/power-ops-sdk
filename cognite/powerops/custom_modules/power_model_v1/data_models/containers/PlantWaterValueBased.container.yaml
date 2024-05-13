@@ -40,8 +40,8 @@ properties:
     name: productionMin
   penstockHeadLossFactors:
     type:
-      type: json
-      list: false
+      type: float64
+      list: true
     nullable: true
     autoIncrement: false
     name: penstockHeadLossFactors
