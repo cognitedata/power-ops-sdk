@@ -36,7 +36,7 @@ def get_prefix_from_type(domain_model_type: type) -> str:
         logger.warning(f"Type {type_name} is not a subclass of DomainModelWrite")
 
     # Convert the type name to snake case
-    external_id_prefix = to_snake(type_name).lower()
+    external_id_prefix = to_snake(type_name)
     return external_id_prefix
 
 
@@ -54,7 +54,7 @@ def get_type_prefix_from_string(type_string: str) -> str:
     """
 
     # Convert the type name to snake case
-    type_prefix = to_snake(type_string).lower()
+    type_prefix = to_snake(type_string)
     return type_prefix
 
 
