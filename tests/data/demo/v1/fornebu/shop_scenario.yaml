@@ -1,0 +1,21 @@
+# ShopScenario view definition
+# - name: String!
+#   model: ShopModel
+#   commands: ShopCommands
+#   source: String
+#   attribute_mappings_override: [ShopAttributeMapping]
+
+- name: "1"
+  model: "[name]Fornebu"
+  commands: "[name]default"
+  source: XXX
+  # attribute_mappings_override:
+  #   - "[external_id]mapping_3"
+  #   - "[external_id]mapping_4"
+- name: "2"
+  model: "[name]Fornebu"
+  commands: "[name|type:ShopCommands]default"
+  source: XXX
+  attribute_mappings_override:
+    - "[external_id]mapping_5"
+    - "[external_id]mapping_6"

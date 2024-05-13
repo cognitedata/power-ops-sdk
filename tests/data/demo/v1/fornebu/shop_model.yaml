@@ -1,0 +1,29 @@
+# ShopModel view definition
+# - name: String!
+#   version: String
+#   shopVersion: String!
+#   penaltyLimit: Float
+#   model: File!
+#   cogShopFilesConfig: [JSONObject]
+#   extraFiles: [File]
+#   baseAttributeMappings: [ShopAttributeMapping]
+
+- name: Fornebu
+  version_: "1"
+  shop_version: "15.4.1.1"
+  penalty_limit: 0.0
+  model: "[external_id]SHOP_Fornebu_model"
+  cog_shop_files_config:
+    - name: "water_value_cut_file_reservoir_mapping"
+      label: "water_value_cut_file_reservoir_mapping"
+      order: 1
+      is_ascii: True
+      file_reference: "SHOP_Fornebu_water_value_cut_file_reservoir_mapping"
+    - name: "water_value_cut_file"
+      label: "water_value_cut_file"
+      order: 2
+      is_ascii: True
+      file_reference: "SHOP_Fornebu_water_value_cut_file"
+  base_attribute_mappings:
+    - "[external_id]mapping_1"
+    - "[external_id]mapping_2"

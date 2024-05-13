@@ -1,0 +1,22 @@
+# ShopBasedPartialBidConfiguration view definition
+# - name: String!
+#   method: String
+#   power_asset: PowerAsset
+#   add_steps: Boolean!
+#   scenario_set: ShopScenarioSet
+
+- name: plant A set A
+  method: multi scenario??
+  power_asset: "[name|type:PlantWaterValueBased]Lund"
+  add_steps: false
+  scenario_set: "[name]1 scenario"
+- name: Fornebu 2
+  method: multi scenario
+  power_asset: "[external_id]plant_water_value_based_lund"
+  add_steps: false
+  scenario_set: "[external_id]shop_scenario_set_2_scenarios"
+- name: Fornebu 3
+  method: multi scenario
+  power_asset: "[external_id]plant_water_value_based_lund"
+  add_steps: false
+  scenario_set: "[name|type:ShopScenarioSet]2 scenario"
