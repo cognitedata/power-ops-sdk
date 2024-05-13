@@ -29,7 +29,7 @@ properties:
     type:
       type: direct
       list: false
-    nullable: false
+    nullable: true
     autoIncrement: false
     name: bidDateSpecification
     description: TODO

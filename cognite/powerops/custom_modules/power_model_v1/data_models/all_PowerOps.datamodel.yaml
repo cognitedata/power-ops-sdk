@@ -231,3 +231,7 @@ views:
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
+  - externalId: DateSpecification
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"

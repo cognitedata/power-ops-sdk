@@ -64,13 +64,18 @@ properties:
     name: model
     description: The shop model file to use as template before applying base mapping
   cogShopFilesConfig:
-    container:
+    type:
+      space: "{{power_ops_type_space}}"
+      externalId: ShopModel.cogShopFilesConfig
+    source:
       space: "{{power_ops_models}}"
-      externalId: ShopModel
-      type: container
-    containerPropertyIdentifier: cogShopFilesConfig
+      externalId: ShopFile
+      version: "{{version}}"
+      type: view
+    direction: outwards
     name: cogShopFilesConfig
     description: Configuration for in what order to load the various files into pyshop
+    connectionType: multi_edge_connection
   extraFiles:
     container:
       space: "{{power_ops_models}}"

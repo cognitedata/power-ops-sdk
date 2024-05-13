@@ -112,6 +112,8 @@ def clean_instances():
     t0 = time.perf_counter()
     spaces = [MODEL_SPACE, INSTANCE_SPACE, TYPE_SPACE]
 
+    print(f"Connected to {client.config.project}")
+
     for space in spaces:
 
         for edges in client.data_modeling.instances(instance_type="edge", space=space, limit=-1, chunk_size=100):
@@ -151,6 +153,8 @@ def clean_containers_views_data_models():
     t0 = time.perf_counter()
     spaces = [MODEL_SPACE, INSTANCE_SPACE, TYPE_SPACE]
 
+    print(f"Connected to {client.config.project}")
+
     for space in spaces:
         views = client.data_modeling.views.list(space=space, limit=-1, all_versions=True).as_ids()
 
@@ -176,6 +180,6 @@ def clean_containers_views_data_models():
 
 
 if __name__ == "__main__":
-    # clean_instances()
-    # clean_containers_views_data_models()
-    main()
+    clean_instances()
+    clean_containers_views_data_models()
+    # main()
