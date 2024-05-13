@@ -1,4 +1,3 @@
-# TODO: Update
 space: "{{power_ops_models}}"
 externalId: TaskDispatcherBenchmarkingOutput
 name: TaskDispatcherBenchmarkingOutput
@@ -36,3 +35,16 @@ properties:
       externalId: TaskDispatcherBenchmarkingInput
       version: "{{version}}"
       type: view
+  benchmarkingShopRunInputs:
+    type:
+      space: "{{power_ops_type_space}}"
+      externalId: benchmarkingShopRunInputs
+    source:
+      space: "{{power_ops_models}}"
+      externalId: DayAheadBenchmarkingShopRunInput
+      version: "{{version}}"
+      type: view
+    direction: outwards
+    name: benchmarkingShopRunInputs
+    description: An array of benchmarking shop run inputs.
+    connectionType: multi_edge_connection

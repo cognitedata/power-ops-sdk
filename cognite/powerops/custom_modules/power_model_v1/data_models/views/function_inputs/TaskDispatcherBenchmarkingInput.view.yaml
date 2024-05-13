@@ -1,4 +1,3 @@
-# TODO: Update
 space: "{{power_ops_models}}"
 externalId: TaskDispatcherBenchmarkingInput
 name: TaskDispatcherBenchmarkingInput
@@ -28,15 +27,28 @@ implements:
     type: view
 version: "{{version}}"
 properties:
-  bidDocument:
+  benchmarkingConfig:
     container:
       space: "{{power_ops_models}}"
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct1
-    name: bidDocument
+    name: benchmarkingConfig
     source:
       space: "{{power_ops_models}}"
-      externalId: BidDocumentDayAheadSimple
+      externalId: DayAheadBenchmarkingConfiguration
       version: "{{version}}"
       type: view
+#bidDocument:
+#  container:
+#    space: "{{power_ops_models}}"
+#    externalId: FunctionData
+#    type: container
+#  containerPropertyIdentifier: direct1
+#  name: bidDocument
+#  source:
+#    space: "{{power_ops_models}}"
+#    externalId: BidDocumentDayAheadSimple
+#    version: "{{version}}"
+#    type: view
+#
