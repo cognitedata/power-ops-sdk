@@ -1,0 +1,17 @@
+# ShopScenarioSet view definition
+# - name: String!
+#   start_specification: String!
+#   end_specification: String!
+#   scenarios: [ShopScenario]
+
+- name: 1 scenario
+  start_specification: '[["shift", {"days": -400}], ["floor", "day"]]'
+  end_specification: '[["shift", {"days": -400}], ["floor", "week"], ["shift", {"weeks": 2}]]'
+  scenarios:
+    - "[external_id]shop_scenario_1"
+- name: 2 scenarios
+  start_specification: '[["shift", {"days": -400}], ["floor", "day"]]'
+  end_specification: '[["shift", {"days": -400}], ["floor", "week"], ["shift", {"weeks": 2}]]'
+  scenarios:
+    - "[name]1"
+    - "[name|type:ShopScenario]2"

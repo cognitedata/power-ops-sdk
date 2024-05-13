@@ -14,10 +14,14 @@ Changes are grouped as follows
 - `Security` in case of vulnerabilities.
 
 
+
+## [0.94.3] - 2024-05-11
+### Added
+* Support for FDM v1 resync
+
 ## [0.94.2] - 2024-05-06
 ### Fixed
 * Bump pygen and regenerate powerops sdk to include bugfix for handling CDF native resource types; Sequence, File, in data class fields
-
 
 ## [0.94.1] - 2024-04-22
 ### Changed
