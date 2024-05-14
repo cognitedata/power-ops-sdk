@@ -71,6 +71,10 @@ views:
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
+  - externalId: ShopOutputTimeSeriesDefinition
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
   - externalId: ShopScenario
     space: "{{power_ops_models}}"
     type: view

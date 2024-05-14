@@ -52,6 +52,7 @@ properties:
       collation: ucs_basic
       type: text
     nullable: true
+    defaultValue: "RANGE"
     autoIncrement: false
     name: retrieve
     description: How to retrieve time series data
@@ -61,6 +62,7 @@ properties:
       collation: ucs_basic
       type: text
     nullable: true
+    defaultValue: "mean"
     autoIncrement: false
     name: aggregation
     description: How to aggregate time series data

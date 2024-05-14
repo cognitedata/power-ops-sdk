@@ -14,6 +14,15 @@ Changes are grouped as follows
 - `Security` in case of vulnerabilities.
 
 ## [0.94.4] - 2024-05-13
+### Added
+* Type DateSpecification to replace previous string format with de
+  * With default value for property processingTimezone as UTC
+  * With default value for property resultingTimezone as UTC
+* Type ShopOutputTimeSeriesDefinition to replace previous static sequence
+* Property outputDefinition in ShopScenario as a list of ShopOutputTimeSeriesDefinition
+* Default value for property retrieve in ShopAttributeMapping as "RANGE"
+* Default value for property aggregation in ShopAttributeMapping as "mean"
+
 ### Changed
 * Renamed ShopPartialBidMatrixCalculationInput to MultiScenarioPartialBidMatrixCalculationInput
 * Replaced "date specification" properties as a string JSON type with a new type DateSpecification

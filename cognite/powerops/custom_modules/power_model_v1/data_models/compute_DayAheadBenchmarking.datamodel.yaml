@@ -72,3 +72,7 @@ views:
     externalId: PartialBidConfiguration
     version: "{{version}}"
     type: view
+  - externalId: ShopOutputTimeSeriesDefinition
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"

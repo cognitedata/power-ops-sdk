@@ -58,6 +58,19 @@ properties:
     containerPropertyIdentifier: source
     name: source
     description: The source of the scenario
+  outputDefinition:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopScenario
+      type: container
+    containerPropertyIdentifier: outputDefinition
+    name: outputDefinition
+    description: The outputDefinition to run
+    source:
+      space: "{{power_ops_models}}"
+      externalId: ShopOutputTimeSeriesDefinition
+      version: "{{version}}"
+      type: view
   attributeMappingsOverride:
     type:
       space: "{{power_ops_type_space}}"
