@@ -56,3 +56,15 @@ views:
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
+  - externalId: BidSource
+    space: "{{power_ops_models}}"
+    version: "{{version}}"
+    type: view
+  - externalId: BenchmarkingCollectorOutput
+    space: "{{power_ops_models}}"
+    version: "{{version}}"
+    type: view
+  - externalId: BenchmarkingCollectorInput
+    space: "{{power_ops_models}}"
+    version: "{{version}}"
+    type: view

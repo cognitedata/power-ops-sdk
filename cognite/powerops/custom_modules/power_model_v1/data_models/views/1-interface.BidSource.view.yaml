@@ -1,6 +1,7 @@
 space: "{{power_ops_models}}"
 externalId: BidSource
 name: BidSource
+description: TODO
 filter:
   and:
     - hasData:
@@ -16,9 +17,6 @@ implements: []
 version: "{{version}}"
 properties:
   timeseries:
-    type:
-      list: false
-      type: timeseries
     container:
       type: container
       space: '{{power_ops_models}}'
@@ -27,10 +25,6 @@ properties:
     name: timeseries
     description: TODO
   name:
-    type:
-      list: false
-      collation: ucs_basic
-      type: text
     container:
       type: container
       space: '{{power_ops_models}}'
