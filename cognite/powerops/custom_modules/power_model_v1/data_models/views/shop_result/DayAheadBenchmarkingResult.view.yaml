@@ -38,7 +38,7 @@ properties:  # TODO: no alerts here?
     description: The delivery date
   bidGenerated:
     container:
-      space: "power_ops_models"
+      space: "{{power_ops_models}}"
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: timestamp1
@@ -71,7 +71,7 @@ properties:  # TODO: no alerts here?
       type: view
   isSelected:
     container:
-      space: "power_ops_models"
+      space: "{{power_ops_models}}"
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: flag  # TODO: Is nullable ok?
@@ -84,3 +84,4 @@ properties:  # TODO: no alerts here?
       type: container
     containerPropertyIdentifier: value1  # TODO: Is nullable ok?
     name: value
+    description: TODO
