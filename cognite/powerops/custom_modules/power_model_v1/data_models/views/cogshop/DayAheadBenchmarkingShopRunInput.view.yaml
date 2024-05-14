@@ -1,8 +1,65 @@
-# Should probably add fields processId, processStep and functionName (?)
-    "The SHOP Scenario (with all details like model and time series)"
-    case: ShopCase # Do we want ShopCase or ShopScenario+shopStartTime+shopEndTime?
-
-    # A BidConfiguration, or DayAheadProductionObligationForBenchmarking, or a simple instance of BidSource for "upper bound"
-    bidSource: BidSource
-    deliveryDate: Date
-    bidGenerated: Timestamp # We don't have this for the "external" bids with the current structure (we could add deliveryDate and bidGenerated timestamp to type DayAheadProductionObligationForBenchmarking, but then we would need a lot of instances of it, instead of letting this be a "stable" config)
+space: "{{power_ops_models}}"
+externalId: DayAheadBenchmarkingShopRunInput
+name: DayAheadBenchmarkingShopRunInput
+description: Class for inputs to shop runs used for day ahead benchmarking
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models}}"
+          externalId: FunctionData
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: DayAheadBenchmarkingShopRunInput
+          space: "{{power_ops_type_space}}"
+implements:
+  - space: "{{power_ops_models}}"
+    externalId: FunctionInput
+    version: "{{version}}"
+    type: view
+version: "{{version}}"
+properties:
+  case:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
+    name: case
+    description: The scenario that is used in the shop run
+    source:
+      space: "{{power_ops_models}}"
+      externalId: ShopCase
+      version: "{{version}}"
+      type: view
+  bidSource:  # A BidConfiguration, or DayAheadProductionObligationForBenchmarking, or a simple instance of BidSource for "upper bound"
+    container:
+      space: "{{power_ops_models}}"
+      externalId: BidSource
+      type: container
+    containerPropertyIdentifier: bidSource
+    name: bidSource
+  deliveryDate:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: date1
+    name: deliveryDate
+    description: The delivery date
+  bidGenerated:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: PartialBidConfiguration
+      type: container
+    containerPropertyIdentifier: addSteps  # TODO: Do we need an own container for bidGenerated or can we just use the addSteps identifier in the PartialBidConfiguration container?
+    name: bidGenerated
+    description: True if a bid had been generated
