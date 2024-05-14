@@ -1,0 +1,46 @@
+space: "{{power_ops_models}}"
+externalId: DayAheadProductionObligationForBenchmarking
+name: DayAheadProductionObligationForBenchmarking
+description: TODO
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models}}"
+          externalId: BidSource
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          space: "{{power_ops_type_space}}"
+          externalId: DayAheadProductionObligationForBenchmarking
+implements:
+  - space: "{{power_ops_models}}"
+    externalId: BidSource
+    version: "{{version}}"
+    type: view
+version: "{{version}}"
+properties:
+  timeseries:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: timeseries
+    description: The time series of the day ahead production obligation for benchmarking
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+    description: The name of the day ahead production obligation for benchmarking
