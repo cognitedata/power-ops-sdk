@@ -41,7 +41,7 @@ properties:  # TODO: no alerts here?
       space: "power_ops_models"
       externalId: FunctionData
       type: container
-    containerPropertyIdentifier: flag  # TODO: Is nullable ok?
+    containerPropertyIdentifier: timestamp1
     name: bidGenerated
     description: True if a bid had been generated
   shopResult:
@@ -74,7 +74,7 @@ properties:  # TODO: no alerts here?
       space: "power_ops_models"
       externalId: FunctionData
       type: container
-    containerPropertyIdentifier: flag2  # TODO: Is nullable ok?
+    containerPropertyIdentifier: flag  # TODO: Is nullable ok?
     name: isSelected
     description: Flag to indicate whether or not the one result is shown in the UI.
   value:
