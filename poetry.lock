@@ -564,13 +564,13 @@ format = ["black (>=24.1.0)"]
 
 [[package]]
 name = "cognite-sdk"
-version = "7.43.1"
+version = "7.43.2"
 description = "Cognite Python SDK"
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "cognite_sdk-7.43.1-py3-none-any.whl", hash = "sha256:d4ed4d45a6f82e0fba1b20dc0db779bcb478749d9019333f214425b1c6992e13"},
-    {file = "cognite_sdk-7.43.1.tar.gz", hash = "sha256:7f994f2a5405baf3688e22f2147ec5147980d8e996639605749ef1943f4ee65b"},
+    {file = "cognite_sdk-7.43.2-py3-none-any.whl", hash = "sha256:400265f95da69b02a7fdcfd9e3737f8544fe2f1367b1cb039b0a0ec69ec5e882"},
+    {file = "cognite_sdk-7.43.2.tar.gz", hash = "sha256:ace67850fe86573d72c9f92406e8c602b1330b4131c56372b6913945dc3533c8"},
 ]
 
 [package.dependencies]
@@ -1876,13 +1876,13 @@ test-ui = ["calysto-bash"]
 
 [[package]]
 name = "keyring"
-version = "25.2.0"
+version = "25.2.1"
 description = "Store and access your passwords safely."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "keyring-25.2.0-py3-none-any.whl", hash = "sha256:19f17d40335444aab84b19a0d16a77ec0758a9c384e3446ae2ed8bd6d53b67a5"},
-    {file = "keyring-25.2.0.tar.gz", hash = "sha256:7045f367268ce42dba44745050164b431e46f6e92f99ef2937dfadaef368d8cf"},
+    {file = "keyring-25.2.1-py3-none-any.whl", hash = "sha256:2458681cdefc0dbc0b7eb6cf75d0b98e59f9ad9b2d4edd319d18f68bdca95e50"},
+    {file = "keyring-25.2.1.tar.gz", hash = "sha256:daaffd42dbda25ddafb1ad5fec4024e5bbcfe424597ca1ca452b299861e49f1b"},
 ]
 
 [package.dependencies]
@@ -4691,13 +4691,13 @@ zstd = ["zstandard (>=0.18.0)"]
 
 [[package]]
 name = "virtualenv"
-version = "20.26.1"
+version = "20.26.2"
 description = "Virtual Python Environment builder"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "virtualenv-20.26.1-py3-none-any.whl", hash = "sha256:7aa9982a728ae5892558bff6a2839c00b9ed145523ece2274fad6f414690ae75"},
-    {file = "virtualenv-20.26.1.tar.gz", hash = "sha256:604bfdceaeece392802e6ae48e69cec49168b9c5f4a44e483963f9242eb0e78b"},
+    {file = "virtualenv-20.26.2-py3-none-any.whl", hash = "sha256:a624db5e94f01ad993d476b9ee5346fdf7b9de43ccaee0e0197012dc838a0e9b"},
+    {file = "virtualenv-20.26.2.tar.gz", hash = "sha256:82bf0f4eebbb78d36ddaee0283d43fe5736b53880b8a8cdcd37390a07ac3741c"},
 ]
 
 [package.dependencies]
@@ -4849,4 +4849,4 @@ docs = ["mkdocs", "mkdocs-git-authors-plugin", "mkdocs-git-revision-date-localiz
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.13"
-content-hash = "b5dab0b55fe21a9d6748c5bc30d17670056eb643d6db172f4dbcf3e1ec256da3"
+content-hash = "55dfbaae611a7713cef65c5de54a41c7a70653fa3e9978e9f9cd77733a280307"

@@ -22,6 +22,7 @@ Changes are grouped as follows
 
 ### Removed
 * Removed property extraFiles from ShopModel
+* Removed unused/redundant y property from EfficiencyCurve container
 
 ### Fixed
 * All file/sequence/timeseries references to be nullable
