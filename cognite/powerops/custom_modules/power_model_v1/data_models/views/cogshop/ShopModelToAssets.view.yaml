@@ -7,7 +7,7 @@ filter:
     - hasData:
         - type: container
           space: "{{power_ops_models}}"
-          externalId: ShopModelToAssets
+          externalId: FunctionData
     - equals:
         property:
           - node
@@ -26,9 +26,9 @@ properties:
   shopModel:
     container:
       space: "{{power_ops_models}}"
-      externalId: ShopScenario
+      externalId: FunctionData
       type: container
-    containerPropertyIdentifier: model
+    containerPropertyIdentifier: direct1
     name: shopModel
     description: Todo
     source:

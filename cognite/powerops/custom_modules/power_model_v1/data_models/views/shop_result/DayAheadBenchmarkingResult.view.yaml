@@ -1,0 +1,86 @@
+space: "{{power_ops_models}}"
+externalId: DayAheadBenchmarkingResult
+name: DayAheadBenchmarkingResult
+description: A generic shop result type that collects all time series outputs from SHOP. This type replaces the POWEROPS_SHOP_RUN event in cdf today
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models}}"
+          externalId: FunctionData
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+implements: []
+version: "{{version}}"
+properties:  # TODO: no alerts here?
+  bidSource:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: FunctionData
+      type: container
+    source:
+      space: "{{power_ops_models}}"
+      externalId: BidSource
+      version: "{{version}}"
+      type: view
+    containerPropertyIdentifier: direct1
+    name: bidSource
+  deliveryDate:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: date1
+    name: deliveryDate
+    description: The delivery date
+  bidGenerated:
+    container:
+      space: "sp_power_ops_models"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: flag  # TODO: Is nullable ok?
+    name: bidGenerated
+    description: True if a bid had been generated
+  shopResult:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct2
+    name: shopResult
+    source:
+      space: "{{power_ops_models}}"
+      externalId: ShopResult
+      version: "{{version}}"
+      type: view
+  shopModel:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct3
+    name: shopModel
+    description: Todo
+    source:
+      space: "{{power_ops_models}}"
+      externalId: ShopModel
+      version: "{{version}}"
+      type: view
+  isSelected:
+    container:
+      space: "sp_power_ops_models"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: flag  # TODO: Is nullable ok?
+    name: isSelected
+    description: Flag to indicate whether or not the one result is shown in the UI.
+  value:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: value1  # TODO: Is nullable ok?
+    name: value
