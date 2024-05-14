@@ -58,8 +58,8 @@ properties:
   bidGenerated:
     container:
       space: "{{power_ops_models}}"
-      externalId: PartialBidConfiguration
+      externalId: FunctionData
       type: container
-    containerPropertyIdentifier: addSteps  # TODO: Do we need an own container for bidGenerated or can we just use the addSteps identifier in the PartialBidConfiguration container?
+    containerPropertyIdentifier: flag  # TODO: Is nullable ok?
     name: bidGenerated
     description: True if a bid had been generated

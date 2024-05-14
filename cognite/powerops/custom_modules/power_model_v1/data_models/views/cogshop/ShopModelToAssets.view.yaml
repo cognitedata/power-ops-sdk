@@ -36,78 +36,29 @@ properties:
       externalId: ShopModel
       version: "{{version}}"
       type: view
-
   powerAssets:
-
-  productionObligations:
-
-
-  name:
-    container:
-      space: "{{power_ops_models}}"
-      externalId: ShopModel
-      type: container
-    containerPropertyIdentifier: name
-    name: name
-    description: TODO
-  version:
-    container:
-      space: "{{power_ops_models}}"
-      externalId: ShopModel
-      type: container
-    containerPropertyIdentifier: version
-    name: version
-    description: The version of the model
-  shopVersion:
-    container:
-      space: "{{power_ops_models}}"
-      externalId: ShopModel
-      type: container
-    containerPropertyIdentifier: shopVersion
-    name: shopVersion
-    description: The version of SHOP to run
-  penaltyLimit:
-    container:
-      space: "{{power_ops_models}}"
-      externalId: ShopModel
-      type: container
-    containerPropertyIdentifier: penaltyLimit
-    name: penaltyLimit
-    description: TODO
-  model:
-    container:
-      space: "{{power_ops_models}}"
-      externalId: ShopModel
-      type: container
-    containerPropertyIdentifier: model
-    name: model
-    description: The shop model file to use as template before applying base mapping
-  cogShopFilesConfig:
-    container:
-      space: "{{power_ops_models}}"
-      externalId: ShopModel
-      type: container
-    containerPropertyIdentifier: cogShopFilesConfig
-    name: cogShopFilesConfig
-    description: Configuration for in what order to load the various files into pyshop
-  extraFiles:
-    container:
-      space: "{{power_ops_models}}"
-      externalId: ShopModel
-      type: container
-    containerPropertyIdentifier: extraFiles
-    name: extraFiles
-    description: Extra files related to a model template
-  baseAttributeMappings:
     type:
       space: "{{power_ops_type_space}}"
-      externalId: ShopModel.baseAttributeMappings
+      externalId: isSubAssetOf
     source:
       space: "{{power_ops_models}}"
-      externalId: ShopAttributeMapping
+      externalId: PowerAsset
       version: "{{version}}"
       type: view
     direction: outwards
-    name: baseAttributeMappings
-    description: The base mappings for the model
+    name: powerAssets
+    description: A list of power assets covered by the Shop model. For a given bid document, we will select the partial bids for these assets, and calculate production obligation for these partial bids (summed up)"
+    connectionType: multi_edge_connection
+  productionObligations:
+    type:
+      space: "{{power_ops_type_space}}"
+      externalId: isSubAssetOf
+    source:
+      space: "{{power_ops_models}}"
+      externalId: DayAheadProductionObligationForBenchmarking
+      version: "{{version}}"
+      type: view
+    direction: outwards
+    name: productionObligations
+    description: TODO
     connectionType: multi_edge_connection
