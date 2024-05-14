@@ -19,6 +19,8 @@ Changes are grouped as follows
 * Replaced "date specification" properties as a string JSON type with a new type DateSpecification
 * Type of property cogShopFilesConfig in ShopModel to be a list of ShopFile
 * Type of property penstockHeadLossFactors to a list of float instead of JSON
+* Renamed objectiveSequence property in ShopResult to objectiveValue
+* Type of property objectiveValue (previously objectiveSequence) in ShopResult to a JSON instead of sequence
 
 ### Removed
 * Removed property extraFiles from ShopModel
