@@ -32,10 +32,32 @@ properties:
     name: name
     description: The name of the benchmarking configuration
   bidConfigurations:
-    # TODO
+    type:
+      space: "{{power_ops_type_space}}"
+      externalId: isSubAssetOf
+    source:
+      space: "{{power_ops_models}}"
+      externalId: BidConfigurationDayAhead_benchmarking
+      version: "{{version}}"
+      type: view
+    direction: outwards
+    name: bidConfigurations
+    description: A list of bid configurations used for day ahead benchmarking
+    connectionType: multi_edge_connection
   assetsPerShopModel:
-    # TODO
-  priceArea:
+    type:
+      space: "{{power_ops_type_space}}"
+      externalId: isSubAssetOf
+    source:
+      space: "{{power_ops_models}}"
+      externalId: ShopModelToAssets
+      version: "{{version}}"
+      type: view
+    direction: outwards
+    name: assetsPerShopModel
+    description: TODO
+    connectionType: multi_edge_connection
+  priceArea:  # TODO: Should we take this from the bidConfigurations?
     container:
       space: "{{power_ops_models}}"
       externalId: BidConfiguration
@@ -49,6 +71,18 @@ properties:
       version: "{{version}}"
       type: view
   shopStartSpecification:
-    # TODO
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopScenarioSet  # TODO: Ok to use this container?
+      type: container
+    containerPropertyIdentifier: startSpecification
+    name: startSpecification
+    description: TODO definition
   shopEndSpecification:
-    # TODO
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopScenarioSet  # TODO: Ok to use this container?
+      type: container
+    containerPropertyIdentifier: endSpecification
+    name: endSpecification
+    description: TODO definition
