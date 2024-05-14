@@ -6,7 +6,7 @@ filter:
     - hasData:
         - type: container
           space: "{{power_ops_models}}"
-          externalId: BidSource
+          externalId: FunctionData
     - equals:
         property:
           - node
