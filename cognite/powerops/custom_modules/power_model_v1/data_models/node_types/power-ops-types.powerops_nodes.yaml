@@ -154,3 +154,5 @@
   externalId: TaskDispatcherBenchmarkingOutput
 - space: "{{power_ops_type_space}}"
   externalId: ShopObjectiveValue
+- space: "{{power_ops_type_space}}"
+  externalId: DayAheadBenchmarkingShopRunInput

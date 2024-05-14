@@ -171,6 +171,12 @@ properties:
     nullable: true
     autoIncrement: false
     name: flag
+  flag2:
+    type:
+      type: boolean
+    nullable: true
+    autoIncrement: false
+    name: flag2
 indexes:
   functionNameIndex:
     properties:

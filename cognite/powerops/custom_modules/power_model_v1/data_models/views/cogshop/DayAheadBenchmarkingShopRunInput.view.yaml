@@ -43,9 +43,9 @@ properties:
   bidSource:  # A BidConfiguration, or DayAheadProductionObligationForBenchmarking, or a simple instance of BidSource for "upper bound"
     container:
       space: "{{power_ops_models}}"
-      externalId: BidSource
+      externalId: FunctionData
       type: container
-    containerPropertyIdentifier: bidSource
+    containerPropertyIdentifier: direct2
     name: bidSource
   deliveryDate:
     container:

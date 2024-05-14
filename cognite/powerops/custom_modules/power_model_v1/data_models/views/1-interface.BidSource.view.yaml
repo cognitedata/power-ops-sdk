@@ -19,8 +19,11 @@ properties:
     type:
       list: false
       type: timeseries
-    nullable: true
-    autoIncrement: false
+    container:
+      type: container
+      space: '{{power_ops_models}}'
+      externalId: FunctionData
+    containerPropertyIdentifier: timeSeries1
     name: timeseries
     description: TODO
   name:
@@ -28,7 +31,10 @@ properties:
       list: false
       collation: ucs_basic
       type: text
-    nullable: false
-    autoIncrement: false
+    container:
+      type: container
+      space: '{{power_ops_models}}'
+      externalId: FunctionData
+    containerPropertyIdentifier: text1
     name: name
     description: The name of the bid source

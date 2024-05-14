@@ -38,7 +38,7 @@ properties:  # TODO: no alerts here?
     description: The delivery date
   bidGenerated:
     container:
-      space: "sp_power_ops_models"
+      space: "power_ops_models"
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: flag  # TODO: Is nullable ok?
@@ -71,10 +71,10 @@ properties:  # TODO: no alerts here?
       type: view
   isSelected:
     container:
-      space: "sp_power_ops_models"
+      space: "power_ops_models"
       externalId: FunctionData
       type: container
-    containerPropertyIdentifier: flag  # TODO: Is nullable ok?
+    containerPropertyIdentifier: flag2  # TODO: Is nullable ok?
     name: isSelected
     description: Flag to indicate whether or not the one result is shown in the UI.
   value:

@@ -33,7 +33,7 @@ properties:
       list: false
     container:
       type: container
-      space: '{{shared_model_space}}'
+      space: '{{power_ops_models}}'
       externalId: FunctionData
     containerPropertyIdentifier: timeSeries1
     name: timeseries
@@ -43,7 +43,10 @@ properties:
       list: false
       collation: ucs_basic
       type: text
-    nullable: false
-    autoIncrement: false
+    container:
+      type: container
+      space: '{{power_ops_models}}'
+      externalId: FunctionData
+    containerPropertyIdentifier: text1
     name: name
     description: The name of the day ahead production obligation for benchmarking
