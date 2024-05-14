@@ -7,7 +7,7 @@ filter:
     - hasData:
         - type: container
           space: "{{power_ops_models}}"
-          externalId: BidSource
+          externalId: FunctionData
     - equals:
         property:
           - node
@@ -29,10 +29,13 @@ version: "{{version}}"
 properties:
   timeseries:
     type:
-      list: false
       type: timeseries
-    nullable: true
-    autoIncrement: false
+      list: false
+    container:
+      type: container
+      space: '{{shared_model_space}}'
+      externalId: FunctionData
+    containerPropertyIdentifier: timeSeries1
     name: timeseries
     description: The time series of the day ahead production obligation for benchmarking
   name:
