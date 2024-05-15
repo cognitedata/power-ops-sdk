@@ -41,11 +41,12 @@ __all__ = [
 
 
 ShopScenarioTextFields = Literal["name", "source"]
-ShopScenarioFields = Literal["name", "source"]
+ShopScenarioFields = Literal["name", "source", "output_definition"]
 
 _SHOPSCENARIO_PROPERTIES_BY_FIELD = {
     "name": "name",
     "source": "source",
+    "output_definition": "outputDefinition",
 }
 
 
@@ -63,6 +64,7 @@ class ShopScenarioGraphQL(GraphQLCore, protected_namespaces=()):
         model: The model template to use when running the scenario
         commands: The commands to run
         source: The source of the scenario
+        output_definition: The outputDefinition to run
         attribute_mappings_override: An array of base mappings to override in shop model file
     """
 
@@ -71,6 +73,7 @@ class ShopScenarioGraphQL(GraphQLCore, protected_namespaces=()):
     model: Optional[ShopModelGraphQL] = Field(None, repr=False)
     commands: Optional[ShopCommandsGraphQL] = Field(None, repr=False)
     source: Optional[str] = None
+    output_definition: Optional[list[str]] = Field(None, alias="outputDefinition")
     attribute_mappings_override: Optional[list[ShopAttributeMappingGraphQL]] = Field(
         default=None, repr=False, alias="attributeMappingsOverride"
     )
@@ -110,6 +113,7 @@ class ShopScenarioGraphQL(GraphQLCore, protected_namespaces=()):
             model=self.model.as_read() if isinstance(self.model, GraphQLCore) else self.model,
             commands=self.commands.as_read() if isinstance(self.commands, GraphQLCore) else self.commands,
             source=self.source,
+            output_definition=self.output_definition,
             attribute_mappings_override=[
                 (
                     attribute_mappings_override.as_read()
@@ -130,6 +134,7 @@ class ShopScenarioGraphQL(GraphQLCore, protected_namespaces=()):
             model=self.model.as_write() if isinstance(self.model, DomainModel) else self.model,
             commands=self.commands.as_write() if isinstance(self.commands, DomainModel) else self.commands,
             source=self.source,
+            output_definition=self.output_definition,
             attribute_mappings_override=[
                 (
                     attribute_mappings_override.as_write()
@@ -154,6 +159,7 @@ class ShopScenario(DomainModel, protected_namespaces=()):
         model: The model template to use when running the scenario
         commands: The commands to run
         source: The source of the scenario
+        output_definition: The outputDefinition to run
         attribute_mappings_override: An array of base mappings to override in shop model file
     """
 
@@ -163,6 +169,7 @@ class ShopScenario(DomainModel, protected_namespaces=()):
     model: Union[ShopModel, str, dm.NodeId, None] = Field(None, repr=False)
     commands: Union[ShopCommands, str, dm.NodeId, None] = Field(None, repr=False)
     source: Optional[str] = None
+    output_definition: Optional[list[str]] = Field(None, alias="outputDefinition")
     attribute_mappings_override: Union[list[ShopAttributeMapping], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="attributeMappingsOverride"
     )
@@ -177,6 +184,7 @@ class ShopScenario(DomainModel, protected_namespaces=()):
             model=self.model.as_write() if isinstance(self.model, DomainModel) else self.model,
             commands=self.commands.as_write() if isinstance(self.commands, DomainModel) else self.commands,
             source=self.source,
+            output_definition=self.output_definition,
             attribute_mappings_override=[
                 (
                     attribute_mappings_override.as_write()
@@ -210,6 +218,7 @@ class ShopScenarioWrite(DomainModelWrite, protected_namespaces=()):
         model: The model template to use when running the scenario
         commands: The commands to run
         source: The source of the scenario
+        output_definition: The outputDefinition to run
         attribute_mappings_override: An array of base mappings to override in shop model file
     """
 
@@ -219,6 +228,7 @@ class ShopScenarioWrite(DomainModelWrite, protected_namespaces=()):
     model: Union[ShopModelWrite, str, dm.NodeId, None] = Field(None, repr=False)
     commands: Union[ShopCommandsWrite, str, dm.NodeId, None] = Field(None, repr=False)
     source: Optional[str] = None
+    output_definition: Optional[list[str]] = Field(None, alias="outputDefinition")
     attribute_mappings_override: Union[list[ShopAttributeMappingWrite], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="attributeMappingsOverride"
     )
@@ -255,6 +265,9 @@ class ShopScenarioWrite(DomainModelWrite, protected_namespaces=()):
 
         if self.source is not None or write_none:
             properties["source"] = self.source
+
+        if self.output_definition is not None or write_none:
+            properties["outputDefinition"] = self.output_definition
 
         if properties:
             this_node = dm.NodeApply(

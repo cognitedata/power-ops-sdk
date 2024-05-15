@@ -826,6 +826,7 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE = {
         "ShopBasedPartialBidConfiguration": data_classes.ShopBasedPartialBidConfigurationGraphQL,
         "ShopFile": data_classes.ShopFileGraphQL,
         "DateSpecification": data_classes.DateSpecificationGraphQL,
+        "ShopOutputTimeSeriesDefinition": data_classes.ShopOutputTimeSeriesDefinitionGraphQL,
     },
     dm.DataModelId("sp_power_ops_models", "compute_TotalBidMatrixCalculation", "1"): {
         "BidMatrix": data_classes.BidMatrixGraphQL,
@@ -854,6 +855,7 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE = {
         "BidConfigurationDayAhead": data_classes.BidConfigurationDayAheadGraphQL,
         "ShopFile": data_classes.ShopFileGraphQL,
         "DateSpecification": data_classes.DateSpecificationGraphQL,
+        "ShopOutputTimeSeriesDefinition": data_classes.ShopOutputTimeSeriesDefinitionGraphQL,
     },
     dm.DataModelId("sp_power_ops_models", "compute_WaterValueBasedDayAheadBid", "1"): {
         "TaskDispatcherInput": data_classes.TaskDispatcherInputGraphQL,
@@ -900,6 +902,7 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE = {
         "PlantInformation": data_classes.PlantInformationGraphQL,
         "PlantWaterValueBased": data_classes.PlantWaterValueBasedGraphQL,
         "DateSpecification": data_classes.DateSpecificationGraphQL,
+        "ShopOutputTimeSeriesDefinition": data_classes.ShopOutputTimeSeriesDefinitionGraphQL,
     },
     dm.DataModelId("sp_power_ops_models", "frontend_AFRRBid", "1"): {
         "BidDocumentAFRR": data_classes.BidDocumentAFRRGraphQL,
@@ -952,5 +955,6 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE = {
         "PartialBidMatrixInformationWithScenarios": data_classes.PartialBidMatrixInformationWithScenariosGraphQL,
         "ShopPenaltyReport": data_classes.ShopPenaltyReportGraphQL,
         "DateSpecification": data_classes.DateSpecificationGraphQL,
+        "ShopOutputTimeSeriesDefinition": data_classes.ShopOutputTimeSeriesDefinitionGraphQL,
     },
 }

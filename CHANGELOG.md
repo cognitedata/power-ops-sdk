@@ -30,6 +30,7 @@ Changes are grouped as follows
 * Type of property penstockHeadLossFactors to a list of float instead of JSON
 * Renamed objectiveSequence property in ShopResult to objectiveValue
 * Type of property objectiveValue (previously objectiveSequence) in ShopResult to a JSON instead of sequence
+* Renamed property X in BidMatrixInformation to underlyingBidMatrices
 
 ### Removed
 * Removed property extraFiles from ShopModel

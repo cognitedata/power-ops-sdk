@@ -43,6 +43,7 @@ from ._api.shop_case import ShopCaseAPI
 from ._api.shop_commands import ShopCommandsAPI
 from ._api.shop_file import ShopFileAPI
 from ._api.shop_model import ShopModelAPI
+from ._api.shop_output_time_series_definition import ShopOutputTimeSeriesDefinitionAPI
 from ._api.shop_penalty_report import ShopPenaltyReportAPI
 from ._api.shop_preprocessor_input import ShopPreprocessorInputAPI
 from ._api.shop_preprocessor_output import ShopPreprocessorOutputAPI
@@ -109,6 +110,9 @@ class ShopBasedDayAheadBidProcesAPIs:
             data_classes.ShopCommands: dm.ViewId("sp_power_ops_models", "ShopCommands", "1"),
             data_classes.ShopFile: dm.ViewId("sp_power_ops_models", "ShopFile", "1"),
             data_classes.ShopModel: dm.ViewId("sp_power_ops_models", "ShopModel", "1"),
+            data_classes.ShopOutputTimeSeriesDefinition: dm.ViewId(
+                "sp_power_ops_models", "ShopOutputTimeSeriesDefinition", "1"
+            ),
             data_classes.ShopPreprocessorInput: dm.ViewId("sp_power_ops_models", "ShopPreprocessorInput", "1"),
             data_classes.ShopPreprocessorOutput: dm.ViewId("sp_power_ops_models", "ShopPreprocessorOutput", "1"),
             data_classes.ShopResult: dm.ViewId("sp_power_ops_models", "ShopResult", "1"),
@@ -146,6 +150,7 @@ class ShopBasedDayAheadBidProcesAPIs:
         self.shop_commands = ShopCommandsAPI(client, view_by_read_class)
         self.shop_file = ShopFileAPI(client, view_by_read_class)
         self.shop_model = ShopModelAPI(client, view_by_read_class)
+        self.shop_output_time_series_definition = ShopOutputTimeSeriesDefinitionAPI(client, view_by_read_class)
         self.shop_preprocessor_input = ShopPreprocessorInputAPI(client, view_by_read_class)
         self.shop_preprocessor_output = ShopPreprocessorOutputAPI(client, view_by_read_class)
         self.shop_result = ShopResultAPI(client, view_by_read_class)
@@ -205,6 +210,9 @@ class TotalBidMatrixCalculationAPIs:
             data_classes.ShopCommands: dm.ViewId("sp_power_ops_models", "ShopCommands", "1"),
             data_classes.ShopFile: dm.ViewId("sp_power_ops_models", "ShopFile", "1"),
             data_classes.ShopModel: dm.ViewId("sp_power_ops_models", "ShopModel", "1"),
+            data_classes.ShopOutputTimeSeriesDefinition: dm.ViewId(
+                "sp_power_ops_models", "ShopOutputTimeSeriesDefinition", "1"
+            ),
             data_classes.ShopResult: dm.ViewId("sp_power_ops_models", "ShopResult", "1"),
             data_classes.ShopScenario: dm.ViewId("sp_power_ops_models", "ShopScenario", "1"),
             data_classes.ShopTimeSeries: dm.ViewId("sp_power_ops_models", "ShopTimeSeries", "1"),
@@ -239,6 +247,7 @@ class TotalBidMatrixCalculationAPIs:
         self.shop_commands = ShopCommandsAPI(client, view_by_read_class)
         self.shop_file = ShopFileAPI(client, view_by_read_class)
         self.shop_model = ShopModelAPI(client, view_by_read_class)
+        self.shop_output_time_series_definition = ShopOutputTimeSeriesDefinitionAPI(client, view_by_read_class)
         self.shop_result = ShopResultAPI(client, view_by_read_class)
         self.shop_scenario = ShopScenarioAPI(client, view_by_read_class)
         self.shop_time_series = ShopTimeSeriesAPI(client, view_by_read_class)
@@ -374,6 +383,9 @@ class DayAheadConfigurationAPIs:
             ),
             data_classes.ShopCommands: dm.ViewId("sp_power_ops_models", "ShopCommands", "1"),
             data_classes.ShopModel: dm.ViewId("sp_power_ops_models", "ShopModel", "1"),
+            data_classes.ShopOutputTimeSeriesDefinition: dm.ViewId(
+                "sp_power_ops_models", "ShopOutputTimeSeriesDefinition", "1"
+            ),
             data_classes.ShopScenario: dm.ViewId("sp_power_ops_models", "ShopScenario", "1"),
             data_classes.ShopScenarioSet: dm.ViewId("sp_power_ops_models", "ShopScenarioSet", "1"),
             data_classes.TurbineEfficiencyCurve: dm.ViewId("sp_power_ops_models", "TurbineEfficiencyCurve", "1"),
@@ -400,6 +412,7 @@ class DayAheadConfigurationAPIs:
         self.shop_based_partial_bid_configuration = ShopBasedPartialBidConfigurationAPI(client, view_by_read_class)
         self.shop_commands = ShopCommandsAPI(client, view_by_read_class)
         self.shop_model = ShopModelAPI(client, view_by_read_class)
+        self.shop_output_time_series_definition = ShopOutputTimeSeriesDefinitionAPI(client, view_by_read_class)
         self.shop_scenario = ShopScenarioAPI(client, view_by_read_class)
         self.shop_scenario_set = ShopScenarioSetAPI(client, view_by_read_class)
         self.turbine_efficiency_curve = TurbineEfficiencyCurveAPI(client, view_by_read_class)
@@ -560,6 +573,9 @@ class DayAheadBidAPIs:
             data_classes.ShopCommands: dm.ViewId("sp_power_ops_models", "ShopCommands", "1"),
             data_classes.ShopFile: dm.ViewId("sp_power_ops_models", "ShopFile", "1"),
             data_classes.ShopModel: dm.ViewId("sp_power_ops_models", "ShopModel", "1"),
+            data_classes.ShopOutputTimeSeriesDefinition: dm.ViewId(
+                "sp_power_ops_models", "ShopOutputTimeSeriesDefinition", "1"
+            ),
             data_classes.ShopPenaltyReport: dm.ViewId("sp_power_ops_models", "ShopPenaltyReport", "1"),
             data_classes.ShopResult: dm.ViewId("sp_power_ops_models", "ShopResult", "1"),
             data_classes.ShopScenario: dm.ViewId("sp_power_ops_models", "ShopScenario", "1"),
@@ -590,6 +606,7 @@ class DayAheadBidAPIs:
         self.shop_commands = ShopCommandsAPI(client, view_by_read_class)
         self.shop_file = ShopFileAPI(client, view_by_read_class)
         self.shop_model = ShopModelAPI(client, view_by_read_class)
+        self.shop_output_time_series_definition = ShopOutputTimeSeriesDefinitionAPI(client, view_by_read_class)
         self.shop_penalty_report = ShopPenaltyReportAPI(client, view_by_read_class)
         self.shop_result = ShopResultAPI(client, view_by_read_class)
         self.shop_scenario = ShopScenarioAPI(client, view_by_read_class)
@@ -613,7 +630,7 @@ class PowerOpsModelsV1Client:
 
     Generated with:
         pygen = 0.99.22
-        cognite-sdk = 7.43.1
+        cognite-sdk = 7.43.2
         pydantic = 2.7.1
 
     """

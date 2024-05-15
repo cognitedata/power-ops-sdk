@@ -17,7 +17,7 @@ properties:
       list: false
       collation: ucs_basic
       type: text
-    nullable: true
+    nullable: false
     autoIncrement: false
     name: objectType
     description: The type of the object
@@ -26,7 +26,7 @@ properties:
       list: false
       collation: ucs_basic
       type: text
-    nullable: true
+    nullable: false
     autoIncrement: false
     name: objectName
     description: The name of the object
@@ -35,7 +35,7 @@ properties:
       list: false
       collation: ucs_basic
       type: text
-    nullable: true
+    nullable: false
     autoIncrement: false
     name: attributeName
     description: The name of the attribute
@@ -44,7 +44,7 @@ properties:
       list: false
       collation: ucs_basic
       type: text
-    nullable: true
+    nullable: false
     autoIncrement: false
     name: unit
     description: The unit of the object
@@ -53,6 +53,7 @@ properties:
       list: false
       type: boolean
     nullable: true
+    defaultValue: true
     autoIncrement: false
     name: isStep
     description: Is the output using step

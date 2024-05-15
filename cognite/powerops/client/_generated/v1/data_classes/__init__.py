@@ -396,6 +396,17 @@ from ._shop_model import (
     ShopModelWrite,
     ShopModelWriteList,
 )
+from ._shop_output_time_series_definition import (
+    ShopOutputTimeSeriesDefinition,
+    ShopOutputTimeSeriesDefinitionApply,
+    ShopOutputTimeSeriesDefinitionApplyList,
+    ShopOutputTimeSeriesDefinitionFields,
+    ShopOutputTimeSeriesDefinitionGraphQL,
+    ShopOutputTimeSeriesDefinitionList,
+    ShopOutputTimeSeriesDefinitionTextFields,
+    ShopOutputTimeSeriesDefinitionWrite,
+    ShopOutputTimeSeriesDefinitionWriteList,
+)
 from ._shop_penalty_report import (
     ShopPenaltyReport,
     ShopPenaltyReportApply,
@@ -1051,6 +1062,15 @@ __all__ = [
     "ShopModelApplyList",
     "ShopModelFields",
     "ShopModelTextFields",
+    "ShopOutputTimeSeriesDefinition",
+    "ShopOutputTimeSeriesDefinitionGraphQL",
+    "ShopOutputTimeSeriesDefinitionWrite",
+    "ShopOutputTimeSeriesDefinitionApply",
+    "ShopOutputTimeSeriesDefinitionList",
+    "ShopOutputTimeSeriesDefinitionWriteList",
+    "ShopOutputTimeSeriesDefinitionApplyList",
+    "ShopOutputTimeSeriesDefinitionFields",
+    "ShopOutputTimeSeriesDefinitionTextFields",
     "ShopPenaltyReport",
     "ShopPenaltyReportGraphQL",
     "ShopPenaltyReportWrite",
