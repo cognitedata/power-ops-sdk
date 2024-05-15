@@ -32,31 +32,21 @@ properties:
     name: name
     description: The name of the benchmarking configuration
   bidConfigurations:
-    type:
-      space: "{{power_ops_type_space}}"
-      externalId: BidConfigurationDayAhead_benchmarking
-    source:
+    container:
       space: "{{power_ops_models}}"
-      externalId: BidConfigurationDayAhead_benchmarking
-      version: "{{version}}"
-      type: view
-    direction: outwards
+      externalId: DayAheadBenchmarkingConfiguration
+      type: container
+    containerPropertyIdentifier: bidConfigurations
     name: bidConfigurations
     description: A list of bid configurations used for day ahead benchmarking
-    connectionType: multi_edge_connection
   assetsPerShopModel:
-    type:
-      space: "{{power_ops_type_space}}"
-      externalId: ShopModelToAssets
-    source:
+    container:
       space: "{{power_ops_models}}"
-      externalId: ShopModelToAssets
-      version: "{{version}}"
-      type: view
-    direction: outwards
+      externalId: DayAheadBenchmarkingConfiguration
+      type: container
+    containerPropertyIdentifier: assetsPerShopModel
     name: assetsPerShopModel
     description: TODO
-    connectionType: multi_edge_connection
   priceArea:  # TODO: Should we take this from the bidConfigurations?
     container:
       space: "{{power_ops_models}}"

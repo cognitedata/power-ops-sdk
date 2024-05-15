@@ -11,6 +11,20 @@ properties:
     nullable: false
     autoIncrement: false
     name: name
+  bidConfigurations:
+    type:
+      type: direct
+      list: true
+    nullable: true
+    autoIncrement: false
+    name: bidConfigurations
+  assetsPerShopModel:
+    type:
+      type: direct
+      list: true
+    nullable: true
+    autoIncrement: false
+    name: assetsPerShopModel
   priceArea:
     type:
       type: direct
