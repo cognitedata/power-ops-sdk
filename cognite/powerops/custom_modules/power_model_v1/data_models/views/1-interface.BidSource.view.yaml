@@ -7,7 +7,7 @@ filter:
     - hasData:
         - type: container
           space: "{{power_ops_models}}"
-          externalId: FunctionData
+          externalId: BidSource
     - equals:
         property:
           - node
@@ -20,15 +20,15 @@ properties:
     container:
       type: container
       space: '{{power_ops_models}}'
-      externalId: FunctionData
-    containerPropertyIdentifier: timeSeries1
+      externalId: BidSource
+    containerPropertyIdentifier: timeseries
     name: timeseries
     description: TODO
   name:
     container:
       type: container
       space: '{{power_ops_models}}'
-      externalId: FunctionData
-    containerPropertyIdentifier: text1
+      externalId: BidSource
+    containerPropertyIdentifier: name
     name: name
     description: The name of the bid source

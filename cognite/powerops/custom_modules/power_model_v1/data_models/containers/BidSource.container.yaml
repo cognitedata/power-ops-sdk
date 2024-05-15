@@ -1,0 +1,27 @@
+space: "{{power_ops_models}}"
+externalId: BidSource
+name: BidSource
+usedFor: node
+properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+  timeseries:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: timeseries
+    description: TODO
+indexes:
+  nameIndex:
+    properties:
+      - name
+    indexType: btree
+    cursorable: false
