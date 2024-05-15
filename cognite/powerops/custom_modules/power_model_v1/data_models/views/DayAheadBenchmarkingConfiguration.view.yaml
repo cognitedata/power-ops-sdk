@@ -7,7 +7,7 @@ filter:
     - hasData:
         - type: container
           space: "{{power_ops_models}}"
-          externalId: BidConfiguration  # TODO: yes?
+          externalId: DayAheadBenchmarkingConfiguration
     - equals:
         property:
           - node
@@ -26,7 +26,7 @@ properties:
   name:
     container:
       space: "{{power_ops_models}}"
-      externalId: BidConfiguration
+      externalId: DayAheadBenchmarkingConfiguration
       type: container
     containerPropertyIdentifier: name
     name: name
@@ -34,7 +34,7 @@ properties:
   bidConfigurations:
     type:
       space: "{{power_ops_type_space}}"
-      externalId: isSubAssetOf
+      externalId: BidConfigurationDayAhead_benchmarking
     source:
       space: "{{power_ops_models}}"
       externalId: BidConfigurationDayAhead_benchmarking
@@ -47,7 +47,7 @@ properties:
   assetsPerShopModel:
     type:
       space: "{{power_ops_type_space}}"
-      externalId: isSubAssetOf
+      externalId: ShopModelToAssets
     source:
       space: "{{power_ops_models}}"
       externalId: ShopModelToAssets
@@ -60,7 +60,7 @@ properties:
   priceArea:  # TODO: Should we take this from the bidConfigurations?
     container:
       space: "{{power_ops_models}}"
-      externalId: BidConfiguration
+      externalId: DayAheadBenchmarkingConfiguration
       type: container
     containerPropertyIdentifier: priceArea
     name: priceArea
@@ -73,16 +73,16 @@ properties:
   shopStartSpecification:
     container:
       space: "{{power_ops_models}}"
-      externalId: ShopScenarioSet  # TODO: Ok to use this container?
+      externalId: DayAheadBenchmarkingConfiguration
       type: container
-    containerPropertyIdentifier: startSpecification
-    name: startSpecification
+    containerPropertyIdentifier: shopStartSpecification
+    name: shopStartSpecification
     description: TODO definition
   shopEndSpecification:
     container:
       space: "{{power_ops_models}}"
-      externalId: ShopScenarioSet  # TODO: Ok to use this container?
+      externalId: DayAheadBenchmarkingConfiguration
       type: container
-    containerPropertyIdentifier: endSpecification
-    name: endSpecification
+    containerPropertyIdentifier: shopEndSpecification
+    name: shopEndSpecification
     description: TODO definition
