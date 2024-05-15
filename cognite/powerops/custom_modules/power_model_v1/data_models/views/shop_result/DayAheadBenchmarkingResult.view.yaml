@@ -1,55 +1,62 @@
 space: "{{power_ops_models}}"
 externalId: DayAheadBenchmarkingResult
 name: DayAheadBenchmarkingResult
-description: A generic shop result type that collects all time series outputs from SHOP. This type replaces the POWEROPS_SHOP_RUN event in cdf today
+description: todo
 filter:
   and:
     - hasData:
         - type: container
           space: "{{power_ops_models}}"
-          externalId: FunctionData
+          externalId: DayAheadBenchmarkingResult
     - equals:
         property:
           - node
           - space
         value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: DayAheadBenchmarkingResult
+          space: "{{power_ops_type_space}}"
 implements: []
 version: "{{version}}"
 properties:  # TODO: no alerts here?
   bidSource:
     container:
       space: "{{power_ops_models}}"
-      externalId: FunctionData
+      externalId: DayAheadBenchmarkingResult
       type: container
     source:
       space: "{{power_ops_models}}"
       externalId: BidSource
       version: "{{version}}"
       type: view
-    containerPropertyIdentifier: direct1
+    containerPropertyIdentifier: bidSource
     name: bidSource
   deliveryDate:
     container:
       space: "{{power_ops_models}}"
-      externalId: FunctionData
+      externalId: DayAheadBenchmarkingResult
       type: container
-    containerPropertyIdentifier: date1
+    containerPropertyIdentifier: deliveryDate
     name: deliveryDate
     description: The delivery date
   bidGenerated:
     container:
       space: "{{power_ops_models}}"
-      externalId: FunctionData
+      externalId: DayAheadBenchmarkingResult
       type: container
-    containerPropertyIdentifier: timestamp1
+    containerPropertyIdentifier: bidGenerated
     name: bidGenerated
     description: True if a bid had been generated
   shopResult:
     container:
       space: "{{power_ops_models}}"
-      externalId: FunctionData
+      externalId: DayAheadBenchmarkingResult
       type: container
-    containerPropertyIdentifier: direct2
+    containerPropertyIdentifier: shopResult
     name: shopResult
     source:
       space: "{{power_ops_models}}"
@@ -59,9 +66,9 @@ properties:  # TODO: no alerts here?
   shopModel:
     container:
       space: "{{power_ops_models}}"
-      externalId: FunctionData
+      externalId: DayAheadBenchmarkingResult
       type: container
-    containerPropertyIdentifier: direct3
+    containerPropertyIdentifier: shopModel
     name: shopModel
     description: Todo
     source:
@@ -72,16 +79,16 @@ properties:  # TODO: no alerts here?
   isSelected:
     container:
       space: "{{power_ops_models}}"
-      externalId: FunctionData
+      externalId: DayAheadBenchmarkingResult
       type: container
-    containerPropertyIdentifier: flag  # TODO: Is nullable ok?
+    containerPropertyIdentifier: isSelected
     name: isSelected
     description: Flag to indicate whether or not the one result is shown in the UI.
   value:
     container:
       space: "{{power_ops_models}}"
-      externalId: FunctionData
+      externalId: DayAheadBenchmarkingResult
       type: container
-    containerPropertyIdentifier: value1  # TODO: Is nullable ok?
+    containerPropertyIdentifier: value
     name: value
     description: TODO
