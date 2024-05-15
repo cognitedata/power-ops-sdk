@@ -40,7 +40,7 @@ To change a view in a data model, follow these steps:
 
 
 ### Changing Containers
-Changing the containers requires dropping existing containers and recereating the changed ones. This is currently
+Changing the containers requires dropping existing containers and recreating the changed ones. This is currently
 not supported by the `powerops` CLI, so you will have to do it using `cdf-tk`, i.e., `cognite-toolkit`, directly.
 
 **Note** There is currently no support for only dropping a single container, you will have to drop every container
