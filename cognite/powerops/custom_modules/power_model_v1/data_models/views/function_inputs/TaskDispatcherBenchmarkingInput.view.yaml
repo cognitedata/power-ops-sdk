@@ -39,25 +39,11 @@ properties:
       externalId: DayAheadBenchmarkingConfiguration
       version: "{{version}}"
       type: view
-    deliveryDate:
-      type:
-        list: false
-        type: timestamp
-      nullable: true
-      autoIncrement: false
-      name: deliveryDate
-      description: The timestamp for the delivery date
-
-#bidDocument:
-#  container:
-#    space: "{{power_ops_models}}"
-#    externalId: FunctionData
-#    type: container
-#  containerPropertyIdentifier: direct1
-#  name: bidDocument
-#  source:
-#    space: "{{power_ops_models}}"
-#    externalId: BidDocumentDayAheadSimple
-#    version: "{{version}}"
-#    type: view
-#
+  deliveryDate:
+    type:
+      list: false
+      type: timestamp
+    nullable: true
+    autoIncrement: false
+    name: deliveryDate
+    description: The timestamp for the delivery date
