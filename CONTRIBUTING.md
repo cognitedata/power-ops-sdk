@@ -78,3 +78,39 @@ When using the `cognite-toolkit` you have to build the configurations first and 
     ```
 7. Verify in the UI (https://cog-power-ops.fusion.cognite.com/power-ops-staging/?cluster=bluefield.cognitedata.com&env=bluefield -> Data Models) that the changes are as expected.
 8. Follow the steps from point 7 on from above, where you post in #powerops-backend channel about the applied changes, execute `pygen_generate_clients.py`, etc.
+
+### Deploying to other environments
+
+Refer to the above sections for more context, PERFORM WITH CAUTION if you haven't done it before ask for support from other team members as these actions will delete many existing resources.
+
+Deploying to power-ops-dev, uses config `config.dev.yaml` and ensure `.env` credentials point to correct project
+
+   ```bash
+   cdf-tk build cognite/powerops --env dev --clean
+   cdf-tk deploy --drop-data --drop --env=dev --dry-run
+   cdf-tk deploy --drop-data --drop --env=dev
+   ```
+
+Deploying to power-ops-staging, uses config `config.staging.yaml` and ensure `.env` credentials point to correct project
+
+   ```bash
+   cdf-tk build cognite/powerops --env staging --clean
+   cdf-tk deploy --drop-data --drop --env=staging --dry-run
+   cdf-tk deploy --drop-data --drop --env=staging
+   ```
+
+Deploying to heco-dev, uses config file `config.heco-dev.yaml` and ensure `.env` credentials point to correct project
+
+   ```bash
+   cdf-tk build cognite/powerops --env heco-dev --clean
+   cdf-tk deploy --drop-data --drop --env=heco-dev --dry-run
+   cdf-tk deploy --drop-data --drop --env=heco-dev
+   ```
+
+Deploying to lyse-dev, uses config `config.lyse-dev.yaml` and ensure `.env` credentials point to correct project
+
+   ```bash
+   cdf-tk build cognite/powerops --env lyse-dev --clean
+   cdf-tk deploy --drop-data --drop --env=lyse-dev --dry-run
+   cdf-tk deploy --drop-data --drop --env=lyse-dev
+   ```

@@ -1,6 +1,6 @@
 environment:
   name: dev
-  project: power-ops-dev
+  project: power-ops-staging
   type: dev
   selected_modules_and_packages:
     - power_model_v1
