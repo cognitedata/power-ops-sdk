@@ -7,7 +7,7 @@ filter:
     - hasData:
         - type: container
           space: "{{power_ops_models}}"
-          externalId: FunctionData
+          externalId: ShopModelToAssets
     - equals:
         property:
           - node

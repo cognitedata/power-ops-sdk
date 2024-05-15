@@ -1,0 +1,38 @@
+space: "{{power_ops_models}}"
+externalId: DayAheadBenchmarkingConfiguration
+name: DayAheadBenchmarkingConfiguration
+usedFor: node
+properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+  priceArea:
+    type:
+      type: direct
+      list: false
+    nullable: true
+    autoIncrement: false
+    name: priceArea
+  shopStartSpecification:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: shopStartSpecification
+    description: The shop start specification
+  shopEndSpecification:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: shopEndSpecification
+    description: The shop end specification
