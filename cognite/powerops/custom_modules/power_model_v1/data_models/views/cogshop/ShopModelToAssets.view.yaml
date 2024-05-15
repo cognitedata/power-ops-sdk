@@ -26,9 +26,9 @@ properties:
   shopModel:
     container:
       space: "{{power_ops_models}}"
-      externalId: FunctionData
+      externalId: ShopModelToAssets
       type: container
-    containerPropertyIdentifier: direct1
+    containerPropertyIdentifier: shopModel
     name: shopModel
     description: Todo
     source:
@@ -37,28 +37,18 @@ properties:
       version: "{{version}}"
       type: view
   powerAssets:
-    type:
-      space: "{{power_ops_type_space}}"
-      externalId: isSubAssetOf
-    source:
+    container:
       space: "{{power_ops_models}}"
-      externalId: PowerAsset
-      version: "{{version}}"
-      type: view
-    direction: outwards
+      externalId: PriceAreaDayAhead
+      type: container
+    containerPropertyIdentifier: powerAssets
     name: powerAssets
     description: A list of power assets covered by the Shop model. For a given bid document, we will select the partial bids for these assets, and calculate production obligation for these partial bids (summed up)"
-    connectionType: multi_edge_connection
   productionObligations:
-    type:
-      space: "{{power_ops_type_space}}"
-      externalId: isSubAssetOf
-    source:
+    container:
       space: "{{power_ops_models}}"
-      externalId: DayAheadProductionObligationForBenchmarking
-      version: "{{version}}"
-      type: view
-    direction: outwards
+      externalId: PriceAreaDayAhead
+      type: container
+    containerPropertyIdentifier: productionObligations
     name: productionObligations
     description: TODO
-    connectionType: multi_edge_connection

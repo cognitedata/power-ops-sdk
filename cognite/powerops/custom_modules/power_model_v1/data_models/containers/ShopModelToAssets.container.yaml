@@ -1,0 +1,26 @@
+space: "{{power_ops_models}}"
+externalId: BidConfiguration
+name: BidConfiguration
+usedFor: node
+properties:
+  shopModel:
+    type:
+      type: direct
+      list: false
+    nullable: true
+    autoIncrement: false
+    name: shopModel
+  powerAssets:
+    type:
+      type: direct
+      list: true
+    nullable: true
+    autoIncrement: false
+    name: shopModel
+  productionObligations:
+    type:
+      type: direct
+      list: true
+    nullable: true
+    autoIncrement: false
+    name: shopModel
