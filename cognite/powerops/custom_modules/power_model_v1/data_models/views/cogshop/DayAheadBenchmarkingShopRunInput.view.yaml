@@ -7,7 +7,7 @@ filter:
     - hasData:
         - type: container
           space: "{{power_ops_models}}"
-          externalId: FunctionData
+          externalId: DayAheadBenchmarkingShopRunInput
     - equals:
         property:
           - node
@@ -30,9 +30,9 @@ properties:
   case:
     container:
       space: "{{power_ops_models}}"
-      externalId: FunctionData
+      externalId: DayAheadBenchmarkingShopRunInput
       type: container
-    containerPropertyIdentifier: direct1
+    containerPropertyIdentifier: case
     name: case
     description: The scenario that is used in the shop run
     source:
@@ -43,23 +43,23 @@ properties:
   bidSource:  # A BidConfiguration, or DayAheadProductionObligationForBenchmarking, or a simple instance of BidSource for "upper bound"
     container:
       space: "{{power_ops_models}}"
-      externalId: FunctionData
+      externalId: DayAheadBenchmarkingShopRunInput
       type: container
-    containerPropertyIdentifier: direct2
+    containerPropertyIdentifier: bidSource
     name: bidSource
   deliveryDate:
     container:
       space: "{{power_ops_models}}"
-      externalId: FunctionData
+      externalId: DayAheadBenchmarkingShopRunInput
       type: container
-    containerPropertyIdentifier: date1
+    containerPropertyIdentifier: deliveryDate
     name: deliveryDate
     description: The delivery date
   bidGenerated:
     container:
       space: "{{power_ops_models}}"
-      externalId: FunctionData
+      externalId: DayAheadBenchmarkingShopRunInput
       type: container
-    containerPropertyIdentifier: flag  # TODO: Is nullable ok?
+    containerPropertyIdentifier: bidGenerated
     name: bidGenerated
     description: True if a bid had been generated

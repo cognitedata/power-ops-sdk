@@ -1,0 +1,38 @@
+space: "{{power_ops_models}}"
+externalId: DayAheadBenchmarkingShopRunInput
+name: DayAheadBenchmarkingShopRunInput
+usedFor: node
+properties:
+  case:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: case
+    description: todo
+  bidSource:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: bidSource
+    description: todo
+  deliveryDate:
+    type:
+      list: false
+      type: date
+    nullable: true
+    autoIncrement: false
+    name: deliveryDate
+    description: todo
+  bidGenerated:
+    type:
+      list: false
+      type: timestamp
+    nullable: true
+    autoIncrement: false
+    name: bidGenerated
+    description: todo
+
