@@ -7,7 +7,7 @@ filter:
     - hasData:
         - type: container
           space: "{{power_ops_models}}"
-          externalId: FunctionData
+          externalId: DayAheadProductionObligationForBenchmarking
     - equals:
         property:
           - node
@@ -28,25 +28,18 @@ implements:
 version: "{{version}}"
 properties:
   timeseries:
-    type:
-      type: timeseries
-      list: false
     container:
       type: container
       space: '{{power_ops_models}}'
-      externalId: FunctionData
-    containerPropertyIdentifier: timeSeries1
+      externalId: DayAheadProductionObligationForBenchmarking
+    containerPropertyIdentifier: timeseries
     name: timeseries
     description: The time series of the day ahead production obligation for benchmarking
   name:
-    type:
-      list: false
-      collation: ucs_basic
-      type: text
     container:
       type: container
       space: '{{power_ops_models}}'
-      externalId: FunctionData
-    containerPropertyIdentifier: text1
+      externalId: DayAheadProductionObligationForBenchmarking
+    containerPropertyIdentifier: name
     name: name
     description: The name of the day ahead production obligation for benchmarking
