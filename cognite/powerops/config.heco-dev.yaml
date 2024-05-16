@@ -1,6 +1,6 @@
 environment:
-  name: dev
-  project: power-ops-dev
+  name: heco-dev
+  project: heco-dev
   type: dev
   selected_modules_and_packages:
     - power_model_v1

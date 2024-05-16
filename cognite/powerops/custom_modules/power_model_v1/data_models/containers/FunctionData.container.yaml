@@ -167,6 +167,7 @@ properties:
     name: sequence
   flag:
     type:
+      list: false
       type: boolean
     nullable: true
     autoIncrement: false
