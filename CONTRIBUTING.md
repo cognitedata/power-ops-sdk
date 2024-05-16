@@ -81,7 +81,8 @@ When using the `cognite-toolkit` you have to build the configurations first and 
 
 ### Deploying to other environments
 
-Refer to the above sections for more context, PERFORM WITH CAUTION if you haven't done it before ask for support from other team members as these actions will delete many existing resources.
+Refer to the above sections for more context and the [following slack thread](https://cognitedata.slack.com/archives/C045M6J3JAD/p1715760252331749).
+PERFORM WITH CAUTION if you haven't done it before ask for support from other team members as these actions will delete many existing resources.
 
 Deploying to power-ops-dev, uses config `config.dev.yaml` and ensure `.env` credentials point to correct project
 
