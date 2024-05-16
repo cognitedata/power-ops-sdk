@@ -52,3 +52,9 @@ properties:
     name: flag
     description: todo
   value:
+    type:
+      list: false
+      type: float64
+    nullable: true
+    autoIncrement: false
+    name: value

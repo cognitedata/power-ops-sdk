@@ -40,15 +40,3 @@ properties:
     name: benchmarkingShopRunOutputs
     description: An array of benchmarking shop run outputs.
     connectionType: multi_edge_connection
-  shopObjectiveValue:
-    container:
-      space: "{{power_ops_models}}"
-      externalId: FunctionData
-      type: container
-    containerPropertyIdentifier: direct1
-    name: shopObjectiveValue
-    source:
-      space: "{{power_ops_models}}"
-      externalId: ShopObjectiveValue
-      version: "{{version}}"
-      type: view

@@ -39,7 +39,7 @@ properties:
   powerAssets:
     container:
       space: "{{power_ops_models}}"
-      externalId: PriceAreaDayAhead
+      externalId: ShopModelToAssets
       type: container
     containerPropertyIdentifier: powerAssets
     name: powerAssets
@@ -47,7 +47,7 @@ properties:
   productionObligations:
     container:
       space: "{{power_ops_models}}"
-      externalId: PriceAreaDayAhead
+      externalId: ShopModelToAssets
       type: container
     containerPropertyIdentifier: productionObligations
     name: productionObligations

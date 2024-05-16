@@ -175,10 +175,6 @@ views:
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - space: "{{power_ops_models}}"
-    externalId: ShopObjectiveValue
-    version: "{{version}}"
-    type: view
   - externalId: TaskDispatcherBenchmarkingInput
     space: "{{power_ops_models}}"
     version: "{{version}}"

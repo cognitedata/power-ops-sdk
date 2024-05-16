@@ -40,10 +40,10 @@ properties:
       version: "{{version}}"
       type: view
   deliveryDate:
-    type:
-      list: false
-      type: timestamp
-    nullable: true
-    autoIncrement: false
+    container:
+      space: "{{power_ops_models}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: timestamp1
     name: deliveryDate
     description: The timestamp for the delivery date

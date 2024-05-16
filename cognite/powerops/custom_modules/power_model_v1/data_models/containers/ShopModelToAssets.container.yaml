@@ -1,6 +1,6 @@
 space: "{{power_ops_models}}"
-externalId: BidConfiguration
-name: BidConfiguration
+externalId: ShopModelToAssets
+name: ShopModelToAssets
 usedFor: node
 properties:
   shopModel:

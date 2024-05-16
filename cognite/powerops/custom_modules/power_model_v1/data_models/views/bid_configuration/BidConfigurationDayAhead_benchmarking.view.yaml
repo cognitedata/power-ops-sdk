@@ -21,7 +21,7 @@ filter:
           space: "{{power_ops_type_space}}"
           externalId: BidConfigurationDayAhead_benchmarking
 implements:
-- space: 'sp_powerops_models'
+- space: '{{power_ops_models}}'
   externalId: BidSource
   version: '1'
   type: view
