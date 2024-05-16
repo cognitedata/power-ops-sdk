@@ -19,4 +19,3 @@ properties:
     autoIncrement: false
     name: text1
     description: todo
-

@@ -22,7 +22,7 @@ filter:
           space: "{{power_ops_type_space}}"
 implements: []
 version: "{{version}}"
-properties:  # TODO: no alerts here?
+properties: # TODO: no alerts here?
   bidSource:
     container:
       space: "{{power_ops_models}}"

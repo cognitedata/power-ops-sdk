@@ -47,7 +47,7 @@ properties:
     containerPropertyIdentifier: assetsPerShopModel
     name: assetsPerShopModel
     description: TODO
-  priceArea:  # TODO: Should we take this from the bidConfigurations?
+  priceArea: # TODO: Should we take this from the bidConfigurations?
     container:
       space: "{{power_ops_models}}"
       externalId: DayAheadBenchmarkingConfiguration

@@ -35,4 +35,3 @@ properties:
     autoIncrement: false
     name: bidGenerated
     description: todo
-
