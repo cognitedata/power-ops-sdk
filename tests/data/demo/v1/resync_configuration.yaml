@@ -1,5 +1,5 @@
 # Path to the working directory where the data model and files are stored
-working_directory: "/Users/nina.odegard@cognitedata.com/Documents/GitHub/Cognite/PowerOps/power-ops-sdk/tests/data/demo/v1"
+working_directory: "tests/data/demo/v1"
 # Whether to overwrite the data if it already exists, note this refers to the "replace" logic from the API for instances
 overwrite_data: True
 
@@ -7,7 +7,7 @@ file_configuration:
   # Whether to overwrite the files if they already exist
   overwrite: True
   # The data set to resync the data to, can be provided as a external_id string or an id integer
-  data_set: 4337077428986960
+  data_set: 7954116792797929
   # The folder path to the files, the default is working_directory/files
   # folder_path: "files" # must be full path if used
   # A list of file metadata to be added to the files, this is optional for each file
