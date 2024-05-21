@@ -19,4 +19,4 @@
   method: multi scenario
   power_asset: "[external_id]plant_water_value_based_lund"
   add_steps: false
-  scenario_set: "[name|type:ShopScenarioSet]2 scenario"
+  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"

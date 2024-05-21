@@ -84,3 +84,9 @@ plant_water_value_based:
     extraction_path: "model.plant.[name].penstock_loss"
   # generators: "connections"
   # connection_losses: "???" # from model file??
+
+shop_attribute_mapping:
+  retrieve:
+    default_value: "RANGE"
+  aggregation:
+    default_value: "MEAN"

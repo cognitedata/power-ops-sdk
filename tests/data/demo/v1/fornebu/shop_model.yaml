@@ -25,5 +25,5 @@
       is_ascii: True
       file_reference: "SHOP_Fornebu_water_value_cut_file"
   base_attribute_mappings:
-    - "[external_id]mapping_1"
-    - "[external_id]mapping_2"
+    - "[external_id]no2_buy_price_base"
+    - "[external_id]no2_sell_price_base"
