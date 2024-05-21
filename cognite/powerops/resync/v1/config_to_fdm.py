@@ -468,7 +468,9 @@ class ResyncImporter:
                 path = self.working_directory / Path(property_configuration.source_file)
                 source_data = load_yaml(path, "dict")
             else:
-                raise ValueError("No source data provided for property configuration")
+                if property_configuration.default_value:
+                    return property_configuration.default_value
+                raise ValueError("No source data or default value provided for property configuration")
 
         try:
             for key in property_configuration.extraction_path or []:
