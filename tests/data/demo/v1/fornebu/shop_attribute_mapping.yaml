@@ -29,13 +29,13 @@
             - offset_minute: 1440.0
               offset_value: 0.0
 
-- external_id: no2_buy_price_base"
+- external_id: no2_buy_price_base
   object_type: market
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
   transformations: []
-- external_id: no2_sale_price_base"
+- external_id: no2_sale_price_base
   object_type: market
   object_name: Dayahead
   attribute_name: sale_price
