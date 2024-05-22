@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 InputFileTypeT = Literal["case", "cut", "mapping", "extra"]
 
 ARGO_SHOP_URL = "https://power-ops-api.staging.{cluster}.cognite.ai/{project}/run-shop"
-SHOP_URL = "https://power-ops-api.staging.{cluster}.cognite.ai/{project}/run-shop-as-service"
+SHOP_AS_A_SERVICE_URL = "https://power-ops-api.staging.{cluster}.cognite.ai/{project}/run-shop-as-service"
 
 
 class ShopRunsAPI:
