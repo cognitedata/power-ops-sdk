@@ -23,8 +23,8 @@ logger = logging.getLogger(__name__)
 
 InputFileTypeT = Literal["case", "cut", "mapping", "extra"]
 
-RUN_SHOP_URL = "https://power-ops-api.staging.{cluster}.cognite.ai/{project}/run-shop"
-RUN_SHOP_AS_A_SERVICE_URL = "https://shop-production.az-inso-powerops.cognite.ai/submit-run"
+ARGO_SHOP_URL = "https://power-ops-api.staging.{cluster}.cognite.ai/{project}/run-shop"
+SHOP_URL = "https://power-ops-api.staging.{cluster}.cognite.ai/{project}/run-shop-as-service"
 
 
 class ShopRunsAPI:
@@ -132,15 +132,14 @@ class ShopRunsAPI:
         self._client.relationships.create(relationship)
 
     def _get_shop_run_endpoint(self):
-
         cdf_config = self._client.config
         project = cdf_config.project
         cluster = cdf_config.base_url.split("//")[1].split(".")[0]
 
         if self._shop_as_a_service:
-            return RUN_SHOP_AS_A_SERVICE_URL
+            return SHOP_AS_A_SERVICE_URL.format(cluster=cluster, project=project)
         else:
-            return RUN_SHOP_URL.format(cluster=cluster, project=project)
+            return ARGO_SHOP_URL.format(cluster=cluster, project=project)
 
     def _get_auth_header(self):
         cdf_config = self._client.config
