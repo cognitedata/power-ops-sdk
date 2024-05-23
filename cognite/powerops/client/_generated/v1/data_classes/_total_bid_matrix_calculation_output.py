@@ -231,7 +231,8 @@ class TotalBidMatrixCalculationOutputWrite(FunctionOutputWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            TotalBidMatrixCalculationOutput, dm.ViewId("sp_power_ops_models", "TotalBidMatrixCalculationOutput", "1")
+            TotalBidMatrixCalculationOutput,
+            dm.ViewId("sp_power_ops_models", "TotalBidMatrixCalculationOutput", "1"),
         )
 
         properties: dict[str, Any] = {}

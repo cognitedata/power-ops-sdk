@@ -209,7 +209,8 @@ class ShopBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            ShopBasedPartialBidConfiguration, dm.ViewId("sp_power_ops_models", "ShopBasedPartialBidConfiguration", "1")
+            ShopBasedPartialBidConfiguration,
+            dm.ViewId("sp_power_ops_models", "ShopBasedPartialBidConfiguration", "1"),
         )
 
         properties: dict[str, Any] = {}

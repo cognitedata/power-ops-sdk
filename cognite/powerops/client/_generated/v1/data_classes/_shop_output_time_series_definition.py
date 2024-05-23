@@ -144,10 +144,10 @@ class ShopOutputTimeSeriesDefinition(DomainModel):
         "sp_power_ops_types", "ShopOutputTimeSeriesDefinition"
     )
     name: str
-    object_type: Optional[str] = Field(None, alias="objectType")
-    object_name: Optional[str] = Field(None, alias="objectName")
-    attribute_name: Optional[str] = Field(None, alias="attributeName")
-    unit: Optional[str] = None
+    object_type: str = Field(alias="objectType")
+    object_name: str = Field(alias="objectName")
+    attribute_name: str = Field(alias="attributeName")
+    unit: str
     is_step: Optional[bool] = Field(None, alias="isStep")
 
     def as_write(self) -> ShopOutputTimeSeriesDefinitionWrite:
@@ -196,11 +196,11 @@ class ShopOutputTimeSeriesDefinitionWrite(DomainModelWrite):
         "sp_power_ops_types", "ShopOutputTimeSeriesDefinition"
     )
     name: str
-    object_type: Optional[str] = Field(None, alias="objectType")
-    object_name: Optional[str] = Field(None, alias="objectName")
-    attribute_name: Optional[str] = Field(None, alias="attributeName")
-    unit: Optional[str] = None
-    is_step: Optional[bool] = Field(None, alias="isStep")
+    object_type: str = Field(alias="objectType")
+    object_name: str = Field(alias="objectName")
+    attribute_name: str = Field(alias="attributeName")
+    unit: str
+    is_step: Optional[bool] = Field(True, alias="isStep")
 
     def _to_instances_write(
         self,
@@ -222,16 +222,16 @@ class ShopOutputTimeSeriesDefinitionWrite(DomainModelWrite):
         if self.name is not None:
             properties["name"] = self.name
 
-        if self.object_type is not None or write_none:
+        if self.object_type is not None:
             properties["objectType"] = self.object_type
 
-        if self.object_name is not None or write_none:
+        if self.object_name is not None:
             properties["objectName"] = self.object_name
 
-        if self.attribute_name is not None or write_none:
+        if self.attribute_name is not None:
             properties["attributeName"] = self.attribute_name
 
-        if self.unit is not None or write_none:
+        if self.unit is not None:
             properties["unit"] = self.unit
 
         if self.is_step is not None or write_none:

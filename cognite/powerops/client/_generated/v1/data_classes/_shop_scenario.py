@@ -26,6 +26,11 @@ if TYPE_CHECKING:
     from ._shop_attribute_mapping import ShopAttributeMapping, ShopAttributeMappingGraphQL, ShopAttributeMappingWrite
     from ._shop_commands import ShopCommands, ShopCommandsGraphQL, ShopCommandsWrite
     from ._shop_model import ShopModel, ShopModelGraphQL, ShopModelWrite
+    from ._shop_output_time_series_definition import (
+        ShopOutputTimeSeriesDefinition,
+        ShopOutputTimeSeriesDefinitionGraphQL,
+        ShopOutputTimeSeriesDefinitionWrite,
+    )
 
 
 __all__ = [
@@ -41,12 +46,11 @@ __all__ = [
 
 
 ShopScenarioTextFields = Literal["name", "source"]
-ShopScenarioFields = Literal["name", "source", "output_definition"]
+ShopScenarioFields = Literal["name", "source"]
 
 _SHOPSCENARIO_PROPERTIES_BY_FIELD = {
     "name": "name",
     "source": "source",
-    "output_definition": "outputDefinition",
 }
 
 
@@ -64,7 +68,7 @@ class ShopScenarioGraphQL(GraphQLCore, protected_namespaces=()):
         model: The model template to use when running the scenario
         commands: The commands to run
         source: The source of the scenario
-        output_definition: The outputDefinition to run
+        output_definition: An array of output definitions for the time series
         attribute_mappings_override: An array of base mappings to override in shop model file
     """
 
@@ -73,7 +77,9 @@ class ShopScenarioGraphQL(GraphQLCore, protected_namespaces=()):
     model: Optional[ShopModelGraphQL] = Field(None, repr=False)
     commands: Optional[ShopCommandsGraphQL] = Field(None, repr=False)
     source: Optional[str] = None
-    output_definition: Optional[list[str]] = Field(None, alias="outputDefinition")
+    output_definition: Optional[list[ShopOutputTimeSeriesDefinitionGraphQL]] = Field(
+        default=None, repr=False, alias="outputDefinition"
+    )
     attribute_mappings_override: Optional[list[ShopAttributeMappingGraphQL]] = Field(
         default=None, repr=False, alias="attributeMappingsOverride"
     )
@@ -89,7 +95,7 @@ class ShopScenarioGraphQL(GraphQLCore, protected_namespaces=()):
             )
         return values
 
-    @field_validator("model", "commands", "attribute_mappings_override", mode="before")
+    @field_validator("model", "commands", "output_definition", "attribute_mappings_override", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
             return value
@@ -113,7 +119,10 @@ class ShopScenarioGraphQL(GraphQLCore, protected_namespaces=()):
             model=self.model.as_read() if isinstance(self.model, GraphQLCore) else self.model,
             commands=self.commands.as_read() if isinstance(self.commands, GraphQLCore) else self.commands,
             source=self.source,
-            output_definition=self.output_definition,
+            output_definition=[
+                output_definition.as_read() if isinstance(output_definition, GraphQLCore) else output_definition
+                for output_definition in self.output_definition or []
+            ],
             attribute_mappings_override=[
                 (
                     attribute_mappings_override.as_read()
@@ -134,7 +143,10 @@ class ShopScenarioGraphQL(GraphQLCore, protected_namespaces=()):
             model=self.model.as_write() if isinstance(self.model, DomainModel) else self.model,
             commands=self.commands.as_write() if isinstance(self.commands, DomainModel) else self.commands,
             source=self.source,
-            output_definition=self.output_definition,
+            output_definition=[
+                output_definition.as_write() if isinstance(output_definition, DomainModel) else output_definition
+                for output_definition in self.output_definition or []
+            ],
             attribute_mappings_override=[
                 (
                     attribute_mappings_override.as_write()
@@ -159,7 +171,7 @@ class ShopScenario(DomainModel, protected_namespaces=()):
         model: The model template to use when running the scenario
         commands: The commands to run
         source: The source of the scenario
-        output_definition: The outputDefinition to run
+        output_definition: An array of output definitions for the time series
         attribute_mappings_override: An array of base mappings to override in shop model file
     """
 
@@ -169,7 +181,9 @@ class ShopScenario(DomainModel, protected_namespaces=()):
     model: Union[ShopModel, str, dm.NodeId, None] = Field(None, repr=False)
     commands: Union[ShopCommands, str, dm.NodeId, None] = Field(None, repr=False)
     source: Optional[str] = None
-    output_definition: Optional[list[str]] = Field(None, alias="outputDefinition")
+    output_definition: Union[list[ShopOutputTimeSeriesDefinition], list[str], list[dm.NodeId], None] = Field(
+        default=None, repr=False, alias="outputDefinition"
+    )
     attribute_mappings_override: Union[list[ShopAttributeMapping], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="attributeMappingsOverride"
     )
@@ -184,7 +198,10 @@ class ShopScenario(DomainModel, protected_namespaces=()):
             model=self.model.as_write() if isinstance(self.model, DomainModel) else self.model,
             commands=self.commands.as_write() if isinstance(self.commands, DomainModel) else self.commands,
             source=self.source,
-            output_definition=self.output_definition,
+            output_definition=[
+                output_definition.as_write() if isinstance(output_definition, DomainModel) else output_definition
+                for output_definition in self.output_definition or []
+            ],
             attribute_mappings_override=[
                 (
                     attribute_mappings_override.as_write()
@@ -218,7 +235,7 @@ class ShopScenarioWrite(DomainModelWrite, protected_namespaces=()):
         model: The model template to use when running the scenario
         commands: The commands to run
         source: The source of the scenario
-        output_definition: The outputDefinition to run
+        output_definition: An array of output definitions for the time series
         attribute_mappings_override: An array of base mappings to override in shop model file
     """
 
@@ -228,7 +245,9 @@ class ShopScenarioWrite(DomainModelWrite, protected_namespaces=()):
     model: Union[ShopModelWrite, str, dm.NodeId, None] = Field(None, repr=False)
     commands: Union[ShopCommandsWrite, str, dm.NodeId, None] = Field(None, repr=False)
     source: Optional[str] = None
-    output_definition: Optional[list[str]] = Field(None, alias="outputDefinition")
+    output_definition: Union[list[ShopOutputTimeSeriesDefinitionWrite], list[str], list[dm.NodeId], None] = Field(
+        default=None, repr=False, alias="outputDefinition"
+    )
     attribute_mappings_override: Union[list[ShopAttributeMappingWrite], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="attributeMappingsOverride"
     )
@@ -266,9 +285,6 @@ class ShopScenarioWrite(DomainModelWrite, protected_namespaces=()):
         if self.source is not None or write_none:
             properties["source"] = self.source
 
-        if self.output_definition is not None or write_none:
-            properties["outputDefinition"] = self.output_definition
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -284,6 +300,19 @@ class ShopScenarioWrite(DomainModelWrite, protected_namespaces=()):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
+
+        edge_type = dm.DirectRelationReference("sp_power_ops_types", "ShopOutputTimeSeriesDefinition")
+        for output_definition in self.output_definition or []:
+            other_resources = DomainRelationWrite.from_edge_to_resources(
+                cache,
+                start_node=self,
+                end_node=output_definition,
+                edge_type=edge_type,
+                view_by_read_class=view_by_read_class,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
+            )
+            resources.extend(other_resources)
 
         edge_type = dm.DirectRelationReference("sp_power_ops_types", "ShopAttributeMapping")
         for attribute_mappings_override in self.attribute_mappings_override or []:

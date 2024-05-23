@@ -903,6 +903,7 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE = {
         "PlantWaterValueBased": data_classes.PlantWaterValueBasedGraphQL,
         "DateSpecification": data_classes.DateSpecificationGraphQL,
         "ShopOutputTimeSeriesDefinition": data_classes.ShopOutputTimeSeriesDefinitionGraphQL,
+        "ShopFile": data_classes.ShopFileGraphQL,
     },
     dm.DataModelId("sp_power_ops_models", "frontend_AFRRBid", "1"): {
         "BidDocumentAFRR": data_classes.BidDocumentAFRRGraphQL,
@@ -929,6 +930,7 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE = {
         "Generator": data_classes.GeneratorGraphQL,
         "TurbineEfficiencyCurve": data_classes.TurbineEfficiencyCurveGraphQL,
         "GeneratorEfficiencyCurve": data_classes.GeneratorEfficiencyCurveGraphQL,
+        "DateSpecification": data_classes.DateSpecificationGraphQL,
     },
     dm.DataModelId("sp_power_ops_models", "frontend_DayAheadBid", "1"): {
         "BidDocumentDayAhead": data_classes.BidDocumentDayAheadGraphQL,

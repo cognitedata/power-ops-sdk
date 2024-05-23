@@ -59,18 +59,18 @@ properties:
     name: source
     description: The source of the scenario
   outputDefinition:
-    container:
-      space: "{{power_ops_models}}"
-      externalId: ShopScenario
-      type: container
-    containerPropertyIdentifier: outputDefinition
-    name: outputDefinition
-    description: The outputDefinition to run
+    type:
+      space: "{{power_ops_type_space}}"
+      externalId: ShopOutputTimeSeriesDefinition
     source:
       space: "{{power_ops_models}}"
       externalId: ShopOutputTimeSeriesDefinition
       version: "{{version}}"
       type: view
+    direction: outwards
+    name: outputDefinition
+    description: An array of output definitions for the time series
+    connectionType: multi_edge_connection
   attributeMappingsOverride:
     type:
       space: "{{power_ops_type_space}}"

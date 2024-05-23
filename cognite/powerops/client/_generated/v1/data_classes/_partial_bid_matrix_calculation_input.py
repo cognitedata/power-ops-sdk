@@ -264,7 +264,8 @@ class PartialBidMatrixCalculationInputWrite(FunctionInputWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            PartialBidMatrixCalculationInput, dm.ViewId("sp_power_ops_models", "PartialBidMatrixCalculationInput", "1")
+            PartialBidMatrixCalculationInput,
+            dm.ViewId("sp_power_ops_models", "PartialBidMatrixCalculationInput", "1"),
         )
 
         properties: dict[str, Any] = {}

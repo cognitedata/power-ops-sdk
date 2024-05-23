@@ -37,14 +37,14 @@ properties:
     autoIncrement: false
     name: source
     description: The source of the scenario
-  outputDefinition:
-    type:
-      list: true
-      type: direct
-    nullable: true
-    autoIncrement: false
-    name: outputDefinition
-    description: The output definition
+    # outputDefinition:
+    #   type:
+    #     list: true
+    #     type: direct
+    #   nullable: true
+    #   autoIncrement: false
+    #   name: outputDefinition
+    #   description: The output definition
 indexes:
   nameIndex:
     properties:

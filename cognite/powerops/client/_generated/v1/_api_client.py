@@ -382,6 +382,7 @@ class DayAheadConfigurationAPIs:
                 "sp_power_ops_models", "ShopBasedPartialBidConfiguration", "1"
             ),
             data_classes.ShopCommands: dm.ViewId("sp_power_ops_models", "ShopCommands", "1"),
+            data_classes.ShopFile: dm.ViewId("sp_power_ops_models", "ShopFile", "1"),
             data_classes.ShopModel: dm.ViewId("sp_power_ops_models", "ShopModel", "1"),
             data_classes.ShopOutputTimeSeriesDefinition: dm.ViewId(
                 "sp_power_ops_models", "ShopOutputTimeSeriesDefinition", "1"
@@ -411,6 +412,7 @@ class DayAheadConfigurationAPIs:
         self.shop_attribute_mapping = ShopAttributeMappingAPI(client, view_by_read_class)
         self.shop_based_partial_bid_configuration = ShopBasedPartialBidConfigurationAPI(client, view_by_read_class)
         self.shop_commands = ShopCommandsAPI(client, view_by_read_class)
+        self.shop_file = ShopFileAPI(client, view_by_read_class)
         self.shop_model = ShopModelAPI(client, view_by_read_class)
         self.shop_output_time_series_definition = ShopOutputTimeSeriesDefinitionAPI(client, view_by_read_class)
         self.shop_scenario = ShopScenarioAPI(client, view_by_read_class)
@@ -490,6 +492,7 @@ class PowerAssetAPIs:
     def __init__(self, client: CogniteClient):
         view_by_read_class = {
             data_classes.BidConfigurationDayAhead: dm.ViewId("sp_power_ops_models", "BidConfigurationDayAhead", "1"),
+            data_classes.DateSpecification: dm.ViewId("sp_power_ops_models", "DateSpecification", "1"),
             data_classes.Generator: dm.ViewId("sp_power_ops_models", "Generator", "1"),
             data_classes.GeneratorEfficiencyCurve: dm.ViewId("sp_power_ops_models", "GeneratorEfficiencyCurve", "1"),
             data_classes.MarketConfiguration: dm.ViewId("sp_power_ops_models", "MarketConfiguration", "1"),
@@ -509,6 +512,7 @@ class PowerAssetAPIs:
         self._client = client
 
         self.bid_configuration_day_ahead = BidConfigurationDayAheadAPI(client, view_by_read_class)
+        self.date_specification = DateSpecificationAPI(client, view_by_read_class)
         self.generator = GeneratorAPI(client, view_by_read_class)
         self.generator_efficiency_curve = GeneratorEfficiencyCurveAPI(client, view_by_read_class)
         self.market_configuration = MarketConfigurationAPI(client, view_by_read_class)

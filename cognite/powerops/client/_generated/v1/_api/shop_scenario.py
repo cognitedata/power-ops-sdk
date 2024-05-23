@@ -33,6 +33,7 @@ from ._core import (
     QueryStep,
     QueryBuilder,
 )
+from .shop_scenario_output_definition import ShopScenarioOutputDefinitionAPI
 from .shop_scenario_attribute_mappings_override import ShopScenarioAttributeMappingsOverrideAPI
 from .shop_scenario_query import ShopScenarioQueryAPI
 
@@ -49,6 +50,7 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList]
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
+        self.output_definition_edge = ShopScenarioOutputDefinitionAPI(client)
         self.attribute_mappings_override_edge = ShopScenarioAttributeMappingsOverrideAPI(client)
 
     def __call__(
@@ -107,7 +109,7 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList]
         """Add or update (upsert) shop scenarios.
 
         Note: This method iterates through all nodes and timeseries linked to shop_scenario and creates them including the edges
-        between the nodes. For example, if any of `attribute_mappings_override` are set, then these
+        between the nodes. For example, if any of `output_definition` or `attribute_mappings_override` are set, then these
         nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
@@ -205,6 +207,13 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList]
             space,
             retrieve_edges=True,
             edge_api_name_type_direction_view_id_penta=[
+                (
+                    self.output_definition_edge,
+                    "output_definition",
+                    dm.DirectRelationReference("sp_power_ops_types", "ShopOutputTimeSeriesDefinition"),
+                    "outwards",
+                    dm.ViewId("sp_power_ops_models", "ShopOutputTimeSeriesDefinition", "1"),
+                ),
                 (
                     self.attribute_mappings_override_edge,
                     "attribute_mappings_override",
@@ -490,7 +499,7 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList]
             space: The space to filter on.
             limit: Maximum number of shop scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            retrieve_edges: Whether to retrieve `attribute_mappings_override` external ids for the shop scenarios. Defaults to True.
+            retrieve_edges: Whether to retrieve `output_definition` or `attribute_mappings_override` external ids for the shop scenarios. Defaults to True.
 
         Returns:
             List of requested shop scenarios
@@ -522,6 +531,13 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList]
             filter=filter_,
             retrieve_edges=retrieve_edges,
             edge_api_name_type_direction_view_id_penta=[
+                (
+                    self.output_definition_edge,
+                    "output_definition",
+                    dm.DirectRelationReference("sp_power_ops_types", "ShopOutputTimeSeriesDefinition"),
+                    "outwards",
+                    dm.ViewId("sp_power_ops_models", "ShopOutputTimeSeriesDefinition", "1"),
+                ),
                 (
                     self.attribute_mappings_override_edge,
                     "attribute_mappings_override",

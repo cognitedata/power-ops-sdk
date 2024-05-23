@@ -49,8 +49,8 @@ in the data model(s) and recreate them.
 To authenticate with the `cognite-toolkit` you will have to use a `.env` file in the power-ops-sdk root directory,
 which should look like this:
 ```dotenv
-CDF_CLUSTER=bluefield
-CDF_URL=https://bluefield.cognitedata.com
+CDF_CLUSTER=azure-dev
+CDF_URL=https://azure-dev.cognitedata.com
 CDF_PROJECT=power-ops-dev
 IDP_TENANT_ID=431fcc8b-74b8-4171-b7c9-e6fab253913b
 IDP_CLIENT_ID=***
