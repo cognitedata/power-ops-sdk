@@ -5,18 +5,183 @@
 #   add_steps: Boolean!
 #   scenario_set: ShopScenarioSet
 
-- name: plant A set A
-  method: multi scenario??
-  power_asset: "[name|type:PlantWaterValueBased]Lund"
-  add_steps: false
-  scenario_set: "[name]1 scenario"
-- name: Fornebu 2
-  method: multi scenario
+- name: Strand_krv 2 step
+  method: multi scenario 2
+  power_asset: "[external_id]plant_water_value_based_strand_krv"
+  add_steps: True
+  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
+- name: Strand_krv 3 step
+  method: multi scenario 3
+  power_asset: "[external_id]plant_water_value_based_strand_krv"
+  add_steps: True
+  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
+- name: Strand_krv 2
+  method: multi scenario 2
+  power_asset: "[external_id]plant_water_value_based_strand_krv"
+  add_steps: False
+  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
+- name: Strand_krv 3
+  method: multi scenario 3
+  power_asset: "[external_id]plant_water_value_based_strand_krv"
+  add_steps: False
+  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
+- name: Rull2 2 step
+  method: multi scenario 2
+  power_asset: "[external_id]plant_water_value_based_rull2"
+  add_steps: True
+  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
+- name: Rull2 3 step
+  method: multi scenario 3
+  power_asset: "[external_id]plant_water_value_based_rull2"
+  add_steps: True
+  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
+- name: Rull2 2
+  method: multi scenario 2
+  power_asset: "[external_id]plant_water_value_based_rull2"
+  add_steps: False
+  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
+- name: Rull2 3
+  method: multi scenario 3
+  power_asset: "[external_id]plant_water_value_based_rull2"
+  add_steps: False
+  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
+- name: Rull1 2 step
+  method: multi scenario 2
+  power_asset: "[external_id]plant_water_value_based_rull1"
+  add_steps: True
+  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
+- name: Rull1 3 step
+  method: multi scenario 3
+  power_asset: "[external_id]plant_water_value_based_rull1"
+  add_steps: True
+  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
+- name: Rull1 2
+  method: multi scenario 2
+  power_asset: "[external_id]plant_water_value_based_rull1"
+  add_steps: False
+  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
+- name: Rull1 3
+  method: multi scenario 3
+  power_asset: "[external_id]plant_water_value_based_rull1"
+  add_steps: False
+  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
+- name: Lien_krv 2 step
+  method: multi scenario 2
+  power_asset: "[external_id]plant_water_value_based_lien_krv"
+  add_steps: True
+  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
+- name: Lien_krv 3 step
+  method: multi scenario 3
+  power_asset: "[external_id]plant_water_value_based_lien_krv"
+  add_steps: True
+  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
+- name: Lien_krv 2
+  method: multi scenario 2
+  power_asset: "[external_id]plant_water_value_based_lien_krv"
+  add_steps: False
+  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
+- name: Lien_krv 3
+  method: multi scenario 3
+  power_asset: "[external_id]plant_water_value_based_lien_krv"
+  add_steps: False
+  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
+- name: Dalby 2 step
+  method: multi scenario 2
+  power_asset: "[external_id]plant_water_value_based_dalby"
+  add_steps: True
+  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
+- name: Dalby 3 step
+  method: multi scenario 3
+  power_asset: "[external_id]plant_water_value_based_dalby"
+  add_steps: True
+  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
+- name: Dalby 2
+  method: multi scenario 2
+  power_asset: "[external_id]plant_water_value_based_dalby"
+  add_steps: False
+  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
+- name: Dalby 3
+  method: multi scenario 3
+  power_asset: "[external_id]plant_water_value_based_dalby"
+  add_steps: False
+  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
+- name: Holen 2 step
+  method: multi scenario 2
+  power_asset: "[external_id]plant_water_value_based_holen"
+  add_steps: True
+  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
+- name: Holen 3 step
+  method: multi scenario 3
+  power_asset: "[external_id]plant_water_value_based_holen"
+  add_steps: True
+  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
+- name: Holen 2
+  method: multi scenario 2
+  power_asset: "[external_id]plant_water_value_based_holen"
+  add_steps: False
+  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
+- name: Holen 3
+  method: multi scenario 3
+  power_asset: "[external_id]plant_water_value_based_holen"
+  add_steps: False
+  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
+- name: Landet 2 step
+  method: multi scenario 2
+  power_asset: "[external_id]plant_water_value_based_landet"
+  add_steps: True
+  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
+- name: Landet 3 step
+  method: multi scenario 3
+  power_asset: "[external_id]plant_water_value_based_landet"
+  add_steps: True
+  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
+- name: Landet 2
+  method: multi scenario 2
+  power_asset: "[external_id]plant_water_value_based_landet"
+  add_steps: False
+  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
+- name: Landet 3
+  method: multi scenario 3
+  power_asset: "[external_id]plant_water_value_based_landet"
+  add_steps: False
+  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
+- name: Scott 2 step
+  method: multi scenario 2
+  power_asset: "[external_id]plant_water_value_based_scott"
+  add_steps: True
+  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
+- name: Scott 3 step
+  method: multi scenario 3
+  power_asset: "[external_id]plant_water_value_based_scott"
+  add_steps: True
+  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
+- name: Scott 2
+  method: multi scenario 2
+  power_asset: "[external_id]plant_water_value_based_scott"
+  add_steps: False
+  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
+- name: Scott 3
+  method: multi scenario 3
+  power_asset: "[external_id]plant_water_value_based_scott"
+  add_steps: False
+  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
+- name: Lund 2 step
+  method: multi scenario 2
   power_asset: "[external_id]plant_water_value_based_lund"
-  add_steps: false
-  scenario_set: "[external_id]shop_scenario_set_2_scenarios"
-- name: Fornebu 3
-  method: multi scenario
+  add_steps: True
+  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
+- name: Lund 3 step
+  method: multi scenario 3
   power_asset: "[external_id]plant_water_value_based_lund"
-  add_steps: false
+  add_steps: True
+  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
+- name: Lund 2
+  method: multi scenario 2
+  power_asset: "[external_id]plant_water_value_based_lund"
+  add_steps: False
+  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
+- name: Lund 3
+  method: multi scenario 3
+  power_asset: "[external_id]plant_water_value_based_lund"
+  add_steps: False
   scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
