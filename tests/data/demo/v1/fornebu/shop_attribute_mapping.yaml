@@ -22,6 +22,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 100000.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_creek_intake_sandvika_inflow
   object_type: creek_intake
   object_name: Sandvika
@@ -33,6 +35,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_creek_intake_golebiowski_intake_overflow_cost
   object_type: creek_intake
   object_name: Golebiowski_intake
@@ -44,6 +48,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 100000.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_creek_intake_lont_intake_overflow_cost
   object_type: creek_intake
   object_name: Lont_intake
@@ -55,6 +61,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 100000.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_creek_intake_narvhus_overflow_cost
   object_type: creek_intake
   object_name: Narvhus
@@ -66,6 +74,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 100000.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_gate_b_hagen_strand_max_flow
   object_type: gate
   object_name: b_Hagen_Strand
@@ -77,6 +87,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_b_sirefelt_knute_rullsvatn_max_flow
   object_type: gate
   object_name: b_Sirefelt_Knute_Rullsvatn
@@ -88,6 +100,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_b_danielsen_lundvann_max_flow
   object_type: gate
   object_name: b_Danielsen_Lundvann
@@ -99,6 +113,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_b_dalbysvatn_knute_rullsvatn_max_flow
   object_type: gate
   object_name: b_Dalbysvatn_Knute_Rullsvatn
@@ -110,6 +126,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_b_nielsen_blakstadana_max_flow
   object_type: gate
   object_name: b_Nielsen_Blakstadana
@@ -121,6 +139,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 10.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_b_lensvik_dalbysvatn_max_flow
   object_type: gate
   object_name: b_Lensvik_Dalbysvatn
@@ -132,6 +152,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_b_livincovs_dalbysvatn_max_flow
   object_type: gate
   object_name: b_Livincovs_Dalbysvatn
@@ -143,6 +165,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_f_blakstadana_knute_rullsvatn_max_flow
   object_type: gate
   object_name: f_Blakstadana_Knute_Rullsvatn
@@ -154,6 +178,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_f_hagen_strand_max_flow
   object_type: gate
   object_name: f_Hagen_Strand
@@ -165,6 +191,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 100.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_f_finnvasstol_dalbysvatn_max_flow
   object_type: gate
   object_name: f_Finnvasstol_Dalbysvatn
@@ -176,6 +204,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 10.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_f_hovden_hagen_max_flow
   object_type: gate
   object_name: f_Hovden_Hagen
@@ -187,6 +217,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_f_fjerdingby_dalbysvatn_max_flow
   object_type: gate
   object_name: f_Fjerdingby_Dalbysvatn
@@ -198,6 +230,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_f_frosta_max_flow
   object_type: gate
   object_name: f_Frosta
@@ -209,6 +243,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_f_varhaug_max_flow
   object_type: gate
   object_name: f_Varhaug
@@ -220,6 +256,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_f_tangvall_max_flow
   object_type: gate
   object_name: f_Tangvall
@@ -231,6 +269,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_f_sirefelt_knute_rullsvatn_max_flow
   object_type: gate
   object_name: f_Sirefelt_Knute_Rullsvatn
@@ -242,6 +282,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_f_lundvann_lensvik_max_flow
   object_type: gate
   object_name: f_Lundvann_Lensvik
@@ -253,6 +295,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_f_nupstj_max_flow
   object_type: gate
   object_name: f_Nupstj
@@ -264,6 +308,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_f_golebiowski_dalbysvatn_max_flow
   object_type: gate
   object_name: f_Golebiowski_Dalbysvatn
@@ -275,6 +321,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_f_lont_dalbysvatn_max_flow
   object_type: gate
   object_name: f_Lont_Dalbysvatn
@@ -286,6 +334,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_f_dalbysvatn_knute_rullsvatn_max_flow
   object_type: gate
   object_name: f_Dalbysvatn_Knute_Rullsvatn
@@ -297,6 +347,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_f_nielsen_max_flow
   object_type: gate
   object_name: f_Nielsen
@@ -308,6 +360,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 10.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_f_narvhus_rullsvatn_max_flow
   object_type: gate
   object_name: f_Narvhus_Rullsvatn
@@ -319,6 +373,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_f_rullsvatn_rullslaagen_max_flow
   object_type: gate
   object_name: f_Rullsvatn_Rullslaagen
@@ -330,6 +386,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_f_ranemsletta_1183_livincovs_max_flow
   object_type: gate
   object_name: f_Ranemsletta_1183_Livincovs
@@ -341,6 +399,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_f_lensvik_max_flow
   object_type: gate
   object_name: f_Lensvik
@@ -352,6 +412,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_f_livincovs_max_flow
   object_type: gate
   object_name: f_Livincovs
@@ -363,6 +425,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_w_finnvasstol_strand_tunnel_max_flow
   object_type: gate
   object_name: w_Finnvasstol_Strand_tunnel
@@ -374,6 +438,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 6.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_w_hovden_livincovs_max_flow
   object_type: gate
   object_name: w_Hovden_Livincovs
@@ -385,6 +451,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 10.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_w_frosta_max_flow
   object_type: gate
   object_name: w_Frosta
@@ -396,6 +464,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_w_varhaug_max_flow
   object_type: gate
   object_name: w_Varhaug
@@ -407,6 +477,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 30.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_w_tangvall_max_flow
   object_type: gate
   object_name: w_Tangvall
@@ -418,6 +490,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_gate_w_rullsvatn_rullslaagen_max_flow
   object_type: gate
   object_name: w_Rullsvatn_Rullslaagen
@@ -429,6 +503,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_generator_holen_g1_startcost
   object_type: generator
   object_name: Holen_G1
@@ -440,6 +516,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 200.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_holen_g1_min_p_constr
   object_type: generator
   object_name: Holen_G1
@@ -451,6 +529,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 28.0
+  retrieve: RANGE
+  aggregation: max
 - external_id: base_mapping_fornebu_generator_holen_g1_max_p_constr
   object_type: generator
   object_name: Holen_G1
@@ -462,6 +542,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 38.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_generator_holen_g1_p_fcr_min
   object_type: generator
   object_name: Holen_G1
@@ -473,6 +555,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 27.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_holen_g1_p_fcr_max
   object_type: generator
   object_name: Holen_G1
@@ -484,6 +568,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 45.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_holen_g1_p_rr_min
   object_type: generator
   object_name: Holen_G1
@@ -495,6 +581,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_holen_g1_droop_min
   object_type: generator
   object_name: Holen_G1
@@ -506,6 +594,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 6.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_holen_g1_droop_max
   object_type: generator
   object_name: Holen_G1
@@ -517,6 +607,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 6.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_lund_g1_startcost
   object_type: generator
   object_name: Lund_G1
@@ -528,6 +620,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 100.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_lund_g1_p_fcr_min
   object_type: generator
   object_name: Lund_G1
@@ -539,6 +633,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0.6
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_lund_g1_p_fcr_max
   object_type: generator
   object_name: Lund_G1
@@ -550,6 +646,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_lund_g1_p_rr_min
   object_type: generator
   object_name: Lund_G1
@@ -561,6 +659,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_lund_g1_droop_min
   object_type: generator
   object_name: Lund_G1
@@ -572,6 +672,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 4.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_lund_g1_droop_max
   object_type: generator
   object_name: Lund_G1
@@ -583,6 +685,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 12.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_lien_krv_g1_startcost
   object_type: generator
   object_name: Lien_krv_G1
@@ -594,6 +698,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 150.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_lien_krv_g1_min_p_constr
   object_type: generator
   object_name: Lien_krv_G1
@@ -605,6 +711,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 2.5
+  retrieve: RANGE
+  aggregation: max
 - external_id: base_mapping_fornebu_generator_lien_krv_g1_max_p_constr
   object_type: generator
   object_name: Lien_krv_G1
@@ -616,6 +724,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 3.1
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_generator_lien_krv_g1_p_fcr_min
   object_type: generator
   object_name: Lien_krv_G1
@@ -627,6 +737,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_lien_krv_g1_p_fcr_max
   object_type: generator
   object_name: Lien_krv_G1
@@ -638,6 +750,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_lien_krv_g1_p_rr_min
   object_type: generator
   object_name: Lien_krv_G1
@@ -649,6 +763,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_lien_krv_g1_droop_min
   object_type: generator
   object_name: Lien_krv_G1
@@ -660,6 +776,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 4.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_lien_krv_g1_droop_max
   object_type: generator
   object_name: Lien_krv_G1
@@ -671,6 +789,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 8.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_landet_g1_startcost
   object_type: generator
   object_name: Landet_G1
@@ -682,6 +802,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 200.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_landet_g1_max_p_constr
   object_type: generator
   object_name: Landet_G1
@@ -693,6 +815,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 48.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_generator_landet_g1_p_fcr_min
   object_type: generator
   object_name: Landet_G1
@@ -704,6 +828,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 25.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_landet_g1_p_fcr_max
   object_type: generator
   object_name: Landet_G1
@@ -715,6 +841,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 50.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_landet_g1_p_rr_min
   object_type: generator
   object_name: Landet_G1
@@ -726,6 +854,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_landet_g1_droop_min
   object_type: generator
   object_name: Landet_G1
@@ -737,6 +867,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 6.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_landet_g1_droop_max
   object_type: generator
   object_name: Landet_G1
@@ -748,6 +880,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 6.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_dalby_g1_startcost
   object_type: generator
   object_name: Dalby_G1
@@ -759,6 +893,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 500.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_dalby_g1_p_fcr_min
   object_type: generator
   object_name: Dalby_G1
@@ -770,6 +906,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 38.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_dalby_g1_p_fcr_max
   object_type: generator
   object_name: Dalby_G1
@@ -781,6 +919,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 85.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_dalby_g1_p_rr_min
   object_type: generator
   object_name: Dalby_G1
@@ -792,6 +932,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_dalby_g1_droop_cost
   object_type: generator
   object_name: Dalby_G1
@@ -803,6 +945,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 50000.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_dalby_g1_droop_min
   object_type: generator
   object_name: Dalby_G1
@@ -814,6 +958,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 2.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_dalby_g1_droop_max
   object_type: generator
   object_name: Dalby_G1
@@ -825,6 +971,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 12.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_dalby_g2_startcost
   object_type: generator
   object_name: Dalby_G2
@@ -836,6 +984,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 250.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_dalby_g2_p_fcr_min
   object_type: generator
   object_name: Dalby_G2
@@ -847,6 +997,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 38.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_dalby_g2_p_fcr_max
   object_type: generator
   object_name: Dalby_G2
@@ -858,6 +1010,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 85.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_dalby_g2_p_rr_min
   object_type: generator
   object_name: Dalby_G2
@@ -869,6 +1023,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_dalby_g2_droop_cost
   object_type: generator
   object_name: Dalby_G2
@@ -880,6 +1036,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 50000.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_dalby_g2_droop_min
   object_type: generator
   object_name: Dalby_G2
@@ -891,6 +1049,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 2.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_dalby_g2_droop_max
   object_type: generator
   object_name: Dalby_G2
@@ -902,6 +1062,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 12.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull1_g1_startcost
   object_type: generator
   object_name: Rull1_G1
@@ -913,6 +1075,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 250.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull1_g1_max_p_constr
   object_type: generator
   object_name: Rull1_G1
@@ -924,6 +1088,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 90.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_generator_rull1_g1_p_fcr_min
   object_type: generator
   object_name: Rull1_G1
@@ -935,6 +1101,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 38.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull1_g1_p_fcr_max
   object_type: generator
   object_name: Rull1_G1
@@ -946,6 +1114,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 95.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull1_g1_p_rr_min
   object_type: generator
   object_name: Rull1_G1
@@ -957,6 +1127,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull1_g1_droop_cost
   object_type: generator
   object_name: Rull1_G1
@@ -968,6 +1140,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 50000.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull1_g1_droop_min
   object_type: generator
   object_name: Rull1_G1
@@ -979,6 +1153,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 2.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull1_g1_droop_max
   object_type: generator
   object_name: Rull1_G1
@@ -990,6 +1166,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 12.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull1_g2_startcost
   object_type: generator
   object_name: Rull1_G2
@@ -1001,6 +1179,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 250.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull1_g2_min_p_constr
   object_type: generator
   object_name: Rull1_G2
@@ -1012,6 +1192,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 43.0
+  retrieve: RANGE
+  aggregation: max
 - external_id: base_mapping_fornebu_generator_rull1_g2_max_p_constr
   object_type: generator
   object_name: Rull1_G2
@@ -1023,6 +1205,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 95.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_generator_rull1_g2_p_fcr_min
   object_type: generator
   object_name: Rull1_G2
@@ -1034,6 +1218,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 38.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull1_g2_p_fcr_max
   object_type: generator
   object_name: Rull1_G2
@@ -1045,6 +1231,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 85.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull1_g2_p_rr_min
   object_type: generator
   object_name: Rull1_G2
@@ -1056,6 +1244,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull1_g2_droop_cost
   object_type: generator
   object_name: Rull1_G2
@@ -1067,6 +1257,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 50000.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull1_g2_droop_min
   object_type: generator
   object_name: Rull1_G2
@@ -1078,6 +1270,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 2.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull1_g2_droop_max
   object_type: generator
   object_name: Rull1_G2
@@ -1089,6 +1283,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 12.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull2_g1_startcost
   object_type: generator
   object_name: Rull2_G1
@@ -1100,6 +1296,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 250.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull2_g1_p_fcr_min
   object_type: generator
   object_name: Rull2_G1
@@ -1111,6 +1309,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 32.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull2_g1_p_fcr_max
   object_type: generator
   object_name: Rull2_G1
@@ -1122,6 +1322,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 74.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull2_g1_p_rr_min
   object_type: generator
   object_name: Rull2_G1
@@ -1133,6 +1335,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull2_g1_droop_cost
   object_type: generator
   object_name: Rull2_G1
@@ -1144,6 +1348,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 50000.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull2_g1_droop_min
   object_type: generator
   object_name: Rull2_G1
@@ -1155,6 +1361,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 4.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull2_g1_droop_max
   object_type: generator
   object_name: Rull2_G1
@@ -1166,6 +1374,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 12.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull2_g2_startcost
   object_type: generator
   object_name: Rull2_G2
@@ -1177,6 +1387,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 250.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull2_g2_max_p_constr
   object_type: generator
   object_name: Rull2_G2
@@ -1188,6 +1400,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 74.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_generator_rull2_g2_p_fcr_min
   object_type: generator
   object_name: Rull2_G2
@@ -1199,6 +1413,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 32.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull2_g2_p_fcr_max
   object_type: generator
   object_name: Rull2_G2
@@ -1210,6 +1426,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 76.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull2_g2_p_rr_min
   object_type: generator
   object_name: Rull2_G2
@@ -1221,6 +1439,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull2_g2_droop_cost
   object_type: generator
   object_name: Rull2_G2
@@ -1232,6 +1452,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 50000.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull2_g2_droop_min
   object_type: generator
   object_name: Rull2_G2
@@ -1243,6 +1465,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 4.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_rull2_g2_droop_max
   object_type: generator
   object_name: Rull2_G2
@@ -1254,6 +1478,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 12.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_scott_g1_startcost
   object_type: generator
   object_name: Scott_G1
@@ -1265,6 +1491,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 150.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_scott_g1_p_fcr_min
   object_type: generator
   object_name: Scott_G1
@@ -1276,6 +1504,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 7.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_scott_g1_p_fcr_max
   object_type: generator
   object_name: Scott_G1
@@ -1287,6 +1517,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 19.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_scott_g1_p_rr_min
   object_type: generator
   object_name: Scott_G1
@@ -1298,6 +1530,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_scott_g1_droop_min
   object_type: generator
   object_name: Scott_G1
@@ -1309,6 +1543,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 6.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_scott_g1_droop_max
   object_type: generator
   object_name: Scott_G1
@@ -1320,6 +1556,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 6.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_strand_krv_g1_startcost
   object_type: generator
   object_name: Strand_krv_G1
@@ -1331,6 +1569,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 150.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_strand_krv_g1_p_fcr_min
   object_type: generator
   object_name: Strand_krv_G1
@@ -1342,6 +1582,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 4.2
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_strand_krv_g1_p_fcr_max
   object_type: generator
   object_name: Strand_krv_G1
@@ -1353,6 +1595,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 4.9
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_strand_krv_g1_p_rr_min
   object_type: generator
   object_name: Strand_krv_G1
@@ -1364,6 +1608,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_strand_krv_g1_droop_min
   object_type: generator
   object_name: Strand_krv_G1
@@ -1375,6 +1621,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 4.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_strand_krv_g1_droop_max
   object_type: generator
   object_name: Strand_krv_G1
@@ -1386,6 +1634,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 12.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_junction_sandvika_min_pressure
   object_type: junction
   object_name: Sandvika
@@ -1397,6 +1647,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 672.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_market_dayahead_load
   object_type: market
   object_name: Dayahead
@@ -1408,6 +1660,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_market_dayahead_max_buy
   object_type: market
   object_name: Dayahead
@@ -1419,6 +1673,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 10000.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_market_dayahead_max_sale
   object_type: market
   object_name: Dayahead
@@ -1430,6 +1686,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 10000.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_plant_holen_prod_area
   object_type: plant
   object_name: Holen
@@ -1441,6 +1699,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_plant_holen_mip_flag
   object_type: plant
   object_name: Holen
@@ -1452,6 +1712,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1.0
+  retrieve: RANGE
+  aggregation: first
 - external_id: base_mapping_fornebu_plant_holen_max_p_constr
   object_type: plant
   object_name: Holen
@@ -1463,6 +1725,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 42.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_plant_holen_max_q_constr
   object_type: plant
   object_name: Holen
@@ -1474,6 +1738,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_plant_lund_prod_area
   object_type: plant
   object_name: Lund
@@ -1485,6 +1751,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_plant_lund_mip_flag
   object_type: plant
   object_name: Lund
@@ -1496,6 +1764,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0.0
+  retrieve: RANGE
+  aggregation: first
 - external_id: base_mapping_fornebu_plant_lund_max_q_constr
   object_type: plant
   object_name: Lund
@@ -1507,6 +1777,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_plant_lien_krv_prod_area
   object_type: plant
   object_name: Lien_krv
@@ -1518,6 +1790,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_plant_lien_krv_mip_flag
   object_type: plant
   object_name: Lien_krv
@@ -1529,6 +1803,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1.0
+  retrieve: RANGE
+  aggregation: first
 - external_id: base_mapping_fornebu_plant_lien_krv_max_q_constr
   object_type: plant
   object_name: Lien_krv
@@ -1540,6 +1816,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 2.7
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_plant_landet_prod_area
   object_type: plant
   object_name: Landet
@@ -1551,6 +1829,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_plant_landet_mip_flag
   object_type: plant
   object_name: Landet
@@ -1562,6 +1842,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1.0
+  retrieve: RANGE
+  aggregation: first
 - external_id: base_mapping_fornebu_plant_landet_max_p_constr
   object_type: plant
   object_name: Landet
@@ -1573,6 +1855,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 48.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_plant_landet_max_q_constr
   object_type: plant
   object_name: Landet
@@ -1584,6 +1868,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_plant_dalby_prod_area
   object_type: plant
   object_name: Dalby
@@ -1595,6 +1881,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_plant_dalby_mip_flag
   object_type: plant
   object_name: Dalby
@@ -1606,6 +1894,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1.0
+  retrieve: RANGE
+  aggregation: first
 - external_id: base_mapping_fornebu_plant_dalby_max_q_constr
   object_type: plant
   object_name: Dalby
@@ -1617,6 +1907,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_plant_rull1_prod_area
   object_type: plant
   object_name: Rull1
@@ -1628,6 +1920,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_plant_rull1_mip_flag
   object_type: plant
   object_name: Rull1
@@ -1639,6 +1933,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1.0
+  retrieve: RANGE
+  aggregation: first
 - external_id: base_mapping_fornebu_plant_rull1_max_p_constr
   object_type: plant
   object_name: Rull1
@@ -1650,6 +1946,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 184.999
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_plant_rull1_max_q_constr
   object_type: plant
   object_name: Rull1
@@ -1661,6 +1959,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_plant_rull2_prod_area
   object_type: plant
   object_name: Rull2
@@ -1672,6 +1972,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_plant_rull2_mip_flag
   object_type: plant
   object_name: Rull2
@@ -1683,6 +1985,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1.0
+  retrieve: RANGE
+  aggregation: first
 - external_id: base_mapping_fornebu_plant_rull2_max_q_constr
   object_type: plant
   object_name: Rull2
@@ -1694,6 +1998,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_plant_scott_prod_area
   object_type: plant
   object_name: Scott
@@ -1705,6 +2011,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_plant_scott_mip_flag
   object_type: plant
   object_name: Scott
@@ -1716,6 +2024,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1.0
+  retrieve: RANGE
+  aggregation: first
 - external_id: base_mapping_fornebu_plant_scott_max_q_constr
   object_type: plant
   object_name: Scott
@@ -1727,6 +2037,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_plant_strand_krv_prod_area
   object_type: plant
   object_name: Strand_krv
@@ -1738,6 +2050,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_plant_strand_krv_mip_flag
   object_type: plant
   object_name: Strand_krv
@@ -1749,6 +2063,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0.0
+  retrieve: RANGE
+  aggregation: first
 - external_id: base_mapping_fornebu_plant_strand_krv_max_q_constr
   object_type: plant
   object_name: Strand_krv
@@ -1760,6 +2076,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1000.0
+  retrieve: RANGE
+  aggregation: min
 - external_id: base_mapping_fornebu_reservoir_sirefelt_tactical_limit_max
   object_type: reservoir
   object_name: Sirefelt
@@ -1771,6 +2089,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 1.42
+  retrieve: RANGE
+  aggregation: mean
 - external_id: base_mapping_fornebu_reservoir_danielsen_tactical_limit_max
   object_type: reservoir
   object_name: Danielsen
@@ -1782,6 +2102,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 9.2
+  retrieve: RANGE
+  aggregation: mean
 - external_id: base_mapping_fornebu_reservoir_dalbysvatn_tactical_limit_max
   object_type: reservoir
   object_name: Dalbysvatn
@@ -1793,6 +2115,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 109.0
+  retrieve: RANGE
+  aggregation: mean
 - external_id: base_mapping_fornebu_production_group_t2landet_max_p_limit
   object_type: production_group
   object_name: T2Landet
@@ -1804,6 +2128,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 48.6
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_reserve_group_rkom_up_rr_up_obligation
   object_type: reserve_group
   object_name: rkom_up
@@ -1815,6 +2141,8 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0.0
+  retrieve: RANGE
+  aggregation: max
 - external_id: base_mapping_fornebu_creek_intake_blakstad_inflow
   object_type: creek_intake
   object_name: Blakstad
@@ -1827,6 +2155,8 @@
     - AddConstant:
         parameters:
           constant: 0.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_creek_intake_fjerdingby_intake_inflow
   object_type: creek_intake
   object_name: Fjerdingby_intake
@@ -1839,6 +2169,8 @@
     - AddConstant:
         parameters:
           constant: 0.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_creek_intake_vigrestad_inflow
   object_type: creek_intake
   object_name: Vigrestad
@@ -1851,6 +2183,8 @@
     - AddConstant:
         parameters:
           constant: 0.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_creek_intake_golebiowski_intake_inflow
   object_type: creek_intake
   object_name: Golebiowski_intake
@@ -1863,6 +2197,8 @@
     - AddConstant:
         parameters:
           constant: 0.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_creek_intake_lont_intake_inflow
   object_type: creek_intake
   object_name: Lont_intake
@@ -1875,6 +2211,8 @@
     - AddConstant:
         parameters:
           constant: 0.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_creek_intake_narvhus_inflow
   object_type: creek_intake
   object_name: Narvhus
@@ -1887,6 +2225,8 @@
     - AddConstant:
         parameters:
           constant: 0.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_creek_intake_gustad_inflow
   object_type: creek_intake
   object_name: Gustad
@@ -1899,6 +2239,8 @@
     - AddConstant:
         parameters:
           constant: 0.0
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_generator_holen_g1_maintenance_flag
   object_type: generator
   object_name: Holen_G1
@@ -1911,6 +2253,8 @@
     - AddConstant:
         parameters:
           constant: 1.0
+  retrieve: RANGE
+  aggregation: max
 - external_id: base_mapping_fornebu_generator_lund_g1_maintenance_flag
   object_type: generator
   object_name: Lund_G1
@@ -1923,6 +2267,8 @@
     - AddConstant:
         parameters:
           constant: 1.0
+  retrieve: RANGE
+  aggregation: max
 - external_id: base_mapping_fornebu_generator_lien_krv_g1_maintenance_flag
   object_type: generator
   object_name: Lien_krv_G1
@@ -1935,6 +2281,8 @@
     - AddConstant:
         parameters:
           constant: 1.0
+  retrieve: RANGE
+  aggregation: max
 - external_id: base_mapping_fornebu_generator_landet_g1_maintenance_flag
   object_type: generator
   object_name: Landet_G1
@@ -1947,6 +2295,8 @@
     - AddConstant:
         parameters:
           constant: 1.0
+  retrieve: RANGE
+  aggregation: max
 - external_id: base_mapping_fornebu_generator_dalby_g1_maintenance_flag
   object_type: generator
   object_name: Dalby_G1
@@ -1959,6 +2309,8 @@
     - AddConstant:
         parameters:
           constant: 1.0
+  retrieve: RANGE
+  aggregation: max
 - external_id: base_mapping_fornebu_generator_dalby_g2_maintenance_flag
   object_type: generator
   object_name: Dalby_G2
@@ -1971,6 +2323,8 @@
     - AddConstant:
         parameters:
           constant: 1.0
+  retrieve: RANGE
+  aggregation: max
 - external_id: base_mapping_fornebu_generator_rull1_g1_maintenance_flag
   object_type: generator
   object_name: Rull1_G1
@@ -1983,6 +2337,8 @@
     - AddConstant:
         parameters:
           constant: 1.0
+  retrieve: RANGE
+  aggregation: max
 - external_id: base_mapping_fornebu_generator_rull1_g2_maintenance_flag
   object_type: generator
   object_name: Rull1_G2
@@ -1995,6 +2351,8 @@
     - AddConstant:
         parameters:
           constant: 1.0
+  retrieve: RANGE
+  aggregation: max
 - external_id: base_mapping_fornebu_generator_rull2_g1_maintenance_flag
   object_type: generator
   object_name: Rull2_G1
@@ -2007,6 +2365,8 @@
     - AddConstant:
         parameters:
           constant: 1.0
+  retrieve: RANGE
+  aggregation: max
 - external_id: base_mapping_fornebu_generator_rull2_g2_maintenance_flag
   object_type: generator
   object_name: Rull2_G2
@@ -2019,6 +2379,8 @@
     - AddConstant:
         parameters:
           constant: 1.0
+  retrieve: RANGE
+  aggregation: max
 - external_id: base_mapping_fornebu_generator_scott_g1_maintenance_flag
   object_type: generator
   object_name: Scott_G1
@@ -2031,6 +2393,8 @@
     - AddConstant:
         parameters:
           constant: 1.0
+  retrieve: RANGE
+  aggregation: max
 - external_id: base_mapping_fornebu_generator_strand_krv_g1_maintenance_flag
   object_type: generator
   object_name: Strand_krv_G1
@@ -2043,255 +2407,320 @@
     - AddConstant:
         parameters:
           constant: 1.0
+  retrieve: RANGE
+  aggregation: max
 - external_id: base_mapping_fornebu_plant_holen_production_schedule
   object_type: plant
   object_name: Holen
   attribute_name: production_schedule
   time_series: "[external_id]136445"
   transformations: []
+  retrieve: RANGE
+  aggregation: first
 - external_id: base_mapping_fornebu_plant_lund_production_schedule
   object_type: plant
   object_name: Lund
   attribute_name: production_schedule
   time_series: "[external_id]136450"
   transformations: []
+  retrieve: RANGE
+  aggregation: first
 - external_id: base_mapping_fornebu_plant_lien_krv_production_schedule
   object_type: plant
   object_name: Lien_krv
   attribute_name: production_schedule
   time_series: "[external_id]136449"
   transformations: []
+  retrieve: RANGE
+  aggregation: first
 - external_id: base_mapping_fornebu_plant_landet_production_schedule
   object_type: plant
   object_name: Landet
   attribute_name: production_schedule
   time_series: "[external_id]136446"
   transformations: []
+  retrieve: RANGE
+  aggregation: first
 - external_id: base_mapping_fornebu_plant_dalby_production_schedule
   object_type: plant
   object_name: Dalby
   attribute_name: production_schedule
   time_series: "[external_id]136442"
   transformations: []
+  retrieve: RANGE
+  aggregation: first
 - external_id: base_mapping_fornebu_plant_rull1_production_schedule
   object_type: plant
   object_name: Rull1
   attribute_name: production_schedule
   time_series: "[external_id]136443"
   transformations: []
+  retrieve: RANGE
+  aggregation: first
 - external_id: base_mapping_fornebu_plant_rull2_production_schedule
   object_type: plant
   object_name: Rull2
   attribute_name: production_schedule
   time_series: "[external_id]136444"
   transformations: []
+  retrieve: RANGE
+  aggregation: first
 - external_id: base_mapping_fornebu_plant_scott_production_schedule
   object_type: plant
   object_name: Scott
   attribute_name: production_schedule
   time_series: "[external_id]136447"
   transformations: []
+  retrieve: RANGE
+  aggregation: first
 - external_id: base_mapping_fornebu_plant_strand_krv_production_schedule
   object_type: plant
   object_name: Strand_krv
   attribute_name: production_schedule
   time_series: "[external_id]136448"
   transformations: []
+  retrieve: RANGE
+  aggregation: first
 - external_id: base_mapping_fornebu_reservoir_hagen_start_head
   object_type: reservoir
   object_name: Hagen
   attribute_name: start_head
-  retrieve: START
   time_series: "[external_id]501436"
   transformations: []
+  retrieve: START
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_reservoir_hagen_inflow
   object_type: reservoir
   object_name: Hagen
   attribute_name: inflow
   time_series: "[external_id]649827"
   transformations: []
+  retrieve: RANGE
+  aggregation: mean
 - external_id: base_mapping_fornebu_reservoir_hovden_start_vol
   object_type: reservoir
   object_name: Hovden
   attribute_name: start_vol
-  retrieve: START
   time_series: "[external_id]601729"
   transformations: []
+  retrieve: START
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_reservoir_hovden_inflow
   object_type: reservoir
   object_name: Hovden
   attribute_name: inflow
   time_series: "[external_id]649831"
   transformations: []
+  retrieve: RANGE
+  aggregation: mean
 - external_id: base_mapping_fornebu_reservoir_frosta_start_head
   object_type: reservoir
   object_name: Frosta
   attribute_name: start_head
-  retrieve: START
   time_series: "[external_id]501437"
   transformations: []
+  retrieve: START
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_reservoir_frosta_inflow
   object_type: reservoir
   object_name: Frosta
   attribute_name: inflow
   time_series: "[external_id]649837"
   transformations: []
+  retrieve: RANGE
+  aggregation: mean
 - external_id: base_mapping_fornebu_reservoir_varhaug_start_head
   object_type: reservoir
   object_name: Varhaug
   attribute_name: start_head
-  retrieve: START
   time_series: "[external_id]740791"
   transformations: []
+  retrieve: START
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_reservoir_varhaug_inflow
   object_type: reservoir
   object_name: Varhaug
   attribute_name: inflow
   time_series: "[external_id]649838"
   transformations: []
+  retrieve: RANGE
+  aggregation: mean
 - external_id: base_mapping_fornebu_reservoir_tangvall_start_head
   object_type: reservoir
   object_name: Tangvall
   attribute_name: start_head
-  retrieve: START
   time_series: "[external_id]501441"
   transformations: []
+  retrieve: START
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_reservoir_tangvall_inflow
   object_type: reservoir
   object_name: Tangvall
   attribute_name: inflow
   time_series: "[external_id]649830"
   transformations: []
+  retrieve: RANGE
+  aggregation: mean
 - external_id: base_mapping_fornebu_reservoir_sirefelt_start_head
   object_type: reservoir
   object_name: Sirefelt
   attribute_name: start_head
-  retrieve: START
   time_series: "[external_id]501433"
   transformations: []
+  retrieve: START
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_reservoir_sirefelt_inflow
   object_type: reservoir
   object_name: Sirefelt
   attribute_name: inflow
   time_series: "[external_id]649835"
   transformations: []
+  retrieve: RANGE
+  aggregation: mean
 - external_id: base_mapping_fornebu_reservoir_lundvann_start_vol
   object_type: reservoir
   object_name: Lundvann
   attribute_name: start_vol
-  retrieve: START
   time_series: "[external_id]601728"
   transformations: []
+  retrieve: START
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_reservoir_lundvann_inflow
   object_type: reservoir
   object_name: Lundvann
   attribute_name: inflow
   time_series: "[external_id]649832"
   transformations: []
+  retrieve: RANGE
+  aggregation: mean
 - external_id: base_mapping_fornebu_reservoir_danielsen_start_head
   object_type: reservoir
   object_name: Danielsen
   attribute_name: start_head
-  retrieve: START
   time_series: "[external_id]501439"
   transformations: []
+  retrieve: START
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_reservoir_danielsen_inflow
   object_type: reservoir
   object_name: Danielsen
   attribute_name: inflow
   time_series: "[external_id]649828"
   transformations: []
+  retrieve: RANGE
+  aggregation: mean
 - external_id: base_mapping_fornebu_reservoir_dalbysvatn_start_head
   object_type: reservoir
   object_name: Dalbysvatn
   attribute_name: start_head
-  retrieve: START
   time_series: "[external_id]501440"
   transformations: []
+  retrieve: START
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_reservoir_dalbysvatn_inflow
   object_type: reservoir
   object_name: Dalbysvatn
   attribute_name: inflow
   time_series: "[external_id]624330"
   transformations: []
+  retrieve: RANGE
+  aggregation: mean
 - external_id: base_mapping_fornebu_reservoir_dalbysvatn_min_head_constr
   object_type: reservoir
   object_name: Dalbysvatn
   attribute_name: min_head_constr
   time_series: "[external_id]582116"
   transformations: []
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_reservoir_dalbysvatn_max_head_constr
   object_type: reservoir
   object_name: Dalbysvatn
   attribute_name: max_head_constr
   time_series: "[external_id]603779"
   transformations: []
+  retrieve: RANGE
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_reservoir_nielsen_start_head
   object_type: reservoir
   object_name: Nielsen
   attribute_name: start_head
-  retrieve: START
   time_series: "[external_id]501431"
   transformations: []
+  retrieve: START
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_reservoir_nielsen_inflow
   object_type: reservoir
   object_name: Nielsen
   attribute_name: inflow
   time_series: "[external_id]649836"
   transformations: []
+  retrieve: RANGE
+  aggregation: mean
 - external_id: base_mapping_fornebu_reservoir_ranemsletta_1183_start_head
   object_type: reservoir
   object_name: Ranemsletta_1183
   attribute_name: start_head
-  retrieve: START
   time_series: "[external_id]770346"
   transformations: []
+  retrieve: START
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_reservoir_ranemsletta_1183_inflow
   object_type: reservoir
   object_name: Ranemsletta_1183
   attribute_name: inflow
   time_series: "[external_id]769827"
   transformations: []
+  retrieve: RANGE
+  aggregation: mean
 - external_id: base_mapping_fornebu_reservoir_lensvik_start_head
   object_type: reservoir
   object_name: Lensvik
   attribute_name: start_head
-  retrieve: START
   time_series: "[external_id]501428"
   transformations: []
+  retrieve: START
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_reservoir_lensvik_inflow
   object_type: reservoir
   object_name: Lensvik
   attribute_name: inflow
   time_series: "[external_id]649792"
   transformations: []
+  retrieve: RANGE
+  aggregation: mean
 - external_id: base_mapping_fornebu_reservoir_strand_start_head
   object_type: reservoir
   object_name: Strand
   attribute_name: start_head
-  retrieve: START
   time_series: "[external_id]501430"
   transformations: []
+  retrieve: START
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_reservoir_strand_inflow
   object_type: reservoir
   object_name: Strand
   attribute_name: inflow
   time_series: "[external_id]649826"
   transformations: []
+  retrieve: RANGE
+  aggregation: mean
 - external_id: base_mapping_fornebu_reservoir_strand_tunnel_start_head
   object_type: reservoir
   object_name: Strand_tunnel
   attribute_name: start_head
-  retrieve: START
   time_series: "[external_id]501428"
   transformations: []
+  retrieve: START
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_reservoir_livincovs_start_head
   object_type: reservoir
   object_name: Livincovs
   attribute_name: start_head
-  retrieve: START
   time_series: "[external_id]501438"
   transformations: []
+  retrieve: START
+  aggregation: MEAN
 - external_id: base_mapping_fornebu_reservoir_livincovs_inflow
   object_type: reservoir
   object_name: Livincovs
@@ -2304,6 +2733,8 @@
     - AddConstant:
         parameters:
           constant: 0.0
+  retrieve: RANGE
+  aggregation: mean
 - external_id: base_mapping_fornebu_market_dayahead_buy_price
   object_type: market
   object_name: Dayahead
@@ -2316,12 +2747,115 @@
     - AddConstant:
         parameters:
           constant: 0.0
+  retrieve: RANGE
+  aggregation: mean
 - external_id: base_mapping_fornebu_market_dayahead_sale_price
   object_type: market
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]6694"
   transformations: []
+  retrieve: RANGE
+  aggregation: mean
+- external_id: base_mapping_fornebu_plant_strand_krv_production_schedule_flag
+  object_type: plant
+  object_name: Strand_krv
+  attribute_name: production_schedule_flag
+  time_series: null
+  transformations:
+    - StaticValues:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 0
+- external_id: base_mapping_fornebu_plant_rull2_production_schedule_flag
+  object_type: plant
+  object_name: Rull2
+  attribute_name: production_schedule_flag
+  time_series: null
+  transformations:
+    - StaticValues:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 0
+- external_id: base_mapping_fornebu_plant_rull1_production_schedule_flag
+  object_type: plant
+  object_name: Rull1
+  attribute_name: production_schedule_flag
+  time_series: null
+  transformations:
+    - StaticValues:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 0
+- external_id: base_mapping_fornebu_plant_lien_krv_production_schedule_flag
+  object_type: plant
+  object_name: Lien_krv
+  attribute_name: production_schedule_flag
+  time_series: null
+  transformations:
+    - StaticValues:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 0
+- external_id: base_mapping_fornebu_plant_dalby_production_schedule_flag
+  object_type: plant
+  object_name: Dalby
+  attribute_name: production_schedule_flag
+  time_series: null
+  transformations:
+    - StaticValues:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 0
+- external_id: base_mapping_fornebu_plant_holen_production_schedule_flag
+  object_type: plant
+  object_name: Holen
+  attribute_name: production_schedule_flag
+  time_series: null
+  transformations:
+    - StaticValues:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 0
+- external_id: base_mapping_fornebu_plant_landet_production_schedule_flag
+  object_type: plant
+  object_name: Landet
+  attribute_name: production_schedule_flag
+  time_series: null
+  transformations:
+    - StaticValues:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 0
+- external_id: base_mapping_fornebu_plant_scott_production_schedule_flag
+  object_type: plant
+  object_name: Scott
+  attribute_name: production_schedule_flag
+  time_series: null
+  transformations:
+    - StaticValues:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 0
+- external_id: base_mapping_fornebu_plant_lund_production_schedule_flag
+  object_type: plant
+  object_name: Lund
+  attribute_name: production_schedule_flag
+  time_series: null
+  transformations:
+    - StaticValues:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 0
 - external_id: no2_buy_price_offset_-200
   object_type: market
   object_name: Dayahead
