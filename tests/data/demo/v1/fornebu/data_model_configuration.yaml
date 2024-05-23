@@ -82,8 +82,8 @@ plant_water_value_based:
     is_list: True
     source_file: "files/model.yaml"
     extraction_path: "model.plant.[name].penstock_loss"
-  # generators: "connections"
-  # connection_losses: "???" # from model file??
+    # generators: "connections"
+    # connection_losses: "???" # from model file??
 
 shop_attribute_mapping:
   retrieve:
