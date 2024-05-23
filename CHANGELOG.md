@@ -15,13 +15,14 @@ Changes are grouped as follows
 
 ## [0.94.4] - 2024-05-13
 ### Added
-* Type DateSpecification to replace previous string format with de
+* Type DateSpecification to replace previous string format for fields bidDateSpecification, startSpecification, and endSpecification
   * With default value for property processingTimezone as UTC
   * With default value for property resultingTimezone as UTC
 * Type ShopOutputTimeSeriesDefinition to replace previous static sequence
 * Property outputDefinition in ShopScenario as a list of ShopOutputTimeSeriesDefinition
-* Default value for property retrieve in ShopAttributeMapping as "RANGE"
-* Default value for property aggregation in ShopAttributeMapping as "mean"
+* Default value for properties inShopAttributeMapping
+  * With default value for property retrieve as "RANGE"
+  * With default value for property aggregation as "mean"
 
 ### Changed
 * Renamed ShopPartialBidMatrixCalculationInput to MultiScenarioPartialBidMatrixCalculationInput
@@ -30,7 +31,7 @@ Changes are grouped as follows
 * Type of property penstockHeadLossFactors to a list of float instead of JSON
 * Renamed objectiveSequence property in ShopResult to objectiveValue
 * Type of property objectiveValue (previously objectiveSequence) in ShopResult to a JSON instead of sequence
-* Renamed property X in BidMatrixInformation to underlyingBidMatrices
+* Renamed property intermediateBidMatrices in BidMatrixInformation to underlyingBidMatrices
 
 ### Removed
 * Removed property extraFiles from ShopModel
