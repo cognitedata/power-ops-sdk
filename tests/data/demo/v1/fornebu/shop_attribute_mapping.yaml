@@ -2101,6 +2101,7 @@
   object_type: reservoir
   object_name: Hagen
   attribute_name: start_head
+  retrieve: START
   time_series: "[external_id]501436"
   transformations: []
 - external_id: base_mapping_fornebu_reservoir_hagen_inflow
@@ -2113,6 +2114,7 @@
   object_type: reservoir
   object_name: Hovden
   attribute_name: start_vol
+  retrieve: START
   time_series: "[external_id]601729"
   transformations: []
 - external_id: base_mapping_fornebu_reservoir_hovden_inflow
@@ -2125,6 +2127,7 @@
   object_type: reservoir
   object_name: Frosta
   attribute_name: start_head
+  retrieve: START
   time_series: "[external_id]501437"
   transformations: []
 - external_id: base_mapping_fornebu_reservoir_frosta_inflow
@@ -2137,6 +2140,7 @@
   object_type: reservoir
   object_name: Varhaug
   attribute_name: start_head
+  retrieve: START
   time_series: "[external_id]740791"
   transformations: []
 - external_id: base_mapping_fornebu_reservoir_varhaug_inflow
@@ -2149,6 +2153,7 @@
   object_type: reservoir
   object_name: Tangvall
   attribute_name: start_head
+  retrieve: START
   time_series: "[external_id]501441"
   transformations: []
 - external_id: base_mapping_fornebu_reservoir_tangvall_inflow
@@ -2161,6 +2166,7 @@
   object_type: reservoir
   object_name: Sirefelt
   attribute_name: start_head
+  retrieve: START
   time_series: "[external_id]501433"
   transformations: []
 - external_id: base_mapping_fornebu_reservoir_sirefelt_inflow
@@ -2173,6 +2179,7 @@
   object_type: reservoir
   object_name: Lundvann
   attribute_name: start_vol
+  retrieve: START
   time_series: "[external_id]601728"
   transformations: []
 - external_id: base_mapping_fornebu_reservoir_lundvann_inflow
@@ -2185,6 +2192,7 @@
   object_type: reservoir
   object_name: Danielsen
   attribute_name: start_head
+  retrieve: START
   time_series: "[external_id]501439"
   transformations: []
 - external_id: base_mapping_fornebu_reservoir_danielsen_inflow
@@ -2197,6 +2205,7 @@
   object_type: reservoir
   object_name: Dalbysvatn
   attribute_name: start_head
+  retrieve: START
   time_series: "[external_id]501440"
   transformations: []
 - external_id: base_mapping_fornebu_reservoir_dalbysvatn_inflow
@@ -2221,6 +2230,7 @@
   object_type: reservoir
   object_name: Nielsen
   attribute_name: start_head
+  retrieve: START
   time_series: "[external_id]501431"
   transformations: []
 - external_id: base_mapping_fornebu_reservoir_nielsen_inflow
@@ -2233,6 +2243,7 @@
   object_type: reservoir
   object_name: Ranemsletta_1183
   attribute_name: start_head
+  retrieve: START
   time_series: "[external_id]770346"
   transformations: []
 - external_id: base_mapping_fornebu_reservoir_ranemsletta_1183_inflow
@@ -2245,6 +2256,7 @@
   object_type: reservoir
   object_name: Lensvik
   attribute_name: start_head
+  retrieve: START
   time_series: "[external_id]501428"
   transformations: []
 - external_id: base_mapping_fornebu_reservoir_lensvik_inflow
@@ -2257,6 +2269,7 @@
   object_type: reservoir
   object_name: Strand
   attribute_name: start_head
+  retrieve: START
   time_series: "[external_id]501430"
   transformations: []
 - external_id: base_mapping_fornebu_reservoir_strand_inflow
@@ -2269,12 +2282,14 @@
   object_type: reservoir
   object_name: Strand_tunnel
   attribute_name: start_head
+  retrieve: START
   time_series: "[external_id]501428"
   transformations: []
 - external_id: base_mapping_fornebu_reservoir_livincovs_start_head
   object_type: reservoir
   object_name: Livincovs
   attribute_name: start_head
+  retrieve: START
   time_series: "[external_id]501438"
   transformations: []
 - external_id: base_mapping_fornebu_reservoir_livincovs_inflow
