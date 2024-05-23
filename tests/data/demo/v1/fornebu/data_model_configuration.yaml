@@ -68,7 +68,7 @@ plant_water_value_based:
     extraction_path: "model.plant.[name].main_loss.[0]"
   outlet_level:
     source_file: "files/model.yaml"
-    extraction_path: "model.plant.[name].outlet_level"
+    extraction_path: "model.plant.[name].outlet_line"
   production_max:
     source_file: "files/model.yaml"
     extraction_path: "model.plant.[name].p_max"
