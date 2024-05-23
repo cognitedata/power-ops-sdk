@@ -98,7 +98,7 @@ def main():
         print(Panel("Done generating v0 clients", title="Done", style="bold green"))
 
         # TODO: update space to not be temp
-        space = "nina_sp_power_ops_models"
+        space = "sp_power_ops_models"
         v1_models = [
             "compute_ShopBasedDayAhead",
             "compute_TotalBidMatrixCalculation",
