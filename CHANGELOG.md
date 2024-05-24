@@ -15,6 +15,10 @@ Changes are grouped as follows
 
 
 
+## [0.94.4] - 2024-05-24
+### Changed
+* FDM v1 resync: Supporting default values in data_model_configuration also without specifying source
+
 ## [0.94.3] - 2024-05-11
 ### Added
 * Support for FDM v1 resync
