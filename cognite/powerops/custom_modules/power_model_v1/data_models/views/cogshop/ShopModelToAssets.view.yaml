@@ -43,7 +43,12 @@ properties:
       type: container
     containerPropertyIdentifier: powerAssets
     name: powerAssets
-    description: A list of power assets covered by the Shop model. For a given bid document, we will select the partial bids for these assets, and calculate production obligation for these partial bids (summed up)"
+    description: A list of power assets covered by the Shop model. For a given bid document, we will select the partial bids for these assets, and calculate production obligation for these partial bids (summed up)
+    source:
+      space: "{{power_ops_models}}"
+      externalId: PowerAsset
+      version: "{{version}}"
+      type: view
   productionObligations:
     container:
       space: "{{power_ops_models}}"
@@ -52,3 +57,8 @@ properties:
     containerPropertyIdentifier: productionObligations
     name: productionObligations
     description: TODO
+    source:
+      space: "{{power_ops_models}}"
+      externalId: DayAheadProductionObligationForBenchmarking
+      version: "{{version}}"
+      type: view

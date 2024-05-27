@@ -47,6 +47,11 @@ properties:
       type: container
     containerPropertyIdentifier: bidSource
     name: bidSource
+    source:
+      space: "{{power_ops_models}}"
+      externalId: BidConfigurationDayAhead
+      version: "{{version}}"
+      type: view
   deliveryDate:
     container:
       space: "{{power_ops_models}}"

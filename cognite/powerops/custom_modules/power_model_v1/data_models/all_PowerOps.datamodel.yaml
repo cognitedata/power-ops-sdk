@@ -227,3 +227,27 @@ views:
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
+  - externalId: BidConfigurationDayAhead_benchmarking
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: DayAheadBenchmarkingShopRunInput
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: ShopModelToAssets
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: DayAheadProductionObligationForBenchmarking
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: DayAheadBenchmarkingResult
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: DayAheadBenchmarkingConfiguration
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
