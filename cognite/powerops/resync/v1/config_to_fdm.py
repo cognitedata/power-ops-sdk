@@ -206,11 +206,15 @@ class ResyncImporter:
         # TODO: handle these special cases in a better way
         if type_configuration.type_ is v1_data_classes.PlantWaterValueBasedWrite:
             # TODO: remove when model is updated to a list instead of json
-            raw_penstock_head_loss_factor = parsed_data["penstock_head_loss_factors"]
-            parsed_data["penstock_head_loss_factors"] = {
-                str(index): float(loss_factor)
-                for index, loss_factor in enumerate(raw_penstock_head_loss_factor, start=1)
-            }
+            raw_penstock_head_loss_factors = parsed_data["penstock_head_loss_factors"]
+            parsed_data["penstock_head_loss_factors"] = (
+                {
+                    str(index): float(loss_factor)
+                    for index, loss_factor in enumerate(raw_penstock_head_loss_factors, start=1)
+                }
+                if raw_penstock_head_loss_factors
+                else {}
+            )
 
             parsed_data["generators"] = (
                 self._get_all_connections(parsed_data, "plant", "generator")
@@ -589,7 +593,8 @@ class ResyncImporter:
         if instance_data is None:
             instance_data = {}
         list_data = self._get_property_value_from_source(property_configuration, instance_data)
-
+        if not list_data:
+            return []
         if property_configuration.cast_type not in self.data_model_configuration:
             raise ValueError(f"Type {property_configuration.cast_type} is not supported, add import to type")
         subtype_data_model_configuration = self.data_model_configuration[property_configuration.cast_type]
