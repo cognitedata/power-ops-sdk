@@ -83,7 +83,9 @@ class TotalBidMatrixCalculationInputGraphQL(GraphQLCore):
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
     function_call_id: Optional[str] = Field(None, alias="functionCallId")
-    bid_configuration: Optional[BidConfigurationDayAheadGraphQL] = Field(None, repr=False, alias="bidConfiguration")
+    bid_configuration: Optional[BidConfigurationDayAheadGraphQL] = Field(
+        default=None, repr=False, alias="bidConfiguration"
+    )
     bid_date: Optional[datetime.date] = Field(None, alias="bidDate")
     partial_bid_matrices: Optional[list[BidMatrixGraphQL]] = Field(default=None, repr=False, alias="partialBidMatrices")
 
@@ -129,8 +131,7 @@ class TotalBidMatrixCalculationInputGraphQL(GraphQLCore):
             ),
             bid_date=self.bid_date,
             partial_bid_matrices=[
-                partial_bid_matrice.as_read() if isinstance(partial_bid_matrice, GraphQLCore) else partial_bid_matrice
-                for partial_bid_matrice in self.partial_bid_matrices or []
+                partial_bid_matrice.as_read() for partial_bid_matrice in self.partial_bid_matrices or []
             ],
         )
 
@@ -146,13 +147,12 @@ class TotalBidMatrixCalculationInputGraphQL(GraphQLCore):
             function_call_id=self.function_call_id,
             bid_configuration=(
                 self.bid_configuration.as_write()
-                if isinstance(self.bid_configuration, DomainModel)
+                if isinstance(self.bid_configuration, GraphQLCore)
                 else self.bid_configuration
             ),
             bid_date=self.bid_date,
             partial_bid_matrices=[
-                partial_bid_matrice.as_write() if isinstance(partial_bid_matrice, DomainModel) else partial_bid_matrice
-                for partial_bid_matrice in self.partial_bid_matrices or []
+                partial_bid_matrice.as_write() for partial_bid_matrice in self.partial_bid_matrices or []
             ],
         )
 
@@ -179,7 +179,7 @@ class TotalBidMatrixCalculationInput(FunctionInput):
         "sp_power_ops_types", "TotalBidMatrixCalculationInput"
     )
     bid_configuration: Union[BidConfigurationDayAhead, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="bidConfiguration"
+        default=None, repr=False, alias="bidConfiguration"
     )
     bid_date: Optional[datetime.date] = Field(None, alias="bidDate")
     partial_bid_matrices: Union[list[BidMatrix], list[str], list[dm.NodeId], None] = Field(
@@ -240,7 +240,7 @@ class TotalBidMatrixCalculationInputWrite(FunctionInputWrite):
         "sp_power_ops_types", "TotalBidMatrixCalculationInput"
     )
     bid_configuration: Union[BidConfigurationDayAheadWrite, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="bidConfiguration"
+        default=None, repr=False, alias="bidConfiguration"
     )
     bid_date: Optional[datetime.date] = Field(None, alias="bidDate")
     partial_bid_matrices: Union[list[BidMatrixWrite], list[str], list[dm.NodeId], None] = Field(

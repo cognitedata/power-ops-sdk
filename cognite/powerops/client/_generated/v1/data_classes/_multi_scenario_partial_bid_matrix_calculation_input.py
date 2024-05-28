@@ -95,9 +95,11 @@ class MultiScenarioPartialBidMatrixCalculationInputGraphQL(GraphQLCore):
     function_name: Optional[str] = Field(None, alias="functionName")
     function_call_id: Optional[str] = Field(None, alias="functionCallId")
     bid_date: Optional[datetime.date] = Field(None, alias="bidDate")
-    bid_configuration: Optional[BidConfigurationDayAheadGraphQL] = Field(None, repr=False, alias="bidConfiguration")
+    bid_configuration: Optional[BidConfigurationDayAheadGraphQL] = Field(
+        default=None, repr=False, alias="bidConfiguration"
+    )
     partial_bid_configuration: Optional[ShopBasedPartialBidConfigurationGraphQL] = Field(
-        None, repr=False, alias="partialBidConfiguration"
+        default=None, repr=False, alias="partialBidConfiguration"
     )
     price_production: Optional[list[PriceProductionGraphQL]] = Field(default=None, repr=False, alias="priceProduction")
 
@@ -147,10 +149,7 @@ class MultiScenarioPartialBidMatrixCalculationInputGraphQL(GraphQLCore):
                 if isinstance(self.partial_bid_configuration, GraphQLCore)
                 else self.partial_bid_configuration
             ),
-            price_production=[
-                price_production.as_read() if isinstance(price_production, GraphQLCore) else price_production
-                for price_production in self.price_production or []
-            ],
+            price_production=[price_production.as_read() for price_production in self.price_production or []],
         )
 
     def as_write(self) -> MultiScenarioPartialBidMatrixCalculationInputWrite:
@@ -166,18 +165,15 @@ class MultiScenarioPartialBidMatrixCalculationInputGraphQL(GraphQLCore):
             bid_date=self.bid_date,
             bid_configuration=(
                 self.bid_configuration.as_write()
-                if isinstance(self.bid_configuration, DomainModel)
+                if isinstance(self.bid_configuration, GraphQLCore)
                 else self.bid_configuration
             ),
             partial_bid_configuration=(
                 self.partial_bid_configuration.as_write()
-                if isinstance(self.partial_bid_configuration, DomainModel)
+                if isinstance(self.partial_bid_configuration, GraphQLCore)
                 else self.partial_bid_configuration
             ),
-            price_production=[
-                price_production.as_write() if isinstance(price_production, DomainModel) else price_production
-                for price_production in self.price_production or []
-            ],
+            price_production=[price_production.as_write() for price_production in self.price_production or []],
         )
 
 

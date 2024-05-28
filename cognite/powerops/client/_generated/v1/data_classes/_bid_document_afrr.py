@@ -86,7 +86,7 @@ class BidDocumentAFRRGraphQL(GraphQLCore):
     end_calculation: Optional[datetime.datetime] = Field(None, alias="endCalculation")
     is_complete: Optional[bool] = Field(None, alias="isComplete")
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
-    price_area: Optional[PriceAreaAFRRGraphQL] = Field(None, repr=False, alias="priceArea")
+    price_area: Optional[PriceAreaAFRRGraphQL] = Field(default=None, repr=False, alias="priceArea")
     bids: Optional[list[BidRowGraphQL]] = Field(default=None, repr=False)
 
     @model_validator(mode="before")
@@ -126,9 +126,9 @@ class BidDocumentAFRRGraphQL(GraphQLCore):
             start_calculation=self.start_calculation,
             end_calculation=self.end_calculation,
             is_complete=self.is_complete,
-            alerts=[alert.as_read() if isinstance(alert, GraphQLCore) else alert for alert in self.alerts or []],
+            alerts=[alert.as_read() for alert in self.alerts or []],
             price_area=self.price_area.as_read() if isinstance(self.price_area, GraphQLCore) else self.price_area,
-            bids=[bid.as_read() if isinstance(bid, GraphQLCore) else bid for bid in self.bids or []],
+            bids=[bid.as_read() for bid in self.bids or []],
         )
 
     def as_write(self) -> BidDocumentAFRRWrite:
@@ -143,9 +143,9 @@ class BidDocumentAFRRGraphQL(GraphQLCore):
             start_calculation=self.start_calculation,
             end_calculation=self.end_calculation,
             is_complete=self.is_complete,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            price_area=self.price_area.as_write() if isinstance(self.price_area, DomainModel) else self.price_area,
-            bids=[bid.as_write() if isinstance(bid, DomainModel) else bid for bid in self.bids or []],
+            alerts=[alert.as_write() for alert in self.alerts or []],
+            price_area=self.price_area.as_write() if isinstance(self.price_area, GraphQLCore) else self.price_area,
+            bids=[bid.as_write() for bid in self.bids or []],
         )
 
 
@@ -172,7 +172,7 @@ class BidDocumentAFRR(BidDocument):
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "sp_power_ops_types", "AFRRBidDocument"
     )
-    price_area: Union[PriceAreaAFRR, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
+    price_area: Union[PriceAreaAFRR, str, dm.NodeId, None] = Field(default=None, repr=False, alias="priceArea")
     bids: Union[list[BidRow], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
     def as_write(self) -> BidDocumentAFRRWrite:
@@ -225,7 +225,7 @@ class BidDocumentAFRRWrite(BidDocumentWrite):
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "sp_power_ops_types", "AFRRBidDocument"
     )
-    price_area: Union[PriceAreaAFRRWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
+    price_area: Union[PriceAreaAFRRWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="priceArea")
     bids: Union[list[BidRowWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
     def _to_instances_write(

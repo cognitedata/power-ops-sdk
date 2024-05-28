@@ -110,7 +110,7 @@ class GeneratorGraphQL(GraphQLCore):
     start_stop_cost: Union[TimeSeries, dict, None] = Field(None, alias="startStopCost")
     availability_time_series: Union[TimeSeries, dict, None] = Field(None, alias="availabilityTimeSeries")
     generator_efficiency_curve: Optional[GeneratorEfficiencyCurveGraphQL] = Field(
-        None, repr=False, alias="generatorEfficiencyCurve"
+        default=None, repr=False, alias="generatorEfficiencyCurve"
     )
     turbine_efficiency_curves: Optional[list[TurbineEfficiencyCurveGraphQL]] = Field(
         default=None, repr=False, alias="turbineEfficiencyCurves"
@@ -162,12 +162,7 @@ class GeneratorGraphQL(GraphQLCore):
                 else self.generator_efficiency_curve
             ),
             turbine_efficiency_curves=[
-                (
-                    turbine_efficiency_curve.as_read()
-                    if isinstance(turbine_efficiency_curve, GraphQLCore)
-                    else turbine_efficiency_curve
-                )
-                for turbine_efficiency_curve in self.turbine_efficiency_curves or []
+                turbine_efficiency_curve.as_read() for turbine_efficiency_curve in self.turbine_efficiency_curves or []
             ],
         )
 
@@ -188,16 +183,11 @@ class GeneratorGraphQL(GraphQLCore):
             availability_time_series=self.availability_time_series,
             generator_efficiency_curve=(
                 self.generator_efficiency_curve.as_write()
-                if isinstance(self.generator_efficiency_curve, DomainModel)
+                if isinstance(self.generator_efficiency_curve, GraphQLCore)
                 else self.generator_efficiency_curve
             ),
             turbine_efficiency_curves=[
-                (
-                    turbine_efficiency_curve.as_write()
-                    if isinstance(turbine_efficiency_curve, DomainModel)
-                    else turbine_efficiency_curve
-                )
-                for turbine_efficiency_curve in self.turbine_efficiency_curves or []
+                turbine_efficiency_curve.as_write() for turbine_efficiency_curve in self.turbine_efficiency_curves or []
             ],
         )
 
@@ -231,7 +221,7 @@ class Generator(PowerAsset):
     start_stop_cost: Union[TimeSeries, str, None] = Field(None, alias="startStopCost")
     availability_time_series: Union[TimeSeries, str, None] = Field(None, alias="availabilityTimeSeries")
     generator_efficiency_curve: Union[GeneratorEfficiencyCurve, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="generatorEfficiencyCurve"
+        default=None, repr=False, alias="generatorEfficiencyCurve"
     )
     turbine_efficiency_curves: Union[list[TurbineEfficiencyCurve], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="turbineEfficiencyCurves"
@@ -306,7 +296,7 @@ class GeneratorWrite(PowerAssetWrite):
     start_stop_cost: Union[TimeSeries, str, None] = Field(None, alias="startStopCost")
     availability_time_series: Union[TimeSeries, str, None] = Field(None, alias="availabilityTimeSeries")
     generator_efficiency_curve: Union[GeneratorEfficiencyCurveWrite, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="generatorEfficiencyCurve"
+        default=None, repr=False, alias="generatorEfficiencyCurve"
     )
     turbine_efficiency_curves: Union[list[TurbineEfficiencyCurveWrite], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="turbineEfficiencyCurves"
@@ -349,16 +339,18 @@ class GeneratorWrite(PowerAssetWrite):
             properties["startCost"] = self.start_cost
 
         if self.start_stop_cost is not None or write_none:
-            if isinstance(self.start_stop_cost, str) or self.start_stop_cost is None:
-                properties["startStopCost"] = self.start_stop_cost
-            else:
-                properties["startStopCost"] = self.start_stop_cost.external_id
+            properties["startStopCost"] = (
+                self.start_stop_cost
+                if isinstance(self.start_stop_cost, str) or self.start_stop_cost is None
+                else self.start_stop_cost.external_id
+            )
 
         if self.availability_time_series is not None or write_none:
-            if isinstance(self.availability_time_series, str) or self.availability_time_series is None:
-                properties["availabilityTimeSeries"] = self.availability_time_series
-            else:
-                properties["availabilityTimeSeries"] = self.availability_time_series.external_id
+            properties["availabilityTimeSeries"] = (
+                self.availability_time_series
+                if isinstance(self.availability_time_series, str) or self.availability_time_series is None
+                else self.availability_time_series.external_id
+            )
 
         if self.generator_efficiency_curve is not None:
             properties["generatorEfficiencyCurve"] = {

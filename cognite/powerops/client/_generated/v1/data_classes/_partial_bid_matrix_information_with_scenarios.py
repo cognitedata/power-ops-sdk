@@ -84,10 +84,10 @@ class PartialBidMatrixInformationWithScenariosGraphQL(GraphQLCore):
     underlying_bid_matrices: Optional[list[BidMatrixGraphQL]] = Field(
         default=None, repr=False, alias="underlyingBidMatrices"
     )
-    power_asset: Optional[PowerAssetGraphQL] = Field(None, repr=False, alias="powerAsset")
+    power_asset: Optional[PowerAssetGraphQL] = Field(default=None, repr=False, alias="powerAsset")
     resource_cost: Optional[float] = Field(None, alias="resourceCost")
     partial_bid_configuration: Optional[PartialBidConfigurationGraphQL] = Field(
-        None, repr=False, alias="partialBidConfiguration"
+        default=None, repr=False, alias="partialBidConfiguration"
     )
     multi_scenario_input: Optional[list[PriceProductionGraphQL]] = Field(
         default=None, repr=False, alias="multiScenarioInput"
@@ -133,14 +133,9 @@ class PartialBidMatrixInformationWithScenariosGraphQL(GraphQLCore):
             ),
             state=self.state,
             bid_matrix=self.bid_matrix["externalId"] if self.bid_matrix and "externalId" in self.bid_matrix else None,
-            alerts=[alert.as_read() if isinstance(alert, GraphQLCore) else alert for alert in self.alerts or []],
+            alerts=[alert.as_read() for alert in self.alerts or []],
             underlying_bid_matrices=[
-                (
-                    underlying_bid_matrice.as_read()
-                    if isinstance(underlying_bid_matrice, GraphQLCore)
-                    else underlying_bid_matrice
-                )
-                for underlying_bid_matrice in self.underlying_bid_matrices or []
+                underlying_bid_matrice.as_read() for underlying_bid_matrice in self.underlying_bid_matrices or []
             ],
             power_asset=self.power_asset.as_read() if isinstance(self.power_asset, GraphQLCore) else self.power_asset,
             resource_cost=self.resource_cost,
@@ -150,12 +145,7 @@ class PartialBidMatrixInformationWithScenariosGraphQL(GraphQLCore):
                 else self.partial_bid_configuration
             ),
             multi_scenario_input=[
-                (
-                    multi_scenario_input.as_read()
-                    if isinstance(multi_scenario_input, GraphQLCore)
-                    else multi_scenario_input
-                )
-                for multi_scenario_input in self.multi_scenario_input or []
+                multi_scenario_input.as_read() for multi_scenario_input in self.multi_scenario_input or []
             ],
         )
 
@@ -167,29 +157,19 @@ class PartialBidMatrixInformationWithScenariosGraphQL(GraphQLCore):
             data_record=DataRecordWrite(existing_version=0),
             state=self.state,
             bid_matrix=self.bid_matrix["externalId"] if self.bid_matrix and "externalId" in self.bid_matrix else None,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
+            alerts=[alert.as_write() for alert in self.alerts or []],
             underlying_bid_matrices=[
-                (
-                    underlying_bid_matrice.as_write()
-                    if isinstance(underlying_bid_matrice, DomainModel)
-                    else underlying_bid_matrice
-                )
-                for underlying_bid_matrice in self.underlying_bid_matrices or []
+                underlying_bid_matrice.as_write() for underlying_bid_matrice in self.underlying_bid_matrices or []
             ],
-            power_asset=self.power_asset.as_write() if isinstance(self.power_asset, DomainModel) else self.power_asset,
+            power_asset=self.power_asset.as_write() if isinstance(self.power_asset, GraphQLCore) else self.power_asset,
             resource_cost=self.resource_cost,
             partial_bid_configuration=(
                 self.partial_bid_configuration.as_write()
-                if isinstance(self.partial_bid_configuration, DomainModel)
+                if isinstance(self.partial_bid_configuration, GraphQLCore)
                 else self.partial_bid_configuration
             ),
             multi_scenario_input=[
-                (
-                    multi_scenario_input.as_write()
-                    if isinstance(multi_scenario_input, DomainModel)
-                    else multi_scenario_input
-                )
-                for multi_scenario_input in self.multi_scenario_input or []
+                multi_scenario_input.as_write() for multi_scenario_input in self.multi_scenario_input or []
             ],
         )
 

@@ -76,9 +76,9 @@ class ShopTriggerOutputGraphQL(GraphQLCore):
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
     function_call_id: Optional[str] = Field(None, alias="functionCallId")
-    input_: Optional[ShopTriggerInputGraphQL] = Field(None, repr=False, alias="input")
+    input_: Optional[ShopTriggerInputGraphQL] = Field(default=None, repr=False, alias="input")
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
-    shop_result: Optional[ShopResultGraphQL] = Field(None, repr=False, alias="shopResult")
+    shop_result: Optional[ShopResultGraphQL] = Field(default=None, repr=False, alias="shopResult")
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -116,7 +116,7 @@ class ShopTriggerOutputGraphQL(GraphQLCore):
             function_name=self.function_name,
             function_call_id=self.function_call_id,
             input_=self.input_.as_read() if isinstance(self.input_, GraphQLCore) else self.input_,
-            alerts=[alert.as_read() if isinstance(alert, GraphQLCore) else alert for alert in self.alerts or []],
+            alerts=[alert.as_read() for alert in self.alerts or []],
             shop_result=self.shop_result.as_read() if isinstance(self.shop_result, GraphQLCore) else self.shop_result,
         )
 
@@ -130,9 +130,9 @@ class ShopTriggerOutputGraphQL(GraphQLCore):
             workflow_step=self.workflow_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
-            input_=self.input_.as_write() if isinstance(self.input_, DomainModel) else self.input_,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            shop_result=self.shop_result.as_write() if isinstance(self.shop_result, DomainModel) else self.shop_result,
+            input_=self.input_.as_write() if isinstance(self.input_, GraphQLCore) else self.input_,
+            alerts=[alert.as_write() for alert in self.alerts or []],
+            shop_result=self.shop_result.as_write() if isinstance(self.shop_result, GraphQLCore) else self.shop_result,
         )
 
 
@@ -157,7 +157,7 @@ class ShopTriggerOutput(FunctionOutput):
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "sp_power_ops_types", "ShopTriggerOutput"
     )
-    shop_result: Union[ShopResult, str, dm.NodeId, None] = Field(None, repr=False, alias="shopResult")
+    shop_result: Union[ShopResult, str, dm.NodeId, None] = Field(default=None, repr=False, alias="shopResult")
 
     def as_write(self) -> ShopTriggerOutputWrite:
         """Convert this read version of shop trigger output to the writing version."""
@@ -205,7 +205,7 @@ class ShopTriggerOutputWrite(FunctionOutputWrite):
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "sp_power_ops_types", "ShopTriggerOutput"
     )
-    shop_result: Union[ShopResultWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="shopResult")
+    shop_result: Union[ShopResultWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="shopResult")
 
     def _to_instances_write(
         self,

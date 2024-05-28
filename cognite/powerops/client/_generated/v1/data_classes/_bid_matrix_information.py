@@ -106,14 +106,9 @@ class BidMatrixInformationGraphQL(GraphQLCore):
             ),
             state=self.state,
             bid_matrix=self.bid_matrix["externalId"] if self.bid_matrix and "externalId" in self.bid_matrix else None,
-            alerts=[alert.as_read() if isinstance(alert, GraphQLCore) else alert for alert in self.alerts or []],
+            alerts=[alert.as_read() for alert in self.alerts or []],
             underlying_bid_matrices=[
-                (
-                    underlying_bid_matrice.as_read()
-                    if isinstance(underlying_bid_matrice, GraphQLCore)
-                    else underlying_bid_matrice
-                )
-                for underlying_bid_matrice in self.underlying_bid_matrices or []
+                underlying_bid_matrice.as_read() for underlying_bid_matrice in self.underlying_bid_matrices or []
             ],
         )
 
@@ -125,14 +120,9 @@ class BidMatrixInformationGraphQL(GraphQLCore):
             data_record=DataRecordWrite(existing_version=0),
             state=self.state,
             bid_matrix=self.bid_matrix["externalId"] if self.bid_matrix and "externalId" in self.bid_matrix else None,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
+            alerts=[alert.as_write() for alert in self.alerts or []],
             underlying_bid_matrices=[
-                (
-                    underlying_bid_matrice.as_write()
-                    if isinstance(underlying_bid_matrice, DomainModel)
-                    else underlying_bid_matrice
-                )
-                for underlying_bid_matrice in self.underlying_bid_matrices or []
+                underlying_bid_matrice.as_write() for underlying_bid_matrice in self.underlying_bid_matrices or []
             ],
         )
 

@@ -73,7 +73,7 @@ class ShopResultGraphQL(GraphQLCore):
     """
 
     view_id = dm.ViewId("sp_power_ops_models", "ShopResult", "1")
-    case: Optional[ShopCaseGraphQL] = Field(None, repr=False)
+    case: Optional[ShopCaseGraphQL] = Field(default=None, repr=False)
     objective_value: Optional[dict] = Field(None, alias="objectiveValue")
     pre_run: Union[dict, None] = Field(None, alias="preRun")
     post_run: Union[dict, None] = Field(None, alias="postRun")
@@ -121,11 +121,8 @@ class ShopResultGraphQL(GraphQLCore):
             post_run=self.post_run["externalId"] if self.post_run and "externalId" in self.post_run else None,
             messages=self.messages["externalId"] if self.messages and "externalId" in self.messages else None,
             cplex_logs=self.cplex_logs["externalId"] if self.cplex_logs and "externalId" in self.cplex_logs else None,
-            alerts=[alert.as_read() if isinstance(alert, GraphQLCore) else alert for alert in self.alerts or []],
-            output_time_series=[
-                output_time_series.as_read() if isinstance(output_time_series, GraphQLCore) else output_time_series
-                for output_time_series in self.output_time_series or []
-            ],
+            alerts=[alert.as_read() for alert in self.alerts or []],
+            output_time_series=[output_time_series.as_read() for output_time_series in self.output_time_series or []],
         )
 
     def as_write(self) -> ShopResultWrite:
@@ -134,17 +131,14 @@ class ShopResultGraphQL(GraphQLCore):
             space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
-            case=self.case.as_write() if isinstance(self.case, DomainModel) else self.case,
+            case=self.case.as_write() if isinstance(self.case, GraphQLCore) else self.case,
             objective_value=self.objective_value,
             pre_run=self.pre_run["externalId"] if self.pre_run and "externalId" in self.pre_run else None,
             post_run=self.post_run["externalId"] if self.post_run and "externalId" in self.post_run else None,
             messages=self.messages["externalId"] if self.messages and "externalId" in self.messages else None,
             cplex_logs=self.cplex_logs["externalId"] if self.cplex_logs and "externalId" in self.cplex_logs else None,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            output_time_series=[
-                output_time_series.as_write() if isinstance(output_time_series, DomainModel) else output_time_series
-                for output_time_series in self.output_time_series or []
-            ],
+            alerts=[alert.as_write() for alert in self.alerts or []],
+            output_time_series=[output_time_series.as_write() for output_time_series in self.output_time_series or []],
         )
 
 
@@ -169,7 +163,7 @@ class ShopResult(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
-    case: Union[ShopCase, str, dm.NodeId, None] = Field(None, repr=False)
+    case: Union[ShopCase, str, dm.NodeId, None] = Field(default=None, repr=False)
     objective_value: Optional[dict] = Field(None, alias="objectiveValue")
     pre_run: Union[str, None] = Field(None, alias="preRun")
     post_run: Union[str, None] = Field(None, alias="postRun")
@@ -230,7 +224,7 @@ class ShopResultWrite(DomainModelWrite):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
-    case: Union[ShopCaseWrite, str, dm.NodeId, None] = Field(None, repr=False)
+    case: Union[ShopCaseWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
     objective_value: Optional[dict] = Field(None, alias="objectiveValue")
     pre_run: Union[str, None] = Field(None, alias="preRun")
     post_run: Union[str, None] = Field(None, alias="postRun")

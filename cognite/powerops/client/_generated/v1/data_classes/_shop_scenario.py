@@ -74,8 +74,8 @@ class ShopScenarioGraphQL(GraphQLCore, protected_namespaces=()):
 
     view_id = dm.ViewId("sp_power_ops_models", "ShopScenario", "1")
     name: Optional[str] = None
-    model: Optional[ShopModelGraphQL] = Field(None, repr=False)
-    commands: Optional[ShopCommandsGraphQL] = Field(None, repr=False)
+    model: Optional[ShopModelGraphQL] = Field(default=None, repr=False)
+    commands: Optional[ShopCommandsGraphQL] = Field(default=None, repr=False)
     source: Optional[str] = None
     output_definition: Optional[list[ShopOutputTimeSeriesDefinitionGraphQL]] = Field(
         default=None, repr=False, alias="outputDefinition"
@@ -119,16 +119,9 @@ class ShopScenarioGraphQL(GraphQLCore, protected_namespaces=()):
             model=self.model.as_read() if isinstance(self.model, GraphQLCore) else self.model,
             commands=self.commands.as_read() if isinstance(self.commands, GraphQLCore) else self.commands,
             source=self.source,
-            output_definition=[
-                output_definition.as_read() if isinstance(output_definition, GraphQLCore) else output_definition
-                for output_definition in self.output_definition or []
-            ],
+            output_definition=[output_definition.as_read() for output_definition in self.output_definition or []],
             attribute_mappings_override=[
-                (
-                    attribute_mappings_override.as_read()
-                    if isinstance(attribute_mappings_override, GraphQLCore)
-                    else attribute_mappings_override
-                )
+                attribute_mappings_override.as_read()
                 for attribute_mappings_override in self.attribute_mappings_override or []
             ],
         )
@@ -140,19 +133,12 @@ class ShopScenarioGraphQL(GraphQLCore, protected_namespaces=()):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,
-            model=self.model.as_write() if isinstance(self.model, DomainModel) else self.model,
-            commands=self.commands.as_write() if isinstance(self.commands, DomainModel) else self.commands,
+            model=self.model.as_write() if isinstance(self.model, GraphQLCore) else self.model,
+            commands=self.commands.as_write() if isinstance(self.commands, GraphQLCore) else self.commands,
             source=self.source,
-            output_definition=[
-                output_definition.as_write() if isinstance(output_definition, DomainModel) else output_definition
-                for output_definition in self.output_definition or []
-            ],
+            output_definition=[output_definition.as_write() for output_definition in self.output_definition or []],
             attribute_mappings_override=[
-                (
-                    attribute_mappings_override.as_write()
-                    if isinstance(attribute_mappings_override, DomainModel)
-                    else attribute_mappings_override
-                )
+                attribute_mappings_override.as_write()
                 for attribute_mappings_override in self.attribute_mappings_override or []
             ],
         )
@@ -178,8 +164,8 @@ class ShopScenario(DomainModel, protected_namespaces=()):
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
     name: str
-    model: Union[ShopModel, str, dm.NodeId, None] = Field(None, repr=False)
-    commands: Union[ShopCommands, str, dm.NodeId, None] = Field(None, repr=False)
+    model: Union[ShopModel, str, dm.NodeId, None] = Field(default=None, repr=False)
+    commands: Union[ShopCommands, str, dm.NodeId, None] = Field(default=None, repr=False)
     source: Optional[str] = None
     output_definition: Union[list[ShopOutputTimeSeriesDefinition], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="outputDefinition"
@@ -242,8 +228,8 @@ class ShopScenarioWrite(DomainModelWrite, protected_namespaces=()):
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
     name: str
-    model: Union[ShopModelWrite, str, dm.NodeId, None] = Field(None, repr=False)
-    commands: Union[ShopCommandsWrite, str, dm.NodeId, None] = Field(None, repr=False)
+    model: Union[ShopModelWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
+    commands: Union[ShopCommandsWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
     source: Optional[str] = None
     output_definition: Union[list[ShopOutputTimeSeriesDefinitionWrite], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="outputDefinition"

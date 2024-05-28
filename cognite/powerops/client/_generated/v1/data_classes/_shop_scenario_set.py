@@ -65,8 +65,10 @@ class ShopScenarioSetGraphQL(GraphQLCore):
 
     view_id = dm.ViewId("sp_power_ops_models", "ShopScenarioSet", "1")
     name: Optional[str] = None
-    start_specification: Optional[DateSpecificationGraphQL] = Field(None, repr=False, alias="startSpecification")
-    end_specification: Optional[DateSpecificationGraphQL] = Field(None, repr=False, alias="endSpecification")
+    start_specification: Optional[DateSpecificationGraphQL] = Field(
+        default=None, repr=False, alias="startSpecification"
+    )
+    end_specification: Optional[DateSpecificationGraphQL] = Field(default=None, repr=False, alias="endSpecification")
     scenarios: Optional[list[ShopScenarioGraphQL]] = Field(default=None, repr=False)
 
     @model_validator(mode="before")
@@ -111,10 +113,7 @@ class ShopScenarioSetGraphQL(GraphQLCore):
                 if isinstance(self.end_specification, GraphQLCore)
                 else self.end_specification
             ),
-            scenarios=[
-                scenario.as_read() if isinstance(scenario, GraphQLCore) else scenario
-                for scenario in self.scenarios or []
-            ],
+            scenarios=[scenario.as_read() for scenario in self.scenarios or []],
         )
 
     def as_write(self) -> ShopScenarioSetWrite:
@@ -126,18 +125,15 @@ class ShopScenarioSetGraphQL(GraphQLCore):
             name=self.name,
             start_specification=(
                 self.start_specification.as_write()
-                if isinstance(self.start_specification, DomainModel)
+                if isinstance(self.start_specification, GraphQLCore)
                 else self.start_specification
             ),
             end_specification=(
                 self.end_specification.as_write()
-                if isinstance(self.end_specification, DomainModel)
+                if isinstance(self.end_specification, GraphQLCore)
                 else self.end_specification
             ),
-            scenarios=[
-                scenario.as_write() if isinstance(scenario, DomainModel) else scenario
-                for scenario in self.scenarios or []
-            ],
+            scenarios=[scenario.as_write() for scenario in self.scenarios or []],
         )
 
 
@@ -160,10 +156,10 @@ class ShopScenarioSet(DomainModel):
     node_type: Union[dm.DirectRelationReference, None] = None
     name: str
     start_specification: Union[DateSpecification, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="startSpecification"
+        default=None, repr=False, alias="startSpecification"
     )
     end_specification: Union[DateSpecification, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="endSpecification"
+        default=None, repr=False, alias="endSpecification"
     )
     scenarios: Union[list[ShopScenario], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
@@ -219,10 +215,10 @@ class ShopScenarioSetWrite(DomainModelWrite):
     node_type: Union[dm.DirectRelationReference, None] = None
     name: str
     start_specification: Union[DateSpecificationWrite, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="startSpecification"
+        default=None, repr=False, alias="startSpecification"
     )
     end_specification: Union[DateSpecificationWrite, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="endSpecification"
+        default=None, repr=False, alias="endSpecification"
     )
     scenarios: Union[list[ShopScenarioWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 

@@ -119,7 +119,7 @@ class BidDocumentGraphQL(GraphQLCore):
             start_calculation=self.start_calculation,
             end_calculation=self.end_calculation,
             is_complete=self.is_complete,
-            alerts=[alert.as_read() if isinstance(alert, GraphQLCore) else alert for alert in self.alerts or []],
+            alerts=[alert.as_read() for alert in self.alerts or []],
         )
 
     def as_write(self) -> BidDocumentWrite:
@@ -134,7 +134,7 @@ class BidDocumentGraphQL(GraphQLCore):
             start_calculation=self.start_calculation,
             end_calculation=self.end_calculation,
             is_complete=self.is_complete,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
+            alerts=[alert.as_write() for alert in self.alerts or []],
         )
 
 

@@ -72,9 +72,13 @@ class BidConfigurationDayAheadGraphQL(GraphQLCore):
 
     view_id = dm.ViewId("sp_power_ops_models", "BidConfigurationDayAhead", "1")
     name: Optional[str] = None
-    market_configuration: Optional[MarketConfigurationGraphQL] = Field(None, repr=False, alias="marketConfiguration")
-    price_area: Optional[PriceAreaDayAheadGraphQL] = Field(None, repr=False, alias="priceArea")
-    bid_date_specification: Optional[DateSpecificationGraphQL] = Field(None, repr=False, alias="bidDateSpecification")
+    market_configuration: Optional[MarketConfigurationGraphQL] = Field(
+        default=None, repr=False, alias="marketConfiguration"
+    )
+    price_area: Optional[PriceAreaDayAheadGraphQL] = Field(default=None, repr=False, alias="priceArea")
+    bid_date_specification: Optional[DateSpecificationGraphQL] = Field(
+        default=None, repr=False, alias="bidDateSpecification"
+    )
     partials: Optional[list[PartialBidConfigurationGraphQL]] = Field(default=None, repr=False)
 
     @model_validator(mode="before")
@@ -120,9 +124,7 @@ class BidConfigurationDayAheadGraphQL(GraphQLCore):
                 if isinstance(self.bid_date_specification, GraphQLCore)
                 else self.bid_date_specification
             ),
-            partials=[
-                partial.as_read() if isinstance(partial, GraphQLCore) else partial for partial in self.partials or []
-            ],
+            partials=[partial.as_read() for partial in self.partials or []],
         )
 
     def as_write(self) -> BidConfigurationDayAheadWrite:
@@ -134,18 +136,16 @@ class BidConfigurationDayAheadGraphQL(GraphQLCore):
             name=self.name,
             market_configuration=(
                 self.market_configuration.as_write()
-                if isinstance(self.market_configuration, DomainModel)
+                if isinstance(self.market_configuration, GraphQLCore)
                 else self.market_configuration
             ),
-            price_area=self.price_area.as_write() if isinstance(self.price_area, DomainModel) else self.price_area,
+            price_area=self.price_area.as_write() if isinstance(self.price_area, GraphQLCore) else self.price_area,
             bid_date_specification=(
                 self.bid_date_specification.as_write()
-                if isinstance(self.bid_date_specification, DomainModel)
+                if isinstance(self.bid_date_specification, GraphQLCore)
                 else self.bid_date_specification
             ),
-            partials=[
-                partial.as_write() if isinstance(partial, DomainModel) else partial for partial in self.partials or []
-            ],
+            partials=[partial.as_write() for partial in self.partials or []],
         )
 
 
@@ -171,11 +171,11 @@ class BidConfigurationDayAhead(DomainModel):
     )
     name: str
     market_configuration: Union[MarketConfiguration, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="marketConfiguration"
+        default=None, repr=False, alias="marketConfiguration"
     )
-    price_area: Union[PriceAreaDayAhead, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
+    price_area: Union[PriceAreaDayAhead, str, dm.NodeId, None] = Field(default=None, repr=False, alias="priceArea")
     bid_date_specification: Union[DateSpecification, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="bidDateSpecification"
+        default=None, repr=False, alias="bidDateSpecification"
     )
     partials: Union[list[PartialBidConfiguration], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
@@ -234,11 +234,11 @@ class BidConfigurationDayAheadWrite(DomainModelWrite):
     )
     name: str
     market_configuration: Union[MarketConfigurationWrite, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="marketConfiguration"
+        default=None, repr=False, alias="marketConfiguration"
     )
-    price_area: Union[PriceAreaDayAheadWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
+    price_area: Union[PriceAreaDayAheadWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="priceArea")
     bid_date_specification: Union[DateSpecificationWrite, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="bidDateSpecification"
+        default=None, repr=False, alias="bidDateSpecification"
     )
     partials: Union[list[PartialBidConfigurationWrite], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False

@@ -118,20 +118,10 @@ class ShopModelGraphQL(GraphQLCore, protected_namespaces=()):
             penalty_limit=self.penalty_limit,
             model=self.model["externalId"] if self.model and "externalId" in self.model else None,
             cog_shop_files_config=[
-                (
-                    cog_shop_files_config.as_read()
-                    if isinstance(cog_shop_files_config, GraphQLCore)
-                    else cog_shop_files_config
-                )
-                for cog_shop_files_config in self.cog_shop_files_config or []
+                cog_shop_files_config.as_read() for cog_shop_files_config in self.cog_shop_files_config or []
             ],
             base_attribute_mappings=[
-                (
-                    base_attribute_mapping.as_read()
-                    if isinstance(base_attribute_mapping, GraphQLCore)
-                    else base_attribute_mapping
-                )
-                for base_attribute_mapping in self.base_attribute_mappings or []
+                base_attribute_mapping.as_read() for base_attribute_mapping in self.base_attribute_mappings or []
             ],
         )
 
@@ -147,20 +137,10 @@ class ShopModelGraphQL(GraphQLCore, protected_namespaces=()):
             penalty_limit=self.penalty_limit,
             model=self.model["externalId"] if self.model and "externalId" in self.model else None,
             cog_shop_files_config=[
-                (
-                    cog_shop_files_config.as_write()
-                    if isinstance(cog_shop_files_config, DomainModel)
-                    else cog_shop_files_config
-                )
-                for cog_shop_files_config in self.cog_shop_files_config or []
+                cog_shop_files_config.as_write() for cog_shop_files_config in self.cog_shop_files_config or []
             ],
             base_attribute_mappings=[
-                (
-                    base_attribute_mapping.as_write()
-                    if isinstance(base_attribute_mapping, DomainModel)
-                    else base_attribute_mapping
-                )
-                for base_attribute_mapping in self.base_attribute_mappings or []
+                base_attribute_mapping.as_write() for base_attribute_mapping in self.base_attribute_mappings or []
             ],
         )
 
