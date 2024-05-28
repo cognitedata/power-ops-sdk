@@ -33,9 +33,3 @@ properties:
     autoIncrement: false
     name: bidDateSpecification
     description: TODO
-indexes:
-  priceAreaIndex:
-    properties:
-      - priceArea
-    indexType: btree
-    cursorable: false

@@ -2,12 +2,12 @@ space: "{{power_ops_models}}"
 externalId: PlantInformation
 name: PlantInformation
 description: TODO interface for configuration population
-filter:
-  and:
-    - hasData:
-        - type: container
-          space: "{{power_ops_models}}"
-          externalId: PlantWaterValueBased
+# filter:
+#   and:
+#     - hasData:
+#         - type: container
+#           space: "{{power_ops_models}}"
+#           externalId: Plant
 implements:
   - space: "{{power_ops_models}}"
     externalId: PlantWaterValueBased
