@@ -19,8 +19,10 @@ Changes are grouped as follows
 ### Changed
 * FDM v1 resync: Supporting default values in data_model_configuration also without specifying source
 ### Fixed
-* FDM v1 resync: Removing hardcoded reference to files/model.yaml, using all source_files in data_model_configuration instead
-* FDM v1 resync: Handling empty files
+* FDM v1 resync:
+  * Removing hardcoded reference to files/model.yaml, using all source_files in data_model_configuration instead
+  * Handling empty files
+  * Handling "missing" penstock_loss_factors and "missing" subtype lists
 
 ## [0.94.3] - 2024-05-11
 ### Added
