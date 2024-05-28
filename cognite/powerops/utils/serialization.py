@@ -207,8 +207,12 @@ def load_yaml(
         )
     output = CSafeLoader(data).get_data()
     if expected_return_type == "dict" and not isinstance(output, dict):
+        if not output:
+            return {}
         raise ValueError(f"Expected a dictionary, got {type(output)}")
     if expected_return_type == "list" and not isinstance(output, list):
+        if not output:
+            return []
         raise ValueError(f"Expected a list, got {type(output)}")
     return output
 
