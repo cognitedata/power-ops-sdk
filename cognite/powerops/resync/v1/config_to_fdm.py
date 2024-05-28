@@ -383,15 +383,23 @@ class ResyncImporter:
             connections: A list of all connections external ids based on the provided data and asset types.
         """
 
-        all_connections = self._get_property_value_from_source(
-            PropertyConfiguration(
-                property="connections",
-                source_file=Path("files/model.yaml"),
-                extraction_path="connections",
-                cast_type=None,
-            ),
-            data,
-        )
+        all_connections = []
+        source_files = {
+            property_config.source_file
+            for dm_config in self.data_model_configuration.values()
+            for property_config in dm_config.property_configurations
+            if property_config.source_file
+        }
+        for source_file in source_files:
+            all_connections += self._get_property_value_from_source(
+                PropertyConfiguration(
+                    property="connections",
+                    source_file=source_file,
+                    extraction_path="connections",
+                    cast_type=None,
+                ),
+                data,
+            )
         connections = []
 
         name = data["name"]
