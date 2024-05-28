@@ -20,7 +20,11 @@ filter:
         value:
           space: "{{power_ops_type_space}}"
           externalId: BidConfigurationDayAhead
-implements: []
+implements:
+  - space: "{{power_ops_models}}"
+    externalId: BidSource
+    version: "{{version}}"
+    type: view
 version: "{{version}}"
 properties:
   name:
