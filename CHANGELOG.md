@@ -15,9 +15,11 @@ Changes are grouped as follows
 
 
 
-## [0.94.4] - 2024-05-24
+## [0.94.4] - 2024-05-28
 ### Changed
 * FDM v1 resync: Supporting default values in data_model_configuration also without specifying source
+### Fixed
+* Removing hardcoded reference to files/model.yaml, using all source_files in data_model_configuration instead
 
 ## [0.94.3] - 2024-05-11
 ### Added
