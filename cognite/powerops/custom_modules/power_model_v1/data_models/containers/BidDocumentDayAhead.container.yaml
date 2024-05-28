@@ -5,12 +5,14 @@ usedFor: node
 properties:
   bidConfiguration:
     type:
+      list: false
       type: direct
     nullable: true
     autoIncrement: false
     name: bidConfiguration
   total:
     type:
+      list: false
       type: direct
     nullable: true
     autoIncrement: false

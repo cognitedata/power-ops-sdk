@@ -5,6 +5,7 @@ usedFor: node
 properties:
   scenario:
     type:
+      list: false
       type: direct
     nullable: true
     autoIncrement: false
