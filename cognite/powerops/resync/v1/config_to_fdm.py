@@ -388,12 +388,12 @@ class ResyncImporter:
         """
 
         all_connections = []
-        source_files = {
-            property_config.source_file
-            for dm_config in self.data_model_configuration.values()
-            for property_config in dm_config.property_configurations
-            if property_config.source_file
-        }
+        source_files = set()
+        for dm_config in self.data_model_configuration.values():
+            for property_config in dm_config.property_configurations:
+                if property_config.source_file:
+                    source_files.add(property_config.source_file)
+
         for source_file in source_files:
             all_connections += self._get_property_value_from_source(
                 PropertyConfiguration(
