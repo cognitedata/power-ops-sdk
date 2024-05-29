@@ -109,10 +109,10 @@ views:
     type: view
     version: "{{version}}"
   - externalId: ShopCase
-    space: "sp_power_ops_models"
+    space: "{{power_ops_models}}"
     type: view
     version: "1"
   - externalId: ShopResult
-    space: "sp_power_ops_models"
+    space: "{{power_ops_models}}"
     type: view
     version: "1"
