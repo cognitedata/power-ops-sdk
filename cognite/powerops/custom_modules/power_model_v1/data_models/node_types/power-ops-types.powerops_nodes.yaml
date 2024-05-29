@@ -33,6 +33,8 @@
 - space: "{{power_ops_type_space}}"
   externalId: Plant
 - space: "{{power_ops_type_space}}"
+  externalId: Watercourse
+- space: "{{power_ops_type_space}}"
   externalId: PlantInformation
 - space: "{{power_ops_type_space}}"
   externalId: PriceAreaAFRR
@@ -72,6 +74,12 @@
   externalId: ShopCase.shopFiles
 - space: "{{power_ops_type_space}}"
   externalId: ShopScenarioSet.scenarios
+- space: "{{power_ops_type_space}}"
+  externalId: ShopOutputTimeSeriesDefinition
+- space: "{{power_ops_type_space}}"
+  externalId: ShopModel.cogShopFilesConfig
+- space: "{{power_ops_type_space}}"
+  externalId: DateSpecification
 
 ## DayAhead Types
 - space: "{{power_ops_type_space}}"
@@ -102,6 +110,8 @@
   externalId: TaskDispatcherOutput
 - space: "{{power_ops_type_space}}"
   externalId: BidMatrix
+- space: "{{power_ops_type_space}}"
+  externalId: intermediateBidMatrix
 - space: "{{power_ops_type_space}}"
   externalId: ShopTriggerInput
 - space: "{{power_ops_type_space}}"
@@ -163,6 +173,8 @@
 - space: "{{power_ops_type_space}}"
   externalId: DayAheadBenchmarkingShopRunInput
 - space: "{{power_ops_type_space}}"
+  externalId: benchmarkingShopRunInputs
+- space: "{{power_ops_type_space}}"
   externalId: benchmarkingShopRunOutputs
 - space: "{{power_ops_type_space}}"
   externalId: PriceAreaInformation
@@ -176,10 +188,9 @@
   externalId: ShopPenaltyReport
 - space: "{{power_ops_type_space}}"
   externalId: DayAheadBenchmarkingResult
-
 - space: "{{power_ops_type_space}}"
-  externalId: intermediateBidMatrix
+  externalId: assetsPerShopModel
+- space: "{{power_ops_type_space}}"
+  externalId: benchmarkingBidConfigurations
 - space: "{{power_ops_type_space}}"
   externalId: DayAheadProductionObligationForBenchmarking
-- space: "{{power_ops_type_space}}"
-  externalId: benchmarkingShopRunInputs
