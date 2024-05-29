@@ -120,3 +120,7 @@ views:
     space: "{{power_ops_models}}"
     type: view
     version: "1"
+  - externalId: DateSpecification
+    space: "{{power_ops_models}}"
+    type: view
+    version: "1"
