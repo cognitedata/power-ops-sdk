@@ -58,12 +58,14 @@ properties:
     description: The workflowExecutionId associated with the Bid calculation workflow.
   bidConfiguration:
     type:
+      list: false
       type: direct
     nullable: true
     autoIncrement: false
     name: bidConfiguration
   total:
     type:
+      list: false
       type: direct
     nullable: true
     autoIncrement: false
