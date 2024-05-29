@@ -15,7 +15,7 @@
   object_type: creek_intake
   object_name: Fjerdingby_intake
   attribute_name: overflow_cost
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -28,7 +28,7 @@
   object_type: creek_intake
   object_name: Sandvika
   attribute_name: inflow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -41,7 +41,7 @@
   object_type: creek_intake
   object_name: Golebiowski_intake
   attribute_name: overflow_cost
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -54,7 +54,7 @@
   object_type: creek_intake
   object_name: Lont_intake
   attribute_name: overflow_cost
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -67,7 +67,7 @@
   object_type: creek_intake
   object_name: Narvhus
   attribute_name: overflow_cost
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -80,7 +80,7 @@
   object_type: gate
   object_name: b_Hagen_Strand
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -93,7 +93,7 @@
   object_type: gate
   object_name: b_Sirefelt_Knute_Rullsvatn
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -106,7 +106,7 @@
   object_type: gate
   object_name: b_Danielsen_Lundvann
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -119,7 +119,7 @@
   object_type: gate
   object_name: b_Dalbysvatn_Knute_Rullsvatn
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -132,7 +132,7 @@
   object_type: gate
   object_name: b_Nielsen_Blakstadana
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -145,7 +145,7 @@
   object_type: gate
   object_name: b_Lensvik_Dalbysvatn
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -158,7 +158,7 @@
   object_type: gate
   object_name: b_Livincovs_Dalbysvatn
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -171,7 +171,7 @@
   object_type: gate
   object_name: f_Blakstadana_Knute_Rullsvatn
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -184,7 +184,7 @@
   object_type: gate
   object_name: f_Hagen_Strand
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -197,7 +197,7 @@
   object_type: gate
   object_name: f_Finnvasstol_Dalbysvatn
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -210,7 +210,7 @@
   object_type: gate
   object_name: f_Hovden_Hagen
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -223,7 +223,7 @@
   object_type: gate
   object_name: f_Fjerdingby_Dalbysvatn
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -236,7 +236,7 @@
   object_type: gate
   object_name: f_Frosta
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -249,7 +249,7 @@
   object_type: gate
   object_name: f_Varhaug
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -262,7 +262,7 @@
   object_type: gate
   object_name: f_Tangvall
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -275,7 +275,7 @@
   object_type: gate
   object_name: f_Sirefelt_Knute_Rullsvatn
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -288,7 +288,7 @@
   object_type: gate
   object_name: f_Lundvann_Lensvik
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -301,7 +301,7 @@
   object_type: gate
   object_name: f_Nupstj
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -314,7 +314,7 @@
   object_type: gate
   object_name: f_Golebiowski_Dalbysvatn
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -327,7 +327,7 @@
   object_type: gate
   object_name: f_Lont_Dalbysvatn
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -340,7 +340,7 @@
   object_type: gate
   object_name: f_Dalbysvatn_Knute_Rullsvatn
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -353,7 +353,7 @@
   object_type: gate
   object_name: f_Nielsen
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -366,7 +366,7 @@
   object_type: gate
   object_name: f_Narvhus_Rullsvatn
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -379,7 +379,7 @@
   object_type: gate
   object_name: f_Rullsvatn_Rullslaagen
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -392,7 +392,7 @@
   object_type: gate
   object_name: f_Ranemsletta_1183_Livincovs
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -405,7 +405,7 @@
   object_type: gate
   object_name: f_Lensvik
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -418,7 +418,7 @@
   object_type: gate
   object_name: f_Livincovs
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -431,7 +431,7 @@
   object_type: gate
   object_name: w_Finnvasstol_Strand_tunnel
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -444,7 +444,7 @@
   object_type: gate
   object_name: w_Hovden_Livincovs
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -457,7 +457,7 @@
   object_type: gate
   object_name: w_Frosta
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -470,7 +470,7 @@
   object_type: gate
   object_name: w_Varhaug
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -483,7 +483,7 @@
   object_type: gate
   object_name: w_Tangvall
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -496,7 +496,7 @@
   object_type: gate
   object_name: w_Rullsvatn_Rullslaagen
   attribute_name: max_flow
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -509,7 +509,7 @@
   object_type: generator
   object_name: Holen_G1
   attribute_name: startcost
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -522,7 +522,7 @@
   object_type: generator
   object_name: Holen_G1
   attribute_name: min_p_constr
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -535,7 +535,7 @@
   object_type: generator
   object_name: Holen_G1
   attribute_name: max_p_constr
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -548,7 +548,7 @@
   object_type: generator
   object_name: Holen_G1
   attribute_name: p_fcr_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -561,7 +561,7 @@
   object_type: generator
   object_name: Holen_G1
   attribute_name: p_fcr_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -574,7 +574,7 @@
   object_type: generator
   object_name: Holen_G1
   attribute_name: p_rr_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -587,7 +587,7 @@
   object_type: generator
   object_name: Holen_G1
   attribute_name: droop_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -600,7 +600,7 @@
   object_type: generator
   object_name: Holen_G1
   attribute_name: droop_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -613,7 +613,7 @@
   object_type: generator
   object_name: Lund_G1
   attribute_name: startcost
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -626,7 +626,7 @@
   object_type: generator
   object_name: Lund_G1
   attribute_name: p_fcr_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -639,7 +639,7 @@
   object_type: generator
   object_name: Lund_G1
   attribute_name: p_fcr_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -652,7 +652,7 @@
   object_type: generator
   object_name: Lund_G1
   attribute_name: p_rr_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -665,7 +665,7 @@
   object_type: generator
   object_name: Lund_G1
   attribute_name: droop_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -678,7 +678,7 @@
   object_type: generator
   object_name: Lund_G1
   attribute_name: droop_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -691,7 +691,7 @@
   object_type: generator
   object_name: Lien_krv_G1
   attribute_name: startcost
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -704,7 +704,7 @@
   object_type: generator
   object_name: Lien_krv_G1
   attribute_name: min_p_constr
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -717,7 +717,7 @@
   object_type: generator
   object_name: Lien_krv_G1
   attribute_name: max_p_constr
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -730,7 +730,7 @@
   object_type: generator
   object_name: Lien_krv_G1
   attribute_name: p_fcr_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -743,7 +743,7 @@
   object_type: generator
   object_name: Lien_krv_G1
   attribute_name: p_fcr_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -756,7 +756,7 @@
   object_type: generator
   object_name: Lien_krv_G1
   attribute_name: p_rr_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -769,7 +769,7 @@
   object_type: generator
   object_name: Lien_krv_G1
   attribute_name: droop_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -782,7 +782,7 @@
   object_type: generator
   object_name: Lien_krv_G1
   attribute_name: droop_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -795,7 +795,7 @@
   object_type: generator
   object_name: Landet_G1
   attribute_name: startcost
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -808,7 +808,7 @@
   object_type: generator
   object_name: Landet_G1
   attribute_name: max_p_constr
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -821,7 +821,7 @@
   object_type: generator
   object_name: Landet_G1
   attribute_name: p_fcr_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -834,7 +834,7 @@
   object_type: generator
   object_name: Landet_G1
   attribute_name: p_fcr_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -847,7 +847,7 @@
   object_type: generator
   object_name: Landet_G1
   attribute_name: p_rr_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -860,7 +860,7 @@
   object_type: generator
   object_name: Landet_G1
   attribute_name: droop_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -873,7 +873,7 @@
   object_type: generator
   object_name: Landet_G1
   attribute_name: droop_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -886,7 +886,7 @@
   object_type: generator
   object_name: Dalby_G1
   attribute_name: startcost
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -899,7 +899,7 @@
   object_type: generator
   object_name: Dalby_G1
   attribute_name: p_fcr_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -912,7 +912,7 @@
   object_type: generator
   object_name: Dalby_G1
   attribute_name: p_fcr_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -925,7 +925,7 @@
   object_type: generator
   object_name: Dalby_G1
   attribute_name: p_rr_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -938,7 +938,7 @@
   object_type: generator
   object_name: Dalby_G1
   attribute_name: droop_cost
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -951,7 +951,7 @@
   object_type: generator
   object_name: Dalby_G1
   attribute_name: droop_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -964,7 +964,7 @@
   object_type: generator
   object_name: Dalby_G1
   attribute_name: droop_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -977,7 +977,7 @@
   object_type: generator
   object_name: Dalby_G2
   attribute_name: startcost
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -990,7 +990,7 @@
   object_type: generator
   object_name: Dalby_G2
   attribute_name: p_fcr_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1003,7 +1003,7 @@
   object_type: generator
   object_name: Dalby_G2
   attribute_name: p_fcr_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1016,7 +1016,7 @@
   object_type: generator
   object_name: Dalby_G2
   attribute_name: p_rr_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1029,7 +1029,7 @@
   object_type: generator
   object_name: Dalby_G2
   attribute_name: droop_cost
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1042,7 +1042,7 @@
   object_type: generator
   object_name: Dalby_G2
   attribute_name: droop_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1055,7 +1055,7 @@
   object_type: generator
   object_name: Dalby_G2
   attribute_name: droop_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1068,7 +1068,7 @@
   object_type: generator
   object_name: Rull1_G1
   attribute_name: startcost
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1081,7 +1081,7 @@
   object_type: generator
   object_name: Rull1_G1
   attribute_name: max_p_constr
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1094,7 +1094,7 @@
   object_type: generator
   object_name: Rull1_G1
   attribute_name: p_fcr_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1107,7 +1107,7 @@
   object_type: generator
   object_name: Rull1_G1
   attribute_name: p_fcr_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1120,7 +1120,7 @@
   object_type: generator
   object_name: Rull1_G1
   attribute_name: p_rr_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1133,7 +1133,7 @@
   object_type: generator
   object_name: Rull1_G1
   attribute_name: droop_cost
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1146,7 +1146,7 @@
   object_type: generator
   object_name: Rull1_G1
   attribute_name: droop_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1159,7 +1159,7 @@
   object_type: generator
   object_name: Rull1_G1
   attribute_name: droop_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1172,7 +1172,7 @@
   object_type: generator
   object_name: Rull1_G2
   attribute_name: startcost
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1185,7 +1185,7 @@
   object_type: generator
   object_name: Rull1_G2
   attribute_name: min_p_constr
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1198,7 +1198,7 @@
   object_type: generator
   object_name: Rull1_G2
   attribute_name: max_p_constr
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1211,7 +1211,7 @@
   object_type: generator
   object_name: Rull1_G2
   attribute_name: p_fcr_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1224,7 +1224,7 @@
   object_type: generator
   object_name: Rull1_G2
   attribute_name: p_fcr_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1237,7 +1237,7 @@
   object_type: generator
   object_name: Rull1_G2
   attribute_name: p_rr_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1250,7 +1250,7 @@
   object_type: generator
   object_name: Rull1_G2
   attribute_name: droop_cost
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1263,7 +1263,7 @@
   object_type: generator
   object_name: Rull1_G2
   attribute_name: droop_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1276,7 +1276,7 @@
   object_type: generator
   object_name: Rull1_G2
   attribute_name: droop_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1289,7 +1289,7 @@
   object_type: generator
   object_name: Rull2_G1
   attribute_name: startcost
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1302,7 +1302,7 @@
   object_type: generator
   object_name: Rull2_G1
   attribute_name: p_fcr_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1315,7 +1315,7 @@
   object_type: generator
   object_name: Rull2_G1
   attribute_name: p_fcr_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1328,7 +1328,7 @@
   object_type: generator
   object_name: Rull2_G1
   attribute_name: p_rr_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1341,7 +1341,7 @@
   object_type: generator
   object_name: Rull2_G1
   attribute_name: droop_cost
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1354,7 +1354,7 @@
   object_type: generator
   object_name: Rull2_G1
   attribute_name: droop_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1367,7 +1367,7 @@
   object_type: generator
   object_name: Rull2_G1
   attribute_name: droop_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1380,7 +1380,7 @@
   object_type: generator
   object_name: Rull2_G2
   attribute_name: startcost
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1393,7 +1393,7 @@
   object_type: generator
   object_name: Rull2_G2
   attribute_name: max_p_constr
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1406,7 +1406,7 @@
   object_type: generator
   object_name: Rull2_G2
   attribute_name: p_fcr_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1419,7 +1419,7 @@
   object_type: generator
   object_name: Rull2_G2
   attribute_name: p_fcr_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1432,7 +1432,7 @@
   object_type: generator
   object_name: Rull2_G2
   attribute_name: p_rr_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1445,7 +1445,7 @@
   object_type: generator
   object_name: Rull2_G2
   attribute_name: droop_cost
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1458,7 +1458,7 @@
   object_type: generator
   object_name: Rull2_G2
   attribute_name: droop_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1471,7 +1471,7 @@
   object_type: generator
   object_name: Rull2_G2
   attribute_name: droop_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1484,7 +1484,7 @@
   object_type: generator
   object_name: Scott_G1
   attribute_name: startcost
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1497,7 +1497,7 @@
   object_type: generator
   object_name: Scott_G1
   attribute_name: p_fcr_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1510,7 +1510,7 @@
   object_type: generator
   object_name: Scott_G1
   attribute_name: p_fcr_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1523,7 +1523,7 @@
   object_type: generator
   object_name: Scott_G1
   attribute_name: p_rr_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1536,7 +1536,7 @@
   object_type: generator
   object_name: Scott_G1
   attribute_name: droop_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1549,7 +1549,7 @@
   object_type: generator
   object_name: Scott_G1
   attribute_name: droop_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1562,7 +1562,7 @@
   object_type: generator
   object_name: Strand_krv_G1
   attribute_name: startcost
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1575,7 +1575,7 @@
   object_type: generator
   object_name: Strand_krv_G1
   attribute_name: p_fcr_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1588,7 +1588,7 @@
   object_type: generator
   object_name: Strand_krv_G1
   attribute_name: p_fcr_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1601,7 +1601,7 @@
   object_type: generator
   object_name: Strand_krv_G1
   attribute_name: p_rr_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1614,7 +1614,7 @@
   object_type: generator
   object_name: Strand_krv_G1
   attribute_name: droop_min
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1627,7 +1627,7 @@
   object_type: generator
   object_name: Strand_krv_G1
   attribute_name: droop_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1640,7 +1640,7 @@
   object_type: junction
   object_name: Sandvika
   attribute_name: min_pressure
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1653,7 +1653,7 @@
   object_type: market
   object_name: Dayahead
   attribute_name: load
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1666,7 +1666,7 @@
   object_type: market
   object_name: Dayahead
   attribute_name: max_buy
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1679,7 +1679,7 @@
   object_type: market
   object_name: Dayahead
   attribute_name: max_sale
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1692,7 +1692,7 @@
   object_type: plant
   object_name: Holen
   attribute_name: prod_area
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1705,7 +1705,7 @@
   object_type: plant
   object_name: Holen
   attribute_name: mip_flag
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1718,7 +1718,7 @@
   object_type: plant
   object_name: Holen
   attribute_name: max_p_constr
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1731,7 +1731,7 @@
   object_type: plant
   object_name: Holen
   attribute_name: max_q_constr
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1744,7 +1744,7 @@
   object_type: plant
   object_name: Lund
   attribute_name: prod_area
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1757,7 +1757,7 @@
   object_type: plant
   object_name: Lund
   attribute_name: mip_flag
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1770,7 +1770,7 @@
   object_type: plant
   object_name: Lund
   attribute_name: max_q_constr
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1783,7 +1783,7 @@
   object_type: plant
   object_name: Lien_krv
   attribute_name: prod_area
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1796,7 +1796,7 @@
   object_type: plant
   object_name: Lien_krv
   attribute_name: mip_flag
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1809,7 +1809,7 @@
   object_type: plant
   object_name: Lien_krv
   attribute_name: max_q_constr
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1822,7 +1822,7 @@
   object_type: plant
   object_name: Landet
   attribute_name: prod_area
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1835,7 +1835,7 @@
   object_type: plant
   object_name: Landet
   attribute_name: mip_flag
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1848,7 +1848,7 @@
   object_type: plant
   object_name: Landet
   attribute_name: max_p_constr
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1861,7 +1861,7 @@
   object_type: plant
   object_name: Landet
   attribute_name: max_q_constr
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1874,7 +1874,7 @@
   object_type: plant
   object_name: Dalby
   attribute_name: prod_area
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1887,7 +1887,7 @@
   object_type: plant
   object_name: Dalby
   attribute_name: mip_flag
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1900,7 +1900,7 @@
   object_type: plant
   object_name: Dalby
   attribute_name: max_q_constr
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1913,7 +1913,7 @@
   object_type: plant
   object_name: Rull1
   attribute_name: prod_area
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1926,7 +1926,7 @@
   object_type: plant
   object_name: Rull1
   attribute_name: mip_flag
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1939,7 +1939,7 @@
   object_type: plant
   object_name: Rull1
   attribute_name: max_p_constr
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1952,7 +1952,7 @@
   object_type: plant
   object_name: Rull1
   attribute_name: max_q_constr
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1965,7 +1965,7 @@
   object_type: plant
   object_name: Rull2
   attribute_name: prod_area
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1978,7 +1978,7 @@
   object_type: plant
   object_name: Rull2
   attribute_name: mip_flag
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -1991,7 +1991,7 @@
   object_type: plant
   object_name: Rull2
   attribute_name: max_q_constr
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -2004,7 +2004,7 @@
   object_type: plant
   object_name: Scott
   attribute_name: prod_area
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -2017,7 +2017,7 @@
   object_type: plant
   object_name: Scott
   attribute_name: mip_flag
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -2030,7 +2030,7 @@
   object_type: plant
   object_name: Scott
   attribute_name: max_q_constr
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -2043,7 +2043,7 @@
   object_type: plant
   object_name: Strand_krv
   attribute_name: prod_area
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -2056,7 +2056,7 @@
   object_type: plant
   object_name: Strand_krv
   attribute_name: mip_flag
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -2069,7 +2069,7 @@
   object_type: plant
   object_name: Strand_krv
   attribute_name: max_q_constr
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -2082,7 +2082,7 @@
   object_type: reservoir
   object_name: Sirefelt
   attribute_name: tactical_limit_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -2095,7 +2095,7 @@
   object_type: reservoir
   object_name: Danielsen
   attribute_name: tactical_limit_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -2108,7 +2108,7 @@
   object_type: reservoir
   object_name: Dalbysvatn
   attribute_name: tactical_limit_max
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -2121,7 +2121,7 @@
   object_type: production_group
   object_name: T2Landet
   attribute_name: max_p_limit
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -2134,7 +2134,7 @@
   object_type: reserve_group
   object_name: rkom_up
   attribute_name: rr_up_obligation
-  time_series: "[external_id]None"
+  time_series: null
   transformations:
     - StaticValues:
         parameters:
@@ -2757,31 +2757,9 @@
   transformations: []
   retrieve: RANGE
   aggregation: mean
-- external_id: base_mapping_fornebu_plant_strand_krv_production_schedule_flag
+- external_id: base_mapping_fornebu_plant_landet_production_schedule_flag
   object_type: plant
-  object_name: Strand_krv
-  attribute_name: production_schedule_flag
-  time_series: null
-  transformations:
-    - StaticValues:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: 0
-- external_id: base_mapping_fornebu_plant_rull2_production_schedule_flag
-  object_type: plant
-  object_name: Rull2
-  attribute_name: production_schedule_flag
-  time_series: null
-  transformations:
-    - StaticValues:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: 0
-- external_id: base_mapping_fornebu_plant_rull1_production_schedule_flag
-  object_type: plant
-  object_name: Rull1
+  object_name: Landet
   attribute_name: production_schedule_flag
   time_series: null
   transformations:
@@ -2801,31 +2779,20 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0
+- external_id: base_mapping_fornebu_plant_rull2_production_schedule_flag
+  object_type: plant
+  object_name: Rull2
+  attribute_name: production_schedule_flag
+  time_series: null
+  transformations:
+    - StaticValues:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 0
 - external_id: base_mapping_fornebu_plant_dalby_production_schedule_flag
   object_type: plant
   object_name: Dalby
-  attribute_name: production_schedule_flag
-  time_series: null
-  transformations:
-    - StaticValues:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: 0
-- external_id: base_mapping_fornebu_plant_holen_production_schedule_flag
-  object_type: plant
-  object_name: Holen
-  attribute_name: production_schedule_flag
-  time_series: null
-  transformations:
-    - StaticValues:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: 0
-- external_id: base_mapping_fornebu_plant_landet_production_schedule_flag
-  object_type: plant
-  object_name: Landet
   attribute_name: production_schedule_flag
   time_series: null
   transformations:
@@ -2848,6 +2815,39 @@
 - external_id: base_mapping_fornebu_plant_lund_production_schedule_flag
   object_type: plant
   object_name: Lund
+  attribute_name: production_schedule_flag
+  time_series: null
+  transformations:
+    - StaticValues:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 0
+- external_id: base_mapping_fornebu_plant_holen_production_schedule_flag
+  object_type: plant
+  object_name: Holen
+  attribute_name: production_schedule_flag
+  time_series: null
+  transformations:
+    - StaticValues:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 0
+- external_id: base_mapping_fornebu_plant_rull1_production_schedule_flag
+  object_type: plant
+  object_name: Rull1
+  attribute_name: production_schedule_flag
+  time_series: null
+  transformations:
+    - StaticValues:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 0
+- external_id: base_mapping_fornebu_plant_strand_krv_production_schedule_flag
+  object_type: plant
+  object_name: Strand_krv
   attribute_name: production_schedule_flag
   time_series: null
   transformations:
