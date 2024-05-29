@@ -33,10 +33,16 @@ class SHOPRunAPI:
         self._dataset_id = dataset_id
         self.cogshop_version = cogshop_version
         self._CONCURRENT_CALLS = 5
+        self.is_shop_as_a_service = False
+
+        if self.is_shop_as_a_service and cogshop_version != "":
+            raise ValueError("CogShop version is not supported in Shop As A Service.")
+
 
     def _get_shop_prerun_files(self, file_external_ids: list[str]) -> list[ShopPreRunFile]:
         prerun_files = self._cdf.files.retrieve_multiple(external_ids=file_external_ids)
         return [ShopPreRunFile.load_from_metadata(file) for file in prerun_files]
+
 
     def trigger_case(self, case: Case, shop_version: str) -> tuple[list, list[SHOPRun]]:
         """
@@ -162,9 +168,16 @@ class SHOPRunAPI:
             r.headers[auth_header_name] = auth_header_value
             return r
 
+        if self.is_shop_as_a_service:
+            shop_url = self._shop_url_shaas()
+            shop_body = {"shopEventExternalId": shop_run.external_id}
+        else:
+            shop_url = self._shop_url()
+            shop_body = {"shopEventExternalId": shop_run.external_id, "cogShopVersion": self.cogshop_version}
+
         response = requests.post(
-            url=self._shop_url(),
-            json={"shopEventExternalId": shop_run.external_id, "cogShopVersion": self.cogshop_version},
+            url=shop_url,
+            json=shop_body,
             auth=auth,
         )
         response.raise_for_status()
@@ -183,6 +196,24 @@ class SHOPRunAPI:
             raise ValueError(f"Can't detect prod/staging from project name: {project!r}")
 
         return f"https://power-ops-api{stage}.{cluster}.cognite.ai/{project}/run-shop"
+
+    def _shop_url_shaas(self) -> str:
+
+        project = self._cdf.config.project
+
+        cluster = urlparse(self._cdf.config.base_url).netloc.split(".", 1)[0]
+
+        match project:
+            case "power-ops-staging":
+                environment = ".staging"
+            case "lyse-dev" | "heco-dev":
+                environment = ""
+            case _:
+                raise ValueError(f"SHOP As A Service has not been configured for project name: {project!r}")
+
+        return f"https://power-ops-api{environment}.{cluster}.cognite.ai/{project}/run-shop-as-service"
+
+
 
     def _load_cdf_event_shop_runs(
         self,
