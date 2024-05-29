@@ -10,7 +10,6 @@ properties:
     nullable: true
     autoIncrement: false
     name: bidSource
-    description: todo
   deliveryDate:
     type:
       list: false
@@ -18,7 +17,6 @@ properties:
     nullable: true
     autoIncrement: false
     name: deliveryDate
-    description: todo
   bidGenerated:
     type:
       list: false
@@ -26,7 +24,6 @@ properties:
     nullable: true
     autoIncrement: false
     name: bidGenerated
-    description: todo
   shopResult:
     type:
       list: false
@@ -34,7 +31,6 @@ properties:
     nullable: true
     autoIncrement: false
     name: shopResult
-    description: todo
   shopModel:
     type:
       list: false
@@ -42,7 +38,6 @@ properties:
     nullable: true
     autoIncrement: false
     name: shopModel
-    description: todo
   isSelected:
     type:
       type: boolean
@@ -50,7 +45,6 @@ properties:
     nullable: true
     autoIncrement: false
     name: flag
-    description: todo
   value:
     type:
       list: false

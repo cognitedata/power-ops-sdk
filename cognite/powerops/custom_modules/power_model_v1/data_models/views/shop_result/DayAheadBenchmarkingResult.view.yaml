@@ -50,7 +50,7 @@ properties: # TODO: no alerts here?
       type: container
     containerPropertyIdentifier: bidGenerated
     name: bidGenerated
-    description: True if a bid had been generated
+    description: Timestamp of when the bid had been generated
   shopResult:
     container:
       space: "{{power_ops_models}}"
