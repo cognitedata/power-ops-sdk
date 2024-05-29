@@ -56,48 +56,48 @@ views:
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
-    externalId: BidMatrix
+  - externalId: BidMatrix
+    space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
-    externalId: Alert
+  - externalId: Alert
+    space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
-    externalId: ShopScenario
+  - externalId: ShopScenario
+    space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
-    externalId: FunctionInput
+  - externalId: FunctionInput
+    space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
-    externalId: FunctionOutput
+  - externalId: FunctionOutput
+    space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
-    externalId: PriceArea
+  - externalId: PriceArea
+    space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
-    externalId: ShopModel
+  - externalId: ShopModel
+    space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
-    externalId: ShopCommands
+  - externalId: ShopCommands
+    space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
-    externalId: ShopAttributeMapping
+  - externalId: ShopAttributeMapping
+    space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
-    externalId: PowerAsset
+  - externalId: PowerAsset
+    space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
-    externalId: PartialBidConfiguration
+  - externalId: PartialBidConfiguration
+    space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
   - externalId: ShopOutputTimeSeriesDefinition
@@ -109,6 +109,10 @@ views:
     type: view
     version: "{{version}}"
   - externalId: ShopCase
+    space: "sp_power_ops_models"
+    type: view
+    version: "1"
+  - externalId: ShopResult
     space: "sp_power_ops_models"
     type: view
     version: "1"
