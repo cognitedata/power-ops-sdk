@@ -69,10 +69,6 @@ views:
     version: "{{version}}"
     type: view
   - space: "{{power_ops_models}}"
-    externalId: ShopObjectiveValue
-    version: "{{version}}"
-    type: view
-  - space: "{{power_ops_models}}"
     externalId: FunctionInput
     version: "{{version}}"
     type: view
