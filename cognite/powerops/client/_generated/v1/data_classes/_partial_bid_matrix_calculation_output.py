@@ -88,10 +88,12 @@ class PartialBidMatrixCalculationOutputGraphQL(GraphQLCore):
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
     function_call_id: Optional[str] = Field(None, alias="functionCallId")
-    input_: Optional[PartialBidMatrixCalculationInputGraphQL] = Field(None, repr=False, alias="input")
+    input_: Optional[PartialBidMatrixCalculationInputGraphQL] = Field(default=None, repr=False, alias="input")
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
-    partial_matrix: Optional[BidMatrixGraphQL] = Field(None, repr=False, alias="partialMatrix")
-    bid_configuration: Optional[BidConfigurationDayAheadGraphQL] = Field(None, repr=False, alias="bidConfiguration")
+    partial_matrix: Optional[BidMatrixGraphQL] = Field(default=None, repr=False, alias="partialMatrix")
+    bid_configuration: Optional[BidConfigurationDayAheadGraphQL] = Field(
+        default=None, repr=False, alias="bidConfiguration"
+    )
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -129,7 +131,7 @@ class PartialBidMatrixCalculationOutputGraphQL(GraphQLCore):
             function_name=self.function_name,
             function_call_id=self.function_call_id,
             input_=self.input_.as_read() if isinstance(self.input_, GraphQLCore) else self.input_,
-            alerts=[alert.as_read() if isinstance(alert, GraphQLCore) else alert for alert in self.alerts or []],
+            alerts=[alert.as_read() for alert in self.alerts or []],
             partial_matrix=(
                 self.partial_matrix.as_read() if isinstance(self.partial_matrix, GraphQLCore) else self.partial_matrix
             ),
@@ -150,14 +152,14 @@ class PartialBidMatrixCalculationOutputGraphQL(GraphQLCore):
             workflow_step=self.workflow_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
-            input_=self.input_.as_write() if isinstance(self.input_, DomainModel) else self.input_,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
+            input_=self.input_.as_write() if isinstance(self.input_, GraphQLCore) else self.input_,
+            alerts=[alert.as_write() for alert in self.alerts or []],
             partial_matrix=(
-                self.partial_matrix.as_write() if isinstance(self.partial_matrix, DomainModel) else self.partial_matrix
+                self.partial_matrix.as_write() if isinstance(self.partial_matrix, GraphQLCore) else self.partial_matrix
             ),
             bid_configuration=(
                 self.bid_configuration.as_write()
-                if isinstance(self.bid_configuration, DomainModel)
+                if isinstance(self.bid_configuration, GraphQLCore)
                 else self.bid_configuration
             ),
         )
@@ -185,9 +187,9 @@ class PartialBidMatrixCalculationOutput(FunctionOutput):
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "sp_power_ops_types", "PartialBidMatrixCalculationOutput"
     )
-    partial_matrix: Union[BidMatrix, str, dm.NodeId, None] = Field(None, repr=False, alias="partialMatrix")
+    partial_matrix: Union[BidMatrix, str, dm.NodeId, None] = Field(default=None, repr=False, alias="partialMatrix")
     bid_configuration: Union[BidConfigurationDayAhead, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="bidConfiguration"
+        default=None, repr=False, alias="bidConfiguration"
     )
 
     def as_write(self) -> PartialBidMatrixCalculationOutputWrite:
@@ -244,9 +246,9 @@ class PartialBidMatrixCalculationOutputWrite(FunctionOutputWrite):
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "sp_power_ops_types", "PartialBidMatrixCalculationOutput"
     )
-    partial_matrix: Union[BidMatrixWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="partialMatrix")
+    partial_matrix: Union[BidMatrixWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="partialMatrix")
     bid_configuration: Union[BidConfigurationDayAheadWrite, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="bidConfiguration"
+        default=None, repr=False, alias="bidConfiguration"
     )
 
     def _to_instances_write(

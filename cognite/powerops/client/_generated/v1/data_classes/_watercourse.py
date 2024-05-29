@@ -126,7 +126,7 @@ class Watercourse(PowerAsset):
         asset_type: The type of the asset
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = None
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_power_ops_types", "Watercourse")
 
     def as_write(self) -> WatercourseWrite:
         """Convert this read version of watercourse to the writing version."""
@@ -165,7 +165,7 @@ class WatercourseWrite(PowerAssetWrite):
         asset_type: The type of the asset
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = None
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_power_ops_types", "Watercourse")
 
     def _to_instances_write(
         self,

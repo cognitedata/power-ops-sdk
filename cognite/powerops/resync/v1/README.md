@@ -39,7 +39,7 @@ edges to the existing references.
      - water_value_based_partial_bid_configuration
      - shop_based_partial_bid_configuration
      - generator
-     - plant_water_value_based
+     - plant_information
      - shop_attribute_mapping
      - shop_commands
      - shop_model
@@ -101,7 +101,7 @@ A general configuration for all instances of a specific type can be defined as a
 file but to override a configuration on a specific instance you can use the below syntax in the "data model population"
 files.
 
-Below is an instance of a plant in the `plant_water_value_based.yaml` and the *production_min* property is being
+Below is an instance of a plant in the `plant_information.yaml` and the *production_min* property is being
 overridden by a custom `extraction_path`. This option currently only supports providing a `source_file` and the
 `extraction_path` in the following syntax
 

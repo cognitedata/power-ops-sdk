@@ -34,7 +34,7 @@ from ._core import (
     QueryBuilder,
 )
 from .bid_matrix_information_alerts import BidMatrixInformationAlertsAPI
-from .bid_matrix_information_intermediate_bid_matrices import BidMatrixInformationIntermediateBidMatricesAPI
+from .bid_matrix_information_underlying_bid_matrices import BidMatrixInformationUnderlyingBidMatricesAPI
 from .bid_matrix_information_query import BidMatrixInformationQueryAPI
 
 
@@ -51,7 +51,7 @@ class BidMatrixInformationAPI(NodeAPI[BidMatrixInformation, BidMatrixInformation
         )
         self._view_id = view_id
         self.alerts_edge = BidMatrixInformationAlertsAPI(client)
-        self.intermediate_bid_matrices_edge = BidMatrixInformationIntermediateBidMatricesAPI(client)
+        self.underlying_bid_matrices_edge = BidMatrixInformationUnderlyingBidMatricesAPI(client)
 
     def __call__(
         self,
@@ -97,7 +97,7 @@ class BidMatrixInformationAPI(NodeAPI[BidMatrixInformation, BidMatrixInformation
         """Add or update (upsert) bid matrix information.
 
         Note: This method iterates through all nodes and timeseries linked to bid_matrix_information and creates them including the edges
-        between the nodes. For example, if any of `alerts` or `intermediate_bid_matrices` are set, then these
+        between the nodes. For example, if any of `alerts` or `underlying_bid_matrices` are set, then these
         nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
@@ -205,8 +205,8 @@ class BidMatrixInformationAPI(NodeAPI[BidMatrixInformation, BidMatrixInformation
                     dm.ViewId("sp_power_ops_models", "Alert", "1"),
                 ),
                 (
-                    self.intermediate_bid_matrices_edge,
-                    "intermediate_bid_matrices",
+                    self.underlying_bid_matrices_edge,
+                    "underlying_bid_matrices",
                     dm.DirectRelationReference("sp_power_ops_types", "intermediateBidMatrix"),
                     "outwards",
                     dm.ViewId("sp_power_ops_models", "BidMatrix", "1"),
@@ -437,7 +437,7 @@ class BidMatrixInformationAPI(NodeAPI[BidMatrixInformation, BidMatrixInformation
             space: The space to filter on.
             limit: Maximum number of bid matrix information to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            retrieve_edges: Whether to retrieve `alerts` or `intermediate_bid_matrices` external ids for the bid matrix information. Defaults to True.
+            retrieve_edges: Whether to retrieve `alerts` or `underlying_bid_matrices` external ids for the bid matrix information. Defaults to True.
 
         Returns:
             List of requested bid matrix information
@@ -473,8 +473,8 @@ class BidMatrixInformationAPI(NodeAPI[BidMatrixInformation, BidMatrixInformation
                     dm.ViewId("sp_power_ops_models", "Alert", "1"),
                 ),
                 (
-                    self.intermediate_bid_matrices_edge,
-                    "intermediate_bid_matrices",
+                    self.underlying_bid_matrices_edge,
+                    "underlying_bid_matrices",
                     dm.DirectRelationReference("sp_power_ops_types", "intermediateBidMatrix"),
                     "outwards",
                     dm.ViewId("sp_power_ops_models", "BidMatrix", "1"),

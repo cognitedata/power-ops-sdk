@@ -204,14 +204,7 @@ class ResyncImporter:
         parsed_data = self._join_data_by_parsing_method(immutable_data, parsed_properties, parsed_reference_data)
 
         # TODO: handle these special cases in a better way
-        if type_configuration.type_ is v1_data_classes.PlantWaterValueBasedWrite:
-            # TODO: remove when model is updated to a list instead of json
-            raw_penstock_head_loss_factor = parsed_data["penstock_head_loss_factors"]
-            parsed_data["penstock_head_loss_factors"] = {
-                str(index): float(loss_factor)
-                for index, loss_factor in enumerate(raw_penstock_head_loss_factor, start=1)
-            }
-
+        if type_configuration.type_ is v1_data_classes.PlantInformationWrite:
             parsed_data["generators"] = (
                 self._get_all_connections(parsed_data, "plant", "generator")
                 if "generators" not in parsed_data

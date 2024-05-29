@@ -243,10 +243,11 @@ class ShopAttributeMappingWrite(DomainModelWrite):
             properties["attributeName"] = self.attribute_name
 
         if self.time_series is not None or write_none:
-            if isinstance(self.time_series, str) or self.time_series is None:
-                properties["timeSeries"] = self.time_series
-            else:
-                properties["timeSeries"] = self.time_series.external_id
+            properties["timeSeries"] = (
+                self.time_series
+                if isinstance(self.time_series, str) or self.time_series is None
+                else self.time_series.external_id
+            )
 
         if self.transformations is not None or write_none:
             properties["transformations"] = self.transformations

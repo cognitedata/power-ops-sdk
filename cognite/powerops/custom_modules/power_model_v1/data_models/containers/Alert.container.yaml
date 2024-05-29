@@ -80,14 +80,3 @@ properties:
     nullable: true
     autoIncrement: false
     name: jsonAdditionalData
-indexes:
-  time:
-    properties:
-      - time
-    indexType: btree
-    cursorable: false
-  alertType:
-    properties:
-      - alertType
-    indexType: btree
-    cursorable: false

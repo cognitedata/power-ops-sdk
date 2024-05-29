@@ -38,14 +38,14 @@ properties:
     autoIncrement: false
     name: timeSeries
     description: Time series object from output of SHOP stored as a time series in CDF
-indexes:
-  objectNameIndex:
-    properties:
-      - objectName
-    indexType: btree
-    cursorable: false
-  objectTypeIndex:
-    properties:
-      - objectType
-    indexType: btree
-    cursorable: false
+# indexes:
+#   objectNameIndex:
+#     properties:
+#       - objectName
+#     indexType: btree
+#     cursorable: false
+#   objectTypeIndex:
+#     properties:
+#       - objectType
+#     indexType: btree
+#     cursorable: false

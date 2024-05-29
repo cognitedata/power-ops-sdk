@@ -1,0 +1,49 @@
+space: "{{power_ops_models}}"
+externalId: DateSpecification
+name: DateSpecification
+usedFor: node
+properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+  processingTimezone:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    defaultValue: "UTC"
+    autoIncrement: false
+    name: processingTimezone
+  resultingTimezone:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    defaultValue: "UTC"
+    autoIncrement: false
+    name: resultingTimezone
+  floorFrame:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    defaultValue: "day"
+    autoIncrement: false
+    name: floorFrame
+    description: The property to "floor" the time to (e.g. "week", "day", "hour", "minute")
+  shiftDefinition:
+    type:
+      list: false
+      type: json
+    nullable: true
+    autoIncrement: false
+    name: shiftDefinition
+    description: "A definition of what time shift to apply to a date (e.g. {'days': 1, 'hours': 2})"

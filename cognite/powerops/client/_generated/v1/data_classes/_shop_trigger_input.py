@@ -83,8 +83,10 @@ class ShopTriggerInputGraphQL(GraphQLCore):
     function_name: Optional[str] = Field(None, alias="functionName")
     function_call_id: Optional[str] = Field(None, alias="functionCallId")
     cog_shop_tag: Optional[str] = Field(None, alias="cogShopTag")
-    case: Optional[ShopCaseGraphQL] = Field(None, repr=False)
-    preprocessor_input: Optional[ShopPreprocessorInputGraphQL] = Field(None, repr=False, alias="preprocessorInput")
+    case: Optional[ShopCaseGraphQL] = Field(default=None, repr=False)
+    preprocessor_input: Optional[ShopPreprocessorInputGraphQL] = Field(
+        default=None, repr=False, alias="preprocessorInput"
+    )
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -141,10 +143,10 @@ class ShopTriggerInputGraphQL(GraphQLCore):
             function_name=self.function_name,
             function_call_id=self.function_call_id,
             cog_shop_tag=self.cog_shop_tag,
-            case=self.case.as_write() if isinstance(self.case, DomainModel) else self.case,
+            case=self.case.as_write() if isinstance(self.case, GraphQLCore) else self.case,
             preprocessor_input=(
                 self.preprocessor_input.as_write()
-                if isinstance(self.preprocessor_input, DomainModel)
+                if isinstance(self.preprocessor_input, GraphQLCore)
                 else self.preprocessor_input
             ),
         )
@@ -172,9 +174,9 @@ class ShopTriggerInput(FunctionInput):
         "sp_power_ops_types", "ShopTriggerInput"
     )
     cog_shop_tag: Optional[str] = Field(None, alias="cogShopTag")
-    case: Union[ShopCase, str, dm.NodeId, None] = Field(None, repr=False)
+    case: Union[ShopCase, str, dm.NodeId, None] = Field(default=None, repr=False)
     preprocessor_input: Union[ShopPreprocessorInput, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="preprocessorInput"
+        default=None, repr=False, alias="preprocessorInput"
     )
 
     def as_write(self) -> ShopTriggerInputWrite:
@@ -228,9 +230,9 @@ class ShopTriggerInputWrite(FunctionInputWrite):
         "sp_power_ops_types", "ShopTriggerInput"
     )
     cog_shop_tag: Optional[str] = Field(None, alias="cogShopTag")
-    case: Union[ShopCaseWrite, str, dm.NodeId, None] = Field(None, repr=False)
+    case: Union[ShopCaseWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
     preprocessor_input: Union[ShopPreprocessorInputWrite, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="preprocessorInput"
+        default=None, repr=False, alias="preprocessorInput"
     )
 
     def _to_instances_write(

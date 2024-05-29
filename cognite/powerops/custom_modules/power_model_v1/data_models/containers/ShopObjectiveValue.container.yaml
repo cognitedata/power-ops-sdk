@@ -1,0 +1,28 @@
+space: "{{power_ops_models}}"
+externalId: ShopObjectiveValue
+name: ShopObjectiveValue
+usedFor: node
+properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: name
+  value:
+    type:
+      list: false
+      type: float64
+    nullable: true
+    autoIncrement: false
+    name: value
+  parts:
+    type:
+      list: true
+      type: json
+    nullable: true
+    autoIncrement: false
+    name: parts
+    description: The parts of the objective value

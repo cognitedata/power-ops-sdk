@@ -46,9 +46,3 @@ properties:
     autoIncrement: false
     name: assetType
     description: The type of the PowerAsset
-indexes:
-  time:
-    properties:
-      - name
-    indexType: btree
-    cursorable: false

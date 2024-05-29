@@ -19,7 +19,7 @@ implements:
     type: view
 version: "{{version}}"
 properties:
-  intermediateBidMatrices:
+  underlyingBidMatrices:
     type:
       space: "{{power_ops_type_space}}"
       externalId: intermediateBidMatrix
@@ -29,7 +29,7 @@ properties:
       version: "{{version}}"
       type: view
     direction: outwards
-    name: intermediateBidMatrices
+    name: underlyingBidMatrices
     description: An array of intermediate BidMatrices.
     connectionType: multi_edge_connection
   alerts:

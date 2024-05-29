@@ -1,6 +1,6 @@
 space: "{{power_ops_models}}"
-externalId: PlantWaterValueBased
-name: PlantWaterValueBased
+externalId: Plant
+name: Plant
 usedFor: node
 properties:
   headLossFactor:
@@ -40,8 +40,8 @@ properties:
     name: productionMin
   penstockHeadLossFactors:
     type:
-      type: json
-      list: false
+      type: float64
+      list: true
     nullable: true
     autoIncrement: false
     name: penstockHeadLossFactors

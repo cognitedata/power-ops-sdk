@@ -82,9 +82,9 @@ class TotalBidMatrixCalculationOutputGraphQL(GraphQLCore):
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
     function_call_id: Optional[str] = Field(None, alias="functionCallId")
-    input_: Optional[TotalBidMatrixCalculationInputGraphQL] = Field(None, repr=False, alias="input")
+    input_: Optional[TotalBidMatrixCalculationInputGraphQL] = Field(default=None, repr=False, alias="input")
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
-    bid_document: Optional[BidDocumentDayAheadGraphQL] = Field(None, repr=False, alias="bidDocument")
+    bid_document: Optional[BidDocumentDayAheadGraphQL] = Field(default=None, repr=False, alias="bidDocument")
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -122,7 +122,7 @@ class TotalBidMatrixCalculationOutputGraphQL(GraphQLCore):
             function_name=self.function_name,
             function_call_id=self.function_call_id,
             input_=self.input_.as_read() if isinstance(self.input_, GraphQLCore) else self.input_,
-            alerts=[alert.as_read() if isinstance(alert, GraphQLCore) else alert for alert in self.alerts or []],
+            alerts=[alert.as_read() for alert in self.alerts or []],
             bid_document=(
                 self.bid_document.as_read() if isinstance(self.bid_document, GraphQLCore) else self.bid_document
             ),
@@ -138,10 +138,10 @@ class TotalBidMatrixCalculationOutputGraphQL(GraphQLCore):
             workflow_step=self.workflow_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
-            input_=self.input_.as_write() if isinstance(self.input_, DomainModel) else self.input_,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
+            input_=self.input_.as_write() if isinstance(self.input_, GraphQLCore) else self.input_,
+            alerts=[alert.as_write() for alert in self.alerts or []],
             bid_document=(
-                self.bid_document.as_write() if isinstance(self.bid_document, DomainModel) else self.bid_document
+                self.bid_document.as_write() if isinstance(self.bid_document, GraphQLCore) else self.bid_document
             ),
         )
 
@@ -167,7 +167,9 @@ class TotalBidMatrixCalculationOutput(FunctionOutput):
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "sp_power_ops_types", "TotalBidMatrixCalculationOutput"
     )
-    bid_document: Union[BidDocumentDayAhead, str, dm.NodeId, None] = Field(None, repr=False, alias="bidDocument")
+    bid_document: Union[BidDocumentDayAhead, str, dm.NodeId, None] = Field(
+        default=None, repr=False, alias="bidDocument"
+    )
 
     def as_write(self) -> TotalBidMatrixCalculationOutputWrite:
         """Convert this read version of total bid matrix calculation output to the writing version."""
@@ -217,7 +219,9 @@ class TotalBidMatrixCalculationOutputWrite(FunctionOutputWrite):
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "sp_power_ops_types", "TotalBidMatrixCalculationOutput"
     )
-    bid_document: Union[BidDocumentDayAheadWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="bidDocument")
+    bid_document: Union[BidDocumentDayAheadWrite, str, dm.NodeId, None] = Field(
+        default=None, repr=False, alias="bidDocument"
+    )
 
     def _to_instances_write(
         self,
@@ -231,7 +235,8 @@ class TotalBidMatrixCalculationOutputWrite(FunctionOutputWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            TotalBidMatrixCalculationOutput, dm.ViewId("sp_power_ops_models", "TotalBidMatrixCalculationOutput", "1")
+            TotalBidMatrixCalculationOutput,
+            dm.ViewId("sp_power_ops_models", "TotalBidMatrixCalculationOutput", "1"),
         )
 
         properties: dict[str, Any] = {}

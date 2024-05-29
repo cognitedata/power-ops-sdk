@@ -802,7 +802,7 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE = {
         "ShopTriggerInput": data_classes.ShopTriggerInputGraphQL,
         "ShopTriggerOutput": data_classes.ShopTriggerOutputGraphQL,
         "PartialBidMatrixCalculationInput": data_classes.PartialBidMatrixCalculationInputGraphQL,
-        "ShopPartialBidMatrixCalculationInput": data_classes.ShopPartialBidMatrixCalculationInputGraphQL,
+        "MultiScenarioPartialBidMatrixCalculationInput": data_classes.MultiScenarioPartialBidMatrixCalculationInputGraphQL,
         "PartialBidMatrixCalculationOutput": data_classes.PartialBidMatrixCalculationOutputGraphQL,
         "BidMatrix": data_classes.BidMatrixGraphQL,
         "MarketConfiguration": data_classes.MarketConfigurationGraphQL,
@@ -825,6 +825,8 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE = {
         "PartialBidConfiguration": data_classes.PartialBidConfigurationGraphQL,
         "ShopBasedPartialBidConfiguration": data_classes.ShopBasedPartialBidConfigurationGraphQL,
         "ShopFile": data_classes.ShopFileGraphQL,
+        "DateSpecification": data_classes.DateSpecificationGraphQL,
+        "ShopOutputTimeSeriesDefinition": data_classes.ShopOutputTimeSeriesDefinitionGraphQL,
     },
     dm.DataModelId("sp_power_ops_models", "compute_TotalBidMatrixCalculation", "1"): {
         "BidMatrix": data_classes.BidMatrixGraphQL,
@@ -852,6 +854,8 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE = {
         "PartialBidConfiguration": data_classes.PartialBidConfigurationGraphQL,
         "BidConfigurationDayAhead": data_classes.BidConfigurationDayAheadGraphQL,
         "ShopFile": data_classes.ShopFileGraphQL,
+        "DateSpecification": data_classes.DateSpecificationGraphQL,
+        "ShopOutputTimeSeriesDefinition": data_classes.ShopOutputTimeSeriesDefinitionGraphQL,
     },
     dm.DataModelId("sp_power_ops_models", "compute_WaterValueBasedDayAheadBid", "1"): {
         "TaskDispatcherInput": data_classes.TaskDispatcherInputGraphQL,
@@ -875,6 +879,7 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE = {
         "PowerAsset": data_classes.PowerAssetGraphQL,
         "PartialBidConfiguration": data_classes.PartialBidConfigurationGraphQL,
         "WaterValueBasedPartialBidConfiguration": data_classes.WaterValueBasedPartialBidConfigurationGraphQL,
+        "DateSpecification": data_classes.DateSpecificationGraphQL,
     },
     dm.DataModelId("sp_power_ops_models", "config_DayAheadConfiguration", "1"): {
         "BidConfigurationDayAhead": data_classes.BidConfigurationDayAheadGraphQL,
@@ -896,6 +901,9 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE = {
         "Plant": data_classes.PlantGraphQL,
         "PlantInformation": data_classes.PlantInformationGraphQL,
         "PlantWaterValueBased": data_classes.PlantWaterValueBasedGraphQL,
+        "DateSpecification": data_classes.DateSpecificationGraphQL,
+        "ShopOutputTimeSeriesDefinition": data_classes.ShopOutputTimeSeriesDefinitionGraphQL,
+        "ShopFile": data_classes.ShopFileGraphQL,
     },
     dm.DataModelId("sp_power_ops_models", "frontend_AFRRBid", "1"): {
         "BidDocumentAFRR": data_classes.BidDocumentAFRRGraphQL,
@@ -922,6 +930,7 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE = {
         "Generator": data_classes.GeneratorGraphQL,
         "TurbineEfficiencyCurve": data_classes.TurbineEfficiencyCurveGraphQL,
         "GeneratorEfficiencyCurve": data_classes.GeneratorEfficiencyCurveGraphQL,
+        "DateSpecification": data_classes.DateSpecificationGraphQL,
     },
     dm.DataModelId("sp_power_ops_models", "frontend_DayAheadBid", "1"): {
         "BidDocumentDayAhead": data_classes.BidDocumentDayAheadGraphQL,
@@ -947,5 +956,7 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE = {
         "PartialBidMatrixInformation": data_classes.PartialBidMatrixInformationGraphQL,
         "PartialBidMatrixInformationWithScenarios": data_classes.PartialBidMatrixInformationWithScenariosGraphQL,
         "ShopPenaltyReport": data_classes.ShopPenaltyReportGraphQL,
+        "DateSpecification": data_classes.DateSpecificationGraphQL,
+        "ShopOutputTimeSeriesDefinition": data_classes.ShopOutputTimeSeriesDefinitionGraphQL,
     },
 }

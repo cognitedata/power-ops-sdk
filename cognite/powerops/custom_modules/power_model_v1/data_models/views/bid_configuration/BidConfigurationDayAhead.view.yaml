@@ -68,7 +68,12 @@ properties:
       type: container
     containerPropertyIdentifier: bidDateSpecification
     name: bidDateSpecification
-    description: TODO definition
+    description: TODO description
+    source:
+      space: "{{power_ops_models}}"
+      externalId: DateSpecification
+      version: "{{version}}"
+      type: view
   partials:
     type:
       space: "{{power_ops_type_space}}"

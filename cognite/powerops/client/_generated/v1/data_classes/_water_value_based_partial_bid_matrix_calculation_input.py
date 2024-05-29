@@ -93,9 +93,11 @@ class WaterValueBasedPartialBidMatrixCalculationInputGraphQL(GraphQLCore):
     function_name: Optional[str] = Field(None, alias="functionName")
     function_call_id: Optional[str] = Field(None, alias="functionCallId")
     bid_date: Optional[datetime.date] = Field(None, alias="bidDate")
-    bid_configuration: Optional[BidConfigurationDayAheadGraphQL] = Field(None, repr=False, alias="bidConfiguration")
+    bid_configuration: Optional[BidConfigurationDayAheadGraphQL] = Field(
+        default=None, repr=False, alias="bidConfiguration"
+    )
     partial_bid_configuration: Optional[WaterValueBasedPartialBidConfigurationGraphQL] = Field(
-        None, repr=False, alias="partialBidConfiguration"
+        default=None, repr=False, alias="partialBidConfiguration"
     )
 
     @model_validator(mode="before")
@@ -159,12 +161,12 @@ class WaterValueBasedPartialBidMatrixCalculationInputGraphQL(GraphQLCore):
             bid_date=self.bid_date,
             bid_configuration=(
                 self.bid_configuration.as_write()
-                if isinstance(self.bid_configuration, DomainModel)
+                if isinstance(self.bid_configuration, GraphQLCore)
                 else self.bid_configuration
             ),
             partial_bid_configuration=(
                 self.partial_bid_configuration.as_write()
-                if isinstance(self.partial_bid_configuration, DomainModel)
+                if isinstance(self.partial_bid_configuration, GraphQLCore)
                 else self.partial_bid_configuration
             ),
         )

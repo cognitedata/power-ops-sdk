@@ -7,7 +7,7 @@ from ._core import DEFAULT_LIMIT_READ, EdgeAPI, _create_edge_filter
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 
 
-class PartialBidMatrixInformationIntermediateBidMatricesAPI(EdgeAPI):
+class PartialBidMatrixInformationUnderlyingBidMatricesAPI(EdgeAPI):
     def list(
         self,
         from_partial_bid_matrix_information: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
@@ -18,7 +18,7 @@ class PartialBidMatrixInformationIntermediateBidMatricesAPI(EdgeAPI):
         space: str | list[str] | None = None,
         limit=DEFAULT_LIMIT_READ,
     ) -> dm.EdgeList:
-        """List intermediate bid matrice edges of a partial bid matrix information.
+        """List underlying bid matrice edges of a partial bid matrix information.
 
         Args:
             from_partial_bid_matrix_information: ID of the source partial bid matrix information.
@@ -27,19 +27,19 @@ class PartialBidMatrixInformationIntermediateBidMatricesAPI(EdgeAPI):
             to_bid_matrix_space: Location of the bid matrixes.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of intermediate bid matrice edges to return. Defaults to 25. Set to -1, float("inf") or None
+            limit: Maximum number of underlying bid matrice edges to return. Defaults to 25. Set to -1, float("inf") or None
                 to return all items.
 
         Returns:
-            The requested intermediate bid matrice edges.
+            The requested underlying bid matrice edges.
 
         Examples:
 
-            List 5 intermediate bid matrice edges connected to "my_partial_bid_matrix_information":
+            List 5 underlying bid matrice edges connected to "my_partial_bid_matrix_information":
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> partial_bid_matrix_information = client.partial_bid_matrix_information.intermediate_bid_matrices_edge.list("my_partial_bid_matrix_information", limit=5)
+                >>> partial_bid_matrix_information = client.partial_bid_matrix_information.underlying_bid_matrices_edge.list("my_partial_bid_matrix_information", limit=5)
 
         """
         filter_ = _create_edge_filter(

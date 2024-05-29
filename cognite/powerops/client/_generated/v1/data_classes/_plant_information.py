@@ -133,7 +133,7 @@ class PlantInformationGraphQL(GraphQLCore):
     outlet_level: Optional[float] = Field(None, alias="outletLevel")
     production_max: Optional[float] = Field(None, alias="productionMax")
     production_min: Optional[float] = Field(None, alias="productionMin")
-    penstock_head_loss_factors: Optional[dict] = Field(None, alias="penstockHeadLossFactors")
+    penstock_head_loss_factors: Optional[list[float]] = Field(None, alias="penstockHeadLossFactors")
     connection_losses: Optional[float] = Field(None, alias="connectionLosses")
     production_max_time_series: Union[TimeSeries, dict, None] = Field(None, alias="productionMaxTimeSeries")
     production_min_time_series: Union[TimeSeries, dict, None] = Field(None, alias="productionMinTimeSeries")
@@ -192,10 +192,7 @@ class PlantInformationGraphQL(GraphQLCore):
             outlet_level_time_series=self.outlet_level_time_series,
             inlet_level_time_series=self.inlet_level_time_series,
             head_direct_time_series=self.head_direct_time_series,
-            generators=[
-                generator.as_read() if isinstance(generator, GraphQLCore) else generator
-                for generator in self.generators or []
-            ],
+            generators=[generator.as_read() for generator in self.generators or []],
         )
 
     def as_write(self) -> PlantInformationWrite:
@@ -221,10 +218,7 @@ class PlantInformationGraphQL(GraphQLCore):
             outlet_level_time_series=self.outlet_level_time_series,
             inlet_level_time_series=self.inlet_level_time_series,
             head_direct_time_series=self.head_direct_time_series,
-            generators=[
-                generator.as_write() if isinstance(generator, DomainModel) else generator
-                for generator in self.generators or []
-            ],
+            generators=[generator.as_write() for generator in self.generators or []],
         )
 
 
@@ -257,9 +251,7 @@ class PlantInformation(PlantWaterValueBased):
         generators: The generator field.
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "PlantInformation"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = None
 
     def as_write(self) -> PlantInformationWrite:
         """Convert this read version of plant information to the writing version."""
@@ -329,9 +321,7 @@ class PlantInformationWrite(PlantWaterValueBasedWrite):
         generators: The generator field.
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "PlantInformation"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = None
 
     def _to_instances_write(
         self,
@@ -381,46 +371,53 @@ class PlantInformationWrite(PlantWaterValueBasedWrite):
             properties["connectionLosses"] = self.connection_losses
 
         if self.production_max_time_series is not None or write_none:
-            if isinstance(self.production_max_time_series, str) or self.production_max_time_series is None:
-                properties["productionMaxTimeSeries"] = self.production_max_time_series
-            else:
-                properties["productionMaxTimeSeries"] = self.production_max_time_series.external_id
+            properties["productionMaxTimeSeries"] = (
+                self.production_max_time_series
+                if isinstance(self.production_max_time_series, str) or self.production_max_time_series is None
+                else self.production_max_time_series.external_id
+            )
 
         if self.production_min_time_series is not None or write_none:
-            if isinstance(self.production_min_time_series, str) or self.production_min_time_series is None:
-                properties["productionMinTimeSeries"] = self.production_min_time_series
-            else:
-                properties["productionMinTimeSeries"] = self.production_min_time_series.external_id
+            properties["productionMinTimeSeries"] = (
+                self.production_min_time_series
+                if isinstance(self.production_min_time_series, str) or self.production_min_time_series is None
+                else self.production_min_time_series.external_id
+            )
 
         if self.water_value_time_series is not None or write_none:
-            if isinstance(self.water_value_time_series, str) or self.water_value_time_series is None:
-                properties["waterValueTimeSeries"] = self.water_value_time_series
-            else:
-                properties["waterValueTimeSeries"] = self.water_value_time_series.external_id
+            properties["waterValueTimeSeries"] = (
+                self.water_value_time_series
+                if isinstance(self.water_value_time_series, str) or self.water_value_time_series is None
+                else self.water_value_time_series.external_id
+            )
 
         if self.feeding_fee_time_series is not None or write_none:
-            if isinstance(self.feeding_fee_time_series, str) or self.feeding_fee_time_series is None:
-                properties["feedingFeeTimeSeries"] = self.feeding_fee_time_series
-            else:
-                properties["feedingFeeTimeSeries"] = self.feeding_fee_time_series.external_id
+            properties["feedingFeeTimeSeries"] = (
+                self.feeding_fee_time_series
+                if isinstance(self.feeding_fee_time_series, str) or self.feeding_fee_time_series is None
+                else self.feeding_fee_time_series.external_id
+            )
 
         if self.outlet_level_time_series is not None or write_none:
-            if isinstance(self.outlet_level_time_series, str) or self.outlet_level_time_series is None:
-                properties["outletLevelTimeSeries"] = self.outlet_level_time_series
-            else:
-                properties["outletLevelTimeSeries"] = self.outlet_level_time_series.external_id
+            properties["outletLevelTimeSeries"] = (
+                self.outlet_level_time_series
+                if isinstance(self.outlet_level_time_series, str) or self.outlet_level_time_series is None
+                else self.outlet_level_time_series.external_id
+            )
 
         if self.inlet_level_time_series is not None or write_none:
-            if isinstance(self.inlet_level_time_series, str) or self.inlet_level_time_series is None:
-                properties["inletLevelTimeSeries"] = self.inlet_level_time_series
-            else:
-                properties["inletLevelTimeSeries"] = self.inlet_level_time_series.external_id
+            properties["inletLevelTimeSeries"] = (
+                self.inlet_level_time_series
+                if isinstance(self.inlet_level_time_series, str) or self.inlet_level_time_series is None
+                else self.inlet_level_time_series.external_id
+            )
 
         if self.head_direct_time_series is not None or write_none:
-            if isinstance(self.head_direct_time_series, str) or self.head_direct_time_series is None:
-                properties["headDirectTimeSeries"] = self.head_direct_time_series
-            else:
-                properties["headDirectTimeSeries"] = self.head_direct_time_series.external_id
+            properties["headDirectTimeSeries"] = (
+                self.head_direct_time_series
+                if isinstance(self.head_direct_time_series, str) or self.head_direct_time_series is None
+                else self.head_direct_time_series.external_id
+            )
 
         if properties:
             this_node = dm.NodeApply(

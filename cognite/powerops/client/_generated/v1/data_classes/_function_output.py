@@ -73,7 +73,7 @@ class FunctionOutputGraphQL(GraphQLCore):
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
     function_call_id: Optional[str] = Field(None, alias="functionCallId")
-    input_: Optional[FunctionInputGraphQL] = Field(None, repr=False, alias="input")
+    input_: Optional[FunctionInputGraphQL] = Field(default=None, repr=False, alias="input")
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
 
     @model_validator(mode="before")
@@ -112,7 +112,7 @@ class FunctionOutputGraphQL(GraphQLCore):
             function_name=self.function_name,
             function_call_id=self.function_call_id,
             input_=self.input_.as_read() if isinstance(self.input_, GraphQLCore) else self.input_,
-            alerts=[alert.as_read() if isinstance(alert, GraphQLCore) else alert for alert in self.alerts or []],
+            alerts=[alert.as_read() for alert in self.alerts or []],
         )
 
     def as_write(self) -> FunctionOutputWrite:
@@ -125,8 +125,8 @@ class FunctionOutputGraphQL(GraphQLCore):
             workflow_step=self.workflow_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
-            input_=self.input_.as_write() if isinstance(self.input_, DomainModel) else self.input_,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
+            input_=self.input_.as_write() if isinstance(self.input_, GraphQLCore) else self.input_,
+            alerts=[alert.as_write() for alert in self.alerts or []],
         )
 
 
@@ -153,7 +153,7 @@ class FunctionOutput(DomainModel):
     workflow_step: int = Field(alias="workflowStep")
     function_name: str = Field(alias="functionName")
     function_call_id: str = Field(alias="functionCallId")
-    input_: Union[FunctionInput, str, dm.NodeId, None] = Field(None, repr=False, alias="input")
+    input_: Union[FunctionInput, str, dm.NodeId, None] = Field(default=None, repr=False, alias="input")
     alerts: Union[list[Alert], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
     def as_write(self) -> FunctionOutputWrite:
@@ -203,7 +203,7 @@ class FunctionOutputWrite(DomainModelWrite):
     workflow_step: int = Field(alias="workflowStep")
     function_name: str = Field(alias="functionName")
     function_call_id: str = Field(alias="functionCallId")
-    input_: Union[FunctionInputWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="input")
+    input_: Union[FunctionInputWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="input")
     alerts: Union[list[AlertWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
     def _to_instances_write(

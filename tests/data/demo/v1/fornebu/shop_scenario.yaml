@@ -3,12 +3,20 @@
 #   model: ShopModel
 #   commands: ShopCommands
 #   source: String
+#   output_definition: [ShopOutputTimeSeriesDefinition]
 #   attribute_mappings_override: [ShopAttributeMapping]
 
 - name: "1"
   model: "[name]Fornebu"
   commands: "[name]default"
   source: XXX
+  # output_definition:
+  #   - "[external_id]shop_output_time_series_definition_market_price"
+  #   - "[external_id]shop_output_time_series_definition_market_sale"
+  #   - "[external_id]shop_output_time_series_definition_plant_production"
+  #   - "[external_id]shop_output_time_series_definition_plant_consumption"
+  #   - "[external_id]shop_output_time_series_definition_reservoir_water_value"
+  #   - "[external_id]shop_output_time_series_definition_reservoir_energy_conversion_factor"
   # attribute_mappings_override:
   #   - "[external_id]mapping_3"
   #   - "[external_id]mapping_4"
@@ -16,6 +24,13 @@
   model: "[name]Fornebu"
   commands: "[name|type:ShopCommands]default"
   source: XXX
+  # output_definition:
+  #   - "[external_id]shop_output_time_series_definition_market_price"
+  #   - "[external_id]shop_output_time_series_definition_market_sale"
+  #   - "[external_id]shop_output_time_series_definition_plant_production"
+  #   - "[external_id]shop_output_time_series_definition_plant_consumption"
+  #   - "[external_id]shop_output_time_series_definition_reservoir_water_value"
+  #   - "[external_id]shop_output_time_series_definition_reservoir_energy_conversion_factor"
   attribute_mappings_override:
     - "[external_id]mapping_5"
     - "[external_id]mapping_6"

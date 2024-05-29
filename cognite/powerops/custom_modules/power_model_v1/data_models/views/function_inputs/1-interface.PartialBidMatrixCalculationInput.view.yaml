@@ -19,7 +19,7 @@ filter:
         #       - type
         #     value:
         #       - WaterValueBasedPartialBidMatrixCalculationInput
-        #       - ShopPartialBidMatrixCalculationInput
+        #       - MultiScenarioPartialBidMatrixCalculationInput
 implements:
   - space: "{{power_ops_models}}"
     externalId: FunctionInput

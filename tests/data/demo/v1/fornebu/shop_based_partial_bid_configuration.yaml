@@ -7,7 +7,7 @@
 
 - name: plant A set A
   method: multi scenario??
-  power_asset: "[name|type:PlantWaterValueBased]Lund"
+  power_asset: "[name|type:PlantInformation]Lund"
   add_steps: false
   scenario_set: "[name]1 scenario"
 - name: Fornebu 2

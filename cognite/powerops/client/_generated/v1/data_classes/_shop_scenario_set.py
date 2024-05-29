@@ -23,6 +23,7 @@ from ._core import (
 )
 
 if TYPE_CHECKING:
+    from ._date_specification import DateSpecification, DateSpecificationGraphQL, DateSpecificationWrite
     from ._shop_scenario import ShopScenario, ShopScenarioGraphQL, ShopScenarioWrite
 
 
@@ -38,13 +39,11 @@ __all__ = [
 ]
 
 
-ShopScenarioSetTextFields = Literal["name", "start_specification", "end_specification"]
-ShopScenarioSetFields = Literal["name", "start_specification", "end_specification"]
+ShopScenarioSetTextFields = Literal["name"]
+ShopScenarioSetFields = Literal["name"]
 
 _SHOPSCENARIOSET_PROPERTIES_BY_FIELD = {
     "name": "name",
-    "start_specification": "startSpecification",
-    "end_specification": "endSpecification",
 }
 
 
@@ -59,15 +58,17 @@ class ShopScenarioSetGraphQL(GraphQLCore):
         external_id: The external id of the shop scenario set.
         data_record: The data record of the shop scenario set node.
         name: The name of the scenario set to run
-        start_specification: TODO definition
-        end_specification: TODO definition
+        start_specification: TODO description
+        end_specification: TODO description
         scenarios: Configuration of the partial bids that make up the total bid configuration
     """
 
     view_id = dm.ViewId("sp_power_ops_models", "ShopScenarioSet", "1")
     name: Optional[str] = None
-    start_specification: Optional[str] = Field(None, alias="startSpecification")
-    end_specification: Optional[str] = Field(None, alias="endSpecification")
+    start_specification: Optional[DateSpecificationGraphQL] = Field(
+        default=None, repr=False, alias="startSpecification"
+    )
+    end_specification: Optional[DateSpecificationGraphQL] = Field(default=None, repr=False, alias="endSpecification")
     scenarios: Optional[list[ShopScenarioGraphQL]] = Field(default=None, repr=False)
 
     @model_validator(mode="before")
@@ -81,7 +82,7 @@ class ShopScenarioSetGraphQL(GraphQLCore):
             )
         return values
 
-    @field_validator("scenarios", mode="before")
+    @field_validator("start_specification", "end_specification", "scenarios", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
             return value
@@ -102,12 +103,17 @@ class ShopScenarioSetGraphQL(GraphQLCore):
                 created_time=self.data_record.created_time,
             ),
             name=self.name,
-            start_specification=self.start_specification,
-            end_specification=self.end_specification,
-            scenarios=[
-                scenario.as_read() if isinstance(scenario, GraphQLCore) else scenario
-                for scenario in self.scenarios or []
-            ],
+            start_specification=(
+                self.start_specification.as_read()
+                if isinstance(self.start_specification, GraphQLCore)
+                else self.start_specification
+            ),
+            end_specification=(
+                self.end_specification.as_read()
+                if isinstance(self.end_specification, GraphQLCore)
+                else self.end_specification
+            ),
+            scenarios=[scenario.as_read() for scenario in self.scenarios or []],
         )
 
     def as_write(self) -> ShopScenarioSetWrite:
@@ -117,12 +123,17 @@ class ShopScenarioSetGraphQL(GraphQLCore):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,
-            start_specification=self.start_specification,
-            end_specification=self.end_specification,
-            scenarios=[
-                scenario.as_write() if isinstance(scenario, DomainModel) else scenario
-                for scenario in self.scenarios or []
-            ],
+            start_specification=(
+                self.start_specification.as_write()
+                if isinstance(self.start_specification, GraphQLCore)
+                else self.start_specification
+            ),
+            end_specification=(
+                self.end_specification.as_write()
+                if isinstance(self.end_specification, GraphQLCore)
+                else self.end_specification
+            ),
+            scenarios=[scenario.as_write() for scenario in self.scenarios or []],
         )
 
 
@@ -136,16 +147,20 @@ class ShopScenarioSet(DomainModel):
         external_id: The external id of the shop scenario set.
         data_record: The data record of the shop scenario set node.
         name: The name of the scenario set to run
-        start_specification: TODO definition
-        end_specification: TODO definition
+        start_specification: TODO description
+        end_specification: TODO description
         scenarios: Configuration of the partial bids that make up the total bid configuration
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
     name: str
-    start_specification: str = Field(alias="startSpecification")
-    end_specification: str = Field(alias="endSpecification")
+    start_specification: Union[DateSpecification, str, dm.NodeId, None] = Field(
+        default=None, repr=False, alias="startSpecification"
+    )
+    end_specification: Union[DateSpecification, str, dm.NodeId, None] = Field(
+        default=None, repr=False, alias="endSpecification"
+    )
     scenarios: Union[list[ShopScenario], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
     def as_write(self) -> ShopScenarioSetWrite:
@@ -155,8 +170,16 @@ class ShopScenarioSet(DomainModel):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             name=self.name,
-            start_specification=self.start_specification,
-            end_specification=self.end_specification,
+            start_specification=(
+                self.start_specification.as_write()
+                if isinstance(self.start_specification, DomainModel)
+                else self.start_specification
+            ),
+            end_specification=(
+                self.end_specification.as_write()
+                if isinstance(self.end_specification, DomainModel)
+                else self.end_specification
+            ),
             scenarios=[
                 scenario.as_write() if isinstance(scenario, DomainModel) else scenario
                 for scenario in self.scenarios or []
@@ -183,16 +206,20 @@ class ShopScenarioSetWrite(DomainModelWrite):
         external_id: The external id of the shop scenario set.
         data_record: The data record of the shop scenario set node.
         name: The name of the scenario set to run
-        start_specification: TODO definition
-        end_specification: TODO definition
+        start_specification: TODO description
+        end_specification: TODO description
         scenarios: Configuration of the partial bids that make up the total bid configuration
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
     name: str
-    start_specification: str = Field(alias="startSpecification")
-    end_specification: str = Field(alias="endSpecification")
+    start_specification: Union[DateSpecificationWrite, str, dm.NodeId, None] = Field(
+        default=None, repr=False, alias="startSpecification"
+    )
+    end_specification: Union[DateSpecificationWrite, str, dm.NodeId, None] = Field(
+        default=None, repr=False, alias="endSpecification"
+    )
     scenarios: Union[list[ShopScenarioWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
     def _to_instances_write(
@@ -216,10 +243,24 @@ class ShopScenarioSetWrite(DomainModelWrite):
             properties["name"] = self.name
 
         if self.start_specification is not None:
-            properties["startSpecification"] = self.start_specification
+            properties["startSpecification"] = {
+                "space": self.space if isinstance(self.start_specification, str) else self.start_specification.space,
+                "externalId": (
+                    self.start_specification
+                    if isinstance(self.start_specification, str)
+                    else self.start_specification.external_id
+                ),
+            }
 
         if self.end_specification is not None:
-            properties["endSpecification"] = self.end_specification
+            properties["endSpecification"] = {
+                "space": self.space if isinstance(self.end_specification, str) else self.end_specification.space,
+                "externalId": (
+                    self.end_specification
+                    if isinstance(self.end_specification, str)
+                    else self.end_specification.external_id
+                ),
+            }
 
         if properties:
             this_node = dm.NodeApply(
@@ -248,6 +289,14 @@ class ShopScenarioSetWrite(DomainModelWrite):
                 write_none=write_none,
                 allow_version_increase=allow_version_increase,
             )
+            resources.extend(other_resources)
+
+        if isinstance(self.start_specification, DomainModelWrite):
+            other_resources = self.start_specification._to_instances_write(cache, view_by_read_class)
+            resources.extend(other_resources)
+
+        if isinstance(self.end_specification, DomainModelWrite):
+            other_resources = self.end_specification._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
 
         return resources
@@ -297,10 +346,8 @@ def _create_shop_scenario_set_filter(
     view_id: dm.ViewId,
     name: str | list[str] | None = None,
     name_prefix: str | None = None,
-    start_specification: str | list[str] | None = None,
-    start_specification_prefix: str | None = None,
-    end_specification: str | list[str] | None = None,
-    end_specification_prefix: str | None = None,
+    start_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    end_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -312,20 +359,62 @@ def _create_shop_scenario_set_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
     if name_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
-    if isinstance(start_specification, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("startSpecification"), value=start_specification))
-    if start_specification and isinstance(start_specification, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("startSpecification"), values=start_specification))
-    if start_specification_prefix is not None:
+    if start_specification and isinstance(start_specification, str):
         filters.append(
-            dm.filters.Prefix(view_id.as_property_ref("startSpecification"), value=start_specification_prefix)
+            dm.filters.Equals(
+                view_id.as_property_ref("startSpecification"),
+                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": start_specification},
+            )
         )
-    if isinstance(end_specification, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("endSpecification"), value=end_specification))
-    if end_specification and isinstance(end_specification, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("endSpecification"), values=end_specification))
-    if end_specification_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("endSpecification"), value=end_specification_prefix))
+    if start_specification and isinstance(start_specification, tuple):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("startSpecification"),
+                value={"space": start_specification[0], "externalId": start_specification[1]},
+            )
+        )
+    if start_specification and isinstance(start_specification, list) and isinstance(start_specification[0], str):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("startSpecification"),
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in start_specification],
+            )
+        )
+    if start_specification and isinstance(start_specification, list) and isinstance(start_specification[0], tuple):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("startSpecification"),
+                values=[{"space": item[0], "externalId": item[1]} for item in start_specification],
+            )
+        )
+    if end_specification and isinstance(end_specification, str):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("endSpecification"),
+                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": end_specification},
+            )
+        )
+    if end_specification and isinstance(end_specification, tuple):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("endSpecification"),
+                value={"space": end_specification[0], "externalId": end_specification[1]},
+            )
+        )
+    if end_specification and isinstance(end_specification, list) and isinstance(end_specification[0], str):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("endSpecification"),
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in end_specification],
+            )
+        )
+    if end_specification and isinstance(end_specification, list) and isinstance(end_specification[0], tuple):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("endSpecification"),
+                values=[{"space": item[0], "externalId": item[1]} for item in end_specification],
+            )
+        )
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):

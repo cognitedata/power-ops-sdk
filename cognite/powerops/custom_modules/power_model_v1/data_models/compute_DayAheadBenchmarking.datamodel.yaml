@@ -68,3 +68,59 @@ views:
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
+  - space: "{{power_ops_models}}"
+    externalId: BidMatrix
+    version: "{{version}}"
+    type: view
+  - space: "{{power_ops_models}}"
+    externalId: Alert
+    version: "{{version}}"
+    type: view
+  - space: "{{power_ops_models}}"
+    externalId: ShopScenario
+    version: "{{version}}"
+    type: view
+  - space: "{{power_ops_models}}"
+    externalId: ShopObjectiveValue
+    version: "{{version}}"
+    type: view
+  - space: "{{power_ops_models}}"
+    externalId: FunctionInput
+    version: "{{version}}"
+    type: view
+  - space: "{{power_ops_models}}"
+    externalId: FunctionOutput
+    version: "{{version}}"
+    type: view
+  - space: "{{power_ops_models}}"
+    externalId: PriceArea
+    version: "{{version}}"
+    type: view
+  - space: "{{power_ops_models}}"
+    externalId: ShopModel
+    version: "{{version}}"
+    type: view
+  - space: "{{power_ops_models}}"
+    externalId: ShopCommands
+    version: "{{version}}"
+    type: view
+  - space: "{{power_ops_models}}"
+    externalId: ShopAttributeMapping
+    version: "{{version}}"
+    type: view
+  - space: "{{power_ops_models}}"
+    externalId: PowerAsset
+    version: "{{version}}"
+    type: view
+  - space: "{{power_ops_models}}"
+    externalId: PartialBidConfiguration
+    version: "{{version}}"
+    type: view
+  - externalId: ShopOutputTimeSeriesDefinition
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: ShopFile
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"

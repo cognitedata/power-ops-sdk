@@ -27,16 +27,9 @@ properties:
     name: priceArea
   bidDateSpecification:
     type:
+      type: direct
       list: false
-      collation: ucs_basic
-      type: text
-    nullable: false
+    nullable: true
     autoIncrement: false
     name: bidDateSpecification
     description: TODO
-indexes:
-  priceAreaIndex:
-    properties:
-      - priceArea
-    indexType: btree
-    cursorable: false

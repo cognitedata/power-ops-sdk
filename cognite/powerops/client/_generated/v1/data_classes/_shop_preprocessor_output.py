@@ -80,9 +80,9 @@ class ShopPreprocessorOutputGraphQL(GraphQLCore):
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
     function_call_id: Optional[str] = Field(None, alias="functionCallId")
-    input_: Optional[ShopPreprocessorInputGraphQL] = Field(None, repr=False, alias="input")
+    input_: Optional[ShopPreprocessorInputGraphQL] = Field(default=None, repr=False, alias="input")
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
-    case: Optional[ShopCaseGraphQL] = Field(None, repr=False)
+    case: Optional[ShopCaseGraphQL] = Field(default=None, repr=False)
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -120,7 +120,7 @@ class ShopPreprocessorOutputGraphQL(GraphQLCore):
             function_name=self.function_name,
             function_call_id=self.function_call_id,
             input_=self.input_.as_read() if isinstance(self.input_, GraphQLCore) else self.input_,
-            alerts=[alert.as_read() if isinstance(alert, GraphQLCore) else alert for alert in self.alerts or []],
+            alerts=[alert.as_read() for alert in self.alerts or []],
             case=self.case.as_read() if isinstance(self.case, GraphQLCore) else self.case,
         )
 
@@ -134,9 +134,9 @@ class ShopPreprocessorOutputGraphQL(GraphQLCore):
             workflow_step=self.workflow_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
-            input_=self.input_.as_write() if isinstance(self.input_, DomainModel) else self.input_,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            case=self.case.as_write() if isinstance(self.case, DomainModel) else self.case,
+            input_=self.input_.as_write() if isinstance(self.input_, GraphQLCore) else self.input_,
+            alerts=[alert.as_write() for alert in self.alerts or []],
+            case=self.case.as_write() if isinstance(self.case, GraphQLCore) else self.case,
         )
 
 
@@ -161,7 +161,7 @@ class ShopPreprocessorOutput(FunctionOutput):
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "sp_power_ops_types", "ShopPreprocessorOutput"
     )
-    case: Union[ShopCase, str, dm.NodeId, None] = Field(None, repr=False)
+    case: Union[ShopCase, str, dm.NodeId, None] = Field(default=None, repr=False)
 
     def as_write(self) -> ShopPreprocessorOutputWrite:
         """Convert this read version of shop preprocessor output to the writing version."""
@@ -209,7 +209,7 @@ class ShopPreprocessorOutputWrite(FunctionOutputWrite):
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "sp_power_ops_types", "ShopPreprocessorOutput"
     )
-    case: Union[ShopCaseWrite, str, dm.NodeId, None] = Field(None, repr=False)
+    case: Union[ShopCaseWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
 
     def _to_instances_write(
         self,

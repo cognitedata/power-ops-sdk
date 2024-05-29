@@ -76,7 +76,7 @@ class TaskDispatcherOutputGraphQL(GraphQLCore):
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
     function_call_id: Optional[str] = Field(None, alias="functionCallId")
-    input_: Optional[TaskDispatcherInputGraphQL] = Field(None, repr=False, alias="input")
+    input_: Optional[TaskDispatcherInputGraphQL] = Field(default=None, repr=False, alias="input")
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
     process_sub_tasks: Optional[list[FunctionInputGraphQL]] = Field(default=None, repr=False, alias="processSubTasks")
 
@@ -116,11 +116,8 @@ class TaskDispatcherOutputGraphQL(GraphQLCore):
             function_name=self.function_name,
             function_call_id=self.function_call_id,
             input_=self.input_.as_read() if isinstance(self.input_, GraphQLCore) else self.input_,
-            alerts=[alert.as_read() if isinstance(alert, GraphQLCore) else alert for alert in self.alerts or []],
-            process_sub_tasks=[
-                process_sub_task.as_read() if isinstance(process_sub_task, GraphQLCore) else process_sub_task
-                for process_sub_task in self.process_sub_tasks or []
-            ],
+            alerts=[alert.as_read() for alert in self.alerts or []],
+            process_sub_tasks=[process_sub_task.as_read() for process_sub_task in self.process_sub_tasks or []],
         )
 
     def as_write(self) -> TaskDispatcherOutputWrite:
@@ -133,12 +130,9 @@ class TaskDispatcherOutputGraphQL(GraphQLCore):
             workflow_step=self.workflow_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
-            input_=self.input_.as_write() if isinstance(self.input_, DomainModel) else self.input_,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            process_sub_tasks=[
-                process_sub_task.as_write() if isinstance(process_sub_task, DomainModel) else process_sub_task
-                for process_sub_task in self.process_sub_tasks or []
-            ],
+            input_=self.input_.as_write() if isinstance(self.input_, GraphQLCore) else self.input_,
+            alerts=[alert.as_write() for alert in self.alerts or []],
+            process_sub_tasks=[process_sub_task.as_write() for process_sub_task in self.process_sub_tasks or []],
         )
 
 

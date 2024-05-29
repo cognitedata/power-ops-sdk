@@ -21,7 +21,6 @@ ColumnNames = Literal[
     "outletLevel",
     "productionMax",
     "productionMin",
-    "penstockHeadLossFactors",
     "connectionLosses",
     "productionMaxTimeSeries",
     "productionMinTimeSeries",

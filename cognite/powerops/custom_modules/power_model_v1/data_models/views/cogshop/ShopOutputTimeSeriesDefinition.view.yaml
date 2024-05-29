@@ -1,0 +1,73 @@
+space: "{{power_ops_models}}"
+externalId: ShopOutputTimeSeriesDefinition
+name: ShopOutputTimeSeriesDefinition
+description: A wrapper around a time series object from the output of a successful SHOP run
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models}}"
+          externalId: ShopOutputTimeSeriesDefinition
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: ShopOutputTimeSeriesDefinition
+          space: "{{power_ops_type_space}}"
+implements: []
+version: "{{version}}"
+properties:
+  name:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopOutputTimeSeriesDefinition
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: The name of the definition
+  objectType:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopOutputTimeSeriesDefinition
+      type: container
+    containerPropertyIdentifier: objectType
+    name: objectType
+    description: The type of the object
+  objectName:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopOutputTimeSeriesDefinition
+      type: container
+    containerPropertyIdentifier: objectName
+    name: objectName
+    description: The name of the object
+  attributeName:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopOutputTimeSeriesDefinition
+      type: container
+    containerPropertyIdentifier: attributeName
+    name: attributeName
+    description: The name of the attribute
+  unit:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopOutputTimeSeriesDefinition
+      type: container
+    containerPropertyIdentifier: unit
+    name: objectName
+    description: The unit of the object
+  isStep:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopOutputTimeSeriesDefinition
+      type: container
+    containerPropertyIdentifier: isStep
+    name: isStep
+    description: The name of the attribute

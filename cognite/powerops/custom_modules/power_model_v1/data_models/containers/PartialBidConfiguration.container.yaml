@@ -33,9 +33,9 @@ properties:
     nullable: false
     autoIncrement: false
     name: addSteps
-indexes:
-  assetIndex:
-    properties:
-      - powerAsset
-    indexType: btree
-    cursorable: false
+# indexes:
+#   assetIndex:
+#     properties:
+#       - powerAsset
+#     indexType: btree
+#     cursorable: false

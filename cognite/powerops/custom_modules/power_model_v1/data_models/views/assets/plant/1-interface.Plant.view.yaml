@@ -3,15 +3,11 @@ externalId: Plant
 name: Plant
 description: TODO interface for typing
 filter:
-  or:
+  and:
     - hasData:
         - type: container
           space: "{{power_ops_models}}"
-          externalId: PlantWaterValueBased
-          # - hasData:
-          #     - type: container
-          #       space: "{{power_ops_models}}"
-          #       externalId: PlantShop
+          externalId: Plant
 implements:
   - space: "{{power_ops_models}}"
     externalId: PowerAsset

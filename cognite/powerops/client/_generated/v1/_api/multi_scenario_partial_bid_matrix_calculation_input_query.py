@@ -7,7 +7,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
-    ShopPartialBidMatrixCalculationInput,
+    MultiScenarioPartialBidMatrixCalculationInput,
     BidConfigurationDayAhead,
     ShopBasedPartialBidConfiguration,
 )
@@ -21,7 +21,7 @@ if TYPE_CHECKING:
     from .price_production_query import PriceProductionQueryAPI
 
 
-class ShopPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
+class MultiScenarioPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
     def __init__(
         self,
         client: CogniteClient,
@@ -34,15 +34,19 @@ class ShopPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
 
         self._builder.append(
             QueryStep(
-                name=self._builder.next_name("shop_partial_bid_matrix_calculation_input"),
+                name=self._builder.next_name("multi_scenario_partial_bid_matrix_calculation_input"),
                 expression=dm.query.NodeResultSetExpression(
                     from_=self._builder[-1].name if self._builder else None,
                     filter=filter_,
                 ),
                 select=dm.query.Select(
-                    [dm.query.SourceSelector(self._view_by_read_class[ShopPartialBidMatrixCalculationInput], ["*"])]
+                    [
+                        dm.query.SourceSelector(
+                            self._view_by_read_class[MultiScenarioPartialBidMatrixCalculationInput], ["*"]
+                        )
+                    ]
                 ),
-                result_cls=ShopPartialBidMatrixCalculationInput,
+                result_cls=MultiScenarioPartialBidMatrixCalculationInput,
                 max_retrieve_limit=limit,
             )
         )
@@ -61,7 +65,7 @@ class ShopPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
         retrieve_bid_configuration: bool = False,
         retrieve_partial_bid_configuration: bool = False,
     ) -> PriceProductionQueryAPI[T_DomainModelList]:
-        """Query along the price production edges of the shop partial bid matrix calculation input.
+        """Query along the price production edges of the multi scenario partial bid matrix calculation input.
 
         Args:
             name: The name to filter on.
@@ -74,8 +78,8 @@ class ShopPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
             filter: (Advanced) Filter applied to node. If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             limit: Maximum number of price production edges to return. Defaults to 3. Set to -1, float("inf") or None
                 to return all items.
-            retrieve_bid_configuration: Whether to retrieve the bid configuration for each shop partial bid matrix calculation input or not.
-            retrieve_partial_bid_configuration: Whether to retrieve the partial bid configuration for each shop partial bid matrix calculation input or not.
+            retrieve_bid_configuration: Whether to retrieve the bid configuration for each multi scenario partial bid matrix calculation input or not.
+            retrieve_partial_bid_configuration: Whether to retrieve the partial bid configuration for each multi scenario partial bid matrix calculation input or not.
 
         Returns:
             PriceProductionQueryAPI: The query API for the price production.
@@ -126,8 +130,8 @@ class ShopPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
         """Execute query and return the result.
 
         Args:
-            retrieve_bid_configuration: Whether to retrieve the bid configuration for each shop partial bid matrix calculation input or not.
-            retrieve_partial_bid_configuration: Whether to retrieve the partial bid configuration for each shop partial bid matrix calculation input or not.
+            retrieve_bid_configuration: Whether to retrieve the bid configuration for each multi scenario partial bid matrix calculation input or not.
+            retrieve_partial_bid_configuration: Whether to retrieve the partial bid configuration for each multi scenario partial bid matrix calculation input or not.
 
         Returns:
             The list of the source nodes of the query.
@@ -148,7 +152,7 @@ class ShopPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_read_class[ShopPartialBidMatrixCalculationInput].as_property_ref(
+                    through=self._view_by_read_class[MultiScenarioPartialBidMatrixCalculationInput].as_property_ref(
                         "bidConfiguration"
                     ),
                     direction="outwards",
@@ -168,7 +172,7 @@ class ShopPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_read_class[ShopPartialBidMatrixCalculationInput].as_property_ref(
+                    through=self._view_by_read_class[MultiScenarioPartialBidMatrixCalculationInput].as_property_ref(
                         "partialBidConfiguration"
                     ),
                     direction="outwards",

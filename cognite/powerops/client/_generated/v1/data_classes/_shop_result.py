@@ -40,11 +40,11 @@ __all__ = [
 ]
 
 
-ShopResultTextFields = Literal["objective_sequence", "pre_run", "post_run", "messages", "cplex_logs"]
-ShopResultFields = Literal["objective_sequence", "pre_run", "post_run", "messages", "cplex_logs"]
+ShopResultTextFields = Literal["pre_run", "post_run", "messages", "cplex_logs"]
+ShopResultFields = Literal["objective_value", "pre_run", "post_run", "messages", "cplex_logs"]
 
 _SHOPRESULT_PROPERTIES_BY_FIELD = {
-    "objective_sequence": "objectiveSequence",
+    "objective_value": "objectiveValue",
     "pre_run": "preRun",
     "post_run": "postRun",
     "messages": "messages",
@@ -63,7 +63,7 @@ class ShopResultGraphQL(GraphQLCore):
         external_id: The external id of the shop result.
         data_record: The data record of the shop result node.
         case: The case that was used to produce this result
-        objective_sequence: The sequence of the objective function
+        objective_value: The sequence of the objective function
         pre_run: The pre-run data for the SHOP run
         post_run: The post-run data for the SHOP run
         messages: The messages from the SHOP run
@@ -73,8 +73,8 @@ class ShopResultGraphQL(GraphQLCore):
     """
 
     view_id = dm.ViewId("sp_power_ops_models", "ShopResult", "1")
-    case: Optional[ShopCaseGraphQL] = Field(None, repr=False)
-    objective_sequence: Union[dict, None] = Field(None, alias="objectiveSequence")
+    case: Optional[ShopCaseGraphQL] = Field(default=None, repr=False)
+    objective_value: Optional[dict] = Field(None, alias="objectiveValue")
     pre_run: Union[dict, None] = Field(None, alias="preRun")
     post_run: Union[dict, None] = Field(None, alias="postRun")
     messages: Union[dict, None] = None
@@ -116,20 +116,13 @@ class ShopResultGraphQL(GraphQLCore):
                 created_time=self.data_record.created_time,
             ),
             case=self.case.as_read() if isinstance(self.case, GraphQLCore) else self.case,
-            objective_sequence=(
-                self.objective_sequence["externalId"]
-                if self.objective_sequence and "externalId" in self.objective_sequence
-                else None
-            ),
+            objective_value=self.objective_value,
             pre_run=self.pre_run["externalId"] if self.pre_run and "externalId" in self.pre_run else None,
             post_run=self.post_run["externalId"] if self.post_run and "externalId" in self.post_run else None,
             messages=self.messages["externalId"] if self.messages and "externalId" in self.messages else None,
             cplex_logs=self.cplex_logs["externalId"] if self.cplex_logs and "externalId" in self.cplex_logs else None,
-            alerts=[alert.as_read() if isinstance(alert, GraphQLCore) else alert for alert in self.alerts or []],
-            output_time_series=[
-                output_time_series.as_read() if isinstance(output_time_series, GraphQLCore) else output_time_series
-                for output_time_series in self.output_time_series or []
-            ],
+            alerts=[alert.as_read() for alert in self.alerts or []],
+            output_time_series=[output_time_series.as_read() for output_time_series in self.output_time_series or []],
         )
 
     def as_write(self) -> ShopResultWrite:
@@ -138,21 +131,14 @@ class ShopResultGraphQL(GraphQLCore):
             space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
-            case=self.case.as_write() if isinstance(self.case, DomainModel) else self.case,
-            objective_sequence=(
-                self.objective_sequence["externalId"]
-                if self.objective_sequence and "externalId" in self.objective_sequence
-                else None
-            ),
+            case=self.case.as_write() if isinstance(self.case, GraphQLCore) else self.case,
+            objective_value=self.objective_value,
             pre_run=self.pre_run["externalId"] if self.pre_run and "externalId" in self.pre_run else None,
             post_run=self.post_run["externalId"] if self.post_run and "externalId" in self.post_run else None,
             messages=self.messages["externalId"] if self.messages and "externalId" in self.messages else None,
             cplex_logs=self.cplex_logs["externalId"] if self.cplex_logs and "externalId" in self.cplex_logs else None,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            output_time_series=[
-                output_time_series.as_write() if isinstance(output_time_series, DomainModel) else output_time_series
-                for output_time_series in self.output_time_series or []
-            ],
+            alerts=[alert.as_write() for alert in self.alerts or []],
+            output_time_series=[output_time_series.as_write() for output_time_series in self.output_time_series or []],
         )
 
 
@@ -166,7 +152,7 @@ class ShopResult(DomainModel):
         external_id: The external id of the shop result.
         data_record: The data record of the shop result node.
         case: The case that was used to produce this result
-        objective_sequence: The sequence of the objective function
+        objective_value: The sequence of the objective function
         pre_run: The pre-run data for the SHOP run
         post_run: The post-run data for the SHOP run
         messages: The messages from the SHOP run
@@ -177,8 +163,8 @@ class ShopResult(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
-    case: Union[ShopCase, str, dm.NodeId, None] = Field(None, repr=False)
-    objective_sequence: Union[str, None] = Field(None, alias="objectiveSequence")
+    case: Union[ShopCase, str, dm.NodeId, None] = Field(default=None, repr=False)
+    objective_value: Optional[dict] = Field(None, alias="objectiveValue")
     pre_run: Union[str, None] = Field(None, alias="preRun")
     post_run: Union[str, None] = Field(None, alias="postRun")
     messages: Union[str, None] = None
@@ -195,7 +181,7 @@ class ShopResult(DomainModel):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             case=self.case.as_write() if isinstance(self.case, DomainModel) else self.case,
-            objective_sequence=self.objective_sequence,
+            objective_value=self.objective_value,
             pre_run=self.pre_run,
             post_run=self.post_run,
             messages=self.messages,
@@ -227,7 +213,7 @@ class ShopResultWrite(DomainModelWrite):
         external_id: The external id of the shop result.
         data_record: The data record of the shop result node.
         case: The case that was used to produce this result
-        objective_sequence: The sequence of the objective function
+        objective_value: The sequence of the objective function
         pre_run: The pre-run data for the SHOP run
         post_run: The post-run data for the SHOP run
         messages: The messages from the SHOP run
@@ -238,8 +224,8 @@ class ShopResultWrite(DomainModelWrite):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
-    case: Union[ShopCaseWrite, str, dm.NodeId, None] = Field(None, repr=False)
-    objective_sequence: Union[str, None] = Field(None, alias="objectiveSequence")
+    case: Union[ShopCaseWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
+    objective_value: Optional[dict] = Field(None, alias="objectiveValue")
     pre_run: Union[str, None] = Field(None, alias="preRun")
     post_run: Union[str, None] = Field(None, alias="postRun")
     messages: Union[str, None] = None
@@ -270,8 +256,8 @@ class ShopResultWrite(DomainModelWrite):
                 "externalId": self.case if isinstance(self.case, str) else self.case.external_id,
             }
 
-        if self.objective_sequence is not None or write_none:
-            properties["objectiveSequence"] = self.objective_sequence
+        if self.objective_value is not None or write_none:
+            properties["objectiveValue"] = self.objective_value
 
         if self.pre_run is not None or write_none:
             properties["preRun"] = self.pre_run

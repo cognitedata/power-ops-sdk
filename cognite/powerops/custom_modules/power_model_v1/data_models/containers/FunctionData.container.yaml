@@ -174,26 +174,19 @@ properties:
     nullable: true
     autoIncrement: false
     name: flag
-  flag2:
-    type:
-      list: false
-      type: boolean
-    nullable: true
-    autoIncrement: false
-    name: flag2
-indexes:
-  functionNameIndex:
-    properties:
-      - functionName
-    indexType: btree
-    cursorable: false
-  functionCallIdIndex:
-    properties:
-      - functionCallId
-    indexType: btree
-    cursorable: false
-  workflowExecutionIdIndex:
-    properties:
-      - workflowExecutionId
-    indexType: btree
-    cursorable: false
+# indexes:
+#   functionNameIndex:
+#     properties:
+#       - functionName
+#     indexType: btree
+#     cursorable: false
+#   functionCallIdIndex:
+#     properties:
+#       - functionCallId
+#     indexType: btree
+#     cursorable: false
+#   workflowExecutionIdIndex:
+#     properties:
+#       - workflowExecutionId
+#     indexType: btree
+#     cursorable: false

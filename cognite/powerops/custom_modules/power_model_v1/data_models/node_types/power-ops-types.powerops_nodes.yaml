@@ -111,7 +111,7 @@
 - space: "{{power_ops_type_space}}"
   externalId: BidMatrixCalculationTask
 - space: "{{power_ops_type_space}}"
-  externalId: ShopPartialBidMatrixCalculationInput
+  externalId: MultiScenarioPartialBidMatrixCalculationInput
 - space: "{{power_ops_type_space}}"
   externalId: ShopPartialBidMatrixCalculationOutput
 - space: "{{power_ops_type_space}}"

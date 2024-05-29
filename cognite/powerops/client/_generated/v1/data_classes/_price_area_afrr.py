@@ -316,58 +316,67 @@ class PriceAreaAFRRWrite(PriceAreaWrite):
             properties["assetType"] = self.asset_type
 
         if self.capacity_price_up is not None or write_none:
-            if isinstance(self.capacity_price_up, str) or self.capacity_price_up is None:
-                properties["capacityPriceUp"] = self.capacity_price_up
-            else:
-                properties["capacityPriceUp"] = self.capacity_price_up.external_id
+            properties["capacityPriceUp"] = (
+                self.capacity_price_up
+                if isinstance(self.capacity_price_up, str) or self.capacity_price_up is None
+                else self.capacity_price_up.external_id
+            )
 
         if self.capacity_price_down is not None or write_none:
-            if isinstance(self.capacity_price_down, str) or self.capacity_price_down is None:
-                properties["capacityPriceDown"] = self.capacity_price_down
-            else:
-                properties["capacityPriceDown"] = self.capacity_price_down.external_id
+            properties["capacityPriceDown"] = (
+                self.capacity_price_down
+                if isinstance(self.capacity_price_down, str) or self.capacity_price_down is None
+                else self.capacity_price_down.external_id
+            )
 
         if self.activation_price_up is not None or write_none:
-            if isinstance(self.activation_price_up, str) or self.activation_price_up is None:
-                properties["activationPriceUp"] = self.activation_price_up
-            else:
-                properties["activationPriceUp"] = self.activation_price_up.external_id
+            properties["activationPriceUp"] = (
+                self.activation_price_up
+                if isinstance(self.activation_price_up, str) or self.activation_price_up is None
+                else self.activation_price_up.external_id
+            )
 
         if self.activation_price_down is not None or write_none:
-            if isinstance(self.activation_price_down, str) or self.activation_price_down is None:
-                properties["activationPriceDown"] = self.activation_price_down
-            else:
-                properties["activationPriceDown"] = self.activation_price_down.external_id
+            properties["activationPriceDown"] = (
+                self.activation_price_down
+                if isinstance(self.activation_price_down, str) or self.activation_price_down is None
+                else self.activation_price_down.external_id
+            )
 
         if self.relative_activation is not None or write_none:
-            if isinstance(self.relative_activation, str) or self.relative_activation is None:
-                properties["relativeActivation"] = self.relative_activation
-            else:
-                properties["relativeActivation"] = self.relative_activation.external_id
+            properties["relativeActivation"] = (
+                self.relative_activation
+                if isinstance(self.relative_activation, str) or self.relative_activation is None
+                else self.relative_activation.external_id
+            )
 
         if self.total_capacity_allocation_up is not None or write_none:
-            if isinstance(self.total_capacity_allocation_up, str) or self.total_capacity_allocation_up is None:
-                properties["totalCapacityAllocationUp"] = self.total_capacity_allocation_up
-            else:
-                properties["totalCapacityAllocationUp"] = self.total_capacity_allocation_up.external_id
+            properties["totalCapacityAllocationUp"] = (
+                self.total_capacity_allocation_up
+                if isinstance(self.total_capacity_allocation_up, str) or self.total_capacity_allocation_up is None
+                else self.total_capacity_allocation_up.external_id
+            )
 
         if self.total_capacity_allocation_down is not None or write_none:
-            if isinstance(self.total_capacity_allocation_down, str) or self.total_capacity_allocation_down is None:
-                properties["totalCapacityAllocationDown"] = self.total_capacity_allocation_down
-            else:
-                properties["totalCapacityAllocationDown"] = self.total_capacity_allocation_down.external_id
+            properties["totalCapacityAllocationDown"] = (
+                self.total_capacity_allocation_down
+                if isinstance(self.total_capacity_allocation_down, str) or self.total_capacity_allocation_down is None
+                else self.total_capacity_allocation_down.external_id
+            )
 
         if self.own_capacity_allocation_up is not None or write_none:
-            if isinstance(self.own_capacity_allocation_up, str) or self.own_capacity_allocation_up is None:
-                properties["ownCapacityAllocationUp"] = self.own_capacity_allocation_up
-            else:
-                properties["ownCapacityAllocationUp"] = self.own_capacity_allocation_up.external_id
+            properties["ownCapacityAllocationUp"] = (
+                self.own_capacity_allocation_up
+                if isinstance(self.own_capacity_allocation_up, str) or self.own_capacity_allocation_up is None
+                else self.own_capacity_allocation_up.external_id
+            )
 
         if self.own_capacity_allocation_down is not None or write_none:
-            if isinstance(self.own_capacity_allocation_down, str) or self.own_capacity_allocation_down is None:
-                properties["ownCapacityAllocationDown"] = self.own_capacity_allocation_down
-            else:
-                properties["ownCapacityAllocationDown"] = self.own_capacity_allocation_down.external_id
+            properties["ownCapacityAllocationDown"] = (
+                self.own_capacity_allocation_down
+                if isinstance(self.own_capacity_allocation_down, str) or self.own_capacity_allocation_down is None
+                else self.own_capacity_allocation_down.external_id
+            )
 
         if properties:
             this_node = dm.NodeApply(

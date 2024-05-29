@@ -69,7 +69,7 @@ class PartialBidMatrixInformationGraphQL(GraphQLCore):
         state: The state field.
         bid_matrix: The bid matrix field.
         alerts: An array of calculation level Alerts.
-        intermediate_bid_matrices: An array of intermediate BidMatrices.
+        underlying_bid_matrices: An array of intermediate BidMatrices.
         power_asset: The power asset field.
         resource_cost: The resource cost field.
         partial_bid_configuration: The partial bid configuration field.
@@ -79,13 +79,13 @@ class PartialBidMatrixInformationGraphQL(GraphQLCore):
     state: Optional[str] = None
     bid_matrix: Union[dict, None] = Field(None, alias="bidMatrix")
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
-    intermediate_bid_matrices: Optional[list[BidMatrixGraphQL]] = Field(
-        default=None, repr=False, alias="intermediateBidMatrices"
+    underlying_bid_matrices: Optional[list[BidMatrixGraphQL]] = Field(
+        default=None, repr=False, alias="underlyingBidMatrices"
     )
-    power_asset: Optional[PowerAssetGraphQL] = Field(None, repr=False, alias="powerAsset")
+    power_asset: Optional[PowerAssetGraphQL] = Field(default=None, repr=False, alias="powerAsset")
     resource_cost: Optional[float] = Field(None, alias="resourceCost")
     partial_bid_configuration: Optional[PartialBidConfigurationGraphQL] = Field(
-        None, repr=False, alias="partialBidConfiguration"
+        default=None, repr=False, alias="partialBidConfiguration"
     )
 
     @model_validator(mode="before")
@@ -99,7 +99,7 @@ class PartialBidMatrixInformationGraphQL(GraphQLCore):
             )
         return values
 
-    @field_validator("alerts", "intermediate_bid_matrices", "power_asset", "partial_bid_configuration", mode="before")
+    @field_validator("alerts", "underlying_bid_matrices", "power_asset", "partial_bid_configuration", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
             return value
@@ -121,14 +121,9 @@ class PartialBidMatrixInformationGraphQL(GraphQLCore):
             ),
             state=self.state,
             bid_matrix=self.bid_matrix["externalId"] if self.bid_matrix and "externalId" in self.bid_matrix else None,
-            alerts=[alert.as_read() if isinstance(alert, GraphQLCore) else alert for alert in self.alerts or []],
-            intermediate_bid_matrices=[
-                (
-                    intermediate_bid_matrice.as_read()
-                    if isinstance(intermediate_bid_matrice, GraphQLCore)
-                    else intermediate_bid_matrice
-                )
-                for intermediate_bid_matrice in self.intermediate_bid_matrices or []
+            alerts=[alert.as_read() for alert in self.alerts or []],
+            underlying_bid_matrices=[
+                underlying_bid_matrice.as_read() for underlying_bid_matrice in self.underlying_bid_matrices or []
             ],
             power_asset=self.power_asset.as_read() if isinstance(self.power_asset, GraphQLCore) else self.power_asset,
             resource_cost=self.resource_cost,
@@ -147,20 +142,15 @@ class PartialBidMatrixInformationGraphQL(GraphQLCore):
             data_record=DataRecordWrite(existing_version=0),
             state=self.state,
             bid_matrix=self.bid_matrix["externalId"] if self.bid_matrix and "externalId" in self.bid_matrix else None,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            intermediate_bid_matrices=[
-                (
-                    intermediate_bid_matrice.as_write()
-                    if isinstance(intermediate_bid_matrice, DomainModel)
-                    else intermediate_bid_matrice
-                )
-                for intermediate_bid_matrice in self.intermediate_bid_matrices or []
+            alerts=[alert.as_write() for alert in self.alerts or []],
+            underlying_bid_matrices=[
+                underlying_bid_matrice.as_write() for underlying_bid_matrice in self.underlying_bid_matrices or []
             ],
-            power_asset=self.power_asset.as_write() if isinstance(self.power_asset, DomainModel) else self.power_asset,
+            power_asset=self.power_asset.as_write() if isinstance(self.power_asset, GraphQLCore) else self.power_asset,
             resource_cost=self.resource_cost,
             partial_bid_configuration=(
                 self.partial_bid_configuration.as_write()
-                if isinstance(self.partial_bid_configuration, DomainModel)
+                if isinstance(self.partial_bid_configuration, GraphQLCore)
                 else self.partial_bid_configuration
             ),
         )
@@ -178,17 +168,17 @@ class PartialBidMatrixInformation(BidMatrixInformation):
         state: The state field.
         bid_matrix: The bid matrix field.
         alerts: An array of calculation level Alerts.
-        intermediate_bid_matrices: An array of intermediate BidMatrices.
+        underlying_bid_matrices: An array of intermediate BidMatrices.
         power_asset: The power asset field.
         resource_cost: The resource cost field.
         partial_bid_configuration: The partial bid configuration field.
     """
 
     node_type: Union[dm.DirectRelationReference, None] = None
-    power_asset: Union[PowerAsset, str, dm.NodeId, None] = Field(None, repr=False, alias="powerAsset")
+    power_asset: Union[PowerAsset, str, dm.NodeId, None] = Field(default=None, repr=False, alias="powerAsset")
     resource_cost: Optional[float] = Field(None, alias="resourceCost")
     partial_bid_configuration: Union[PartialBidConfiguration, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="partialBidConfiguration"
+        default=None, repr=False, alias="partialBidConfiguration"
     )
 
     def as_write(self) -> PartialBidMatrixInformationWrite:
@@ -200,13 +190,13 @@ class PartialBidMatrixInformation(BidMatrixInformation):
             state=self.state,
             bid_matrix=self.bid_matrix,
             alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            intermediate_bid_matrices=[
+            underlying_bid_matrices=[
                 (
-                    intermediate_bid_matrice.as_write()
-                    if isinstance(intermediate_bid_matrice, DomainModel)
-                    else intermediate_bid_matrice
+                    underlying_bid_matrice.as_write()
+                    if isinstance(underlying_bid_matrice, DomainModel)
+                    else underlying_bid_matrice
                 )
-                for intermediate_bid_matrice in self.intermediate_bid_matrices or []
+                for underlying_bid_matrice in self.underlying_bid_matrices or []
             ],
             power_asset=self.power_asset.as_write() if isinstance(self.power_asset, DomainModel) else self.power_asset,
             resource_cost=self.resource_cost,
@@ -239,17 +229,17 @@ class PartialBidMatrixInformationWrite(BidMatrixInformationWrite):
         state: The state field.
         bid_matrix: The bid matrix field.
         alerts: An array of calculation level Alerts.
-        intermediate_bid_matrices: An array of intermediate BidMatrices.
+        underlying_bid_matrices: An array of intermediate BidMatrices.
         power_asset: The power asset field.
         resource_cost: The resource cost field.
         partial_bid_configuration: The partial bid configuration field.
     """
 
     node_type: Union[dm.DirectRelationReference, None] = None
-    power_asset: Union[PowerAssetWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="powerAsset")
+    power_asset: Union[PowerAssetWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="powerAsset")
     resource_cost: Optional[float] = Field(None, alias="resourceCost")
     partial_bid_configuration: Union[PartialBidConfigurationWrite, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="partialBidConfiguration"
+        default=None, repr=False, alias="partialBidConfiguration"
     )
 
     def _to_instances_write(
@@ -328,11 +318,11 @@ class PartialBidMatrixInformationWrite(BidMatrixInformationWrite):
             resources.extend(other_resources)
 
         edge_type = dm.DirectRelationReference("sp_power_ops_types", "intermediateBidMatrix")
-        for intermediate_bid_matrice in self.intermediate_bid_matrices or []:
+        for underlying_bid_matrice in self.underlying_bid_matrices or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
                 start_node=self,
-                end_node=intermediate_bid_matrice,
+                end_node=underlying_bid_matrice,
                 edge_type=edge_type,
                 view_by_read_class=view_by_read_class,
                 write_none=write_none,

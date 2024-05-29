@@ -10,6 +10,7 @@ from cognite.powerops.client._generated.v1.data_classes import (
     BidConfigurationDayAhead,
     MarketConfiguration,
     PriceAreaDayAhead,
+    DateSpecification,
 )
 from cognite.powerops.client._generated.v1.data_classes._partial_bid_configuration import (
     PartialBidConfiguration,
@@ -63,6 +64,7 @@ class BidConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         limit: int | None = DEFAULT_QUERY_LIMIT,
         retrieve_market_configuration: bool = False,
         retrieve_price_area: bool = False,
+        retrieve_bid_date_specification: bool = False,
     ) -> PartialBidConfigurationQueryAPI[T_DomainModelList]:
         """Query along the partial edges of the bid configuration day ahead.
 
@@ -82,6 +84,7 @@ class BidConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
                 to return all items.
             retrieve_market_configuration: Whether to retrieve the market configuration for each bid configuration day ahead or not.
             retrieve_price_area: Whether to retrieve the price area for each bid configuration day ahead or not.
+            retrieve_bid_date_specification: Whether to retrieve the bid date specification for each bid configuration day ahead or not.
 
         Returns:
             PartialBidConfigurationQueryAPI: The query API for the partial bid configuration.
@@ -125,18 +128,22 @@ class BidConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
             self._query_append_market_configuration(from_)
         if retrieve_price_area:
             self._query_append_price_area(from_)
+        if retrieve_bid_date_specification:
+            self._query_append_bid_date_specification(from_)
         return PartialBidConfigurationQueryAPI(self._client, self._builder, self._view_by_read_class, node_filer, limit)
 
     def query(
         self,
         retrieve_market_configuration: bool = False,
         retrieve_price_area: bool = False,
+        retrieve_bid_date_specification: bool = False,
     ) -> T_DomainModelList:
         """Execute query and return the result.
 
         Args:
             retrieve_market_configuration: Whether to retrieve the market configuration for each bid configuration day ahead or not.
             retrieve_price_area: Whether to retrieve the price area for each bid configuration day ahead or not.
+            retrieve_bid_date_specification: Whether to retrieve the bid date specification for each bid configuration day ahead or not.
 
         Returns:
             The list of the source nodes of the query.
@@ -147,6 +154,8 @@ class BidConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
             self._query_append_market_configuration(from_)
         if retrieve_price_area:
             self._query_append_price_area(from_)
+        if retrieve_bid_date_specification:
+            self._query_append_bid_date_specification(from_)
         return self._query()
 
     def _query_append_market_configuration(self, from_: str) -> None:
@@ -181,6 +190,24 @@ class BidConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
                 result_cls=PriceAreaDayAhead,
+                is_single_direct_relation=True,
+            ),
+        )
+
+    def _query_append_bid_date_specification(self, from_: str) -> None:
+        view_id = self._view_by_read_class[DateSpecification]
+        self._builder.append(
+            QueryStep(
+                name=self._builder.next_name("bid_date_specification"),
+                expression=dm.query.NodeResultSetExpression(
+                    filter=dm.filters.HasData(views=[view_id]),
+                    from_=from_,
+                    through=self._view_by_read_class[BidConfigurationDayAhead].as_property_ref("bidDateSpecification"),
+                    direction="outwards",
+                ),
+                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
+                max_retrieve_limit=-1,
+                result_cls=DateSpecification,
                 is_single_direct_relation=True,
             ),
         )

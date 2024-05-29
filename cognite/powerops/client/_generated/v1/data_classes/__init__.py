@@ -101,6 +101,17 @@ from ._bid_row import (
     BidRowWrite,
     BidRowWriteList,
 )
+from ._date_specification import (
+    DateSpecification,
+    DateSpecificationApply,
+    DateSpecificationApplyList,
+    DateSpecificationFields,
+    DateSpecificationGraphQL,
+    DateSpecificationList,
+    DateSpecificationTextFields,
+    DateSpecificationWrite,
+    DateSpecificationWriteList,
+)
 from ._function_input import (
     FunctionInput,
     FunctionInputApply,
@@ -154,6 +165,17 @@ from ._market_configuration import (
     MarketConfigurationTextFields,
     MarketConfigurationWrite,
     MarketConfigurationWriteList,
+)
+from ._multi_scenario_partial_bid_matrix_calculation_input import (
+    MultiScenarioPartialBidMatrixCalculationInput,
+    MultiScenarioPartialBidMatrixCalculationInputApply,
+    MultiScenarioPartialBidMatrixCalculationInputApplyList,
+    MultiScenarioPartialBidMatrixCalculationInputFields,
+    MultiScenarioPartialBidMatrixCalculationInputGraphQL,
+    MultiScenarioPartialBidMatrixCalculationInputList,
+    MultiScenarioPartialBidMatrixCalculationInputTextFields,
+    MultiScenarioPartialBidMatrixCalculationInputWrite,
+    MultiScenarioPartialBidMatrixCalculationInputWriteList,
 )
 from ._partial_bid_configuration import (
     PartialBidConfiguration,
@@ -374,16 +396,16 @@ from ._shop_model import (
     ShopModelWrite,
     ShopModelWriteList,
 )
-from ._shop_partial_bid_matrix_calculation_input import (
-    ShopPartialBidMatrixCalculationInput,
-    ShopPartialBidMatrixCalculationInputApply,
-    ShopPartialBidMatrixCalculationInputApplyList,
-    ShopPartialBidMatrixCalculationInputFields,
-    ShopPartialBidMatrixCalculationInputGraphQL,
-    ShopPartialBidMatrixCalculationInputList,
-    ShopPartialBidMatrixCalculationInputTextFields,
-    ShopPartialBidMatrixCalculationInputWrite,
-    ShopPartialBidMatrixCalculationInputWriteList,
+from ._shop_output_time_series_definition import (
+    ShopOutputTimeSeriesDefinition,
+    ShopOutputTimeSeriesDefinitionApply,
+    ShopOutputTimeSeriesDefinitionApplyList,
+    ShopOutputTimeSeriesDefinitionFields,
+    ShopOutputTimeSeriesDefinitionGraphQL,
+    ShopOutputTimeSeriesDefinitionList,
+    ShopOutputTimeSeriesDefinitionTextFields,
+    ShopOutputTimeSeriesDefinitionWrite,
+    ShopOutputTimeSeriesDefinitionWriteList,
 )
 from ._shop_penalty_report import (
     ShopPenaltyReport,
@@ -603,6 +625,10 @@ Generator.model_rebuild()
 GeneratorGraphQL.model_rebuild()
 GeneratorWrite.model_rebuild()
 GeneratorApply.model_rebuild()
+MultiScenarioPartialBidMatrixCalculationInput.model_rebuild()
+MultiScenarioPartialBidMatrixCalculationInputGraphQL.model_rebuild()
+MultiScenarioPartialBidMatrixCalculationInputWrite.model_rebuild()
+MultiScenarioPartialBidMatrixCalculationInputApply.model_rebuild()
 PartialBidConfiguration.model_rebuild()
 PartialBidConfigurationGraphQL.model_rebuild()
 PartialBidConfigurationWrite.model_rebuild()
@@ -655,10 +681,6 @@ ShopModel.model_rebuild()
 ShopModelGraphQL.model_rebuild()
 ShopModelWrite.model_rebuild()
 ShopModelApply.model_rebuild()
-ShopPartialBidMatrixCalculationInput.model_rebuild()
-ShopPartialBidMatrixCalculationInputGraphQL.model_rebuild()
-ShopPartialBidMatrixCalculationInputWrite.model_rebuild()
-ShopPartialBidMatrixCalculationInputApply.model_rebuild()
 ShopPreprocessorInput.model_rebuild()
 ShopPreprocessorInputGraphQL.model_rebuild()
 ShopPreprocessorInputWrite.model_rebuild()
@@ -799,6 +821,15 @@ __all__ = [
     "BidRowApplyList",
     "BidRowFields",
     "BidRowTextFields",
+    "DateSpecification",
+    "DateSpecificationGraphQL",
+    "DateSpecificationWrite",
+    "DateSpecificationApply",
+    "DateSpecificationList",
+    "DateSpecificationWriteList",
+    "DateSpecificationApplyList",
+    "DateSpecificationFields",
+    "DateSpecificationTextFields",
     "FunctionInput",
     "FunctionInputGraphQL",
     "FunctionInputWrite",
@@ -843,6 +874,15 @@ __all__ = [
     "MarketConfigurationApplyList",
     "MarketConfigurationFields",
     "MarketConfigurationTextFields",
+    "MultiScenarioPartialBidMatrixCalculationInput",
+    "MultiScenarioPartialBidMatrixCalculationInputGraphQL",
+    "MultiScenarioPartialBidMatrixCalculationInputWrite",
+    "MultiScenarioPartialBidMatrixCalculationInputApply",
+    "MultiScenarioPartialBidMatrixCalculationInputList",
+    "MultiScenarioPartialBidMatrixCalculationInputWriteList",
+    "MultiScenarioPartialBidMatrixCalculationInputApplyList",
+    "MultiScenarioPartialBidMatrixCalculationInputFields",
+    "MultiScenarioPartialBidMatrixCalculationInputTextFields",
     "PartialBidConfiguration",
     "PartialBidConfigurationGraphQL",
     "PartialBidConfigurationWrite",
@@ -1022,15 +1062,15 @@ __all__ = [
     "ShopModelApplyList",
     "ShopModelFields",
     "ShopModelTextFields",
-    "ShopPartialBidMatrixCalculationInput",
-    "ShopPartialBidMatrixCalculationInputGraphQL",
-    "ShopPartialBidMatrixCalculationInputWrite",
-    "ShopPartialBidMatrixCalculationInputApply",
-    "ShopPartialBidMatrixCalculationInputList",
-    "ShopPartialBidMatrixCalculationInputWriteList",
-    "ShopPartialBidMatrixCalculationInputApplyList",
-    "ShopPartialBidMatrixCalculationInputFields",
-    "ShopPartialBidMatrixCalculationInputTextFields",
+    "ShopOutputTimeSeriesDefinition",
+    "ShopOutputTimeSeriesDefinitionGraphQL",
+    "ShopOutputTimeSeriesDefinitionWrite",
+    "ShopOutputTimeSeriesDefinitionApply",
+    "ShopOutputTimeSeriesDefinitionList",
+    "ShopOutputTimeSeriesDefinitionWriteList",
+    "ShopOutputTimeSeriesDefinitionApplyList",
+    "ShopOutputTimeSeriesDefinitionFields",
+    "ShopOutputTimeSeriesDefinitionTextFields",
     "ShopPenaltyReport",
     "ShopPenaltyReportGraphQL",
     "ShopPenaltyReportWrite",

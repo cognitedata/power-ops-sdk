@@ -55,10 +55,8 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        start_specification: str | list[str] | None = None,
-        start_specification_prefix: str | None = None,
-        end_specification: str | list[str] | None = None,
-        end_specification_prefix: str | None = None,
+        start_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        end_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -70,9 +68,7 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
             start_specification: The start specification to filter on.
-            start_specification_prefix: The prefix of the start specification to filter on.
             end_specification: The end specification to filter on.
-            end_specification_prefix: The prefix of the end specification to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop scenario sets to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -88,9 +84,7 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
             name,
             name_prefix,
             start_specification,
-            start_specification_prefix,
             end_specification,
-            end_specification_prefix,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -223,10 +217,8 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
         properties: ShopScenarioSetTextFields | Sequence[ShopScenarioSetTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        start_specification: str | list[str] | None = None,
-        start_specification_prefix: str | None = None,
-        end_specification: str | list[str] | None = None,
-        end_specification_prefix: str | None = None,
+        start_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        end_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -240,9 +232,7 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
             start_specification: The start specification to filter on.
-            start_specification_prefix: The prefix of the start specification to filter on.
             end_specification: The end specification to filter on.
-            end_specification_prefix: The prefix of the end specification to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop scenario sets to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -265,9 +255,7 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
             name,
             name_prefix,
             start_specification,
-            start_specification_prefix,
             end_specification,
-            end_specification_prefix,
             external_id_prefix,
             space,
             filter,
@@ -289,10 +277,8 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
         search_properties: ShopScenarioSetTextFields | Sequence[ShopScenarioSetTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        start_specification: str | list[str] | None = None,
-        start_specification_prefix: str | None = None,
-        end_specification: str | list[str] | None = None,
-        end_specification_prefix: str | None = None,
+        start_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        end_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -314,10 +300,8 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
         search_properties: ShopScenarioSetTextFields | Sequence[ShopScenarioSetTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        start_specification: str | list[str] | None = None,
-        start_specification_prefix: str | None = None,
-        end_specification: str | list[str] | None = None,
-        end_specification_prefix: str | None = None,
+        start_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        end_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -338,10 +322,8 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
         search_property: ShopScenarioSetTextFields | Sequence[ShopScenarioSetTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        start_specification: str | list[str] | None = None,
-        start_specification_prefix: str | None = None,
-        end_specification: str | list[str] | None = None,
-        end_specification_prefix: str | None = None,
+        start_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        end_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -358,9 +340,7 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
             start_specification: The start specification to filter on.
-            start_specification_prefix: The prefix of the start specification to filter on.
             end_specification: The end specification to filter on.
-            end_specification_prefix: The prefix of the end specification to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop scenario sets to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -384,9 +364,7 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
             name,
             name_prefix,
             start_specification,
-            start_specification_prefix,
             end_specification,
-            end_specification_prefix,
             external_id_prefix,
             space,
             filter,
@@ -411,10 +389,8 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
         search_property: ShopScenarioSetTextFields | Sequence[ShopScenarioSetTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        start_specification: str | list[str] | None = None,
-        start_specification_prefix: str | None = None,
-        end_specification: str | list[str] | None = None,
-        end_specification_prefix: str | None = None,
+        start_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        end_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -430,9 +406,7 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
             start_specification: The start specification to filter on.
-            start_specification_prefix: The prefix of the start specification to filter on.
             end_specification: The end specification to filter on.
-            end_specification_prefix: The prefix of the end specification to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop scenario sets to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -447,9 +421,7 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
             name,
             name_prefix,
             start_specification,
-            start_specification_prefix,
             end_specification,
-            end_specification_prefix,
             external_id_prefix,
             space,
             filter,
@@ -469,10 +441,8 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        start_specification: str | list[str] | None = None,
-        start_specification_prefix: str | None = None,
-        end_specification: str | list[str] | None = None,
-        end_specification_prefix: str | None = None,
+        start_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        end_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -485,9 +455,7 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
             start_specification: The start specification to filter on.
-            start_specification_prefix: The prefix of the start specification to filter on.
             end_specification: The end specification to filter on.
-            end_specification_prefix: The prefix of the end specification to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop scenario sets to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -511,9 +479,7 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
             name,
             name_prefix,
             start_specification,
-            start_specification_prefix,
             end_specification,
-            end_specification_prefix,
             external_id_prefix,
             space,
             filter,
