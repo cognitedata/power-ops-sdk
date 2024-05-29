@@ -34,4 +34,4 @@ properties:
     nullable: true
     autoIncrement: false
     name: bidGenerated
-    description: todo
+    description: Timestamp of when the bid had been generated

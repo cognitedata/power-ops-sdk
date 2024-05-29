@@ -49,7 +49,7 @@ properties:
     name: bidSource
     source:
       space: "{{power_ops_models}}"
-      externalId: BidConfigurationDayAhead
+      externalId: BidSource
       version: "{{version}}"
       type: view
   deliveryDate:
@@ -67,4 +67,4 @@ properties:
       type: container
     containerPropertyIdentifier: bidGenerated
     name: bidGenerated
-    description: True if a bid had been generated
+    description: Timestamp of when the bid had been generated
