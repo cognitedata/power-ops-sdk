@@ -41,7 +41,6 @@ properties:
     nullable: false
     autoIncrement: false
     name: shopStartSpecification
-    description: The shop start specification
   shopEndSpecification:
     type:
       list: false
@@ -50,4 +49,3 @@ properties:
     nullable: false
     autoIncrement: false
     name: shopEndSpecification
-    description: The shop end specification

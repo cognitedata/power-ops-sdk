@@ -1,7 +1,7 @@
 space: "{{power_ops_models}}"
 externalId: DayAheadProductionObligationForBenchmarking
 name: DayAheadProductionObligationForBenchmarking
-description: TODO
+description: Production obligations for the day ahead market used in benchmarking
 filter:
   and:
     - hasData:

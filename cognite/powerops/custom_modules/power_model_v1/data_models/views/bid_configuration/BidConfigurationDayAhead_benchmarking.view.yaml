@@ -1,7 +1,7 @@
 space: "{{power_ops_models}}"
 externalId: BidConfigurationDayAhead_benchmarking
 name: BidConfigurationDayAhead_benchmarking
-description: TODO
+description: A view into BidConfigurationDayAhead from the DayAheadBid data model
 filter:
   and:
     - hasData:

@@ -56,7 +56,7 @@ properties:
       type: container
     containerPropertyIdentifier: productionObligations
     name: productionObligations
-    description: TODO
+    description: It is possible to specify time series for production obligation - one benchmarking run will be set up for each of these time series. The intended use of this, is to specify the production obligation resulting from the submitted bid, or any other bid document not modelled within PowerOps
     source:
       space: "{{power_ops_models}}"
       externalId: DayAheadProductionObligationForBenchmarking

@@ -1,7 +1,7 @@
 space: "{{power_ops_models}}"
 externalId: DayAheadBenchmarkingResult
 name: DayAheadBenchmarkingResult
-description: todo
+description: Result of benchmarking the day ahead market
 filter:
   and:
     - hasData:
@@ -83,7 +83,7 @@ properties: # TODO: no alerts here?
       type: container
     containerPropertyIdentifier: isSelected
     name: isSelected
-    description: Flag to indicate whether or not the one result is shown in the UI.
+    description: Indicating that this is the one result (for the bidSource and deliveryDate) that should be shown by default in the UI
   value:
     container:
       space: "{{power_ops_models}}"
@@ -91,4 +91,4 @@ properties: # TODO: no alerts here?
       type: container
     containerPropertyIdentifier: value
     name: value
-    description: TODO
+    description: This would normally be the objective value ('grand total') from the Shop result, or maybe the difference between the objective value in this run and for 'upper bound', but it should be possible to override it (e. g. if the difference is above some limit)

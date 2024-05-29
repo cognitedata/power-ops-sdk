@@ -34,7 +34,7 @@ properties:
       type: container
     containerPropertyIdentifier: case
     name: case
-    description: The scenario that is used in the shop run
+    description: "The SHOP case (with all details like model, scenario, and time series)"
     source:
       space: "{{power_ops_models}}"
       externalId: ShopCase
