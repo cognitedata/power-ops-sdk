@@ -27,16 +27,29 @@ implements:
     type: view
 version: "{{version}}"
 properties:
-  benchmarkingShopRunOutputs:
+  shopResults:
     type:
       space: "{{power_ops_type_space}}"
-      externalId: benchmarkingShopRunOutputs
+      externalId: ShopResults
     source:
       space: "{{power_ops_models}}"
-      externalId: DayAheadBenchmarkingResult # DayAheadBenchmarkingShopRunOutput
+      externalId: ShopResult
       version: "{{version}}"
       type: view
     direction: outwards
-    name: benchmarkingShopRunOutputs
-    description: An array of benchmarking shop run outputs.
+    name: shopResults
+    description: An array of shop results.
+    connectionType: multi_edge_connection
+  shopRunInputs:
+    type:
+      space: "{{power_ops_type_space}}"
+      externalId: ShopRunInputs
+    source:
+      space: "{{power_ops_models}}"
+      externalId: DayAheadBenchmarkingShopRunInput
+      version: "{{version}}"
+      type: view
+    direction: outwards
+    name: shopRunInputs
+    description: An array of benchmarking shop run inputs.
     connectionType: multi_edge_connection

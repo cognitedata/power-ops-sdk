@@ -24,11 +24,11 @@ views:
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - externalId: TaskDispatcherBenchmarkingInput # PrepareDayAheadBenchmarkingShopRunsInput
+  - externalId: DayAheadBenchmarkingTaskDispatcherInput # PrepareDayAheadBenchmarkingShopRunsInput
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - externalId: TaskDispatcherBenchmarkingOutput # PrepareDayAheadBenchmarkingShopRunsOutput
+  - externalId: DayAheadBenchmarkingTaskDispatcherOutput # PrepareDayAheadBenchmarkingShopRunsOutput
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view

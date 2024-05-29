@@ -57,6 +57,10 @@
 - space: "{{power_ops_type_space}}"
   externalId: ShopResult
 - space: "{{power_ops_type_space}}"
+  externalId: ShopResults
+- space: "{{power_ops_type_space}}"
+  externalId: ShopRunInputs
+- space: "{{power_ops_type_space}}"
   externalId: ShopResultPriceProd
 - space: "{{power_ops_type_space}}"
   externalId: ShopCommands
@@ -163,9 +167,9 @@
 - space: "{{power_ops_type_space}}"
   externalId: BenchmarkingCollectorOutput
 - space: "{{power_ops_type_space}}"
-  externalId: TaskDispatcherBenchmarkingInput
+  externalId: DayAheadBenchmarkingTaskDispatcherInput
 - space: "{{power_ops_type_space}}"
-  externalId: TaskDispatcherBenchmarkingOutput
+  externalId: DayAheadBenchmarkingTaskDispatcherOutput
 - space: "{{power_ops_type_space}}"
   externalId: BidConfigurationDayAhead_benchmarking
 - space: "{{power_ops_type_space}}"
