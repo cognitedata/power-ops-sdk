@@ -1,9 +1,11 @@
-### Changing a Data Model
+## Changing Data Modeling Resources
 
-The data models are kept in `cognite/powerops/custom_modules`. Each set of data models are kept in a
-module following the structure of the [CDF-Toolkit](https://developer.cognite.com/sdks/toolkit/). In each
-module, you will find the data model files in the `data_models` resource folder. Each container, view, data model,
-and space are kept in separate files, one file for one resource.
+Data Modeling resources are deployed, updated, and managed via the [CDF-Toolkit](https://developer.cognite.com/sdks/toolkit/).
+Refer to the documentation for detailed configuration options.
+
+The relevant data modeling configuration files can be found in `cognite/powerops/custom_modules` following the folder
+and file naming structure required by CDF-Toolkit. Each space, container, view, and data model is kept in separate
+files with one file for one resource.
 
 You can control which module is deployed by setting the `selected_module_and_packages` in
 `cognite/powerops/config.dev.yaml`:
@@ -14,7 +16,25 @@ You can control which module is deployed by setting the `selected_module_and_pac
   - power_model_v1
 ...
 ```
-This will deploy the `power_model_v1` module.
+This will only deploy the `power_model_v1` module.
+
+### Authentication
+
+To authenticate with the `cognite-toolkit` you will have to use a `.env` file in the `power-ops-sdk` root directory,
+which should look like this:
+```dotenv
+CDF_CLUSTER=<CLUSTER>
+CDF_URL=https://<CLUSTER>.cognitedata.com
+CDF_PROJECT=<PROJECT>
+IDP_TENANT_ID=431fcc8b-74b8-4171-b7c9-e6fab253913b
+IDP_CLIENT_ID=***
+IDP_CLIENT_SECRET=***
+IDP_TOKEN_URL="https://login.microsoftonline.com/431fcc8b-74b8-4171-b7c9-e6fab253913b/oauth2/v2.0/token"
+SENTRY_ENABLED=false
+```
+
+### Versioning Changes
+
 
 ### Changing only Views
 
@@ -40,24 +60,21 @@ To change a view in a data model, follow these steps:
 
 
 ### Changing Containers
+
+We should NOT be needing to delete containers to make changes to them but we are limited to only making changes based on
+the limitations detailed [here](https://docs.cognite.com/cdf/dm/dm_concepts/dm_containers_views_datamodels/#impact-of-changes-to-views-and-data-models).
+In the scenario that any container changes need to be made that are not allowed via update the container will need to be
+deleted and recreated again, this should only be done on a case by case bases taking into consideration if the data will
+need to be re-ingested or not.
+
+
+
+
 Changing the containers requires dropping existing containers and recreating the changed ones. This is currently
 not supported by the `powerops` CLI, so you will have to do it using `cdf-tk`, i.e., `cognite-toolkit`, directly.
 
 **Note** There is currently no support for only dropping a single container, you will have to drop every container
 in the data model(s) and recreate them.
-
-To authenticate with the `cognite-toolkit` you will have to use a `.env` file in the power-ops-sdk root directory,
-which should look like this:
-```dotenv
-CDF_CLUSTER=azure-dev
-CDF_URL=https://azure-dev.cognitedata.com
-CDF_PROJECT=power-ops-dev
-IDP_TENANT_ID=431fcc8b-74b8-4171-b7c9-e6fab253913b
-IDP_CLIENT_ID=***
-IDP_CLIENT_SECRET=***
-IDP_TOKEN_URL="https://login.microsoftonline.com/431fcc8b-74b8-4171-b7c9-e6fab253913b/oauth2/v2.0/token"
-SENTRY_ENABLED=false
-```
 
 When using the `cognite-toolkit` you have to build the configurations first and then deploy/clean them.
 
