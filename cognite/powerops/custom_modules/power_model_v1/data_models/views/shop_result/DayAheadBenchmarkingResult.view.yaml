@@ -63,19 +63,6 @@ properties: # TODO: no alerts here?
       externalId: ShopResult
       version: "{{version}}"
       type: view
-  shopModel:
-    container:
-      space: "{{power_ops_models}}"
-      externalId: DayAheadBenchmarkingResult
-      type: container
-    containerPropertyIdentifier: shopModel
-    name: shopModel
-    description: Todo
-    source:
-      space: "{{power_ops_models}}"
-      externalId: ShopModel
-      version: "{{version}}"
-      type: view
   isSelected:
     container:
       space: "{{power_ops_models}}"

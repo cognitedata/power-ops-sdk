@@ -31,13 +31,6 @@ properties:
     nullable: true
     autoIncrement: false
     name: shopResult
-  shopModel:
-    type:
-      list: false
-      type: direct
-    nullable: true
-    autoIncrement: false
-    name: shopModel
   isSelected:
     type:
       type: boolean
