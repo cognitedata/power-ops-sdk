@@ -207,14 +207,11 @@ class ResyncImporter:
         if type_configuration.type_ is v1_data_classes.PlantWaterValueBasedWrite:
             # TODO: remove when model is updated to a list instead of json
             raw_penstock_head_loss_factors = parsed_data["penstock_head_loss_factors"]
-            parsed_data["penstock_head_loss_factors"] = (
-                {
+            if raw_penstock_head_loss_factors:
+                parsed_data["penstock_head_loss_factors"] = {
                     str(index): float(loss_factor)
                     for index, loss_factor in enumerate(raw_penstock_head_loss_factors, start=1)
                 }
-                if raw_penstock_head_loss_factors
-                else {}
-            )
 
             parsed_data["generators"] = (
                 self._get_all_connections(parsed_data, "plant", "generator")
