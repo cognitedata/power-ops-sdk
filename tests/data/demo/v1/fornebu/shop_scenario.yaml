@@ -5,17 +5,22 @@
 #   source: String
 #   attribute_mappings_override: [ShopAttributeMapping]
 
-- name: "1"
+- name: "Fornebu base"
   model: "[name]Fornebu"
   commands: "[name]default"
-  source: XXX
-  # attribute_mappings_override:
-  #   - "[external_id]mapping_3"
-  #   - "[external_id]mapping_4"
-- name: "2"
+  source: resync
+  attribute_mappings_override: []
+- name: "Fornebu price offset -200"
   model: "[name]Fornebu"
   commands: "[name|type:ShopCommands]default"
-  source: XXX
+  source: resync
   attribute_mappings_override:
-    - "[external_id]mapping_5"
-    - "[external_id]mapping_6"
+    - "[external_id]no2_buy_price_offset_-200"
+    - "[external_id]no2_sale_price_offset_-200"
+- name: "Fornebu price offset 200"
+  model: "[name]Fornebu"
+  commands: "[name|type:ShopCommands]default"
+  source: resync
+  attribute_mappings_override:
+    - "[external_id]no2_buy_price_offset_200"
+    - "[external_id]no2_sale_price_offset_200"

@@ -16,7 +16,29 @@
   price_area: "[external_id]price_area_information_no2"
   bid_date_specification: '[["shift", {"days": -400}], ["floor", "day"]]'
   partials:
-    - "[external_id]shop_based_partial_bid_configuration_fornebu_2"
+    - "[external_id]shop_based_partial_bid_configuration_strand_krv_2"
+    - "[external_id]shop_based_partial_bid_configuration_rull2_2"
+    - "[external_id]shop_based_partial_bid_configuration_rull1_2"
+    - "[external_id]shop_based_partial_bid_configuration_lien_krv_2"
+    - "[external_id]shop_based_partial_bid_configuration_dalby_2"
+    - "[external_id]shop_based_partial_bid_configuration_holen_2"
+    - "[external_id]shop_based_partial_bid_configuration_landet_2"
+    - "[external_id]shop_based_partial_bid_configuration_scott_2"
+    - "[external_id]shop_based_partial_bid_configuration_lund_2"
+- name: Multi Scenario 3 NO2
+  market_configuration: "[external_id]market_configuration_nord_pool_day_ahead"
+  price_area: "[external_id]price_area_information_no2"
+  bid_date_specification: '[["shift", {"days": -400}], ["floor", "day"]]'
+  partials:
+    - "[external_id]shop_based_partial_bid_configuration_strand_krv_3"
+    - "[external_id]shop_based_partial_bid_configuration_rull2_3"
+    - "[external_id]shop_based_partial_bid_configuration_rull1_3"
+    - "[external_id]shop_based_partial_bid_configuration_lien_krv_3"
+    - "[external_id]shop_based_partial_bid_configuration_dalby_3"
+    - "[external_id]shop_based_partial_bid_configuration_holen_3"
+    - "[external_id]shop_based_partial_bid_configuration_landet_3"
+    - "[external_id]shop_based_partial_bid_configuration_scott_3"
+    - "[external_id]shop_based_partial_bid_configuration_lund_3"
 - name: Water Value NO2 Lund
   market_configuration: "[name]Nord Pool Day-Ahead"
   price_area: "[external_id]price_area_information_no2"
@@ -43,3 +65,17 @@
     - "[name|type:WaterValueBasedPartialBidConfiguration]Plant Rull2"
     - "[name|type:WaterValueBasedPartialBidConfiguration]Plant Scott Step"
     - "[name|type:WaterValueBasedPartialBidConfiguration]Plant Strand_krv"
+- name: NO2 Combination
+  market_configuration: "[name]Nord Pool Day-Ahead"
+  price_area: "[external_id]price_area_information_no2"
+  bid_date_specification: '[["shift", {"days": -400}], ["floor", "day"]]'
+  partials:
+    - "[name|type:WaterValueBasedPartialBidConfiguration]Plant Rull1 Step"
+    - "[name|type:WaterValueBasedPartialBidConfiguration]Plant Rull2"
+    - "[name|type:WaterValueBasedPartialBidConfiguration]Plant Scott Step"
+    - "[name|type:WaterValueBasedPartialBidConfiguration]Plant Strand_krv"
+    - "[external_id]shop_based_partial_bid_configuration_lien_krv_3"
+    - "[external_id]shop_based_partial_bid_configuration_dalby_2_step"
+    - "[external_id]shop_based_partial_bid_configuration_holen_3"
+    - "[external_id]shop_based_partial_bid_configuration_landet_2"
+    - "[external_id]shop_based_partial_bid_configuration_lund_3_step"
