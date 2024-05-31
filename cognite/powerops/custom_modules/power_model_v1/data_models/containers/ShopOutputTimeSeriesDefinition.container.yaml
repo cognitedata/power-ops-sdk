@@ -39,6 +39,7 @@ properties:
     autoIncrement: false
     name: attributeName
     description: The name of the attribute
+  # TODO: consider using the built in CDF unit support and provide a unit_external_id instead
   unit:
     type:
       list: false
