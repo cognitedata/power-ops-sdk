@@ -78,6 +78,7 @@ class SHOPRun:
     _shop_files: list[SHOPFileReference]
     _client: CogniteClient = field(repr=False)
     _run_event_types: set[str] = field(init=False, default_factory=set)
+    _manual_run: bool = True
     plants: Optional[str] = ""
     price_scenario: Optional[str] = ""
 
@@ -138,7 +139,7 @@ class SHOPRun:
             end_time=datetime_to_ms(self.end) if self.end else None,
             metadata={
                 ShopRunEvent.watercourse: self.watercourse,
-                ShopRunEvent.manual_run: "",
+                ShopRunEvent.manual_run: self._manual_run,
                 ShopRunEvent.plants: self.plants,
                 ShopRunEvent.price_scenario: self.price_scenario,
                 ShopRunEvent.preprocessor_data: json.dumps(
