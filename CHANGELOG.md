@@ -17,7 +17,7 @@ Changes are grouped as follows
 
 ## [0.94.5] - 2024-05-31
 ### Changed
-* Updated the SHOPRun class to provide a manual run flag; this is used in CogSHOP to skip output timeseries  
+* Updated the SHOPRun class to provide a manual run flag; this is used in CogSHOP to skip output timeseries
 ## [0.94.4] - 2024-05-28
 ### Changed
 * FDM v1 resync: Supporting default values in data_model_configuration also without specifying source
