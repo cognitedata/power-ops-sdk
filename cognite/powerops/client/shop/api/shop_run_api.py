@@ -132,7 +132,6 @@ class ShopRunsAPI:
         relationship.data_set_id = self._data_set_api.write_dataset_id
         self._client.relationships.create(relationship)
 
-
     def _shop_url(self) -> str:
         project = self._client.config.project
 
@@ -171,14 +170,7 @@ class ShopRunsAPI:
 
         if self._shop_as_a_service:
             shop_url = self._shop_url_shaas()
-            shop_body = {
-                "mode": "asset",
-                "runs": [
-                    {
-                        "event_external_id": shop_run.external_id
-                    }
-                ]
-            }
+            shop_body = {"mode": "asset", "runs": [{"event_external_id": shop_run.external_id}]}
         else:
             shop_url = self._shop_url()
             shop_body = {"shopEventExternalId": shop_run.external_id, "cogShopVersion": self.cogshop_version}

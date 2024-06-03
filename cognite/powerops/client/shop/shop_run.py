@@ -318,10 +318,12 @@ class SHOPRunList(UserList):
     """
 
     @overload
-    def __getitem__(self, item: int) -> SHOPRun: ...
+    def __getitem__(self, item: int) -> SHOPRun:
+        ...
 
     @overload
-    def __getitem__(self, item: slice) -> SHOPRunList: ...
+    def __getitem__(self, item: slice) -> SHOPRunList:
+        ...
 
     # The dunder implementations is to get proper type hints
     def __getitem__(self, item: int | slice) -> SHOPRunList | SHOPRun:

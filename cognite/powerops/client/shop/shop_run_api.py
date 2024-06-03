@@ -28,7 +28,9 @@ _APICallableForSHOPRunT = Callable[[Union[SHOPRun, Sequence[SHOPRun]]], Union[SH
 
 
 class SHOPRunAPI:
-    def __init__(self, client: CogniteClient, dataset_id: int, cogshop_version: str = "", shop_as_a_service: bool = False):
+    def __init__(
+        self, client: CogniteClient, dataset_id: int, cogshop_version: str = "", shop_as_a_service: bool = False
+    ):
         self._cdf = client
         self._dataset_id = dataset_id
         self.cogshop_version = cogshop_version
@@ -38,11 +40,9 @@ class SHOPRunAPI:
         if self.shop_as_a_service and cogshop_version != "":
             raise ValueError("CogShop version is not supported in Shop As A Service.")
 
-
     def _get_shop_prerun_files(self, file_external_ids: list[str]) -> list[ShopPreRunFile]:
         prerun_files = self._cdf.files.retrieve_multiple(external_ids=file_external_ids)
         return [ShopPreRunFile.load_from_metadata(file) for file in prerun_files]
-
 
     def trigger_case(self, case: Case, shop_version: str) -> tuple[list, list[SHOPRun]]:
         """
@@ -200,14 +200,7 @@ class SHOPRunAPI:
 
         if self.shop_as_a_service:
             shop_url = self._shop_url_shaas()
-            shop_body = {
-                "mode": "asset",
-                "runs": [
-                    {
-                        "event_external_id": shop_run.external_id
-                    }
-                ]
-            }
+            shop_body = {"mode": "asset", "runs": [{"event_external_id": shop_run.external_id}]}
         else:
             shop_url = self._shop_url()
             shop_body = {"shopEventExternalId": shop_run.external_id, "cogShopVersion": self.cogshop_version}
@@ -218,7 +211,6 @@ class SHOPRunAPI:
             auth=auth,
         )
         response.raise_for_status()
-
 
     def _load_cdf_event_shop_runs(
         self,
@@ -231,10 +223,12 @@ class SHOPRunAPI:
         return SHOPRunList.load(events)
 
     @overload
-    def retrieve(self, external_id: str) -> SHOPRun | None: ...
+    def retrieve(self, external_id: str) -> SHOPRun | None:
+        ...
 
     @overload
-    def retrieve(self, external_id: Sequence[str]) -> SHOPRunList: ...
+    def retrieve(self, external_id: Sequence[str]) -> SHOPRunList:
+        ...
 
     def retrieve(
         self, external_id: str | Sequence[str], ignore_unknown_ids: bool = True
@@ -354,30 +348,36 @@ class SHOPRunAPI:
         return remote_versions
 
     @overload
-    def _create(self, shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]: ...
+    def _create(self, shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]:
+        ...
 
     @overload
-    def _create(self, shop_run: Sequence[SHOPRun]) -> Sequence[SHOPRun]: ...
+    def _create(self, shop_run: Sequence[SHOPRun]) -> Sequence[SHOPRun]:
+        ...
 
     def _create(self, shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]:
         api_method = self._wrap_event_api(self._cdf.events.create)
         return api_method(shop_run)
 
     @overload
-    def _update(self, shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]: ...
+    def _update(self, shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]:
+        ...
 
     @overload
-    def _update(self, shop_run: Sequence[SHOPRun]) -> Sequence[SHOPRun]: ...
+    def _update(self, shop_run: Sequence[SHOPRun]) -> Sequence[SHOPRun]:
+        ...
 
     def _update(self, shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]:
         api_method = self._wrap_event_api(self._cdf.events.update)
         return api_method(shop_run)
 
     @overload
-    def _upsert(self, shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]: ...
+    def _upsert(self, shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]:
+        ...
 
     @overload
-    def _upsert(self, shop_run: Sequence[SHOPRun]) -> Sequence[SHOPRun]: ...
+    def _upsert(self, shop_run: Sequence[SHOPRun]) -> Sequence[SHOPRun]:
+        ...
 
     def _upsert(self, shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]:
         api_method = self._wrap_event_api(self._cdf.events.update)
