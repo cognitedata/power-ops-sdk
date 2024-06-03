@@ -183,13 +183,12 @@ class SHOPRunAPI:
 
         cluster = urlparse(self._cdf.config.base_url).netloc.split(".", 1)[0]
 
-        match project:
-            case "power-ops-staging":
-                environment = ".staging"
-            case "lyse-dev" | "lyse-prod" | "heco-dev" | "heco-prod":
-                environment = ""
-            case _:
-                raise ValueError(f"SHOP As A Service has not been configured for project name: {project!r}")
+        if project == "power-ops-staging":
+            environment = ".staging"
+        elif project in {"lyse-dev", "lyse-prod", "heco-dev", "heco-prod"}:
+            environment = ""
+        else:
+            raise ValueError(f"SHOP As A Service has not been configured for project name: {project!r}")
 
         return f"https://power-ops-api{environment}.{cluster}.cognite.ai/{project}/run-shop-as-service"
 
@@ -219,7 +218,6 @@ class SHOPRunAPI:
             auth=auth,
         )
         response.raise_for_status()
-
 
 
     def _load_cdf_event_shop_runs(
