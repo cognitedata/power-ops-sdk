@@ -20,9 +20,10 @@ Changes are grouped as follows
   * With default value for property resultingTimezone as UTC
 * Type ShopOutputTimeSeriesDefinition to replace previous static sequence
 * Property outputDefinition in ShopScenario as a list of ShopOutputTimeSeriesDefinition
-* Default value for properties inShopAttributeMapping
+* Default value for properties in ShopAttributeMapping
   * With default value for property retrieve as "RANGE"
-  * With default value for property aggregation as "mean"
+  * With default value for property aggregation as "MEAN"
+* Added fileReferencePrefix property to ShopFile to be used if no file external id is provided
 
 ### Changed
 * Renamed ShopPartialBidMatrixCalculationInput to MultiScenarioPartialBidMatrixCalculationInput
