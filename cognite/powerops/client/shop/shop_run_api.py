@@ -28,14 +28,14 @@ _APICallableForSHOPRunT = Callable[[Union[SHOPRun, Sequence[SHOPRun]]], Union[SH
 
 
 class SHOPRunAPI:
-    def __init__(self, client: CogniteClient, dataset_id: int, cogshop_version: str = ""):
+    def __init__(self, client: CogniteClient, dataset_id: int, cogshop_version: str = "", shop_as_a_service: bool = False):
         self._cdf = client
         self._dataset_id = dataset_id
         self.cogshop_version = cogshop_version
         self._CONCURRENT_CALLS = 5
-        self.is_shop_as_a_service = False
+        self.shop_as_a_service = shop_as_a_service
 
-        if self.is_shop_as_a_service and cogshop_version != "":
+        if self.shop_as_a_service and cogshop_version != "":
             raise ValueError("CogShop version is not supported in Shop As A Service.")
 
 
@@ -162,26 +162,6 @@ class SHOPRunAPI:
         self._trigger_shop_container(shop_run)
         return shop_run
 
-    def _trigger_shop_container(self, shop_run: SHOPRun):
-        def auth(r: requests.PreparedRequest) -> requests.PreparedRequest:
-            auth_header_name, auth_header_value = self._cdf._config.credentials.authorization_header()
-            r.headers[auth_header_name] = auth_header_value
-            return r
-
-        if self.is_shop_as_a_service:
-            shop_url = self._shop_url_shaas()
-            shop_body = {"shopEventExternalId": shop_run.external_id}
-        else:
-            shop_url = self._shop_url()
-            shop_body = {"shopEventExternalId": shop_run.external_id, "cogShopVersion": self.cogshop_version}
-
-        response = requests.post(
-            url=shop_url,
-            json=shop_body,
-            auth=auth,
-        )
-        response.raise_for_status()
-
     def _shop_url(self) -> str:
         project = self._cdf.config.project
 
@@ -206,12 +186,39 @@ class SHOPRunAPI:
         match project:
             case "power-ops-staging":
                 environment = ".staging"
-            case "lyse-dev" | "heco-dev":
+            case "lyse-dev" | "lyse-prod" | "heco-dev" | "heco-prod":
                 environment = ""
             case _:
                 raise ValueError(f"SHOP As A Service has not been configured for project name: {project!r}")
 
         return f"https://power-ops-api{environment}.{cluster}.cognite.ai/{project}/run-shop-as-service"
+
+    def _trigger_shop_container(self, shop_run: SHOPRun):
+        def auth(r: requests.PreparedRequest) -> requests.PreparedRequest:
+            auth_header_name, auth_header_value = self._cdf._config.credentials.authorization_header()
+            r.headers[auth_header_name] = auth_header_value
+            return r
+
+        if self.shop_as_a_service:
+            shop_url = self._shop_url_shaas()
+            shop_body = {
+                "mode": "asset",
+                "runs": [
+                    {
+                        "event_external_id": shop_run.external_id
+                    }
+                ]
+            }
+        else:
+            shop_url = self._shop_url()
+            shop_body = {"shopEventExternalId": shop_run.external_id, "cogShopVersion": self.cogshop_version}
+
+        response = requests.post(
+            url=shop_url,
+            json=shop_body,
+            auth=auth,
+        )
+        response.raise_for_status()
 
 
 
