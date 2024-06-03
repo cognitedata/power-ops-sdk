@@ -163,13 +163,13 @@ class ShopRunsAPI:
 
         return f"https://power-ops-api{environment}.{cluster}.cognite.ai/{project}/run-shop-as-service"
 
-    def _trigger_shop_container(self, shop_run: SHOPRun):
+    def _trigger_shop_container(self, shop_run: ShopRun):
         def auth(r: requests.PreparedRequest) -> requests.PreparedRequest:
-            auth_header_name, auth_header_value = self._cdf._config.credentials.authorization_header()
+            auth_header_name, auth_header_value = self._client._config.credentials.authorization_header()
             r.headers[auth_header_name] = auth_header_value
             return r
 
-        if self.is_shop_as_a_service:
+        if self._shop_as_a_service:
             shop_url = self._shop_url_shaas()
             shop_body = {
                 "mode": "asset",
