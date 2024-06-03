@@ -84,6 +84,6 @@ properties:
       version: "{{version}}"
       type: view
     direction: outwards
-    name: turbineCurves
+    name: turbineEfficiencyCurves
     description: TODO description
     connectionType: multi_edge_connection
