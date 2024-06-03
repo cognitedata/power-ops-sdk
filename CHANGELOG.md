@@ -17,7 +17,7 @@ Changes are grouped as follows
 
 ## [0.95.0] - 2024-06-03
 ### Added
-* Support for triggering SHOP As A Service through SHOP client. 
+* Support for triggering SHOP As A Service through SHOP client.
 
 ## [0.94.5] - 2024-05-31
 ### Changed
