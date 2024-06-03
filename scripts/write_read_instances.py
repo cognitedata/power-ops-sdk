@@ -14,9 +14,9 @@ from cognite.powerops.utils.serialization import chdir
 
 REPO_ROOT = Path(__file__).parent.parent
 # TODO: update space to not be temp
-INSTANCE_SPACE = "nina_sp_power_ops_instance"
-MODEL_SPACE = "nina_sp_power_ops_models"
-TYPE_SPACE = "nina_sp_power_ops_types"
+INSTANCE_SPACE = "sp_power_ops_instance"
+MODEL_SPACE = "sp_power_ops_models"
+TYPE_SPACE = "sp_power_ops_types"
 # TODO: consider adding a separate space for mock data
 
 
@@ -180,6 +180,6 @@ def clean_containers_views_data_models():
 
 
 if __name__ == "__main__":
-    clean_instances()
-    clean_containers_views_data_models()
-    # main()
+    # clean_instances()
+    # clean_containers_views_data_models()
+    main()
