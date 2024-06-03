@@ -30,18 +30,16 @@ properties:
       type: container
     containerPropertyIdentifier: shopModel
     name: shopModel
-    description: Todo
+    description: The shop model that includes one water course for one shop run
     source:
       space: "{{power_ops_models}}"
       externalId: ShopModel
       version: "{{version}}"
       type: view
   powerAssets:
-    container:
+    type:
       space: "{{power_ops_models}}"
       externalId: ShopModelToAssets
-      type: container
-    containerPropertyIdentifier: powerAssets
     name: powerAssets
     description: A list of power assets covered by the Shop model. For a given bid document, we will select the partial bids for these assets, and calculate production obligation for these partial bids (summed up)
     source:
@@ -49,12 +47,12 @@ properties:
       externalId: PowerAsset
       version: "{{version}}"
       type: view
+    direction: outwards
+    connectionType: multi_edge_connection
   productionObligations:
-    container:
+    type:
       space: "{{power_ops_models}}"
       externalId: ShopModelToAssets
-      type: container
-    containerPropertyIdentifier: productionObligations
     name: productionObligations
     description: It is possible to specify time series for production obligation - one benchmarking run will be set up for each of these time series. The intended use of this, is to specify the production obligation resulting from the submitted bid, or any other bid document not modelled within PowerOps
     source:
@@ -62,3 +60,5 @@ properties:
       externalId: DayAheadProductionObligationForBenchmarking
       version: "{{version}}"
       type: view
+    direction: outwards
+    connectionType: multi_edge_connection

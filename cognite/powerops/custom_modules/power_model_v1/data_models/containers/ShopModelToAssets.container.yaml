@@ -16,11 +16,11 @@ properties:
       list: true
     nullable: true
     autoIncrement: false
-    name: shopModel
+    name: powerAssets
   productionObligations:
     type:
       type: direct
       list: true
     nullable: true
     autoIncrement: false
-    name: shopModel
+    name: productionObligations
