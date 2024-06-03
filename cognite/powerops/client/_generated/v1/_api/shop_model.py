@@ -57,8 +57,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        version_: str | list[str] | None = None,
-        version_prefix: str | None = None,
+        model_version: str | list[str] | None = None,
+        model_version_prefix: str | None = None,
         shop_version: str | list[str] | None = None,
         shop_version_prefix: str | None = None,
         min_penalty_limit: float | None = None,
@@ -73,8 +73,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            version_: The version to filter on.
-            version_prefix: The prefix of the version to filter on.
+            model_version: The model version to filter on.
+            model_version_prefix: The prefix of the model version to filter on.
             shop_version: The shop version to filter on.
             shop_version_prefix: The prefix of the shop version to filter on.
             min_penalty_limit: The minimum value of the penalty limit to filter on.
@@ -93,8 +93,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
             self._view_id,
             name,
             name_prefix,
-            version_,
-            version_prefix,
+            model_version,
+            model_version_prefix,
             shop_version,
             shop_version_prefix,
             min_penalty_limit,
@@ -236,8 +236,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
         properties: ShopModelTextFields | Sequence[ShopModelTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        version_: str | list[str] | None = None,
-        version_prefix: str | None = None,
+        model_version: str | list[str] | None = None,
+        model_version_prefix: str | None = None,
         shop_version: str | list[str] | None = None,
         shop_version_prefix: str | None = None,
         min_penalty_limit: float | None = None,
@@ -254,8 +254,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
             properties: The property to search, if nothing is passed all text fields will be searched.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            version_: The version to filter on.
-            version_prefix: The prefix of the version to filter on.
+            model_version: The model version to filter on.
+            model_version_prefix: The prefix of the model version to filter on.
             shop_version: The shop version to filter on.
             shop_version_prefix: The prefix of the shop version to filter on.
             min_penalty_limit: The minimum value of the penalty limit to filter on.
@@ -281,8 +281,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
             self._view_id,
             name,
             name_prefix,
-            version_,
-            version_prefix,
+            model_version,
+            model_version_prefix,
             shop_version,
             shop_version_prefix,
             min_penalty_limit,
@@ -308,8 +308,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
         search_properties: ShopModelTextFields | Sequence[ShopModelTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        version_: str | list[str] | None = None,
-        version_prefix: str | None = None,
+        model_version: str | list[str] | None = None,
+        model_version_prefix: str | None = None,
         shop_version: str | list[str] | None = None,
         shop_version_prefix: str | None = None,
         min_penalty_limit: float | None = None,
@@ -335,8 +335,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
         search_properties: ShopModelTextFields | Sequence[ShopModelTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        version_: str | list[str] | None = None,
-        version_prefix: str | None = None,
+        model_version: str | list[str] | None = None,
+        model_version_prefix: str | None = None,
         shop_version: str | list[str] | None = None,
         shop_version_prefix: str | None = None,
         min_penalty_limit: float | None = None,
@@ -361,8 +361,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
         search_property: ShopModelTextFields | Sequence[ShopModelTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        version_: str | list[str] | None = None,
-        version_prefix: str | None = None,
+        model_version: str | list[str] | None = None,
+        model_version_prefix: str | None = None,
         shop_version: str | list[str] | None = None,
         shop_version_prefix: str | None = None,
         min_penalty_limit: float | None = None,
@@ -382,8 +382,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
             search_property: The text field to search in.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            version_: The version to filter on.
-            version_prefix: The prefix of the version to filter on.
+            model_version: The model version to filter on.
+            model_version_prefix: The prefix of the model version to filter on.
             shop_version: The shop version to filter on.
             shop_version_prefix: The prefix of the shop version to filter on.
             min_penalty_limit: The minimum value of the penalty limit to filter on.
@@ -410,8 +410,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
             self._view_id,
             name,
             name_prefix,
-            version_,
-            version_prefix,
+            model_version,
+            model_version_prefix,
             shop_version,
             shop_version_prefix,
             min_penalty_limit,
@@ -440,8 +440,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
         search_property: ShopModelTextFields | Sequence[ShopModelTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        version_: str | list[str] | None = None,
-        version_prefix: str | None = None,
+        model_version: str | list[str] | None = None,
+        model_version_prefix: str | None = None,
         shop_version: str | list[str] | None = None,
         shop_version_prefix: str | None = None,
         min_penalty_limit: float | None = None,
@@ -460,8 +460,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
             search_property: The text field to search in.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            version_: The version to filter on.
-            version_prefix: The prefix of the version to filter on.
+            model_version: The model version to filter on.
+            model_version_prefix: The prefix of the model version to filter on.
             shop_version: The shop version to filter on.
             shop_version_prefix: The prefix of the shop version to filter on.
             min_penalty_limit: The minimum value of the penalty limit to filter on.
@@ -479,8 +479,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
             self._view_id,
             name,
             name_prefix,
-            version_,
-            version_prefix,
+            model_version,
+            model_version_prefix,
             shop_version,
             shop_version_prefix,
             min_penalty_limit,
@@ -504,8 +504,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        version_: str | list[str] | None = None,
-        version_prefix: str | None = None,
+        model_version: str | list[str] | None = None,
+        model_version_prefix: str | None = None,
         shop_version: str | list[str] | None = None,
         shop_version_prefix: str | None = None,
         min_penalty_limit: float | None = None,
@@ -521,8 +521,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            version_: The version to filter on.
-            version_prefix: The prefix of the version to filter on.
+            model_version: The model version to filter on.
+            model_version_prefix: The prefix of the model version to filter on.
             shop_version: The shop version to filter on.
             shop_version_prefix: The prefix of the shop version to filter on.
             min_penalty_limit: The minimum value of the penalty limit to filter on.
@@ -549,8 +549,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
             self._view_id,
             name,
             name_prefix,
-            version_,
-            version_prefix,
+            model_version,
+            model_version_prefix,
             shop_version,
             shop_version_prefix,
             min_penalty_limit,

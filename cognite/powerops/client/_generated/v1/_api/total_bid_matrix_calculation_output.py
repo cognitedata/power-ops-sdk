@@ -63,7 +63,7 @@ class TotalBidMatrixCalculationOutputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         bid_document: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -81,7 +81,7 @@ class TotalBidMatrixCalculationOutputAPI(
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            input_: The input to filter on.
+            function_input: The function input to filter on.
             bid_document: The bid document to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -103,7 +103,7 @@ class TotalBidMatrixCalculationOutputAPI(
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            input_,
+            function_input,
             bid_document,
             external_id_prefix,
             space,
@@ -249,7 +249,7 @@ class TotalBidMatrixCalculationOutputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         bid_document: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -269,7 +269,7 @@ class TotalBidMatrixCalculationOutputAPI(
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            input_: The input to filter on.
+            function_input: The function input to filter on.
             bid_document: The bid document to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -298,7 +298,7 @@ class TotalBidMatrixCalculationOutputAPI(
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            input_,
+            function_input,
             bid_document,
             external_id_prefix,
             space,
@@ -331,7 +331,7 @@ class TotalBidMatrixCalculationOutputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         bid_document: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -362,7 +362,7 @@ class TotalBidMatrixCalculationOutputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         bid_document: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -392,7 +392,7 @@ class TotalBidMatrixCalculationOutputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         bid_document: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -415,7 +415,7 @@ class TotalBidMatrixCalculationOutputAPI(
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            input_: The input to filter on.
+            function_input: The function input to filter on.
             bid_document: The bid document to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -445,7 +445,7 @@ class TotalBidMatrixCalculationOutputAPI(
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            input_,
+            function_input,
             bid_document,
             external_id_prefix,
             space,
@@ -479,7 +479,7 @@ class TotalBidMatrixCalculationOutputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         bid_document: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -501,7 +501,7 @@ class TotalBidMatrixCalculationOutputAPI(
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            input_: The input to filter on.
+            function_input: The function input to filter on.
             bid_document: The bid document to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -522,7 +522,7 @@ class TotalBidMatrixCalculationOutputAPI(
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            input_,
+            function_input,
             bid_document,
             external_id_prefix,
             space,
@@ -549,7 +549,7 @@ class TotalBidMatrixCalculationOutputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         bid_document: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -568,7 +568,7 @@ class TotalBidMatrixCalculationOutputAPI(
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            input_: The input to filter on.
+            function_input: The function input to filter on.
             bid_document: The bid document to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -598,7 +598,7 @@ class TotalBidMatrixCalculationOutputAPI(
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            input_,
+            function_input,
             bid_document,
             external_id_prefix,
             space,

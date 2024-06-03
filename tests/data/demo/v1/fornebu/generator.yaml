@@ -17,69 +17,69 @@
   asset_type: generator
   production_min: "[SOURCE:files/model.yaml]model.generator.Lund_G1.p_min"
   penstock_number: "[SOURCE:files/model.yaml]model.generator.Lund_G1.penstock"
-  start_cost: "[SOURCE:files/model.yaml]model.generator.Lund_G1.startcost.value"
-  start_stop_cost: "[external_id]start_stop_cost_Lund_G1"
+  start_stop_cost: "[SOURCE:files/model.yaml]model.generator.Lund_G1.startcost.value"
+  start_stop_cost_time_series: "[external_id]start_stop_cost_Lund_G1"
   availability_time_series: "[external_id]is_available_Lund_G1"
 
 - name: Holen_G1
   display_name: Holen G1
   ordering: 1
   asset_type: generator
-  start_stop_cost: "[external_id]start_stop_cost_Lund_G1"
+  start_stop_cost_time_series: "[external_id]start_stop_cost_Lund_G1"
   availability_time_series: "[external_id]is_available_Lund_G1"
 
 - name: Rull1_G1
   display_name: Rull 1 G1
   ordering: 1
   asset_type: generator
-  start_stop_cost: "[external_id]start_stop_cost_Lund_G1"
+  start_stop_cost_time_series: "[external_id]start_stop_cost_Lund_G1"
   availability_time_series: "[external_id]is_available_Lund_G1"
 
 - name: Dalby_G1
   display_name: Dalby G1
   ordering: 1
   asset_type: generator
-  start_stop_cost: "[external_id]start_stop_cost_Lund_G1"
+  start_stop_cost_time_series: "[external_id]start_stop_cost_Lund_G1"
   availability_time_series: "[external_id]is_available_Lund_G1"
 
 - name: Landet_G1
   display_name: Landet G1
   ordering: 1
   asset_type: generator
-  start_stop_cost: "[external_id]start_stop_cost_Lund_G1"
+  start_stop_cost_time_series: "[external_id]start_stop_cost_Lund_G1"
   availability_time_series: "[external_id]is_available_Lund_G1"
 
 - name: Lien_krv_G1
   display_name: Lien krv G1
   ordering: 1
   asset_type: generator
-  start_stop_cost: "[external_id]start_stop_cost_Lund_G1"
+  start_stop_cost_time_series: "[external_id]start_stop_cost_Lund_G1"
   availability_time_series: "[external_id]is_available_Lund_G1"
 
 - name: Rull2_G1
   display_name: Rull2 G1
   ordering: 1
   asset_type: generator
-  start_stop_cost: "[external_id]start_stop_cost_Lund_G1"
+  start_stop_cost_time_series: "[external_id]start_stop_cost_Lund_G1"
   availability_time_series: "[external_id]is_available_Lund_G1"
 
 - name: Rull2_G2
   display_name: Rull2 G2
   ordering: 1
   asset_type: generator
-  start_stop_cost: "[external_id]start_stop_cost_Lund_G1"
+  start_stop_cost_time_series: "[external_id]start_stop_cost_Lund_G1"
   availability_time_series: "[external_id]is_available_Lund_G1"
 
 - name: Scott_G1
   display_name: Scott G1
   ordering: 1
   asset_type: generator
-  start_stop_cost: "[external_id]start_stop_cost_Lund_G1"
+  start_stop_cost_time_series: "[external_id]start_stop_cost_Lund_G1"
   availability_time_series: "[external_id]is_available_Lund_G1"
 
 - name: Strand_krv_G1
   display_name: Strand krv G1
   ordering: 1
   asset_type: generator
-  start_stop_cost: "[external_id]start_stop_cost_Lund_G1"
+  start_stop_cost_time_series: "[external_id]start_stop_cost_Lund_G1"
   availability_time_series: "[external_id]is_available_Lund_G1"

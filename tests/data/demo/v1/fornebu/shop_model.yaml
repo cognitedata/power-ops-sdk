@@ -9,7 +9,7 @@
 #   baseAttributeMappings: [ShopAttributeMapping]
 
 - name: Fornebu
-  version_: "1"
+  model_version: "1"
   shop_version: "15.4.1.1"
   penalty_limit: 0.0
   model: "[external_id]SHOP_Fornebu_model"

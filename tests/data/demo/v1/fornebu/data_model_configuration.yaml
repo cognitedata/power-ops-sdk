@@ -11,7 +11,7 @@ generator:
     is_list: False
     default_value: 0 # TODO: Check if this is correct
     cast_type: int
-  start_cost:
+  start_stop_cost:
     source_file: "files/model.yaml"
     extraction_path: "model.generator.[name].startcost.value"
     is_list: False

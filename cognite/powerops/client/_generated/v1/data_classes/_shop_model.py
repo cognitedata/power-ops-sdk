@@ -39,12 +39,12 @@ __all__ = [
 ]
 
 
-ShopModelTextFields = Literal["name", "version_", "shop_version", "model"]
-ShopModelFields = Literal["name", "version_", "shop_version", "penalty_limit", "model"]
+ShopModelTextFields = Literal["name", "model_version", "shop_version", "model"]
+ShopModelFields = Literal["name", "model_version", "shop_version", "penalty_limit", "model"]
 
 _SHOPMODEL_PROPERTIES_BY_FIELD = {
     "name": "name",
-    "version_": "version",
+    "model_version": "modelVersion",
     "shop_version": "shopVersion",
     "penalty_limit": "penaltyLimit",
     "model": "model",
@@ -62,7 +62,7 @@ class ShopModelGraphQL(GraphQLCore, protected_namespaces=()):
         external_id: The external id of the shop model.
         data_record: The data record of the shop model node.
         name: TODO
-        version_: The version of the model
+        model_version: The version of the model
         shop_version: The version of SHOP to run
         penalty_limit: TODO
         model: The shop model file to use as template before applying base mapping
@@ -72,7 +72,7 @@ class ShopModelGraphQL(GraphQLCore, protected_namespaces=()):
 
     view_id = dm.ViewId("sp_power_ops_models", "ShopModel", "1")
     name: Optional[str] = None
-    version_: Optional[str] = Field(None, alias="version")
+    model_version: Optional[str] = Field(None, alias="modelVersion")
     shop_version: Optional[str] = Field(None, alias="shopVersion")
     penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
     model: Union[dict, None] = None
@@ -113,7 +113,7 @@ class ShopModelGraphQL(GraphQLCore, protected_namespaces=()):
                 created_time=self.data_record.created_time,
             ),
             name=self.name,
-            version_=self.version_,
+            model_version=self.model_version,
             shop_version=self.shop_version,
             penalty_limit=self.penalty_limit,
             model=self.model["externalId"] if self.model and "externalId" in self.model else None,
@@ -132,7 +132,7 @@ class ShopModelGraphQL(GraphQLCore, protected_namespaces=()):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,
-            version_=self.version_,
+            model_version=self.model_version,
             shop_version=self.shop_version,
             penalty_limit=self.penalty_limit,
             model=self.model["externalId"] if self.model and "externalId" in self.model else None,
@@ -155,7 +155,7 @@ class ShopModel(DomainModel, protected_namespaces=()):
         external_id: The external id of the shop model.
         data_record: The data record of the shop model node.
         name: TODO
-        version_: The version of the model
+        model_version: The version of the model
         shop_version: The version of SHOP to run
         penalty_limit: TODO
         model: The shop model file to use as template before applying base mapping
@@ -166,7 +166,7 @@ class ShopModel(DomainModel, protected_namespaces=()):
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_power_ops_types", "ShopModel")
     name: str
-    version_: Optional[str] = Field(None, alias="version")
+    model_version: Optional[str] = Field(None, alias="modelVersion")
     shop_version: str = Field(alias="shopVersion")
     penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
     model: Union[str, None] = None
@@ -184,7 +184,7 @@ class ShopModel(DomainModel, protected_namespaces=()):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             name=self.name,
-            version_=self.version_,
+            model_version=self.model_version,
             shop_version=self.shop_version,
             penalty_limit=self.penalty_limit,
             model=self.model,
@@ -226,7 +226,7 @@ class ShopModelWrite(DomainModelWrite, protected_namespaces=()):
         external_id: The external id of the shop model.
         data_record: The data record of the shop model node.
         name: TODO
-        version_: The version of the model
+        model_version: The version of the model
         shop_version: The version of SHOP to run
         penalty_limit: TODO
         model: The shop model file to use as template before applying base mapping
@@ -237,7 +237,7 @@ class ShopModelWrite(DomainModelWrite, protected_namespaces=()):
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_power_ops_types", "ShopModel")
     name: str
-    version_: Optional[str] = Field(None, alias="version")
+    model_version: Optional[str] = Field(None, alias="modelVersion")
     shop_version: str = Field(alias="shopVersion")
     penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
     model: Union[str, None] = None
@@ -266,8 +266,8 @@ class ShopModelWrite(DomainModelWrite, protected_namespaces=()):
         if self.name is not None:
             properties["name"] = self.name
 
-        if self.version_ is not None or write_none:
-            properties["version"] = self.version_
+        if self.model_version is not None or write_none:
+            properties["modelVersion"] = self.model_version
 
         if self.shop_version is not None:
             properties["shopVersion"] = self.shop_version
@@ -367,8 +367,8 @@ def _create_shop_model_filter(
     view_id: dm.ViewId,
     name: str | list[str] | None = None,
     name_prefix: str | None = None,
-    version_: str | list[str] | None = None,
-    version_prefix: str | None = None,
+    model_version: str | list[str] | None = None,
+    model_version_prefix: str | None = None,
     shop_version: str | list[str] | None = None,
     shop_version_prefix: str | None = None,
     min_penalty_limit: float | None = None,
@@ -384,12 +384,12 @@ def _create_shop_model_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
     if name_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
-    if isinstance(version_, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("version"), value=version_))
-    if version_ and isinstance(version_, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("version"), values=version_))
-    if version_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("version"), value=version_prefix))
+    if isinstance(model_version, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("modelVersion"), value=model_version))
+    if model_version and isinstance(model_version, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("modelVersion"), values=model_version))
+    if model_version_prefix is not None:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("modelVersion"), value=model_version_prefix))
     if isinstance(shop_version, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("shopVersion"), value=shop_version))
     if shop_version and isinstance(shop_version, list):

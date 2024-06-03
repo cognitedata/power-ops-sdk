@@ -50,6 +50,8 @@ class ShopCaseQueryAPI(QueryAPI[T_DomainModelList]):
         name_prefix: str | None = None,
         label: str | list[str] | None = None,
         label_prefix: str | None = None,
+        file_reference_prefix: str | list[str] | None = None,
+        file_reference_prefix_prefix: str | None = None,
         min_order: int | None = None,
         max_order: int | None = None,
         is_ascii: bool | None = None,
@@ -68,6 +70,8 @@ class ShopCaseQueryAPI(QueryAPI[T_DomainModelList]):
             name_prefix: The prefix of the name to filter on.
             label: The label to filter on.
             label_prefix: The prefix of the label to filter on.
+            file_reference_prefix: The file reference prefix to filter on.
+            file_reference_prefix_prefix: The prefix of the file reference prefix to filter on.
             min_order: The minimum value of the order to filter on.
             max_order: The maximum value of the order to filter on.
             is_ascii: The is ascii to filter on.
@@ -112,6 +116,8 @@ class ShopCaseQueryAPI(QueryAPI[T_DomainModelList]):
             name_prefix,
             label,
             label_prefix,
+            file_reference_prefix,
+            file_reference_prefix_prefix,
             min_order,
             max_order,
             is_ascii,
