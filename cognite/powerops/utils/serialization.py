@@ -207,8 +207,20 @@ def load_yaml(
         )
     output = CSafeLoader(data).get_data()
     if expected_return_type == "dict" and not isinstance(output, dict):
+        if not output:
+            warnings.warn(
+                f"File {yaml_path.parent}/{yaml_path.name} contains no data",
+                stacklevel=2,
+            )
+            return {}
         raise ValueError(f"Expected a dictionary, got {type(output)}")
     if expected_return_type == "list" and not isinstance(output, list):
+        if not output:
+            warnings.warn(
+                f"File {yaml_path.parent}/{yaml_path.name} contains no data",
+                stacklevel=2,
+            )
+            return []
         raise ValueError(f"Expected a list, got {type(output)}")
     return output
 

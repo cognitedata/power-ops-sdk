@@ -205,6 +205,13 @@ class ResyncImporter:
 
         # TODO: handle these special cases in a better way
         if type_configuration.type_ is v1_data_classes.PlantInformationWrite:
+            # TODO: remove when model is updated to a list instead of json
+            raw_penstock_head_loss_factors = parsed_data["penstock_head_loss_factors"]
+            if raw_penstock_head_loss_factors:
+                parsed_data["penstock_head_loss_factors"] = {
+                    str(index): float(loss_factor)
+                    for index, loss_factor in enumerate(raw_penstock_head_loss_factors, start=1)
+                }
             parsed_data["generators"] = (
                 self._get_all_connections(parsed_data, "plant", "generator")
                 if "generators" not in parsed_data
@@ -376,15 +383,23 @@ class ResyncImporter:
             connections: A list of all connections external ids based on the provided data and asset types.
         """
 
-        all_connections = self._get_property_value_from_source(
-            PropertyConfiguration(
-                property="connections",
-                source_file=Path("files/model.yaml"),
-                extraction_path="connections",
-                cast_type=None,
-            ),
-            data,
-        )
+        all_connections = []
+        source_files = set()
+        for dm_config in self.data_model_configuration.values():
+            for property_config in dm_config.property_configurations:
+                if property_config.source_file:
+                    source_files.add(property_config.source_file)
+
+        for source_file in source_files:
+            all_connections += self._get_property_value_from_source(
+                PropertyConfiguration(
+                    property="connections",
+                    source_file=source_file,
+                    extraction_path="connections",
+                    cast_type=None,
+                ),
+                data,
+            )
         connections = []
 
         name = data["name"]
@@ -461,7 +476,9 @@ class ResyncImporter:
                 path = self.working_directory / Path(property_configuration.source_file)
                 source_data = load_yaml(path, "dict")
             else:
-                raise ValueError("No source data provided for property configuration")
+                if property_configuration.default_value:
+                    return property_configuration.default_value
+                raise ValueError("No source data or default value provided for property configuration")
 
         try:
             for key in property_configuration.extraction_path or []:
@@ -572,7 +589,8 @@ class ResyncImporter:
         if instance_data is None:
             instance_data = {}
         list_data = self._get_property_value_from_source(property_configuration, instance_data)
-
+        if not list_data:
+            return []
         if property_configuration.cast_type not in self.data_model_configuration:
             raise ValueError(f"Type {property_configuration.cast_type} is not supported, add import to type")
         subtype_data_model_configuration = self.data_model_configuration[property_configuration.cast_type]
