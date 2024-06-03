@@ -11,7 +11,7 @@
     - set mipgap 0.001000 #should be updated
     - set timelimit 600.000 #should be updated
     - set reserve_ramping_cost 1
-    - set fcr_n_equality /on
+    - set fcr_n_equality_flag /on
     - set reserve_slack_cost 1 #uncertain
     - set reserve_min_capacity 0.02
     - set dyn_seg /on
