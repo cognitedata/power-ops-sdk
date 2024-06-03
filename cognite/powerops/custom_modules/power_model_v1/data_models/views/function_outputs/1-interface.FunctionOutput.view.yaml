@@ -51,13 +51,13 @@ properties:
     containerPropertyIdentifier: functionCallId
     name: functionCallId
     description: The function call id
-  input:
+  functionInput:
     container:
       space: "{{power_ops_models}}"
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: linkedStep
-    name: input
+    name: functionInput
     source:
       space: "{{power_ops_models}}"
       externalId: FunctionInput

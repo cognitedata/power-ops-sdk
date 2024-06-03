@@ -33,6 +33,7 @@ Changes are grouped as follows
 * Renamed objectiveSequence property in ShopResult to objectiveValue
 * Type of property objectiveValue (previously objectiveSequence) in ShopResult to a JSON instead of sequence
 * Renamed property intermediateBidMatrices in BidMatrixInformation to underlyingBidMatrices
+* Renamed property input in all FunctionOutput views to functionInput
 
 ### Removed
 * Removed property extraFiles from ShopModel
