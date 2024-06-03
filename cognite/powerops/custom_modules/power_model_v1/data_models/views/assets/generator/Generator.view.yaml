@@ -41,13 +41,6 @@ properties:
       type: container
     containerPropertyIdentifier: penstockNumber
     name: penstockNumber
-  startCost:
-    container:
-      space: "{{power_ops_models}}"
-      externalId: Generator
-      type: container
-    containerPropertyIdentifier: startCost
-    name: startCost
   startStopCost:
     container:
       space: "{{power_ops_models}}"
@@ -55,6 +48,13 @@ properties:
       type: container
     containerPropertyIdentifier: startStopCost
     name: startStopCost
+  startStopCostTimeSeries:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: Generator
+      type: container
+    containerPropertyIdentifier: startStopCostTimeSeries
+    name: startStopCostTimeSeries
   availabilityTimeSeries:
     container:
       space: "{{power_ops_models}}"
