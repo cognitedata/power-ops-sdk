@@ -31,13 +31,13 @@ properties:
     containerPropertyIdentifier: name
     name: name
     description: TODO
-  version:
+  modelVersion:
     container:
       space: "{{power_ops_models}}"
       externalId: ShopModel
       type: container
-    containerPropertyIdentifier: version
-    name: version
+    containerPropertyIdentifier: modelVersion
+    name: modelVersion
     description: The version of the model
   shopVersion:
     container:

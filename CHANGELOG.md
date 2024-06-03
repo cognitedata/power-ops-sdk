@@ -13,12 +13,12 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.94.4] - 2024-05-13
+## [0.94.6] - 2024-06-03
 ### Added
 * Type DateSpecification to replace previous string format for fields bidDateSpecification, startSpecification, and endSpecification
   * With default value for property processingTimezone as UTC
   * With default value for property resultingTimezone as UTC
-* Type ShopOutputTimeSeriesDefinition to replace previous static sequence
+* Type ShopOutputTimeSeriesDefinition to replace previous static sequence `SHOP_output_definition`
 * Property outputDefinition in ShopScenario as a list of ShopOutputTimeSeriesDefinition
 * Default value for properties in ShopAttributeMapping
   * With default value for property retrieve as "RANGE"
@@ -37,6 +37,8 @@ Changes are grouped as follows
 * Renamed properties on Generator
   * startCost to startStopCost
   * startStopCost to startStopCostTimeSeries
+* Renamed property in ShopModel to avoid python name conflicts
+  * version to modelVersion
 
 ### Removed
 * Removed property extraFiles from ShopModel
@@ -50,6 +52,7 @@ Changes are grouped as follows
 ## [0.94.5] - 2024-05-31
 ### Changed
 * Updated the SHOPRun class to provide a manual run flag; this is used in CogSHOP to skip output timeseries
+
 ## [0.94.4] - 2024-05-28
 ### Changed
 * FDM v1 resync: Supporting default values in data_model_configuration also without specifying source
