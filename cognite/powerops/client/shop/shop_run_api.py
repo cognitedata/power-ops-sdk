@@ -37,9 +37,6 @@ class SHOPRunAPI:
         self._CONCURRENT_CALLS = 5
         self.shop_as_a_service = shop_as_a_service
 
-        if self.shop_as_a_service and cogshop_version != "":
-            raise ValueError("CogShop version is not supported in Shop As A Service.")
-
     def _get_shop_prerun_files(self, file_external_ids: list[str]) -> list[ShopPreRunFile]:
         prerun_files = self._cdf.files.retrieve_multiple(external_ids=file_external_ids)
         return [ShopPreRunFile.load_from_metadata(file) for file in prerun_files]

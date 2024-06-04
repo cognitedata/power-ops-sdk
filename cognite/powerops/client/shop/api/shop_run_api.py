@@ -40,9 +40,6 @@ class ShopRunsAPI:
         self._cogshop_version = cogshop_version
         self._shop_as_a_service = shop_as_a_service
 
-        if self._shop_as_a_service and cogshop_version != "":
-            raise ValueError("CogShop version is not supported in Shop As A Service.")
-
     def trigger(self, case: Case) -> ShopRun:
         """
         Trigger a SHOP run for a given case.
