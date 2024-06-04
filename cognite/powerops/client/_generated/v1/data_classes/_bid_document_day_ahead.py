@@ -88,7 +88,7 @@ class BidDocumentDayAheadGraphQL(GraphQLCore):
         partials: The partial field.
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "BidDocumentDayAhead", "1")
+    view_id = dm.ViewId("power_ops_core", "BidDocumentDayAhead", "1")
     name: Optional[str] = None
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     delivery_date: Optional[datetime.date] = Field(None, alias="deliveryDate")
@@ -96,8 +96,10 @@ class BidDocumentDayAheadGraphQL(GraphQLCore):
     end_calculation: Optional[datetime.datetime] = Field(None, alias="endCalculation")
     is_complete: Optional[bool] = Field(None, alias="isComplete")
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
-    bid_configuration: Optional[BidConfigurationDayAheadGraphQL] = Field(None, repr=False, alias="bidConfiguration")
-    total: Optional[BidMatrixInformationGraphQL] = Field(None, repr=False)
+    bid_configuration: Optional[BidConfigurationDayAheadGraphQL] = Field(
+        default=None, repr=False, alias="bidConfiguration"
+    )
+    total: Optional[BidMatrixInformationGraphQL] = Field(default=None, repr=False)
     partials: Optional[list[PartialBidMatrixInformationGraphQL]] = Field(default=None, repr=False)
 
     @model_validator(mode="before")
@@ -137,16 +139,14 @@ class BidDocumentDayAheadGraphQL(GraphQLCore):
             start_calculation=self.start_calculation,
             end_calculation=self.end_calculation,
             is_complete=self.is_complete,
-            alerts=[alert.as_read() if isinstance(alert, GraphQLCore) else alert for alert in self.alerts or []],
+            alerts=[alert.as_read() for alert in self.alerts or []],
             bid_configuration=(
                 self.bid_configuration.as_read()
                 if isinstance(self.bid_configuration, GraphQLCore)
                 else self.bid_configuration
             ),
             total=self.total.as_read() if isinstance(self.total, GraphQLCore) else self.total,
-            partials=[
-                partial.as_read() if isinstance(partial, GraphQLCore) else partial for partial in self.partials or []
-            ],
+            partials=[partial.as_read() for partial in self.partials or []],
         )
 
     def as_write(self) -> BidDocumentDayAheadWrite:
@@ -161,16 +161,14 @@ class BidDocumentDayAheadGraphQL(GraphQLCore):
             start_calculation=self.start_calculation,
             end_calculation=self.end_calculation,
             is_complete=self.is_complete,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
+            alerts=[alert.as_write() for alert in self.alerts or []],
             bid_configuration=(
                 self.bid_configuration.as_write()
-                if isinstance(self.bid_configuration, DomainModel)
+                if isinstance(self.bid_configuration, GraphQLCore)
                 else self.bid_configuration
             ),
-            total=self.total.as_write() if isinstance(self.total, DomainModel) else self.total,
-            partials=[
-                partial.as_write() if isinstance(partial, DomainModel) else partial for partial in self.partials or []
-            ],
+            total=self.total.as_write() if isinstance(self.total, GraphQLCore) else self.total,
+            partials=[partial.as_write() for partial in self.partials or []],
         )
 
 
@@ -196,12 +194,12 @@ class BidDocumentDayAhead(BidDocument):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "DayAheadBidDocument"
+        "power_ops_types", "DayAheadBidDocument"
     )
     bid_configuration: Union[BidConfigurationDayAhead, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="bidConfiguration"
+        default=None, repr=False, alias="bidConfiguration"
     )
-    total: Union[BidMatrixInformation, str, dm.NodeId, None] = Field(None, repr=False)
+    total: Union[BidMatrixInformation, str, dm.NodeId, None] = Field(default=None, repr=False)
     partials: Union[list[PartialBidMatrixInformation], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False
     )
@@ -262,12 +260,12 @@ class BidDocumentDayAheadWrite(BidDocumentWrite):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "DayAheadBidDocument"
+        "power_ops_types", "DayAheadBidDocument"
     )
     bid_configuration: Union[BidConfigurationDayAheadWrite, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="bidConfiguration"
+        default=None, repr=False, alias="bidConfiguration"
     )
-    total: Union[BidMatrixInformationWrite, str, dm.NodeId, None] = Field(None, repr=False)
+    total: Union[BidMatrixInformationWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
     partials: Union[list[PartialBidMatrixInformationWrite], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False
     )
@@ -284,7 +282,7 @@ class BidDocumentDayAheadWrite(BidDocumentWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            BidDocumentDayAhead, dm.ViewId("sp_power_ops_models", "BidDocumentDayAhead", "1")
+            BidDocumentDayAhead, dm.ViewId("power_ops_core", "BidDocumentDayAhead", "1")
         )
 
         properties: dict[str, Any] = {}
@@ -343,7 +341,7 @@ class BidDocumentDayAheadWrite(BidDocumentWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "calculationIssue")
+        edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
@@ -356,7 +354,7 @@ class BidDocumentDayAheadWrite(BidDocumentWrite):
             )
             resources.extend(other_resources)
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "partialBid")
+        edge_type = dm.DirectRelationReference("power_ops_types", "partialBid")
         for partial in self.partials or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

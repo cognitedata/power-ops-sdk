@@ -53,7 +53,7 @@ allow_redefinition = true
 python = ">=3.9,<3.13"
 typer = {version="^0.9.0", extras=["rich"]}
 PyYAML = "^6.0"
-cognite-sdk = {version = ">=7.37", extras = ["pandas"]}
+cognite-sdk = {version = ">=7.43", extras = ["pandas"]}
 pydantic = "^2.0"
 pydantic-settings = "^2.0"
 loguru = "^0.7.0"
@@ -67,7 +67,8 @@ tomli = {version = "^2.0.1", python = "<3.11"}
 StrEnum = {version = "^0.4.15", python = "<3.11"}
 tomli-w = "^1.0.0"
 tabulate = "^0.9"
-cognite-pygen = "^0.99.22"
+cognite-pygen = "^0.99.24"
+toml = ">=0.10"
 mkdocs =  {version="*", optional=true}
 mkdocs-jupyter = {version="*", optional=true}
 mkdocs-material = {version="*", optional=true}
@@ -79,7 +80,7 @@ mkdocs-glightbox = {version="*", optional=true}
 pymdown-extensions = {version="*", optional=true}
 mkdocstrings = {version="*", optional=true, extras=["python"]}
 cachelib = "^0.13.0"
-cognite-toolkit = "^0.1.2"
+cognite-toolkit = "^0.1.4"
 
 [tool.poetry.extras]
 docs = ["mkdocs", "mkdocs-jupyter", "mkdocs-material", "mkdocs-material-extensions", "mkdocs-git-revision-date-localized-plugin",

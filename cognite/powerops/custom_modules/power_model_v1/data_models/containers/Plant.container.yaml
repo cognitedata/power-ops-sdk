@@ -1,6 +1,6 @@
 space: "{{power_ops_models}}"
-externalId: PlantWaterValueBased
-name: PlantWaterValueBased
+externalId: Plant
+name: Plant
 usedFor: node
 properties:
   headLossFactor:
@@ -40,17 +40,11 @@ properties:
     name: productionMin
   penstockHeadLossFactors:
     type:
-      type: json
-      list: false
+      type: float64
+      list: true
     nullable: true
     autoIncrement: false
     name: penstockHeadLossFactors
-  # watercourse:
-  #   type:
-  #     type: direct
-  #   nullable: true
-  #   autoIncrement: false
-  #   name: watercourse
   productionMaxTimeSeries:
     type:
       type: timeseries
@@ -100,12 +94,6 @@ properties:
     nullable: true
     autoIncrement: false
     name: headDirectTimeSeries
-    # inletReservoir:
-    #   type:
-    #     type: direct
-    #   nullable: true
-    #   autoIncrement: false
-    #   name: inletReservoir
 constraints:
   requiredPowerAsset:
     require:

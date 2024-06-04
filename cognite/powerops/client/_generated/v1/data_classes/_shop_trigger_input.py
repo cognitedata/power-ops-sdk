@@ -77,14 +77,16 @@ class ShopTriggerInputGraphQL(GraphQLCore):
         preprocessor_input: The preprocessor input to the shop run
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "ShopTriggerInput", "1")
+    view_id = dm.ViewId("power_ops_core", "ShopTriggerInput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
     function_call_id: Optional[str] = Field(None, alias="functionCallId")
     cog_shop_tag: Optional[str] = Field(None, alias="cogShopTag")
-    case: Optional[ShopCaseGraphQL] = Field(None, repr=False)
-    preprocessor_input: Optional[ShopPreprocessorInputGraphQL] = Field(None, repr=False, alias="preprocessorInput")
+    case: Optional[ShopCaseGraphQL] = Field(default=None, repr=False)
+    preprocessor_input: Optional[ShopPreprocessorInputGraphQL] = Field(
+        default=None, repr=False, alias="preprocessorInput"
+    )
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -141,10 +143,10 @@ class ShopTriggerInputGraphQL(GraphQLCore):
             function_name=self.function_name,
             function_call_id=self.function_call_id,
             cog_shop_tag=self.cog_shop_tag,
-            case=self.case.as_write() if isinstance(self.case, DomainModel) else self.case,
+            case=self.case.as_write() if isinstance(self.case, GraphQLCore) else self.case,
             preprocessor_input=(
                 self.preprocessor_input.as_write()
-                if isinstance(self.preprocessor_input, DomainModel)
+                if isinstance(self.preprocessor_input, GraphQLCore)
                 else self.preprocessor_input
             ),
         )
@@ -169,12 +171,12 @@ class ShopTriggerInput(FunctionInput):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "ShopTriggerInput"
+        "power_ops_types", "ShopTriggerInput"
     )
     cog_shop_tag: Optional[str] = Field(None, alias="cogShopTag")
-    case: Union[ShopCase, str, dm.NodeId, None] = Field(None, repr=False)
+    case: Union[ShopCase, str, dm.NodeId, None] = Field(default=None, repr=False)
     preprocessor_input: Union[ShopPreprocessorInput, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="preprocessorInput"
+        default=None, repr=False, alias="preprocessorInput"
     )
 
     def as_write(self) -> ShopTriggerInputWrite:
@@ -225,12 +227,12 @@ class ShopTriggerInputWrite(FunctionInputWrite):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "ShopTriggerInput"
+        "power_ops_types", "ShopTriggerInput"
     )
     cog_shop_tag: Optional[str] = Field(None, alias="cogShopTag")
-    case: Union[ShopCaseWrite, str, dm.NodeId, None] = Field(None, repr=False)
+    case: Union[ShopCaseWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
     preprocessor_input: Union[ShopPreprocessorInputWrite, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="preprocessorInput"
+        default=None, repr=False, alias="preprocessorInput"
     )
 
     def _to_instances_write(
@@ -245,7 +247,7 @@ class ShopTriggerInputWrite(FunctionInputWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            ShopTriggerInput, dm.ViewId("sp_power_ops_models", "ShopTriggerInput", "1")
+            ShopTriggerInput, dm.ViewId("power_ops_core", "ShopTriggerInput", "1")
         )
 
         properties: dict[str, Any] = {}

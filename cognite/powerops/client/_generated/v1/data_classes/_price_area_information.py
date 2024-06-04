@@ -127,7 +127,7 @@ class PriceAreaInformationGraphQL(GraphQLCore):
         price_scenarios: TODO
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "PriceAreaInformation", "1")
+    view_id = dm.ViewId("power_ops_core", "PriceAreaInformation", "1")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
@@ -142,7 +142,7 @@ class PriceAreaInformationGraphQL(GraphQLCore):
     own_capacity_allocation_up: Union[TimeSeries, dict, None] = Field(None, alias="ownCapacityAllocationUp")
     own_capacity_allocation_down: Union[TimeSeries, dict, None] = Field(None, alias="ownCapacityAllocationDown")
     default_bid_configuration: Optional[BidConfigurationDayAheadGraphQL] = Field(
-        None, repr=False, alias="defaultBidConfiguration"
+        default=None, repr=False, alias="defaultBidConfiguration"
     )
     main_price_scenario: Union[TimeSeries, dict, None] = Field(None, alias="mainPriceScenario")
     price_scenarios: Union[list[TimeSeries], list[dict], None] = Field(None, alias="priceScenarios")
@@ -227,7 +227,7 @@ class PriceAreaInformationGraphQL(GraphQLCore):
             own_capacity_allocation_down=self.own_capacity_allocation_down,
             default_bid_configuration=(
                 self.default_bid_configuration.as_write()
-                if isinstance(self.default_bid_configuration, DomainModel)
+                if isinstance(self.default_bid_configuration, GraphQLCore)
                 else self.default_bid_configuration
             ),
             main_price_scenario=self.main_price_scenario,
@@ -262,9 +262,7 @@ class PriceAreaInformation(PriceAreaAFRR, PriceAreaDayAhead):
         price_scenarios: TODO
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "PriceAreaInformation"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = None
 
     def as_write(self) -> PriceAreaInformationWrite:
         """Convert this read version of price area information to the writing version."""
@@ -331,9 +329,7 @@ class PriceAreaInformationWrite(PriceAreaAFRRWrite, PriceAreaDayAheadWrite):
         price_scenarios: TODO
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "PriceAreaInformation"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = None
 
     def _to_instances_write(
         self,
@@ -347,7 +343,7 @@ class PriceAreaInformationWrite(PriceAreaAFRRWrite, PriceAreaDayAheadWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            PriceAreaInformation, dm.ViewId("sp_power_ops_models", "PriceAreaInformation", "1")
+            PriceAreaInformation, dm.ViewId("power_ops_core", "PriceAreaInformation", "1")
         )
 
         properties: dict[str, Any] = {}
@@ -365,58 +361,67 @@ class PriceAreaInformationWrite(PriceAreaAFRRWrite, PriceAreaDayAheadWrite):
             properties["assetType"] = self.asset_type
 
         if self.capacity_price_up is not None or write_none:
-            if isinstance(self.capacity_price_up, str) or self.capacity_price_up is None:
-                properties["capacityPriceUp"] = self.capacity_price_up
-            else:
-                properties["capacityPriceUp"] = self.capacity_price_up.external_id
+            properties["capacityPriceUp"] = (
+                self.capacity_price_up
+                if isinstance(self.capacity_price_up, str) or self.capacity_price_up is None
+                else self.capacity_price_up.external_id
+            )
 
         if self.capacity_price_down is not None or write_none:
-            if isinstance(self.capacity_price_down, str) or self.capacity_price_down is None:
-                properties["capacityPriceDown"] = self.capacity_price_down
-            else:
-                properties["capacityPriceDown"] = self.capacity_price_down.external_id
+            properties["capacityPriceDown"] = (
+                self.capacity_price_down
+                if isinstance(self.capacity_price_down, str) or self.capacity_price_down is None
+                else self.capacity_price_down.external_id
+            )
 
         if self.activation_price_up is not None or write_none:
-            if isinstance(self.activation_price_up, str) or self.activation_price_up is None:
-                properties["activationPriceUp"] = self.activation_price_up
-            else:
-                properties["activationPriceUp"] = self.activation_price_up.external_id
+            properties["activationPriceUp"] = (
+                self.activation_price_up
+                if isinstance(self.activation_price_up, str) or self.activation_price_up is None
+                else self.activation_price_up.external_id
+            )
 
         if self.activation_price_down is not None or write_none:
-            if isinstance(self.activation_price_down, str) or self.activation_price_down is None:
-                properties["activationPriceDown"] = self.activation_price_down
-            else:
-                properties["activationPriceDown"] = self.activation_price_down.external_id
+            properties["activationPriceDown"] = (
+                self.activation_price_down
+                if isinstance(self.activation_price_down, str) or self.activation_price_down is None
+                else self.activation_price_down.external_id
+            )
 
         if self.relative_activation is not None or write_none:
-            if isinstance(self.relative_activation, str) or self.relative_activation is None:
-                properties["relativeActivation"] = self.relative_activation
-            else:
-                properties["relativeActivation"] = self.relative_activation.external_id
+            properties["relativeActivation"] = (
+                self.relative_activation
+                if isinstance(self.relative_activation, str) or self.relative_activation is None
+                else self.relative_activation.external_id
+            )
 
         if self.total_capacity_allocation_up is not None or write_none:
-            if isinstance(self.total_capacity_allocation_up, str) or self.total_capacity_allocation_up is None:
-                properties["totalCapacityAllocationUp"] = self.total_capacity_allocation_up
-            else:
-                properties["totalCapacityAllocationUp"] = self.total_capacity_allocation_up.external_id
+            properties["totalCapacityAllocationUp"] = (
+                self.total_capacity_allocation_up
+                if isinstance(self.total_capacity_allocation_up, str) or self.total_capacity_allocation_up is None
+                else self.total_capacity_allocation_up.external_id
+            )
 
         if self.total_capacity_allocation_down is not None or write_none:
-            if isinstance(self.total_capacity_allocation_down, str) or self.total_capacity_allocation_down is None:
-                properties["totalCapacityAllocationDown"] = self.total_capacity_allocation_down
-            else:
-                properties["totalCapacityAllocationDown"] = self.total_capacity_allocation_down.external_id
+            properties["totalCapacityAllocationDown"] = (
+                self.total_capacity_allocation_down
+                if isinstance(self.total_capacity_allocation_down, str) or self.total_capacity_allocation_down is None
+                else self.total_capacity_allocation_down.external_id
+            )
 
         if self.own_capacity_allocation_up is not None or write_none:
-            if isinstance(self.own_capacity_allocation_up, str) or self.own_capacity_allocation_up is None:
-                properties["ownCapacityAllocationUp"] = self.own_capacity_allocation_up
-            else:
-                properties["ownCapacityAllocationUp"] = self.own_capacity_allocation_up.external_id
+            properties["ownCapacityAllocationUp"] = (
+                self.own_capacity_allocation_up
+                if isinstance(self.own_capacity_allocation_up, str) or self.own_capacity_allocation_up is None
+                else self.own_capacity_allocation_up.external_id
+            )
 
         if self.own_capacity_allocation_down is not None or write_none:
-            if isinstance(self.own_capacity_allocation_down, str) or self.own_capacity_allocation_down is None:
-                properties["ownCapacityAllocationDown"] = self.own_capacity_allocation_down
-            else:
-                properties["ownCapacityAllocationDown"] = self.own_capacity_allocation_down.external_id
+            properties["ownCapacityAllocationDown"] = (
+                self.own_capacity_allocation_down
+                if isinstance(self.own_capacity_allocation_down, str) or self.own_capacity_allocation_down is None
+                else self.own_capacity_allocation_down.external_id
+            )
 
         if self.default_bid_configuration is not None:
             properties["defaultBidConfiguration"] = {
@@ -433,10 +438,11 @@ class PriceAreaInformationWrite(PriceAreaAFRRWrite, PriceAreaDayAheadWrite):
             }
 
         if self.main_price_scenario is not None or write_none:
-            if isinstance(self.main_price_scenario, str) or self.main_price_scenario is None:
-                properties["mainPriceScenario"] = self.main_price_scenario
-            else:
-                properties["mainPriceScenario"] = self.main_price_scenario.external_id
+            properties["mainPriceScenario"] = (
+                self.main_price_scenario
+                if isinstance(self.main_price_scenario, str) or self.main_price_scenario is None
+                else self.main_price_scenario.external_id
+            )
 
         if self.price_scenarios is not None or write_none:
             properties["priceScenarios"] = [

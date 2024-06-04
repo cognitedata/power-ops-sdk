@@ -43,7 +43,7 @@ class BidConfigurationDayAheadPartialsAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("sp_power_ops_types", "BidConfiguration.partials"),
+            dm.DirectRelationReference("power_ops_types", "BidConfiguration.partials"),
             from_bid_configuration_day_ahead,
             from_bid_configuration_day_ahead_space,
             to_partial_bid_configuration,

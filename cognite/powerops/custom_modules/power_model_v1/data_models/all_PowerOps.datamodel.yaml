@@ -67,7 +67,11 @@ views:
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: ShopPartialBidMatrixCalculationInput
+  - externalId: MultiScenarioPartialBidMatrixCalculationInput
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: ShopOutputTimeSeriesDefinition
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
@@ -228,6 +232,10 @@ views:
     type: view
     version: "{{version}}"
   - externalId: ShopPenaltyReport
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: DateSpecification
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"

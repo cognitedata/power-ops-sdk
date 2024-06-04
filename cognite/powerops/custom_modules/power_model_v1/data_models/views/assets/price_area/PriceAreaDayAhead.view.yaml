@@ -1,25 +1,25 @@
 space: "{{power_ops_models}}"
 externalId: PriceAreaDayAhead
 name: PriceAreaDayAhead
-description: Information about the Price Area that is only relevant for AFRR
-filter:
-  and:
-    - hasData:
-        - type: container
-          space: "{{power_ops_models}}"
-          externalId: PriceAreaDayAhead
-          # - equals:
-          #     property:
-          #       - node
-          #       - space
-          #     value: "{{power_ops_instance_space}}"
-          # - equals:
-          #     property:
-          #       - node
-          #       - type
-          #     value:
-          #       externalId: PriceAreaDayAhead
-          #       space: "{{power_ops_type_space}}"
+description: Information about the Price Area that is only relevant for Day Ahead
+# filter:
+#   and:
+#     - hasData:
+#         - type: container
+#           space: "{{power_ops_models}}"
+#           externalId: PriceArea
+#           # - equals:
+#           #     property:
+#           #       - node
+#           #       - space
+#           #     value: "{{power_ops_instance_space}}"
+#           # - equals:
+#           #     property:
+#           #       - node
+#           #       - type
+#           #     value:
+#           #       externalId: PriceAreaDayAhead
+#           #       space: "{{power_ops_type_space}}"
 implements:
   - space: "{{power_ops_models}}"
     externalId: PriceArea
@@ -30,7 +30,7 @@ properties:
   defaultBidConfiguration:
     container:
       space: "{{power_ops_models}}"
-      externalId: PriceAreaDayAhead
+      externalId: PriceArea
       type: container
     containerPropertyIdentifier: defaultBidConfiguration
     name: defaultBidConfiguration
@@ -43,7 +43,7 @@ properties:
   mainPriceScenario:
     container:
       space: "{{power_ops_models}}"
-      externalId: PriceAreaDayAhead
+      externalId: PriceArea
       type: container
     containerPropertyIdentifier: mainPriceScenario
     name: mainPriceScenario
@@ -51,7 +51,7 @@ properties:
   priceScenarios:
     container:
       space: "{{power_ops_models}}"
-      externalId: PriceAreaDayAhead
+      externalId: PriceArea
       type: container
     containerPropertyIdentifier: priceScenarios
     name: priceScenarios

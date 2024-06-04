@@ -109,7 +109,7 @@ class BidMatrixInformationQueryAPI(QueryAPI[T_DomainModelList]):
 
         from_ = self._builder[-1].name
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
+            dm.DirectRelationReference("power_ops_types", "calculationIssue"),
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -152,7 +152,7 @@ class BidMatrixInformationQueryAPI(QueryAPI[T_DomainModelList]):
         )
         return AlertQueryAPI(self._client, self._builder, self._view_by_read_class, node_filer, limit)
 
-    def intermediate_bid_matrices(
+    def underlying_bid_matrices(
         self,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
@@ -163,7 +163,7 @@ class BidMatrixInformationQueryAPI(QueryAPI[T_DomainModelList]):
         filter: dm.Filter | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
     ) -> BidMatrixQueryAPI[T_DomainModelList]:
-        """Query along the intermediate bid matrice edges of the bid matrix information.
+        """Query along the underlying bid matrice edges of the bid matrix information.
 
         Args:
             state: The state to filter on.
@@ -173,7 +173,7 @@ class BidMatrixInformationQueryAPI(QueryAPI[T_DomainModelList]):
             external_id_prefix_edge: The prefix of the external ID to filter on.
             space_edge: The space to filter on.
             filter: (Advanced) Filter applied to node. If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            limit: Maximum number of intermediate bid matrice edges to return. Defaults to 3. Set to -1, float("inf") or None
+            limit: Maximum number of underlying bid matrice edges to return. Defaults to 3. Set to -1, float("inf") or None
                 to return all items.
 
         Returns:
@@ -183,13 +183,13 @@ class BidMatrixInformationQueryAPI(QueryAPI[T_DomainModelList]):
 
         from_ = self._builder[-1].name
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("sp_power_ops_types", "intermediateBidMatrix"),
+            dm.DirectRelationReference("power_ops_types", "intermediateBidMatrix"),
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
         self._builder.append(
             QueryStep(
-                name=self._builder.next_name("intermediate_bid_matrices"),
+                name=self._builder.next_name("underlying_bid_matrices"),
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,

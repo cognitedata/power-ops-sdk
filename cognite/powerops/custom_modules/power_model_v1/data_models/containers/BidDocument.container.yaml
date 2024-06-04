@@ -55,9 +55,15 @@ properties:
     autoIncrement: false
     name: workflowExecutionId
     description: The workflowExecutionId associated with the Bid calculation workflow.
-indexes:
-  deliveryDate:
-    properties:
-      - deliveryDate
-    indexType: btree
-    cursorable: false
+  bidConfiguration:
+    type:
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: bidConfiguration
+  total:
+    type:
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: total

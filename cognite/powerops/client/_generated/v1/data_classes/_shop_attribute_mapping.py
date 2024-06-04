@@ -74,7 +74,7 @@ class ShopAttributeMappingGraphQL(GraphQLCore):
         aggregation: How to aggregate time series data
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "ShopAttributeMapping", "1")
+    view_id = dm.ViewId("power_ops_core", "ShopAttributeMapping", "1")
     object_type: Optional[str] = Field(None, alias="objectType")
     object_name: Optional[str] = Field(None, alias="objectName")
     attribute_name: Optional[str] = Field(None, alias="attributeName")
@@ -151,7 +151,7 @@ class ShopAttributeMapping(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "ShopAttributeMapping"
+        "power_ops_types", "ShopAttributeMapping"
     )
     object_type: str = Field(alias="objectType")
     object_name: str = Field(alias="objectName")
@@ -206,7 +206,7 @@ class ShopAttributeMappingWrite(DomainModelWrite):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "ShopAttributeMapping"
+        "power_ops_types", "ShopAttributeMapping"
     )
     object_type: str = Field(alias="objectType")
     object_name: str = Field(alias="objectName")
@@ -228,7 +228,7 @@ class ShopAttributeMappingWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            ShopAttributeMapping, dm.ViewId("sp_power_ops_models", "ShopAttributeMapping", "1")
+            ShopAttributeMapping, dm.ViewId("power_ops_core", "ShopAttributeMapping", "1")
         )
 
         properties: dict[str, Any] = {}
@@ -243,10 +243,11 @@ class ShopAttributeMappingWrite(DomainModelWrite):
             properties["attributeName"] = self.attribute_name
 
         if self.time_series is not None or write_none:
-            if isinstance(self.time_series, str) or self.time_series is None:
-                properties["timeSeries"] = self.time_series
-            else:
-                properties["timeSeries"] = self.time_series.external_id
+            properties["timeSeries"] = (
+                self.time_series
+                if isinstance(self.time_series, str) or self.time_series is None
+                else self.time_series.external_id
+            )
 
         if self.transformations is not None or write_none:
             properties["transformations"] = self.transformations

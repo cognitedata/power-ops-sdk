@@ -1,0 +1,44 @@
+# ShopOutputTimeSeriesDefinition view definition
+# - name: String!
+#   object_type: String
+#   object_name: String
+#   attribute_name: String
+#   unit: String
+#   is_step: Boolean
+
+- name: market price
+  object_type: market
+  object_name: price
+  attribute_name: sale_price
+  unit: EUR/MWh
+  is_step: true
+- name: market sale
+  object_type: market
+  object_name: sales
+  attribute_name: sale
+  unit: MWh
+  is_step: true
+- name: plant production
+  object_type: plant
+  object_name: production
+  attribute_name: production
+  unit: MW
+  is_step: true
+- name: plant consumption
+  object_type: plant
+  object_name: consumption
+  attribute_name: consumption
+  unit: MW
+  is_step: true
+- name: reservoir water value
+  object_type: reservoir
+  object_name: water_value
+  attribute_name: water_value_global_result
+  unit: EUR/Mm3
+  is_step: true
+- name: reservoir energy conversion factor
+  object_type: reservoir
+  object_name: energy_conversion_factor
+  attribute_name: energy_conversion_factor
+  unit: MWh/Mm3
+  is_step: true

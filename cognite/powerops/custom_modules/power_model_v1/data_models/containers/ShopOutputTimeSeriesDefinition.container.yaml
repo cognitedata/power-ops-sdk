@@ -1,0 +1,60 @@
+space: "{{power_ops_models}}"
+externalId: ShopOutputTimeSeriesDefinition
+name: ShopOutputTimeSeriesDefinition
+usedFor: node
+properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+    description: The name of the Shop Scenario
+  objectType:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: objectType
+    description: The type of the object
+  objectName:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: objectName
+    description: The name of the object
+  attributeName:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: attributeName
+    description: The name of the attribute
+  # TODO: consider using the built in CDF unit support and provide a unit_external_id instead
+  unit:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: unit
+    description: The unit of the object
+  isStep:
+    type:
+      list: false
+      type: boolean
+    nullable: true
+    defaultValue: true
+    autoIncrement: false
+    name: isStep
+    description: Is the output using step

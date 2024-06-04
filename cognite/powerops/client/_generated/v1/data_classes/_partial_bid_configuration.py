@@ -64,10 +64,10 @@ class PartialBidConfigurationGraphQL(GraphQLCore):
         add_steps: TODO definition
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "PartialBidConfiguration", "1")
+    view_id = dm.ViewId("power_ops_core", "PartialBidConfiguration", "1")
     name: Optional[str] = None
     method: Optional[str] = None
-    power_asset: Optional[PowerAssetGraphQL] = Field(None, repr=False, alias="powerAsset")
+    power_asset: Optional[PowerAssetGraphQL] = Field(default=None, repr=False, alias="powerAsset")
     add_steps: Optional[bool] = Field(None, alias="addSteps")
 
     @model_validator(mode="before")
@@ -115,7 +115,7 @@ class PartialBidConfigurationGraphQL(GraphQLCore):
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,
             method=self.method,
-            power_asset=self.power_asset.as_write() if isinstance(self.power_asset, DomainModel) else self.power_asset,
+            power_asset=self.power_asset.as_write() if isinstance(self.power_asset, GraphQLCore) else self.power_asset,
             add_steps=self.add_steps,
         )
 
@@ -139,7 +139,7 @@ class PartialBidConfiguration(DomainModel):
     node_type: Union[dm.DirectRelationReference, None] = None
     name: str
     method: Optional[str] = None
-    power_asset: Union[PowerAsset, str, dm.NodeId, None] = Field(None, repr=False, alias="powerAsset")
+    power_asset: Union[PowerAsset, str, dm.NodeId, None] = Field(default=None, repr=False, alias="powerAsset")
     add_steps: bool = Field(alias="addSteps")
 
     def as_write(self) -> PartialBidConfigurationWrite:
@@ -183,7 +183,7 @@ class PartialBidConfigurationWrite(DomainModelWrite):
     node_type: Union[dm.DirectRelationReference, None] = None
     name: str
     method: Optional[str] = None
-    power_asset: Union[PowerAssetWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="powerAsset")
+    power_asset: Union[PowerAssetWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="powerAsset")
     add_steps: bool = Field(alias="addSteps")
 
     def _to_instances_write(
@@ -198,7 +198,7 @@ class PartialBidConfigurationWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            PartialBidConfiguration, dm.ViewId("sp_power_ops_models", "PartialBidConfiguration", "1")
+            PartialBidConfiguration, dm.ViewId("power_ops_core", "PartialBidConfiguration", "1")
         )
 
         properties: dict[str, Any] = {}

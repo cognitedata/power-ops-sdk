@@ -2,15 +2,15 @@ space: "{{power_ops_models}}"
 externalId: PriceAreaInformation
 name: PriceAreaInformation
 description: TODO interface for configuration population
-filter:
-  and:
-    - equals:
-        property:
-          - node
-          - type
-        value:
-          externalId: PriceAreaInformation
-          space: "{{power_ops_type_space}}"
+# filter:
+#   and:
+#     - equals:
+#         property:
+#           - node
+#           - type
+#         value:
+#           externalId: PriceAreaInformation
+#           space: "{{power_ops_type_space}}"
 implements:
   - space: "{{power_ops_models}}"
     externalId: PriceAreaAFRR

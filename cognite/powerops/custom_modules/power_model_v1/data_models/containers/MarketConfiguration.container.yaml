@@ -81,9 +81,3 @@ properties:
     autoIncrement: false
     name: tradeLot
     description: '"Granularity" of the volumes; trade lot = 0.2 means that volumes must be "rounded to nearest 0.2" (i. e. 66.5 is not allowed, but 66.4 is)'
-indexes:
-  priceStepsIndex:
-    properties:
-      - priceSteps
-    indexType: btree
-    cursorable: false

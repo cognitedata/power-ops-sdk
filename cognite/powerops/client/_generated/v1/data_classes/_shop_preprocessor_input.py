@@ -74,12 +74,12 @@ class ShopPreprocessorInputGraphQL(GraphQLCore):
         end_time: End date of bid period TODO
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "ShopPreprocessorInput", "1")
+    view_id = dm.ViewId("power_ops_core", "ShopPreprocessorInput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
     function_call_id: Optional[str] = Field(None, alias="functionCallId")
-    scenario: Optional[ShopScenarioGraphQL] = Field(None, repr=False)
+    scenario: Optional[ShopScenarioGraphQL] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
 
@@ -133,7 +133,7 @@ class ShopPreprocessorInputGraphQL(GraphQLCore):
             workflow_step=self.workflow_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
-            scenario=self.scenario.as_write() if isinstance(self.scenario, DomainModel) else self.scenario,
+            scenario=self.scenario.as_write() if isinstance(self.scenario, GraphQLCore) else self.scenario,
             start_time=self.start_time,
             end_time=self.end_time,
         )
@@ -158,9 +158,9 @@ class ShopPreprocessorInput(FunctionInput):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "ShopPreprocessorInput"
+        "power_ops_types", "ShopPreprocessorInput"
     )
-    scenario: Union[ShopScenario, str, dm.NodeId, None] = Field(None, repr=False)
+    scenario: Union[ShopScenario, str, dm.NodeId, None] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
 
@@ -208,9 +208,9 @@ class ShopPreprocessorInputWrite(FunctionInputWrite):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "ShopPreprocessorInput"
+        "power_ops_types", "ShopPreprocessorInput"
     )
-    scenario: Union[ShopScenarioWrite, str, dm.NodeId, None] = Field(None, repr=False)
+    scenario: Union[ShopScenarioWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
 
@@ -226,7 +226,7 @@ class ShopPreprocessorInputWrite(FunctionInputWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            ShopPreprocessorInput, dm.ViewId("sp_power_ops_models", "ShopPreprocessorInput", "1")
+            ShopPreprocessorInput, dm.ViewId("power_ops_core", "ShopPreprocessorInput", "1")
         )
 
         properties: dict[str, Any] = {}

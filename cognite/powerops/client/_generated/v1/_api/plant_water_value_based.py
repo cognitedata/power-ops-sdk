@@ -260,9 +260,9 @@ class PlantWaterValueBasedAPI(NodeAPI[PlantWaterValueBased, PlantWaterValueBased
                 (
                     self.generators_edge,
                     "generators",
-                    dm.DirectRelationReference("sp_power_ops_types", "isSubAssetOf"),
+                    dm.DirectRelationReference("power_ops_types", "isSubAssetOf"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "Generator", "1"),
+                    dm.ViewId("power_ops_core", "Generator", "1"),
                 ),
             ],
         )
@@ -745,9 +745,9 @@ class PlantWaterValueBasedAPI(NodeAPI[PlantWaterValueBased, PlantWaterValueBased
                 (
                     self.generators_edge,
                     "generators",
-                    dm.DirectRelationReference("sp_power_ops_types", "isSubAssetOf"),
+                    dm.DirectRelationReference("power_ops_types", "isSubAssetOf"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "Generator", "1"),
+                    dm.ViewId("power_ops_core", "Generator", "1"),
                 ),
             ],
         )

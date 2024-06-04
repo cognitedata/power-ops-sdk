@@ -82,23 +82,23 @@ def main():
                 style="bold blue",
             )
         )
-        for model in models:
-            generate_sdk(
-                model.model_id,
-                client,
-                top_level_package=f"{top_level}.{model.directory}",
-                default_instance_space="power-ops" if model.model_id.space == "power-ops" else "power-ops-instance",
-                client_name=model.client_name,
-                output_dir=REPO_ROOT,
-                logger=print,
-                pydantic_version="v2",
-                overwrite=True,
-                format_code=True,
-            )
+        # for model in models:
+        #     generate_sdk(
+        #         model.model_id,
+        #         client,
+        #         top_level_package=f"{top_level}.{model.directory}",
+        #         default_instance_space="power-ops" if model.model_id.space == "power-ops" else "power-ops-instance",
+        #         client_name=model.client_name,
+        #         output_dir=REPO_ROOT,
+        #         logger=print,
+        #         pydantic_version="v2",
+        #         overwrite=True,
+        #         format_code=True,
+        #     )
         print(Panel("Done generating v0 clients", title="Done", style="bold green"))
 
         # TODO: update space to not be temp
-        space = "sp_power_ops_models"
+        space = "power_ops_core"
         v1_models = [
             "compute_ShopBasedDayAhead",
             "compute_TotalBidMatrixCalculation",
@@ -119,7 +119,7 @@ def main():
             [dm.DataModelId(space, external_id, "1") for external_id in v1_models],
             client,
             top_level_package=f"{top_level}.v1",
-            default_instance_space="sp_power_ops_instance",  # TODO: update space to not be temp
+            default_instance_space="power_ops_instances",  # TODO: update space to not be temp
             client_name="PowerOpsModelsV1Client",
             output_dir=REPO_ROOT,
             logger=print,

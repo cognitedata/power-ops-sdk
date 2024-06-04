@@ -29,13 +29,13 @@ properties:
       externalId: ShopCase
       version: "{{version}}"
       type: view
-  objectiveSequence:
+  objectiveValue:
     container:
       space: "{{power_ops_models}}"
       externalId: ShopResult
       type: container
-    containerPropertyIdentifier: objectiveSequence
-    name: objectiveSequence
+    containerPropertyIdentifier: objectiveValue
+    name: objectiveValue
     description: The sequence of the objective function
   preRun:
     container:

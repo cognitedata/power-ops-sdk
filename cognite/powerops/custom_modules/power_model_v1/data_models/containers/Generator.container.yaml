@@ -17,20 +17,20 @@ properties:
     nullable: false
     autoIncrement: false
     name: penstockNumber
-  startCost:
+  startStopCost:
     type:
       type: float64
       list: false
     nullable: false
     autoIncrement: false
-    name: startCost
-  startStopCost:
+    name: startStopCost
+  startStopCostTimeSeries:
     type:
       type: timeseries
       list: false
     nullable: true
     autoIncrement: false
-    name: startStopCost
+    name: startStopCostTimeSeries
   availabilityTimeSeries:
     type:
       type: timeseries
@@ -45,9 +45,3 @@ properties:
     nullable: true
     autoIncrement: false
     name: generatorEfficiencyCurve
-# indexes:
-#   nameIndex:
-#     properties:
-#       - name
-#     indexType: btree
-#     cursorable: false

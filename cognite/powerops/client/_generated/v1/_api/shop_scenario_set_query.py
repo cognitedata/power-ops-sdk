@@ -8,6 +8,8 @@ from cognite.client import data_modeling as dm, CogniteClient
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     ShopScenarioSet,
+    DateSpecification,
+    DateSpecification,
 )
 from cognite.powerops.client._generated.v1.data_classes._shop_scenario import (
     ShopScenario,
@@ -57,6 +59,8 @@ class ShopScenarioSetQueryAPI(QueryAPI[T_DomainModelList]):
         space_edge: str | list[str] | None = None,
         filter: dm.Filter | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
+        retrieve_start_specification: bool = False,
+        retrieve_end_specification: bool = False,
     ) -> ShopScenarioQueryAPI[T_DomainModelList]:
         """Query along the scenario edges of the shop scenario set.
 
@@ -74,6 +78,8 @@ class ShopScenarioSetQueryAPI(QueryAPI[T_DomainModelList]):
             filter: (Advanced) Filter applied to node. If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             limit: Maximum number of scenario edges to return. Defaults to 3. Set to -1, float("inf") or None
                 to return all items.
+            retrieve_start_specification: Whether to retrieve the start specification for each shop scenario set or not.
+            retrieve_end_specification: Whether to retrieve the end specification for each shop scenario set or not.
 
         Returns:
             ShopScenarioQueryAPI: The query API for the shop scenario.
@@ -82,7 +88,7 @@ class ShopScenarioSetQueryAPI(QueryAPI[T_DomainModelList]):
 
         from_ = self._builder[-1].name
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("sp_power_ops_types", "ShopScenarioSet.scenarios"),
+            dm.DirectRelationReference("power_ops_types", "ShopScenarioSet.scenarios"),
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -113,15 +119,66 @@ class ShopScenarioSetQueryAPI(QueryAPI[T_DomainModelList]):
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
+        if retrieve_start_specification:
+            self._query_append_start_specification(from_)
+        if retrieve_end_specification:
+            self._query_append_end_specification(from_)
         return ShopScenarioQueryAPI(self._client, self._builder, self._view_by_read_class, node_filer, limit)
 
     def query(
         self,
+        retrieve_start_specification: bool = False,
+        retrieve_end_specification: bool = False,
     ) -> T_DomainModelList:
         """Execute query and return the result.
+
+        Args:
+            retrieve_start_specification: Whether to retrieve the start specification for each shop scenario set or not.
+            retrieve_end_specification: Whether to retrieve the end specification for each shop scenario set or not.
 
         Returns:
             The list of the source nodes of the query.
 
         """
+        from_ = self._builder[-1].name
+        if retrieve_start_specification:
+            self._query_append_start_specification(from_)
+        if retrieve_end_specification:
+            self._query_append_end_specification(from_)
         return self._query()
+
+    def _query_append_start_specification(self, from_: str) -> None:
+        view_id = self._view_by_read_class[DateSpecification]
+        self._builder.append(
+            QueryStep(
+                name=self._builder.next_name("start_specification"),
+                expression=dm.query.NodeResultSetExpression(
+                    filter=dm.filters.HasData(views=[view_id]),
+                    from_=from_,
+                    through=self._view_by_read_class[ShopScenarioSet].as_property_ref("startSpecification"),
+                    direction="outwards",
+                ),
+                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
+                max_retrieve_limit=-1,
+                result_cls=DateSpecification,
+                is_single_direct_relation=True,
+            ),
+        )
+
+    def _query_append_end_specification(self, from_: str) -> None:
+        view_id = self._view_by_read_class[DateSpecification]
+        self._builder.append(
+            QueryStep(
+                name=self._builder.next_name("end_specification"),
+                expression=dm.query.NodeResultSetExpression(
+                    filter=dm.filters.HasData(views=[view_id]),
+                    from_=from_,
+                    through=self._view_by_read_class[ShopScenarioSet].as_property_ref("endSpecification"),
+                    direction="outwards",
+                ),
+                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
+                max_retrieve_limit=-1,
+                result_cls=DateSpecification,
+                is_single_direct_relation=True,
+            ),
+        )

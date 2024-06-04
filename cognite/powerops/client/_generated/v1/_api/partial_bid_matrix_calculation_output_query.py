@@ -72,7 +72,7 @@ class PartialBidMatrixCalculationOutputQueryAPI(QueryAPI[T_DomainModelList]):
         space_edge: str | list[str] | None = None,
         filter: dm.Filter | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
-        retrieve_input_: bool = False,
+        retrieve_function_input: bool = False,
         retrieve_partial_matrix: bool = False,
         retrieve_bid_configuration: bool = False,
     ) -> AlertQueryAPI[T_DomainModelList]:
@@ -102,7 +102,7 @@ class PartialBidMatrixCalculationOutputQueryAPI(QueryAPI[T_DomainModelList]):
             filter: (Advanced) Filter applied to node. If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             limit: Maximum number of alert edges to return. Defaults to 3. Set to -1, float("inf") or None
                 to return all items.
-            retrieve_input_: Whether to retrieve the input for each partial bid matrix calculation output or not.
+            retrieve_function_input: Whether to retrieve the function input for each partial bid matrix calculation output or not.
             retrieve_partial_matrix: Whether to retrieve the partial matrix for each partial bid matrix calculation output or not.
             retrieve_bid_configuration: Whether to retrieve the bid configuration for each partial bid matrix calculation output or not.
 
@@ -113,7 +113,7 @@ class PartialBidMatrixCalculationOutputQueryAPI(QueryAPI[T_DomainModelList]):
 
         from_ = self._builder[-1].name
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
+            dm.DirectRelationReference("power_ops_types", "calculationIssue"),
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -154,8 +154,8 @@ class PartialBidMatrixCalculationOutputQueryAPI(QueryAPI[T_DomainModelList]):
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        if retrieve_input_:
-            self._query_append_input_(from_)
+        if retrieve_function_input:
+            self._query_append_function_input(from_)
         if retrieve_partial_matrix:
             self._query_append_partial_matrix(from_)
         if retrieve_bid_configuration:
@@ -164,14 +164,14 @@ class PartialBidMatrixCalculationOutputQueryAPI(QueryAPI[T_DomainModelList]):
 
     def query(
         self,
-        retrieve_input_: bool = False,
+        retrieve_function_input: bool = False,
         retrieve_partial_matrix: bool = False,
         retrieve_bid_configuration: bool = False,
     ) -> T_DomainModelList:
         """Execute query and return the result.
 
         Args:
-            retrieve_input_: Whether to retrieve the input for each partial bid matrix calculation output or not.
+            retrieve_function_input: Whether to retrieve the function input for each partial bid matrix calculation output or not.
             retrieve_partial_matrix: Whether to retrieve the partial matrix for each partial bid matrix calculation output or not.
             retrieve_bid_configuration: Whether to retrieve the bid configuration for each partial bid matrix calculation output or not.
 
@@ -180,23 +180,25 @@ class PartialBidMatrixCalculationOutputQueryAPI(QueryAPI[T_DomainModelList]):
 
         """
         from_ = self._builder[-1].name
-        if retrieve_input_:
-            self._query_append_input_(from_)
+        if retrieve_function_input:
+            self._query_append_function_input(from_)
         if retrieve_partial_matrix:
             self._query_append_partial_matrix(from_)
         if retrieve_bid_configuration:
             self._query_append_bid_configuration(from_)
         return self._query()
 
-    def _query_append_input_(self, from_: str) -> None:
+    def _query_append_function_input(self, from_: str) -> None:
         view_id = self._view_by_read_class[PartialBidMatrixCalculationInput]
         self._builder.append(
             QueryStep(
-                name=self._builder.next_name("input_"),
+                name=self._builder.next_name("function_input"),
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_read_class[PartialBidMatrixCalculationOutput].as_property_ref("input"),
+                    through=self._view_by_read_class[PartialBidMatrixCalculationOutput].as_property_ref(
+                        "functionInput"
+                    ),
                     direction="outwards",
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),

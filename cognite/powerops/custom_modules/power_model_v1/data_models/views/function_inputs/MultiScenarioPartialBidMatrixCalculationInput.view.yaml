@@ -1,6 +1,6 @@
 space: "{{power_ops_models}}"
-externalId: ShopPartialBidMatrixCalculationInput
-name: ShopPartialBidMatrixCalculationInput
+externalId: MultiScenarioPartialBidMatrixCalculationInput
+name: MultiScenarioPartialBidMatrixCalculationInput
 description: Input to the task dispatcher in the shop bid process
 filter:
   and:
@@ -18,7 +18,7 @@ filter:
           - node
           - type
         value:
-          externalId: ShopPartialBidMatrixCalculationInput
+          externalId: MultiScenarioPartialBidMatrixCalculationInput
           space: "{{power_ops_type_space}}"
 implements:
   - space: "{{power_ops_models}}"

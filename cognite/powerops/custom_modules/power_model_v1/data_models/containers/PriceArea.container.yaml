@@ -1,8 +1,28 @@
 space: "{{power_ops_models}}"
-externalId: PriceAreaAFRR
-name: PriceAreaAFRR
+externalId: PriceArea
+name: PriceArea
 usedFor: node
 properties:
+  defaultBidConfiguration:
+    type:
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: defaultBidConfiguration
+  mainPriceScenario:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: mainPriceScenario
+  priceScenarios:
+    type:
+      list: true
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: priceScenarios
   capacityPriceUp:
     type:
       list: false
