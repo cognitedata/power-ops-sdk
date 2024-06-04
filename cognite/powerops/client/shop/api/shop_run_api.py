@@ -5,6 +5,7 @@ import logging
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import BinaryIO, Literal, TextIO, Union
+from urllib.parse import urlparse
 
 import requests
 from cognite.client import CogniteClient
@@ -24,17 +25,20 @@ logger = logging.getLogger(__name__)
 InputFileTypeT = Literal["case", "cut", "mapping", "extra"]
 
 
-RUN_SHOP_URL = "https://power-ops-api.staging.{cluster}.cognite.ai/{project}/run-shop"
-
-
 class ShopRunsAPI:
     def __init__(
-        self, client: CogniteClient, data_set_api: DataSetsAPI, result_api: ShopRunResultsAPI, cogshop_version: str
+        self,
+        client: CogniteClient,
+        data_set_api: DataSetsAPI,
+        result_api: ShopRunResultsAPI,
+        cogshop_version: str,
+        shop_as_a_service: bool = False,
     ):
         self._client = client
         self._data_set_api = data_set_api
         self._result_api = result_api
         self._cogshop_version = cogshop_version
+        self._shop_as_a_service = shop_as_a_service
 
     def trigger(self, case: Case) -> ShopRun:
         """
@@ -48,7 +52,7 @@ class ShopRunsAPI:
         """
         logger.info("Triggering SHOP run...")
         shop_run = self._upload_to_cdf(case)
-        self._post_shop_run(shop_run.shop_run_event.external_id)
+        self._trigger_shop_container(shop_run.shop_run_event.external_id)
         return shop_run
 
     def _upload_to_cdf(self, case: Case) -> ShopRun:
@@ -125,24 +129,55 @@ class ShopRunsAPI:
         relationship.data_set_id = self._data_set_api.write_dataset_id
         self._client.relationships.create(relationship)
 
-    def _post_shop_run(self, shop_run_external_id: str):
-        logger.info(f"Triggering run-shop endpoint, cogShopVersion: '{self._cogshop_version}'.")
-        cdf_config = self._client.config
-        project = cdf_config.project
-        cluster = cdf_config.base_url.split("//")[1].split(".")[0]
-        auth_header = dict([cdf_config.credentials.authorization_header()])
+    def _shop_url(self) -> str:
+        project = self._client.config.project
+
+        cluster = urlparse(self._client.config.base_url).netloc.split(".", 1)[0]
+
+        environment = project.split("-")[-1]
+        if environment in {"dev", "staging"}:
+            stage = ".staging"
+        elif environment == "prod":
+            stage = ""
+        else:
+            raise ValueError(f"Can't detect prod/staging from project name: {project!r}")
+
+        return f"https://power-ops-api{stage}.{cluster}.cognite.ai/{project}/run-shop"
+
+    def _shop_url_shaas(self) -> str:
+
+        project = self._client.config.project
+
+        cluster = urlparse(self._client.config.base_url).netloc.split(".", 1)[0]
+
+        if project == "power-ops-staging":
+            environment = ".staging"
+        elif project in {"lyse-dev", "lyse-prod", "heco-dev", "heco-prod"}:
+            environment = ""
+        else:
+            raise ValueError(f"SHOP As A Service has not been configured for project name: {project!r}")
+
+        return f"https://power-ops-api{environment}.{cluster}.cognite.ai/{project}/run-shop-as-service"
+
+    def _trigger_shop_container(self, shop_run: ShopRun):
+        def auth(r: requests.PreparedRequest) -> requests.PreparedRequest:
+            auth_header_name, auth_header_value = self._client._config.credentials.authorization_header()
+            r.headers[auth_header_name] = auth_header_value
+            return r
+
+        if self._shop_as_a_service:
+            shop_url = self._shop_url_shaas()
+            shop_body = {"mode": "asset", "runs": [{"event_external_id": shop_run.external_id}]}
+        else:
+            shop_url = self._shop_url()
+            shop_body = {"shopEventExternalId": shop_run.external_id, "cogShopVersion": self.cogshop_version}
 
         response = requests.post(
-            RUN_SHOP_URL.format(cluster=cluster, project=project),
-            json={
-                "shopEventExternalId": shop_run_external_id,
-                "datasetId": self._data_set_api.write_dataset_id,
-                "cogShopVersion": self._cogshop_version,
-            },
-            headers=auth_header,
+            url=shop_url,
+            json=shop_body,
+            auth=auth,
         )
         response.raise_for_status()
-        logger.debug(response.json())
 
     def list(self, created_after: int | str | None = None, limit: int | None = 25) -> list[ShopRun]:
         """

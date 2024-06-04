@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.95.1] - 2024-06-04
+### Added
+* Support for triggering SHOP As A Service through SHOP client.
+
 ## [0.95.0] - 2024-06-04
 ### Added
 * Type DateSpecification to replace previous string format for fields bidDateSpecification, startSpecification, and endSpecification
