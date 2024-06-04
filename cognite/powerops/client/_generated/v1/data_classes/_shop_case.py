@@ -62,7 +62,7 @@ class ShopCaseGraphQL(GraphQLCore):
         shop_files: The list of shop files that are used in a shop run. This encompasses all shop files such as case, module series, cut files etc.
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "ShopCase", "1")
+    view_id = dm.ViewId("power_ops_core", "ShopCase", "1")
     scenario: Optional[ShopScenarioGraphQL] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
@@ -134,7 +134,7 @@ class ShopCase(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_power_ops_types", "ShopCase")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopCase")
     scenario: Union[ShopScenario, str, dm.NodeId, None] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
@@ -183,7 +183,7 @@ class ShopCaseWrite(DomainModelWrite):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_power_ops_types", "ShopCase")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopCase")
     scenario: Union[ShopScenarioWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
@@ -202,7 +202,7 @@ class ShopCaseWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(ShopCase, dm.ViewId("sp_power_ops_models", "ShopCase", "1"))
+        write_view = (view_by_read_class or {}).get(ShopCase, dm.ViewId("power_ops_core", "ShopCase", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -234,7 +234,7 @@ class ShopCaseWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "ShopCase.shopFiles")
+        edge_type = dm.DirectRelationReference("power_ops_types", "ShopCase.shopFiles")
         for shop_file in self.shop_files or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

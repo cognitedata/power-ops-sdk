@@ -68,7 +68,7 @@ class FunctionOutputGraphQL(GraphQLCore):
         alerts: An array of calculation level Alerts.
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "FunctionOutput", "1")
+    view_id = dm.ViewId("power_ops_core", "FunctionOutput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
@@ -225,9 +225,7 @@ class FunctionOutputWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(
-            FunctionOutput, dm.ViewId("sp_power_ops_models", "FunctionOutput", "1")
-        )
+        write_view = (view_by_read_class or {}).get(FunctionOutput, dm.ViewId("power_ops_core", "FunctionOutput", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -267,7 +265,7 @@ class FunctionOutputWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "calculationIssue")
+        edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

@@ -70,7 +70,7 @@ class BidConfigurationDayAheadGraphQL(GraphQLCore):
         partials: Configuration of the partial bids that make up the total bid
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "BidConfigurationDayAhead", "1")
+    view_id = dm.ViewId("power_ops_core", "BidConfigurationDayAhead", "1")
     name: Optional[str] = None
     market_configuration: Optional[MarketConfigurationGraphQL] = Field(
         default=None, repr=False, alias="marketConfiguration"
@@ -167,7 +167,7 @@ class BidConfigurationDayAhead(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "BidConfigurationDayAhead"
+        "power_ops_types", "BidConfigurationDayAhead"
     )
     name: str
     market_configuration: Union[MarketConfiguration, str, dm.NodeId, None] = Field(
@@ -230,7 +230,7 @@ class BidConfigurationDayAheadWrite(DomainModelWrite):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "BidConfigurationDayAhead"
+        "power_ops_types", "BidConfigurationDayAhead"
     )
     name: str
     market_configuration: Union[MarketConfigurationWrite, str, dm.NodeId, None] = Field(
@@ -256,7 +256,7 @@ class BidConfigurationDayAheadWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            BidConfigurationDayAhead, dm.ViewId("sp_power_ops_models", "BidConfigurationDayAhead", "1")
+            BidConfigurationDayAhead, dm.ViewId("power_ops_core", "BidConfigurationDayAhead", "1")
         )
 
         properties: dict[str, Any] = {}
@@ -308,7 +308,7 @@ class BidConfigurationDayAheadWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "BidConfiguration.partials")
+        edge_type = dm.DirectRelationReference("power_ops_types", "BidConfiguration.partials")
         for partial in self.partials or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

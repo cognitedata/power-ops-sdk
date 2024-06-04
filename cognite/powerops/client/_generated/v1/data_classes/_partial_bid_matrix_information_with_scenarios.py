@@ -77,7 +77,7 @@ class PartialBidMatrixInformationWithScenariosGraphQL(GraphQLCore):
         multi_scenario_input: TODO
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "PartialBidMatrixInformationWithScenarios", "1")
+    view_id = dm.ViewId("power_ops_core", "PartialBidMatrixInformationWithScenarios", "1")
     state: Optional[str] = None
     bid_matrix: Union[dict, None] = Field(None, alias="bidMatrix")
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
@@ -279,7 +279,7 @@ class PartialBidMatrixInformationWithScenariosWrite(PartialBidMatrixInformationW
 
         write_view = (view_by_read_class or {}).get(
             PartialBidMatrixInformationWithScenarios,
-            dm.ViewId("sp_power_ops_models", "PartialBidMatrixInformationWithScenarios", "1"),
+            dm.ViewId("power_ops_core", "PartialBidMatrixInformationWithScenarios", "1"),
         )
 
         properties: dict[str, Any] = {}
@@ -329,7 +329,7 @@ class PartialBidMatrixInformationWithScenariosWrite(PartialBidMatrixInformationW
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "calculationIssue")
+        edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
@@ -342,7 +342,7 @@ class PartialBidMatrixInformationWithScenariosWrite(PartialBidMatrixInformationW
             )
             resources.extend(other_resources)
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "intermediateBidMatrix")
+        edge_type = dm.DirectRelationReference("power_ops_types", "intermediateBidMatrix")
         for underlying_bid_matrice in self.underlying_bid_matrices or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
@@ -355,7 +355,7 @@ class PartialBidMatrixInformationWithScenariosWrite(PartialBidMatrixInformationW
             )
             resources.extend(other_resources)
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "calculationIssue")
+        edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for multi_scenario_input in self.multi_scenario_input or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

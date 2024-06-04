@@ -210,16 +210,16 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList]
                 (
                     self.output_definition_edge,
                     "output_definition",
-                    dm.DirectRelationReference("sp_power_ops_types", "ShopOutputTimeSeriesDefinition"),
+                    dm.DirectRelationReference("power_ops_types", "ShopOutputTimeSeriesDefinition"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "ShopOutputTimeSeriesDefinition", "1"),
+                    dm.ViewId("power_ops_core", "ShopOutputTimeSeriesDefinition", "1"),
                 ),
                 (
                     self.attribute_mappings_override_edge,
                     "attribute_mappings_override",
-                    dm.DirectRelationReference("sp_power_ops_types", "ShopAttributeMapping"),
+                    dm.DirectRelationReference("power_ops_types", "ShopAttributeMapping"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "ShopAttributeMapping", "1"),
+                    dm.ViewId("power_ops_core", "ShopAttributeMapping", "1"),
                 ),
             ],
         )
@@ -534,16 +534,16 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList]
                 (
                     self.output_definition_edge,
                     "output_definition",
-                    dm.DirectRelationReference("sp_power_ops_types", "ShopOutputTimeSeriesDefinition"),
+                    dm.DirectRelationReference("power_ops_types", "ShopOutputTimeSeriesDefinition"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "ShopOutputTimeSeriesDefinition", "1"),
+                    dm.ViewId("power_ops_core", "ShopOutputTimeSeriesDefinition", "1"),
                 ),
                 (
                     self.attribute_mappings_override_edge,
                     "attribute_mappings_override",
-                    dm.DirectRelationReference("sp_power_ops_types", "ShopAttributeMapping"),
+                    dm.DirectRelationReference("power_ops_types", "ShopAttributeMapping"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "ShopAttributeMapping", "1"),
+                    dm.ViewId("power_ops_core", "ShopAttributeMapping", "1"),
                 ),
             ],
         )

@@ -216,16 +216,16 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
                 (
                     self.cog_shop_files_config_edge,
                     "cog_shop_files_config",
-                    dm.DirectRelationReference("sp_power_ops_types", "ShopModel.cogShopFilesConfig"),
+                    dm.DirectRelationReference("power_ops_types", "ShopModel.cogShopFilesConfig"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "ShopFile", "1"),
+                    dm.ViewId("power_ops_core", "ShopFile", "1"),
                 ),
                 (
                     self.base_attribute_mappings_edge,
                     "base_attribute_mappings",
-                    dm.DirectRelationReference("sp_power_ops_types", "ShopModel.baseAttributeMappings"),
+                    dm.DirectRelationReference("power_ops_types", "ShopModel.baseAttributeMappings"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "ShopAttributeMapping", "1"),
+                    dm.ViewId("power_ops_core", "ShopAttributeMapping", "1"),
                 ),
             ],
         )
@@ -568,16 +568,16 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
                 (
                     self.cog_shop_files_config_edge,
                     "cog_shop_files_config",
-                    dm.DirectRelationReference("sp_power_ops_types", "ShopModel.cogShopFilesConfig"),
+                    dm.DirectRelationReference("power_ops_types", "ShopModel.cogShopFilesConfig"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "ShopFile", "1"),
+                    dm.ViewId("power_ops_core", "ShopFile", "1"),
                 ),
                 (
                     self.base_attribute_mappings_edge,
                     "base_attribute_mappings",
-                    dm.DirectRelationReference("sp_power_ops_types", "ShopModel.baseAttributeMappings"),
+                    dm.DirectRelationReference("power_ops_types", "ShopModel.baseAttributeMappings"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "ShopAttributeMapping", "1"),
+                    dm.ViewId("power_ops_core", "ShopAttributeMapping", "1"),
                 ),
             ],
         )

@@ -43,7 +43,7 @@ class ShopPreprocessorOutputAlertsAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
+            dm.DirectRelationReference("power_ops_types", "calculationIssue"),
             from_shop_preprocessor_output,
             from_shop_preprocessor_output_space,
             to_alert,

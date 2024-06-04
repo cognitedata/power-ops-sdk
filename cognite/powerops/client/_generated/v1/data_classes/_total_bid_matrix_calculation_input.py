@@ -78,7 +78,7 @@ class TotalBidMatrixCalculationInputGraphQL(GraphQLCore):
         partial_bid_matrices: The partial bid matrices that are used to calculate the total bid matrix.
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "TotalBidMatrixCalculationInput", "1")
+    view_id = dm.ViewId("power_ops_core", "TotalBidMatrixCalculationInput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
@@ -176,7 +176,7 @@ class TotalBidMatrixCalculationInput(FunctionInput):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "TotalBidMatrixCalculationInput"
+        "power_ops_types", "TotalBidMatrixCalculationInput"
     )
     bid_configuration: Union[BidConfigurationDayAhead, str, dm.NodeId, None] = Field(
         default=None, repr=False, alias="bidConfiguration"
@@ -237,7 +237,7 @@ class TotalBidMatrixCalculationInputWrite(FunctionInputWrite):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "TotalBidMatrixCalculationInput"
+        "power_ops_types", "TotalBidMatrixCalculationInput"
     )
     bid_configuration: Union[BidConfigurationDayAheadWrite, str, dm.NodeId, None] = Field(
         default=None, repr=False, alias="bidConfiguration"
@@ -259,7 +259,7 @@ class TotalBidMatrixCalculationInputWrite(FunctionInputWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            TotalBidMatrixCalculationInput, dm.ViewId("sp_power_ops_models", "TotalBidMatrixCalculationInput", "1")
+            TotalBidMatrixCalculationInput, dm.ViewId("power_ops_core", "TotalBidMatrixCalculationInput", "1")
         )
 
         properties: dict[str, Any] = {}
@@ -305,7 +305,7 @@ class TotalBidMatrixCalculationInputWrite(FunctionInputWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "BidMatrix")
+        edge_type = dm.DirectRelationReference("power_ops_types", "BidMatrix")
         for partial_bid_matrice in self.partial_bid_matrices or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

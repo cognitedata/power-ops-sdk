@@ -200,16 +200,16 @@ class BidMatrixInformationAPI(NodeAPI[BidMatrixInformation, BidMatrixInformation
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
+                    dm.DirectRelationReference("power_ops_types", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "Alert", "1"),
+                    dm.ViewId("power_ops_core", "Alert", "1"),
                 ),
                 (
                     self.underlying_bid_matrices_edge,
                     "underlying_bid_matrices",
-                    dm.DirectRelationReference("sp_power_ops_types", "intermediateBidMatrix"),
+                    dm.DirectRelationReference("power_ops_types", "intermediateBidMatrix"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "BidMatrix", "1"),
+                    dm.ViewId("power_ops_core", "BidMatrix", "1"),
                 ),
             ],
         )
@@ -468,16 +468,16 @@ class BidMatrixInformationAPI(NodeAPI[BidMatrixInformation, BidMatrixInformation
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
+                    dm.DirectRelationReference("power_ops_types", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "Alert", "1"),
+                    dm.ViewId("power_ops_core", "Alert", "1"),
                 ),
                 (
                     self.underlying_bid_matrices_edge,
                     "underlying_bid_matrices",
-                    dm.DirectRelationReference("sp_power_ops_types", "intermediateBidMatrix"),
+                    dm.DirectRelationReference("power_ops_types", "intermediateBidMatrix"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "BidMatrix", "1"),
+                    dm.ViewId("power_ops_core", "BidMatrix", "1"),
                 ),
             ],
         )

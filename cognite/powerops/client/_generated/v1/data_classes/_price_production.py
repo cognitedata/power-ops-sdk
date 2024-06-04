@@ -66,7 +66,7 @@ class PriceProductionGraphQL(GraphQLCore):
         shop_result: The shop result field.
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "PriceProduction", "1")
+    view_id = dm.ViewId("power_ops_core", "PriceProduction", "1")
     name: Optional[str] = None
     price: Union[TimeSeries, dict, None] = None
     production: Union[TimeSeries, dict, None] = None
@@ -139,7 +139,7 @@ class PriceProduction(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "PriceProduction"
+        "power_ops_types", "PriceProduction"
     )
     name: str
     price: Union[TimeSeries, str, None] = None
@@ -185,7 +185,7 @@ class PriceProductionWrite(DomainModelWrite):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "PriceProduction"
+        "power_ops_types", "PriceProduction"
     )
     name: str
     price: Union[TimeSeries, str, None] = None
@@ -204,7 +204,7 @@ class PriceProductionWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            PriceProduction, dm.ViewId("sp_power_ops_models", "PriceProduction", "1")
+            PriceProduction, dm.ViewId("power_ops_core", "PriceProduction", "1")
         )
 
         properties: dict[str, Any] = {}

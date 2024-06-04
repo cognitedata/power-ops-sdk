@@ -101,7 +101,7 @@ class GeneratorGraphQL(GraphQLCore):
         turbine_efficiency_curves: TODO description
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "Generator", "1")
+    view_id = dm.ViewId("power_ops_core", "Generator", "1")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
@@ -216,7 +216,7 @@ class Generator(PowerAsset):
         turbine_efficiency_curves: TODO description
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_power_ops_types", "Generator")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "Generator")
     production_min: float = Field(alias="productionMin")
     penstock_number: int = Field(alias="penstockNumber")
     start_stop_cost: float = Field(alias="startStopCost")
@@ -291,7 +291,7 @@ class GeneratorWrite(PowerAssetWrite):
         turbine_efficiency_curves: TODO description
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_power_ops_types", "Generator")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "Generator")
     production_min: float = Field(alias="productionMin")
     penstock_number: int = Field(alias="penstockNumber")
     start_stop_cost: float = Field(alias="startStopCost")
@@ -315,7 +315,7 @@ class GeneratorWrite(PowerAssetWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(Generator, dm.ViewId("sp_power_ops_models", "Generator", "1"))
+        write_view = (view_by_read_class or {}).get(Generator, dm.ViewId("power_ops_core", "Generator", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -384,7 +384,7 @@ class GeneratorWrite(PowerAssetWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "isSubAssetOf")
+        edge_type = dm.DirectRelationReference("power_ops_types", "isSubAssetOf")
         for turbine_efficiency_curve in self.turbine_efficiency_curves or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

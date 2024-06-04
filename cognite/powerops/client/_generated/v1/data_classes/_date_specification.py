@@ -66,7 +66,7 @@ class DateSpecificationGraphQL(GraphQLCore):
         shift_definition: TODO description
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "DateSpecification", "1")
+    view_id = dm.ViewId("power_ops_core", "DateSpecification", "1")
     name: Optional[str] = None
     processing_timezone: Optional[str] = Field(None, alias="processingTimezone")
     resulting_timezone: Optional[str] = Field(None, alias="resultingTimezone")
@@ -135,7 +135,7 @@ class DateSpecification(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "DateSpecification"
+        "power_ops_types", "DateSpecification"
     )
     name: str
     processing_timezone: Optional[str] = Field(None, alias="processingTimezone")
@@ -184,7 +184,7 @@ class DateSpecificationWrite(DomainModelWrite):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "DateSpecification"
+        "power_ops_types", "DateSpecification"
     )
     name: str
     processing_timezone: Optional[str] = Field("UTC", alias="processingTimezone")
@@ -204,7 +204,7 @@ class DateSpecificationWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            DateSpecification, dm.ViewId("sp_power_ops_models", "DateSpecification", "1")
+            DateSpecification, dm.ViewId("power_ops_core", "DateSpecification", "1")
         )
 
         properties: dict[str, Any] = {}

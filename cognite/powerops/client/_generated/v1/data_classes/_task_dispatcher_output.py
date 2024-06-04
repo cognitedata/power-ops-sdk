@@ -71,7 +71,7 @@ class TaskDispatcherOutputGraphQL(GraphQLCore):
         process_sub_tasks: An array of input for process subtasks used for partial bid calculations.
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "TaskDispatcherOutput", "1")
+    view_id = dm.ViewId("power_ops_core", "TaskDispatcherOutput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
@@ -159,7 +159,7 @@ class TaskDispatcherOutput(FunctionOutput):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "TaskDispatcherOutput"
+        "power_ops_types", "TaskDispatcherOutput"
     )
     process_sub_tasks: Union[list[FunctionInput], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="processSubTasks"
@@ -214,7 +214,7 @@ class TaskDispatcherOutputWrite(FunctionOutputWrite):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "TaskDispatcherOutput"
+        "power_ops_types", "TaskDispatcherOutput"
     )
     process_sub_tasks: Union[list[FunctionInputWrite], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="processSubTasks"
@@ -232,7 +232,7 @@ class TaskDispatcherOutputWrite(FunctionOutputWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            TaskDispatcherOutput, dm.ViewId("sp_power_ops_models", "TaskDispatcherOutput", "1")
+            TaskDispatcherOutput, dm.ViewId("power_ops_core", "TaskDispatcherOutput", "1")
         )
 
         properties: dict[str, Any] = {}
@@ -273,7 +273,7 @@ class TaskDispatcherOutputWrite(FunctionOutputWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "calculationIssue")
+        edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
@@ -286,7 +286,7 @@ class TaskDispatcherOutputWrite(FunctionOutputWrite):
             )
             resources.extend(other_resources)
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "processSubTasks")
+        edge_type = dm.DirectRelationReference("power_ops_types", "processSubTasks")
         for process_sub_task in self.process_sub_tasks or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

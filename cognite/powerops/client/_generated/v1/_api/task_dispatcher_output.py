@@ -221,16 +221,16 @@ class TaskDispatcherOutputAPI(NodeAPI[TaskDispatcherOutput, TaskDispatcherOutput
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
+                    dm.DirectRelationReference("power_ops_types", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "Alert", "1"),
+                    dm.ViewId("power_ops_core", "Alert", "1"),
                 ),
                 (
                     self.process_sub_tasks_edge,
                     "process_sub_tasks",
-                    dm.DirectRelationReference("sp_power_ops_types", "processSubTasks"),
+                    dm.DirectRelationReference("power_ops_types", "processSubTasks"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "FunctionInput", "1"),
+                    dm.ViewId("power_ops_core", "FunctionInput", "1"),
                 ),
             ],
         )
@@ -587,16 +587,16 @@ class TaskDispatcherOutputAPI(NodeAPI[TaskDispatcherOutput, TaskDispatcherOutput
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
+                    dm.DirectRelationReference("power_ops_types", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "Alert", "1"),
+                    dm.ViewId("power_ops_core", "Alert", "1"),
                 ),
                 (
                     self.process_sub_tasks_edge,
                     "process_sub_tasks",
-                    dm.DirectRelationReference("sp_power_ops_types", "processSubTasks"),
+                    dm.DirectRelationReference("power_ops_types", "processSubTasks"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "FunctionInput", "1"),
+                    dm.ViewId("power_ops_core", "FunctionInput", "1"),
                 ),
             ],
         )

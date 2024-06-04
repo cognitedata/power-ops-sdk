@@ -67,7 +67,7 @@ class ShopBasedPartialBidConfigurationGraphQL(GraphQLCore):
         scenario_set: The scenario set field.
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "ShopBasedPartialBidConfiguration", "1")
+    view_id = dm.ViewId("power_ops_core", "ShopBasedPartialBidConfiguration", "1")
     name: Optional[str] = None
     method: Optional[str] = None
     power_asset: Optional[PowerAssetGraphQL] = Field(default=None, repr=False, alias="powerAsset")
@@ -147,7 +147,7 @@ class ShopBasedPartialBidConfiguration(PartialBidConfiguration):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "ShopBasedPartialBidConfiguration"
+        "power_ops_types", "ShopBasedPartialBidConfiguration"
     )
     scenario_set: Union[ShopScenarioSet, str, dm.NodeId, None] = Field(default=None, repr=False, alias="scenarioSet")
 
@@ -193,7 +193,7 @@ class ShopBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "ShopBasedPartialBidConfiguration"
+        "power_ops_types", "ShopBasedPartialBidConfiguration"
     )
     scenario_set: Union[ShopScenarioSetWrite, str, dm.NodeId, None] = Field(
         default=None, repr=False, alias="scenarioSet"
@@ -211,8 +211,7 @@ class ShopBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            ShopBasedPartialBidConfiguration,
-            dm.ViewId("sp_power_ops_models", "ShopBasedPartialBidConfiguration", "1"),
+            ShopBasedPartialBidConfiguration, dm.ViewId("power_ops_core", "ShopBasedPartialBidConfiguration", "1")
         )
 
         properties: dict[str, Any] = {}

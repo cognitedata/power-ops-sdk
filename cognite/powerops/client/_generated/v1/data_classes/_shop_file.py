@@ -66,7 +66,7 @@ class ShopFileGraphQL(GraphQLCore):
         is_ascii: The file extension of the file
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "ShopFile", "1")
+    view_id = dm.ViewId("power_ops_core", "ShopFile", "1")
     name: Optional[str] = None
     label: Optional[str] = None
     file_reference: Union[dict, None] = Field(None, alias="fileReference")
@@ -146,7 +146,7 @@ class ShopFile(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_power_ops_types", "ShopFile")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopFile")
     name: str
     label: str
     file_reference: Union[str, None] = Field(None, alias="fileReference")
@@ -196,7 +196,7 @@ class ShopFileWrite(DomainModelWrite):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_power_ops_types", "ShopFile")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopFile")
     name: str
     label: str
     file_reference: Union[str, None] = Field(None, alias="fileReference")
@@ -215,7 +215,7 @@ class ShopFileWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(ShopFile, dm.ViewId("sp_power_ops_models", "ShopFile", "1"))
+        write_view = (view_by_read_class or {}).get(ShopFile, dm.ViewId("power_ops_core", "ShopFile", "1"))
 
         properties: dict[str, Any] = {}
 

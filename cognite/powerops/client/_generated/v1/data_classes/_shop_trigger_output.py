@@ -71,7 +71,7 @@ class ShopTriggerOutputGraphQL(GraphQLCore):
         shop_result: The shop result field.
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "ShopTriggerOutput", "1")
+    view_id = dm.ViewId("power_ops_core", "ShopTriggerOutput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
@@ -159,7 +159,7 @@ class ShopTriggerOutput(FunctionOutput):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "ShopTriggerOutput"
+        "power_ops_types", "ShopTriggerOutput"
     )
     shop_result: Union[ShopResult, str, dm.NodeId, None] = Field(default=None, repr=False, alias="shopResult")
 
@@ -209,7 +209,7 @@ class ShopTriggerOutputWrite(FunctionOutputWrite):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "ShopTriggerOutput"
+        "power_ops_types", "ShopTriggerOutput"
     )
     shop_result: Union[ShopResultWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="shopResult")
 
@@ -225,7 +225,7 @@ class ShopTriggerOutputWrite(FunctionOutputWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            ShopTriggerOutput, dm.ViewId("sp_power_ops_models", "ShopTriggerOutput", "1")
+            ShopTriggerOutput, dm.ViewId("power_ops_core", "ShopTriggerOutput", "1")
         )
 
         properties: dict[str, Any] = {}
@@ -272,7 +272,7 @@ class ShopTriggerOutputWrite(FunctionOutputWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "calculationIssue")
+        edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

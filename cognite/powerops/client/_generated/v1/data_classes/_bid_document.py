@@ -73,7 +73,7 @@ class BidDocumentGraphQL(GraphQLCore):
         alerts: An array of calculation level Alerts.
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "BidDocument", "1")
+    view_id = dm.ViewId("power_ops_core", "BidDocument", "1")
     name: Optional[str] = None
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     delivery_date: Optional[datetime.date] = Field(None, alias="deliveryDate")
@@ -230,7 +230,7 @@ class BidDocumentWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(BidDocument, dm.ViewId("sp_power_ops_models", "BidDocument", "1"))
+        write_view = (view_by_read_class or {}).get(BidDocument, dm.ViewId("power_ops_core", "BidDocument", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -272,7 +272,7 @@ class BidDocumentWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "calculationIssue")
+        edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

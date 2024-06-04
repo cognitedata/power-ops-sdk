@@ -89,7 +89,7 @@ class MultiScenarioPartialBidMatrixCalculationInputGraphQL(GraphQLCore):
         price_production: An array of shop results with price/prod time series pairs for all plants included in the respective shop scenario
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "MultiScenarioPartialBidMatrixCalculationInput", "1")
+    view_id = dm.ViewId("power_ops_core", "MultiScenarioPartialBidMatrixCalculationInput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
@@ -197,7 +197,7 @@ class MultiScenarioPartialBidMatrixCalculationInput(PartialBidMatrixCalculationI
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "MultiScenarioPartialBidMatrixCalculationInput"
+        "power_ops_types", "MultiScenarioPartialBidMatrixCalculationInput"
     )
     price_production: Union[list[PriceProduction], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="priceProduction"
@@ -260,7 +260,7 @@ class MultiScenarioPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalcula
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "MultiScenarioPartialBidMatrixCalculationInput"
+        "power_ops_types", "MultiScenarioPartialBidMatrixCalculationInput"
     )
     price_production: Union[list[PriceProductionWrite], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="priceProduction"
@@ -279,7 +279,7 @@ class MultiScenarioPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalcula
 
         write_view = (view_by_read_class or {}).get(
             MultiScenarioPartialBidMatrixCalculationInput,
-            dm.ViewId("sp_power_ops_models", "MultiScenarioPartialBidMatrixCalculationInput", "1"),
+            dm.ViewId("power_ops_core", "MultiScenarioPartialBidMatrixCalculationInput", "1"),
         )
 
         properties: dict[str, Any] = {}
@@ -339,7 +339,7 @@ class MultiScenarioPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalcula
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "PriceProduction")
+        edge_type = dm.DirectRelationReference("power_ops_types", "PriceProduction")
         for price_production in self.price_production or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

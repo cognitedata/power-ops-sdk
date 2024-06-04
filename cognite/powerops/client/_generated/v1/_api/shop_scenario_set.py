@@ -204,9 +204,9 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
                 (
                     self.scenarios_edge,
                     "scenarios",
-                    dm.DirectRelationReference("sp_power_ops_types", "ShopScenarioSet.scenarios"),
+                    dm.DirectRelationReference("power_ops_types", "ShopScenarioSet.scenarios"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "ShopScenario", "1"),
+                    dm.ViewId("power_ops_core", "ShopScenario", "1"),
                 ),
             ],
         )
@@ -493,9 +493,9 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
                 (
                     self.scenarios_edge,
                     "scenarios",
-                    dm.DirectRelationReference("sp_power_ops_types", "ShopScenarioSet.scenarios"),
+                    dm.DirectRelationReference("power_ops_types", "ShopScenarioSet.scenarios"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "ShopScenario", "1"),
+                    dm.ViewId("power_ops_core", "ShopScenario", "1"),
                 ),
             ],
         )

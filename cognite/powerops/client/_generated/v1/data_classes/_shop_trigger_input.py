@@ -77,7 +77,7 @@ class ShopTriggerInputGraphQL(GraphQLCore):
         preprocessor_input: The preprocessor input to the shop run
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "ShopTriggerInput", "1")
+    view_id = dm.ViewId("power_ops_core", "ShopTriggerInput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
@@ -171,7 +171,7 @@ class ShopTriggerInput(FunctionInput):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "ShopTriggerInput"
+        "power_ops_types", "ShopTriggerInput"
     )
     cog_shop_tag: Optional[str] = Field(None, alias="cogShopTag")
     case: Union[ShopCase, str, dm.NodeId, None] = Field(default=None, repr=False)
@@ -227,7 +227,7 @@ class ShopTriggerInputWrite(FunctionInputWrite):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "ShopTriggerInput"
+        "power_ops_types", "ShopTriggerInput"
     )
     cog_shop_tag: Optional[str] = Field(None, alias="cogShopTag")
     case: Union[ShopCaseWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
@@ -247,7 +247,7 @@ class ShopTriggerInputWrite(FunctionInputWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            ShopTriggerInput, dm.ViewId("sp_power_ops_models", "ShopTriggerInput", "1")
+            ShopTriggerInput, dm.ViewId("power_ops_core", "ShopTriggerInput", "1")
         )
 
         properties: dict[str, Any] = {}

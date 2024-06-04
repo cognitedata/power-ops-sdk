@@ -93,7 +93,7 @@ class ShopModelQueryAPI(QueryAPI[T_DomainModelList]):
 
         from_ = self._builder[-1].name
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("sp_power_ops_types", "ShopModel.cogShopFilesConfig"),
+            dm.DirectRelationReference("power_ops_types", "ShopModel.cogShopFilesConfig"),
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -176,7 +176,7 @@ class ShopModelQueryAPI(QueryAPI[T_DomainModelList]):
 
         from_ = self._builder[-1].name
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("sp_power_ops_types", "ShopModel.baseAttributeMappings"),
+            dm.DirectRelationReference("power_ops_types", "ShopModel.baseAttributeMappings"),
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )

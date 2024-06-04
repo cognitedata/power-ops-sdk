@@ -43,7 +43,7 @@ class PartialBidMatrixInformationWithScenariosUnderlyingBidMatricesAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("sp_power_ops_types", "intermediateBidMatrix"),
+            dm.DirectRelationReference("power_ops_types", "intermediateBidMatrix"),
             from_partial_bid_matrix_information_with_scenario,
             from_partial_bid_matrix_information_with_scenario_space,
             to_bid_matrix,

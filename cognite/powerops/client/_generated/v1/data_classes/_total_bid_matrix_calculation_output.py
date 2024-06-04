@@ -77,7 +77,7 @@ class TotalBidMatrixCalculationOutputGraphQL(GraphQLCore):
         bid_document: The bid document field.
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "TotalBidMatrixCalculationOutput", "1")
+    view_id = dm.ViewId("power_ops_core", "TotalBidMatrixCalculationOutput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
@@ -171,7 +171,7 @@ class TotalBidMatrixCalculationOutput(FunctionOutput):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "TotalBidMatrixCalculationOutput"
+        "power_ops_types", "TotalBidMatrixCalculationOutput"
     )
     bid_document: Union[BidDocumentDayAhead, str, dm.NodeId, None] = Field(
         default=None, repr=False, alias="bidDocument"
@@ -225,7 +225,7 @@ class TotalBidMatrixCalculationOutputWrite(FunctionOutputWrite):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "TotalBidMatrixCalculationOutput"
+        "power_ops_types", "TotalBidMatrixCalculationOutput"
     )
     bid_document: Union[BidDocumentDayAheadWrite, str, dm.NodeId, None] = Field(
         default=None, repr=False, alias="bidDocument"
@@ -243,8 +243,7 @@ class TotalBidMatrixCalculationOutputWrite(FunctionOutputWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            TotalBidMatrixCalculationOutput,
-            dm.ViewId("sp_power_ops_models", "TotalBidMatrixCalculationOutput", "1"),
+            TotalBidMatrixCalculationOutput, dm.ViewId("power_ops_core", "TotalBidMatrixCalculationOutput", "1")
         )
 
         properties: dict[str, Any] = {}
@@ -293,7 +292,7 @@ class TotalBidMatrixCalculationOutputWrite(FunctionOutputWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "calculationIssue")
+        edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

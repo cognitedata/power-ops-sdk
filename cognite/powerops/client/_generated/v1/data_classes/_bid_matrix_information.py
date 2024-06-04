@@ -65,7 +65,7 @@ class BidMatrixInformationGraphQL(GraphQLCore):
         underlying_bid_matrices: An array of intermediate BidMatrices.
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "BidMatrixInformation", "1")
+    view_id = dm.ViewId("power_ops_core", "BidMatrixInformation", "1")
     state: Optional[str] = None
     bid_matrix: Union[dict, None] = Field(None, alias="bidMatrix")
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
@@ -210,7 +210,7 @@ class BidMatrixInformationWrite(BidMatrixWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            BidMatrixInformation, dm.ViewId("sp_power_ops_models", "BidMatrixInformation", "1")
+            BidMatrixInformation, dm.ViewId("power_ops_core", "BidMatrixInformation", "1")
         )
 
         properties: dict[str, Any] = {}
@@ -237,7 +237,7 @@ class BidMatrixInformationWrite(BidMatrixWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "calculationIssue")
+        edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
@@ -250,7 +250,7 @@ class BidMatrixInformationWrite(BidMatrixWrite):
             )
             resources.extend(other_resources)
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "intermediateBidMatrix")
+        edge_type = dm.DirectRelationReference("power_ops_types", "intermediateBidMatrix")
         for underlying_bid_matrice in self.underlying_bid_matrices or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

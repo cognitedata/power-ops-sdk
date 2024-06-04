@@ -62,7 +62,7 @@ class FunctionInputGraphQL(GraphQLCore):
         function_call_id: The function call id
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "FunctionInput", "1")
+    view_id = dm.ViewId("power_ops_core", "FunctionInput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
@@ -187,9 +187,7 @@ class FunctionInputWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(
-            FunctionInput, dm.ViewId("sp_power_ops_models", "FunctionInput", "1")
-        )
+        write_view = (view_by_read_class or {}).get(FunctionInput, dm.ViewId("power_ops_core", "FunctionInput", "1"))
 
         properties: dict[str, Any] = {}
 

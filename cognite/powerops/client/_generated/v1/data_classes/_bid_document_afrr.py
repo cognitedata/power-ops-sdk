@@ -78,7 +78,7 @@ class BidDocumentAFRRGraphQL(GraphQLCore):
         bids: An array of BidRows containing the Bid data.
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "BidDocumentAFRR", "1")
+    view_id = dm.ViewId("power_ops_core", "BidDocumentAFRR", "1")
     name: Optional[str] = None
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     delivery_date: Optional[datetime.date] = Field(None, alias="deliveryDate")
@@ -170,7 +170,7 @@ class BidDocumentAFRR(BidDocument):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "AFRRBidDocument"
+        "power_ops_types", "AFRRBidDocument"
     )
     price_area: Union[PriceAreaAFRR, str, dm.NodeId, None] = Field(default=None, repr=False, alias="priceArea")
     bids: Union[list[BidRow], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
@@ -223,7 +223,7 @@ class BidDocumentAFRRWrite(BidDocumentWrite):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "AFRRBidDocument"
+        "power_ops_types", "AFRRBidDocument"
     )
     price_area: Union[PriceAreaAFRRWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="priceArea")
     bids: Union[list[BidRowWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
@@ -240,7 +240,7 @@ class BidDocumentAFRRWrite(BidDocumentWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            BidDocumentAFRR, dm.ViewId("sp_power_ops_models", "BidDocumentAFRR", "1")
+            BidDocumentAFRR, dm.ViewId("power_ops_core", "BidDocumentAFRR", "1")
         )
 
         properties: dict[str, Any] = {}
@@ -289,7 +289,7 @@ class BidDocumentAFRRWrite(BidDocumentWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "calculationIssue")
+        edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
@@ -302,7 +302,7 @@ class BidDocumentAFRRWrite(BidDocumentWrite):
             )
             resources.extend(other_resources)
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "partialBid")
+        edge_type = dm.DirectRelationReference("power_ops_types", "partialBid")
         for bid in self.bids or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

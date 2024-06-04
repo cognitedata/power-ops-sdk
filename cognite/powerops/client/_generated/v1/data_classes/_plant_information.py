@@ -124,7 +124,7 @@ class PlantInformationGraphQL(GraphQLCore):
         generators: The generator field.
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "PlantInformation", "1")
+    view_id = dm.ViewId("power_ops_core", "PlantInformation", "1")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
@@ -335,7 +335,7 @@ class PlantInformationWrite(PlantWaterValueBasedWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            PlantInformation, dm.ViewId("sp_power_ops_models", "PlantInformation", "1")
+            PlantInformation, dm.ViewId("power_ops_core", "PlantInformation", "1")
         )
 
         properties: dict[str, Any] = {}
@@ -435,7 +435,7 @@ class PlantInformationWrite(PlantWaterValueBasedWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "isSubAssetOf")
+        edge_type = dm.DirectRelationReference("power_ops_types", "isSubAssetOf")
         for generator in self.generators or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

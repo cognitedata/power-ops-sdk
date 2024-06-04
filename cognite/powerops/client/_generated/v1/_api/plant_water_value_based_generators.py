@@ -43,7 +43,7 @@ class PlantWaterValueBasedGeneratorsAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("sp_power_ops_types", "isSubAssetOf"),
+            dm.DirectRelationReference("power_ops_types", "isSubAssetOf"),
             from_plant_water_value_based,
             from_plant_water_value_based_space,
             to_generator,

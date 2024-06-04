@@ -63,7 +63,7 @@ class ShopScenarioSetGraphQL(GraphQLCore):
         scenarios: Configuration of the partial bids that make up the total bid configuration
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "ShopScenarioSet", "1")
+    view_id = dm.ViewId("power_ops_core", "ShopScenarioSet", "1")
     name: Optional[str] = None
     start_specification: Optional[DateSpecificationGraphQL] = Field(
         default=None, repr=False, alias="startSpecification"
@@ -234,7 +234,7 @@ class ShopScenarioSetWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            ShopScenarioSet, dm.ViewId("sp_power_ops_models", "ShopScenarioSet", "1")
+            ShopScenarioSet, dm.ViewId("power_ops_core", "ShopScenarioSet", "1")
         )
 
         properties: dict[str, Any] = {}
@@ -278,7 +278,7 @@ class ShopScenarioSetWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "ShopScenarioSet.scenarios")
+        edge_type = dm.DirectRelationReference("power_ops_types", "ShopScenarioSet.scenarios")
         for scenario in self.scenarios or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

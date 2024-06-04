@@ -70,7 +70,7 @@ class ShopModelGraphQL(GraphQLCore, protected_namespaces=()):
         base_attribute_mappings: The base mappings for the model
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "ShopModel", "1")
+    view_id = dm.ViewId("power_ops_core", "ShopModel", "1")
     name: Optional[str] = None
     model_version: Optional[str] = Field(None, alias="modelVersion")
     shop_version: Optional[str] = Field(None, alias="shopVersion")
@@ -164,7 +164,7 @@ class ShopModel(DomainModel, protected_namespaces=()):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_power_ops_types", "ShopModel")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopModel")
     name: str
     model_version: Optional[str] = Field(None, alias="modelVersion")
     shop_version: str = Field(alias="shopVersion")
@@ -235,7 +235,7 @@ class ShopModelWrite(DomainModelWrite, protected_namespaces=()):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_power_ops_types", "ShopModel")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopModel")
     name: str
     model_version: Optional[str] = Field(None, alias="modelVersion")
     shop_version: str = Field(alias="shopVersion")
@@ -259,7 +259,7 @@ class ShopModelWrite(DomainModelWrite, protected_namespaces=()):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(ShopModel, dm.ViewId("sp_power_ops_models", "ShopModel", "1"))
+        write_view = (view_by_read_class or {}).get(ShopModel, dm.ViewId("power_ops_core", "ShopModel", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -294,7 +294,7 @@ class ShopModelWrite(DomainModelWrite, protected_namespaces=()):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "ShopModel.cogShopFilesConfig")
+        edge_type = dm.DirectRelationReference("power_ops_types", "ShopModel.cogShopFilesConfig")
         for cog_shop_files_config in self.cog_shop_files_config or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
@@ -307,7 +307,7 @@ class ShopModelWrite(DomainModelWrite, protected_namespaces=()):
             )
             resources.extend(other_resources)
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "ShopModel.baseAttributeMappings")
+        edge_type = dm.DirectRelationReference("power_ops_types", "ShopModel.baseAttributeMappings")
         for base_attribute_mapping in self.base_attribute_mappings or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

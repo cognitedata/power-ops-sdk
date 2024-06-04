@@ -205,9 +205,9 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList]):
                 (
                     self.shop_files_edge,
                     "shop_files",
-                    dm.DirectRelationReference("sp_power_ops_types", "ShopCase.shopFiles"),
+                    dm.DirectRelationReference("power_ops_types", "ShopCase.shopFiles"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "ShopFile", "1"),
+                    dm.ViewId("power_ops_core", "ShopFile", "1"),
                 ),
             ],
         )
@@ -442,9 +442,9 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList]):
                 (
                     self.shop_files_edge,
                     "shop_files",
-                    dm.DirectRelationReference("sp_power_ops_types", "ShopCase.shopFiles"),
+                    dm.DirectRelationReference("power_ops_types", "ShopCase.shopFiles"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "ShopFile", "1"),
+                    dm.ViewId("power_ops_core", "ShopFile", "1"),
                 ),
             ],
         )

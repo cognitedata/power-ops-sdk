@@ -44,7 +44,7 @@ TimeSeries = Annotated[
 ]
 
 
-DEFAULT_INSTANCE_SPACE = "sp_power_ops_instance"
+DEFAULT_INSTANCE_SPACE = "power_ops_instances"
 
 
 @dataclass

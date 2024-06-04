@@ -43,7 +43,7 @@ class FunctionOutputAlertsAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
+            dm.DirectRelationReference("power_ops_types", "calculationIssue"),
             from_function_output,
             from_function_output_space,
             to_alert,

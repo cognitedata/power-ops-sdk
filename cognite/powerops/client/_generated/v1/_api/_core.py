@@ -794,7 +794,7 @@ class GraphQLQueryResponse:
 
 
 _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE = {
-    dm.DataModelId("sp_power_ops_models", "compute_ShopBasedDayAhead", "1"): {
+    dm.DataModelId("power_ops_core", "compute_ShopBasedDayAhead", "1"): {
         "TaskDispatcherInput": data_classes.TaskDispatcherInputGraphQL,
         "TaskDispatcherOutput": data_classes.TaskDispatcherOutputGraphQL,
         "ShopPreprocessorInput": data_classes.ShopPreprocessorInputGraphQL,
@@ -828,7 +828,7 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE = {
         "DateSpecification": data_classes.DateSpecificationGraphQL,
         "ShopOutputTimeSeriesDefinition": data_classes.ShopOutputTimeSeriesDefinitionGraphQL,
     },
-    dm.DataModelId("sp_power_ops_models", "compute_TotalBidMatrixCalculation", "1"): {
+    dm.DataModelId("power_ops_core", "compute_TotalBidMatrixCalculation", "1"): {
         "BidMatrix": data_classes.BidMatrixGraphQL,
         "BidMatrixInformation": data_classes.BidMatrixInformationGraphQL,
         "PartialBidMatrixInformation": data_classes.PartialBidMatrixInformationGraphQL,
@@ -857,7 +857,7 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE = {
         "DateSpecification": data_classes.DateSpecificationGraphQL,
         "ShopOutputTimeSeriesDefinition": data_classes.ShopOutputTimeSeriesDefinitionGraphQL,
     },
-    dm.DataModelId("sp_power_ops_models", "compute_WaterValueBasedDayAheadBid", "1"): {
+    dm.DataModelId("power_ops_core", "compute_WaterValueBasedDayAheadBid", "1"): {
         "TaskDispatcherInput": data_classes.TaskDispatcherInputGraphQL,
         "TaskDispatcherOutput": data_classes.TaskDispatcherOutputGraphQL,
         "PartialBidMatrixCalculationInput": data_classes.PartialBidMatrixCalculationInputGraphQL,
@@ -881,7 +881,7 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE = {
         "WaterValueBasedPartialBidConfiguration": data_classes.WaterValueBasedPartialBidConfigurationGraphQL,
         "DateSpecification": data_classes.DateSpecificationGraphQL,
     },
-    dm.DataModelId("sp_power_ops_models", "config_DayAheadConfiguration", "1"): {
+    dm.DataModelId("power_ops_core", "config_DayAheadConfiguration", "1"): {
         "BidConfigurationDayAhead": data_classes.BidConfigurationDayAheadGraphQL,
         "MarketConfiguration": data_classes.MarketConfigurationGraphQL,
         "PriceArea": data_classes.PriceAreaGraphQL,
@@ -905,7 +905,7 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE = {
         "ShopOutputTimeSeriesDefinition": data_classes.ShopOutputTimeSeriesDefinitionGraphQL,
         "ShopFile": data_classes.ShopFileGraphQL,
     },
-    dm.DataModelId("sp_power_ops_models", "frontend_AFRRBid", "1"): {
+    dm.DataModelId("power_ops_core", "frontend_AFRRBid", "1"): {
         "BidDocumentAFRR": data_classes.BidDocumentAFRRGraphQL,
         "BidDocument": data_classes.BidDocumentGraphQL,
         "BidRow": data_classes.BidRowGraphQL,
@@ -914,7 +914,7 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE = {
         "Alert": data_classes.AlertGraphQL,
         "PowerAsset": data_classes.PowerAssetGraphQL,
     },
-    dm.DataModelId("sp_power_ops_models", "frontend_Asset", "1"): {
+    dm.DataModelId("power_ops_core", "frontend_Asset", "1"): {
         "PriceArea": data_classes.PriceAreaGraphQL,
         "PriceAreaAFRR": data_classes.PriceAreaAFRRGraphQL,
         "PriceAreaDayAhead": data_classes.PriceAreaDayAheadGraphQL,
@@ -932,7 +932,7 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE = {
         "GeneratorEfficiencyCurve": data_classes.GeneratorEfficiencyCurveGraphQL,
         "DateSpecification": data_classes.DateSpecificationGraphQL,
     },
-    dm.DataModelId("sp_power_ops_models", "frontend_DayAheadBid", "1"): {
+    dm.DataModelId("power_ops_core", "frontend_DayAheadBid", "1"): {
         "BidDocumentDayAhead": data_classes.BidDocumentDayAheadGraphQL,
         "BidDocument": data_classes.BidDocumentGraphQL,
         "PriceArea": data_classes.PriceAreaGraphQL,

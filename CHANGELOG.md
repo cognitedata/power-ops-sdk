@@ -39,6 +39,10 @@ Changes are grouped as follows
   * startStopCost to startStopCostTimeSeries
 * Renamed property in ShopModel to avoid python name conflicts
   * version to modelVersion
+* Changed space names
+  * sp_power_ops_instance to power_ops_instances
+  * sp_power_ops_models to power_ops_core
+  * sp_power_ops_types to power_ops_types
 
 ### Removed
 * Removed property extraFiles from ShopModel

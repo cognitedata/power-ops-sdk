@@ -88,7 +88,7 @@ class MultiScenarioPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainMod
 
         from_ = self._builder[-1].name
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("sp_power_ops_types", "PriceProduction"),
+            dm.DirectRelationReference("power_ops_types", "PriceProduction"),
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )

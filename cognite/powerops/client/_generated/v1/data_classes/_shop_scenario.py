@@ -72,7 +72,7 @@ class ShopScenarioGraphQL(GraphQLCore, protected_namespaces=()):
         attribute_mappings_override: An array of base mappings to override in shop model file
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "ShopScenario", "1")
+    view_id = dm.ViewId("power_ops_core", "ShopScenario", "1")
     name: Optional[str] = None
     model: Optional[ShopModelGraphQL] = Field(default=None, repr=False)
     commands: Optional[ShopCommandsGraphQL] = Field(default=None, repr=False)
@@ -249,7 +249,7 @@ class ShopScenarioWrite(DomainModelWrite, protected_namespaces=()):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(ShopScenario, dm.ViewId("sp_power_ops_models", "ShopScenario", "1"))
+        write_view = (view_by_read_class or {}).get(ShopScenario, dm.ViewId("power_ops_core", "ShopScenario", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -287,7 +287,7 @@ class ShopScenarioWrite(DomainModelWrite, protected_namespaces=()):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "ShopOutputTimeSeriesDefinition")
+        edge_type = dm.DirectRelationReference("power_ops_types", "ShopOutputTimeSeriesDefinition")
         for output_definition in self.output_definition or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
@@ -300,7 +300,7 @@ class ShopScenarioWrite(DomainModelWrite, protected_namespaces=()):
             )
             resources.extend(other_resources)
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "ShopAttributeMapping")
+        edge_type = dm.DirectRelationReference("power_ops_types", "ShopAttributeMapping")
         for attribute_mappings_override in self.attribute_mappings_override or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
