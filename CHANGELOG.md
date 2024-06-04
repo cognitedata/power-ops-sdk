@@ -13,7 +13,7 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.95.0] - 2024-06-03
+## [0.95.0] - 2024-06-04
 ### Added
 * Type DateSpecification to replace previous string format for fields bidDateSpecification, startSpecification, and endSpecification
   * With default value for property processingTimezone as UTC
@@ -52,12 +52,14 @@ Changes are grouped as follows
 * All file/sequence/timeseries references to be nullable
 * Filters on PlantInformation
 * Filters on Watercourse
+* Minor fixes to align resync with DMS changes
 
 ## [0.94.5] - 2024-05-31
 ### Changed
 * Updated the SHOPRun class to provide a manual run flag; this is used in CogSHOP to skip output timeseries
 
 ## [0.94.4] - 2024-05-28
+
 ### Changed
 * FDM v1 resync: Supporting default values in data_model_configuration also without specifying source
 ### Fixed
