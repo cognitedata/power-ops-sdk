@@ -86,13 +86,12 @@ class PowerOpsClient:
         Returns:
             A PowerOpsClient object.
         """
-        settings = Settings()
-        return PowerOpsClient(
+        return cls.from_settings(
             config=client.config,
-            read_dataset=read_dataset if read_dataset is not None else settings.powerops.read_dataset,
-            write_dataset=write_dataset if write_dataset is not None else settings.powerops.write_dataset,
-            monitor_dataset=monitor_dataset if monitor_dataset is not None else settings.powerops.monitor_dataset,
-            cogshop_version=cogshop_version if cogshop_version is not None else settings.powerops.cogshop_version,
+            read_dataset=read_dataset,
+            write_dataset=write_dataset,
+            cogshop_version=cogshop_version,
+            monitor_dataset=monitor_dataset,
             shop_as_a_service=shop_as_a_service,
         )
 
@@ -130,20 +129,14 @@ class PowerOpsClient:
 
         client_config = config if config is not None else get_client_config(settings.cognite)
 
-        if settings.powerops.shop_as_a_service or shop_as_a_service:
-            shop_as_a_service = True
-
-        if settings.powerops.cogshop_version and cogshop_version:
-            raise ValueError("CogShop version was provided in two settings.")
-        elif settings.powerops.cogshop_version:
-            cogshop_version = str(settings.powerops.cogshop_version)
-        elif cogshop_version:
+        if shop_as_a_service and cogshop_version != "":
+            raise ValueError("CogShop version is not supported in Shop As A Service.")
+        elif shop_as_a_service:
+            cogshop_version = ""
+        elif cogshop_version is not None:
             cogshop_version = cogshop_version
         else:
-            cogshop_version = ""
-
-        if shop_as_a_service and (cogshop_version and cogshop_version != ""):
-            raise ValueError("CogShop version is not supported in Shop As A Service.")
+            cogshop_version = settings.powerops.cogshop_version
 
         return PowerOpsClient(
             config=client_config,
@@ -166,4 +159,4 @@ class PowerOpsClient:
             A PowerOpsClient object.
         """
         content = read_toml_file(toml_file)
-        return cls.from_settings(Settings.model_validate(content))
+        return cls.from_settings(settings=Settings.model_validate(content))
