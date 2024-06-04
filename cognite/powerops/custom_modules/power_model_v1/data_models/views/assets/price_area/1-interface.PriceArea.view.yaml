@@ -7,11 +7,7 @@ filter:
     - hasData:
         - type: container
           space: "{{power_ops_models}}"
-          externalId: PriceAreaAFRR
-    - hasData:
-        - type: container
-          space: "{{power_ops_models}}"
-          externalId: PriceAreaDayAhead
+          externalId: PriceArea
 implements:
   - space: "{{power_ops_models}}"
     externalId: PowerAsset

@@ -46,6 +46,13 @@ properties:
       type: container
     containerPropertyIdentifier: fileReference
     name: fileReference
+  fileReferencePrefix:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopFile
+      type: container
+    containerPropertyIdentifier: fileReferencePrefix
+    name: fileReferencePrefix
   order:
     container:
       space: "{{power_ops_models}}"

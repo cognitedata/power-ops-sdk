@@ -31,7 +31,12 @@ properties:
       type: container
     containerPropertyIdentifier: startSpecification
     name: startSpecification
-    description: TODO definition
+    description: TODO description
+    source:
+      space: "{{power_ops_models}}"
+      externalId: DateSpecification
+      version: "{{version}}"
+      type: view
   endSpecification:
     container:
       space: "{{power_ops_models}}"
@@ -39,7 +44,12 @@ properties:
       type: container
     containerPropertyIdentifier: endSpecification
     name: endSpecification
-    description: TODO definition
+    description: TODO description
+    source:
+      space: "{{power_ops_models}}"
+      externalId: DateSpecification
+      version: "{{version}}"
+      type: view
   scenarios:
     type:
       space: "{{power_ops_type_space}}"

@@ -1,0 +1,65 @@
+space: "{{power_ops_models}}"
+externalId: DateSpecification
+name: DateSpecification
+description: Date Specification
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models}}"
+          externalId: DateSpecification
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: DateSpecification
+          space: "{{power_ops_type_space}}"
+implements: []
+version: "{{version}}"
+properties:
+  name:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: DateSpecification
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: TODO description
+  processingTimezone:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: DateSpecification
+      type: container
+    containerPropertyIdentifier: processingTimezone
+    name: processingTimezone
+    description: TODO description
+  resultingTimezone:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: DateSpecification
+      type: container
+    containerPropertyIdentifier: resultingTimezone
+    name: resultingTimezone
+    description: TODO description
+  floorFrame:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: DateSpecification
+      type: container
+    containerPropertyIdentifier: floorFrame
+    name: floorFrame
+    description: TODO description
+  shiftDefinition:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: DateSpecification
+      type: container
+    containerPropertyIdentifier: shiftDefinition
+    name: shiftDefinition
+    description: TODO description

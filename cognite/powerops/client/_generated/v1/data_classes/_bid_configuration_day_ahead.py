@@ -23,6 +23,7 @@ from ._core import (
 )
 
 if TYPE_CHECKING:
+    from ._date_specification import DateSpecification, DateSpecificationGraphQL, DateSpecificationWrite
     from ._market_configuration import MarketConfiguration, MarketConfigurationGraphQL, MarketConfigurationWrite
     from ._partial_bid_configuration import (
         PartialBidConfiguration,
@@ -44,12 +45,11 @@ __all__ = [
 ]
 
 
-BidConfigurationDayAheadTextFields = Literal["name", "bid_date_specification"]
-BidConfigurationDayAheadFields = Literal["name", "bid_date_specification"]
+BidConfigurationDayAheadTextFields = Literal["name"]
+BidConfigurationDayAheadFields = Literal["name"]
 
 _BIDCONFIGURATIONDAYAHEAD_PROPERTIES_BY_FIELD = {
     "name": "name",
-    "bid_date_specification": "bidDateSpecification",
 }
 
 
@@ -66,15 +66,19 @@ class BidConfigurationDayAheadGraphQL(GraphQLCore):
         name: The name of the bid configuration
         market_configuration: The market configuration related to the bid configuration
         price_area: The price area related to the bid calculation task
-        bid_date_specification: TODO definition
+        bid_date_specification: TODO description
         partials: Configuration of the partial bids that make up the total bid
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "BidConfigurationDayAhead", "1")
+    view_id = dm.ViewId("power_ops_core", "BidConfigurationDayAhead", "1")
     name: Optional[str] = None
-    market_configuration: Optional[MarketConfigurationGraphQL] = Field(None, repr=False, alias="marketConfiguration")
-    price_area: Optional[PriceAreaDayAheadGraphQL] = Field(None, repr=False, alias="priceArea")
-    bid_date_specification: Optional[str] = Field(None, alias="bidDateSpecification")
+    market_configuration: Optional[MarketConfigurationGraphQL] = Field(
+        default=None, repr=False, alias="marketConfiguration"
+    )
+    price_area: Optional[PriceAreaDayAheadGraphQL] = Field(default=None, repr=False, alias="priceArea")
+    bid_date_specification: Optional[DateSpecificationGraphQL] = Field(
+        default=None, repr=False, alias="bidDateSpecification"
+    )
     partials: Optional[list[PartialBidConfigurationGraphQL]] = Field(default=None, repr=False)
 
     @model_validator(mode="before")
@@ -88,7 +92,7 @@ class BidConfigurationDayAheadGraphQL(GraphQLCore):
             )
         return values
 
-    @field_validator("market_configuration", "price_area", "partials", mode="before")
+    @field_validator("market_configuration", "price_area", "bid_date_specification", "partials", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
             return value
@@ -115,10 +119,12 @@ class BidConfigurationDayAheadGraphQL(GraphQLCore):
                 else self.market_configuration
             ),
             price_area=self.price_area.as_read() if isinstance(self.price_area, GraphQLCore) else self.price_area,
-            bid_date_specification=self.bid_date_specification,
-            partials=[
-                partial.as_read() if isinstance(partial, GraphQLCore) else partial for partial in self.partials or []
-            ],
+            bid_date_specification=(
+                self.bid_date_specification.as_read()
+                if isinstance(self.bid_date_specification, GraphQLCore)
+                else self.bid_date_specification
+            ),
+            partials=[partial.as_read() for partial in self.partials or []],
         )
 
     def as_write(self) -> BidConfigurationDayAheadWrite:
@@ -130,14 +136,16 @@ class BidConfigurationDayAheadGraphQL(GraphQLCore):
             name=self.name,
             market_configuration=(
                 self.market_configuration.as_write()
-                if isinstance(self.market_configuration, DomainModel)
+                if isinstance(self.market_configuration, GraphQLCore)
                 else self.market_configuration
             ),
-            price_area=self.price_area.as_write() if isinstance(self.price_area, DomainModel) else self.price_area,
-            bid_date_specification=self.bid_date_specification,
-            partials=[
-                partial.as_write() if isinstance(partial, DomainModel) else partial for partial in self.partials or []
-            ],
+            price_area=self.price_area.as_write() if isinstance(self.price_area, GraphQLCore) else self.price_area,
+            bid_date_specification=(
+                self.bid_date_specification.as_write()
+                if isinstance(self.bid_date_specification, GraphQLCore)
+                else self.bid_date_specification
+            ),
+            partials=[partial.as_write() for partial in self.partials or []],
         )
 
 
@@ -153,20 +161,22 @@ class BidConfigurationDayAhead(DomainModel):
         name: The name of the bid configuration
         market_configuration: The market configuration related to the bid configuration
         price_area: The price area related to the bid calculation task
-        bid_date_specification: TODO definition
+        bid_date_specification: TODO description
         partials: Configuration of the partial bids that make up the total bid
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "BidConfigurationDayAhead"
+        "power_ops_types", "BidConfigurationDayAhead"
     )
     name: str
     market_configuration: Union[MarketConfiguration, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="marketConfiguration"
+        default=None, repr=False, alias="marketConfiguration"
     )
-    price_area: Union[PriceAreaDayAhead, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
-    bid_date_specification: str = Field(alias="bidDateSpecification")
+    price_area: Union[PriceAreaDayAhead, str, dm.NodeId, None] = Field(default=None, repr=False, alias="priceArea")
+    bid_date_specification: Union[DateSpecification, str, dm.NodeId, None] = Field(
+        default=None, repr=False, alias="bidDateSpecification"
+    )
     partials: Union[list[PartialBidConfiguration], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
     def as_write(self) -> BidConfigurationDayAheadWrite:
@@ -182,7 +192,11 @@ class BidConfigurationDayAhead(DomainModel):
                 else self.market_configuration
             ),
             price_area=self.price_area.as_write() if isinstance(self.price_area, DomainModel) else self.price_area,
-            bid_date_specification=self.bid_date_specification,
+            bid_date_specification=(
+                self.bid_date_specification.as_write()
+                if isinstance(self.bid_date_specification, DomainModel)
+                else self.bid_date_specification
+            ),
             partials=[
                 partial.as_write() if isinstance(partial, DomainModel) else partial for partial in self.partials or []
             ],
@@ -210,20 +224,22 @@ class BidConfigurationDayAheadWrite(DomainModelWrite):
         name: The name of the bid configuration
         market_configuration: The market configuration related to the bid configuration
         price_area: The price area related to the bid calculation task
-        bid_date_specification: TODO definition
+        bid_date_specification: TODO description
         partials: Configuration of the partial bids that make up the total bid
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "BidConfigurationDayAhead"
+        "power_ops_types", "BidConfigurationDayAhead"
     )
     name: str
     market_configuration: Union[MarketConfigurationWrite, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="marketConfiguration"
+        default=None, repr=False, alias="marketConfiguration"
     )
-    price_area: Union[PriceAreaDayAheadWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
-    bid_date_specification: str = Field(alias="bidDateSpecification")
+    price_area: Union[PriceAreaDayAheadWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="priceArea")
+    bid_date_specification: Union[DateSpecificationWrite, str, dm.NodeId, None] = Field(
+        default=None, repr=False, alias="bidDateSpecification"
+    )
     partials: Union[list[PartialBidConfigurationWrite], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False
     )
@@ -240,7 +256,7 @@ class BidConfigurationDayAheadWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            BidConfigurationDayAhead, dm.ViewId("sp_power_ops_models", "BidConfigurationDayAhead", "1")
+            BidConfigurationDayAhead, dm.ViewId("power_ops_core", "BidConfigurationDayAhead", "1")
         )
 
         properties: dict[str, Any] = {}
@@ -265,7 +281,16 @@ class BidConfigurationDayAheadWrite(DomainModelWrite):
             }
 
         if self.bid_date_specification is not None:
-            properties["bidDateSpecification"] = self.bid_date_specification
+            properties["bidDateSpecification"] = {
+                "space": (
+                    self.space if isinstance(self.bid_date_specification, str) else self.bid_date_specification.space
+                ),
+                "externalId": (
+                    self.bid_date_specification
+                    if isinstance(self.bid_date_specification, str)
+                    else self.bid_date_specification.external_id
+                ),
+            }
 
         if properties:
             this_node = dm.NodeApply(
@@ -283,7 +308,7 @@ class BidConfigurationDayAheadWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "BidConfiguration.partials")
+        edge_type = dm.DirectRelationReference("power_ops_types", "BidConfiguration.partials")
         for partial in self.partials or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
@@ -302,6 +327,10 @@ class BidConfigurationDayAheadWrite(DomainModelWrite):
 
         if isinstance(self.price_area, DomainModelWrite):
             other_resources = self.price_area._to_instances_write(cache, view_by_read_class)
+            resources.extend(other_resources)
+
+        if isinstance(self.bid_date_specification, DomainModelWrite):
+            other_resources = self.bid_date_specification._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
 
         return resources
@@ -353,8 +382,7 @@ def _create_bid_configuration_day_ahead_filter(
     name_prefix: str | None = None,
     market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-    bid_date_specification: str | list[str] | None = None,
-    bid_date_specification_prefix: str | None = None,
+    bid_date_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -420,13 +448,41 @@ def _create_bid_configuration_day_ahead_filter(
                 values=[{"space": item[0], "externalId": item[1]} for item in price_area],
             )
         )
-    if isinstance(bid_date_specification, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("bidDateSpecification"), value=bid_date_specification))
-    if bid_date_specification and isinstance(bid_date_specification, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("bidDateSpecification"), values=bid_date_specification))
-    if bid_date_specification_prefix is not None:
+    if bid_date_specification and isinstance(bid_date_specification, str):
         filters.append(
-            dm.filters.Prefix(view_id.as_property_ref("bidDateSpecification"), value=bid_date_specification_prefix)
+            dm.filters.Equals(
+                view_id.as_property_ref("bidDateSpecification"),
+                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": bid_date_specification},
+            )
+        )
+    if bid_date_specification and isinstance(bid_date_specification, tuple):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("bidDateSpecification"),
+                value={"space": bid_date_specification[0], "externalId": bid_date_specification[1]},
+            )
+        )
+    if (
+        bid_date_specification
+        and isinstance(bid_date_specification, list)
+        and isinstance(bid_date_specification[0], str)
+    ):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("bidDateSpecification"),
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in bid_date_specification],
+            )
+        )
+    if (
+        bid_date_specification
+        and isinstance(bid_date_specification, list)
+        and isinstance(bid_date_specification[0], tuple)
+    ):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("bidDateSpecification"),
+                values=[{"space": item[0], "externalId": item[1]} for item in bid_date_specification],
+            )
         )
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))

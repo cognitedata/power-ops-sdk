@@ -2,24 +2,24 @@ space: "{{power_ops_models}}"
 externalId: PriceAreaAFRR
 name: PriceAreaAFRR
 description: Information about the Price Area that is only relevant for AFRR
-filter:
-  and:
-    - hasData:
-        - type: container
-          space: "{{power_ops_models}}"
-          externalId: PriceAreaAFRR
-          # - equals:
-          #     property:
-          #       - node
-          #       - space
-          #     value: "{{power_ops_instance_space}}"
-          # - equals:
-          #     property:
-          #       - node
-          #       - type
-          #     value:
-          #       externalId: PriceAreaAFRR
-          #       space: "{{power_ops_type_space}}"
+# filter:
+#   and:
+#     - hasData:
+#         - type: container
+#           space: "{{power_ops_models}}"
+#           externalId: PriceArea
+#           # - equals:
+#           #     property:
+#           #       - node
+#           #       - space
+#           #     value: "{{power_ops_instance_space}}"
+#           # - equals:
+#           #     property:
+#           #       - node
+#           #       - type
+#           #     value:
+#           #       externalId: PriceAreaAFRR
+#           #       space: "{{power_ops_type_space}}"
 implements:
   - space: "{{power_ops_models}}"
     externalId: PriceArea
@@ -30,21 +30,21 @@ properties:
   capacityPriceUp:
     container:
       space: "{{power_ops_models}}"
-      externalId: PriceAreaAFRR
+      externalId: PriceArea
       type: container
     containerPropertyIdentifier: capacityPriceUp
     name: capacityPriceUp
   capacityPriceDown:
     container:
       space: "{{power_ops_models}}"
-      externalId: PriceAreaAFRR
+      externalId: PriceArea
       type: container
     containerPropertyIdentifier: capacityPriceDown
     name: capacityPriceDown
   activationPriceUp:
     container:
       space: "{{power_ops_models}}"
-      externalId: PriceAreaAFRR
+      externalId: PriceArea
       type: container
     containerPropertyIdentifier: activationPriceUp
     name: activationPriceUp
@@ -52,7 +52,7 @@ properties:
   activationPriceDown:
     container:
       space: "{{power_ops_models}}"
-      externalId: PriceAreaAFRR
+      externalId: PriceArea
       type: container
     containerPropertyIdentifier: activationPriceDown
     name: activationPriceDown
@@ -60,7 +60,7 @@ properties:
   relativeActivation:
     container:
       space: "{{power_ops_models}}"
-      externalId: PriceAreaAFRR
+      externalId: PriceArea
       type: container
     containerPropertyIdentifier: relativeActivation
     name: relativeActivation
@@ -68,28 +68,28 @@ properties:
   totalCapacityAllocationUp:
     container:
       space: "{{power_ops_models}}"
-      externalId: PriceAreaAFRR
+      externalId: PriceArea
       type: container
     containerPropertyIdentifier: totalCapacityAllocationUp
     name: totalCapacityAllocationUp
   totalCapacityAllocationDown:
     container:
       space: "{{power_ops_models}}"
-      externalId: PriceAreaAFRR
+      externalId: PriceArea
       type: container
     containerPropertyIdentifier: totalCapacityAllocationDown
     name: totalCapacityAllocationDown
   ownCapacityAllocationUp:
     container:
       space: "{{power_ops_models}}"
-      externalId: PriceAreaAFRR
+      externalId: PriceArea
       type: container
     containerPropertyIdentifier: ownCapacityAllocationUp
     name: ownCapacityAllocationUp
   ownCapacityAllocationDown:
     container:
       space: "{{power_ops_models}}"
-      externalId: PriceAreaAFRR
+      externalId: PriceArea
       type: container
     containerPropertyIdentifier: ownCapacityAllocationDown
     name: ownCapacityAllocationDown

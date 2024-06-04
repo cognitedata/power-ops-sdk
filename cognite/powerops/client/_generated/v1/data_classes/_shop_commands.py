@@ -57,7 +57,7 @@ class ShopCommandsGraphQL(GraphQLCore):
         commands: The commands used in the shop model file
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "ShopCommands", "1")
+    view_id = dm.ViewId("power_ops_core", "ShopCommands", "1")
     name: Optional[str] = None
     commands: Optional[list[str]] = None
 
@@ -113,9 +113,7 @@ class ShopCommands(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "ShopCommands"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopCommands")
     name: str
     commands: Optional[list[str]] = None
 
@@ -153,9 +151,7 @@ class ShopCommandsWrite(DomainModelWrite):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "ShopCommands"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopCommands")
     name: str
     commands: list[str]
 
@@ -170,7 +166,7 @@ class ShopCommandsWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(ShopCommands, dm.ViewId("sp_power_ops_models", "ShopCommands", "1"))
+        write_view = (view_by_read_class or {}).get(ShopCommands, dm.ViewId("power_ops_core", "ShopCommands", "1"))
 
         properties: dict[str, Any] = {}
 

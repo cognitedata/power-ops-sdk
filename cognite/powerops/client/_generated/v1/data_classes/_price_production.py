@@ -66,11 +66,11 @@ class PriceProductionGraphQL(GraphQLCore):
         shop_result: The shop result field.
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "PriceProduction", "1")
+    view_id = dm.ViewId("power_ops_core", "PriceProduction", "1")
     name: Optional[str] = None
     price: Union[TimeSeries, dict, None] = None
     production: Union[TimeSeries, dict, None] = None
-    shop_result: Optional[ShopResultGraphQL] = Field(None, repr=False, alias="shopResult")
+    shop_result: Optional[ShopResultGraphQL] = Field(default=None, repr=False, alias="shopResult")
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -118,7 +118,7 @@ class PriceProductionGraphQL(GraphQLCore):
             name=self.name,
             price=self.price,
             production=self.production,
-            shop_result=self.shop_result.as_write() if isinstance(self.shop_result, DomainModel) else self.shop_result,
+            shop_result=self.shop_result.as_write() if isinstance(self.shop_result, GraphQLCore) else self.shop_result,
         )
 
 
@@ -139,12 +139,12 @@ class PriceProduction(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "PriceProduction"
+        "power_ops_types", "PriceProduction"
     )
     name: str
     price: Union[TimeSeries, str, None] = None
     production: Union[TimeSeries, str, None] = None
-    shop_result: Union[ShopResult, str, dm.NodeId, None] = Field(None, repr=False, alias="shopResult")
+    shop_result: Union[ShopResult, str, dm.NodeId, None] = Field(default=None, repr=False, alias="shopResult")
 
     def as_write(self) -> PriceProductionWrite:
         """Convert this read version of price production to the writing version."""
@@ -185,12 +185,12 @@ class PriceProductionWrite(DomainModelWrite):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "PriceProduction"
+        "power_ops_types", "PriceProduction"
     )
     name: str
     price: Union[TimeSeries, str, None] = None
     production: Union[TimeSeries, str, None] = None
-    shop_result: Union[ShopResultWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="shopResult")
+    shop_result: Union[ShopResultWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="shopResult")
 
     def _to_instances_write(
         self,
@@ -204,7 +204,7 @@ class PriceProductionWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            PriceProduction, dm.ViewId("sp_power_ops_models", "PriceProduction", "1")
+            PriceProduction, dm.ViewId("power_ops_core", "PriceProduction", "1")
         )
 
         properties: dict[str, Any] = {}
@@ -213,16 +213,16 @@ class PriceProductionWrite(DomainModelWrite):
             properties["name"] = self.name
 
         if self.price is not None or write_none:
-            if isinstance(self.price, str) or self.price is None:
-                properties["price"] = self.price
-            else:
-                properties["price"] = self.price.external_id
+            properties["price"] = (
+                self.price if isinstance(self.price, str) or self.price is None else self.price.external_id
+            )
 
         if self.production is not None or write_none:
-            if isinstance(self.production, str) or self.production is None:
-                properties["production"] = self.production
-            else:
-                properties["production"] = self.production.external_id
+            properties["production"] = (
+                self.production
+                if isinstance(self.production, str) or self.production is None
+                else self.production.external_id
+            )
 
         if self.shop_result is not None:
             properties["shopResult"] = {

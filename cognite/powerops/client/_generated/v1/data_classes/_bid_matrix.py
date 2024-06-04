@@ -58,7 +58,7 @@ class BidMatrixGraphQL(GraphQLCore):
         bid_matrix: The bid matrix field.
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "BidMatrix", "1")
+    view_id = dm.ViewId("power_ops_core", "BidMatrix", "1")
     state: Optional[str] = None
     bid_matrix: Union[dict, None] = Field(None, alias="bidMatrix")
 
@@ -167,7 +167,7 @@ class BidMatrixWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(BidMatrix, dm.ViewId("sp_power_ops_models", "BidMatrix", "1"))
+        write_view = (view_by_read_class or {}).get(BidMatrix, dm.ViewId("power_ops_core", "BidMatrix", "1"))
 
         properties: dict[str, Any] = {}
 

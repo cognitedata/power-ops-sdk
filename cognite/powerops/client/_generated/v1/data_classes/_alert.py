@@ -83,7 +83,7 @@ class AlertGraphQL(GraphQLCore):
         calculation_run: The identifier of the parent Bid Calculation (required so tha alerts can be created befor the BidDocument)
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "Alert", "1")
+    view_id = dm.ViewId("power_ops_core", "Alert", "1")
     time: Optional[datetime.datetime] = None
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     title: Optional[str] = None
@@ -248,7 +248,7 @@ class AlertWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(Alert, dm.ViewId("sp_power_ops_models", "Alert", "1"))
+        write_view = (view_by_read_class or {}).get(Alert, dm.ViewId("power_ops_core", "Alert", "1"))
 
         properties: dict[str, Any] = {}
 

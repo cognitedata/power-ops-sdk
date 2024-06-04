@@ -194,16 +194,16 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList]):
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
+                    dm.DirectRelationReference("power_ops_types", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "Alert", "1"),
+                    dm.ViewId("power_ops_core", "Alert", "1"),
                 ),
                 (
                     self.output_time_series_edge,
                     "output_time_series",
-                    dm.DirectRelationReference("sp_power_ops_types", "ShopResult.outputTimeSeries"),
+                    dm.DirectRelationReference("power_ops_types", "ShopResult.outputTimeSeries"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "ShopTimeSeries", "1"),
+                    dm.ViewId("power_ops_core", "ShopTimeSeries", "1"),
                 ),
             ],
         )
@@ -394,16 +394,16 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList]):
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
+                    dm.DirectRelationReference("power_ops_types", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "Alert", "1"),
+                    dm.ViewId("power_ops_core", "Alert", "1"),
                 ),
                 (
                     self.output_time_series_edge,
                     "output_time_series",
-                    dm.DirectRelationReference("sp_power_ops_types", "ShopResult.outputTimeSeries"),
+                    dm.DirectRelationReference("power_ops_types", "ShopResult.outputTimeSeries"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "ShopTimeSeries", "1"),
+                    dm.ViewId("power_ops_core", "ShopTimeSeries", "1"),
                 ),
             ],
         )

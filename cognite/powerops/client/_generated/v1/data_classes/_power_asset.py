@@ -62,7 +62,7 @@ class PowerAssetGraphQL(GraphQLCore):
         asset_type: The type of the asset
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "PowerAsset", "1")
+    view_id = dm.ViewId("power_ops_core", "PowerAsset", "1")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
@@ -187,7 +187,7 @@ class PowerAssetWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(PowerAsset, dm.ViewId("sp_power_ops_models", "PowerAsset", "1"))
+        write_view = (view_by_read_class or {}).get(PowerAsset, dm.ViewId("power_ops_core", "PowerAsset", "1"))
 
         properties: dict[str, Any] = {}
 

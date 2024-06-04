@@ -33,6 +33,7 @@ from ._core import (
     QueryStep,
     QueryBuilder,
 )
+from .shop_model_cog_shop_files_config import ShopModelCogShopFilesConfigAPI
 from .shop_model_base_attribute_mappings import ShopModelBaseAttributeMappingsAPI
 from .shop_model_query import ShopModelQueryAPI
 
@@ -49,14 +50,15 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
+        self.cog_shop_files_config_edge = ShopModelCogShopFilesConfigAPI(client)
         self.base_attribute_mappings_edge = ShopModelBaseAttributeMappingsAPI(client)
 
     def __call__(
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        version_: str | list[str] | None = None,
-        version_prefix: str | None = None,
+        model_version: str | list[str] | None = None,
+        model_version_prefix: str | None = None,
         shop_version: str | list[str] | None = None,
         shop_version_prefix: str | None = None,
         min_penalty_limit: float | None = None,
@@ -71,8 +73,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            version_: The version to filter on.
-            version_prefix: The prefix of the version to filter on.
+            model_version: The model version to filter on.
+            model_version_prefix: The prefix of the model version to filter on.
             shop_version: The shop version to filter on.
             shop_version_prefix: The prefix of the shop version to filter on.
             min_penalty_limit: The minimum value of the penalty limit to filter on.
@@ -91,8 +93,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
             self._view_id,
             name,
             name_prefix,
-            version_,
-            version_prefix,
+            model_version,
+            model_version_prefix,
             shop_version,
             shop_version_prefix,
             min_penalty_limit,
@@ -113,7 +115,7 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
         """Add or update (upsert) shop models.
 
         Note: This method iterates through all nodes and timeseries linked to shop_model and creates them including the edges
-        between the nodes. For example, if any of `base_attribute_mappings` are set, then these
+        between the nodes. For example, if any of `cog_shop_files_config` or `base_attribute_mappings` are set, then these
         nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
@@ -212,11 +214,18 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
             retrieve_edges=True,
             edge_api_name_type_direction_view_id_penta=[
                 (
+                    self.cog_shop_files_config_edge,
+                    "cog_shop_files_config",
+                    dm.DirectRelationReference("power_ops_types", "ShopModel.cogShopFilesConfig"),
+                    "outwards",
+                    dm.ViewId("power_ops_core", "ShopFile", "1"),
+                ),
+                (
                     self.base_attribute_mappings_edge,
                     "base_attribute_mappings",
-                    dm.DirectRelationReference("sp_power_ops_types", "ShopModel.baseAttributeMappings"),
+                    dm.DirectRelationReference("power_ops_types", "ShopModel.baseAttributeMappings"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "ShopAttributeMapping", "1"),
+                    dm.ViewId("power_ops_core", "ShopAttributeMapping", "1"),
                 ),
             ],
         )
@@ -227,8 +236,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
         properties: ShopModelTextFields | Sequence[ShopModelTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        version_: str | list[str] | None = None,
-        version_prefix: str | None = None,
+        model_version: str | list[str] | None = None,
+        model_version_prefix: str | None = None,
         shop_version: str | list[str] | None = None,
         shop_version_prefix: str | None = None,
         min_penalty_limit: float | None = None,
@@ -245,8 +254,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
             properties: The property to search, if nothing is passed all text fields will be searched.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            version_: The version to filter on.
-            version_prefix: The prefix of the version to filter on.
+            model_version: The model version to filter on.
+            model_version_prefix: The prefix of the model version to filter on.
             shop_version: The shop version to filter on.
             shop_version_prefix: The prefix of the shop version to filter on.
             min_penalty_limit: The minimum value of the penalty limit to filter on.
@@ -272,8 +281,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
             self._view_id,
             name,
             name_prefix,
-            version_,
-            version_prefix,
+            model_version,
+            model_version_prefix,
             shop_version,
             shop_version_prefix,
             min_penalty_limit,
@@ -299,8 +308,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
         search_properties: ShopModelTextFields | Sequence[ShopModelTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        version_: str | list[str] | None = None,
-        version_prefix: str | None = None,
+        model_version: str | list[str] | None = None,
+        model_version_prefix: str | None = None,
         shop_version: str | list[str] | None = None,
         shop_version_prefix: str | None = None,
         min_penalty_limit: float | None = None,
@@ -326,8 +335,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
         search_properties: ShopModelTextFields | Sequence[ShopModelTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        version_: str | list[str] | None = None,
-        version_prefix: str | None = None,
+        model_version: str | list[str] | None = None,
+        model_version_prefix: str | None = None,
         shop_version: str | list[str] | None = None,
         shop_version_prefix: str | None = None,
         min_penalty_limit: float | None = None,
@@ -352,8 +361,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
         search_property: ShopModelTextFields | Sequence[ShopModelTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        version_: str | list[str] | None = None,
-        version_prefix: str | None = None,
+        model_version: str | list[str] | None = None,
+        model_version_prefix: str | None = None,
         shop_version: str | list[str] | None = None,
         shop_version_prefix: str | None = None,
         min_penalty_limit: float | None = None,
@@ -373,8 +382,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
             search_property: The text field to search in.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            version_: The version to filter on.
-            version_prefix: The prefix of the version to filter on.
+            model_version: The model version to filter on.
+            model_version_prefix: The prefix of the model version to filter on.
             shop_version: The shop version to filter on.
             shop_version_prefix: The prefix of the shop version to filter on.
             min_penalty_limit: The minimum value of the penalty limit to filter on.
@@ -401,8 +410,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
             self._view_id,
             name,
             name_prefix,
-            version_,
-            version_prefix,
+            model_version,
+            model_version_prefix,
             shop_version,
             shop_version_prefix,
             min_penalty_limit,
@@ -431,8 +440,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
         search_property: ShopModelTextFields | Sequence[ShopModelTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        version_: str | list[str] | None = None,
-        version_prefix: str | None = None,
+        model_version: str | list[str] | None = None,
+        model_version_prefix: str | None = None,
         shop_version: str | list[str] | None = None,
         shop_version_prefix: str | None = None,
         min_penalty_limit: float | None = None,
@@ -451,8 +460,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
             search_property: The text field to search in.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            version_: The version to filter on.
-            version_prefix: The prefix of the version to filter on.
+            model_version: The model version to filter on.
+            model_version_prefix: The prefix of the model version to filter on.
             shop_version: The shop version to filter on.
             shop_version_prefix: The prefix of the shop version to filter on.
             min_penalty_limit: The minimum value of the penalty limit to filter on.
@@ -470,8 +479,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
             self._view_id,
             name,
             name_prefix,
-            version_,
-            version_prefix,
+            model_version,
+            model_version_prefix,
             shop_version,
             shop_version_prefix,
             min_penalty_limit,
@@ -495,8 +504,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        version_: str | list[str] | None = None,
-        version_prefix: str | None = None,
+        model_version: str | list[str] | None = None,
+        model_version_prefix: str | None = None,
         shop_version: str | list[str] | None = None,
         shop_version_prefix: str | None = None,
         min_penalty_limit: float | None = None,
@@ -512,8 +521,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            version_: The version to filter on.
-            version_prefix: The prefix of the version to filter on.
+            model_version: The model version to filter on.
+            model_version_prefix: The prefix of the model version to filter on.
             shop_version: The shop version to filter on.
             shop_version_prefix: The prefix of the shop version to filter on.
             min_penalty_limit: The minimum value of the penalty limit to filter on.
@@ -522,7 +531,7 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
             space: The space to filter on.
             limit: Maximum number of shop models to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            retrieve_edges: Whether to retrieve `base_attribute_mappings` external ids for the shop models. Defaults to True.
+            retrieve_edges: Whether to retrieve `cog_shop_files_config` or `base_attribute_mappings` external ids for the shop models. Defaults to True.
 
         Returns:
             List of requested shop models
@@ -540,8 +549,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
             self._view_id,
             name,
             name_prefix,
-            version_,
-            version_prefix,
+            model_version,
+            model_version_prefix,
             shop_version,
             shop_version_prefix,
             min_penalty_limit,
@@ -557,11 +566,18 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList]):
             retrieve_edges=retrieve_edges,
             edge_api_name_type_direction_view_id_penta=[
                 (
+                    self.cog_shop_files_config_edge,
+                    "cog_shop_files_config",
+                    dm.DirectRelationReference("power_ops_types", "ShopModel.cogShopFilesConfig"),
+                    "outwards",
+                    dm.ViewId("power_ops_core", "ShopFile", "1"),
+                ),
+                (
                     self.base_attribute_mappings_edge,
                     "base_attribute_mappings",
-                    dm.DirectRelationReference("sp_power_ops_types", "ShopModel.baseAttributeMappings"),
+                    dm.DirectRelationReference("power_ops_types", "ShopModel.baseAttributeMappings"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "ShopAttributeMapping", "1"),
+                    dm.ViewId("power_ops_core", "ShopAttributeMapping", "1"),
                 ),
             ],
         )

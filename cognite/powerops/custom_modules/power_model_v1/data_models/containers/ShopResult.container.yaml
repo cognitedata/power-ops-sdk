@@ -11,13 +11,13 @@ properties:
     autoIncrement: false
     name: case
     description: The scenario that was used to create the shop result
-  objectiveSequence:
+  objectiveValue:
     type:
       list: false
-      type: sequence
+      type: json
     nullable: true
     autoIncrement: false
-    name: objectiveSequence
+    name: objectiveValue
   preRun:
     type:
       list: false

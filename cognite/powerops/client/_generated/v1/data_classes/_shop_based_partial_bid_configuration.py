@@ -67,12 +67,12 @@ class ShopBasedPartialBidConfigurationGraphQL(GraphQLCore):
         scenario_set: The scenario set field.
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "ShopBasedPartialBidConfiguration", "1")
+    view_id = dm.ViewId("power_ops_core", "ShopBasedPartialBidConfiguration", "1")
     name: Optional[str] = None
     method: Optional[str] = None
-    power_asset: Optional[PowerAssetGraphQL] = Field(None, repr=False, alias="powerAsset")
+    power_asset: Optional[PowerAssetGraphQL] = Field(default=None, repr=False, alias="powerAsset")
     add_steps: Optional[bool] = Field(None, alias="addSteps")
-    scenario_set: Optional[ShopScenarioSetGraphQL] = Field(None, repr=False, alias="scenarioSet")
+    scenario_set: Optional[ShopScenarioSetGraphQL] = Field(default=None, repr=False, alias="scenarioSet")
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -122,10 +122,10 @@ class ShopBasedPartialBidConfigurationGraphQL(GraphQLCore):
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,
             method=self.method,
-            power_asset=self.power_asset.as_write() if isinstance(self.power_asset, DomainModel) else self.power_asset,
+            power_asset=self.power_asset.as_write() if isinstance(self.power_asset, GraphQLCore) else self.power_asset,
             add_steps=self.add_steps,
             scenario_set=(
-                self.scenario_set.as_write() if isinstance(self.scenario_set, DomainModel) else self.scenario_set
+                self.scenario_set.as_write() if isinstance(self.scenario_set, GraphQLCore) else self.scenario_set
             ),
         )
 
@@ -147,9 +147,9 @@ class ShopBasedPartialBidConfiguration(PartialBidConfiguration):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "ShopBasedPartialBidConfiguration"
+        "power_ops_types", "ShopBasedPartialBidConfiguration"
     )
-    scenario_set: Union[ShopScenarioSet, str, dm.NodeId, None] = Field(None, repr=False, alias="scenarioSet")
+    scenario_set: Union[ShopScenarioSet, str, dm.NodeId, None] = Field(default=None, repr=False, alias="scenarioSet")
 
     def as_write(self) -> ShopBasedPartialBidConfigurationWrite:
         """Convert this read version of shop based partial bid configuration to the writing version."""
@@ -193,9 +193,11 @@ class ShopBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "ShopBasedPartialBidConfiguration"
+        "power_ops_types", "ShopBasedPartialBidConfiguration"
     )
-    scenario_set: Union[ShopScenarioSetWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="scenarioSet")
+    scenario_set: Union[ShopScenarioSetWrite, str, dm.NodeId, None] = Field(
+        default=None, repr=False, alias="scenarioSet"
+    )
 
     def _to_instances_write(
         self,
@@ -209,7 +211,7 @@ class ShopBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            ShopBasedPartialBidConfiguration, dm.ViewId("sp_power_ops_models", "ShopBasedPartialBidConfiguration", "1")
+            ShopBasedPartialBidConfiguration, dm.ViewId("power_ops_core", "ShopBasedPartialBidConfiguration", "1")
         )
 
         properties: dict[str, Any] = {}

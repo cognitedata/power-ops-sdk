@@ -76,12 +76,14 @@ class TaskDispatcherInputGraphQL(GraphQLCore):
         bid_date: The bid date
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "TaskDispatcherInput", "1")
+    view_id = dm.ViewId("power_ops_core", "TaskDispatcherInput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
     function_call_id: Optional[str] = Field(None, alias="functionCallId")
-    bid_configuration: Optional[BidConfigurationDayAheadGraphQL] = Field(None, repr=False, alias="bidConfiguration")
+    bid_configuration: Optional[BidConfigurationDayAheadGraphQL] = Field(
+        default=None, repr=False, alias="bidConfiguration"
+    )
     bid_date: Optional[datetime.date] = Field(None, alias="bidDate")
 
     @model_validator(mode="before")
@@ -139,7 +141,7 @@ class TaskDispatcherInputGraphQL(GraphQLCore):
             function_call_id=self.function_call_id,
             bid_configuration=(
                 self.bid_configuration.as_write()
-                if isinstance(self.bid_configuration, DomainModel)
+                if isinstance(self.bid_configuration, GraphQLCore)
                 else self.bid_configuration
             ),
             bid_date=self.bid_date,
@@ -164,10 +166,10 @@ class TaskDispatcherInput(FunctionInput):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "TaskDispatcherInput"
+        "power_ops_types", "TaskDispatcherInput"
     )
     bid_configuration: Union[BidConfigurationDayAhead, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="bidConfiguration"
+        default=None, repr=False, alias="bidConfiguration"
     )
     bid_date: Optional[datetime.date] = Field(None, alias="bidDate")
 
@@ -217,10 +219,10 @@ class TaskDispatcherInputWrite(FunctionInputWrite):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "TaskDispatcherInput"
+        "power_ops_types", "TaskDispatcherInput"
     )
     bid_configuration: Union[BidConfigurationDayAheadWrite, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="bidConfiguration"
+        default=None, repr=False, alias="bidConfiguration"
     )
     bid_date: Optional[datetime.date] = Field(None, alias="bidDate")
 
@@ -236,7 +238,7 @@ class TaskDispatcherInputWrite(FunctionInputWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            TaskDispatcherInput, dm.ViewId("sp_power_ops_models", "TaskDispatcherInput", "1")
+            TaskDispatcherInput, dm.ViewId("power_ops_core", "TaskDispatcherInput", "1")
         )
 
         properties: dict[str, Any] = {}

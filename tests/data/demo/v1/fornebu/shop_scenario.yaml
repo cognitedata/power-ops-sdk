@@ -3,6 +3,7 @@
 #   model: ShopModel
 #   commands: ShopCommands
 #   source: String
+#   output_definition: [ShopOutputTimeSeriesDefinition]
 #   attribute_mappings_override: [ShopAttributeMapping]
 
 - name: "Fornebu base"

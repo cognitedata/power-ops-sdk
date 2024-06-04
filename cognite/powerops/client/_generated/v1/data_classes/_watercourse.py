@@ -63,7 +63,7 @@ class WatercourseGraphQL(GraphQLCore):
         asset_type: The type of the asset
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "Watercourse", "1")
+    view_id = dm.ViewId("power_ops_core", "Watercourse", "1")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
@@ -126,7 +126,7 @@ class Watercourse(PowerAsset):
         asset_type: The type of the asset
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = None
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "Watercourse")
 
     def as_write(self) -> WatercourseWrite:
         """Convert this read version of watercourse to the writing version."""
@@ -165,7 +165,7 @@ class WatercourseWrite(PowerAssetWrite):
         asset_type: The type of the asset
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = None
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "Watercourse")
 
     def _to_instances_write(
         self,
@@ -178,7 +178,7 @@ class WatercourseWrite(PowerAssetWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(Watercourse, dm.ViewId("sp_power_ops_models", "Watercourse", "1"))
+        write_view = (view_by_read_class or {}).get(Watercourse, dm.ViewId("power_ops_core", "Watercourse", "1"))
 
         properties: dict[str, Any] = {}
 

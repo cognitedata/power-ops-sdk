@@ -232,9 +232,9 @@ class TotalBidMatrixCalculationInputAPI(
                 (
                     self.partial_bid_matrices_edge,
                     "partial_bid_matrices",
-                    dm.DirectRelationReference("sp_power_ops_types", "BidMatrix"),
+                    dm.DirectRelationReference("power_ops_types", "BidMatrix"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "BidMatrix", "1"),
+                    dm.ViewId("power_ops_core", "BidMatrix", "1"),
                 ),
             ],
         )
@@ -631,9 +631,9 @@ class TotalBidMatrixCalculationInputAPI(
                 (
                     self.partial_bid_matrices_edge,
                     "partial_bid_matrices",
-                    dm.DirectRelationReference("sp_power_ops_types", "BidMatrix"),
+                    dm.DirectRelationReference("power_ops_types", "BidMatrix"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "BidMatrix", "1"),
+                    dm.ViewId("power_ops_core", "BidMatrix", "1"),
                 ),
             ],
         )

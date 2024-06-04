@@ -56,7 +56,7 @@ class TurbineEfficiencyCurveGraphQL(GraphQLCore):
         efficiency: The turbine efficiency values
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "TurbineEfficiencyCurve", "1")
+    view_id = dm.ViewId("power_ops_core", "TurbineEfficiencyCurve", "1")
     head: Optional[float] = None
     flow: Optional[list[float]] = None
     efficiency: Optional[list[float]] = None
@@ -117,7 +117,7 @@ class TurbineEfficiencyCurve(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "TurbineEfficiencyCurve"
+        "power_ops_types", "TurbineEfficiencyCurve"
     )
     head: Optional[float] = None
     flow: Optional[list[float]] = None
@@ -160,7 +160,7 @@ class TurbineEfficiencyCurveWrite(DomainModelWrite):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "TurbineEfficiencyCurve"
+        "power_ops_types", "TurbineEfficiencyCurve"
     )
     head: Optional[float] = None
     flow: list[float]
@@ -178,7 +178,7 @@ class TurbineEfficiencyCurveWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            TurbineEfficiencyCurve, dm.ViewId("sp_power_ops_models", "TurbineEfficiencyCurve", "1")
+            TurbineEfficiencyCurve, dm.ViewId("power_ops_core", "TurbineEfficiencyCurve", "1")
         )
 
         properties: dict[str, Any] = {}

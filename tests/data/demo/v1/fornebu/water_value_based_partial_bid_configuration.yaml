@@ -6,7 +6,7 @@
 
 - name: Plant Lund
   method: Water Value Based Bid Generation (WVBBG)
-  power_asset: "[name|type:PlantWaterValueBased]Lund"
+  power_asset: "[name|type:PlantInformation]Lund"
   add_steps: false
 - name: Plant Lund Step
   method: Water Value Based Bid Generation (WVBBG)
@@ -14,33 +14,33 @@
   add_steps: true
 - name: Plant Dalby Step
   method: Water Value Based Bid Generation (WVBBG)
-  power_asset: "[name|type:PlantWaterValueBased]Dalby"
+  power_asset: "[name|type:PlantInformation]Dalby"
   add_steps: true
 - name: Plant Holen
   method: Water Value Based Bid Generation (WVBBG)
-  power_asset: "[name|type:PlantWaterValueBased]Holen"
+  power_asset: "[name|type:PlantInformation]Holen"
   add_steps: false
 - name: Plant Landet Step
   method: Water Value Based Bid Generation (WVBBG)
-  power_asset: "[name|type:PlantWaterValueBased]Landet"
+  power_asset: "[name|type:PlantInformation]Landet"
   add_steps: true
 - name: Plant Lien_krv
   method: Water Value Based Bid Generation (WVBBG)
-  power_asset: "[name|type:PlantWaterValueBased]Lien_krv"
+  power_asset: "[name|type:PlantInformation]Lien_krv"
   add_steps: false
 - name: Plant Rull1 Step
   method: Water Value Based Bid Generation (WVBBG)
-  power_asset: "[name|type:PlantWaterValueBased]Rull1"
+  power_asset: "[name|type:PlantInformation]Rull1"
   add_steps: true
 - name: Plant Rull2
   method: Water Value Based Bid Generation (WVBBG)
-  power_asset: "[name|type:PlantWaterValueBased]Rull2"
+  power_asset: "[name|type:PlantInformation]Rull2"
   add_steps: false
 - name: Plant Scott Step
   method: Water Value Based Bid Generation (WVBBG)
-  power_asset: "[name|type:PlantWaterValueBased]Scott"
+  power_asset: "[name|type:PlantInformation]Scott"
   add_steps: true
 - name: Plant Strand_krv
   method: Water Value Based Bid Generation (WVBBG)
-  power_asset: "[name|type:PlantWaterValueBased]Strand_krv"
+  power_asset: "[name|type:PlantInformation]Strand_krv"
   add_steps: false

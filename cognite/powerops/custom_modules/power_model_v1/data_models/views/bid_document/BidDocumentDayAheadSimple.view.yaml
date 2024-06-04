@@ -7,9 +7,6 @@ filter:
         - type: container
           space: "{{power_ops_models}}"
           externalId: BidDocument
-        - type: container
-          space: "{{power_ops_models}}"
-          externalId: BidDocumentDayAhead
     - equals:
         property:
           - node
@@ -40,7 +37,7 @@ properties:
   total:
     container:
       space: "{{power_ops_models}}"
-      externalId: BidDocumentDayAhead
+      externalId: BidDocument
       type: container
     containerPropertyIdentifier: total
     name: total

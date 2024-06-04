@@ -1,9 +1,11 @@
-### Changing a Data Model
+# Changing Data Modeling Resources
 
-The data models are kept in `cognite/powerops/custom_modules`. Each set of data models are kept in a
-module following the structure of the [CDF-Toolkit](https://developer.cognite.com/sdks/toolkit/). In each
-module, you will find the data model files in the `data_models` resource folder. Each container, view, data model,
-and space are kept in separate files, one file for one resource.
+Data Modeling resources are deployed, updated, and managed via the [CDF-Toolkit](https://developer.cognite.com/sdks/toolkit/).
+Refer to the documentation for detailed configuration options.
+
+The relevant data modeling configuration files can be found in `cognite/powerops/custom_modules` following the folder
+and file naming structure required by CDF-Toolkit. Each space, container, view, and data model is kept in separate
+files with one file for one resource.
 
 You can control which module is deployed by setting the `selected_module_and_packages` in
 `cognite/powerops/config.dev.yaml`:
@@ -14,44 +16,16 @@ You can control which module is deployed by setting the `selected_module_and_pac
   - power_model_v1
 ...
 ```
-This will deploy the `power_model_v1` module.
+This will only deploy the `power_model_v1` module.
 
-### Changing only Views
+## Authentication
 
-To change a view in a data model, follow these steps:
-
-1. Do the change to the `.yaml` files in the `data_models/views` folder.
-2. Run the command `powerops init --dev --dry-run` to see what change will be made.
-   -  Note the `--dev` flag is used to indicate the data model is currently in development mode.
-      That means that when there are breaking changes to `views` and `data_models` resources, these will
-      be deleted and recreated. In a production mode, you will have to bump the version of these resources
-      instead.
-   - You can add the flag `--verbose` to get more information about the changes that will be made.
-3. Create a PR and request feedback on your suggested changes.
-4. Post in the development channel `#powerops-backend` that you are about to apply the changes.
-5. Check that nobody else are currently about to do change, then, run `powerops init --dev` to apply the changes.
-6. Verify in the UI that the changes are as expected.
-7. Post in the development channel `#powerops-backend` that the changes are applied.
-8. Regenerate the SDK for the data model changes by calling `python scripts/pygen_generate_clients.py`.
-9. Commit the changes and push it to your PR.
-10. Update the `CHANGELOG.md` with the changes you have made.
-11. Update the version in `pyproject.toml` and `cognite/powerops/_version.py` to the next version. Do a patch version bump.
-12. Get the PR approved and merge it.
-
-
-### Changing Containers
-Changing the containers requires dropping existing containers and recreating the changed ones. This is currently
-not supported by the `powerops` CLI, so you will have to do it using `cdf-tk`, i.e., `cognite-toolkit`, directly.
-
-**Note** There is currently no support for only dropping a single container, you will have to drop every container
-in the data model(s) and recreate them.
-
-To authenticate with the `cognite-toolkit` you will have to use a `.env` file in the power-ops-sdk root directory,
+To authenticate with the `cognite-toolkit` you will have to use a `.env` file in the `power-ops-sdk` root directory,
 which should look like this:
 ```dotenv
-CDF_CLUSTER=bluefield
-CDF_URL=https://bluefield.cognitedata.com
-CDF_PROJECT=power-ops-dev
+CDF_CLUSTER=<CLUSTER>
+CDF_URL=https://<CLUSTER>.cognitedata.com
+CDF_PROJECT=<PROJECT>
 IDP_TENANT_ID=431fcc8b-74b8-4171-b7c9-e6fab253913b
 IDP_CLIENT_ID=***
 IDP_CLIENT_SECRET=***
@@ -59,59 +33,97 @@ IDP_TOKEN_URL="https://login.microsoftonline.com/431fcc8b-74b8-4171-b7c9-e6fab25
 SENTRY_ENABLED=false
 ```
 
-When using the `cognite-toolkit` you have to build the configurations first and then deploy/clean them.
+## Change Limitations
 
-1. Do the changes to the .yaml files in the `data_models/container` folder.
-2. Build the configurations and remove existing files in the build directory:
+Not all resource types can be changed and not all operations are supported to be made on existing resources. Refer to
+the [Data Modeling changes documentation](https://docs.cognite.com/cdf/dm/dm_concepts/dm_containers_views_datamodels/#impact-of-changes-to-views-and-data-models)
+for a detailed list of what is allowed. Based on if an operation is allowed or not there are a few different ways to
+deploy the changes.
+
+### Changes to Containers
+
+If the change is allowed and it *is not* a breaking change then no version or additional considerations need to be taken
+into account.
+
+If the change is allowed and it *is* a breaking change then the change needs to be carefully planned to scope it's impacts.
+
+If the change is not allowed (like deleting a property) then alternative workarounds need to be implemented (ie. do not
+use the property we want to delete).
+
+### Changes to Views and Data Models
+
+Many changes to containers may result in changes to the related views and data models, these should then potentially be
+versioned in order to avoid breaking changes in the consumption layer.
+
+If a change requires a version change, the following version system should be used (MAJOR.MINOR.PATCH):
+- Test changes to data model in `power-ops-dev` with a version bump to the PATCH
+- Test changes to data model along with related resources (functions, workflows, shop) in `power-ops-staging` with a version bump to MINOR
+- Changes deployed to customer environment (dev & prod) should bump the MAJOR version
+- Once deployed to the next environment the previous environment will "rest"
+  - If testing is done in `power-ops-dev` with version 1.0.3, then those models will be deployed to `power-ops-staging`
+   as 1.1.0. When testing is done in staging and changes get deployed to customer environments the version would become 2
+
+
+## Local development process
+
+1. Make the relevant changes to the `.yaml` files in the `data_models` folder.
+2. Post on slack `#powerops-backend` that you are about to make changes to ensure it doesn't conflict with others work.
+3. Deploy changes manually to **power-ops-dev** using toolkit following bellow steps.
+4. Verify in the UI that the changes are as expected.
+5. Iterate until desired changes are completed.
+6. Create a PR and request feedback on your suggested changes.
+7. Once PR is approved inform the team that the changes will be deployed to `power-ops-staging`.
+8. Deploy changes manually to **power-ops-staging** ensuring you've used the correct version if needed.
+9.  Regenerate the SDK for the data model changes by calling `python scripts/pygen_generate_clients.py`.
+10. Bump the SDK version in `pyproject.toml` and `cognite/powerops/_version.py`.
+11. Update the `CHANGELOG.md` with the changes made.
+12. Get a second approval on the PR.
+
+## Manual Deployment
+
+1. Check which environment to deploy to, they are defined in the `cognite` folder in the `config.<ENV>.yaml` files
+   1. config.dev.yaml
+      1. ENV=dev
+      2. CDF_PROJECT=power-ops-dev
+   2. config.staging.yaml
+      1. ENV=staging
+      2. CDF_PROJECT=power-ops-staging
+   3. config.lyse-dev.yaml
+      1. ENV=lyse-dev
+      2. CDF_PROJECT=lyse-dev
+   4. config.heco-dev.yaml
+      1. ENV=heco-dev
+      2. CDF_PROJECT=heco-dev
+2. Ensure the credentials in your `.env` file point to the same environment you want to deploy to
+3. Build the configurations and remove existing files in the build directory:
    ```bash
-   cdf-tk build cognite/powerops --env dev --clean
+   cdf-tk build cognite/powerops --env ENV --clean
    ```
-3. Dry-run the redeploy to see what changes would be made:
+4. Dry-run the deployment to see what changes would be made:
    ```bash
-    cdf-tk deploy --drop-data --drop --env=dev --dry-run
+    cdf-tk deploy --env=ENV --dry-run
     ```
-4. Create a PR and request feedback on your suggested changes.
-5. Post in the development channel `#powerops-backend` that you are about to apply the changes.
-6. Check that nobody else are currently about to do change, then deploy the changes:
+5. Deploy the changes if the environment and changes your making won't impact other people's work:
    ```bash
-    cdf-tk deploy --drop-data --drop --env=dev
+    cdf-tk deploy --env=ENV
     ```
-7. Verify in the UI (https://cog-power-ops.fusion.cognite.com/power-ops-staging/?cluster=bluefield.cognitedata.com&env=bluefield -> Data Models) that the changes are as expected.
-8. Follow the steps from point 7 on from above, where you post in #powerops-backend channel about the applied changes, execute `pygen_generate_clients.py`, etc.
 
-### Deploying to other environments
+### WARNING: Full manual redeploy steps
 
-Refer to the above sections for more context and the [following slack thread](https://cognitedata.slack.com/archives/C045M6J3JAD/p1715760252331749).
-PERFORM WITH CAUTION if you haven't done it before ask for support from other team members as these actions will delete many existing resources.
+We should NOT be needing to delete containers to make changes to them but we are limited to only making changes based on
+the limitations detailed [here](https://docs.cognite.com/cdf/dm/dm_concepts/dm_containers_views_datamodels/#impact-of-changes-to-views-and-data-models).
+In the scenario that any container changes need to be made that are not allowed via update the container will need to be
+deleted and recreated again, this should only be done on a case by case bases taking into consideration if the data will
+need to be re-ingested or not.
 
-Deploying to power-ops-dev, uses config `config.dev.yaml` and ensure `.env` credentials point to correct project
+DO NOT perform these steps unless it has been aligned with the full team and a solution has been agreed upon.
 
+1. Follow the same 1-3 steps from the [Manual Deployment](#manual-deployment) steps
+2. Dry-run the deployment to see what changes would be made with the `drop` flags:
    ```bash
-   cdf-tk build cognite/powerops --env dev --clean
-   cdf-tk deploy --drop-data --drop --env=dev --dry-run
-   cdf-tk deploy --drop-data --drop --env=dev
-   ```
-
-Deploying to power-ops-staging, uses config `config.staging.yaml` and ensure `.env` credentials point to correct project
-
+    cdf-tk deploy --drop-data --drop --env=ENV --dry-run
+    ```
+3. Deploy the changes if the environment and changes your making won't impact other people's work:
    ```bash
-   cdf-tk build cognite/powerops --env staging --clean
-   cdf-tk deploy --drop-data --drop --env=staging --dry-run
-   cdf-tk deploy --drop-data --drop --env=staging
-   ```
-
-Deploying to heco-dev, uses config file `config.heco-dev.yaml` and ensure `.env` credentials point to correct project
-
-   ```bash
-   cdf-tk build cognite/powerops --env heco-dev --clean
-   cdf-tk deploy --drop-data --drop --env=heco-dev --dry-run
-   cdf-tk deploy --drop-data --drop --env=heco-dev
-   ```
-
-Deploying to lyse-dev, uses config `config.lyse-dev.yaml` and ensure `.env` credentials point to correct project
-
-   ```bash
-   cdf-tk build cognite/powerops --env lyse-dev --clean
-   cdf-tk deploy --drop-data --drop --env=lyse-dev --dry-run
-   cdf-tk deploy --drop-data --drop --env=lyse-dev
-   ```
+    cdf-tk deploy --drop-data --drop --env=ENV
+    ```

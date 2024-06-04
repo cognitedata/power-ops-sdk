@@ -43,7 +43,7 @@ class ShopCaseShopFilesAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("sp_power_ops_types", "ShopCase.shopFiles"),
+            dm.DirectRelationReference("power_ops_types", "ShopCase.shopFiles"),
             from_shop_case,
             from_shop_case_space,
             to_shop_file,

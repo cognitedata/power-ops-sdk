@@ -43,7 +43,7 @@ class TaskDispatcherOutputProcessSubTasksAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("sp_power_ops_types", "processSubTasks"),
+            dm.DirectRelationReference("power_ops_types", "processSubTasks"),
             from_task_dispatcher_output,
             from_task_dispatcher_output_space,
             to_function_input,

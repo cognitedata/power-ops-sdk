@@ -79,13 +79,13 @@ class PriceAreaDayAheadGraphQL(GraphQLCore):
         price_scenarios: TODO
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "PriceAreaDayAhead", "1")
+    view_id = dm.ViewId("power_ops_core", "PriceAreaDayAhead", "1")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
     asset_type: Optional[str] = Field(None, alias="assetType")
     default_bid_configuration: Optional[BidConfigurationDayAheadGraphQL] = Field(
-        None, repr=False, alias="defaultBidConfiguration"
+        default=None, repr=False, alias="defaultBidConfiguration"
     )
     main_price_scenario: Union[TimeSeries, dict, None] = Field(None, alias="mainPriceScenario")
     price_scenarios: Union[list[TimeSeries], list[dict], None] = Field(None, alias="priceScenarios")
@@ -152,7 +152,7 @@ class PriceAreaDayAheadGraphQL(GraphQLCore):
             asset_type=self.asset_type,
             default_bid_configuration=(
                 self.default_bid_configuration.as_write()
-                if isinstance(self.default_bid_configuration, DomainModel)
+                if isinstance(self.default_bid_configuration, GraphQLCore)
                 else self.default_bid_configuration
             ),
             main_price_scenario=self.main_price_scenario,
@@ -180,7 +180,7 @@ class PriceAreaDayAhead(PriceArea):
 
     node_type: Union[dm.DirectRelationReference, None] = None
     default_bid_configuration: Union[BidConfigurationDayAhead, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="defaultBidConfiguration"
+        default=None, repr=False, alias="defaultBidConfiguration"
     )
     main_price_scenario: Union[TimeSeries, str, None] = Field(None, alias="mainPriceScenario")
     price_scenarios: Union[list[TimeSeries], list[str], None] = Field(None, alias="priceScenarios")
@@ -234,7 +234,7 @@ class PriceAreaDayAheadWrite(PriceAreaWrite):
 
     node_type: Union[dm.DirectRelationReference, None] = None
     default_bid_configuration: Union[BidConfigurationDayAheadWrite, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="defaultBidConfiguration"
+        default=None, repr=False, alias="defaultBidConfiguration"
     )
     main_price_scenario: Union[TimeSeries, str, None] = Field(None, alias="mainPriceScenario")
     price_scenarios: Union[list[TimeSeries], list[str], None] = Field(None, alias="priceScenarios")
@@ -251,7 +251,7 @@ class PriceAreaDayAheadWrite(PriceAreaWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            PriceAreaDayAhead, dm.ViewId("sp_power_ops_models", "PriceAreaDayAhead", "1")
+            PriceAreaDayAhead, dm.ViewId("power_ops_core", "PriceAreaDayAhead", "1")
         )
 
         properties: dict[str, Any] = {}
@@ -283,10 +283,11 @@ class PriceAreaDayAheadWrite(PriceAreaWrite):
             }
 
         if self.main_price_scenario is not None or write_none:
-            if isinstance(self.main_price_scenario, str) or self.main_price_scenario is None:
-                properties["mainPriceScenario"] = self.main_price_scenario
-            else:
-                properties["mainPriceScenario"] = self.main_price_scenario.external_id
+            properties["mainPriceScenario"] = (
+                self.main_price_scenario
+                if isinstance(self.main_price_scenario, str) or self.main_price_scenario is None
+                else self.main_price_scenario.external_id
+            )
 
         if self.price_scenarios is not None or write_none:
             properties["priceScenarios"] = [

@@ -62,8 +62,8 @@ class ShopCaseGraphQL(GraphQLCore):
         shop_files: The list of shop files that are used in a shop run. This encompasses all shop files such as case, module series, cut files etc.
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "ShopCase", "1")
-    scenario: Optional[ShopScenarioGraphQL] = Field(None, repr=False)
+    view_id = dm.ViewId("power_ops_core", "ShopCase", "1")
+    scenario: Optional[ShopScenarioGraphQL] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
     shop_files: Optional[list[ShopFileGraphQL]] = Field(default=None, repr=False, alias="shopFiles")
@@ -102,10 +102,7 @@ class ShopCaseGraphQL(GraphQLCore):
             scenario=self.scenario.as_read() if isinstance(self.scenario, GraphQLCore) else self.scenario,
             start_time=self.start_time,
             end_time=self.end_time,
-            shop_files=[
-                shop_file.as_read() if isinstance(shop_file, GraphQLCore) else shop_file
-                for shop_file in self.shop_files or []
-            ],
+            shop_files=[shop_file.as_read() for shop_file in self.shop_files or []],
         )
 
     def as_write(self) -> ShopCaseWrite:
@@ -114,13 +111,10 @@ class ShopCaseGraphQL(GraphQLCore):
             space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
-            scenario=self.scenario.as_write() if isinstance(self.scenario, DomainModel) else self.scenario,
+            scenario=self.scenario.as_write() if isinstance(self.scenario, GraphQLCore) else self.scenario,
             start_time=self.start_time,
             end_time=self.end_time,
-            shop_files=[
-                shop_file.as_write() if isinstance(shop_file, DomainModel) else shop_file
-                for shop_file in self.shop_files or []
-            ],
+            shop_files=[shop_file.as_write() for shop_file in self.shop_files or []],
         )
 
 
@@ -140,8 +134,8 @@ class ShopCase(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_power_ops_types", "ShopCase")
-    scenario: Union[ShopScenario, str, dm.NodeId, None] = Field(None, repr=False)
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopCase")
+    scenario: Union[ShopScenario, str, dm.NodeId, None] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
     shop_files: Union[list[ShopFile], list[str], list[dm.NodeId], None] = Field(
@@ -189,8 +183,8 @@ class ShopCaseWrite(DomainModelWrite):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_power_ops_types", "ShopCase")
-    scenario: Union[ShopScenarioWrite, str, dm.NodeId, None] = Field(None, repr=False)
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopCase")
+    scenario: Union[ShopScenarioWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
     shop_files: Union[list[ShopFileWrite], list[str], list[dm.NodeId], None] = Field(
@@ -208,7 +202,7 @@ class ShopCaseWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(ShopCase, dm.ViewId("sp_power_ops_models", "ShopCase", "1"))
+        write_view = (view_by_read_class or {}).get(ShopCase, dm.ViewId("power_ops_core", "ShopCase", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -240,7 +234,7 @@ class ShopCaseWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "ShopCase.shopFiles")
+        edge_type = dm.DirectRelationReference("power_ops_types", "ShopCase.shopFiles")
         for shop_file in self.shop_files or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

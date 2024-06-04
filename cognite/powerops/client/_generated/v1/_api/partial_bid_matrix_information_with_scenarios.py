@@ -34,8 +34,8 @@ from ._core import (
     QueryBuilder,
 )
 from .partial_bid_matrix_information_with_scenarios_alerts import PartialBidMatrixInformationWithScenariosAlertsAPI
-from .partial_bid_matrix_information_with_scenarios_intermediate_bid_matrices import (
-    PartialBidMatrixInformationWithScenariosIntermediateBidMatricesAPI,
+from .partial_bid_matrix_information_with_scenarios_underlying_bid_matrices import (
+    PartialBidMatrixInformationWithScenariosUnderlyingBidMatricesAPI,
 )
 from .partial_bid_matrix_information_with_scenarios_multi_scenario_input import (
     PartialBidMatrixInformationWithScenariosMultiScenarioInputAPI,
@@ -62,7 +62,7 @@ class PartialBidMatrixInformationWithScenariosAPI(
         )
         self._view_id = view_id
         self.alerts_edge = PartialBidMatrixInformationWithScenariosAlertsAPI(client)
-        self.intermediate_bid_matrices_edge = PartialBidMatrixInformationWithScenariosIntermediateBidMatricesAPI(client)
+        self.underlying_bid_matrices_edge = PartialBidMatrixInformationWithScenariosUnderlyingBidMatricesAPI(client)
         self.multi_scenario_input_edge = PartialBidMatrixInformationWithScenariosMultiScenarioInputAPI(client)
 
     def __call__(
@@ -125,7 +125,7 @@ class PartialBidMatrixInformationWithScenariosAPI(
         """Add or update (upsert) partial bid matrix information with scenarios.
 
         Note: This method iterates through all nodes and timeseries linked to partial_bid_matrix_information_with_scenario and creates them including the edges
-        between the nodes. For example, if any of `alerts`, `intermediate_bid_matrices` or `multi_scenario_input` are set, then these
+        between the nodes. For example, if any of `alerts`, `underlying_bid_matrices` or `multi_scenario_input` are set, then these
         nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
@@ -230,23 +230,23 @@ class PartialBidMatrixInformationWithScenariosAPI(
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
+                    dm.DirectRelationReference("power_ops_types", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "Alert", "1"),
+                    dm.ViewId("power_ops_core", "Alert", "1"),
                 ),
                 (
-                    self.intermediate_bid_matrices_edge,
-                    "intermediate_bid_matrices",
-                    dm.DirectRelationReference("sp_power_ops_types", "intermediateBidMatrix"),
+                    self.underlying_bid_matrices_edge,
+                    "underlying_bid_matrices",
+                    dm.DirectRelationReference("power_ops_types", "intermediateBidMatrix"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "BidMatrix", "1"),
+                    dm.ViewId("power_ops_core", "BidMatrix", "1"),
                 ),
                 (
                     self.multi_scenario_input_edge,
                     "multi_scenario_input",
-                    dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
+                    dm.DirectRelationReference("power_ops_types", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "PriceProduction", "1"),
+                    dm.ViewId("power_ops_core", "PriceProduction", "1"),
                 ),
             ],
         )
@@ -571,7 +571,7 @@ class PartialBidMatrixInformationWithScenariosAPI(
             space: The space to filter on.
             limit: Maximum number of partial bid matrix information with scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            retrieve_edges: Whether to retrieve `alerts`, `intermediate_bid_matrices` or `multi_scenario_input` external ids for the partial bid matrix information with scenarios. Defaults to True.
+            retrieve_edges: Whether to retrieve `alerts`, `underlying_bid_matrices` or `multi_scenario_input` external ids for the partial bid matrix information with scenarios. Defaults to True.
 
         Returns:
             List of requested partial bid matrix information with scenarios
@@ -606,23 +606,23 @@ class PartialBidMatrixInformationWithScenariosAPI(
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
+                    dm.DirectRelationReference("power_ops_types", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "Alert", "1"),
+                    dm.ViewId("power_ops_core", "Alert", "1"),
                 ),
                 (
-                    self.intermediate_bid_matrices_edge,
-                    "intermediate_bid_matrices",
-                    dm.DirectRelationReference("sp_power_ops_types", "intermediateBidMatrix"),
+                    self.underlying_bid_matrices_edge,
+                    "underlying_bid_matrices",
+                    dm.DirectRelationReference("power_ops_types", "intermediateBidMatrix"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "BidMatrix", "1"),
+                    dm.ViewId("power_ops_core", "BidMatrix", "1"),
                 ),
                 (
                     self.multi_scenario_input_edge,
                     "multi_scenario_input",
-                    dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
+                    dm.DirectRelationReference("power_ops_types", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "PriceProduction", "1"),
+                    dm.ViewId("power_ops_core", "PriceProduction", "1"),
                 ),
             ],
         )

@@ -61,7 +61,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -78,7 +78,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            input_: The input to filter on.
+            function_input: The function input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of function outputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -99,7 +99,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            input_,
+            function_input,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -217,9 +217,9 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
+                    dm.DirectRelationReference("power_ops_types", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "Alert", "1"),
+                    dm.ViewId("power_ops_core", "Alert", "1"),
                 ),
             ],
         )
@@ -236,7 +236,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -255,7 +255,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            input_: The input to filter on.
+            function_input: The function input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of function outputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -283,7 +283,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            input_,
+            function_input,
             external_id_prefix,
             space,
             filter,
@@ -311,7 +311,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -339,7 +339,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -366,7 +366,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -388,7 +388,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            input_: The input to filter on.
+            function_input: The function input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of function outputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -417,7 +417,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            input_,
+            function_input,
             external_id_prefix,
             space,
             filter,
@@ -448,7 +448,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -469,7 +469,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            input_: The input to filter on.
+            function_input: The function input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of function outputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -489,7 +489,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            input_,
+            function_input,
             external_id_prefix,
             space,
             filter,
@@ -515,7 +515,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -533,7 +533,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            input_: The input to filter on.
+            function_input: The function input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of function outputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -562,7 +562,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            input_,
+            function_input,
             external_id_prefix,
             space,
             filter,
@@ -576,9 +576,9 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
+                    dm.DirectRelationReference("power_ops_types", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "Alert", "1"),
+                    dm.ViewId("power_ops_core", "Alert", "1"),
                 ),
             ],
         )

@@ -43,7 +43,7 @@ class GeneratorTurbineEfficiencyCurvesAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("sp_power_ops_types", "isSubAssetOf"),
+            dm.DirectRelationReference("power_ops_types", "isSubAssetOf"),
             from_generator,
             from_generator_space,
             to_turbine_efficiency_curve,

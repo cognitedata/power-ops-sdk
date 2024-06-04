@@ -43,7 +43,7 @@ class BidDocumentDayAheadPartialsAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("sp_power_ops_types", "partialBid"),
+            dm.DirectRelationReference("power_ops_types", "partialBid"),
             from_bid_document_day_ahead,
             from_bid_document_day_ahead_space,
             to_partial_bid_matrix_information,

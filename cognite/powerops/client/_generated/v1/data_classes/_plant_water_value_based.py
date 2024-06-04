@@ -124,7 +124,7 @@ class PlantWaterValueBasedGraphQL(GraphQLCore):
         generators: The generator field.
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "PlantWaterValueBased", "1")
+    view_id = dm.ViewId("power_ops_core", "PlantWaterValueBased", "1")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
@@ -133,7 +133,7 @@ class PlantWaterValueBasedGraphQL(GraphQLCore):
     outlet_level: Optional[float] = Field(None, alias="outletLevel")
     production_max: Optional[float] = Field(None, alias="productionMax")
     production_min: Optional[float] = Field(None, alias="productionMin")
-    penstock_head_loss_factors: Optional[dict] = Field(None, alias="penstockHeadLossFactors")
+    penstock_head_loss_factors: Optional[list[float]] = Field(None, alias="penstockHeadLossFactors")
     connection_losses: Optional[float] = Field(None, alias="connectionLosses")
     production_max_time_series: Union[TimeSeries, dict, None] = Field(None, alias="productionMaxTimeSeries")
     production_min_time_series: Union[TimeSeries, dict, None] = Field(None, alias="productionMinTimeSeries")
@@ -192,10 +192,7 @@ class PlantWaterValueBasedGraphQL(GraphQLCore):
             outlet_level_time_series=self.outlet_level_time_series,
             inlet_level_time_series=self.inlet_level_time_series,
             head_direct_time_series=self.head_direct_time_series,
-            generators=[
-                generator.as_read() if isinstance(generator, GraphQLCore) else generator
-                for generator in self.generators or []
-            ],
+            generators=[generator.as_read() for generator in self.generators or []],
         )
 
     def as_write(self) -> PlantWaterValueBasedWrite:
@@ -221,10 +218,7 @@ class PlantWaterValueBasedGraphQL(GraphQLCore):
             outlet_level_time_series=self.outlet_level_time_series,
             inlet_level_time_series=self.inlet_level_time_series,
             head_direct_time_series=self.head_direct_time_series,
-            generators=[
-                generator.as_write() if isinstance(generator, DomainModel) else generator
-                for generator in self.generators or []
-            ],
+            generators=[generator.as_write() for generator in self.generators or []],
         )
 
 
@@ -257,14 +251,12 @@ class PlantWaterValueBased(Plant):
         generators: The generator field.
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "PlantWaterValueBased"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = None
     head_loss_factor: Optional[float] = Field(None, alias="headLossFactor")
     outlet_level: Optional[float] = Field(None, alias="outletLevel")
     production_max: Optional[float] = Field(None, alias="productionMax")
     production_min: Optional[float] = Field(None, alias="productionMin")
-    penstock_head_loss_factors: Optional[dict] = Field(None, alias="penstockHeadLossFactors")
+    penstock_head_loss_factors: Optional[list[float]] = Field(None, alias="penstockHeadLossFactors")
     connection_losses: Optional[float] = Field(None, alias="connectionLosses")
     production_max_time_series: Union[TimeSeries, str, None] = Field(None, alias="productionMaxTimeSeries")
     production_min_time_series: Union[TimeSeries, str, None] = Field(None, alias="productionMinTimeSeries")
@@ -343,14 +335,12 @@ class PlantWaterValueBasedWrite(PlantWrite):
         generators: The generator field.
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "PlantWaterValueBased"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = None
     head_loss_factor: Optional[float] = Field(None, alias="headLossFactor")
     outlet_level: Optional[float] = Field(None, alias="outletLevel")
     production_max: Optional[float] = Field(None, alias="productionMax")
     production_min: Optional[float] = Field(None, alias="productionMin")
-    penstock_head_loss_factors: Optional[dict] = Field(None, alias="penstockHeadLossFactors")
+    penstock_head_loss_factors: Optional[list[float]] = Field(None, alias="penstockHeadLossFactors")
     connection_losses: Optional[float] = Field(None, alias="connectionLosses")
     production_max_time_series: Union[TimeSeries, str, None] = Field(None, alias="productionMaxTimeSeries")
     production_min_time_series: Union[TimeSeries, str, None] = Field(None, alias="productionMinTimeSeries")
@@ -373,7 +363,7 @@ class PlantWaterValueBasedWrite(PlantWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            PlantWaterValueBased, dm.ViewId("sp_power_ops_models", "PlantWaterValueBased", "1")
+            PlantWaterValueBased, dm.ViewId("power_ops_core", "PlantWaterValueBased", "1")
         )
 
         properties: dict[str, Any] = {}
@@ -409,46 +399,53 @@ class PlantWaterValueBasedWrite(PlantWrite):
             properties["connectionLosses"] = self.connection_losses
 
         if self.production_max_time_series is not None or write_none:
-            if isinstance(self.production_max_time_series, str) or self.production_max_time_series is None:
-                properties["productionMaxTimeSeries"] = self.production_max_time_series
-            else:
-                properties["productionMaxTimeSeries"] = self.production_max_time_series.external_id
+            properties["productionMaxTimeSeries"] = (
+                self.production_max_time_series
+                if isinstance(self.production_max_time_series, str) or self.production_max_time_series is None
+                else self.production_max_time_series.external_id
+            )
 
         if self.production_min_time_series is not None or write_none:
-            if isinstance(self.production_min_time_series, str) or self.production_min_time_series is None:
-                properties["productionMinTimeSeries"] = self.production_min_time_series
-            else:
-                properties["productionMinTimeSeries"] = self.production_min_time_series.external_id
+            properties["productionMinTimeSeries"] = (
+                self.production_min_time_series
+                if isinstance(self.production_min_time_series, str) or self.production_min_time_series is None
+                else self.production_min_time_series.external_id
+            )
 
         if self.water_value_time_series is not None or write_none:
-            if isinstance(self.water_value_time_series, str) or self.water_value_time_series is None:
-                properties["waterValueTimeSeries"] = self.water_value_time_series
-            else:
-                properties["waterValueTimeSeries"] = self.water_value_time_series.external_id
+            properties["waterValueTimeSeries"] = (
+                self.water_value_time_series
+                if isinstance(self.water_value_time_series, str) or self.water_value_time_series is None
+                else self.water_value_time_series.external_id
+            )
 
         if self.feeding_fee_time_series is not None or write_none:
-            if isinstance(self.feeding_fee_time_series, str) or self.feeding_fee_time_series is None:
-                properties["feedingFeeTimeSeries"] = self.feeding_fee_time_series
-            else:
-                properties["feedingFeeTimeSeries"] = self.feeding_fee_time_series.external_id
+            properties["feedingFeeTimeSeries"] = (
+                self.feeding_fee_time_series
+                if isinstance(self.feeding_fee_time_series, str) or self.feeding_fee_time_series is None
+                else self.feeding_fee_time_series.external_id
+            )
 
         if self.outlet_level_time_series is not None or write_none:
-            if isinstance(self.outlet_level_time_series, str) or self.outlet_level_time_series is None:
-                properties["outletLevelTimeSeries"] = self.outlet_level_time_series
-            else:
-                properties["outletLevelTimeSeries"] = self.outlet_level_time_series.external_id
+            properties["outletLevelTimeSeries"] = (
+                self.outlet_level_time_series
+                if isinstance(self.outlet_level_time_series, str) or self.outlet_level_time_series is None
+                else self.outlet_level_time_series.external_id
+            )
 
         if self.inlet_level_time_series is not None or write_none:
-            if isinstance(self.inlet_level_time_series, str) or self.inlet_level_time_series is None:
-                properties["inletLevelTimeSeries"] = self.inlet_level_time_series
-            else:
-                properties["inletLevelTimeSeries"] = self.inlet_level_time_series.external_id
+            properties["inletLevelTimeSeries"] = (
+                self.inlet_level_time_series
+                if isinstance(self.inlet_level_time_series, str) or self.inlet_level_time_series is None
+                else self.inlet_level_time_series.external_id
+            )
 
         if self.head_direct_time_series is not None or write_none:
-            if isinstance(self.head_direct_time_series, str) or self.head_direct_time_series is None:
-                properties["headDirectTimeSeries"] = self.head_direct_time_series
-            else:
-                properties["headDirectTimeSeries"] = self.head_direct_time_series.external_id
+            properties["headDirectTimeSeries"] = (
+                self.head_direct_time_series
+                if isinstance(self.head_direct_time_series, str) or self.head_direct_time_series is None
+                else self.head_direct_time_series.external_id
+            )
 
         if properties:
             this_node = dm.NodeApply(
@@ -466,7 +463,7 @@ class PlantWaterValueBasedWrite(PlantWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "isSubAssetOf")
+        edge_type = dm.DirectRelationReference("power_ops_types", "isSubAssetOf")
         for generator in self.generators or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

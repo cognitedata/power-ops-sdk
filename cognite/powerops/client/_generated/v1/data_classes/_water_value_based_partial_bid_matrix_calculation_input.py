@@ -87,15 +87,17 @@ class WaterValueBasedPartialBidMatrixCalculationInputGraphQL(GraphQLCore):
         partial_bid_configuration: The partial bid configuration related to the bid calculation task
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "WaterValueBasedPartialBidMatrixCalculationInput", "1")
+    view_id = dm.ViewId("power_ops_core", "WaterValueBasedPartialBidMatrixCalculationInput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
     function_call_id: Optional[str] = Field(None, alias="functionCallId")
     bid_date: Optional[datetime.date] = Field(None, alias="bidDate")
-    bid_configuration: Optional[BidConfigurationDayAheadGraphQL] = Field(None, repr=False, alias="bidConfiguration")
+    bid_configuration: Optional[BidConfigurationDayAheadGraphQL] = Field(
+        default=None, repr=False, alias="bidConfiguration"
+    )
     partial_bid_configuration: Optional[WaterValueBasedPartialBidConfigurationGraphQL] = Field(
-        None, repr=False, alias="partialBidConfiguration"
+        default=None, repr=False, alias="partialBidConfiguration"
     )
 
     @model_validator(mode="before")
@@ -159,12 +161,12 @@ class WaterValueBasedPartialBidMatrixCalculationInputGraphQL(GraphQLCore):
             bid_date=self.bid_date,
             bid_configuration=(
                 self.bid_configuration.as_write()
-                if isinstance(self.bid_configuration, DomainModel)
+                if isinstance(self.bid_configuration, GraphQLCore)
                 else self.bid_configuration
             ),
             partial_bid_configuration=(
                 self.partial_bid_configuration.as_write()
-                if isinstance(self.partial_bid_configuration, DomainModel)
+                if isinstance(self.partial_bid_configuration, GraphQLCore)
                 else self.partial_bid_configuration
             ),
         )
@@ -189,7 +191,7 @@ class WaterValueBasedPartialBidMatrixCalculationInput(PartialBidMatrixCalculatio
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "WaterValueBasedPartialBidMatrixCalculationInput"
+        "power_ops_types", "WaterValueBasedPartialBidMatrixCalculationInput"
     )
 
     def as_write(self) -> WaterValueBasedPartialBidMatrixCalculationInputWrite:
@@ -244,7 +246,7 @@ class WaterValueBasedPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalcu
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "WaterValueBasedPartialBidMatrixCalculationInput"
+        "power_ops_types", "WaterValueBasedPartialBidMatrixCalculationInput"
     )
 
     def _to_instances_write(
@@ -260,7 +262,7 @@ class WaterValueBasedPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalcu
 
         write_view = (view_by_read_class or {}).get(
             WaterValueBasedPartialBidMatrixCalculationInput,
-            dm.ViewId("sp_power_ops_models", "WaterValueBasedPartialBidMatrixCalculationInput", "1"),
+            dm.ViewId("power_ops_core", "WaterValueBasedPartialBidMatrixCalculationInput", "1"),
         )
 
         properties: dict[str, Any] = {}

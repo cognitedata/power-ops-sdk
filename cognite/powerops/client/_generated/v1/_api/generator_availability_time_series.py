@@ -19,8 +19,8 @@ ColumnNames = Literal[
     "assetType",
     "productionMin",
     "penstockNumber",
-    "startCost",
     "startStopCost",
+    "startStopCostTimeSeries",
     "availabilityTimeSeries",
 ]
 
@@ -381,8 +381,8 @@ class GeneratorAvailabilityTimeSeriesAPI:
         max_production_min: float | None = None,
         min_penstock_number: int | None = None,
         max_penstock_number: int | None = None,
-        min_start_cost: float | None = None,
-        max_start_cost: float | None = None,
+        min_start_stop_cost: float | None = None,
+        max_start_stop_cost: float | None = None,
         generator_efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -404,8 +404,8 @@ class GeneratorAvailabilityTimeSeriesAPI:
             max_production_min: The maximum value of the production min to filter on.
             min_penstock_number: The minimum value of the penstock number to filter on.
             max_penstock_number: The maximum value of the penstock number to filter on.
-            min_start_cost: The minimum value of the start cost to filter on.
-            max_start_cost: The maximum value of the start cost to filter on.
+            min_start_stop_cost: The minimum value of the start stop cost to filter on.
+            max_start_stop_cost: The maximum value of the start stop cost to filter on.
             generator_efficiency_curve: The generator efficiency curve to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -439,8 +439,8 @@ class GeneratorAvailabilityTimeSeriesAPI:
             max_production_min,
             min_penstock_number,
             max_penstock_number,
-            min_start_cost,
-            max_start_cost,
+            min_start_stop_cost,
+            max_start_stop_cost,
             generator_efficiency_curve,
             external_id_prefix,
             space,
@@ -468,8 +468,8 @@ class GeneratorAvailabilityTimeSeriesAPI:
         max_production_min: float | None = None,
         min_penstock_number: int | None = None,
         max_penstock_number: int | None = None,
-        min_start_cost: float | None = None,
-        max_start_cost: float | None = None,
+        min_start_stop_cost: float | None = None,
+        max_start_stop_cost: float | None = None,
         generator_efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -491,8 +491,8 @@ class GeneratorAvailabilityTimeSeriesAPI:
             max_production_min: The maximum value of the production min to filter on.
             min_penstock_number: The minimum value of the penstock number to filter on.
             max_penstock_number: The maximum value of the penstock number to filter on.
-            min_start_cost: The minimum value of the start cost to filter on.
-            max_start_cost: The maximum value of the start cost to filter on.
+            min_start_stop_cost: The minimum value of the start stop cost to filter on.
+            max_start_stop_cost: The maximum value of the start stop cost to filter on.
             generator_efficiency_curve: The generator efficiency curve to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -525,8 +525,8 @@ class GeneratorAvailabilityTimeSeriesAPI:
             max_production_min,
             min_penstock_number,
             max_penstock_number,
-            min_start_cost,
-            max_start_cost,
+            min_start_stop_cost,
+            max_start_stop_cost,
             generator_efficiency_curve,
             external_id_prefix,
             space,

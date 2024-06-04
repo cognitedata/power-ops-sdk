@@ -59,8 +59,7 @@ class BidConfigurationDayAheadAPI(
         name_prefix: str | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        bid_date_specification: str | list[str] | None = None,
-        bid_date_specification_prefix: str | None = None,
+        bid_date_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -74,7 +73,6 @@ class BidConfigurationDayAheadAPI(
             market_configuration: The market configuration to filter on.
             price_area: The price area to filter on.
             bid_date_specification: The bid date specification to filter on.
-            bid_date_specification_prefix: The prefix of the bid date specification to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid configuration day aheads to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -92,7 +90,6 @@ class BidConfigurationDayAheadAPI(
             market_configuration,
             price_area,
             bid_date_specification,
-            bid_date_specification_prefix,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -212,9 +209,9 @@ class BidConfigurationDayAheadAPI(
                 (
                     self.partials_edge,
                     "partials",
-                    dm.DirectRelationReference("sp_power_ops_types", "BidConfiguration.partials"),
+                    dm.DirectRelationReference("power_ops_types", "BidConfiguration.partials"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "PartialBidConfiguration", "1"),
+                    dm.ViewId("power_ops_core", "PartialBidConfiguration", "1"),
                 ),
             ],
         )
@@ -227,8 +224,7 @@ class BidConfigurationDayAheadAPI(
         name_prefix: str | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        bid_date_specification: str | list[str] | None = None,
-        bid_date_specification_prefix: str | None = None,
+        bid_date_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -244,7 +240,6 @@ class BidConfigurationDayAheadAPI(
             market_configuration: The market configuration to filter on.
             price_area: The price area to filter on.
             bid_date_specification: The bid date specification to filter on.
-            bid_date_specification_prefix: The prefix of the bid date specification to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid configuration day aheads to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -269,7 +264,6 @@ class BidConfigurationDayAheadAPI(
             market_configuration,
             price_area,
             bid_date_specification,
-            bid_date_specification_prefix,
             external_id_prefix,
             space,
             filter,
@@ -297,8 +291,7 @@ class BidConfigurationDayAheadAPI(
         name_prefix: str | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        bid_date_specification: str | list[str] | None = None,
-        bid_date_specification_prefix: str | None = None,
+        bid_date_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -324,8 +317,7 @@ class BidConfigurationDayAheadAPI(
         name_prefix: str | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        bid_date_specification: str | list[str] | None = None,
-        bid_date_specification_prefix: str | None = None,
+        bid_date_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -350,8 +342,7 @@ class BidConfigurationDayAheadAPI(
         name_prefix: str | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        bid_date_specification: str | list[str] | None = None,
-        bid_date_specification_prefix: str | None = None,
+        bid_date_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -370,7 +361,6 @@ class BidConfigurationDayAheadAPI(
             market_configuration: The market configuration to filter on.
             price_area: The price area to filter on.
             bid_date_specification: The bid date specification to filter on.
-            bid_date_specification_prefix: The prefix of the bid date specification to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid configuration day aheads to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -396,7 +386,6 @@ class BidConfigurationDayAheadAPI(
             market_configuration,
             price_area,
             bid_date_specification,
-            bid_date_specification_prefix,
             external_id_prefix,
             space,
             filter,
@@ -425,8 +414,7 @@ class BidConfigurationDayAheadAPI(
         name_prefix: str | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        bid_date_specification: str | list[str] | None = None,
-        bid_date_specification_prefix: str | None = None,
+        bid_date_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -444,7 +432,6 @@ class BidConfigurationDayAheadAPI(
             market_configuration: The market configuration to filter on.
             price_area: The price area to filter on.
             bid_date_specification: The bid date specification to filter on.
-            bid_date_specification_prefix: The prefix of the bid date specification to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid configuration day aheads to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -461,7 +448,6 @@ class BidConfigurationDayAheadAPI(
             market_configuration,
             price_area,
             bid_date_specification,
-            bid_date_specification_prefix,
             external_id_prefix,
             space,
             filter,
@@ -483,8 +469,7 @@ class BidConfigurationDayAheadAPI(
         name_prefix: str | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        bid_date_specification: str | list[str] | None = None,
-        bid_date_specification_prefix: str | None = None,
+        bid_date_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -499,7 +484,6 @@ class BidConfigurationDayAheadAPI(
             market_configuration: The market configuration to filter on.
             price_area: The price area to filter on.
             bid_date_specification: The bid date specification to filter on.
-            bid_date_specification_prefix: The prefix of the bid date specification to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid configuration day aheads to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -525,7 +509,6 @@ class BidConfigurationDayAheadAPI(
             market_configuration,
             price_area,
             bid_date_specification,
-            bid_date_specification_prefix,
             external_id_prefix,
             space,
             filter,
@@ -539,9 +522,9 @@ class BidConfigurationDayAheadAPI(
                 (
                     self.partials_edge,
                     "partials",
-                    dm.DirectRelationReference("sp_power_ops_types", "BidConfiguration.partials"),
+                    dm.DirectRelationReference("power_ops_types", "BidConfiguration.partials"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "PartialBidConfiguration", "1"),
+                    dm.ViewId("power_ops_core", "PartialBidConfiguration", "1"),
                 ),
             ],
         )

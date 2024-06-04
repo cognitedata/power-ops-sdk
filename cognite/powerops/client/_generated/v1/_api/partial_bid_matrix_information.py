@@ -34,9 +34,7 @@ from ._core import (
     QueryBuilder,
 )
 from .partial_bid_matrix_information_alerts import PartialBidMatrixInformationAlertsAPI
-from .partial_bid_matrix_information_intermediate_bid_matrices import (
-    PartialBidMatrixInformationIntermediateBidMatricesAPI,
-)
+from .partial_bid_matrix_information_underlying_bid_matrices import PartialBidMatrixInformationUnderlyingBidMatricesAPI
 from .partial_bid_matrix_information_query import PartialBidMatrixInformationQueryAPI
 
 
@@ -55,7 +53,7 @@ class PartialBidMatrixInformationAPI(
         )
         self._view_id = view_id
         self.alerts_edge = PartialBidMatrixInformationAlertsAPI(client)
-        self.intermediate_bid_matrices_edge = PartialBidMatrixInformationIntermediateBidMatricesAPI(client)
+        self.underlying_bid_matrices_edge = PartialBidMatrixInformationUnderlyingBidMatricesAPI(client)
 
     def __call__(
         self,
@@ -113,7 +111,7 @@ class PartialBidMatrixInformationAPI(
         """Add or update (upsert) partial bid matrix information.
 
         Note: This method iterates through all nodes and timeseries linked to partial_bid_matrix_information and creates them including the edges
-        between the nodes. For example, if any of `alerts` or `intermediate_bid_matrices` are set, then these
+        between the nodes. For example, if any of `alerts` or `underlying_bid_matrices` are set, then these
         nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
@@ -216,16 +214,16 @@ class PartialBidMatrixInformationAPI(
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
+                    dm.DirectRelationReference("power_ops_types", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "Alert", "1"),
+                    dm.ViewId("power_ops_core", "Alert", "1"),
                 ),
                 (
-                    self.intermediate_bid_matrices_edge,
-                    "intermediate_bid_matrices",
-                    dm.DirectRelationReference("sp_power_ops_types", "intermediateBidMatrix"),
+                    self.underlying_bid_matrices_edge,
+                    "underlying_bid_matrices",
+                    dm.DirectRelationReference("power_ops_types", "intermediateBidMatrix"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "BidMatrix", "1"),
+                    dm.ViewId("power_ops_core", "BidMatrix", "1"),
                 ),
             ],
         )
@@ -517,7 +515,7 @@ class PartialBidMatrixInformationAPI(
             space: The space to filter on.
             limit: Maximum number of partial bid matrix information to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            retrieve_edges: Whether to retrieve `alerts` or `intermediate_bid_matrices` external ids for the partial bid matrix information. Defaults to True.
+            retrieve_edges: Whether to retrieve `alerts` or `underlying_bid_matrices` external ids for the partial bid matrix information. Defaults to True.
 
         Returns:
             List of requested partial bid matrix information
@@ -552,16 +550,16 @@ class PartialBidMatrixInformationAPI(
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
+                    dm.DirectRelationReference("power_ops_types", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "Alert", "1"),
+                    dm.ViewId("power_ops_core", "Alert", "1"),
                 ),
                 (
-                    self.intermediate_bid_matrices_edge,
-                    "intermediate_bid_matrices",
-                    dm.DirectRelationReference("sp_power_ops_types", "intermediateBidMatrix"),
+                    self.underlying_bid_matrices_edge,
+                    "underlying_bid_matrices",
+                    dm.DirectRelationReference("power_ops_types", "intermediateBidMatrix"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "BidMatrix", "1"),
+                    dm.ViewId("power_ops_core", "BidMatrix", "1"),
                 ),
             ],
         )

@@ -78,7 +78,7 @@ class BidRowGraphQL(GraphQLCore):
         alerts: An array of associated alerts.
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "BidRow", "1")
+    view_id = dm.ViewId("power_ops_core", "BidRow", "1")
     price: Optional[float] = None
     quantity_per_hour: Optional[list[float]] = Field(None, alias="quantityPerHour")
     product: Optional[str] = None
@@ -86,8 +86,8 @@ class BidRowGraphQL(GraphQLCore):
     min_quantity: Optional[list[float]] = Field(None, alias="minQuantity")
     is_block: Optional[bool] = Field(None, alias="isBlock")
     exclusive_group_id: Optional[str] = Field(None, alias="exclusiveGroupId")
-    linked_bid: Optional[BidRowGraphQL] = Field(None, repr=False, alias="linkedBid")
-    power_asset: Optional[PowerAssetGraphQL] = Field(None, repr=False, alias="powerAsset")
+    linked_bid: Optional[BidRowGraphQL] = Field(default=None, repr=False, alias="linkedBid")
+    power_asset: Optional[PowerAssetGraphQL] = Field(default=None, repr=False, alias="powerAsset")
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
 
     @model_validator(mode="before")
@@ -130,7 +130,7 @@ class BidRowGraphQL(GraphQLCore):
             exclusive_group_id=self.exclusive_group_id,
             linked_bid=self.linked_bid.as_read() if isinstance(self.linked_bid, GraphQLCore) else self.linked_bid,
             power_asset=self.power_asset.as_read() if isinstance(self.power_asset, GraphQLCore) else self.power_asset,
-            alerts=[alert.as_read() if isinstance(alert, GraphQLCore) else alert for alert in self.alerts or []],
+            alerts=[alert.as_read() for alert in self.alerts or []],
         )
 
     def as_write(self) -> BidRowWrite:
@@ -146,9 +146,9 @@ class BidRowGraphQL(GraphQLCore):
             min_quantity=self.min_quantity,
             is_block=self.is_block,
             exclusive_group_id=self.exclusive_group_id,
-            linked_bid=self.linked_bid.as_write() if isinstance(self.linked_bid, DomainModel) else self.linked_bid,
-            power_asset=self.power_asset.as_write() if isinstance(self.power_asset, DomainModel) else self.power_asset,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
+            linked_bid=self.linked_bid.as_write() if isinstance(self.linked_bid, GraphQLCore) else self.linked_bid,
+            power_asset=self.power_asset.as_write() if isinstance(self.power_asset, GraphQLCore) else self.power_asset,
+            alerts=[alert.as_write() for alert in self.alerts or []],
         )
 
 
@@ -174,7 +174,7 @@ class BidRow(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_power_ops_types", "BidRow")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "BidRow")
     price: Optional[float] = None
     quantity_per_hour: Optional[list[float]] = Field(None, alias="quantityPerHour")
     product: Optional[str] = None
@@ -182,8 +182,8 @@ class BidRow(DomainModel):
     min_quantity: Optional[list[float]] = Field(None, alias="minQuantity")
     is_block: Optional[bool] = Field(None, alias="isBlock")
     exclusive_group_id: Optional[str] = Field(None, alias="exclusiveGroupId")
-    linked_bid: Union[BidRow, str, dm.NodeId, None] = Field(None, repr=False, alias="linkedBid")
-    power_asset: Union[PowerAsset, str, dm.NodeId, None] = Field(None, repr=False, alias="powerAsset")
+    linked_bid: Union[BidRow, str, dm.NodeId, None] = Field(default=None, repr=False, alias="linkedBid")
+    power_asset: Union[PowerAsset, str, dm.NodeId, None] = Field(default=None, repr=False, alias="powerAsset")
     alerts: Union[list[Alert], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
     def as_write(self) -> BidRowWrite:
@@ -236,7 +236,7 @@ class BidRowWrite(DomainModelWrite):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_power_ops_types", "BidRow")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "BidRow")
     price: Optional[float] = None
     quantity_per_hour: Optional[list[float]] = Field(None, alias="quantityPerHour")
     product: Optional[str] = None
@@ -244,8 +244,8 @@ class BidRowWrite(DomainModelWrite):
     min_quantity: Optional[list[float]] = Field(None, alias="minQuantity")
     is_block: Optional[bool] = Field(None, alias="isBlock")
     exclusive_group_id: Optional[str] = Field(None, alias="exclusiveGroupId")
-    linked_bid: Union[BidRowWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="linkedBid")
-    power_asset: Union[PowerAssetWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="powerAsset")
+    linked_bid: Union[BidRowWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="linkedBid")
+    power_asset: Union[PowerAssetWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="powerAsset")
     alerts: Union[list[AlertWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
     def _to_instances_write(
@@ -259,7 +259,7 @@ class BidRowWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(BidRow, dm.ViewId("sp_power_ops_models", "BidRow", "1"))
+        write_view = (view_by_read_class or {}).get(BidRow, dm.ViewId("power_ops_core", "BidRow", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -312,7 +312,7 @@ class BidRowWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "calculationIssue")
+        edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

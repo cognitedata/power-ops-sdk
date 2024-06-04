@@ -14,9 +14,9 @@ from cognite.powerops.utils.serialization import chdir
 
 REPO_ROOT = Path(__file__).parent.parent
 # TODO: update space to not be temp
-INSTANCE_SPACE = "sp_power_ops_instance"
-MODEL_SPACE = "sp_power_ops_models"
-TYPE_SPACE = "sp_power_ops_types"
+INSTANCE_SPACE = "power_ops_instances"
+MODEL_SPACE = "power_ops_core"
+TYPE_SPACE = "power_ops_types"
 # TODO: consider adding a separate space for mock data
 
 
@@ -112,6 +112,8 @@ def clean_instances():
     t0 = time.perf_counter()
     spaces = [MODEL_SPACE, INSTANCE_SPACE, TYPE_SPACE]
 
+    print(f"Connected to {client.config.project}")
+
     for space in spaces:
 
         for edges in client.data_modeling.instances(instance_type="edge", space=space, limit=-1, chunk_size=100):
@@ -150,6 +152,8 @@ def clean_containers_views_data_models():
         client = get_cognite_client()
     t0 = time.perf_counter()
     spaces = [MODEL_SPACE, INSTANCE_SPACE, TYPE_SPACE]
+
+    print(f"Connected to {client.config.project}")
 
     for space in spaces:
         views = client.data_modeling.views.list(space=space, limit=-1, all_versions=True).as_ids()

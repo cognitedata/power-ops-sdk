@@ -50,7 +50,9 @@ __all__ = [
 ]
 
 
-GeneratorTextFields = Literal["name", "display_name", "asset_type", "start_stop_cost", "availability_time_series"]
+GeneratorTextFields = Literal[
+    "name", "display_name", "asset_type", "start_stop_cost_time_series", "availability_time_series"
+]
 GeneratorFields = Literal[
     "name",
     "display_name",
@@ -58,8 +60,8 @@ GeneratorFields = Literal[
     "asset_type",
     "production_min",
     "penstock_number",
-    "start_cost",
     "start_stop_cost",
+    "start_stop_cost_time_series",
     "availability_time_series",
 ]
 
@@ -70,8 +72,8 @@ _GENERATOR_PROPERTIES_BY_FIELD = {
     "asset_type": "assetType",
     "production_min": "productionMin",
     "penstock_number": "penstockNumber",
-    "start_cost": "startCost",
     "start_stop_cost": "startStopCost",
+    "start_stop_cost_time_series": "startStopCostTimeSeries",
     "availability_time_series": "availabilityTimeSeries",
 }
 
@@ -92,25 +94,25 @@ class GeneratorGraphQL(GraphQLCore):
         asset_type: The type of the asset
         production_min: The production min field.
         penstock_number: The penstock number field.
-        start_cost: The start cost field.
         start_stop_cost: The start stop cost field.
+        start_stop_cost_time_series: The start stop cost time series field.
         availability_time_series: The availability time series field.
         generator_efficiency_curve: The generator efficiency curve field.
         turbine_efficiency_curves: TODO description
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "Generator", "1")
+    view_id = dm.ViewId("power_ops_core", "Generator", "1")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
     asset_type: Optional[str] = Field(None, alias="assetType")
     production_min: Optional[float] = Field(None, alias="productionMin")
     penstock_number: Optional[int] = Field(None, alias="penstockNumber")
-    start_cost: Optional[float] = Field(None, alias="startCost")
-    start_stop_cost: Union[TimeSeries, dict, None] = Field(None, alias="startStopCost")
+    start_stop_cost: Optional[float] = Field(None, alias="startStopCost")
+    start_stop_cost_time_series: Union[TimeSeries, dict, None] = Field(None, alias="startStopCostTimeSeries")
     availability_time_series: Union[TimeSeries, dict, None] = Field(None, alias="availabilityTimeSeries")
     generator_efficiency_curve: Optional[GeneratorEfficiencyCurveGraphQL] = Field(
-        None, repr=False, alias="generatorEfficiencyCurve"
+        default=None, repr=False, alias="generatorEfficiencyCurve"
     )
     turbine_efficiency_curves: Optional[list[TurbineEfficiencyCurveGraphQL]] = Field(
         default=None, repr=False, alias="turbineEfficiencyCurves"
@@ -153,8 +155,8 @@ class GeneratorGraphQL(GraphQLCore):
             asset_type=self.asset_type,
             production_min=self.production_min,
             penstock_number=self.penstock_number,
-            start_cost=self.start_cost,
             start_stop_cost=self.start_stop_cost,
+            start_stop_cost_time_series=self.start_stop_cost_time_series,
             availability_time_series=self.availability_time_series,
             generator_efficiency_curve=(
                 self.generator_efficiency_curve.as_read()
@@ -162,12 +164,7 @@ class GeneratorGraphQL(GraphQLCore):
                 else self.generator_efficiency_curve
             ),
             turbine_efficiency_curves=[
-                (
-                    turbine_efficiency_curve.as_read()
-                    if isinstance(turbine_efficiency_curve, GraphQLCore)
-                    else turbine_efficiency_curve
-                )
-                for turbine_efficiency_curve in self.turbine_efficiency_curves or []
+                turbine_efficiency_curve.as_read() for turbine_efficiency_curve in self.turbine_efficiency_curves or []
             ],
         )
 
@@ -183,21 +180,16 @@ class GeneratorGraphQL(GraphQLCore):
             asset_type=self.asset_type,
             production_min=self.production_min,
             penstock_number=self.penstock_number,
-            start_cost=self.start_cost,
             start_stop_cost=self.start_stop_cost,
+            start_stop_cost_time_series=self.start_stop_cost_time_series,
             availability_time_series=self.availability_time_series,
             generator_efficiency_curve=(
                 self.generator_efficiency_curve.as_write()
-                if isinstance(self.generator_efficiency_curve, DomainModel)
+                if isinstance(self.generator_efficiency_curve, GraphQLCore)
                 else self.generator_efficiency_curve
             ),
             turbine_efficiency_curves=[
-                (
-                    turbine_efficiency_curve.as_write()
-                    if isinstance(turbine_efficiency_curve, DomainModel)
-                    else turbine_efficiency_curve
-                )
-                for turbine_efficiency_curve in self.turbine_efficiency_curves or []
+                turbine_efficiency_curve.as_write() for turbine_efficiency_curve in self.turbine_efficiency_curves or []
             ],
         )
 
@@ -217,21 +209,21 @@ class Generator(PowerAsset):
         asset_type: The type of the asset
         production_min: The production min field.
         penstock_number: The penstock number field.
-        start_cost: The start cost field.
         start_stop_cost: The start stop cost field.
+        start_stop_cost_time_series: The start stop cost time series field.
         availability_time_series: The availability time series field.
         generator_efficiency_curve: The generator efficiency curve field.
         turbine_efficiency_curves: TODO description
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_power_ops_types", "Generator")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "Generator")
     production_min: float = Field(alias="productionMin")
     penstock_number: int = Field(alias="penstockNumber")
-    start_cost: float = Field(alias="startCost")
-    start_stop_cost: Union[TimeSeries, str, None] = Field(None, alias="startStopCost")
+    start_stop_cost: float = Field(alias="startStopCost")
+    start_stop_cost_time_series: Union[TimeSeries, str, None] = Field(None, alias="startStopCostTimeSeries")
     availability_time_series: Union[TimeSeries, str, None] = Field(None, alias="availabilityTimeSeries")
     generator_efficiency_curve: Union[GeneratorEfficiencyCurve, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="generatorEfficiencyCurve"
+        default=None, repr=False, alias="generatorEfficiencyCurve"
     )
     turbine_efficiency_curves: Union[list[TurbineEfficiencyCurve], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="turbineEfficiencyCurves"
@@ -249,8 +241,8 @@ class Generator(PowerAsset):
             asset_type=self.asset_type,
             production_min=self.production_min,
             penstock_number=self.penstock_number,
-            start_cost=self.start_cost,
             start_stop_cost=self.start_stop_cost,
+            start_stop_cost_time_series=self.start_stop_cost_time_series,
             availability_time_series=self.availability_time_series,
             generator_efficiency_curve=(
                 self.generator_efficiency_curve.as_write()
@@ -292,21 +284,21 @@ class GeneratorWrite(PowerAssetWrite):
         asset_type: The type of the asset
         production_min: The production min field.
         penstock_number: The penstock number field.
-        start_cost: The start cost field.
         start_stop_cost: The start stop cost field.
+        start_stop_cost_time_series: The start stop cost time series field.
         availability_time_series: The availability time series field.
         generator_efficiency_curve: The generator efficiency curve field.
         turbine_efficiency_curves: TODO description
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_power_ops_types", "Generator")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "Generator")
     production_min: float = Field(alias="productionMin")
     penstock_number: int = Field(alias="penstockNumber")
-    start_cost: float = Field(alias="startCost")
-    start_stop_cost: Union[TimeSeries, str, None] = Field(None, alias="startStopCost")
+    start_stop_cost: float = Field(alias="startStopCost")
+    start_stop_cost_time_series: Union[TimeSeries, str, None] = Field(None, alias="startStopCostTimeSeries")
     availability_time_series: Union[TimeSeries, str, None] = Field(None, alias="availabilityTimeSeries")
     generator_efficiency_curve: Union[GeneratorEfficiencyCurveWrite, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="generatorEfficiencyCurve"
+        default=None, repr=False, alias="generatorEfficiencyCurve"
     )
     turbine_efficiency_curves: Union[list[TurbineEfficiencyCurveWrite], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="turbineEfficiencyCurves"
@@ -323,7 +315,7 @@ class GeneratorWrite(PowerAssetWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(Generator, dm.ViewId("sp_power_ops_models", "Generator", "1"))
+        write_view = (view_by_read_class or {}).get(Generator, dm.ViewId("power_ops_core", "Generator", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -345,20 +337,22 @@ class GeneratorWrite(PowerAssetWrite):
         if self.penstock_number is not None:
             properties["penstockNumber"] = self.penstock_number
 
-        if self.start_cost is not None:
-            properties["startCost"] = self.start_cost
+        if self.start_stop_cost is not None:
+            properties["startStopCost"] = self.start_stop_cost
 
-        if self.start_stop_cost is not None or write_none:
-            if isinstance(self.start_stop_cost, str) or self.start_stop_cost is None:
-                properties["startStopCost"] = self.start_stop_cost
-            else:
-                properties["startStopCost"] = self.start_stop_cost.external_id
+        if self.start_stop_cost_time_series is not None or write_none:
+            properties["startStopCostTimeSeries"] = (
+                self.start_stop_cost_time_series
+                if isinstance(self.start_stop_cost_time_series, str) or self.start_stop_cost_time_series is None
+                else self.start_stop_cost_time_series.external_id
+            )
 
         if self.availability_time_series is not None or write_none:
-            if isinstance(self.availability_time_series, str) or self.availability_time_series is None:
-                properties["availabilityTimeSeries"] = self.availability_time_series
-            else:
-                properties["availabilityTimeSeries"] = self.availability_time_series.external_id
+            properties["availabilityTimeSeries"] = (
+                self.availability_time_series
+                if isinstance(self.availability_time_series, str) or self.availability_time_series is None
+                else self.availability_time_series.external_id
+            )
 
         if self.generator_efficiency_curve is not None:
             properties["generatorEfficiencyCurve"] = {
@@ -390,7 +384,7 @@ class GeneratorWrite(PowerAssetWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "isSubAssetOf")
+        edge_type = dm.DirectRelationReference("power_ops_types", "isSubAssetOf")
         for turbine_efficiency_curve in self.turbine_efficiency_curves or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
@@ -407,8 +401,8 @@ class GeneratorWrite(PowerAssetWrite):
             other_resources = self.generator_efficiency_curve._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
 
-        if isinstance(self.start_stop_cost, CogniteTimeSeries):
-            resources.time_series.append(self.start_stop_cost)
+        if isinstance(self.start_stop_cost_time_series, CogniteTimeSeries):
+            resources.time_series.append(self.start_stop_cost_time_series)
 
         if isinstance(self.availability_time_series, CogniteTimeSeries):
             resources.time_series.append(self.availability_time_series)
@@ -470,8 +464,8 @@ def _create_generator_filter(
     max_production_min: float | None = None,
     min_penstock_number: int | None = None,
     max_penstock_number: int | None = None,
-    min_start_cost: float | None = None,
-    max_start_cost: float | None = None,
+    min_start_stop_cost: float | None = None,
+    max_start_stop_cost: float | None = None,
     generator_efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
@@ -508,8 +502,10 @@ def _create_generator_filter(
                 view_id.as_property_ref("penstockNumber"), gte=min_penstock_number, lte=max_penstock_number
             )
         )
-    if min_start_cost is not None or max_start_cost is not None:
-        filters.append(dm.filters.Range(view_id.as_property_ref("startCost"), gte=min_start_cost, lte=max_start_cost))
+    if min_start_stop_cost is not None or max_start_stop_cost is not None:
+        filters.append(
+            dm.filters.Range(view_id.as_property_ref("startStopCost"), gte=min_start_stop_cost, lte=max_start_stop_cost)
+        )
     if generator_efficiency_curve and isinstance(generator_efficiency_curve, str):
         filters.append(
             dm.filters.Equals(
