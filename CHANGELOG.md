@@ -14,7 +14,7 @@ Changes are grouped as follows
 - `Security` in case of vulnerabilities.
 
 ## [0.95.2] - 2024-06-04
-### Added
+### Fixed
 * Fix from setting configuration of triggering SHOP As A Service through SHOP client.
 
 ## [0.95.1] - 2024-06-04
