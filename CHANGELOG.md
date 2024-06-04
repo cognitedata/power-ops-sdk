@@ -13,7 +13,7 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.94.6] - 2024-06-03
+## [0.95.0] - 2024-06-03
 ### Added
 * Type DateSpecification to replace previous string format for fields bidDateSpecification, startSpecification, and endSpecification
   * With default value for property processingTimezone as UTC
