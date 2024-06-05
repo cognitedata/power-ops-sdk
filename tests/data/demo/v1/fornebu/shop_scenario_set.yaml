@@ -16,8 +16,8 @@
     - "[name]Fornebu base"
     - "[name]Fornebu price offset 200"
 - name: 3 scenarios
-  start_specification: '[["shift", {"days": -400}], ["floor", "day"]]'
-  end_specification: '[["shift", {"days": -400}], ["floor", "week"], ["shift", {"weeks": 2}]]'
+  start_specification: "[name]Default Start"
+  end_specification: "[name]Default End"
   scenarios:
     - "[name]Fornebu base"
     - "[name|type:ShopScenario]Fornebu price offset -200"
