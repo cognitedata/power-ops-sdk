@@ -69,7 +69,7 @@ class PowerOpsClient:
         write_dataset: str | None = None,
         cogshop_version: str | None = None,
         monitor_dataset: str | None = None,
-        shop_as_a_service: bool = False,
+        shop_as_a_service: bool | None = None,
     ) -> PowerOpsClient:
         """
         Create a PowerOpsClient from a CogniteClient object.
@@ -86,13 +86,12 @@ class PowerOpsClient:
         Returns:
             A PowerOpsClient object.
         """
-        settings = Settings()
-        return PowerOpsClient(
+        return cls.from_settings(
             config=client.config,
-            read_dataset=read_dataset if read_dataset is not None else settings.powerops.read_dataset,
-            write_dataset=write_dataset if write_dataset is not None else settings.powerops.write_dataset,
-            monitor_dataset=monitor_dataset if monitor_dataset is not None else settings.powerops.monitor_dataset,
-            cogshop_version=cogshop_version if cogshop_version is not None else settings.powerops.cogshop_version,
+            read_dataset=read_dataset,
+            write_dataset=write_dataset,
+            cogshop_version=cogshop_version,
+            monitor_dataset=monitor_dataset,
             shop_as_a_service=shop_as_a_service,
         )
 
@@ -106,7 +105,7 @@ class PowerOpsClient:
         write_dataset: str | None = None,
         cogshop_version: str | None = None,
         monitor_dataset: str | None = None,
-        shop_as_a_service: bool = False,
+        shop_as_a_service: bool | None = None,
     ) -> PowerOpsClient:
         """
         Create a PowerOpsClient from a Settings object.
@@ -130,22 +129,15 @@ class PowerOpsClient:
 
         client_config = config if config is not None else get_client_config(settings.cognite)
 
-        if shop_as_a_service and cogshop_version != "":
-            raise ValueError("CogShop version is not supported in Shop As A Service.")
-        elif shop_as_a_service:
-            cogshop_version = ""
-        elif cogshop_version is not None:
-            cogshop_version = cogshop_version
-        else:
-            cogshop_version = settings.powerops.cogshop_version
-
         return PowerOpsClient(
             config=client_config,
             read_dataset=read_dataset if read_dataset is not None else settings.powerops.read_dataset,
             write_dataset=write_dataset if write_dataset is not None else settings.powerops.write_dataset,
             monitor_dataset=monitor_dataset if monitor_dataset is not None else settings.powerops.monitor_dataset,
-            cogshop_version=cogshop_version,
-            shop_as_a_service=shop_as_a_service,
+            cogshop_version=cogshop_version if cogshop_version is not None else settings.powerops.cogshop_version,
+            shop_as_a_service=(
+                shop_as_a_service if shop_as_a_service is not None else settings.powerops.shop_as_a_service
+            ),
         )
 
     @classmethod
@@ -160,4 +152,4 @@ class PowerOpsClient:
             A PowerOpsClient object.
         """
         content = read_toml_file(toml_file)
-        return cls.from_settings(Settings.model_validate(content))
+        return cls.from_settings(settings=Settings.model_validate(content))
