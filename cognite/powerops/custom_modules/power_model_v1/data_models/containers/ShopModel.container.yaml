@@ -12,14 +12,14 @@ properties:
     autoIncrement: false
     name: name
     description: The name of the model template
-  version:
+  modelVersion:
     type:
       list: false
       collation: ucs_basic
       type: text
     nullable: true
     autoIncrement: false
-    name: version
+    name: modelVersion
     description: The version of the model file (in case  of multiple versions of the same model file)
   shopVersion:
     type:

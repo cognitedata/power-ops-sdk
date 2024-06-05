@@ -246,9 +246,9 @@ class MultiScenarioPartialBidMatrixCalculationInputAPI(
                 (
                     self.price_production_edge,
                     "price_production",
-                    dm.DirectRelationReference("sp_power_ops_types", "PriceProduction"),
+                    dm.DirectRelationReference("power_ops_types", "PriceProduction"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "PriceProduction", "1"),
+                    dm.ViewId("power_ops_core", "PriceProduction", "1"),
                 ),
             ],
         )
@@ -693,9 +693,9 @@ class MultiScenarioPartialBidMatrixCalculationInputAPI(
                 (
                     self.price_production_edge,
                     "price_production",
-                    dm.DirectRelationReference("sp_power_ops_types", "PriceProduction"),
+                    dm.DirectRelationReference("power_ops_types", "PriceProduction"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "PriceProduction", "1"),
+                    dm.ViewId("power_ops_core", "PriceProduction", "1"),
                 ),
             ],
         )

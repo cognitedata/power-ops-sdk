@@ -11,7 +11,7 @@ generator:
     is_list: False
     default_value: 0 # TODO: Check if this is correct
     cast_type: int
-  start_cost:
+  start_stop_cost:
     source_file: "files/model.yaml"
     extraction_path: "model.generator.[name].startcost.value"
     is_list: False
@@ -82,5 +82,11 @@ plant_information:
     is_list: True
     source_file: "files/model.yaml"
     extraction_path: "model.plant.[name].penstock_loss"
-  # generators: "connections"
-  # connection_losses: "???" # from model file??
+    # generators: "connections"
+    # connection_losses: "???" # from model file??
+
+shop_attribute_mapping:
+  retrieve:
+    default_value: "RANGE"
+  aggregation:
+    default_value: "MEAN"

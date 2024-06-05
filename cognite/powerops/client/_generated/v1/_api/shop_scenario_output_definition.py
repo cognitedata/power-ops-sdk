@@ -43,7 +43,7 @@ class ShopScenarioOutputDefinitionAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("sp_power_ops_types", "ShopOutputTimeSeriesDefinition"),
+            dm.DirectRelationReference("power_ops_types", "ShopOutputTimeSeriesDefinition"),
             from_shop_scenario,
             from_shop_scenario_space,
             to_shop_output_time_series_definition,

@@ -54,7 +54,7 @@ class GeneratorEfficiencyCurveGraphQL(GraphQLCore):
         efficiency: The generator efficiency values
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "GeneratorEfficiencyCurve", "1")
+    view_id = dm.ViewId("power_ops_core", "GeneratorEfficiencyCurve", "1")
     power: Optional[list[float]] = None
     efficiency: Optional[list[float]] = None
 
@@ -111,7 +111,7 @@ class GeneratorEfficiencyCurve(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "GeneratorEfficiencyCurve"
+        "power_ops_types", "GeneratorEfficiencyCurve"
     )
     power: Optional[list[float]] = None
     efficiency: Optional[list[float]] = None
@@ -151,7 +151,7 @@ class GeneratorEfficiencyCurveWrite(DomainModelWrite):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "GeneratorEfficiencyCurve"
+        "power_ops_types", "GeneratorEfficiencyCurve"
     )
     power: list[float]
     efficiency: list[float]
@@ -168,7 +168,7 @@ class GeneratorEfficiencyCurveWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            GeneratorEfficiencyCurve, dm.ViewId("sp_power_ops_models", "GeneratorEfficiencyCurve", "1")
+            GeneratorEfficiencyCurve, dm.ViewId("power_ops_core", "GeneratorEfficiencyCurve", "1")
         )
 
         properties: dict[str, Any] = {}

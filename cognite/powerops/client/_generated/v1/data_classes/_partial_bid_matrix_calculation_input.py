@@ -82,7 +82,7 @@ class PartialBidMatrixCalculationInputGraphQL(GraphQLCore):
         partial_bid_configuration: The partial bid configuration related to the bid calculation task
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "PartialBidMatrixCalculationInput", "1")
+    view_id = dm.ViewId("power_ops_core", "PartialBidMatrixCalculationInput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
@@ -266,8 +266,7 @@ class PartialBidMatrixCalculationInputWrite(FunctionInputWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            PartialBidMatrixCalculationInput,
-            dm.ViewId("sp_power_ops_models", "PartialBidMatrixCalculationInput", "1"),
+            PartialBidMatrixCalculationInput, dm.ViewId("power_ops_core", "PartialBidMatrixCalculationInput", "1")
         )
 
         properties: dict[str, Any] = {}

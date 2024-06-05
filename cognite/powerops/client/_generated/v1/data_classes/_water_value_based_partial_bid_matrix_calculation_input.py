@@ -87,7 +87,7 @@ class WaterValueBasedPartialBidMatrixCalculationInputGraphQL(GraphQLCore):
         partial_bid_configuration: The partial bid configuration related to the bid calculation task
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "WaterValueBasedPartialBidMatrixCalculationInput", "1")
+    view_id = dm.ViewId("power_ops_core", "WaterValueBasedPartialBidMatrixCalculationInput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
@@ -191,7 +191,7 @@ class WaterValueBasedPartialBidMatrixCalculationInput(PartialBidMatrixCalculatio
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "WaterValueBasedPartialBidMatrixCalculationInput"
+        "power_ops_types", "WaterValueBasedPartialBidMatrixCalculationInput"
     )
 
     def as_write(self) -> WaterValueBasedPartialBidMatrixCalculationInputWrite:
@@ -246,7 +246,7 @@ class WaterValueBasedPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalcu
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "WaterValueBasedPartialBidMatrixCalculationInput"
+        "power_ops_types", "WaterValueBasedPartialBidMatrixCalculationInput"
     )
 
     def _to_instances_write(
@@ -262,7 +262,7 @@ class WaterValueBasedPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalcu
 
         write_view = (view_by_read_class or {}).get(
             WaterValueBasedPartialBidMatrixCalculationInput,
-            dm.ViewId("sp_power_ops_models", "WaterValueBasedPartialBidMatrixCalculationInput", "1"),
+            dm.ViewId("power_ops_core", "WaterValueBasedPartialBidMatrixCalculationInput", "1"),
         )
 
         properties: dict[str, Any] = {}

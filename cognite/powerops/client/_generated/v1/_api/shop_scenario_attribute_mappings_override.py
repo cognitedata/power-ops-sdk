@@ -43,7 +43,7 @@ class ShopScenarioAttributeMappingsOverrideAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("sp_power_ops_types", "ShopAttributeMapping"),
+            dm.DirectRelationReference("power_ops_types", "ShopAttributeMapping"),
             from_shop_scenario,
             from_shop_scenario_space,
             to_shop_attribute_mapping,

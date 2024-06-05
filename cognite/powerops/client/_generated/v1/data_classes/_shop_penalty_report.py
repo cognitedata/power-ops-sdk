@@ -89,7 +89,7 @@ class ShopPenaltyReportGraphQL(GraphQLCore):
         penalties: TODO
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "ShopPenaltyReport", "1")
+    view_id = dm.ViewId("power_ops_core", "ShopPenaltyReport", "1")
     time: Optional[datetime.datetime] = None
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     title: Optional[str] = None
@@ -177,7 +177,7 @@ class ShopPenaltyReport(Alert):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "ShopPenaltyReport"
+        "power_ops_types", "ShopPenaltyReport"
     )
     penalties: Optional[list[dict]] = None
 
@@ -231,7 +231,7 @@ class ShopPenaltyReportWrite(AlertWrite):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "ShopPenaltyReport"
+        "power_ops_types", "ShopPenaltyReport"
     )
     penalties: Optional[list[dict]] = None
 
@@ -247,7 +247,7 @@ class ShopPenaltyReportWrite(AlertWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            ShopPenaltyReport, dm.ViewId("sp_power_ops_models", "ShopPenaltyReport", "1")
+            ShopPenaltyReport, dm.ViewId("power_ops_core", "ShopPenaltyReport", "1")
         )
 
         properties: dict[str, Any] = {}

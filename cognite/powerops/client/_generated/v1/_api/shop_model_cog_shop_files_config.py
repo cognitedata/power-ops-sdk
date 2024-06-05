@@ -43,7 +43,7 @@ class ShopModelCogShopFilesConfigAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("sp_power_ops_types", "ShopModel.cogShopFilesConfig"),
+            dm.DirectRelationReference("power_ops_types", "ShopModel.cogShopFilesConfig"),
             from_shop_model,
             from_shop_model_space,
             to_shop_file,

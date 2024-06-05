@@ -27,7 +27,7 @@ def plan(configuration: Path) -> None:
     resync_data_model_objects, external_ids = resync_importer.to_data_model()
 
     logger.info(resync_data_model_objects)
-    logger.info(f"Generated {len(resync_data_model_objects)} bid configurations")
+    logger.info(f"Generated {len(resync_data_model_objects)} objects")
     logger.info(f"External IDs: {external_ids}")
 
 
@@ -61,4 +61,4 @@ def apply(configuration: Path, client: PowerOpsClient | None = None) -> None:
     logger.info(resync_data_model_objects)
     client.v1.upsert(resync_data_model_objects, replace=resync_importer.overwrite_data)
 
-    logger.info(f"Upserted {len(resync_data_model_objects)} bid configurations")
+    logger.info(f"Upserted {len(resync_data_model_objects)} objects")

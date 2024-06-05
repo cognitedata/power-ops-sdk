@@ -43,7 +43,7 @@ class ShopScenarioSetScenariosAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("sp_power_ops_types", "ShopScenarioSet.scenarios"),
+            dm.DirectRelationReference("power_ops_types", "ShopScenarioSet.scenarios"),
             from_shop_scenario_set,
             from_shop_scenario_set_space,
             to_shop_scenario,

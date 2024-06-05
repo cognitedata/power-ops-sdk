@@ -74,7 +74,7 @@ class ShopPreprocessorInputGraphQL(GraphQLCore):
         end_time: End date of bid period TODO
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "ShopPreprocessorInput", "1")
+    view_id = dm.ViewId("power_ops_core", "ShopPreprocessorInput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
@@ -158,7 +158,7 @@ class ShopPreprocessorInput(FunctionInput):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "ShopPreprocessorInput"
+        "power_ops_types", "ShopPreprocessorInput"
     )
     scenario: Union[ShopScenario, str, dm.NodeId, None] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
@@ -208,7 +208,7 @@ class ShopPreprocessorInputWrite(FunctionInputWrite):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "ShopPreprocessorInput"
+        "power_ops_types", "ShopPreprocessorInput"
     )
     scenario: Union[ShopScenarioWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
@@ -226,7 +226,7 @@ class ShopPreprocessorInputWrite(FunctionInputWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            ShopPreprocessorInput, dm.ViewId("sp_power_ops_models", "ShopPreprocessorInput", "1")
+            ShopPreprocessorInput, dm.ViewId("power_ops_core", "ShopPreprocessorInput", "1")
         )
 
         properties: dict[str, Any] = {}

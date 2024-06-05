@@ -43,7 +43,7 @@ class ShopResultOutputTimeSeriesAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("sp_power_ops_types", "ShopResult.outputTimeSeries"),
+            dm.DirectRelationReference("power_ops_types", "ShopResult.outputTimeSeries"),
             from_shop_result,
             from_shop_result_space,
             to_shop_time_series,

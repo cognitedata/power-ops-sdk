@@ -55,14 +55,14 @@ properties:
     defaultValue: "RANGE"
     autoIncrement: false
     name: retrieve
-    description: How to retrieve time series data
+    description: How to retrieve time series data, valid options include RANGE, START, END, FALSE, and None (the default value is RANGE)
   aggregation:
     type:
       list: false
       collation: ucs_basic
       type: text
     nullable: true
-    defaultValue: "mean"
+    defaultValue: "MEAN"
     autoIncrement: false
     name: aggregation
-    description: How to aggregate time series data
+    description: How to aggregate time series data, valid options include MEAN, SUM, MIN, MAX, STD, MEDIAN, FIRST, LAST (the default value is MEAN)

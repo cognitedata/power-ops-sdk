@@ -71,7 +71,7 @@ class ShopPreprocessorOutputQueryAPI(QueryAPI[T_DomainModelList]):
         space_edge: str | list[str] | None = None,
         filter: dm.Filter | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
-        retrieve_input_: bool = False,
+        retrieve_function_input: bool = False,
         retrieve_case: bool = False,
     ) -> AlertQueryAPI[T_DomainModelList]:
         """Query along the alert edges of the shop preprocessor output.
@@ -100,7 +100,7 @@ class ShopPreprocessorOutputQueryAPI(QueryAPI[T_DomainModelList]):
             filter: (Advanced) Filter applied to node. If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             limit: Maximum number of alert edges to return. Defaults to 3. Set to -1, float("inf") or None
                 to return all items.
-            retrieve_input_: Whether to retrieve the input for each shop preprocessor output or not.
+            retrieve_function_input: Whether to retrieve the function input for each shop preprocessor output or not.
             retrieve_case: Whether to retrieve the case for each shop preprocessor output or not.
 
         Returns:
@@ -110,7 +110,7 @@ class ShopPreprocessorOutputQueryAPI(QueryAPI[T_DomainModelList]):
 
         from_ = self._builder[-1].name
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
+            dm.DirectRelationReference("power_ops_types", "calculationIssue"),
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -151,21 +151,21 @@ class ShopPreprocessorOutputQueryAPI(QueryAPI[T_DomainModelList]):
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        if retrieve_input_:
-            self._query_append_input_(from_)
+        if retrieve_function_input:
+            self._query_append_function_input(from_)
         if retrieve_case:
             self._query_append_case(from_)
         return AlertQueryAPI(self._client, self._builder, self._view_by_read_class, node_filer, limit)
 
     def query(
         self,
-        retrieve_input_: bool = False,
+        retrieve_function_input: bool = False,
         retrieve_case: bool = False,
     ) -> T_DomainModelList:
         """Execute query and return the result.
 
         Args:
-            retrieve_input_: Whether to retrieve the input for each shop preprocessor output or not.
+            retrieve_function_input: Whether to retrieve the function input for each shop preprocessor output or not.
             retrieve_case: Whether to retrieve the case for each shop preprocessor output or not.
 
         Returns:
@@ -173,21 +173,21 @@ class ShopPreprocessorOutputQueryAPI(QueryAPI[T_DomainModelList]):
 
         """
         from_ = self._builder[-1].name
-        if retrieve_input_:
-            self._query_append_input_(from_)
+        if retrieve_function_input:
+            self._query_append_function_input(from_)
         if retrieve_case:
             self._query_append_case(from_)
         return self._query()
 
-    def _query_append_input_(self, from_: str) -> None:
+    def _query_append_function_input(self, from_: str) -> None:
         view_id = self._view_by_read_class[ShopPreprocessorInput]
         self._builder.append(
             QueryStep(
-                name=self._builder.next_name("input_"),
+                name=self._builder.next_name("function_input"),
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_read_class[ShopPreprocessorOutput].as_property_ref("input"),
+                    through=self._view_by_read_class[ShopPreprocessorOutput].as_property_ref("functionInput"),
                     direction="outwards",
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),

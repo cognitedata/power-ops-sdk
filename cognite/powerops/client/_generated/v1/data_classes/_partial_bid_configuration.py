@@ -64,7 +64,7 @@ class PartialBidConfigurationGraphQL(GraphQLCore):
         add_steps: TODO definition
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "PartialBidConfiguration", "1")
+    view_id = dm.ViewId("power_ops_core", "PartialBidConfiguration", "1")
     name: Optional[str] = None
     method: Optional[str] = None
     power_asset: Optional[PowerAssetGraphQL] = Field(default=None, repr=False, alias="powerAsset")
@@ -198,7 +198,7 @@ class PartialBidConfigurationWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            PartialBidConfiguration, dm.ViewId("sp_power_ops_models", "PartialBidConfiguration", "1")
+            PartialBidConfiguration, dm.ViewId("power_ops_core", "PartialBidConfiguration", "1")
         )
 
         properties: dict[str, Any] = {}

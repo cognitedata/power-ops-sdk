@@ -28,14 +28,14 @@ properties:
       type: text
     nullable: true
     autoIncrement: false
-    name: name
+    name: description
   ordering:
     type:
       list: false
       type: int32
     nullable: true
     autoIncrement: false
-    name: order
+    name: ordering
     description: The order of the PowerAsset
   assetType:
     type:

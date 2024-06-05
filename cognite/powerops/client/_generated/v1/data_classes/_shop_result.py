@@ -72,7 +72,7 @@ class ShopResultGraphQL(GraphQLCore):
         output_time_series: TODO
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "ShopResult", "1")
+    view_id = dm.ViewId("power_ops_core", "ShopResult", "1")
     case: Optional[ShopCaseGraphQL] = Field(default=None, repr=False)
     objective_value: Optional[dict] = Field(None, alias="objectiveValue")
     pre_run: Union[dict, None] = Field(None, alias="preRun")
@@ -246,7 +246,7 @@ class ShopResultWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(ShopResult, dm.ViewId("sp_power_ops_models", "ShopResult", "1"))
+        write_view = (view_by_read_class or {}).get(ShopResult, dm.ViewId("power_ops_core", "ShopResult", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -287,7 +287,7 @@ class ShopResultWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "calculationIssue")
+        edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
@@ -300,7 +300,7 @@ class ShopResultWrite(DomainModelWrite):
             )
             resources.extend(other_resources)
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "ShopResult.outputTimeSeries")
+        edge_type = dm.DirectRelationReference("power_ops_types", "ShopResult.outputTimeSeries")
         for output_time_series in self.output_time_series or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

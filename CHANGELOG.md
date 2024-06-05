@@ -13,16 +13,21 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.94.4] - 2024-05-13
+## [0.95.1] - 2024-06-04
+### Added
+* Support for triggering SHOP As A Service through SHOP client.
+
+## [0.95.0] - 2024-06-04
 ### Added
 * Type DateSpecification to replace previous string format for fields bidDateSpecification, startSpecification, and endSpecification
   * With default value for property processingTimezone as UTC
   * With default value for property resultingTimezone as UTC
-* Type ShopOutputTimeSeriesDefinition to replace previous static sequence
+* Type ShopOutputTimeSeriesDefinition to replace previous static sequence `SHOP_output_definition`
 * Property outputDefinition in ShopScenario as a list of ShopOutputTimeSeriesDefinition
-* Default value for properties inShopAttributeMapping
+* Default value for properties in ShopAttributeMapping
   * With default value for property retrieve as "RANGE"
-  * With default value for property aggregation as "mean"
+  * With default value for property aggregation as "MEAN"
+* Added fileReferencePrefix property to ShopFile to be used if no file external id is provided
 
 ### Changed
 * Renamed ShopPartialBidMatrixCalculationInput to MultiScenarioPartialBidMatrixCalculationInput
@@ -32,6 +37,16 @@ Changes are grouped as follows
 * Renamed objectiveSequence property in ShopResult to objectiveValue
 * Type of property objectiveValue (previously objectiveSequence) in ShopResult to a JSON instead of sequence
 * Renamed property intermediateBidMatrices in BidMatrixInformation to underlyingBidMatrices
+* Renamed property input in all FunctionOutput views to functionInput
+* Renamed properties on Generator
+  * startCost to startStopCost
+  * startStopCost to startStopCostTimeSeries
+* Renamed property in ShopModel to avoid python name conflicts
+  * version to modelVersion
+* Changed space names
+  * sp_power_ops_instance to power_ops_instances
+  * sp_power_ops_models to power_ops_core
+  * sp_power_ops_types to power_ops_types
 
 ### Removed
 * Removed property extraFiles from ShopModel
@@ -41,6 +56,21 @@ Changes are grouped as follows
 * All file/sequence/timeseries references to be nullable
 * Filters on PlantInformation
 * Filters on Watercourse
+* Minor fixes to align resync with DMS changes
+
+## [0.94.5] - 2024-05-31
+### Changed
+* Updated the SHOPRun class to provide a manual run flag; this is used in CogSHOP to skip output timeseries
+
+## [0.94.4] - 2024-05-28
+
+### Changed
+* FDM v1 resync: Supporting default values in data_model_configuration also without specifying source
+### Fixed
+* FDM v1 resync:
+  * Removing hardcoded reference to files/model.yaml, using all source_files in data_model_configuration instead
+  * Handling empty files
+  * Handling "missing" penstock_loss_factors and "missing" subtype lists
 
 ## [0.94.3] - 2024-05-11
 ### Added

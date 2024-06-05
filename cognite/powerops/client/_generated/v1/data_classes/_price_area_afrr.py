@@ -110,7 +110,7 @@ class PriceAreaAFRRGraphQL(GraphQLCore):
         own_capacity_allocation_down: The own capacity allocation down field.
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "PriceAreaAFRR", "1")
+    view_id = dm.ViewId("power_ops_core", "PriceAreaAFRR", "1")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
@@ -297,9 +297,7 @@ class PriceAreaAFRRWrite(PriceAreaWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(
-            PriceAreaAFRR, dm.ViewId("sp_power_ops_models", "PriceAreaAFRR", "1")
-        )
+        write_view = (view_by_read_class or {}).get(PriceAreaAFRR, dm.ViewId("power_ops_core", "PriceAreaAFRR", "1"))
 
         properties: dict[str, Any] = {}
 

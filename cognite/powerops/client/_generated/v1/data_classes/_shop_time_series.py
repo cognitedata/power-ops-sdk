@@ -64,7 +64,7 @@ class ShopTimeSeriesGraphQL(GraphQLCore):
         time_series: Time series object from output of SHOP stored as a time series in cdf
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "ShopTimeSeries", "1")
+    view_id = dm.ViewId("power_ops_core", "ShopTimeSeries", "1")
     object_type: Optional[str] = Field(None, alias="objectType")
     object_name: Optional[str] = Field(None, alias="objectName")
     attribute_name: Optional[str] = Field(None, alias="attributeName")
@@ -128,9 +128,7 @@ class ShopTimeSeries(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "ShopTimeSeries"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopTimeSeries")
     object_type: Optional[str] = Field(None, alias="objectType")
     object_name: Optional[str] = Field(None, alias="objectName")
     attribute_name: Optional[str] = Field(None, alias="attributeName")
@@ -174,9 +172,7 @@ class ShopTimeSeriesWrite(DomainModelWrite):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "ShopTimeSeries"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopTimeSeries")
     object_type: Optional[str] = Field(None, alias="objectType")
     object_name: Optional[str] = Field(None, alias="objectName")
     attribute_name: Optional[str] = Field(None, alias="attributeName")
@@ -193,9 +189,7 @@ class ShopTimeSeriesWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(
-            ShopTimeSeries, dm.ViewId("sp_power_ops_models", "ShopTimeSeries", "1")
-        )
+        write_view = (view_by_read_class or {}).get(ShopTimeSeries, dm.ViewId("power_ops_core", "ShopTimeSeries", "1"))
 
         properties: dict[str, Any] = {}
 

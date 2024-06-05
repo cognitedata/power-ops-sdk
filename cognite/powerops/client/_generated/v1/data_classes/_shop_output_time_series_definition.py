@@ -68,7 +68,7 @@ class ShopOutputTimeSeriesDefinitionGraphQL(GraphQLCore):
         is_step: The name of the attribute
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "ShopOutputTimeSeriesDefinition", "1")
+    view_id = dm.ViewId("power_ops_core", "ShopOutputTimeSeriesDefinition", "1")
     name: Optional[str] = None
     object_type: Optional[str] = Field(None, alias="objectType")
     object_name: Optional[str] = Field(None, alias="objectName")
@@ -141,7 +141,7 @@ class ShopOutputTimeSeriesDefinition(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "ShopOutputTimeSeriesDefinition"
+        "power_ops_types", "ShopOutputTimeSeriesDefinition"
     )
     name: str
     object_type: str = Field(alias="objectType")
@@ -193,7 +193,7 @@ class ShopOutputTimeSeriesDefinitionWrite(DomainModelWrite):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "ShopOutputTimeSeriesDefinition"
+        "power_ops_types", "ShopOutputTimeSeriesDefinition"
     )
     name: str
     object_type: str = Field(alias="objectType")
@@ -214,7 +214,7 @@ class ShopOutputTimeSeriesDefinitionWrite(DomainModelWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            ShopOutputTimeSeriesDefinition, dm.ViewId("sp_power_ops_models", "ShopOutputTimeSeriesDefinition", "1")
+            ShopOutputTimeSeriesDefinition, dm.ViewId("power_ops_core", "ShopOutputTimeSeriesDefinition", "1")
         )
 
         properties: dict[str, Any] = {}

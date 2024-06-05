@@ -35,13 +35,14 @@ __all__ = [
 ]
 
 
-ShopFileTextFields = Literal["name", "label", "file_reference"]
-ShopFileFields = Literal["name", "label", "file_reference", "order", "is_ascii"]
+ShopFileTextFields = Literal["name", "label", "file_reference", "file_reference_prefix"]
+ShopFileFields = Literal["name", "label", "file_reference", "file_reference_prefix", "order", "is_ascii"]
 
 _SHOPFILE_PROPERTIES_BY_FIELD = {
     "name": "name",
     "label": "label",
     "file_reference": "fileReference",
+    "file_reference_prefix": "fileReferencePrefix",
     "order": "order",
     "is_ascii": "isAscii",
 }
@@ -60,14 +61,16 @@ class ShopFileGraphQL(GraphQLCore):
         name: The name of the shop file
         label: The label of the shop file
         file_reference: The file reference field.
+        file_reference_prefix: The file reference prefix field.
         order: The order in which the file should be loaded into pyshop
         is_ascii: The file extension of the file
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "ShopFile", "1")
+    view_id = dm.ViewId("power_ops_core", "ShopFile", "1")
     name: Optional[str] = None
     label: Optional[str] = None
     file_reference: Union[dict, None] = Field(None, alias="fileReference")
+    file_reference_prefix: Optional[str] = Field(None, alias="fileReferencePrefix")
     order: Optional[int] = None
     is_ascii: Optional[bool] = Field(None, alias="isAscii")
 
@@ -101,6 +104,7 @@ class ShopFileGraphQL(GraphQLCore):
                 if self.file_reference and "externalId" in self.file_reference
                 else None
             ),
+            file_reference_prefix=self.file_reference_prefix,
             order=self.order,
             is_ascii=self.is_ascii,
         )
@@ -118,6 +122,7 @@ class ShopFileGraphQL(GraphQLCore):
                 if self.file_reference and "externalId" in self.file_reference
                 else None
             ),
+            file_reference_prefix=self.file_reference_prefix,
             order=self.order,
             is_ascii=self.is_ascii,
         )
@@ -135,15 +140,17 @@ class ShopFile(DomainModel):
         name: The name of the shop file
         label: The label of the shop file
         file_reference: The file reference field.
+        file_reference_prefix: The file reference prefix field.
         order: The order in which the file should be loaded into pyshop
         is_ascii: The file extension of the file
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_power_ops_types", "ShopFile")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopFile")
     name: str
     label: str
     file_reference: Union[str, None] = Field(None, alias="fileReference")
+    file_reference_prefix: Optional[str] = Field(None, alias="fileReferencePrefix")
     order: int
     is_ascii: bool = Field(alias="isAscii")
 
@@ -156,6 +163,7 @@ class ShopFile(DomainModel):
             name=self.name,
             label=self.label,
             file_reference=self.file_reference,
+            file_reference_prefix=self.file_reference_prefix,
             order=self.order,
             is_ascii=self.is_ascii,
         )
@@ -182,15 +190,17 @@ class ShopFileWrite(DomainModelWrite):
         name: The name of the shop file
         label: The label of the shop file
         file_reference: The file reference field.
+        file_reference_prefix: The file reference prefix field.
         order: The order in which the file should be loaded into pyshop
         is_ascii: The file extension of the file
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_power_ops_types", "ShopFile")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopFile")
     name: str
     label: str
     file_reference: Union[str, None] = Field(None, alias="fileReference")
+    file_reference_prefix: Optional[str] = Field(None, alias="fileReferencePrefix")
     order: int
     is_ascii: bool = Field(alias="isAscii")
 
@@ -205,7 +215,7 @@ class ShopFileWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(ShopFile, dm.ViewId("sp_power_ops_models", "ShopFile", "1"))
+        write_view = (view_by_read_class or {}).get(ShopFile, dm.ViewId("power_ops_core", "ShopFile", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -217,6 +227,9 @@ class ShopFileWrite(DomainModelWrite):
 
         if self.file_reference is not None or write_none:
             properties["fileReference"] = self.file_reference
+
+        if self.file_reference_prefix is not None or write_none:
+            properties["fileReferencePrefix"] = self.file_reference_prefix
 
         if self.order is not None:
             properties["order"] = self.order
@@ -289,6 +302,8 @@ def _create_shop_file_filter(
     name_prefix: str | None = None,
     label: str | list[str] | None = None,
     label_prefix: str | None = None,
+    file_reference_prefix: str | list[str] | None = None,
+    file_reference_prefix_prefix: str | None = None,
     min_order: int | None = None,
     max_order: int | None = None,
     is_ascii: bool | None = None,
@@ -309,6 +324,14 @@ def _create_shop_file_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("label"), values=label))
     if label_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("label"), value=label_prefix))
+    if isinstance(file_reference_prefix, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("fileReferencePrefix"), value=file_reference_prefix))
+    if file_reference_prefix and isinstance(file_reference_prefix, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("fileReferencePrefix"), values=file_reference_prefix))
+    if file_reference_prefix_prefix is not None:
+        filters.append(
+            dm.filters.Prefix(view_id.as_property_ref("fileReferencePrefix"), value=file_reference_prefix_prefix)
+        )
     if min_order is not None or max_order is not None:
         filters.append(dm.filters.Range(view_id.as_property_ref("order"), gte=min_order, lte=max_order))
     if isinstance(is_ascii, bool):

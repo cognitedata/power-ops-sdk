@@ -65,7 +65,7 @@ class WaterValueBasedPartialBidConfigurationGraphQL(GraphQLCore):
         add_steps: TODO definition
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "WaterValueBasedPartialBidConfiguration", "1")
+    view_id = dm.ViewId("power_ops_core", "WaterValueBasedPartialBidConfiguration", "1")
     name: Optional[str] = None
     method: Optional[str] = None
     power_asset: Optional[PlantWaterValueBasedGraphQL] = Field(default=None, repr=False, alias="powerAsset")
@@ -137,7 +137,7 @@ class WaterValueBasedPartialBidConfiguration(PartialBidConfiguration):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "WaterValueBasedPartialBidConfiguration"
+        "power_ops_types", "WaterValueBasedPartialBidConfiguration"
     )
 
     def as_write(self) -> WaterValueBasedPartialBidConfigurationWrite:
@@ -178,7 +178,7 @@ class WaterValueBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "WaterValueBasedPartialBidConfiguration"
+        "power_ops_types", "WaterValueBasedPartialBidConfiguration"
     )
 
     def _to_instances_write(
@@ -194,7 +194,7 @@ class WaterValueBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
 
         write_view = (view_by_read_class or {}).get(
             WaterValueBasedPartialBidConfiguration,
-            dm.ViewId("sp_power_ops_models", "WaterValueBasedPartialBidConfiguration", "1"),
+            dm.ViewId("power_ops_core", "WaterValueBasedPartialBidConfiguration", "1"),
         )
 
         properties: dict[str, Any] = {}

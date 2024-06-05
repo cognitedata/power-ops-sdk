@@ -47,6 +47,7 @@ class PoweropsRunSettings(pydantic.BaseModel):
     write_dataset: Optional[str] = None
     monitor_dataset: Optional[str] = None
     cogshop_version: Optional[str] = None
+    shop_as_a_service: bool = False
 
     @field_validator("cogshop_version", mode="before")
     def number_to_str(cls, v):

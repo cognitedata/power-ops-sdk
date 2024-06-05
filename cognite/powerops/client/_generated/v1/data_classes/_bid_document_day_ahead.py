@@ -88,7 +88,7 @@ class BidDocumentDayAheadGraphQL(GraphQLCore):
         partials: The partial field.
     """
 
-    view_id = dm.ViewId("sp_power_ops_models", "BidDocumentDayAhead", "1")
+    view_id = dm.ViewId("power_ops_core", "BidDocumentDayAhead", "1")
     name: Optional[str] = None
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     delivery_date: Optional[datetime.date] = Field(None, alias="deliveryDate")
@@ -194,7 +194,7 @@ class BidDocumentDayAhead(BidDocument):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "DayAheadBidDocument"
+        "power_ops_types", "DayAheadBidDocument"
     )
     bid_configuration: Union[BidConfigurationDayAhead, str, dm.NodeId, None] = Field(
         default=None, repr=False, alias="bidConfiguration"
@@ -260,7 +260,7 @@ class BidDocumentDayAheadWrite(BidDocumentWrite):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_power_ops_types", "DayAheadBidDocument"
+        "power_ops_types", "DayAheadBidDocument"
     )
     bid_configuration: Union[BidConfigurationDayAheadWrite, str, dm.NodeId, None] = Field(
         default=None, repr=False, alias="bidConfiguration"
@@ -282,7 +282,7 @@ class BidDocumentDayAheadWrite(BidDocumentWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            BidDocumentDayAhead, dm.ViewId("sp_power_ops_models", "BidDocumentDayAhead", "1")
+            BidDocumentDayAhead, dm.ViewId("power_ops_core", "BidDocumentDayAhead", "1")
         )
 
         properties: dict[str, Any] = {}
@@ -341,7 +341,7 @@ class BidDocumentDayAheadWrite(BidDocumentWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "calculationIssue")
+        edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
@@ -354,7 +354,7 @@ class BidDocumentDayAheadWrite(BidDocumentWrite):
             )
             resources.extend(other_resources)
 
-        edge_type = dm.DirectRelationReference("sp_power_ops_types", "partialBid")
+        edge_type = dm.DirectRelationReference("power_ops_types", "partialBid")
         for partial in self.partials or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,

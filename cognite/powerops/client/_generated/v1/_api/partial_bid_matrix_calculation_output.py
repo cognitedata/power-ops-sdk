@@ -65,7 +65,7 @@ class PartialBidMatrixCalculationOutputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         partial_matrix: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
@@ -84,7 +84,7 @@ class PartialBidMatrixCalculationOutputAPI(
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            input_: The input to filter on.
+            function_input: The function input to filter on.
             partial_matrix: The partial matrix to filter on.
             bid_configuration: The bid configuration to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
@@ -107,7 +107,7 @@ class PartialBidMatrixCalculationOutputAPI(
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            input_,
+            function_input,
             partial_matrix,
             bid_configuration,
             external_id_prefix,
@@ -235,9 +235,9 @@ class PartialBidMatrixCalculationOutputAPI(
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
+                    dm.DirectRelationReference("power_ops_types", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "Alert", "1"),
+                    dm.ViewId("power_ops_core", "Alert", "1"),
                 ),
             ],
         )
@@ -256,7 +256,7 @@ class PartialBidMatrixCalculationOutputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         partial_matrix: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
@@ -277,7 +277,7 @@ class PartialBidMatrixCalculationOutputAPI(
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            input_: The input to filter on.
+            function_input: The function input to filter on.
             partial_matrix: The partial matrix to filter on.
             bid_configuration: The bid configuration to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
@@ -307,7 +307,7 @@ class PartialBidMatrixCalculationOutputAPI(
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            input_,
+            function_input,
             partial_matrix,
             bid_configuration,
             external_id_prefix,
@@ -343,7 +343,7 @@ class PartialBidMatrixCalculationOutputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         partial_matrix: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
@@ -377,7 +377,7 @@ class PartialBidMatrixCalculationOutputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         partial_matrix: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
@@ -412,7 +412,7 @@ class PartialBidMatrixCalculationOutputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         partial_matrix: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
@@ -436,7 +436,7 @@ class PartialBidMatrixCalculationOutputAPI(
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            input_: The input to filter on.
+            function_input: The function input to filter on.
             partial_matrix: The partial matrix to filter on.
             bid_configuration: The bid configuration to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
@@ -467,7 +467,7 @@ class PartialBidMatrixCalculationOutputAPI(
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            input_,
+            function_input,
             partial_matrix,
             bid_configuration,
             external_id_prefix,
@@ -502,7 +502,7 @@ class PartialBidMatrixCalculationOutputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         partial_matrix: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
@@ -525,7 +525,7 @@ class PartialBidMatrixCalculationOutputAPI(
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            input_: The input to filter on.
+            function_input: The function input to filter on.
             partial_matrix: The partial matrix to filter on.
             bid_configuration: The bid configuration to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
@@ -547,7 +547,7 @@ class PartialBidMatrixCalculationOutputAPI(
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            input_,
+            function_input,
             partial_matrix,
             bid_configuration,
             external_id_prefix,
@@ -575,7 +575,7 @@ class PartialBidMatrixCalculationOutputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         partial_matrix: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
@@ -595,7 +595,7 @@ class PartialBidMatrixCalculationOutputAPI(
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            input_: The input to filter on.
+            function_input: The function input to filter on.
             partial_matrix: The partial matrix to filter on.
             bid_configuration: The bid configuration to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
@@ -626,7 +626,7 @@ class PartialBidMatrixCalculationOutputAPI(
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            input_,
+            function_input,
             partial_matrix,
             bid_configuration,
             external_id_prefix,
@@ -642,9 +642,9 @@ class PartialBidMatrixCalculationOutputAPI(
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("sp_power_ops_types", "calculationIssue"),
+                    dm.DirectRelationReference("power_ops_types", "calculationIssue"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "Alert", "1"),
+                    dm.ViewId("power_ops_core", "Alert", "1"),
                 ),
             ],
         )

@@ -45,7 +45,7 @@ class MultiScenarioPartialBidMatrixCalculationInputPriceProductionAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("sp_power_ops_types", "PriceProduction"),
+            dm.DirectRelationReference("power_ops_types", "PriceProduction"),
             from_multi_scenario_partial_bid_matrix_calculation_input,
             from_multi_scenario_partial_bid_matrix_calculation_input_space,
             to_price_production,

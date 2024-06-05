@@ -209,9 +209,9 @@ class BidConfigurationDayAheadAPI(
                 (
                     self.partials_edge,
                     "partials",
-                    dm.DirectRelationReference("sp_power_ops_types", "BidConfiguration.partials"),
+                    dm.DirectRelationReference("power_ops_types", "BidConfiguration.partials"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "PartialBidConfiguration", "1"),
+                    dm.ViewId("power_ops_core", "PartialBidConfiguration", "1"),
                 ),
             ],
         )
@@ -522,9 +522,9 @@ class BidConfigurationDayAheadAPI(
                 (
                     self.partials_edge,
                     "partials",
-                    dm.DirectRelationReference("sp_power_ops_types", "BidConfiguration.partials"),
+                    dm.DirectRelationReference("power_ops_types", "BidConfiguration.partials"),
                     "outwards",
-                    dm.ViewId("sp_power_ops_models", "PartialBidConfiguration", "1"),
+                    dm.ViewId("power_ops_core", "PartialBidConfiguration", "1"),
                 ),
             ],
         )

@@ -103,7 +103,7 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
 
         from_ = self._builder[-1].name
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("sp_power_ops_types", "ShopOutputTimeSeriesDefinition"),
+            dm.DirectRelationReference("power_ops_types", "ShopOutputTimeSeriesDefinition"),
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -198,7 +198,7 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
 
         from_ = self._builder[-1].name
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("sp_power_ops_types", "ShopAttributeMapping"),
+            dm.DirectRelationReference("power_ops_types", "ShopAttributeMapping"),
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )

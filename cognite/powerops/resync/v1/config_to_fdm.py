@@ -376,15 +376,23 @@ class ResyncImporter:
             connections: A list of all connections external ids based on the provided data and asset types.
         """
 
-        all_connections = self._get_property_value_from_source(
-            PropertyConfiguration(
-                property="connections",
-                source_file=Path("files/model.yaml"),
-                extraction_path="connections",
-                cast_type=None,
-            ),
-            data,
-        )
+        all_connections = []
+        source_files = set()
+        for dm_config in self.data_model_configuration.values():
+            for property_config in dm_config.property_configurations:
+                if property_config.source_file:
+                    source_files.add(property_config.source_file)
+
+        for source_file in source_files:
+            all_connections += self._get_property_value_from_source(
+                PropertyConfiguration(
+                    property="connections",
+                    source_file=source_file,
+                    extraction_path="connections",
+                    cast_type=None,
+                ),
+                data,
+            )
         connections = []
 
         name = data["name"]
@@ -461,7 +469,9 @@ class ResyncImporter:
                 path = self.working_directory / Path(property_configuration.source_file)
                 source_data = load_yaml(path, "dict")
             else:
-                raise ValueError("No source data provided for property configuration")
+                if property_configuration.default_value:
+                    return property_configuration.default_value
+                raise ValueError("No source data or default value provided for property configuration")
 
         try:
             for key in property_configuration.extraction_path or []:
@@ -572,7 +582,8 @@ class ResyncImporter:
         if instance_data is None:
             instance_data = {}
         list_data = self._get_property_value_from_source(property_configuration, instance_data)
-
+        if not list_data:
+            return []
         if property_configuration.cast_type not in self.data_model_configuration:
             raise ValueError(f"Type {property_configuration.cast_type} is not supported, add import to type")
         subtype_data_model_configuration = self.data_model_configuration[property_configuration.cast_type]

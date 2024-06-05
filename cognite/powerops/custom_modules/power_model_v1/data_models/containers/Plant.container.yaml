@@ -45,12 +45,6 @@ properties:
     nullable: true
     autoIncrement: false
     name: penstockHeadLossFactors
-  # watercourse:
-  #   type:
-  #     type: direct
-  #   nullable: true
-  #   autoIncrement: false
-  #   name: watercourse
   productionMaxTimeSeries:
     type:
       type: timeseries
@@ -100,12 +94,6 @@ properties:
     nullable: true
     autoIncrement: false
     name: headDirectTimeSeries
-    # inletReservoir:
-    #   type:
-    #     type: direct
-    #   nullable: true
-    #   autoIncrement: false
-    #   name: inletReservoir
 constraints:
   requiredPowerAsset:
     require:
