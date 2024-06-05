@@ -129,14 +129,20 @@ class PowerOpsClient:
 
         client_config = config if config is not None else get_client_config(settings.cognite)
 
-        if shop_as_a_service and cogshop_version != "":
-            raise ValueError("CogShop version is not supported in Shop As A Service.")
-        elif shop_as_a_service:
-            cogshop_version = ""
+        if settings.powerops.shop_as_a_service or shop_as_a_service:
+            shop_as_a_service = True
+
+        if settings.powerops.cogshop_version and cogshop_version:
+            raise ValueError("CogShop version was provided in two settings.")
+        elif settings.powerops.cogshop_version:
+            cogshop_version = str(settings.powerops.cogshop_version)
         elif cogshop_version is not None:
             cogshop_version = cogshop_version
         else:
-            cogshop_version = settings.powerops.cogshop_version
+            cogshop_version = ""
+
+        if shop_as_a_service and (cogshop_version and cogshop_version != ""):
+            raise ValueError("CogShop version is not supported in Shop As A Service.")
 
         return PowerOpsClient(
             config=client_config,
