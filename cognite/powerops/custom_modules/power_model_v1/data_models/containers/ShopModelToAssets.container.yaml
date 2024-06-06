@@ -35,6 +35,7 @@ properties:
   market_name:
     type:
       type: text
+      collation: ucs_basic
       list: false
     nullable: true
     autoIncrement: false
