@@ -32,3 +32,10 @@ properties:
     nullable: true
     autoIncrement: false
     name: shopCommands
+  market_name:
+    type:
+      type: text
+      list: false
+    nullable: true
+    autoIncrement: false
+    name: marketName
