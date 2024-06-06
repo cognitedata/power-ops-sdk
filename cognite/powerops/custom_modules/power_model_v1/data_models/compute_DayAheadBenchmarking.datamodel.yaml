@@ -131,3 +131,11 @@ views:
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
+  - externalId: ShopTriggerInput
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: ShopCommands
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"

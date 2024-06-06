@@ -1,7 +1,7 @@
 space: "{{power_ops_models}}"
 externalId: ShopModelToAssets
 name: ShopModelToAssets
-description: The template for SHOP models to assets
+description: Link the shop model to all its assets=power-plants
 filter:
   and:
     - hasData:
@@ -62,3 +62,17 @@ properties:
       type: view
     direction: outwards
     connectionType: multi_edge_connection
+  shopCommands:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopModelToAssets
+      type: container
+    containerPropertyIdentifier: shopCommands
+    name: shopCommands
+    description: Commands for the shop file
+    source:
+      space: "{{power_ops_models}}"
+      externalId: ShopCommands
+      version: "{{version}}"
+      type: view
+

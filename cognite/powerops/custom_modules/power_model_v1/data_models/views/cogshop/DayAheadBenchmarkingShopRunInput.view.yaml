@@ -22,7 +22,7 @@ filter:
           space: "{{power_ops_type_space}}"
 implements:
   - space: "{{power_ops_models}}"
-    externalId: FunctionInput
+    externalId: ShopTriggerInput
     version: "{{version}}"
     type: view
 version: "{{version}}"
