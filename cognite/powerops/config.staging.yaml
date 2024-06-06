@@ -8,9 +8,9 @@ environment:
 modules:
   custom_modules:
     power_model_v1:
-      power_ops_type_space: "sp_power_ops_model_benchmarking"
-      power_ops_instance_space: "sp_power_ops_model_benchmarking"
-      power_ops_models: "sp_power_ops_model_benchmarking"
+      power_ops_type_space: "temp_thomi"
+      power_ops_instance_space: "temp_thomi"
+      power_ops_models: "temp_thomi"
       version: "1"
     power_model_v0:
       # variables used for substitution in other files in this directory
