@@ -32,11 +32,3 @@ properties:
     nullable: true
     autoIncrement: false
     name: shopCommands
-  market_name:
-    type:
-      type: text
-      collation: ucs_basic
-      list: false
-    nullable: true
-    autoIncrement: false
-    name: marketName
