@@ -12,10 +12,6 @@ views:
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  #- externalId: TimeSeriesWithLabel
-  #  space: "{{power_ops_models}}"
-  #  version: "{{version}}"
-  #  type: view
   - externalId: BidConfigurationDayAhead
     space: "{{power_ops_models}}"
     version: "{{version}}"
@@ -107,10 +103,6 @@ views:
   - externalId: ShopOutputTimeSeriesDefinition
     space: "{{power_ops_models}}"
     type: view
-  - externalId: ShopOutputTimeSeriesDefinition
-    space: "{{power_ops_models}}"
-    type: view
-    version: "{{version}}"
   - externalId: ShopFile
     space: "{{power_ops_models}}"
     type: view
