@@ -75,4 +75,3 @@ properties:
       externalId: ShopCommands
       version: "{{version}}"
       type: view
-
