@@ -7,7 +7,7 @@ filter:
     - hasData:
         - type: container
           space: "{{power_ops_models}}"
-          externalId: DayAheadBenchmarkingShopRunInput
+          externalId: FunctionData
     - equals:
         property:
           - node
@@ -30,9 +30,9 @@ properties:
   case:
     container:
       space: "{{power_ops_models}}"
-      externalId: DayAheadBenchmarkingShopRunInput
+      externalId: FunctionData
       type: container
-    containerPropertyIdentifier: case
+    containerPropertyIdentifier: direct1
     name: case
     description: "The SHOP case (with all details like model, scenario, and time series)"
     source:
@@ -43,9 +43,9 @@ properties:
   bidSource: # A BidConfiguration, or DayAheadProductionObligationForBenchmarking, or a simple instance of BidSource for "upper bound"
     container:
       space: "{{power_ops_models}}"
-      externalId: DayAheadBenchmarkingShopRunInput
+      externalId: FunctionData
       type: container
-    containerPropertyIdentifier: bidSource
+    containerPropertyIdentifier: direct2
     name: bidSource
     source:
       space: "{{power_ops_models}}"
@@ -55,16 +55,16 @@ properties:
   deliveryDate:
     container:
       space: "{{power_ops_models}}"
-      externalId: DayAheadBenchmarkingShopRunInput
+      externalId: FunctionData
       type: container
-    containerPropertyIdentifier: deliveryDate
+    containerPropertyIdentifier: date1
     name: deliveryDate
     description: The delivery date
   bidGenerated:
     container:
       space: "{{power_ops_models}}"
-      externalId: DayAheadBenchmarkingShopRunInput
+      externalId: FunctionData
       type: container
-    containerPropertyIdentifier: bidGenerated
+    containerPropertyIdentifier: timestamp1
     name: bidGenerated
     description: Timestamp of when the bid had been generated
