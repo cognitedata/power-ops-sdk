@@ -1,6 +1,6 @@
 space: "{{power_ops_models}}"
-externalId: DayAheadBenchmarkingResult
-name: DayAheadBenchmarkingResult
+externalId: BenchmarkingResult
+name: BenchmarkingResult
 usedFor: node
 properties:
   bidSource:
