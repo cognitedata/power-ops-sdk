@@ -13,11 +13,8 @@
   attribute_mappings_override: []
   output_definition:
     - "[name]market price"
-    - "[name]market sale"
     - "[name]plant production"
     - "[name]plant consumption"
-    - "[name]reservoir water value"
-    - "[name]reservoir energy conversion factor"
 - name: "Fornebu price offset -200"
   model: "[name]Fornebu"
   commands: "[name|type:ShopCommands]default"
@@ -27,11 +24,8 @@
     - "[external_id]no2_sale_price_offset_-200"
   output_definition:
     - "[name]market price"
-    - "[name]market sale"
     - "[name]plant production"
     - "[name]plant consumption"
-    - "[name]reservoir water value"
-    - "[name]reservoir energy conversion factor"
 - name: "Fornebu price offset 200"
   model: "[name]Fornebu"
   commands: "[name|type:ShopCommands]default"
@@ -41,8 +35,5 @@
     - "[external_id]no2_sale_price_offset_200"
   output_definition:
     - "[name]market price"
-    - "[name]market sale"
     - "[name]plant production"
     - "[name]plant consumption"
-    - "[name]reservoir water value"
-    - "[name]reservoir energy conversion factor"
