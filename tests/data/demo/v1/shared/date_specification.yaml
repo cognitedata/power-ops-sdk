@@ -13,7 +13,8 @@
     days: -400
 - name: Default BidDate
   processing_timezone: Europe/Oslo
-  resulting_timezone: UTC
+  resulting_timezone: Europe/Oslo
+  floor_frame: hour # Not really needed to floor, but default is day, so we need to specify something finer
   shift_definition:
     days: -400
 - name: Default End
