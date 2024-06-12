@@ -11,6 +11,11 @@
   floor_frame: day
   shift_definition:
     days: -400
+- name: Default BidDate
+  processing_timezone: Europe/Oslo
+  resulting_timezone: UTC
+  shift_definition:
+    days: -400
 - name: Default End
   processing_timezone: Europe/Oslo
   resulting_timezone: UTC
@@ -18,7 +23,7 @@
   shift_definition:
     days: -400
     weeks: 2
-- name: Tomorrow
+- name: Start of tomorrow
   processing_timezone: Europe/Oslo
   resulting_timezone: UTC
   floor_frame: day
