@@ -6,15 +6,27 @@
 #   shift_definition: JSONObject
 
 - name: Default Start
-  processing_timezone: local
+  processing_timezone: Europe/Oslo
   resulting_timezone: UTC
   floor_frame: day
   shift_definition:
     days: -400
 - name: Default End
-  processing_timezone: local
+  processing_timezone: Europe/Oslo
   resulting_timezone: UTC
   floor_frame: week
   shift_definition:
     days: -400
+    weeks: 2
+- name: Tomorrow
+  processing_timezone: Europe/Oslo
+  resulting_timezone: UTC
+  floor_frame: day
+  shift_definition:
+    days: 1
+- name: End of next week
+  processing_timezone: Europe/Oslo
+  resulting_timezone: UTC
+  floor_frame: week
+  shift_definition:
     weeks: 2
