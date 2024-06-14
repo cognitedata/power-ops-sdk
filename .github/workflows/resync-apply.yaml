@@ -40,5 +40,5 @@ jobs:
           SETTINGS__COGNITE__CLIENT_ID: ${{ vars.CLIENT_ID }}
           SETTINGS__COGNITE__PROJECT: ${{ vars.COGNITE_PROJECT }}
         run: |
-          echo Running resync plan in CDF environment $SETTINGS__COGNITE__PROJECT
-          powerops plan tests/data/demo/v1/resync_configuration.yaml
+          echo Running resync apply in CDF environment $SETTINGS__COGNITE__PROJECT
+          powerops apply_v1 tests/data/demo/v1/resync_configuration.yaml
