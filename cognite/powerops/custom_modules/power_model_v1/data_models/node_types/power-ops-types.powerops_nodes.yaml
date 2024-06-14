@@ -171,8 +171,6 @@
 - space: "{{power_ops_type_space}}"
   externalId: DayAheadBenchmarkingTaskDispatcherOutput
 - space: "{{power_ops_type_space}}"
-  externalId: BidConfigurationDayAhead_benchmarking
-- space: "{{power_ops_type_space}}"
   externalId: DayAheadBenchmarkingConfiguration
 - space: "{{power_ops_type_space}}"
   externalId: DayAheadBenchmarkingShopRunInput

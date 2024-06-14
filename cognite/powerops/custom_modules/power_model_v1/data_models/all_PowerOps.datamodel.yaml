@@ -231,10 +231,6 @@ views:
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: BidConfigurationDayAhead_benchmarking
-    space: "{{power_ops_models}}"
-    type: view
-    version: "{{version}}"
   - externalId: DayAheadBenchmarkingShopRunInput
     space: "{{power_ops_models}}"
     type: view
