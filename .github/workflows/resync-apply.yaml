@@ -2,6 +2,8 @@ name: Resync Apply "v1"
 
 on:
   push:
+    branches:
+      - main
     paths:
       - "cognite/powerops/resync/v1/**.py"
       - "cognite/powerops/cli.py"

@@ -1,7 +1,9 @@
 name: Resync Plan "v1"
 
 on:
-  push:
+  pull_request:
+    branches:
+      - main
     paths:
       - "cognite/powerops/resync/v1/**.py"
       - "cognite/powerops/cli.py"
