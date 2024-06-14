@@ -40,10 +40,6 @@ views:
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - externalId: BidSource
-    space: "{{power_ops_models}}"
-    version: "{{version}}"
-    type: view
   - externalId: MarketConfiguration
     space: "{{power_ops_models}}"
     version: "{{version}}"

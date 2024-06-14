@@ -20,11 +20,7 @@ filter:
         value:
           space: "{{power_ops_type_space}}"
           externalId: DayAheadProductionObligationForBenchmarking
-implements:
-  - space: "{{power_ops_models}}"
-    externalId: BidSource
-    version: "{{version}}"
-    type: view
+implements: []
 version: "{{version}}"
 properties:
   timeseries:

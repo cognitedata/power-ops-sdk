@@ -47,11 +47,6 @@ properties:
       type: container
     containerPropertyIdentifier: direct2
     name: bidSource
-    source:
-      space: "{{power_ops_models}}"
-      externalId: BidSource
-      version: "{{version}}"
-      type: view
   deliveryDate:
     container:
       space: "{{power_ops_models}}"

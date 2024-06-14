@@ -23,16 +23,11 @@ filter:
 implements: []
 version: "{{version}}"
 properties: # TODO: no alerts here?
-  bidSource:
+  bidSource: # Note: For now there is no source for bidSource, because it can be BidConfigurationDayAhead, DayAheadProductionObligationForBenchmarking, or just a string.
     container:
       space: "{{power_ops_models}}"
       externalId: BenchmarkingResult
       type: container
-    source:
-      space: "{{power_ops_models}}"
-      externalId: BidSource
-      version: "{{version}}"
-      type: view
     containerPropertyIdentifier: bidSource
     name: bidSource
   deliveryDate:
