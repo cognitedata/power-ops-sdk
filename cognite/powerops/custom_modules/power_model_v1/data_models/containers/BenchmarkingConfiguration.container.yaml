@@ -1,6 +1,6 @@
 space: "{{power_ops_models}}"
-externalId: DayAheadBenchmarkingConfiguration
-name: DayAheadBenchmarkingConfiguration
+externalId: BenchmarkingConfiguration
+name: BenchmarkingConfiguration
 usedFor: node
 properties:
   name:

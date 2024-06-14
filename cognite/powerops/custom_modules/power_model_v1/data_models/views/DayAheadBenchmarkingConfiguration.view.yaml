@@ -7,7 +7,7 @@ filter:
     - hasData:
         - type: container
           space: "{{power_ops_models}}"
-          externalId: DayAheadBenchmarkingConfiguration
+          externalId: BenchmarkingConfiguration
     - equals:
         property:
           - node
@@ -26,7 +26,7 @@ properties:
   name:
     container:
       space: "{{power_ops_models}}"
-      externalId: DayAheadBenchmarkingConfiguration
+      externalId: BenchmarkingConfiguration
       type: container
     containerPropertyIdentifier: name
     name: name
@@ -60,7 +60,7 @@ properties:
   priceArea: # TODO: Should we take this from the bidConfigurations?
     container:
       space: "{{power_ops_models}}"
-      externalId: DayAheadBenchmarkingConfiguration
+      externalId: BenchmarkingConfiguration
       type: container
     containerPropertyIdentifier: priceArea
     name: priceArea
@@ -73,7 +73,7 @@ properties:
   shopStartSpecification:
     container:
       space: "{{power_ops_models}}"
-      externalId: DayAheadBenchmarkingConfiguration
+      externalId: BenchmarkingConfiguration
       type: container
     containerPropertyIdentifier: shopStartSpecification
     name: shopStartSpecification
@@ -81,7 +81,7 @@ properties:
   shopEndSpecification:
     container:
       space: "{{power_ops_models}}"
-      externalId: DayAheadBenchmarkingConfiguration
+      externalId: BenchmarkingConfiguration
       type: container
     containerPropertyIdentifier: shopEndSpecification
     name: shopEndSpecification
