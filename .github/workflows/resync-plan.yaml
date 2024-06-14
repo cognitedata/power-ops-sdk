@@ -1,0 +1,42 @@
+name: Resync Plan "v1"
+
+on:
+  push:
+    paths:
+      - "cognite/powerops/resync/v1/**.py"
+      - "cognite/powerops/cli.py"
+      - "tests/data/demo/v1/**.yaml"
+      - "tests/data/demo/v1/**.yml"
+
+jobs:
+  resync-plan:
+    name: Resync Plan "v1" to CDF project ${{ vars.COGNITE_PROJECT }}
+
+    environment:
+      name: dev
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip poetry==1.*
+          poetry config virtualenvs.create false
+          poetry install
+
+      - name: Run resync plan
+        env:
+          SETTINGS__COGNITE__CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          SETTINGS__COGNITE__CLIENT_ID: ${{ vars.CLIENT_ID }}
+          SETTINGS__COGNITE__PROJECT: ${{ vars.COGNITE_PROJECT }}
+        run: |
+          echo Running resync plan in CDF environment $SETTINGS__COGNITE__PROJECT
+          powerops plan tests/data/demo/v1/resync_configuration.yaml
