@@ -4,7 +4,7 @@ version: "1"
 name: DayAheadBenchmarking
 description: "The process of benchmarking day-ahead bids"
 views:
-  - externalId: DayAheadBenchmarkingConfiguration
+  - externalId: BenchmarkingConfigurationDayAhead
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view

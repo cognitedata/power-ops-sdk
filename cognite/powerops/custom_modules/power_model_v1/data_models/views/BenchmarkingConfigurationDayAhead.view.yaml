@@ -1,6 +1,6 @@
 space: "{{power_ops_models}}"
-externalId: DayAheadBenchmarkingConfiguration
-name: DayAheadBenchmarkingConfiguration
+externalId: BenchmarkingConfigurationDayAhead
+name: BenchmarkingConfigurationDayAhead
 description: Representing the same as the good old benchmarking config asset
 filter:
   and:
@@ -19,7 +19,7 @@ filter:
           - type
         value:
           space: "{{power_ops_type_space}}"
-          externalId: DayAheadBenchmarkingConfiguration
+          externalId: BenchmarkingConfigurationDayAhead
 implements: []
 version: "{{version}}"
 properties:
