@@ -5,7 +5,7 @@
   project = "power-ops-staging"
   cdf_cluster = "bluefield"
   tenant_id = "431fcc8b-74b8-4171-b7c9-e6fab253913b"
-  client_id = "140df241-50bf-4c16-a965-6fd4e5b87958"
+  client_id = "d985b4fe-275e-4df3-9e49-b6b18a77778a"
 
 [powerops]
   read_dataset = "uc:000:powerops"
