@@ -7,7 +7,7 @@ file_configuration:
   # Whether to overwrite the files if they already exist
   overwrite: True
   # The data set to resync the data to, can be provided as a external_id string or an id integer
-  data_set: 7954116792797929
+  data_set: "powerops:config"
   # The folder path to the files, the default is working_directory/files
   # folder_path: "files" # must be full path if used
   # A list of file metadata to be added to the files, this is optional for each file
