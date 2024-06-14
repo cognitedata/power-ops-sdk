@@ -8,7 +8,7 @@ views:
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - externalId: ShopModelToAssets
+  - externalId: ShopModelWithAssets
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view

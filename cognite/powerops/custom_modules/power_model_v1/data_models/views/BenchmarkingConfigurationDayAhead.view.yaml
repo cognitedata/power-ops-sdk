@@ -50,7 +50,7 @@ properties:
       externalId: assetsPerShopModel
     source:
       space: "{{power_ops_models}}"
-      externalId: ShopModelToAssets
+      externalId: ShopModelWithAssets
       version: "{{version}}"
       type: view
     direction: outwards

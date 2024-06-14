@@ -1,6 +1,6 @@
 space: "{{power_ops_models}}"
-externalId: ShopModelToAssets
-name: ShopModelToAssets
+externalId: ShopModelWithAssets
+name: ShopModelWithAssets
 usedFor: node
 properties:
   shopModel:

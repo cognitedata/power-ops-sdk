@@ -181,7 +181,7 @@
 - space: "{{power_ops_type_space}}"
   externalId: PriceAreaInformation
 - space: "{{power_ops_type_space}}"
-  externalId: ShopModelToAssets
+  externalId: ShopModelWithAssets
 - space: "{{power_ops_type_space}}"
   externalId: PlantWaterValueBased
 - space: "{{power_ops_type_space}}"
