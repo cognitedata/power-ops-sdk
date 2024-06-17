@@ -9,7 +9,6 @@ env:
 
 jobs:
   lint:
-    name: Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,7 +29,6 @@ jobs:
           pre-commit run --all-files
 
   test_and_release:
-    name: Test and Release
     runs-on: ubuntu-latest
     environment: CD
     steps:
