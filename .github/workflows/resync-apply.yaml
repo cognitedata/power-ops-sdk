@@ -10,8 +10,11 @@ on:
       - "tests/data/demo/v1/**.yaml"
       - "tests/data/demo/v1/**.yml"
 
+env:
+  CONFIGURATION_FILE: "tests/data/demo/v1/resync_configuration.yaml"
+
 jobs:
-  resync-plan:
+  resync-apply:
     name: Resync Apply "v1" to CDF project ${{ vars.PROJECT }}
 
     environment:
@@ -20,11 +23,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: main
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: 3.11
 
@@ -34,7 +35,7 @@ jobs:
           poetry config virtualenvs.create false
           poetry install
 
-      - name: Run resync plan
+      - name: Run resync apply
         env:
           SETTINGS__COGNITE__CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           SETTINGS__COGNITE__CLIENT_ID: ${{ vars.CLIENT_ID }}
@@ -44,4 +45,4 @@ jobs:
           SETTINGS__COGNITE__LOGIN_FLOW: "client_credentials"
         run: |
           echo Running resync apply in CDF environment $SETTINGS__COGNITE__PROJECT
-          powerops apply_v1 tests/data/demo/v1/resync_configuration.yaml
+          powerops apply_v1 $CONFIGURATION_FILE

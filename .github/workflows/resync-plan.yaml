@@ -10,6 +10,9 @@ on:
       - "tests/data/demo/v1/**.yaml"
       - "tests/data/demo/v1/**.yml"
 
+env:
+  CONFIGURATION_FILE: "tests/data/demo/v1/resync_configuration.yaml"
+
 jobs:
   resync-plan:
     name: Resync Plan "v1" to CDF project ${{ vars.PROJECT }}
@@ -20,11 +23,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: main
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: 3.11
 
@@ -44,4 +45,4 @@ jobs:
           SETTINGS__COGNITE__LOGIN_FLOW: "client_credentials"
         run: |
           echo Running resync plan in CDF environment $SETTINGS__COGNITE__PROJECT
-          powerops plan_v1 tests/data/demo/v1/resync_configuration.yaml
+          powerops plan_v1 $CONFIGURATION_FILE
