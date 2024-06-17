@@ -11,7 +11,7 @@ on:
       - "tests/data/demo/v1/**.yml"
 
 jobs:
-  resync-plan:
+  resync-apply:
     name: Resync Apply "v1" to CDF project ${{ vars.PROJECT }}
 
     environment:
@@ -20,11 +20,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: main
 
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: 3.11
 
@@ -34,7 +34,7 @@ jobs:
           poetry config virtualenvs.create false
           poetry install
 
-      - name: Run resync plan
+      - name: Run resync apply
         env:
           SETTINGS__COGNITE__CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           SETTINGS__COGNITE__CLIENT_ID: ${{ vars.CLIENT_ID }}
