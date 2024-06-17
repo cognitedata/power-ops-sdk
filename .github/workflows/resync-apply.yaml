@@ -10,6 +10,9 @@ on:
       - "tests/data/demo/v1/**.yaml"
       - "tests/data/demo/v1/**.yml"
 
+env:
+  CONFIGURATION_FILE: "tests/data/demo/v1/resync_configuration.yaml"
+
 jobs:
   resync-apply:
     name: Resync Apply "v1" to CDF project ${{ vars.PROJECT }}
@@ -42,4 +45,4 @@ jobs:
           SETTINGS__COGNITE__LOGIN_FLOW: "client_credentials"
         run: |
           echo Running resync apply in CDF environment $SETTINGS__COGNITE__PROJECT
-          powerops apply_v1 tests/data/demo/v1/resync_configuration.yaml
+          powerops apply_v1 $CONFIGURATION_FILE
