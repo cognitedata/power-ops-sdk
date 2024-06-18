@@ -23,13 +23,13 @@ filter:
 implements: []
 version: "{{version}}"
 properties:
-  timeseries:
+  timeSeries:
     container:
       type: container
       space: '{{power_ops_models}}'
       externalId: ProductionObligationForBenchmarkingDayAhead
-    containerPropertyIdentifier: timeseries
-    name: timeseries
+    containerPropertyIdentifier: timeSeries
+    name: timeSeries
     description: The time series of the day ahead production obligation for benchmarking
   name:
     container:

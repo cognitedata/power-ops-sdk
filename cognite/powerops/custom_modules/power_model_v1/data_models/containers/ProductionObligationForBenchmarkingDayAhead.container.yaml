@@ -3,13 +3,13 @@ externalId: ProductionObligationForBenchmarkingDayAhead
 name: ProductionObligationForBenchmarkingDayAhead
 usedFor: node
 properties:
-  timeseries:
+  timeSeries:
     type:
       list: false
       type: timeseries
     nullable: true
     autoIncrement: false
-    name: timeseries
+    name: timeSeries
     description: The time series of the day ahead production obligation for benchmarking
   name:
     type:
