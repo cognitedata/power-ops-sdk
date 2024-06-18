@@ -1,6 +1,6 @@
 space: "{{power_ops_models}}"
-externalId: DayAheadProductionObligationForBenchmarking
-name: DayAheadProductionObligationForBenchmarking
+externalId: ProductionObligationForBenchmarkingDayAhead
+name: ProductionObligationForBenchmarkingDayAhead
 usedFor: node
 properties:
   timeseries:

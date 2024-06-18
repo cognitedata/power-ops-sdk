@@ -235,11 +235,11 @@ views:
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: DayAheadProductionObligationForBenchmarking
+  - externalId: ProductionObligationForBenchmarkingDayAhead
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: DayAheadBenchmarkingResult
+  - externalId: BenchmarkingResultDayAhead
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"

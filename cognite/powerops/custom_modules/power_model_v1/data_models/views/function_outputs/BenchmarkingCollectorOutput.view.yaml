@@ -41,7 +41,7 @@ properties:
       externalId: benchmarkingShopRunOutputs
     source:
       space: "{{power_ops_models}}"
-      externalId: DayAheadBenchmarkingResult # DayAheadBenchmarkingShopRunOutput
+      externalId: BenchmarkingResultDayAhead # DayAheadBenchmarkingShopRunOutput
       version: "{{version}}"
       type: view
     direction: outwards

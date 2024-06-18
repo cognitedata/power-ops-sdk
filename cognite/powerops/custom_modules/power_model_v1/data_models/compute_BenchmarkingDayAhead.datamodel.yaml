@@ -32,11 +32,11 @@ views:
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - externalId: DayAheadBenchmarkingResult # DayAheadBenchmarkingShopRunOutput
+  - externalId: BenchmarkingResultDayAhead # DayAheadBenchmarkingShopRunOutput
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - externalId: DayAheadProductionObligationForBenchmarking
+  - externalId: ProductionObligationForBenchmarkingDayAhead
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view

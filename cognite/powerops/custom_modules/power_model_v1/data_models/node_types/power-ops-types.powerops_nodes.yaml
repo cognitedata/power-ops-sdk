@@ -189,10 +189,10 @@
 - space: "{{power_ops_type_space}}"
   externalId: ShopPenaltyReport
 - space: "{{power_ops_type_space}}"
-  externalId: DayAheadBenchmarkingResult
+  externalId: BenchmarkingResultDayAhead
 - space: "{{power_ops_type_space}}"
   externalId: assetsPerShopModel
 - space: "{{power_ops_type_space}}"
   externalId: benchmarkingBidConfigurations
 - space: "{{power_ops_type_space}}"
-  externalId: DayAheadProductionObligationForBenchmarking
+  externalId: ProductionObligationForBenchmarkingDayAhead

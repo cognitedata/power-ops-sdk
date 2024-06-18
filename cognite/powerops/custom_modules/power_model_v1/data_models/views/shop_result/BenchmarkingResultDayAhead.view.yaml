@@ -1,6 +1,6 @@
 space: "{{power_ops_models}}"
-externalId: DayAheadBenchmarkingResult
-name: DayAheadBenchmarkingResult
+externalId: BenchmarkingResultDayAhead
+name: BenchmarkingResultDayAhead
 description: Result of benchmarking the day ahead market
 filter:
   and:
@@ -18,12 +18,12 @@ filter:
           - node
           - type
         value:
-          externalId: DayAheadBenchmarkingResult
+          externalId: BenchmarkingResultDayAhead
           space: "{{power_ops_type_space}}"
 implements: []
 version: "{{version}}"
 properties: # TODO: no alerts here?
-  bidSource: # Note: For now there is no source for bidSource, because it can be BidConfigurationDayAhead, DayAheadProductionObligationForBenchmarking, or just a string.
+  bidSource: # Note: For now there is no source for bidSource, because it can be BidConfigurationDayAhead, ProductionObligationForBenchmarkingDayAhead, or just a string.
     container:
       space: "{{power_ops_models}}"
       externalId: BenchmarkingResult
