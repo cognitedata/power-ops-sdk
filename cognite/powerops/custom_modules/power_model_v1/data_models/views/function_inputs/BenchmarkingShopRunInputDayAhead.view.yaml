@@ -40,7 +40,7 @@ properties:
       externalId: ShopCase
       version: "{{version}}"
       type: view
-  bidSource: # A BidConfiguration ext ID, or DayAheadProductionObligationForBenchmarking ext ID, or a string for "upper bound"
+  bidSource: # A BidConfiguration ext ID, or ProductionObligationForBenchmarkingDayAhead ext ID, or a string for "upper bound"
     container:
       space: "{{power_ops_models}}"
       externalId: FunctionData
