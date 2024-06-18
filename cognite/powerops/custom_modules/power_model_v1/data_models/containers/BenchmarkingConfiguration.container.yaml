@@ -36,16 +36,14 @@ properties:
   shopStartSpecification:
     type:
       list: false
-      collation: ucs_basic
-      type: text
+      type: direct
     nullable: false
     autoIncrement: false
     name: shopStartSpecification
   shopEndSpecification:
     type:
       list: false
-      collation: ucs_basic
-      type: text
+      type: direct
     nullable: false
     autoIncrement: false
     name: shopEndSpecification

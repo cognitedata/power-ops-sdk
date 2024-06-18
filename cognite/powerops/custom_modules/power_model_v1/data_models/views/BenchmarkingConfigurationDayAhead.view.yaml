@@ -78,6 +78,11 @@ properties:
     containerPropertyIdentifier: shopStartSpecification
     name: shopStartSpecification
     description: Relative time spec. for start-time for benchmarking SHOP runs
+    source:
+      space: "{{power_ops_models}}"
+      externalId: DateSpecification
+      version: "{{version}}"
+      type: view
   shopEndSpecification:
     container:
       space: "{{power_ops_models}}"
@@ -86,3 +91,8 @@ properties:
     containerPropertyIdentifier: shopEndSpecification
     name: shopEndSpecification
     description: Relative time spec. for end-time for benchmarking SHOP runs
+    source:
+      space: "{{power_ops_models}}"
+      externalId: DateSpecification
+      version: "{{version}}"
+      type: view
