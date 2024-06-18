@@ -169,7 +169,7 @@
 - space: "{{power_ops_type_space}}"
   externalId: BenchmarkingTaskDispatcherInputDayAhead
 - space: "{{power_ops_type_space}}"
-  externalId: DayAheadBenchmarkingTaskDispatcherOutput
+  externalId: BenchmarkingTaskDispatcherOutputDayAhead
 - space: "{{power_ops_type_space}}"
   externalId: BenchmarkingConfigurationDayAhead
 - space: "{{power_ops_type_space}}"

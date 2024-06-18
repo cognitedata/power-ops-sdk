@@ -179,7 +179,7 @@ views:
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - externalId: DayAheadBenchmarkingTaskDispatcherOutput
+  - externalId: BenchmarkingTaskDispatcherOutputDayAhead
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view

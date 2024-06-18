@@ -1,6 +1,6 @@
 space: "{{power_ops_models}}"
-externalId: DayAheadBenchmarkingTaskDispatcherOutput
-name: DayAheadBenchmarkingTaskDispatcherOutput
+externalId: BenchmarkingTaskDispatcherOutputDayAhead
+name: BenchmarkingTaskDispatcherOutputDayAhead
 description: The task dispatcher output data for benchmarking
 filter:
   and:
@@ -14,7 +14,7 @@ filter:
           - node
           - type
         value:
-          externalId: DayAheadBenchmarkingTaskDispatcherOutput
+          externalId: BenchmarkingTaskDispatcherOutputDayAhead
           space: "{{power_ops_type_space}}"
 implements:
   - space: "{{power_ops_models}}"

@@ -24,7 +24,7 @@ views:
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - externalId: DayAheadBenchmarkingTaskDispatcherOutput # PrepareDayAheadBenchmarkingShopRunsOutput
+  - externalId: BenchmarkingTaskDispatcherOutputDayAhead # PrepareDayAheadBenchmarkingShopRunsOutput
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
