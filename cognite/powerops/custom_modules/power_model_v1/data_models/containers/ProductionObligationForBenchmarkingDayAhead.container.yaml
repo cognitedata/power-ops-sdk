@@ -10,7 +10,7 @@ properties:
     nullable: true
     autoIncrement: false
     name: timeseries
-    description: todo
+    description: The time series of the day ahead production obligation for benchmarking
   name:
     type:
       list: false
@@ -18,5 +18,5 @@ properties:
       type: text
     nullable: true
     autoIncrement: false
-    name: text1
-    description: todo
+    name: name
+    description: The name of the day ahead production obligation for benchmarking

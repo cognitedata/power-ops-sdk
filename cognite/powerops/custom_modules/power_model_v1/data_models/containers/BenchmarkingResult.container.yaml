@@ -37,7 +37,7 @@ properties:
       list: false
     nullable: true
     autoIncrement: false
-    name: flag
+    name: isSelected
   value:
     type:
       list: false
