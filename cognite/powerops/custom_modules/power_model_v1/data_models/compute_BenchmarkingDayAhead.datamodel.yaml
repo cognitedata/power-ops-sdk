@@ -1,7 +1,7 @@
-externalId: compute_DayAheadBenchmarking
+externalId: compute_BenchmarkingDayAhead
 space: "{{power_ops_models}}"
 version: "1"
-name: DayAheadBenchmarking
+name: BenchmarkingDayAhead
 description: "The process of benchmarking day-ahead bids"
 views:
   - externalId: BenchmarkingConfigurationDayAhead
