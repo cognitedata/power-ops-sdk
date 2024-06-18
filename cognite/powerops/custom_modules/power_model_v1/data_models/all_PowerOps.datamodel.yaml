@@ -227,7 +227,7 @@ views:
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: DayAheadBenchmarkingShopRunInput
+  - externalId: BenchmarkingShopRunInputDayAhead
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
