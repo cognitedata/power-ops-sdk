@@ -2779,50 +2779,6 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0
-- external_id: base_mapping_fornebu_plant_rull2_production_schedule_flag
-  object_type: plant
-  object_name: Rull2
-  attribute_name: production_schedule_flag
-  time_series: null
-  transformations:
-    - StaticValues:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: 0
-- external_id: base_mapping_fornebu_plant_dalby_production_schedule_flag
-  object_type: plant
-  object_name: Dalby
-  attribute_name: production_schedule_flag
-  time_series: null
-  transformations:
-    - StaticValues:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: 0
-- external_id: base_mapping_fornebu_plant_scott_production_schedule_flag
-  object_type: plant
-  object_name: Scott
-  attribute_name: production_schedule_flag
-  time_series: null
-  transformations:
-    - StaticValues:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: 0
-- external_id: base_mapping_fornebu_plant_lund_production_schedule_flag
-  object_type: plant
-  object_name: Lund
-  attribute_name: production_schedule_flag
-  time_series: null
-  transformations:
-    - StaticValues:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: 0
 - external_id: base_mapping_fornebu_plant_holen_production_schedule_flag
   object_type: plant
   object_name: Holen
@@ -2845,6 +2801,28 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0
+- external_id: base_mapping_fornebu_plant_dalby_production_schedule_flag
+  object_type: plant
+  object_name: Dalby
+  attribute_name: production_schedule_flag
+  time_series: null
+  transformations:
+    - StaticValues:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 0
+- external_id: base_mapping_fornebu_plant_lund_production_schedule_flag
+  object_type: plant
+  object_name: Lund
+  attribute_name: production_schedule_flag
+  time_series: null
+  transformations:
+    - StaticValues:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 0
 - external_id: base_mapping_fornebu_plant_strand_krv_production_schedule_flag
   object_type: plant
   object_name: Strand_krv
@@ -2856,10 +2834,507 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0
-- external_id: no2_buy_price_offset_-200
+- external_id: base_mapping_fornebu_plant_scott_production_schedule_flag
+  object_type: plant
+  object_name: Scott
+  attribute_name: production_schedule_flag
+  time_series: null
+  transformations:
+    - StaticValues:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 0
+- external_id: base_mapping_fornebu_plant_rull2_production_schedule_flag
+  object_type: plant
+  object_name: Rull2
+  attribute_name: production_schedule_flag
+  time_series: null
+  transformations:
+    - StaticValues:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 0
+- external_id: no2_buy_price_minus_500_first_24h
   object_type: market
   object_name: Dayahead
   attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: -499.99
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_minus_200_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: -199.99
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_minus_180_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: -179.99
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_minus_160_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: -159.99
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_minus_140_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: -139.99
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_minus_120_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: -119.99
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_minus_100_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: -99.99
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_minus_80_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: -79.99
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_minus_60_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: -59.99
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_minus_50_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: -49.99
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_minus_40_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: -39.99
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_minus_30_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: -29.99
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_minus_20_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: -19.99
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_minus_15_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: -14.99
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_minus_10_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: -9.99
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_minus_5_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: -4.99
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_minus_0_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 0.01
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_plus_5_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 5.01
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_plus_10_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 10.01
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_plus_15_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 15.01
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_plus_20_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 20.01
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_plus_30_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 30.01
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_plus_40_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 40.01
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_plus_50_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 50.01
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_plus_60_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 60.01
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_plus_70_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 70.01
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_plus_80_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 80.01
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_plus_100_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 100.01
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_plus_120_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 120.01
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_plus_140_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 140.01
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_plus_160_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 160.01
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_plus_180_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 180.01
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_plus_200_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 200.01
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_plus_2000_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 2000.01
+            - offset_minute: 1440.0
+              offset_value: 0.01
+- external_id: no2_buy_price_multiply_0_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 0.01
+            - offset_minute: 1440.0
+              offset_value: 0.01
+    - MultiplyFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 0
+            - offset_minute: 1440.0
+              offset_value: 0
+- external_id: no2_sale_price_minus_500_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: sale_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: -500
+            - offset_minute: 1440.0
+              offset_value: 0.0
+- external_id: no2_sale_price_minus_200_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: sale_price
   time_series: "[external_id]907677"
   transformations:
     - AddFromOffset:
@@ -2869,280 +3344,7 @@
               offset_value: -200
             - offset_minute: 1440.0
               offset_value: 0.0
-- external_id: no2_buy_price_offset_-180
-  object_type: market
-  object_name: Dayahead
-  attribute_name: buy_price
-  time_series: "[external_id]907677"
-  transformations:
-    - AddFromOffset:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: -180
-            - offset_minute: 1440.0
-              offset_value: 0.0
-- external_id: no2_buy_price_offset_-160
-  object_type: market
-  object_name: Dayahead
-  attribute_name: buy_price
-  time_series: "[external_id]907677"
-  transformations:
-    - AddFromOffset:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: -160
-            - offset_minute: 1440.0
-              offset_value: 0.0
-- external_id: no2_buy_price_offset_-140
-  object_type: market
-  object_name: Dayahead
-  attribute_name: buy_price
-  time_series: "[external_id]907677"
-  transformations:
-    - AddFromOffset:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: -140
-            - offset_minute: 1440.0
-              offset_value: 0.0
-- external_id: no2_buy_price_offset_-120
-  object_type: market
-  object_name: Dayahead
-  attribute_name: buy_price
-  time_series: "[external_id]907677"
-  transformations:
-    - AddFromOffset:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: -120
-            - offset_minute: 1440.0
-              offset_value: 0.0
-- external_id: no2_buy_price_offset_-100
-  object_type: market
-  object_name: Dayahead
-  attribute_name: buy_price
-  time_series: "[external_id]907677"
-  transformations:
-    - AddFromOffset:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: -100
-            - offset_minute: 1440.0
-              offset_value: 0.0
-- external_id: no2_buy_price_offset_-80
-  object_type: market
-  object_name: Dayahead
-  attribute_name: buy_price
-  time_series: "[external_id]907677"
-  transformations:
-    - AddFromOffset:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: -80
-            - offset_minute: 1440.0
-              offset_value: 0.0
-- external_id: no2_buy_price_offset_-60
-  object_type: market
-  object_name: Dayahead
-  attribute_name: buy_price
-  time_series: "[external_id]907677"
-  transformations:
-    - AddFromOffset:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: -60
-            - offset_minute: 1440.0
-              offset_value: 0.0
-- external_id: no2_buy_price_offset_-40
-  object_type: market
-  object_name: Dayahead
-  attribute_name: buy_price
-  time_series: "[external_id]907677"
-  transformations:
-    - AddFromOffset:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: -40
-            - offset_minute: 1440.0
-              offset_value: 0.0
-- external_id: no2_buy_price_offset_-20
-  object_type: market
-  object_name: Dayahead
-  attribute_name: buy_price
-  time_series: "[external_id]907677"
-  transformations:
-    - AddFromOffset:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: -20
-            - offset_minute: 1440.0
-              offset_value: 0.0
-- external_id: no2_buy_price_offset_0
-  object_type: market
-  object_name: Dayahead
-  attribute_name: buy_price
-  time_series: "[external_id]907677"
-  transformations:
-    - AddFromOffset:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: 0
-            - offset_minute: 1440.0
-              offset_value: 0.0
-- external_id: no2_buy_price_offset_20
-  object_type: market
-  object_name: Dayahead
-  attribute_name: buy_price
-  time_series: "[external_id]907677"
-  transformations:
-    - AddFromOffset:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: 20
-            - offset_minute: 1440.0
-              offset_value: 0.0
-- external_id: no2_buy_price_offset_40
-  object_type: market
-  object_name: Dayahead
-  attribute_name: buy_price
-  time_series: "[external_id]907677"
-  transformations:
-    - AddFromOffset:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: 40
-            - offset_minute: 1440.0
-              offset_value: 0.0
-- external_id: no2_buy_price_offset_60
-  object_type: market
-  object_name: Dayahead
-  attribute_name: buy_price
-  time_series: "[external_id]907677"
-  transformations:
-    - AddFromOffset:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: 60
-            - offset_minute: 1440.0
-              offset_value: 0.0
-- external_id: no2_buy_price_offset_80
-  object_type: market
-  object_name: Dayahead
-  attribute_name: buy_price
-  time_series: "[external_id]907677"
-  transformations:
-    - AddFromOffset:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: 80
-            - offset_minute: 1440.0
-              offset_value: 0.0
-- external_id: no2_buy_price_offset_100
-  object_type: market
-  object_name: Dayahead
-  attribute_name: buy_price
-  time_series: "[external_id]907677"
-  transformations:
-    - AddFromOffset:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: 100
-            - offset_minute: 1440.0
-              offset_value: 0.0
-- external_id: no2_buy_price_offset_120
-  object_type: market
-  object_name: Dayahead
-  attribute_name: buy_price
-  time_series: "[external_id]907677"
-  transformations:
-    - AddFromOffset:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: 120
-            - offset_minute: 1440.0
-              offset_value: 0.0
-- external_id: no2_buy_price_offset_140
-  object_type: market
-  object_name: Dayahead
-  attribute_name: buy_price
-  time_series: "[external_id]907677"
-  transformations:
-    - AddFromOffset:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: 140
-            - offset_minute: 1440.0
-              offset_value: 0.0
-- external_id: no2_buy_price_offset_160
-  object_type: market
-  object_name: Dayahead
-  attribute_name: buy_price
-  time_series: "[external_id]907677"
-  transformations:
-    - AddFromOffset:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: 160
-            - offset_minute: 1440.0
-              offset_value: 0.0
-- external_id: no2_buy_price_offset_180
-  object_type: market
-  object_name: Dayahead
-  attribute_name: buy_price
-  time_series: "[external_id]907677"
-  transformations:
-    - AddFromOffset:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: 180
-            - offset_minute: 1440.0
-              offset_value: 0.0
-- external_id: no2_buy_price_offset_200
-  object_type: market
-  object_name: Dayahead
-  attribute_name: buy_price
-  time_series: "[external_id]907677"
-  transformations:
-    - AddFromOffset:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: 200
-            - offset_minute: 1440.0
-              offset_value: 0.0
-- external_id: no2_sale_price_offset_-200
-  object_type: market
-  object_name: Dayahead
-  attribute_name: sale_price
-  time_series: "[external_id]907677"
-  transformations:
-    - AddFromOffset:
-        parameters:
-          relative_datapoints:
-            - offset_minute: 0.0
-              offset_value: -200
-            - offset_minute: 1440.0
-              offset_value: 0.0
-- external_id: no2_sale_price_offset_-180
+- external_id: no2_sale_price_minus_180_first_24h
   object_type: market
   object_name: Dayahead
   attribute_name: sale_price
@@ -3155,7 +3357,7 @@
               offset_value: -180
             - offset_minute: 1440.0
               offset_value: 0.0
-- external_id: no2_sale_price_offset_-160
+- external_id: no2_sale_price_minus_160_first_24h
   object_type: market
   object_name: Dayahead
   attribute_name: sale_price
@@ -3168,7 +3370,7 @@
               offset_value: -160
             - offset_minute: 1440.0
               offset_value: 0.0
-- external_id: no2_sale_price_offset_-140
+- external_id: no2_sale_price_minus_140_first_24h
   object_type: market
   object_name: Dayahead
   attribute_name: sale_price
@@ -3181,7 +3383,7 @@
               offset_value: -140
             - offset_minute: 1440.0
               offset_value: 0.0
-- external_id: no2_sale_price_offset_-120
+- external_id: no2_sale_price_minus_120_first_24h
   object_type: market
   object_name: Dayahead
   attribute_name: sale_price
@@ -3194,7 +3396,7 @@
               offset_value: -120
             - offset_minute: 1440.0
               offset_value: 0.0
-- external_id: no2_sale_price_offset_-100
+- external_id: no2_sale_price_minus_100_first_24h
   object_type: market
   object_name: Dayahead
   attribute_name: sale_price
@@ -3207,7 +3409,7 @@
               offset_value: -100
             - offset_minute: 1440.0
               offset_value: 0.0
-- external_id: no2_sale_price_offset_-80
+- external_id: no2_sale_price_minus_80_first_24h
   object_type: market
   object_name: Dayahead
   attribute_name: sale_price
@@ -3220,7 +3422,7 @@
               offset_value: -80
             - offset_minute: 1440.0
               offset_value: 0.0
-- external_id: no2_sale_price_offset_-60
+- external_id: no2_sale_price_minus_60_first_24h
   object_type: market
   object_name: Dayahead
   attribute_name: sale_price
@@ -3233,7 +3435,20 @@
               offset_value: -60
             - offset_minute: 1440.0
               offset_value: 0.0
-- external_id: no2_sale_price_offset_-40
+- external_id: no2_sale_price_minus_50_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: sale_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: -50
+            - offset_minute: 1440.0
+              offset_value: 0.0
+- external_id: no2_sale_price_minus_40_first_24h
   object_type: market
   object_name: Dayahead
   attribute_name: sale_price
@@ -3246,7 +3461,20 @@
               offset_value: -40
             - offset_minute: 1440.0
               offset_value: 0.0
-- external_id: no2_sale_price_offset_-20
+- external_id: no2_sale_price_minus_30_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: sale_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: -30
+            - offset_minute: 1440.0
+              offset_value: 0.0
+- external_id: no2_sale_price_minus_20_first_24h
   object_type: market
   object_name: Dayahead
   attribute_name: sale_price
@@ -3259,7 +3487,46 @@
               offset_value: -20
             - offset_minute: 1440.0
               offset_value: 0.0
-- external_id: no2_sale_price_offset_0
+- external_id: no2_sale_price_minus_15_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: sale_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: -15
+            - offset_minute: 1440.0
+              offset_value: 0.0
+- external_id: no2_sale_price_minus_10_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: sale_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: -10
+            - offset_minute: 1440.0
+              offset_value: 0.0
+- external_id: no2_sale_price_minus_5_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: sale_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: -5
+            - offset_minute: 1440.0
+              offset_value: 0.0
+- external_id: no2_sale_price_minus_0_first_24h
   object_type: market
   object_name: Dayahead
   attribute_name: sale_price
@@ -3272,7 +3539,46 @@
               offset_value: 0
             - offset_minute: 1440.0
               offset_value: 0.0
-- external_id: no2_sale_price_offset_20
+- external_id: no2_sale_price_plus_5_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: sale_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 5
+            - offset_minute: 1440.0
+              offset_value: 0.0
+- external_id: no2_sale_price_plus_10_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: sale_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 10
+            - offset_minute: 1440.0
+              offset_value: 0.0
+- external_id: no2_sale_price_plus_15_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: sale_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 15
+            - offset_minute: 1440.0
+              offset_value: 0.0
+- external_id: no2_sale_price_plus_20_first_24h
   object_type: market
   object_name: Dayahead
   attribute_name: sale_price
@@ -3285,7 +3591,20 @@
               offset_value: 20
             - offset_minute: 1440.0
               offset_value: 0.0
-- external_id: no2_sale_price_offset_40
+- external_id: no2_sale_price_plus_30_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: sale_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 30
+            - offset_minute: 1440.0
+              offset_value: 0.0
+- external_id: no2_sale_price_plus_40_first_24h
   object_type: market
   object_name: Dayahead
   attribute_name: sale_price
@@ -3298,7 +3617,20 @@
               offset_value: 40
             - offset_minute: 1440.0
               offset_value: 0.0
-- external_id: no2_sale_price_offset_60
+- external_id: no2_sale_price_plus_50_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: sale_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 50
+            - offset_minute: 1440.0
+              offset_value: 0.0
+- external_id: no2_sale_price_plus_60_first_24h
   object_type: market
   object_name: Dayahead
   attribute_name: sale_price
@@ -3311,7 +3643,20 @@
               offset_value: 60
             - offset_minute: 1440.0
               offset_value: 0.0
-- external_id: no2_sale_price_offset_80
+- external_id: no2_sale_price_plus_70_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: sale_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 70
+            - offset_minute: 1440.0
+              offset_value: 0.0
+- external_id: no2_sale_price_plus_80_first_24h
   object_type: market
   object_name: Dayahead
   attribute_name: sale_price
@@ -3324,7 +3669,7 @@
               offset_value: 80
             - offset_minute: 1440.0
               offset_value: 0.0
-- external_id: no2_sale_price_offset_100
+- external_id: no2_sale_price_plus_100_first_24h
   object_type: market
   object_name: Dayahead
   attribute_name: sale_price
@@ -3337,7 +3682,7 @@
               offset_value: 100
             - offset_minute: 1440.0
               offset_value: 0.0
-- external_id: no2_sale_price_offset_120
+- external_id: no2_sale_price_plus_120_first_24h
   object_type: market
   object_name: Dayahead
   attribute_name: sale_price
@@ -3350,7 +3695,7 @@
               offset_value: 120
             - offset_minute: 1440.0
               offset_value: 0.0
-- external_id: no2_sale_price_offset_140
+- external_id: no2_sale_price_plus_140_first_24h
   object_type: market
   object_name: Dayahead
   attribute_name: sale_price
@@ -3363,7 +3708,7 @@
               offset_value: 140
             - offset_minute: 1440.0
               offset_value: 0.0
-- external_id: no2_sale_price_offset_160
+- external_id: no2_sale_price_plus_160_first_24h
   object_type: market
   object_name: Dayahead
   attribute_name: sale_price
@@ -3376,7 +3721,7 @@
               offset_value: 160
             - offset_minute: 1440.0
               offset_value: 0.0
-- external_id: no2_sale_price_offset_180
+- external_id: no2_sale_price_plus_180_first_24h
   object_type: market
   object_name: Dayahead
   attribute_name: sale_price
@@ -3389,7 +3734,7 @@
               offset_value: 180
             - offset_minute: 1440.0
               offset_value: 0.0
-- external_id: no2_sale_price_offset_200
+- external_id: no2_sale_price_plus_200_first_24h
   object_type: market
   object_name: Dayahead
   attribute_name: sale_price
@@ -3402,3 +3747,29 @@
               offset_value: 200
             - offset_minute: 1440.0
               offset_value: 0.0
+- external_id: no2_sale_price_plus_2000_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: sale_price
+  time_series: "[external_id]907677"
+  transformations:
+    - AddFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 2000
+            - offset_minute: 1440.0
+              offset_value: 0.0
+- external_id: no2_sale_price_multiply_0_first_24h
+  object_type: market
+  object_name: Dayahead
+  attribute_name: sale_price
+  time_series: "[external_id]907677"
+  transformations:
+    - MultiplyFromOffset:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 0
+            - offset_minute: 1440.0
+              offset_value: 0
