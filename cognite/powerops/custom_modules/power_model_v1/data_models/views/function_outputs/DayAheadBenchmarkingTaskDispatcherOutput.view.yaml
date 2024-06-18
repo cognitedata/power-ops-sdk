@@ -32,7 +32,7 @@ properties:
     name: functionInput
     source:
       space: "{{power_ops_models}}"
-      externalId: DayAheadBenchmarkingTaskDispatcherInput
+      externalId: BenchmarkingTaskDispatcherInputDayAhead
       version: "{{version}}"
       type: view
   benchmarkingShopRunInputs:
