@@ -22,7 +22,23 @@ filter:
           space: "{{power_ops_type_space}}"
 implements: []
 version: "{{version}}"
-properties: # TODO: no alerts here?
+properties:
+  name:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: BenchmarkingResult
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: Unique name for a given instance of a Benchmarking result.
+  workflowExecutionId:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: BenchmarkingResult
+      type: container
+    containerPropertyIdentifier: workflowExecutionId
+    name: workflowExecutionId
+    description: The process associated with the benchmarking workflow.
   bidSource: # Note: For now there is no source for bidSource, because it can be BidConfigurationDayAhead, BenchmarkingProductionObligationDayAhead, or just a string.
     container:
       space: "{{power_ops_models}}"
@@ -74,3 +90,16 @@ properties: # TODO: no alerts here?
     containerPropertyIdentifier: value
     name: value
     description: This would normally be the objective value ('grand total') from the Shop result, or maybe the difference between the objective value in this run and for 'upper bound', but it should be possible to override it (e. g. if the difference is above some limit)
+  alerts:
+    type:
+      space: "{{power_ops_type_space}}"
+      externalId: calculationIssue
+    source:
+      space: "{{power_ops_models}}"
+      externalId: Alert
+      version: "{{version}}"
+      type: view
+    direction: outwards
+    name: alerts
+    description: An array of benchmarking calculation level Alerts.
+    connectionType: multi_edge_connection
