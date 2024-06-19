@@ -23,7 +23,7 @@ filter:
 implements: []
 version: "{{version}}"
 properties: # TODO: no alerts here?
-  bidSource: # Note: For now there is no source for bidSource, because it can be BidConfigurationDayAhead, ProductionObligationForBenchmarkingDayAhead, or just a string.
+  bidSource: # Note: For now there is no source for bidSource, because it can be BidConfigurationDayAhead, BenchmarkingProductionObligationDayAhead, or just a string.
     container:
       space: "{{power_ops_models}}"
       externalId: BenchmarkingResult
