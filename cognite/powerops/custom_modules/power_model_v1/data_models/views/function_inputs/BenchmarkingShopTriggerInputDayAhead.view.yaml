@@ -1,6 +1,6 @@
 space: "{{power_ops_models}}"
-externalId: BenchmarkingShopRunInputDayAhead
-name: BenchmarkingShopRunInputDayAhead
+externalId: BenchmarkingShopTriggerInputDayAhead
+name: BenchmarkingShopTriggerInputDayAhead
 description: Class for inputs to shop runs used for day ahead benchmarking
 filter:
   and:
@@ -18,7 +18,7 @@ filter:
           - node
           - type
         value:
-          externalId: BenchmarkingShopRunInputDayAhead
+          externalId: BenchmarkingShopTriggerInputDayAhead
           space: "{{power_ops_type_space}}"
 implements:
   - space: "{{power_ops_models}}"

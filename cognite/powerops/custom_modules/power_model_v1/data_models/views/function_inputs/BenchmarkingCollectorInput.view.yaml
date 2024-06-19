@@ -46,7 +46,7 @@ properties:
       externalId: ShopRunInputs
     source:
       space: "{{power_ops_models}}"
-      externalId: BenchmarkingShopRunInputDayAhead
+      externalId: BenchmarkingShopTriggerInputDayAhead
       version: "{{version}}"
       type: view
     direction: outwards
