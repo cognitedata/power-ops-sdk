@@ -173,7 +173,7 @@
 - space: "{{power_ops_type_space}}"
   externalId: BenchmarkingConfigurationDayAhead
 - space: "{{power_ops_type_space}}"
-  externalId: BenchmarkingShopTriggerInputDayAhead
+  externalId: BenchmarkingShopCase
 - space: "{{power_ops_type_space}}"
   externalId: benchmarkingShopRunInputs
 - space: "{{power_ops_type_space}}"

@@ -35,16 +35,16 @@ properties:
       externalId: BenchmarkingTaskDispatcherInputDayAhead
       version: "{{version}}"
       type: view
-  benchmarkingShopRunInputs:
+  benchmarkingSubTasks:
     type:
       space: "{{power_ops_type_space}}"
-      externalId: benchmarkingShopRunInputs
+      externalId: benchmarkingSubTasks
     source:
       space: "{{power_ops_models}}"
-      externalId: BenchmarkingShopTriggerInputDayAhead
+      externalId: FunctionInput
       version: "{{version}}"
       type: view
     direction: outwards
-    name: benchmarkingShopRunInputs
-    description: An array of benchmarking shop run inputs.
+    name: benchmarkingSubTasks
+    description: An array of input for benchmarking subtasks used for benchmarking value calculations.
     connectionType: multi_edge_connection

@@ -40,16 +40,3 @@ properties:
     name: shopResults
     description: An array of shop results.
     connectionType: multi_edge_connection
-  shopRunInputs:
-    type:
-      space: "{{power_ops_type_space}}"
-      externalId: ShopRunInputs
-    source:
-      space: "{{power_ops_models}}"
-      externalId: BenchmarkingShopTriggerInputDayAhead
-      version: "{{version}}"
-      type: view
-    direction: outwards
-    name: shopRunInputs
-    description: An array of benchmarking shop run inputs.
-    connectionType: multi_edge_connection

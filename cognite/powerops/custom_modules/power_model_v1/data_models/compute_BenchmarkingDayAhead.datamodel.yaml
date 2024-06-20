@@ -28,7 +28,7 @@ views:
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - externalId: BenchmarkingShopTriggerInputDayAhead
+  - externalId: BenchmarkingShopCase
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
