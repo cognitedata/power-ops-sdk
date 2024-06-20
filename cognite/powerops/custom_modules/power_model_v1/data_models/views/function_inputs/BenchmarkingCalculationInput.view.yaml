@@ -1,7 +1,7 @@
 space: "{{power_ops_models}}"
-externalId: BenchmarkingCollectorInput
-name: BenchmarkingCollectorInput
-description: The benchmarking collector/ input data.
+externalId: BenchmarkingCalculationInput
+name: BenchmarkingCalculationInput
+description: The benchmarking Calculation input data.
 filter:
   and:
     - hasData:
@@ -18,7 +18,7 @@ filter:
           - node
           - type
         value:
-          externalId: BenchmarkingCollectorInput
+          externalId: BenchmarkingCalculationInput
           space: "{{power_ops_type_space}}"
 implements:
   - space: "{{power_ops_models}}"

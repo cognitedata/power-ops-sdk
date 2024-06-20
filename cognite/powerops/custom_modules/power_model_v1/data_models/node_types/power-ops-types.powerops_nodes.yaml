@@ -161,9 +161,9 @@
 
 # Benchmarking Types
 - space: "{{power_ops_type_space}}"
-  externalId: BenchmarkingCollectorInput
+  externalId: BenchmarkingCalculationInput
 - space: "{{power_ops_type_space}}"
-  externalId: BenchmarkingCollectorOutput
+  externalId: BenchmarkingCalculationOutput
 - space: "{{power_ops_type_space}}"
   externalId: BenchmarkingTaskDispatcherInputDayAhead
 - space: "{{power_ops_type_space}}"

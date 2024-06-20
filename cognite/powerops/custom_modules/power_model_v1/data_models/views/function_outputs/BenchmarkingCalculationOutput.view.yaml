@@ -1,7 +1,7 @@
 space: "{{power_ops_models}}"
-externalId: BenchmarkingCollectorOutput
-name: BenchmarkingCollectorOutput
-description: The benchmarking collector output data.
+externalId: BenchmarkingCalculationOutput
+name: BenchmarkingCalculationOutput
+description: The benchmarking Calculation output data.
 filter:
   and:
     - equals:
@@ -14,7 +14,7 @@ filter:
           - node
           - type
         value:
-          externalId: BenchmarkingCollectorOutput
+          externalId: BenchmarkingCalculationOutput
           space: "{{power_ops_type_space}}"
 implements:
   - space: "{{power_ops_models}}"
@@ -32,7 +32,7 @@ properties:
     name: functionInput
     source:
       space: "{{power_ops_models}}"
-      externalId: BenchmarkingCollectorInput
+      externalId: BenchmarkingCalculationInput
       version: "{{version}}"
       type: view
   benchmarkingResults:
