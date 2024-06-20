@@ -20,11 +20,11 @@ views:
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - externalId: BenchmarkingTaskDispatcherInputDayAhead # PrepareDayAheadBenchmarkingShopRunsInput
+  - externalId: BenchmarkingTaskDispatcherInputDayAhead
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - externalId: BenchmarkingTaskDispatcherOutputDayAhead # PrepareDayAheadBenchmarkingShopRunsOutput
+  - externalId: BenchmarkingTaskDispatcherOutputDayAhead
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
@@ -32,7 +32,7 @@ views:
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - externalId: BenchmarkingResultDayAhead # DayAheadBenchmarkingShopRunOutput
+  - externalId: BenchmarkingResultDayAhead
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view

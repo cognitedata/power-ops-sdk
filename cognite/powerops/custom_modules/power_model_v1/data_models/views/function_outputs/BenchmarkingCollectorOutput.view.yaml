@@ -38,13 +38,13 @@ properties:
   benchmarkingResults:
     type:
       space: "{{power_ops_type_space}}"
-      externalId: benchmarkingShopRunOutputs
+      externalId: BenchmarkingResultsDayAhead
     source:
       space: "{{power_ops_models}}"
-      externalId: BenchmarkingResultDayAhead # DayAheadBenchmarkingShopRunOutput
+      externalId: BenchmarkingResultDayAhead
       version: "{{version}}"
       type: view
     direction: outwards
     name: benchmarkingResults
-    description: An array of benchmarking shop run outputs.
+    description: An array of benchmarking shop run results for the day-ahead market.
     connectionType: multi_edge_connection

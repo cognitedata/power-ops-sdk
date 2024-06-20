@@ -59,8 +59,6 @@
 - space: "{{power_ops_type_space}}"
   externalId: ShopResults
 - space: "{{power_ops_type_space}}"
-  externalId: ShopRunInputs
-- space: "{{power_ops_type_space}}"
   externalId: ShopResultPriceProd
 - space: "{{power_ops_type_space}}"
   externalId: ShopCommands
@@ -175,10 +173,6 @@
 - space: "{{power_ops_type_space}}"
   externalId: BenchmarkingShopCase
 - space: "{{power_ops_type_space}}"
-  externalId: benchmarkingShopRunInputs
-- space: "{{power_ops_type_space}}"
-  externalId: benchmarkingShopRunOutputs
-- space: "{{power_ops_type_space}}"
   externalId: PriceAreaInformation
 - space: "{{power_ops_type_space}}"
   externalId: ShopModelWithAssets
@@ -190,6 +184,8 @@
   externalId: ShopPenaltyReport
 - space: "{{power_ops_type_space}}"
   externalId: BenchmarkingResultDayAhead
+- space: "{{power_ops_type_space}}"
+  externalId: BenchmarkingResultsDayAhead
 - space: "{{power_ops_type_space}}"
   externalId: assetsPerShopModel
 - space: "{{power_ops_type_space}}"
