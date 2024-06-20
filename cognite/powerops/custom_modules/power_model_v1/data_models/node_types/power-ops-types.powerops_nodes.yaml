@@ -196,3 +196,5 @@
   externalId: benchmarkingBidConfigurations
 - space: "{{power_ops_type_space}}"
   externalId: BenchmarkingProductionObligationDayAhead
+- space: "{{power_ops_type_space}}"
+  externalId: benchmarkingSubTasks
