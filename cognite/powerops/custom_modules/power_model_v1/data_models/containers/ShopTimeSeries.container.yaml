@@ -37,4 +37,4 @@ properties:
     nullable: true
     autoIncrement: false
     name: timeSeries
-    description: Time series object from output of SHOP stored as a time series in cdf
+    description: Time series object from output of SHOP stored as a time series in CDF

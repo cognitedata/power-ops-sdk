@@ -33,6 +33,10 @@
 - space: "{{power_ops_type_space}}"
   externalId: Plant
 - space: "{{power_ops_type_space}}"
+  externalId: Watercourse
+- space: "{{power_ops_type_space}}"
+  externalId: PlantInformation
+- space: "{{power_ops_type_space}}"
   externalId: PriceAreaAFRR
 - space: "{{power_ops_type_space}}"
   externalId: TurbineEfficiencyCurve
@@ -53,6 +57,8 @@
 - space: "{{power_ops_type_space}}"
   externalId: ShopResult
 - space: "{{power_ops_type_space}}"
+  externalId: ShopResults
+- space: "{{power_ops_type_space}}"
   externalId: ShopResultPriceProd
 - space: "{{power_ops_type_space}}"
   externalId: ShopCommands
@@ -67,7 +73,15 @@
 - space: "{{power_ops_type_space}}"
   externalId: ShopFile
 - space: "{{power_ops_type_space}}"
+  externalId: ShopCase.shopFiles
+- space: "{{power_ops_type_space}}"
   externalId: ShopScenarioSet.scenarios
+- space: "{{power_ops_type_space}}"
+  externalId: ShopOutputTimeSeriesDefinition
+- space: "{{power_ops_type_space}}"
+  externalId: ShopModel.cogShopFilesConfig
+- space: "{{power_ops_type_space}}"
+  externalId: DateSpecification
 
 ## DayAhead Types
 - space: "{{power_ops_type_space}}"
@@ -98,6 +112,8 @@
   externalId: TaskDispatcherOutput
 - space: "{{power_ops_type_space}}"
   externalId: BidMatrix
+- space: "{{power_ops_type_space}}"
+  externalId: intermediateBidMatrix
 - space: "{{power_ops_type_space}}"
   externalId: ShopTriggerInput
 - space: "{{power_ops_type_space}}"
@@ -145,12 +161,36 @@
 
 # Benchmarking Types
 - space: "{{power_ops_type_space}}"
-  externalId: BenchmarkingCollectorInput
+  externalId: BenchmarkingCalculationInput
 - space: "{{power_ops_type_space}}"
-  externalId: BenchmarkingCollectorOutput
+  externalId: BenchmarkingCalculationOutput
 - space: "{{power_ops_type_space}}"
-  externalId: TaskDispatcherBenchmarkingInput
+  externalId: BenchmarkingTaskDispatcherInputDayAhead
 - space: "{{power_ops_type_space}}"
-  externalId: TaskDispatcherBenchmarkingOutput
+  externalId: BenchmarkingTaskDispatcherOutputDayAhead
 - space: "{{power_ops_type_space}}"
-  externalId: ShopObjectiveValue
+  externalId: BenchmarkingConfigurationDayAhead
+- space: "{{power_ops_type_space}}"
+  externalId: BenchmarkingShopCase
+- space: "{{power_ops_type_space}}"
+  externalId: PriceAreaInformation
+- space: "{{power_ops_type_space}}"
+  externalId: ShopModelWithAssets
+- space: "{{power_ops_type_space}}"
+  externalId: PlantWaterValueBased
+- space: "{{power_ops_type_space}}"
+  externalId: BidConfigurationDayAhead
+- space: "{{power_ops_type_space}}"
+  externalId: ShopPenaltyReport
+- space: "{{power_ops_type_space}}"
+  externalId: BenchmarkingResultDayAhead
+- space: "{{power_ops_type_space}}"
+  externalId: BenchmarkingResultsDayAhead
+- space: "{{power_ops_type_space}}"
+  externalId: assetsPerShopModel
+- space: "{{power_ops_type_space}}"
+  externalId: benchmarkingBidConfigurations
+- space: "{{power_ops_type_space}}"
+  externalId: BenchmarkingProductionObligationDayAhead
+- space: "{{power_ops_type_space}}"
+  externalId: benchmarkingSubTasks

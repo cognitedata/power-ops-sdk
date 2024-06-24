@@ -1,0 +1,105 @@
+space: "{{power_ops_models}}"
+externalId: BenchmarkingResultDayAhead
+name: BenchmarkingResultDayAhead
+description: Result of benchmarking the day ahead market
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models}}"
+          externalId: BenchmarkingResult
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: BenchmarkingResultDayAhead
+          space: "{{power_ops_type_space}}"
+implements: []
+version: "{{version}}"
+properties:
+  name:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: BenchmarkingResult
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: Unique name for a given instance of a Benchmarking result.
+  workflowExecutionId:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: BenchmarkingResult
+      type: container
+    containerPropertyIdentifier: workflowExecutionId
+    name: workflowExecutionId
+    description: The process associated with the benchmarking workflow.
+  bidSource: # Note: For now there is no source for bidSource, because it can be BidConfigurationDayAhead, BenchmarkingProductionObligationDayAhead, or just a string.
+    container:
+      space: "{{power_ops_models}}"
+      externalId: BenchmarkingResult
+      type: container
+    containerPropertyIdentifier: bidSource
+    name: bidSource
+  deliveryDate:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: BenchmarkingResult
+      type: container
+    containerPropertyIdentifier: deliveryDate
+    name: deliveryDate
+    description: The delivery date
+  bidGenerated:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: BenchmarkingResult
+      type: container
+    containerPropertyIdentifier: bidGenerated
+    name: bidGenerated
+    description: Timestamp of when the bid had been generated
+  shopResult:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: BenchmarkingResult
+      type: container
+    containerPropertyIdentifier: shopResult
+    name: shopResult
+    source:
+      space: "{{power_ops_models}}"
+      externalId: ShopResult
+      version: "{{version}}"
+      type: view
+  isSelected:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: BenchmarkingResult
+      type: container
+    containerPropertyIdentifier: isSelected
+    name: isSelected
+    description: Indicating that this is the one result (for the bidSource and deliveryDate) that should be shown by default in the UI
+  value:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: BenchmarkingResult
+      type: container
+    containerPropertyIdentifier: value
+    name: value
+    description: This would normally be the objective value ('grand total') from the Shop result, or maybe the difference between the objective value in this run and for 'upper bound', but it should be possible to override it (e. g. if the difference is above some limit)
+  alerts:
+    type:
+      space: "{{power_ops_type_space}}"
+      externalId: calculationIssue
+    source:
+      space: "{{power_ops_models}}"
+      externalId: Alert
+      version: "{{version}}"
+      type: view
+    direction: outwards
+    name: alerts
+    description: An array of benchmarking calculation level Alerts.
+    connectionType: multi_edge_connection

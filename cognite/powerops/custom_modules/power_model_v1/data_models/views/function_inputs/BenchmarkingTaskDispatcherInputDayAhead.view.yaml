@@ -1,6 +1,6 @@
 space: "{{power_ops_models}}"
-externalId: TaskDispatcherBenchmarkingInput
-name: TaskDispatcherBenchmarkingInput
+externalId: BenchmarkingTaskDispatcherInputDayAhead
+name: BenchmarkingTaskDispatcherInputDayAhead
 description: The task dispatcher input data for benchmarking
 filter:
   and:
@@ -18,7 +18,7 @@ filter:
           - node
           - type
         value:
-          externalId: TaskDispatcherBenchmarkingInput
+          externalId: BenchmarkingTaskDispatcherInputDayAhead
           space: "{{power_ops_type_space}}"
 implements:
   - space: "{{power_ops_models}}"
@@ -27,15 +27,23 @@ implements:
     type: view
 version: "{{version}}"
 properties:
-  bidDocument:
+  benchmarkingConfig:
     container:
       space: "{{power_ops_models}}"
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct1
-    name: bidDocument
+    name: benchmarkingConfig
     source:
       space: "{{power_ops_models}}"
-      externalId: BidDocumentDayAheadSimple
+      externalId: BenchmarkingConfigurationDayAhead
       version: "{{version}}"
       type: view
+  deliveryDate:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: timestamp1
+    name: deliveryDate
+    description: The timestamp for the delivery date

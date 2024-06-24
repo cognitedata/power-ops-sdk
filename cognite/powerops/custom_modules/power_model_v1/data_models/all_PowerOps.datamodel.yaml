@@ -175,27 +175,19 @@ views:
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - space: "{{power_ops_models}}"
-    externalId: ShopObjectiveValue
-    version: "{{version}}"
-    type: view
-  - externalId: TaskDispatcherBenchmarkingInput
+  - externalId: BenchmarkingTaskDispatcherInputDayAhead
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - externalId: TaskDispatcherBenchmarkingOutput
+  - externalId: BenchmarkingTaskDispatcherOutputDayAhead
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - externalId: BenchmarkingCollectorInput
+  - externalId: BenchmarkingCalculationInput
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
-  - externalId: BenchmarkingCollectorOutput
-    space: "{{power_ops_models}}"
-    version: "{{version}}"
-    type: view
-  - externalId: BidDocumentDayAheadSimple
+  - externalId: BenchmarkingCalculationOutput
     space: "{{power_ops_models}}"
     version: "{{version}}"
     type: view
@@ -232,6 +224,26 @@ views:
     type: view
     version: "{{version}}"
   - externalId: ShopPenaltyReport
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: BenchmarkingShopCase
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: ShopModelWithAssets
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: BenchmarkingProductionObligationDayAhead
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: BenchmarkingResultDayAhead
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: BenchmarkingConfigurationDayAhead
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"

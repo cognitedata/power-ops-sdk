@@ -1,7 +1,7 @@
 space: "{{power_ops_models}}"
-externalId: BenchmarkingCollectorInput
-name: BenchmarkingCollectorInput
-description: The benchmarking collector/ input data.
+externalId: BenchmarkingCalculationInput
+name: BenchmarkingCalculationInput
+description: The benchmarking Calculation input data.
 filter:
   and:
     - hasData:
@@ -18,7 +18,7 @@ filter:
           - node
           - type
         value:
-          externalId: BenchmarkingCollectorInput
+          externalId: BenchmarkingCalculationInput
           space: "{{power_ops_type_space}}"
 implements:
   - space: "{{power_ops_models}}"
@@ -27,15 +27,16 @@ implements:
     type: view
 version: "{{version}}"
 properties:
-  shopObjectiveValue:
-    container:
-      space: "{{power_ops_models}}"
-      externalId: FunctionData
-      type: container
-    containerPropertyIdentifier: direct1
-    name: shopObjectiveValue
+  shopResults:
+    type:
+      space: "{{power_ops_type_space}}"
+      externalId: ShopResults
     source:
       space: "{{power_ops_models}}"
-      externalId: ShopObjectiveValue
+      externalId: ShopResult
       version: "{{version}}"
       type: view
+    direction: outwards
+    name: shopResults
+    description: An array of shop results.
+    connectionType: multi_edge_connection

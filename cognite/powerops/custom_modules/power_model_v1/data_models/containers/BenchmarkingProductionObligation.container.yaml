@@ -1,0 +1,22 @@
+space: "{{power_ops_models}}"
+externalId: BenchmarkingProductionObligation
+name: BenchmarkingProductionObligation
+usedFor: node
+properties:
+  timeSeries:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: timeSeries
+    description: The time series of the day ahead production obligation for benchmarking
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: name
+    description: The name of the day ahead production obligation for benchmarking

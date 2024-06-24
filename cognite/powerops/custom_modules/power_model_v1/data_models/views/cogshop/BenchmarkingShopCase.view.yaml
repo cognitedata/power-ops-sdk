@@ -1,0 +1,52 @@
+space: "{{power_ops_models}}"
+externalId: BenchmarkingShopCase
+name: BenchmarkingShopCase
+description: Class for inputs to shop runs used for day ahead benchmarking
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models}}"
+          externalId: ShopCase
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: BenchmarkingShopCase
+          space: "{{power_ops_type_space}}"
+implements:
+  - space: "{{power_ops_models}}"
+    externalId: ShopCase
+    version: "{{version}}"
+    type: view
+version: "{{version}}"
+properties:
+  bidSource: # A BidConfiguration ext ID, or BenchmarkingProductionObligationDayAhead ext ID, or a string for "upper bound"
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopCase
+      type: container
+    containerPropertyIdentifier: bidSource
+    name: bidSource
+  deliveryDate:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopCase
+      type: container
+    containerPropertyIdentifier: deliveryDate
+    name: deliveryDate
+    description: The delivery date
+  bidGenerated:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopCase
+      type: container
+    containerPropertyIdentifier: bidGenerated
+    name: bidGenerated
+    description: Timestamp of when the bid had been generated

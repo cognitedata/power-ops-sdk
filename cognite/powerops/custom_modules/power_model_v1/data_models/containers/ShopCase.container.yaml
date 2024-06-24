@@ -5,6 +5,7 @@ usedFor: node
 properties:
   scenario:
     type:
+      list: false
       type: direct
     nullable: true
     autoIncrement: false
@@ -26,3 +27,24 @@ properties:
     autoIncrement: false
     name: endTime
     description: The end of the optimisation period (for SHOP)
+  bidSource:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: bidSource
+  deliveryDate:
+    type:
+      list: false
+      type: date
+    nullable: true
+    autoIncrement: false
+    name: deliveryDate
+  bidGenerated:
+    type:
+      list: false
+      type: timestamp
+    nullable: true
+    autoIncrement: false
+    name: bidGenerated

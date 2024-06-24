@@ -1,0 +1,64 @@
+space: "{{power_ops_models}}"
+externalId: BenchmarkingResult
+name: BenchmarkingResult
+usedFor: node
+properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: name
+  workflowExecutionId:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: workflowExecutionId
+    description: The workflowExecutionId associated with the Benchmarking workflow.
+  bidSource:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: bidSource
+  deliveryDate:
+    type:
+      list: false
+      type: date
+    nullable: true
+    autoIncrement: false
+    name: deliveryDate
+  bidGenerated:
+    type:
+      list: false
+      type: timestamp
+    nullable: true
+    autoIncrement: false
+    name: bidGenerated
+  shopResult:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: shopResult
+  isSelected:
+    type:
+      type: boolean
+      list: false
+    nullable: true
+    autoIncrement: false
+    name: isSelected
+  value:
+    type:
+      list: false
+      type: float64
+    nullable: true
+    autoIncrement: false
+    name: value

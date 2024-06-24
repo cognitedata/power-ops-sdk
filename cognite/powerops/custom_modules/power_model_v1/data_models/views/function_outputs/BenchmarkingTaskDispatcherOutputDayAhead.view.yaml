@@ -1,7 +1,7 @@
 space: "{{power_ops_models}}"
-externalId: BenchmarkingCollectorOutput
-name: BenchmarkingCollectorOutput
-description: The benchmarking collector output data.
+externalId: BenchmarkingTaskDispatcherOutputDayAhead
+name: BenchmarkingTaskDispatcherOutputDayAhead
+description: The task dispatcher output data for benchmarking
 filter:
   and:
     - equals:
@@ -14,7 +14,7 @@ filter:
           - node
           - type
         value:
-          externalId: BenchmarkingCollectorOutput
+          externalId: BenchmarkingTaskDispatcherOutputDayAhead
           space: "{{power_ops_type_space}}"
 implements:
   - space: "{{power_ops_models}}"
@@ -32,6 +32,19 @@ properties:
     name: functionInput
     source:
       space: "{{power_ops_models}}"
-      externalId: BenchmarkingCollectorInput
+      externalId: BenchmarkingTaskDispatcherInputDayAhead
       version: "{{version}}"
       type: view
+  benchmarkingSubTasks:
+    type:
+      space: "{{power_ops_type_space}}"
+      externalId: benchmarkingSubTasks
+    source:
+      space: "{{power_ops_models}}"
+      externalId: FunctionInput
+      version: "{{version}}"
+      type: view
+    direction: outwards
+    name: benchmarkingSubTasks
+    description: An array of input for benchmarking subtasks used for benchmarking value calculations.
+    connectionType: multi_edge_connection

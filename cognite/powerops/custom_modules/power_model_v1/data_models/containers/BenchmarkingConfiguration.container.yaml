@@ -1,0 +1,49 @@
+space: "{{power_ops_models}}"
+externalId: BenchmarkingConfiguration
+name: BenchmarkingConfiguration
+usedFor: node
+properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+  # TODO: should these be list of direct? Using multi_edge until list of direct is supported
+  # bidConfigurations:
+  #   type:
+  #     type: direct
+  #     list: true
+  #   nullable: true
+  #   autoIncrement: false
+  #   name: bidConfigurations
+  # assetsPerShopModel:
+  #   type:
+  #     type: direct
+  #     list: true
+  #   nullable: true
+  #   autoIncrement: false
+  #   name: assetsPerShopModel
+  priceArea:
+    type:
+      type: direct
+      list: false
+    nullable: true
+    autoIncrement: false
+    name: priceArea
+  shopStartSpecification:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: shopStartSpecification
+  shopEndSpecification:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: shopEndSpecification

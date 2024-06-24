@@ -1,0 +1,41 @@
+space: "{{power_ops_models}}"
+externalId: BenchmarkingProductionObligationDayAhead
+name: BenchmarkingProductionObligationDayAhead
+description: Production obligations for the day ahead market used in benchmarking
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models}}"
+          externalId: BenchmarkingProductionObligation
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          space: "{{power_ops_type_space}}"
+          externalId: BenchmarkingProductionObligationDayAhead
+implements: []
+version: "{{version}}"
+properties:
+  timeSeries:
+    container:
+      type: container
+      space: '{{power_ops_models}}'
+      externalId: BenchmarkingProductionObligation
+    containerPropertyIdentifier: timeSeries
+    name: timeSeries
+    description: The time series of the day ahead production obligation for benchmarking
+  name:
+    container:
+      type: container
+      space: '{{power_ops_models}}'
+      externalId: BenchmarkingProductionObligation
+    containerPropertyIdentifier: name
+    name: name
+    description: The name of the day ahead production obligation for benchmarking

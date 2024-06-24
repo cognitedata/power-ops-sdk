@@ -1,0 +1,77 @@
+space: "{{power_ops_models}}"
+externalId: ShopModelWithAssets
+name: ShopModelWithAssets
+description: Link the shop model to all its assets=power-plants
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models}}"
+          externalId: ShopModelWithAssets
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: ShopModelWithAssets
+          space: "{{power_ops_type_space}}"
+implements: []
+version: "{{version}}"
+properties:
+  shopModel:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopModelWithAssets
+      type: container
+    containerPropertyIdentifier: shopModel
+    name: shopModel
+    description: The shop model that includes one water course for one shop run
+    source:
+      space: "{{power_ops_models}}"
+      externalId: ShopModel
+      version: "{{version}}"
+      type: view
+  powerAssets:
+    type:
+      space: "{{power_ops_models}}"
+      externalId: ShopModelWithAssets
+    name: powerAssets
+    description: A list of power assets covered by the Shop model. For a given bid document, we will select the partial bids for these assets, and calculate production obligation for these partial bids (summed up)
+    source:
+      space: "{{power_ops_models}}"
+      externalId: PowerAsset
+      version: "{{version}}"
+      type: view
+    direction: outwards
+    connectionType: multi_edge_connection
+  productionObligations:
+    type:
+      space: "{{power_ops_models}}"
+      externalId: ShopModelWithAssets
+    name: productionObligations
+    description: It is possible to specify time series for production obligation - one benchmarking run will be set up for each of these time series. The intended use of this, is to specify the production obligation resulting from the submitted bid, or any other bid document not modelled within PowerOps
+    source:
+      space: "{{power_ops_models}}"
+      externalId: BenchmarkingProductionObligationDayAhead
+      version: "{{version}}"
+      type: view
+    direction: outwards
+    connectionType: multi_edge_connection
+  shopCommands:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: ShopModelWithAssets
+      type: container
+    containerPropertyIdentifier: shopCommands
+    name: shopCommands
+    description: Commands for the shop file
+    source:
+      space: "{{power_ops_models}}"
+      externalId: ShopCommands
+      version: "{{version}}"
+      type: view
