@@ -105,7 +105,7 @@ def main():
         # mock_data.clean(client)
 
 
-def clean_instances():
+def clean_instances(dry_run: bool):
     with chdir(REPO_ROOT):
         os.environ["SETTINGS_FILES"] = "settings.toml;.secrets.toml"
         client = get_cognite_client()
@@ -117,36 +117,41 @@ def clean_instances():
     for space in spaces:
 
         for edges in client.data_modeling.instances(instance_type="edge", space=space, limit=-1, chunk_size=100):
-            deleted = client.data_modeling.instances.delete(edges.as_ids())
-            print(f"Deleted {len(deleted.edges)} edges. Elapsed time {time.perf_counter() - t0:.2f} seconds")
+            if not dry_run:
+                deleted = client.data_modeling.instances.delete(edges.as_ids())
+                print(f"Deleted {len(deleted.edges)} edges. Elapsed time {time.perf_counter() - t0:.2f} seconds")
         else:
-            print("Done deleting edges")
+            print(f"Done deleting edges in space {space}")
 
         for nodes in client.data_modeling.instances(instance_type="node", space=space, limit=-1, chunk_size=500):
-            deleted = client.data_modeling.instances.delete(nodes.as_ids())
-            print(f"Deleted {len(deleted.nodes)} nodes. Elapsed time {time.perf_counter() - t0:.2f} seconds")
+            if not dry_run:
+                deleted = client.data_modeling.instances.delete(nodes.as_ids())
+                print(f"Deleted {len(deleted.nodes)} nodes. Elapsed time {time.perf_counter() - t0:.2f} seconds")
         else:
-            print("Done deleting nodes")
+            print(f"Done deleting nodes in space {space}")
 
         is_mock_generator = filters.Equals(["metadata", "source"], "PygenMockGenerator")
 
     timeseries = client.time_series.filter(limit=-1, filter=is_mock_generator)
     if timeseries:
-        client.time_series.delete(id=[ts.id for ts in timeseries])
+        if not dry_run:
+            client.time_series.delete(id=[ts.id for ts in timeseries])
         print(f"Deleted {len(timeseries)} timeseries. Elapsed time {time.perf_counter() - t0:.2f} seconds")
 
     sequences = client.sequences.filter(limit=-1, filter=is_mock_generator)
     if sequences:
-        client.sequences.delete(id=[seq.id for seq in sequences])
+        if not dry_run:
+            client.sequences.delete(id=[seq.id for seq in sequences])
         print(f"Deleted {len(sequences)} sequences. Elapsed time {time.perf_counter() - t0:.2f} seconds")
 
     files = client.files.list(limit=-1, metadata={"source": "PygenMockGenerator"})
     if files:
-        client.files.delete(id=[file.id for file in files])
+        if not dry_run:
+            client.files.delete(id=[file.id for file in files])
         print(f"Deleted {len(files)} files. Elapsed time {time.perf_counter() - t0:.2f} seconds")
 
 
-def clean_containers_views_data_models():
+def clean_containers_views_data_models(dry_run: bool):
     with chdir(REPO_ROOT):
         os.environ["SETTINGS_FILES"] = "settings.toml;.secrets.toml"
         client = get_cognite_client()
@@ -160,26 +165,51 @@ def clean_containers_views_data_models():
 
         if views:
             print(f"Deleting {len(views)} views in {space}")
-            client.data_modeling.views.delete(views)
+            if not dry_run:
+                client.data_modeling.views.delete(views)
         else:
             print(f"No views found in {space}")
 
         data_models = client.data_modeling.data_models.list(space=space, limit=-1, all_versions=True).as_ids()
         if data_models:
             print(f"Deleting {len(data_models)} data models in {space}")
-            client.data_modeling.data_models.delete(data_models)
+            if not dry_run:
+                client.data_modeling.data_models.delete(data_models)
         else:
             print(f"No data models found in {space}")
 
         containers = client.data_modeling.containers.list(space=space, limit=-1).as_ids()
         if containers:
             print(f"Deleting {len(containers)} containers in {space}")
-            client.data_modeling.containers.delete(containers)
+            if not dry_run:
+                client.data_modeling.containers.delete(containers)
         else:
             print(f"No containers found in {space}")
 
 
+def clean_spaces(dry_run: bool):
+    with chdir(REPO_ROOT):
+        os.environ["SETTINGS_FILES"] = "settings.toml;.secrets.toml"
+        client = get_cognite_client()
+    t0 = time.perf_counter()
+    spaces = [MODEL_SPACE, INSTANCE_SPACE, TYPE_SPACE]
+
+    print(f"Connected to {client.config.project}")
+
+    existing_spaces = client.data_modeling.spaces.retrieve(spaces=spaces)
+    existing_space_names = [s.space for s in existing_spaces]
+    for space in spaces:
+        if space in existing_space_names:
+            print(f"Deleting space {space}")
+            if not dry_run:
+                client.data_modeling.spaces.delete(space)
+        else:
+            print(f"Space {space} not found")
+
+
 if __name__ == "__main__":
-    # clean_instances()
-    # clean_containers_views_data_models()
-    main()
+    dry_run = True
+    clean_instances(dry_run)
+    clean_containers_views_data_models(dry_run)
+    clean_spaces(dry_run)
+    # main()
