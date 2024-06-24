@@ -13,10 +13,6 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.96.0] - 2024-06-18
-### Changed
-* Update of Benchmarking Data Model compute_BenchmarkingDayAhead related to FDM
-
 ## [0.95.2] - 2024-06-04
 ### Fixed
 * Fix from setting configuration of triggering SHOP As A Service through SHOP client.
