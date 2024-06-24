@@ -24,6 +24,93 @@ from ._alert import (
     AlertWrite,
     AlertWriteList,
 )
+from ._benchmarking_calculation_input import (
+    BenchmarkingCalculationInput,
+    BenchmarkingCalculationInputApply,
+    BenchmarkingCalculationInputApplyList,
+    BenchmarkingCalculationInputFields,
+    BenchmarkingCalculationInputGraphQL,
+    BenchmarkingCalculationInputList,
+    BenchmarkingCalculationInputTextFields,
+    BenchmarkingCalculationInputWrite,
+    BenchmarkingCalculationInputWriteList,
+)
+from ._benchmarking_calculation_output import (
+    BenchmarkingCalculationOutput,
+    BenchmarkingCalculationOutputApply,
+    BenchmarkingCalculationOutputApplyList,
+    BenchmarkingCalculationOutputFields,
+    BenchmarkingCalculationOutputGraphQL,
+    BenchmarkingCalculationOutputList,
+    BenchmarkingCalculationOutputTextFields,
+    BenchmarkingCalculationOutputWrite,
+    BenchmarkingCalculationOutputWriteList,
+)
+from ._benchmarking_configuration_day_ahead import (
+    BenchmarkingConfigurationDayAhead,
+    BenchmarkingConfigurationDayAheadApply,
+    BenchmarkingConfigurationDayAheadApplyList,
+    BenchmarkingConfigurationDayAheadFields,
+    BenchmarkingConfigurationDayAheadGraphQL,
+    BenchmarkingConfigurationDayAheadList,
+    BenchmarkingConfigurationDayAheadTextFields,
+    BenchmarkingConfigurationDayAheadWrite,
+    BenchmarkingConfigurationDayAheadWriteList,
+)
+from ._benchmarking_production_obligation_day_ahead import (
+    BenchmarkingProductionObligationDayAhead,
+    BenchmarkingProductionObligationDayAheadApply,
+    BenchmarkingProductionObligationDayAheadApplyList,
+    BenchmarkingProductionObligationDayAheadFields,
+    BenchmarkingProductionObligationDayAheadGraphQL,
+    BenchmarkingProductionObligationDayAheadList,
+    BenchmarkingProductionObligationDayAheadTextFields,
+    BenchmarkingProductionObligationDayAheadWrite,
+    BenchmarkingProductionObligationDayAheadWriteList,
+)
+from ._benchmarking_result_day_ahead import (
+    BenchmarkingResultDayAhead,
+    BenchmarkingResultDayAheadApply,
+    BenchmarkingResultDayAheadApplyList,
+    BenchmarkingResultDayAheadFields,
+    BenchmarkingResultDayAheadGraphQL,
+    BenchmarkingResultDayAheadList,
+    BenchmarkingResultDayAheadTextFields,
+    BenchmarkingResultDayAheadWrite,
+    BenchmarkingResultDayAheadWriteList,
+)
+from ._benchmarking_shop_case import (
+    BenchmarkingShopCase,
+    BenchmarkingShopCaseApply,
+    BenchmarkingShopCaseApplyList,
+    BenchmarkingShopCaseFields,
+    BenchmarkingShopCaseGraphQL,
+    BenchmarkingShopCaseList,
+    BenchmarkingShopCaseWrite,
+    BenchmarkingShopCaseWriteList,
+)
+from ._benchmarking_task_dispatcher_input_day_ahead import (
+    BenchmarkingTaskDispatcherInputDayAhead,
+    BenchmarkingTaskDispatcherInputDayAheadApply,
+    BenchmarkingTaskDispatcherInputDayAheadApplyList,
+    BenchmarkingTaskDispatcherInputDayAheadFields,
+    BenchmarkingTaskDispatcherInputDayAheadGraphQL,
+    BenchmarkingTaskDispatcherInputDayAheadList,
+    BenchmarkingTaskDispatcherInputDayAheadTextFields,
+    BenchmarkingTaskDispatcherInputDayAheadWrite,
+    BenchmarkingTaskDispatcherInputDayAheadWriteList,
+)
+from ._benchmarking_task_dispatcher_output_day_ahead import (
+    BenchmarkingTaskDispatcherOutputDayAhead,
+    BenchmarkingTaskDispatcherOutputDayAheadApply,
+    BenchmarkingTaskDispatcherOutputDayAheadApplyList,
+    BenchmarkingTaskDispatcherOutputDayAheadFields,
+    BenchmarkingTaskDispatcherOutputDayAheadGraphQL,
+    BenchmarkingTaskDispatcherOutputDayAheadList,
+    BenchmarkingTaskDispatcherOutputDayAheadTextFields,
+    BenchmarkingTaskDispatcherOutputDayAheadWrite,
+    BenchmarkingTaskDispatcherOutputDayAheadWriteList,
+)
 from ._bid_configuration_day_ahead import (
     BidConfigurationDayAhead,
     BidConfigurationDayAheadApply,
@@ -396,6 +483,15 @@ from ._shop_model import (
     ShopModelWrite,
     ShopModelWriteList,
 )
+from ._shop_model_with_assets import (
+    ShopModelWithAssets,
+    ShopModelWithAssetsApply,
+    ShopModelWithAssetsApplyList,
+    ShopModelWithAssetsGraphQL,
+    ShopModelWithAssetsList,
+    ShopModelWithAssetsWrite,
+    ShopModelWithAssetsWriteList,
+)
 from ._shop_output_time_series_definition import (
     ShopOutputTimeSeriesDefinition,
     ShopOutputTimeSeriesDefinitionApply,
@@ -593,6 +689,34 @@ from ._watercourse import (
     WatercourseWriteList,
 )
 
+BenchmarkingCalculationInput.model_rebuild()
+BenchmarkingCalculationInputGraphQL.model_rebuild()
+BenchmarkingCalculationInputWrite.model_rebuild()
+BenchmarkingCalculationInputApply.model_rebuild()
+BenchmarkingCalculationOutput.model_rebuild()
+BenchmarkingCalculationOutputGraphQL.model_rebuild()
+BenchmarkingCalculationOutputWrite.model_rebuild()
+BenchmarkingCalculationOutputApply.model_rebuild()
+BenchmarkingConfigurationDayAhead.model_rebuild()
+BenchmarkingConfigurationDayAheadGraphQL.model_rebuild()
+BenchmarkingConfigurationDayAheadWrite.model_rebuild()
+BenchmarkingConfigurationDayAheadApply.model_rebuild()
+BenchmarkingResultDayAhead.model_rebuild()
+BenchmarkingResultDayAheadGraphQL.model_rebuild()
+BenchmarkingResultDayAheadWrite.model_rebuild()
+BenchmarkingResultDayAheadApply.model_rebuild()
+BenchmarkingShopCase.model_rebuild()
+BenchmarkingShopCaseGraphQL.model_rebuild()
+BenchmarkingShopCaseWrite.model_rebuild()
+BenchmarkingShopCaseApply.model_rebuild()
+BenchmarkingTaskDispatcherInputDayAhead.model_rebuild()
+BenchmarkingTaskDispatcherInputDayAheadGraphQL.model_rebuild()
+BenchmarkingTaskDispatcherInputDayAheadWrite.model_rebuild()
+BenchmarkingTaskDispatcherInputDayAheadApply.model_rebuild()
+BenchmarkingTaskDispatcherOutputDayAhead.model_rebuild()
+BenchmarkingTaskDispatcherOutputDayAheadGraphQL.model_rebuild()
+BenchmarkingTaskDispatcherOutputDayAheadWrite.model_rebuild()
+BenchmarkingTaskDispatcherOutputDayAheadApply.model_rebuild()
 BidConfigurationDayAhead.model_rebuild()
 BidConfigurationDayAheadGraphQL.model_rebuild()
 BidConfigurationDayAheadWrite.model_rebuild()
@@ -681,6 +805,10 @@ ShopModel.model_rebuild()
 ShopModelGraphQL.model_rebuild()
 ShopModelWrite.model_rebuild()
 ShopModelApply.model_rebuild()
+ShopModelWithAssets.model_rebuild()
+ShopModelWithAssetsGraphQL.model_rebuild()
+ShopModelWithAssetsWrite.model_rebuild()
+ShopModelWithAssetsApply.model_rebuild()
 ShopPreprocessorInput.model_rebuild()
 ShopPreprocessorInputGraphQL.model_rebuild()
 ShopPreprocessorInputWrite.model_rebuild()
@@ -758,6 +886,77 @@ __all__ = [
     "AlertApplyList",
     "AlertFields",
     "AlertTextFields",
+    "BenchmarkingCalculationInput",
+    "BenchmarkingCalculationInputGraphQL",
+    "BenchmarkingCalculationInputWrite",
+    "BenchmarkingCalculationInputApply",
+    "BenchmarkingCalculationInputList",
+    "BenchmarkingCalculationInputWriteList",
+    "BenchmarkingCalculationInputApplyList",
+    "BenchmarkingCalculationInputFields",
+    "BenchmarkingCalculationInputTextFields",
+    "BenchmarkingCalculationOutput",
+    "BenchmarkingCalculationOutputGraphQL",
+    "BenchmarkingCalculationOutputWrite",
+    "BenchmarkingCalculationOutputApply",
+    "BenchmarkingCalculationOutputList",
+    "BenchmarkingCalculationOutputWriteList",
+    "BenchmarkingCalculationOutputApplyList",
+    "BenchmarkingCalculationOutputFields",
+    "BenchmarkingCalculationOutputTextFields",
+    "BenchmarkingConfigurationDayAhead",
+    "BenchmarkingConfigurationDayAheadGraphQL",
+    "BenchmarkingConfigurationDayAheadWrite",
+    "BenchmarkingConfigurationDayAheadApply",
+    "BenchmarkingConfigurationDayAheadList",
+    "BenchmarkingConfigurationDayAheadWriteList",
+    "BenchmarkingConfigurationDayAheadApplyList",
+    "BenchmarkingConfigurationDayAheadFields",
+    "BenchmarkingConfigurationDayAheadTextFields",
+    "BenchmarkingProductionObligationDayAhead",
+    "BenchmarkingProductionObligationDayAheadGraphQL",
+    "BenchmarkingProductionObligationDayAheadWrite",
+    "BenchmarkingProductionObligationDayAheadApply",
+    "BenchmarkingProductionObligationDayAheadList",
+    "BenchmarkingProductionObligationDayAheadWriteList",
+    "BenchmarkingProductionObligationDayAheadApplyList",
+    "BenchmarkingProductionObligationDayAheadFields",
+    "BenchmarkingProductionObligationDayAheadTextFields",
+    "BenchmarkingResultDayAhead",
+    "BenchmarkingResultDayAheadGraphQL",
+    "BenchmarkingResultDayAheadWrite",
+    "BenchmarkingResultDayAheadApply",
+    "BenchmarkingResultDayAheadList",
+    "BenchmarkingResultDayAheadWriteList",
+    "BenchmarkingResultDayAheadApplyList",
+    "BenchmarkingResultDayAheadFields",
+    "BenchmarkingResultDayAheadTextFields",
+    "BenchmarkingShopCase",
+    "BenchmarkingShopCaseGraphQL",
+    "BenchmarkingShopCaseWrite",
+    "BenchmarkingShopCaseApply",
+    "BenchmarkingShopCaseList",
+    "BenchmarkingShopCaseWriteList",
+    "BenchmarkingShopCaseApplyList",
+    "BenchmarkingShopCaseFields",
+    "BenchmarkingTaskDispatcherInputDayAhead",
+    "BenchmarkingTaskDispatcherInputDayAheadGraphQL",
+    "BenchmarkingTaskDispatcherInputDayAheadWrite",
+    "BenchmarkingTaskDispatcherInputDayAheadApply",
+    "BenchmarkingTaskDispatcherInputDayAheadList",
+    "BenchmarkingTaskDispatcherInputDayAheadWriteList",
+    "BenchmarkingTaskDispatcherInputDayAheadApplyList",
+    "BenchmarkingTaskDispatcherInputDayAheadFields",
+    "BenchmarkingTaskDispatcherInputDayAheadTextFields",
+    "BenchmarkingTaskDispatcherOutputDayAhead",
+    "BenchmarkingTaskDispatcherOutputDayAheadGraphQL",
+    "BenchmarkingTaskDispatcherOutputDayAheadWrite",
+    "BenchmarkingTaskDispatcherOutputDayAheadApply",
+    "BenchmarkingTaskDispatcherOutputDayAheadList",
+    "BenchmarkingTaskDispatcherOutputDayAheadWriteList",
+    "BenchmarkingTaskDispatcherOutputDayAheadApplyList",
+    "BenchmarkingTaskDispatcherOutputDayAheadFields",
+    "BenchmarkingTaskDispatcherOutputDayAheadTextFields",
     "BidConfigurationDayAhead",
     "BidConfigurationDayAheadGraphQL",
     "BidConfigurationDayAheadWrite",
@@ -1062,6 +1261,13 @@ __all__ = [
     "ShopModelApplyList",
     "ShopModelFields",
     "ShopModelTextFields",
+    "ShopModelWithAssets",
+    "ShopModelWithAssetsGraphQL",
+    "ShopModelWithAssetsWrite",
+    "ShopModelWithAssetsApply",
+    "ShopModelWithAssetsList",
+    "ShopModelWithAssetsWriteList",
+    "ShopModelWithAssetsApplyList",
     "ShopOutputTimeSeriesDefinition",
     "ShopOutputTimeSeriesDefinitionGraphQL",
     "ShopOutputTimeSeriesDefinitionWrite",
