@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import datetime
 import warnings
 from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
@@ -24,69 +25,68 @@ from ._core import (
 from ._function_input import FunctionInput, FunctionInputWrite
 
 if TYPE_CHECKING:
-    from ._shop_case import ShopCase, ShopCaseGraphQL, ShopCaseWrite
-    from ._shop_preprocessor_input import (
-        ShopPreprocessorInput,
-        ShopPreprocessorInputGraphQL,
-        ShopPreprocessorInputWrite,
+    from ._benchmarking_configuration_day_ahead import (
+        BenchmarkingConfigurationDayAhead,
+        BenchmarkingConfigurationDayAheadGraphQL,
+        BenchmarkingConfigurationDayAheadWrite,
     )
 
 
 __all__ = [
-    "ShopTriggerInput",
-    "ShopTriggerInputWrite",
-    "ShopTriggerInputApply",
-    "ShopTriggerInputList",
-    "ShopTriggerInputWriteList",
-    "ShopTriggerInputApplyList",
-    "ShopTriggerInputFields",
-    "ShopTriggerInputTextFields",
+    "BenchmarkingTaskDispatcherInputDayAhead",
+    "BenchmarkingTaskDispatcherInputDayAheadWrite",
+    "BenchmarkingTaskDispatcherInputDayAheadApply",
+    "BenchmarkingTaskDispatcherInputDayAheadList",
+    "BenchmarkingTaskDispatcherInputDayAheadWriteList",
+    "BenchmarkingTaskDispatcherInputDayAheadApplyList",
+    "BenchmarkingTaskDispatcherInputDayAheadFields",
+    "BenchmarkingTaskDispatcherInputDayAheadTextFields",
 ]
 
 
-ShopTriggerInputTextFields = Literal["workflow_execution_id", "function_name", "function_call_id", "cog_shop_tag"]
-ShopTriggerInputFields = Literal[
-    "workflow_execution_id", "workflow_step", "function_name", "function_call_id", "cog_shop_tag"
+BenchmarkingTaskDispatcherInputDayAheadTextFields = Literal[
+    "workflow_execution_id", "function_name", "function_call_id"
+]
+BenchmarkingTaskDispatcherInputDayAheadFields = Literal[
+    "workflow_execution_id", "workflow_step", "function_name", "function_call_id", "delivery_date"
 ]
 
-_SHOPTRIGGERINPUT_PROPERTIES_BY_FIELD = {
+_BENCHMARKINGTASKDISPATCHERINPUTDAYAHEAD_PROPERTIES_BY_FIELD = {
     "workflow_execution_id": "workflowExecutionId",
     "workflow_step": "workflowStep",
     "function_name": "functionName",
     "function_call_id": "functionCallId",
-    "cog_shop_tag": "cogShopTag",
+    "delivery_date": "deliveryDate",
 }
 
 
-class ShopTriggerInputGraphQL(GraphQLCore):
-    """This represents the reading version of shop trigger input, used
+class BenchmarkingTaskDispatcherInputDayAheadGraphQL(GraphQLCore):
+    """This represents the reading version of benchmarking task dispatcher input day ahead, used
     when data is retrieved from CDF using GraphQL.
 
     It is used when retrieving data from CDF using GraphQL.
 
     Args:
         space: The space where the node is located.
-        external_id: The external id of the shop trigger input.
-        data_record: The data record of the shop trigger input node.
+        external_id: The external id of the benchmarking task dispatcher input day ahead.
+        data_record: The data record of the benchmarking task dispatcher input day ahead node.
         workflow_execution_id: The process associated with the function execution
         workflow_step: This is the step in the process.
         function_name: The name of the function
         function_call_id: The function call id
-        cog_shop_tag: Optionally specify cogshop tag to trigger
-        case: The SHOP case (with all details like model, scenario, and time series)
-        preprocessor_input: The preprocessor input to the shop run
+        benchmarking_config: The benchmarking config field.
+        delivery_date: The timestamp for the delivery date
     """
 
-    view_id = dm.ViewId("power_ops_core", "ShopTriggerInput", "1")
+    view_id = dm.ViewId("power_ops_core", "BenchmarkingTaskDispatcherInputDayAhead", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
     function_call_id: Optional[str] = Field(None, alias="functionCallId")
-    cog_shop_tag: Optional[str] = Field(None, alias="cogShopTag")
-    case: Optional[ShopCaseGraphQL] = Field(default=None, repr=False)
-    preprocessor_input: Optional[ShopPreprocessorInputGraphQL] = Field(
-        default=None, repr=False, alias="preprocessorInput"
+    benchmarking_config: Optional[BenchmarkingConfigurationDayAheadGraphQL] = Field(
+        default=None, repr=False, alias="benchmarkingConfig"
     )
+    delivery_date: Optional[datetime.datetime] = Field(None, alias="deliveryDate")
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -99,7 +99,7 @@ class ShopTriggerInputGraphQL(GraphQLCore):
             )
         return values
 
-    @field_validator("case", "preprocessor_input", mode="before")
+    @field_validator("benchmarking_config", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
             return value
@@ -107,11 +107,11 @@ class ShopTriggerInputGraphQL(GraphQLCore):
             return value["items"]
         return value
 
-    def as_read(self) -> ShopTriggerInput:
-        """Convert this GraphQL format of shop trigger input to the reading format."""
+    def as_read(self) -> BenchmarkingTaskDispatcherInputDayAhead:
+        """Convert this GraphQL format of benchmarking task dispatcher input day ahead to the reading format."""
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
-        return ShopTriggerInput(
+        return BenchmarkingTaskDispatcherInputDayAhead(
             space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecord(
@@ -123,18 +123,17 @@ class ShopTriggerInputGraphQL(GraphQLCore):
             workflow_step=self.workflow_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
-            cog_shop_tag=self.cog_shop_tag,
-            case=self.case.as_read() if isinstance(self.case, GraphQLCore) else self.case,
-            preprocessor_input=(
-                self.preprocessor_input.as_read()
-                if isinstance(self.preprocessor_input, GraphQLCore)
-                else self.preprocessor_input
+            benchmarking_config=(
+                self.benchmarking_config.as_read()
+                if isinstance(self.benchmarking_config, GraphQLCore)
+                else self.benchmarking_config
             ),
+            delivery_date=self.delivery_date,
         )
 
-    def as_write(self) -> ShopTriggerInputWrite:
-        """Convert this GraphQL format of shop trigger input to the writing format."""
-        return ShopTriggerInputWrite(
+    def as_write(self) -> BenchmarkingTaskDispatcherInputDayAheadWrite:
+        """Convert this GraphQL format of benchmarking task dispatcher input day ahead to the writing format."""
+        return BenchmarkingTaskDispatcherInputDayAheadWrite(
             space=self.space or DEFAULT_INSTANCE_SPACE,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
@@ -142,46 +141,43 @@ class ShopTriggerInputGraphQL(GraphQLCore):
             workflow_step=self.workflow_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
-            cog_shop_tag=self.cog_shop_tag,
-            case=self.case.as_write() if isinstance(self.case, GraphQLCore) else self.case,
-            preprocessor_input=(
-                self.preprocessor_input.as_write()
-                if isinstance(self.preprocessor_input, GraphQLCore)
-                else self.preprocessor_input
+            benchmarking_config=(
+                self.benchmarking_config.as_write()
+                if isinstance(self.benchmarking_config, GraphQLCore)
+                else self.benchmarking_config
             ),
+            delivery_date=self.delivery_date,
         )
 
 
-class ShopTriggerInput(FunctionInput):
-    """This represents the reading version of shop trigger input.
+class BenchmarkingTaskDispatcherInputDayAhead(FunctionInput):
+    """This represents the reading version of benchmarking task dispatcher input day ahead.
 
     It is used to when data is retrieved from CDF.
 
     Args:
         space: The space where the node is located.
-        external_id: The external id of the shop trigger input.
-        data_record: The data record of the shop trigger input node.
+        external_id: The external id of the benchmarking task dispatcher input day ahead.
+        data_record: The data record of the benchmarking task dispatcher input day ahead node.
         workflow_execution_id: The process associated with the function execution
         workflow_step: This is the step in the process.
         function_name: The name of the function
         function_call_id: The function call id
-        cog_shop_tag: Optionally specify cogshop tag to trigger
-        case: The SHOP case (with all details like model, scenario, and time series)
-        preprocessor_input: The preprocessor input to the shop run
+        benchmarking_config: The benchmarking config field.
+        delivery_date: The timestamp for the delivery date
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "ShopTriggerInput"
+        "power_ops_types", "BenchmarkingTaskDispatcherInputDayAhead"
     )
-    cog_shop_tag: Optional[str] = Field(None, alias="cogShopTag")
-    case: Union[ShopCase, str, dm.NodeId, None] = Field(default=None, repr=False)
-    preprocessor_input: Union[ShopPreprocessorInput, str, dm.NodeId, None] = Field(
-        default=None, repr=False, alias="preprocessorInput"
+    benchmarking_config: Union[BenchmarkingConfigurationDayAhead, str, dm.NodeId, None] = Field(
+        default=None, repr=False, alias="benchmarkingConfig"
     )
+    delivery_date: Optional[datetime.datetime] = Field(None, alias="deliveryDate")
 
-    def as_write(self) -> ShopTriggerInputWrite:
-        """Convert this read version of shop trigger input to the writing version."""
-        return ShopTriggerInputWrite(
+    def as_write(self) -> BenchmarkingTaskDispatcherInputDayAheadWrite:
+        """Convert this read version of benchmarking task dispatcher input day ahead to the writing version."""
+        return BenchmarkingTaskDispatcherInputDayAheadWrite(
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
@@ -189,17 +185,16 @@ class ShopTriggerInput(FunctionInput):
             workflow_step=self.workflow_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
-            cog_shop_tag=self.cog_shop_tag,
-            case=self.case.as_write() if isinstance(self.case, DomainModel) else self.case,
-            preprocessor_input=(
-                self.preprocessor_input.as_write()
-                if isinstance(self.preprocessor_input, DomainModel)
-                else self.preprocessor_input
+            benchmarking_config=(
+                self.benchmarking_config.as_write()
+                if isinstance(self.benchmarking_config, DomainModel)
+                else self.benchmarking_config
             ),
+            delivery_date=self.delivery_date,
         )
 
-    def as_apply(self) -> ShopTriggerInputWrite:
-        """Convert this read version of shop trigger input to the writing version."""
+    def as_apply(self) -> BenchmarkingTaskDispatcherInputDayAheadWrite:
+        """Convert this read version of benchmarking task dispatcher input day ahead to the writing version."""
         warnings.warn(
             "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
             UserWarning,
@@ -208,32 +203,30 @@ class ShopTriggerInput(FunctionInput):
         return self.as_write()
 
 
-class ShopTriggerInputWrite(FunctionInputWrite):
-    """This represents the writing version of shop trigger input.
+class BenchmarkingTaskDispatcherInputDayAheadWrite(FunctionInputWrite):
+    """This represents the writing version of benchmarking task dispatcher input day ahead.
 
     It is used to when data is sent to CDF.
 
     Args:
         space: The space where the node is located.
-        external_id: The external id of the shop trigger input.
-        data_record: The data record of the shop trigger input node.
+        external_id: The external id of the benchmarking task dispatcher input day ahead.
+        data_record: The data record of the benchmarking task dispatcher input day ahead node.
         workflow_execution_id: The process associated with the function execution
         workflow_step: This is the step in the process.
         function_name: The name of the function
         function_call_id: The function call id
-        cog_shop_tag: Optionally specify cogshop tag to trigger
-        case: The SHOP case (with all details like model, scenario, and time series)
-        preprocessor_input: The preprocessor input to the shop run
+        benchmarking_config: The benchmarking config field.
+        delivery_date: The timestamp for the delivery date
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "ShopTriggerInput"
+        "power_ops_types", "BenchmarkingTaskDispatcherInputDayAhead"
     )
-    cog_shop_tag: Optional[str] = Field(None, alias="cogShopTag")
-    case: Union[ShopCaseWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
-    preprocessor_input: Union[ShopPreprocessorInputWrite, str, dm.NodeId, None] = Field(
-        default=None, repr=False, alias="preprocessorInput"
+    benchmarking_config: Union[BenchmarkingConfigurationDayAheadWrite, str, dm.NodeId, None] = Field(
+        default=None, repr=False, alias="benchmarkingConfig"
     )
+    delivery_date: Optional[datetime.datetime] = Field(None, alias="deliveryDate")
 
     def _to_instances_write(
         self,
@@ -247,7 +240,8 @@ class ShopTriggerInputWrite(FunctionInputWrite):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            ShopTriggerInput, dm.ViewId("power_ops_core", "ShopTriggerInput", "1")
+            BenchmarkingTaskDispatcherInputDayAhead,
+            dm.ViewId("power_ops_core", "BenchmarkingTaskDispatcherInputDayAhead", "1"),
         )
 
         properties: dict[str, Any] = {}
@@ -264,24 +258,20 @@ class ShopTriggerInputWrite(FunctionInputWrite):
         if self.function_call_id is not None:
             properties["functionCallId"] = self.function_call_id
 
-        if self.cog_shop_tag is not None or write_none:
-            properties["cogShopTag"] = self.cog_shop_tag
-
-        if self.case is not None:
-            properties["case"] = {
-                "space": self.space if isinstance(self.case, str) else self.case.space,
-                "externalId": self.case if isinstance(self.case, str) else self.case.external_id,
-            }
-
-        if self.preprocessor_input is not None:
-            properties["preprocessorInput"] = {
-                "space": self.space if isinstance(self.preprocessor_input, str) else self.preprocessor_input.space,
+        if self.benchmarking_config is not None:
+            properties["benchmarkingConfig"] = {
+                "space": self.space if isinstance(self.benchmarking_config, str) else self.benchmarking_config.space,
                 "externalId": (
-                    self.preprocessor_input
-                    if isinstance(self.preprocessor_input, str)
-                    else self.preprocessor_input.external_id
+                    self.benchmarking_config
+                    if isinstance(self.benchmarking_config, str)
+                    else self.benchmarking_config.external_id
                 ),
             }
+
+        if self.delivery_date is not None or write_none:
+            properties["deliveryDate"] = (
+                self.delivery_date.isoformat(timespec="milliseconds") if self.delivery_date else None
+            )
 
         if properties:
             this_node = dm.NodeApply(
@@ -299,39 +289,35 @@ class ShopTriggerInputWrite(FunctionInputWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        if isinstance(self.case, DomainModelWrite):
-            other_resources = self.case._to_instances_write(cache, view_by_read_class)
-            resources.extend(other_resources)
-
-        if isinstance(self.preprocessor_input, DomainModelWrite):
-            other_resources = self.preprocessor_input._to_instances_write(cache, view_by_read_class)
+        if isinstance(self.benchmarking_config, DomainModelWrite):
+            other_resources = self.benchmarking_config._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
 
         return resources
 
 
-class ShopTriggerInputApply(ShopTriggerInputWrite):
-    def __new__(cls, *args, **kwargs) -> ShopTriggerInputApply:
+class BenchmarkingTaskDispatcherInputDayAheadApply(BenchmarkingTaskDispatcherInputDayAheadWrite):
+    def __new__(cls, *args, **kwargs) -> BenchmarkingTaskDispatcherInputDayAheadApply:
         warnings.warn(
-            "ShopTriggerInputApply is deprecated and will be removed in v1.0. Use ShopTriggerInputWrite instead."
+            "BenchmarkingTaskDispatcherInputDayAheadApply is deprecated and will be removed in v1.0. Use BenchmarkingTaskDispatcherInputDayAheadWrite instead."
             "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "ShopTriggerInput.",
+            "BenchmarkingTaskDispatcherInputDayAhead.",
             UserWarning,
             stacklevel=2,
         )
         return super().__new__(cls)
 
 
-class ShopTriggerInputList(DomainModelList[ShopTriggerInput]):
-    """List of shop trigger inputs in the read version."""
+class BenchmarkingTaskDispatcherInputDayAheadList(DomainModelList[BenchmarkingTaskDispatcherInputDayAhead]):
+    """List of benchmarking task dispatcher input day aheads in the read version."""
 
-    _INSTANCE = ShopTriggerInput
+    _INSTANCE = BenchmarkingTaskDispatcherInputDayAhead
 
-    def as_write(self) -> ShopTriggerInputWriteList:
-        """Convert these read versions of shop trigger input to the writing versions."""
-        return ShopTriggerInputWriteList([node.as_write() for node in self.data])
+    def as_write(self) -> BenchmarkingTaskDispatcherInputDayAheadWriteList:
+        """Convert these read versions of benchmarking task dispatcher input day ahead to the writing versions."""
+        return BenchmarkingTaskDispatcherInputDayAheadWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> ShopTriggerInputWriteList:
+    def as_apply(self) -> BenchmarkingTaskDispatcherInputDayAheadWriteList:
         """Convert these read versions of primitive nullable to the writing versions."""
         warnings.warn(
             "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
@@ -341,16 +327,18 @@ class ShopTriggerInputList(DomainModelList[ShopTriggerInput]):
         return self.as_write()
 
 
-class ShopTriggerInputWriteList(DomainModelWriteList[ShopTriggerInputWrite]):
-    """List of shop trigger inputs in the writing version."""
+class BenchmarkingTaskDispatcherInputDayAheadWriteList(
+    DomainModelWriteList[BenchmarkingTaskDispatcherInputDayAheadWrite]
+):
+    """List of benchmarking task dispatcher input day aheads in the writing version."""
 
-    _INSTANCE = ShopTriggerInputWrite
+    _INSTANCE = BenchmarkingTaskDispatcherInputDayAheadWrite
 
 
-class ShopTriggerInputApplyList(ShopTriggerInputWriteList): ...
+class BenchmarkingTaskDispatcherInputDayAheadApplyList(BenchmarkingTaskDispatcherInputDayAheadWriteList): ...
 
 
-def _create_shop_trigger_input_filter(
+def _create_benchmarking_task_dispatcher_input_day_ahead_filter(
     view_id: dm.ViewId,
     workflow_execution_id: str | list[str] | None = None,
     workflow_execution_id_prefix: str | None = None,
@@ -360,10 +348,9 @@ def _create_shop_trigger_input_filter(
     function_name_prefix: str | None = None,
     function_call_id: str | list[str] | None = None,
     function_call_id_prefix: str | None = None,
-    cog_shop_tag: str | list[str] | None = None,
-    cog_shop_tag_prefix: str | None = None,
-    case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-    preprocessor_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    benchmarking_config: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    min_delivery_date: datetime.datetime | None = None,
+    max_delivery_date: datetime.datetime | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -393,61 +380,40 @@ def _create_shop_trigger_input_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("functionCallId"), values=function_call_id))
     if function_call_id_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("functionCallId"), value=function_call_id_prefix))
-    if isinstance(cog_shop_tag, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("cogShopTag"), value=cog_shop_tag))
-    if cog_shop_tag and isinstance(cog_shop_tag, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("cogShopTag"), values=cog_shop_tag))
-    if cog_shop_tag_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("cogShopTag"), value=cog_shop_tag_prefix))
-    if case and isinstance(case, str):
+    if benchmarking_config and isinstance(benchmarking_config, str):
         filters.append(
             dm.filters.Equals(
-                view_id.as_property_ref("case"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": case}
+                view_id.as_property_ref("benchmarkingConfig"),
+                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": benchmarking_config},
             )
         )
-    if case and isinstance(case, tuple):
-        filters.append(
-            dm.filters.Equals(view_id.as_property_ref("case"), value={"space": case[0], "externalId": case[1]})
-        )
-    if case and isinstance(case, list) and isinstance(case[0], str):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("case"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in case],
-            )
-        )
-    if case and isinstance(case, list) and isinstance(case[0], tuple):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("case"), values=[{"space": item[0], "externalId": item[1]} for item in case]
-            )
-        )
-    if preprocessor_input and isinstance(preprocessor_input, str):
+    if benchmarking_config and isinstance(benchmarking_config, tuple):
         filters.append(
             dm.filters.Equals(
-                view_id.as_property_ref("preprocessorInput"),
-                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": preprocessor_input},
+                view_id.as_property_ref("benchmarkingConfig"),
+                value={"space": benchmarking_config[0], "externalId": benchmarking_config[1]},
             )
         )
-    if preprocessor_input and isinstance(preprocessor_input, tuple):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("preprocessorInput"),
-                value={"space": preprocessor_input[0], "externalId": preprocessor_input[1]},
-            )
-        )
-    if preprocessor_input and isinstance(preprocessor_input, list) and isinstance(preprocessor_input[0], str):
+    if benchmarking_config and isinstance(benchmarking_config, list) and isinstance(benchmarking_config[0], str):
         filters.append(
             dm.filters.In(
-                view_id.as_property_ref("preprocessorInput"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in preprocessor_input],
+                view_id.as_property_ref("benchmarkingConfig"),
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in benchmarking_config],
             )
         )
-    if preprocessor_input and isinstance(preprocessor_input, list) and isinstance(preprocessor_input[0], tuple):
+    if benchmarking_config and isinstance(benchmarking_config, list) and isinstance(benchmarking_config[0], tuple):
         filters.append(
             dm.filters.In(
-                view_id.as_property_ref("preprocessorInput"),
-                values=[{"space": item[0], "externalId": item[1]} for item in preprocessor_input],
+                view_id.as_property_ref("benchmarkingConfig"),
+                values=[{"space": item[0], "externalId": item[1]} for item in benchmarking_config],
+            )
+        )
+    if min_delivery_date is not None or max_delivery_date is not None:
+        filters.append(
+            dm.filters.Range(
+                view_id.as_property_ref("deliveryDate"),
+                gte=min_delivery_date.isoformat(timespec="milliseconds") if min_delivery_date else None,
+                lte=max_delivery_date.isoformat(timespec="milliseconds") if max_delivery_date else None,
             )
         )
     if external_id_prefix is not None:

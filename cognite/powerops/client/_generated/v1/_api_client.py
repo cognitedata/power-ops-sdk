@@ -9,6 +9,14 @@ from cognite.client.data_classes import TimeSeriesList
 from cognite.client.credentials import OAuthClientCredentials
 
 from ._api.alert import AlertAPI
+from ._api.benchmarking_calculation_input import BenchmarkingCalculationInputAPI
+from ._api.benchmarking_calculation_output import BenchmarkingCalculationOutputAPI
+from ._api.benchmarking_configuration_day_ahead import BenchmarkingConfigurationDayAheadAPI
+from ._api.benchmarking_production_obligation_day_ahead import BenchmarkingProductionObligationDayAheadAPI
+from ._api.benchmarking_result_day_ahead import BenchmarkingResultDayAheadAPI
+from ._api.benchmarking_shop_case import BenchmarkingShopCaseAPI
+from ._api.benchmarking_task_dispatcher_input_day_ahead import BenchmarkingTaskDispatcherInputDayAheadAPI
+from ._api.benchmarking_task_dispatcher_output_day_ahead import BenchmarkingTaskDispatcherOutputDayAheadAPI
 from ._api.bid_configuration_day_ahead import BidConfigurationDayAheadAPI
 from ._api.bid_document import BidDocumentAPI
 from ._api.bid_document_afrr import BidDocumentAFRRAPI
@@ -43,6 +51,7 @@ from ._api.shop_case import ShopCaseAPI
 from ._api.shop_commands import ShopCommandsAPI
 from ._api.shop_file import ShopFileAPI
 from ._api.shop_model import ShopModelAPI
+from ._api.shop_model_with_assets import ShopModelWithAssetsAPI
 from ._api.shop_output_time_series_definition import ShopOutputTimeSeriesDefinitionAPI
 from ._api.shop_penalty_report import ShopPenaltyReportAPI
 from ._api.shop_preprocessor_input import ShopPreprocessorInputAPI
@@ -66,6 +75,114 @@ from ._api.watercourse import WatercourseAPI
 from ._api._core import SequenceNotStr, GraphQLQueryResponse
 from .data_classes._core import DEFAULT_INSTANCE_SPACE, GraphQLList
 from . import data_classes
+
+
+class BenchmarkingDayAheadAPIs:
+    """
+    BenchmarkingDayAheadAPIs
+
+    Data Model:
+        space: power_ops_core
+        externalId: compute_BenchmarkingDayAhead
+        version: 1
+
+    """
+
+    def __init__(self, client: CogniteClient):
+        view_by_read_class = {
+            data_classes.Alert: dm.ViewId("power_ops_core", "Alert", "1"),
+            data_classes.BenchmarkingCalculationInput: dm.ViewId("power_ops_core", "BenchmarkingCalculationInput", "1"),
+            data_classes.BenchmarkingCalculationOutput: dm.ViewId(
+                "power_ops_core", "BenchmarkingCalculationOutput", "1"
+            ),
+            data_classes.BenchmarkingConfigurationDayAhead: dm.ViewId(
+                "power_ops_core", "BenchmarkingConfigurationDayAhead", "1"
+            ),
+            data_classes.BenchmarkingProductionObligationDayAhead: dm.ViewId(
+                "power_ops_core", "BenchmarkingProductionObligationDayAhead", "1"
+            ),
+            data_classes.BenchmarkingResultDayAhead: dm.ViewId("power_ops_core", "BenchmarkingResultDayAhead", "1"),
+            data_classes.BenchmarkingShopCase: dm.ViewId("power_ops_core", "BenchmarkingShopCase", "1"),
+            data_classes.BenchmarkingTaskDispatcherInputDayAhead: dm.ViewId(
+                "power_ops_core", "BenchmarkingTaskDispatcherInputDayAhead", "1"
+            ),
+            data_classes.BenchmarkingTaskDispatcherOutputDayAhead: dm.ViewId(
+                "power_ops_core", "BenchmarkingTaskDispatcherOutputDayAhead", "1"
+            ),
+            data_classes.BidConfigurationDayAhead: dm.ViewId("power_ops_core", "BidConfigurationDayAhead", "1"),
+            data_classes.DateSpecification: dm.ViewId("power_ops_core", "DateSpecification", "1"),
+            data_classes.FunctionInput: dm.ViewId("power_ops_core", "FunctionInput", "1"),
+            data_classes.FunctionOutput: dm.ViewId("power_ops_core", "FunctionOutput", "1"),
+            data_classes.MarketConfiguration: dm.ViewId("power_ops_core", "MarketConfiguration", "1"),
+            data_classes.PartialBidConfiguration: dm.ViewId("power_ops_core", "PartialBidConfiguration", "1"),
+            data_classes.PowerAsset: dm.ViewId("power_ops_core", "PowerAsset", "1"),
+            data_classes.PriceArea: dm.ViewId("power_ops_core", "PriceArea", "1"),
+            data_classes.PriceAreaDayAhead: dm.ViewId("power_ops_core", "PriceAreaDayAhead", "1"),
+            data_classes.ShopAttributeMapping: dm.ViewId("power_ops_core", "ShopAttributeMapping", "1"),
+            data_classes.ShopCase: dm.ViewId("power_ops_core", "ShopCase", "1"),
+            data_classes.ShopCommands: dm.ViewId("power_ops_core", "ShopCommands", "1"),
+            data_classes.ShopFile: dm.ViewId("power_ops_core", "ShopFile", "1"),
+            data_classes.ShopModel: dm.ViewId("power_ops_core", "ShopModel", "1"),
+            data_classes.ShopModelWithAssets: dm.ViewId("power_ops_core", "ShopModelWithAssets", "1"),
+            data_classes.ShopOutputTimeSeriesDefinition: dm.ViewId(
+                "power_ops_core", "ShopOutputTimeSeriesDefinition", "1"
+            ),
+            data_classes.ShopPreprocessorInput: dm.ViewId("power_ops_core", "ShopPreprocessorInput", "1"),
+            data_classes.ShopResult: dm.ViewId("power_ops_core", "ShopResult", "1"),
+            data_classes.ShopScenario: dm.ViewId("power_ops_core", "ShopScenario", "1"),
+            data_classes.ShopTimeSeries: dm.ViewId("power_ops_core", "ShopTimeSeries", "1"),
+            data_classes.ShopTriggerInput: dm.ViewId("power_ops_core", "ShopTriggerInput", "1"),
+        }
+        self._view_by_read_class = view_by_read_class
+        self._client = client
+
+        self.alert = AlertAPI(client, view_by_read_class)
+        self.benchmarking_calculation_input = BenchmarkingCalculationInputAPI(client, view_by_read_class)
+        self.benchmarking_calculation_output = BenchmarkingCalculationOutputAPI(client, view_by_read_class)
+        self.benchmarking_configuration_day_ahead = BenchmarkingConfigurationDayAheadAPI(client, view_by_read_class)
+        self.benchmarking_production_obligation_day_ahead = BenchmarkingProductionObligationDayAheadAPI(
+            client, view_by_read_class
+        )
+        self.benchmarking_result_day_ahead = BenchmarkingResultDayAheadAPI(client, view_by_read_class)
+        self.benchmarking_shop_case = BenchmarkingShopCaseAPI(client, view_by_read_class)
+        self.benchmarking_task_dispatcher_input_day_ahead = BenchmarkingTaskDispatcherInputDayAheadAPI(
+            client, view_by_read_class
+        )
+        self.benchmarking_task_dispatcher_output_day_ahead = BenchmarkingTaskDispatcherOutputDayAheadAPI(
+            client, view_by_read_class
+        )
+        self.bid_configuration_day_ahead = BidConfigurationDayAheadAPI(client, view_by_read_class)
+        self.date_specification = DateSpecificationAPI(client, view_by_read_class)
+        self.function_input = FunctionInputAPI(client, view_by_read_class)
+        self.function_output = FunctionOutputAPI(client, view_by_read_class)
+        self.market_configuration = MarketConfigurationAPI(client, view_by_read_class)
+        self.partial_bid_configuration = PartialBidConfigurationAPI(client, view_by_read_class)
+        self.power_asset = PowerAssetAPI(client, view_by_read_class)
+        self.price_area = PriceAreaAPI(client, view_by_read_class)
+        self.price_area_day_ahead = PriceAreaDayAheadAPI(client, view_by_read_class)
+        self.shop_attribute_mapping = ShopAttributeMappingAPI(client, view_by_read_class)
+        self.shop_case = ShopCaseAPI(client, view_by_read_class)
+        self.shop_commands = ShopCommandsAPI(client, view_by_read_class)
+        self.shop_file = ShopFileAPI(client, view_by_read_class)
+        self.shop_model = ShopModelAPI(client, view_by_read_class)
+        self.shop_model_with_assets = ShopModelWithAssetsAPI(client, view_by_read_class)
+        self.shop_output_time_series_definition = ShopOutputTimeSeriesDefinitionAPI(client, view_by_read_class)
+        self.shop_preprocessor_input = ShopPreprocessorInputAPI(client, view_by_read_class)
+        self.shop_result = ShopResultAPI(client, view_by_read_class)
+        self.shop_scenario = ShopScenarioAPI(client, view_by_read_class)
+        self.shop_time_series = ShopTimeSeriesAPI(client, view_by_read_class)
+        self.shop_trigger_input = ShopTriggerInputAPI(client, view_by_read_class)
+
+    def graphql_query(self, query: str, variables: dict[str, Any] | None = None) -> GraphQLList:
+        """Execute a GraphQl query against the compute_BenchmarkingDayAhead data model.
+
+        Args:
+            query (str): The GraphQL query to issue.
+            variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
+        """
+        data_model_id = dm.DataModelId("power_ops_core", "compute_BenchmarkingDayAhead", "1")
+        result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
+        return GraphQLQueryResponse(data_model_id).parse(result)
 
 
 class ShopBasedDayAheadBidProcesAPIs:
@@ -645,6 +762,7 @@ class PowerOpsModelsV1Client:
         # The client name is used for aggregated logging of Pygen Usage
         client.config.client_name = "CognitePygen:0.99.24"
 
+        self.benchmarking_day_ahead = BenchmarkingDayAheadAPIs(client)
         self.shop_based_day_ahead_bid_process = ShopBasedDayAheadBidProcesAPIs(client)
         self.total_bid_matrix_calculation = TotalBidMatrixCalculationAPIs(client)
         self.water_value_based_day_ahead_bid_process = WaterValueBasedDayAheadBidProcesAPIs(client)
@@ -657,6 +775,7 @@ class PowerOpsModelsV1Client:
         self._view_by_read_class = {
             k: v
             for api in [
+                self.benchmarking_day_ahead,
                 self.shop_based_day_ahead_bid_process,
                 self.total_bid_matrix_calculation,
                 self.water_value_based_day_ahead_bid_process,

@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.96.0] - 2024-07-24
+### Added
+* Support for benchmarking data model and it's types
+
 ## [0.95.2] - 2024-06-04
 ### Fixed
 * Fix from setting configuration of triggering SHOP As A Service through SHOP client.

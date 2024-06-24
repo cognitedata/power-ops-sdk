@@ -107,6 +107,7 @@ def main():
             "frontend_AFRRBid",
             "frontend_Asset",
             "frontend_DayAheadBid",
+            "compute_BenchmarkingDayAhead",
         ]
         print(
             Panel(
