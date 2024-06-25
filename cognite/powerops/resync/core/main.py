@@ -16,8 +16,8 @@ from click.core import Command
 from cognite.client import CogniteClient
 from cognite.client.data_classes.data_modeling import DataModelId, MappedProperty, ViewList
 from cognite.client.exceptions import CogniteAPIError
-from cognite_toolkit._cdf_tk.load import DataModelLoader as ToolkitDataModelLoader  # type: ignore[import-untyped]
-from cognite_toolkit._cdf_tk.load import ViewLoader  # type: ignore[import-untyped]  # type: ignore[import-untyped]
+from cognite_toolkit._cdf_tk.loaders import DataModelLoader as ToolkitDataModelLoader  # type: ignore[import-untyped]
+from cognite_toolkit._cdf_tk.loaders import ViewLoader  # type: ignore[import-untyped]  # type: ignore[import-untyped]
 from cognite_toolkit._cdf_tk.utils import CDFToolConfig, calculate_directory_hash  # type: ignore[import-untyped]
 from rich import print
 from rich.panel import Panel
