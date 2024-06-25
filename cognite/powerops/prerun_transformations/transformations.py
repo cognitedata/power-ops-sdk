@@ -846,12 +846,12 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         # Forward fill discharge for all (hour) timestamps until start
         one_hour = pd.Timedelta("1h")
         if start - one_hour not in discharge.index:
-            discharge[start - one_hour] = np.NaN
+            discharge[start - one_hour] = np.nan
         discharge = discharge.resample(one_hour).ffill().ffill()
 
         # Make sure inflow has values for all (hour) timestamps up until end (exclusive)
         if end not in inflow.index:
-            inflow[end] = np.NaN
+            inflow[end] = np.nan
         inflow = inflow.resample(one_hour).ffill().ffill()
 
         for delay, water_percentage in shape.items():
