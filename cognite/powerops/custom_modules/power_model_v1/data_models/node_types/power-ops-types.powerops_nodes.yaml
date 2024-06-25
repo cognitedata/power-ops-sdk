@@ -153,8 +153,6 @@
 - space: "{{power_ops_type_space}}"
   externalId: MarketConfiguration
 - space: "{{power_ops_type_space}}"
-  externalId: BidConfiguration
-- space: "{{power_ops_type_space}}"
   externalId: BidConfiguration.partials
 - space: "{{power_ops_type_space}}"
   externalId: BidDocument
