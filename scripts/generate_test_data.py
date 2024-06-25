@@ -6,15 +6,9 @@ from cognite.powerops import PowerOpsClient
 import datetime
 import random
 
-if __name__ == "__main__":
-    client = get_client_demo()
-    po_client = PowerOpsClient(read_dataset="powerops:misc", write_dataset="powerops:misc", cogshop_version="0.0.1", config=client.config)
 
-    space = "final_thomi"
-    data_model_external_id = "compute_BenchmarkingDayAhead"
-    data_model_version = "1"
-    data_model_id = (space, data_model_external_id, data_model_version)
-    #bench_client = pygen.generate_sdk_notebook(data_model_id, client)
+
+def create_dummy_instances_for_frontend():
 
     import cognite.powerops.client._generated.v1.data_classes as data_classes
 
@@ -106,19 +100,46 @@ if __name__ == "__main__":
                 ))
     po_client.v1.upsert(results)
 
+    from cognite.powerops.client._generated.v1.data_classes import PriceAreaDayAheadWrite
+    price_area = PriceAreaDayAheadWrite(
+            external_id="price-area-testing",
+            main_price_scenario="6694",  # Note: needs to be present
+            name="NO2",
+    )
+    po_client.v1.upsert([price_area])
+
+    from cognite.powerops.client._generated.v1.data_classes import DateSpecificationWrite
+    start_date_specification = DateSpecificationWrite(
+        external_id="date_specification_test_start",
+        name="start",
+        processing_timezone="Europe/Oslo",
+        floor_frame="week",
+        shift_definition={"days": -1, "weeks": 2},
+        resulting_timezone="UTC"
+    )
+    stop_date_specification = DateSpecificationWrite(
+        external_id="date_specification_test_stop",
+        name="stop",
+        processing_timezone="Europe/Oslo",
+        floor_frame="week",
+        shift_definition={"days": 0, "weeks": 2},
+        resulting_timezone="UTC"
+    )
+    po_client.v1.upsert([start_date_specification, stop_date_specification])
+
     bm_config = data_classes.BenchmarkingConfigurationDayAheadWrite(
         externalId="day_ahead_benchmarking_configuration_no2",
         name="Day Ahead Benchmarking Configuration Dummy",
         bidConfigurations=bid_config_ext_ids,
-        shopStartSpecification="[]",
-        shopEndSpecification="[]",
+        shopStartSpecification=start_date_specification,
+        shopEndSpecification=stop_date_specification,
         assetsPerShopModel=[data_classes.ShopModelWithAssetsWrite(
             externalId=f"shop_model_to_assets_dummy_{shop_model.external_id[-1:]}",
             shopModel=shop_model.external_id,
             powerAssets=[],
             productionObligations=[],
         ) for shop_model in [shop_model_dummy_1, shop_model_dummy_2]],
-
+        priceArea=price_area.external_id
     )
     upserted_bm_config = po_client.v1.upsert(bm_config)
 
@@ -127,3 +148,10 @@ if __name__ == "__main__":
     po_client.v1.benchmarking_day_ahead.shop_result.list()
 
     po_client.v1.benchmarking_day_ahead.benchmarking_configuration_day_ahead.list()
+
+
+if __name__ == "__main__":
+    client = get_client_demo()
+    po_client = PowerOpsClient(read_dataset="powerops:misc", write_dataset="powerops:misc", cogshop_version="0.0.1", config=client.config)
+
+    create_dummy_instances_for_frontend()
