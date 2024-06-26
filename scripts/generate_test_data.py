@@ -7,7 +7,6 @@ import datetime
 import random
 
 
-
 def create_dummy_instances_for_frontend():
 
     import cognite.powerops.client._generated.v1.data_classes as data_classes
@@ -18,6 +17,7 @@ def create_dummy_instances_for_frontend():
     # shop_models = po_client.v1.shop_based_day_ahead_bid_process.shop_model.list(space="sp_power_ops_instance", limit=1000)
     from cognite.powerops.client._generated.v1.data_classes import BidConfigurationDayAheadWrite
 
+    from cognite.client.data_classes import FileMetadataWrite
     shop_model_dummy_1 = data_classes.ShopModelWrite(
         externalId="shop_model_benchmarking_dummy_1",
         name="Fornebu B",
@@ -33,12 +33,14 @@ def create_dummy_instances_for_frontend():
     shop_scenario_dummy_1 = data_classes.ShopScenarioWrite(
         externalId="shop_scenario_benchmarking_dummy_1",
         name="Fornebu B Benchmarking",
-        model=shop_model_dummy_1
+        model=shop_model_dummy_1,
+        shop_commands="shop_commands_default"
     )
     shop_scenario_dummy_2 = data_classes.ShopScenarioWrite(
         externalId="shop_scenario_benchmarking_dummy_2",
         name="Lysakerelva B Benchmarking",
         model=shop_model_dummy_2,
+        shop_commands="shop_commands_default"
     )
     shop_case_dummy_1 = data_classes.ShopCaseWrite(
         externalId="shop_case_benchmarking_dummy_1",
@@ -113,8 +115,8 @@ def create_dummy_instances_for_frontend():
         external_id="date_specification_test_start",
         name="start",
         processing_timezone="Europe/Oslo",
-        floor_frame="week",
-        shift_definition={"days": -1, "weeks": 2},
+        floor_frame="day",
+        shift_definition={"days": -900},
         resulting_timezone="UTC"
     )
     stop_date_specification = DateSpecificationWrite(
@@ -122,10 +124,27 @@ def create_dummy_instances_for_frontend():
         name="stop",
         processing_timezone="Europe/Oslo",
         floor_frame="week",
-        shift_definition={"days": 0, "weeks": 2},
+        shift_definition={"days": -400, "weeks": 2},
         resulting_timezone="UTC"
     )
     po_client.v1.upsert([start_date_specification, stop_date_specification])
+
+    from cognite.powerops.client._generated.v1.data_classes import PowerAssetWrite
+    power_asset_1 = PowerAssetWrite(
+        name="example_power_asset_1",
+        external_id="power-asset-1-ext-id",
+        display_name="Example Power Asset 1",
+        ordering=2,
+        asset_type="plant",
+    )
+    power_asset_2 = PowerAssetWrite(
+        name="example_power_asset_2",
+        external_id="power-asset-2-ext-id",
+        display_name="Example Power Asset 2",
+        ordering=2,
+        asset_type="plant",
+    )
+    po_client.v1.upsert([power_asset_1, power_asset_2])
 
     bm_config = data_classes.BenchmarkingConfigurationDayAheadWrite(
         externalId="day_ahead_benchmarking_configuration_no2",
@@ -136,8 +155,9 @@ def create_dummy_instances_for_frontend():
         assetsPerShopModel=[data_classes.ShopModelWithAssetsWrite(
             externalId=f"shop_model_to_assets_dummy_{shop_model.external_id[-1:]}",
             shopModel=shop_model.external_id,
-            powerAssets=[],
+            powerAssets=[power_asset_1, power_asset_2],
             productionObligations=[],
+            shopCommands="shop_commands_default"
         ) for shop_model in [shop_model_dummy_1, shop_model_dummy_2]],
         priceArea=price_area.external_id
     )
