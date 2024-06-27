@@ -21,26 +21,48 @@ def create_dummy_instances_for_frontend():
     shop_model_dummy_1 = data_classes.ShopModelWrite(
         externalId="shop_model_benchmarking_dummy_1",
         name="Fornebu B",
-        shopVersion="15.4.1",
-        model="SHOP_Fornebu_model"
+        shopVersion="15.4.1.1",
+        model="SHOP_Fornebu_model",
+        modelVersion="1",
+        penaltyLimit=0.0,
+        cogShopFilesConfig=["shop_file_water_value_cut_file_reservoir_mapping",
+                            "shop_file_water_value_cut_file"],
+        baseAttributeMappings=["base_mapping_fornebu_creek_intake_fjerdingby_intake_overflow_cost",
+                               "base_mapping_fornebu_creek_intake_sandvika_inflow"]
     )
     shop_model_dummy_2 = data_classes.ShopModelWrite(
         externalId="shop_model_benchmarking_dummy_2",
         name="Lysakerelva B",
-        shopVersion="15.4.1",
-        model="SHOP_Fornebu_model"
+        shopVersion="15.4.1.1",
+        model="SHOP_Fornebu_model",
+        modelVersion="1",
+        penaltyLimit=0.0,
+        cogShopFilesConfig=["shop_file_water_value_cut_file_reservoir_mapping",
+                            "shop_file_water_value_cut_file"],
+        baseAttributeMappings=["base_mapping_fornebu_creek_intake_fjerdingby_intake_overflow_cost",
+                               "base_mapping_fornebu_creek_intake_sandvika_inflow"]
     )
     shop_scenario_dummy_1 = data_classes.ShopScenarioWrite(
         externalId="shop_scenario_benchmarking_dummy_1",
         name="Fornebu B Benchmarking",
         model=shop_model_dummy_1,
-        shop_commands="shop_commands_default"
+        shopCommands="shop_commands_default",
+        outputDefinition=["shop_output_time_series_definition_market_price", "shop_output_time_series_definition_market_sale",
+"shop_output_time_series_definition_plant_production",
+"shop_output_time_series_definition_plant_consumption",
+"shop_output_time_series_definition_reservoir_water_value",
+"shop_output_time_series_definition_reservoir_energy_conversion_factor",]
     )
     shop_scenario_dummy_2 = data_classes.ShopScenarioWrite(
         externalId="shop_scenario_benchmarking_dummy_2",
         name="Lysakerelva B Benchmarking",
         model=shop_model_dummy_2,
-        shop_commands="shop_commands_default"
+        shopCommands="shop_commands_default",
+        outputDefinition=["shop_output_time_series_definition_market_price", "shop_output_time_series_definition_market_sale",
+"shop_output_time_series_definition_plant_production",
+"shop_output_time_series_definition_plant_consumption",
+"shop_output_time_series_definition_reservoir_water_value",
+"shop_output_time_series_definition_reservoir_energy_conversion_factor",]
     )
     shop_case_dummy_1 = data_classes.BenchmarkingShopCaseWrite(
         externalId="shop_case_benchmarking_dummy_1",
@@ -48,7 +70,7 @@ def create_dummy_instances_for_frontend():
         scenario=shop_scenario_dummy_1,
         deliveryDate="2024-05-01",
         bidGenerated="2024-04-30",
-        bidSource="upper-bound"
+        bidSource="upper_bound"
     )
     shop_case_dummy_2 = data_classes.BenchmarkingShopCaseWrite(
         externalId="shop_case_benchmarking_dummy_2",
