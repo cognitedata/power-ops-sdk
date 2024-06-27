@@ -2,24 +2,6 @@ space: "{{power_ops_models}}"
 externalId: ShopCase
 name: ShopCase
 description: A case that links a Scenario and shop dates to run shop with
-filter:
-  and:
-    - hasData:
-        - type: container
-          space: "{{power_ops_models}}"
-          externalId: ShopCase
-    - equals:
-        property:
-          - node
-          - space
-        value: "{{power_ops_instance_space}}"
-    - equals:
-        property:
-          - node
-          - type
-        value:
-          externalId: ShopCase
-          space: "{{power_ops_type_space}}"
 implements: []
 version: "{{version}}"
 properties:
