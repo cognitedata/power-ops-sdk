@@ -42,25 +42,33 @@ def create_dummy_instances_for_frontend():
         model=shop_model_dummy_2,
         shop_commands="shop_commands_default"
     )
-    shop_case_dummy_1 = data_classes.ShopCaseWrite(
+    shop_case_dummy_1 = data_classes.BenchmarkingShopCaseWrite(
         externalId="shop_case_benchmarking_dummy_1",
         name="Lysakerelva B Benchmarking dummy",
         scenario=shop_scenario_dummy_1,
+        deliveryDate="2024-05-01",
+        bidGenerated="2024-04-30",
+        bidSource="upper-bound"
     )
-    shop_case_dummy_2 = data_classes.ShopCaseWrite(
+    shop_case_dummy_2 = data_classes.BenchmarkingShopCaseWrite(
         externalId="shop_case_benchmarking_dummy_2",
         name="Lysakerelva B Benchmarking dummy",
         scenario=shop_scenario_dummy_2,
+        deliveryDate="2024-05-01",
+        bidGenerated="2024-04-30",
+        bidSource=f"{bid_config_ext_ids[0]}"
     )
     shop_result_dummy_1 = data_classes.ShopResultWrite(
-        externalId="shop_result_benchmarking_dummy_1",
+        externalId="shop_result_benchmarking_dummy_10",
         name="Fornebu B Benchmarking dummy",
-        case=shop_case_dummy_1
+        case=shop_case_dummy_1,
+        objective_value={"grand_total": -1000, "load_value": -50}
     )
     shop_result_dummy_2 = data_classes.ShopResultWrite(
-        externalId="shop_result_benchmarking_dummy_2",
+        externalId="shop_result_benchmarking_dummy_20",
         name="Lysakerelva B Benchmarking dummy",
         case=shop_case_dummy_2,
+        objective_value={"grand_total": -2000, "load_value": -100}
     )
 
     shop_results_upserted = po_client.v1.upsert([shop_result_dummy_1, shop_result_dummy_2])
