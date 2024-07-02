@@ -13,7 +13,12 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.96.0] - 2024-07-24
+## [0.96.1] - 2024-07-02
+### Fixed
+* import from `cognite-toolkit` to new path
+* replace deprecated `np.Nan` with `np.nan`
+
+## [0.96.0] - 2024-06-24
 ### Added
 * Support for benchmarking data model and it's types
 
