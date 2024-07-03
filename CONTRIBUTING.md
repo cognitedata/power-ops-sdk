@@ -97,7 +97,7 @@ If a change requires a version change, the following version system should be us
 2. Ensure the credentials in your `.env` file point to the same environment you want to deploy to
 3. Build the configurations and remove existing files in the build directory:
    ```bash
-   cdf-tk build cognite/powerops --env ENV --clean
+   cdf-tk build cognite/powerops --env ENV
    ```
 4. Dry-run the deployment to see what changes would be made:
    ```bash

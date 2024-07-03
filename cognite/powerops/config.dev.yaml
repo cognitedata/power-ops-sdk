@@ -2,10 +2,10 @@ environment:
   name: dev
   project: power-ops-dev
   type: dev
-  selected_modules_and_packages:
+  selected:
     - power_model_v1
 
-modules:
+variables:
   custom_modules:
     power_model_v1:
       power_ops_type_space: "power_ops_types"
