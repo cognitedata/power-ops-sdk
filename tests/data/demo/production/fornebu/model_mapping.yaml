@@ -2296,7 +2296,6 @@ model:
       tactical_limit_min: 0.30 # Mm3, equals 625.0 masl.
       tactical_cost_max: 1000
 
-
       tactical_limit_max: 1.42 # Mm3, equals 629.5 masl.
       latitude: 0.0
       longitude: 0.0
