@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/python-poetry/poetry
-    rev: "1.8.3" # add version here
+    rev: "1.8.3"
     hooks:
       - id: poetry-check
       - id: poetry-lock
@@ -11,7 +11,6 @@ repos:
       - id: black
 
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    # Ruff version.
     rev: "v0.5.1"
     hooks:
       - id: ruff
