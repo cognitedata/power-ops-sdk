@@ -20,10 +20,10 @@ from cognite.powerops.resync.v1.data_classes import (
 )
 from cognite.powerops.resync.v1.utils import (
     check_input_keys,
-    ext_id_factory,
     parse_external_ids,
 )
 from cognite.powerops.utils.serialization import load_yaml
+from cognite.pygen.utils.external_id_factories import ExternalIdFactory  # type: ignore
 
 logger = logging.getLogger(__name__)
 
@@ -72,7 +72,9 @@ class ResyncImporter:
         self.data_model_configuration = data_model_configuration or {}
         self.data_model_classes = data_model_classes
 
-        v1_data_classes.DomainModelWrite.external_id_factory = ext_id_factory
+        v1_data_classes.DomainModelWrite.external_id_factory = ExternalIdFactory.create_external_id_factory(
+            suffix_ext_id_factory=ExternalIdFactory.incremental_factory()
+        )
 
     @classmethod
     def from_yaml(

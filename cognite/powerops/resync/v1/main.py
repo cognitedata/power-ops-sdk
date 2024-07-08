@@ -10,7 +10,19 @@ from cognite.powerops.resync.v1.utils import check_all_linked_sources_exist, get
 logger = logging.getLogger(__name__)
 
 
-def plan(configuration: Path) -> None:
+def _init_resync(configuration: Path, client: PowerOpsClient | None = None) -> tuple[ResyncImporter, PowerOpsClient]:
+    client = client or PowerOpsClient.from_settings()
+
+    data_model_classes = get_data_model_write_classes(client.v1)
+
+    resync_importer = ResyncImporter.from_yaml(configuration, data_model_classes, client.cdf)
+
+    # FIXME: reset the external id factory to default
+
+    return resync_importer, client
+
+
+def plan(configuration: Path, client: PowerOpsClient | None = None) -> None:
     """Generates data model objects from a resync configuration and prints the plan.
 
     Initializes a ResyncImporter given the input configuration path. The importer is then used to generate data model
@@ -19,11 +31,8 @@ def plan(configuration: Path) -> None:
     Args:
         configuration: Path to the resync configuration file.
     """
-    client = PowerOpsClient.from_settings()
+    resync_importer, _ = _init_resync(configuration, client)
 
-    data_model_classes = get_data_model_write_classes(client.v1)
-
-    resync_importer = ResyncImporter.from_yaml(configuration, data_model_classes, client.cdf)
     resync_data_model_objects, external_ids = resync_importer.to_data_model()
 
     logger.info(resync_data_model_objects)
@@ -45,11 +54,8 @@ def apply(configuration: Path, client: PowerOpsClient | None = None) -> None:
         client: PowerOpsClient to use for upserting the data model objects. If not provided, a client is created from
             the settings.
     """
-    client = client or PowerOpsClient.from_settings()
+    resync_importer, client = _init_resync(configuration, None)
 
-    data_model_classes = get_data_model_write_classes(client.v1)
-
-    resync_importer = ResyncImporter.from_yaml(configuration, data_model_classes, client.cdf)
     resync_data_model_objects, external_ids = resync_importer.to_data_model()
 
     if resync_importer.file_configuration:
