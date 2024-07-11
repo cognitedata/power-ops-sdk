@@ -35,7 +35,7 @@ SENTRY_ENABLED=false
 
 ## Change Limitations
 
-Not all resource types can be changed and not all operations are supported to be made on existing resources. Refer to
+Not all resource types can be changed, and not all operations are supported to be made on existing resources. Refer to
 the [Data Modeling changes documentation](https://docs.cognite.com/cdf/dm/dm_concepts/dm_containers_views_datamodels/#impact-of-changes-to-views-and-data-models)
 for a detailed list of what is allowed. Based on if an operation is allowed or not there are a few different ways to
 deploy the changes.
