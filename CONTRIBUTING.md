@@ -3,12 +3,12 @@
 Data Modeling resources are deployed, updated, and managed via the [CDF-Toolkit](https://developer.cognite.com/sdks/toolkit/).
 Refer to the documentation for detailed configuration options.
 
-The relevant data modeling configuration files can be found in `cognite/powerops/custom_modules` following the folder
+The relevant data modeling configuration files can be found in `toolkit/custom_modules` following the folder
 and file naming structure required by CDF-Toolkit. Each space, container, view, and data model is kept in separate
 files with one file for one resource.
 
 You can control which module is deployed by setting the `selected_module_and_packages` in
-`cognite/powerops/config.dev.yaml`:
+`toolkit/config.dev.yaml`:
 
 ```yaml
 ...
@@ -35,7 +35,7 @@ SENTRY_ENABLED=false
 
 ## Change Limitations
 
-Not all resource types can be changed and not all operations are supported to be made on existing resources. Refer to
+Not all resource types can be changed, and not all operations are supported to be made on existing resources. Refer to
 the [Data Modeling changes documentation](https://docs.cognite.com/cdf/dm/dm_concepts/dm_containers_views_datamodels/#impact-of-changes-to-views-and-data-models)
 for a detailed list of what is allowed. Based on if an operation is allowed or not there are a few different ways to
 deploy the changes.
@@ -75,7 +75,7 @@ If a change requires a version change, the following version system should be us
 7. Once PR is approved inform the team that the changes will be deployed to `power-ops-staging`.
 8. Deploy changes manually to **power-ops-staging** ensuring you've used the correct version if needed.
 9.  Regenerate the SDK for the data model changes by calling `python scripts/pygen_generate_clients.py`.
-10. Bump the SDK version in `pyproject.toml` and `cognite/powerops/_version.py`.
+10. Bump the SDK version in `pyproject.toml` and `toolkit/_version.py`.
 11. Update the `CHANGELOG.md` with the changes made.
 12. Get a second approval on the PR.
 
@@ -97,7 +97,7 @@ If a change requires a version change, the following version system should be us
 2. Ensure the credentials in your `.env` file point to the same environment you want to deploy to
 3. Build the configurations and remove existing files in the build directory:
    ```bash
-   cdf-tk build cognite/powerops --env ENV
+   cdf-tk build toolkit/ --env ENV
    ```
 4. Dry-run the deployment to see what changes would be made:
    ```bash
