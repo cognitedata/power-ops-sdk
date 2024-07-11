@@ -17,6 +17,7 @@ from .rkom import (
 __all__ = [
     "PriceScenario",
     "PriceScenarioID",
+    "PriceScenarioV2",
     "BenchmarkingConfig",
     "ReserveScenario",
     "ReserveScenarios",
@@ -29,4 +30,5 @@ __all__ = [
     "BidProcessConfig",
     "Market",
     "MARKET_CONFIG_NORDPOOL_DAYAHEAD",
+    "MARKET_BY_PRICE_AREA",
 ]

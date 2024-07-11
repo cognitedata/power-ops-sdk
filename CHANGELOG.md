@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.96.2] - 2024-07-08
+### Added
+* set the default external id generator function for `v1` data models, does not affect existing resource creation
+  as the manually provided external id will take precedence
+
 ## [0.96.1] - 2024-07-02
 ### Fixed
 * import from `cognite-toolkit` to new path

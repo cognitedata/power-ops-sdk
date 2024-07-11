@@ -33,12 +33,11 @@ class Bid(NonAssetType):
 
 class Process(AssetType, ABC):
     ...
-    # TODO extract common fields:
-    # parent_external_id: ClassVar[str]  # noqa
-    # parent_description: ClassVar[str]  # noqa
-    # label: ClassVar[Union[AssetLabel, str]]  # noqa
-    # shop: ShopTransformation  # noqa
-    # bid: Bid  # noqa
-    # probably also:
-    # incremental_mapping: list[CDFSequence] = Field(default_factory=list)  # noqa
-    # (the "#noqa" is for ruff to avoid removing these comments -_- )
+    # TODO: extract common fields
+    # parent_external_id: ClassVar[str]  # noqa: ERA001
+    # parent_description: ClassVar[str]  # noqa: ERA001
+    # label: ClassVar[Union[AssetLabel, str]]  # noqa: ERA001
+    # shop: ShopTransformation  # noqa: ERA001
+    # bid: Bid  # noqa: ERA001
+    # incremental_mapping: list[CDFSequence] = Field(default_factory=list)  # noqa: ERA001
+    # (the noqa is for ruff to avoid removing these comments -_- )
