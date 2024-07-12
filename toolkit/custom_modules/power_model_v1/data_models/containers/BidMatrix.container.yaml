@@ -39,3 +39,10 @@ properties:
     nullable: true
     autoIncrement: false
     name: resourceCost
+  linkedTimeSeries:
+    type:
+      list: true
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: linkedTimeSeries
