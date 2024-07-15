@@ -75,7 +75,7 @@ If a change requires a version change, the following version system should be us
 7. Once PR is approved inform the team that the changes will be deployed to `power-ops-staging`.
 8. Deploy changes manually to **power-ops-staging** ensuring you've used the correct version if needed.
 9.  Regenerate the SDK for the data model changes by calling `python scripts/pygen_generate_clients.py`.
-10. Bump the SDK version in `pyproject.toml` and `toolkit/_version.py`.
+10. Bump the SDK version in `pyproject.toml` and `cognite/powerops/_version.py`.
 11. Update the `CHANGELOG.md` with the changes made.
 12. Get a second approval on the PR.
 
