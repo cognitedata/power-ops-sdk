@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
-from typing import overload
+from typing import overload, Literal
 import warnings
 
 from cognite.client import CogniteClient
@@ -551,6 +551,8 @@ class ShopOutputTimeSeriesDefinitionAPI(
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: ShopOutputTimeSeriesDefinitionFields | Sequence[ShopOutputTimeSeriesDefinitionFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
     ) -> ShopOutputTimeSeriesDefinitionList:
         """List/filter shop output time series definitions
 
@@ -570,6 +572,8 @@ class ShopOutputTimeSeriesDefinitionAPI(
             space: The space to filter on.
             limit: Maximum number of shop output time series definitions to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
 
         Returns:
             List of requested shop output time series definitions
@@ -600,4 +604,10 @@ class ShopOutputTimeSeriesDefinitionAPI(
             space,
             filter,
         )
-        return self._list(limit=limit, filter=filter_)
+        return self._list(
+            limit=limit,
+            filter=filter_,
+            properties_by_field=_SHOPOUTPUTTIMESERIESDEFINITION_PROPERTIES_BY_FIELD,
+            sort_by=sort_by,
+            direction=direction,
+        )

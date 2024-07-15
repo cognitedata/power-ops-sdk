@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
-from typing import overload
+from typing import overload, Literal
 import warnings
 
 from cognite.client import CogniteClient
@@ -218,6 +218,8 @@ class ShopModelWithAssetsAPI(NodeAPI[ShopModelWithAssets, ShopModelWithAssetsWri
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: ShopModelWithAssetsFields | Sequence[ShopModelWithAssetsFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
         retrieve_edges: bool = True,
     ) -> ShopModelWithAssetsList:
         """List/filter shop model with assets
@@ -229,6 +231,8 @@ class ShopModelWithAssetsAPI(NodeAPI[ShopModelWithAssets, ShopModelWithAssetsWri
             space: The space to filter on.
             limit: Maximum number of shop model with assets to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
             retrieve_edges: Whether to retrieve `power_assets` or `production_obligations` external ids for the shop model with assets. Defaults to True.
 
         Returns:
@@ -255,6 +259,9 @@ class ShopModelWithAssetsAPI(NodeAPI[ShopModelWithAssets, ShopModelWithAssetsWri
         return self._list(
             limit=limit,
             filter=filter_,
+            properties_by_field=_SHOPMODELWITHASSETS_PROPERTIES_BY_FIELD,
+            sort_by=sort_by,
+            direction=direction,
             retrieve_edges=retrieve_edges,
             edge_api_name_type_direction_view_id_penta=[
                 (

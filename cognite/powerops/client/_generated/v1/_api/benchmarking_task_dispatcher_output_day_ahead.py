@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
-from typing import overload
+from typing import overload, Literal
 import warnings
 
 from cognite.client import CogniteClient
@@ -590,6 +590,12 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: (
+            BenchmarkingTaskDispatcherOutputDayAheadFields
+            | Sequence[BenchmarkingTaskDispatcherOutputDayAheadFields]
+            | None
+        ) = None,
+        direction: Literal["ascending", "descending"] = "ascending",
         retrieve_edges: bool = True,
     ) -> BenchmarkingTaskDispatcherOutputDayAheadList:
         """List/filter benchmarking task dispatcher output day aheads
@@ -608,6 +614,8 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(
             space: The space to filter on.
             limit: Maximum number of benchmarking task dispatcher output day aheads to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
             retrieve_edges: Whether to retrieve `alerts` or `benchmarking_sub_tasks` external ids for the benchmarking task dispatcher output day aheads. Defaults to True.
 
         Returns:
@@ -641,6 +649,9 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(
         return self._list(
             limit=limit,
             filter=filter_,
+            properties_by_field=_BENCHMARKINGTASKDISPATCHEROUTPUTDAYAHEAD_PROPERTIES_BY_FIELD,
+            sort_by=sort_by,
+            direction=direction,
             retrieve_edges=retrieve_edges,
             edge_api_name_type_direction_view_id_penta=[
                 (

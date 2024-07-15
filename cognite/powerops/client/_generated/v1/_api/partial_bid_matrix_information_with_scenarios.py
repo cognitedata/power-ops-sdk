@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
-from typing import overload
+from typing import overload, Literal
 import warnings
 
 from cognite.client import CogniteClient
@@ -40,6 +40,9 @@ from .partial_bid_matrix_information_with_scenarios_underlying_bid_matrices impo
 from .partial_bid_matrix_information_with_scenarios_multi_scenario_input import (
     PartialBidMatrixInformationWithScenariosMultiScenarioInputAPI,
 )
+from .partial_bid_matrix_information_with_scenarios_linked_time_series import (
+    PartialBidMatrixInformationWithScenariosLinkedTimeSeriesAPI,
+)
 from .partial_bid_matrix_information_with_scenarios_query import PartialBidMatrixInformationWithScenariosQueryAPI
 
 
@@ -64,6 +67,7 @@ class PartialBidMatrixInformationWithScenariosAPI(
         self.alerts_edge = PartialBidMatrixInformationWithScenariosAlertsAPI(client)
         self.underlying_bid_matrices_edge = PartialBidMatrixInformationWithScenariosUnderlyingBidMatricesAPI(client)
         self.multi_scenario_input_edge = PartialBidMatrixInformationWithScenariosMultiScenarioInputAPI(client)
+        self.linked_time_series = PartialBidMatrixInformationWithScenariosLinkedTimeSeriesAPI(client, view_id)
 
     def __call__(
         self,
@@ -556,6 +560,12 @@ class PartialBidMatrixInformationWithScenariosAPI(
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: (
+            PartialBidMatrixInformationWithScenariosFields
+            | Sequence[PartialBidMatrixInformationWithScenariosFields]
+            | None
+        ) = None,
+        direction: Literal["ascending", "descending"] = "ascending",
         retrieve_edges: bool = True,
     ) -> PartialBidMatrixInformationWithScenariosList:
         """List/filter partial bid matrix information with scenarios
@@ -571,6 +581,8 @@ class PartialBidMatrixInformationWithScenariosAPI(
             space: The space to filter on.
             limit: Maximum number of partial bid matrix information with scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
             retrieve_edges: Whether to retrieve `alerts`, `underlying_bid_matrices` or `multi_scenario_input` external ids for the partial bid matrix information with scenarios. Defaults to True.
 
         Returns:
@@ -601,6 +613,9 @@ class PartialBidMatrixInformationWithScenariosAPI(
         return self._list(
             limit=limit,
             filter=filter_,
+            properties_by_field=_PARTIALBIDMATRIXINFORMATIONWITHSCENARIOS_PROPERTIES_BY_FIELD,
+            sort_by=sort_by,
+            direction=direction,
             retrieve_edges=retrieve_edges,
             edge_api_name_type_direction_view_id_penta=[
                 (

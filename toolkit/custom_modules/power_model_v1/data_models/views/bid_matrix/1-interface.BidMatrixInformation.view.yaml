@@ -45,3 +45,10 @@ properties:
     name: alerts
     description: An array of calculation level Alerts.
     connectionType: multi_edge_connection
+  linkedTimeSeries:
+    container:
+      space: "{{power_ops_models}}"
+      externalId: BidMatrix
+      type: container
+    containerPropertyIdentifier: linkedTimeSeries
+    name: linkedTimeSeries

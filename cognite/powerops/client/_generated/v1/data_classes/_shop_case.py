@@ -134,7 +134,7 @@ class ShopCase(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopCase")
+    node_type: Union[dm.DirectRelationReference, None] = None
     scenario: Union[ShopScenario, str, dm.NodeId, None] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
@@ -183,7 +183,7 @@ class ShopCaseWrite(DomainModelWrite):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopCase")
+    node_type: Union[dm.DirectRelationReference, None] = None
     scenario: Union[ShopScenarioWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")

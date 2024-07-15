@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Sequence
-from typing import overload
+from typing import overload, Literal
 import warnings
 
 from cognite.client import CogniteClient
@@ -577,6 +577,10 @@ class PartialBidMatrixCalculationInputAPI(
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: (
+            PartialBidMatrixCalculationInputFields | Sequence[PartialBidMatrixCalculationInputFields] | None
+        ) = None,
+        direction: Literal["ascending", "descending"] = "ascending",
     ) -> PartialBidMatrixCalculationInputList:
         """List/filter partial bid matrix calculation inputs
 
@@ -597,6 +601,8 @@ class PartialBidMatrixCalculationInputAPI(
             space: The space to filter on.
             limit: Maximum number of partial bid matrix calculation inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
 
         Returns:
             List of requested partial bid matrix calculation inputs
@@ -628,4 +634,10 @@ class PartialBidMatrixCalculationInputAPI(
             space,
             filter,
         )
-        return self._list(limit=limit, filter=filter_)
+        return self._list(
+            limit=limit,
+            filter=filter_,
+            properties_by_field=_PARTIALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD,
+            sort_by=sort_by,
+            direction=direction,
+        )

@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.97.0] - 2024-07-15
+### Added
+* added linked_time_series to bid_matrix_information view and regenerated the powerops SDK
+
 ## [0.96.2] - 2024-07-08
 ### Added
 * set the default external id generator function for `v1` data models, does not affect existing resource creation

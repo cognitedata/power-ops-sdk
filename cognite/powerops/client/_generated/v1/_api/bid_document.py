@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Sequence
-from typing import overload
+from typing import overload, Literal
 import warnings
 
 from cognite.client import CogniteClient
@@ -551,6 +551,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentWrite, BidDocumentList]):
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: BidDocumentFields | Sequence[BidDocumentFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
         retrieve_edges: bool = True,
     ) -> BidDocumentList:
         """List/filter bid documents
@@ -571,6 +573,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentWrite, BidDocumentList]):
             space: The space to filter on.
             limit: Maximum number of bid documents to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
             retrieve_edges: Whether to retrieve `alerts` external ids for the bid documents. Defaults to True.
 
         Returns:
@@ -606,6 +610,9 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentWrite, BidDocumentList]):
         return self._list(
             limit=limit,
             filter=filter_,
+            properties_by_field=_BIDDOCUMENT_PROPERTIES_BY_FIELD,
+            sort_by=sort_by,
+            direction=direction,
             retrieve_edges=retrieve_edges,
             edge_api_name_type_direction_view_id_penta=[
                 (
