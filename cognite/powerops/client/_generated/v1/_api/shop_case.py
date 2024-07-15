@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Sequence
-from typing import overload
+from typing import overload, Literal
 import warnings
 
 from cognite.client import CogniteClient
@@ -394,6 +394,8 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList]):
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: ShopCaseFields | Sequence[ShopCaseFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
         retrieve_edges: bool = True,
     ) -> ShopCaseList:
         """List/filter shop cases
@@ -408,6 +410,8 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList]):
             space: The space to filter on.
             limit: Maximum number of shop cases to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
             retrieve_edges: Whether to retrieve `shop_files` external ids for the shop cases. Defaults to True.
 
         Returns:
@@ -437,6 +441,9 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList]):
         return self._list(
             limit=limit,
             filter=filter_,
+            properties_by_field=_SHOPCASE_PROPERTIES_BY_FIELD,
+            sort_by=sort_by,
+            direction=direction,
             retrieve_edges=retrieve_edges,
             edge_api_name_type_direction_view_id_penta=[
                 (

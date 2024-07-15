@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
-from typing import overload
+from typing import overload, Literal
 import warnings
 
 from cognite.client import CogniteClient
@@ -531,6 +531,8 @@ class TaskDispatcherOutputAPI(NodeAPI[TaskDispatcherOutput, TaskDispatcherOutput
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: TaskDispatcherOutputFields | Sequence[TaskDispatcherOutputFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
         retrieve_edges: bool = True,
     ) -> TaskDispatcherOutputList:
         """List/filter task dispatcher outputs
@@ -549,6 +551,8 @@ class TaskDispatcherOutputAPI(NodeAPI[TaskDispatcherOutput, TaskDispatcherOutput
             space: The space to filter on.
             limit: Maximum number of task dispatcher outputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
             retrieve_edges: Whether to retrieve `alerts` or `process_sub_tasks` external ids for the task dispatcher outputs. Defaults to True.
 
         Returns:
@@ -582,6 +586,9 @@ class TaskDispatcherOutputAPI(NodeAPI[TaskDispatcherOutput, TaskDispatcherOutput
         return self._list(
             limit=limit,
             filter=filter_,
+            properties_by_field=_TASKDISPATCHEROUTPUT_PROPERTIES_BY_FIELD,
+            sort_by=sort_by,
+            direction=direction,
             retrieve_edges=retrieve_edges,
             edge_api_name_type_direction_view_id_penta=[
                 (

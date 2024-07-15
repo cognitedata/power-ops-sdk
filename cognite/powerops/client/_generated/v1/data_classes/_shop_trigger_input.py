@@ -73,8 +73,8 @@ class ShopTriggerInputGraphQL(GraphQLCore):
         function_name: The name of the function
         function_call_id: The function call id
         cog_shop_tag: Optionally specify cogshop tag to trigger
-        case: The SHOP case (with all details like model, scenario, and time series)
         preprocessor_input: The preprocessor input to the shop run
+        case: The SHOP case (with all details like model, scenario, and time series)
     """
 
     view_id = dm.ViewId("power_ops_core", "ShopTriggerInput", "1")
@@ -83,10 +83,10 @@ class ShopTriggerInputGraphQL(GraphQLCore):
     function_name: Optional[str] = Field(None, alias="functionName")
     function_call_id: Optional[str] = Field(None, alias="functionCallId")
     cog_shop_tag: Optional[str] = Field(None, alias="cogShopTag")
-    case: Optional[ShopCaseGraphQL] = Field(default=None, repr=False)
     preprocessor_input: Optional[ShopPreprocessorInputGraphQL] = Field(
         default=None, repr=False, alias="preprocessorInput"
     )
+    case: Optional[ShopCaseGraphQL] = Field(default=None, repr=False)
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -99,7 +99,7 @@ class ShopTriggerInputGraphQL(GraphQLCore):
             )
         return values
 
-    @field_validator("case", "preprocessor_input", mode="before")
+    @field_validator("preprocessor_input", "case", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
             return value
@@ -124,12 +124,12 @@ class ShopTriggerInputGraphQL(GraphQLCore):
             function_name=self.function_name,
             function_call_id=self.function_call_id,
             cog_shop_tag=self.cog_shop_tag,
-            case=self.case.as_read() if isinstance(self.case, GraphQLCore) else self.case,
             preprocessor_input=(
                 self.preprocessor_input.as_read()
                 if isinstance(self.preprocessor_input, GraphQLCore)
                 else self.preprocessor_input
             ),
+            case=self.case.as_read() if isinstance(self.case, GraphQLCore) else self.case,
         )
 
     def as_write(self) -> ShopTriggerInputWrite:
@@ -143,12 +143,12 @@ class ShopTriggerInputGraphQL(GraphQLCore):
             function_name=self.function_name,
             function_call_id=self.function_call_id,
             cog_shop_tag=self.cog_shop_tag,
-            case=self.case.as_write() if isinstance(self.case, GraphQLCore) else self.case,
             preprocessor_input=(
                 self.preprocessor_input.as_write()
                 if isinstance(self.preprocessor_input, GraphQLCore)
                 else self.preprocessor_input
             ),
+            case=self.case.as_write() if isinstance(self.case, GraphQLCore) else self.case,
         )
 
 
@@ -166,18 +166,18 @@ class ShopTriggerInput(FunctionInput):
         function_name: The name of the function
         function_call_id: The function call id
         cog_shop_tag: Optionally specify cogshop tag to trigger
-        case: The SHOP case (with all details like model, scenario, and time series)
         preprocessor_input: The preprocessor input to the shop run
+        case: The SHOP case (with all details like model, scenario, and time series)
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "power_ops_types", "ShopTriggerInput"
     )
     cog_shop_tag: Optional[str] = Field(None, alias="cogShopTag")
-    case: Union[ShopCase, str, dm.NodeId, None] = Field(default=None, repr=False)
     preprocessor_input: Union[ShopPreprocessorInput, str, dm.NodeId, None] = Field(
         default=None, repr=False, alias="preprocessorInput"
     )
+    case: Union[ShopCase, str, dm.NodeId, None] = Field(default=None, repr=False)
 
     def as_write(self) -> ShopTriggerInputWrite:
         """Convert this read version of shop trigger input to the writing version."""
@@ -190,12 +190,12 @@ class ShopTriggerInput(FunctionInput):
             function_name=self.function_name,
             function_call_id=self.function_call_id,
             cog_shop_tag=self.cog_shop_tag,
-            case=self.case.as_write() if isinstance(self.case, DomainModel) else self.case,
             preprocessor_input=(
                 self.preprocessor_input.as_write()
                 if isinstance(self.preprocessor_input, DomainModel)
                 else self.preprocessor_input
             ),
+            case=self.case.as_write() if isinstance(self.case, DomainModel) else self.case,
         )
 
     def as_apply(self) -> ShopTriggerInputWrite:
@@ -222,18 +222,18 @@ class ShopTriggerInputWrite(FunctionInputWrite):
         function_name: The name of the function
         function_call_id: The function call id
         cog_shop_tag: Optionally specify cogshop tag to trigger
-        case: The SHOP case (with all details like model, scenario, and time series)
         preprocessor_input: The preprocessor input to the shop run
+        case: The SHOP case (with all details like model, scenario, and time series)
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "power_ops_types", "ShopTriggerInput"
     )
     cog_shop_tag: Optional[str] = Field(None, alias="cogShopTag")
-    case: Union[ShopCaseWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
     preprocessor_input: Union[ShopPreprocessorInputWrite, str, dm.NodeId, None] = Field(
         default=None, repr=False, alias="preprocessorInput"
     )
+    case: Union[ShopCaseWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
 
     def _to_instances_write(
         self,
@@ -267,12 +267,6 @@ class ShopTriggerInputWrite(FunctionInputWrite):
         if self.cog_shop_tag is not None or write_none:
             properties["cogShopTag"] = self.cog_shop_tag
 
-        if self.case is not None:
-            properties["case"] = {
-                "space": self.space if isinstance(self.case, str) else self.case.space,
-                "externalId": self.case if isinstance(self.case, str) else self.case.external_id,
-            }
-
         if self.preprocessor_input is not None:
             properties["preprocessorInput"] = {
                 "space": self.space if isinstance(self.preprocessor_input, str) else self.preprocessor_input.space,
@@ -281,6 +275,12 @@ class ShopTriggerInputWrite(FunctionInputWrite):
                     if isinstance(self.preprocessor_input, str)
                     else self.preprocessor_input.external_id
                 ),
+            }
+
+        if self.case is not None:
+            properties["case"] = {
+                "space": self.space if isinstance(self.case, str) else self.case.space,
+                "externalId": self.case if isinstance(self.case, str) else self.case.external_id,
             }
 
         if properties:
@@ -299,12 +299,12 @@ class ShopTriggerInputWrite(FunctionInputWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        if isinstance(self.case, DomainModelWrite):
-            other_resources = self.case._to_instances_write(cache, view_by_read_class)
-            resources.extend(other_resources)
-
         if isinstance(self.preprocessor_input, DomainModelWrite):
             other_resources = self.preprocessor_input._to_instances_write(cache, view_by_read_class)
+            resources.extend(other_resources)
+
+        if isinstance(self.case, DomainModelWrite):
+            other_resources = self.case._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
 
         return resources
@@ -362,8 +362,8 @@ def _create_shop_trigger_input_filter(
     function_call_id_prefix: str | None = None,
     cog_shop_tag: str | list[str] | None = None,
     cog_shop_tag_prefix: str | None = None,
-    case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     preprocessor_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -399,29 +399,6 @@ def _create_shop_trigger_input_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("cogShopTag"), values=cog_shop_tag))
     if cog_shop_tag_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("cogShopTag"), value=cog_shop_tag_prefix))
-    if case and isinstance(case, str):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("case"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": case}
-            )
-        )
-    if case and isinstance(case, tuple):
-        filters.append(
-            dm.filters.Equals(view_id.as_property_ref("case"), value={"space": case[0], "externalId": case[1]})
-        )
-    if case and isinstance(case, list) and isinstance(case[0], str):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("case"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in case],
-            )
-        )
-    if case and isinstance(case, list) and isinstance(case[0], tuple):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("case"), values=[{"space": item[0], "externalId": item[1]} for item in case]
-            )
-        )
     if preprocessor_input and isinstance(preprocessor_input, str):
         filters.append(
             dm.filters.Equals(
@@ -448,6 +425,29 @@ def _create_shop_trigger_input_filter(
             dm.filters.In(
                 view_id.as_property_ref("preprocessorInput"),
                 values=[{"space": item[0], "externalId": item[1]} for item in preprocessor_input],
+            )
+        )
+    if case and isinstance(case, str):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("case"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": case}
+            )
+        )
+    if case and isinstance(case, tuple):
+        filters.append(
+            dm.filters.Equals(view_id.as_property_ref("case"), value={"space": case[0], "externalId": case[1]})
+        )
+    if case and isinstance(case, list) and isinstance(case[0], str):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("case"),
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in case],
+            )
+        )
+    if case and isinstance(case, list) and isinstance(case[0], tuple):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("case"), values=[{"space": item[0], "externalId": item[1]} for item in case]
             )
         )
     if external_id_prefix is not None:

@@ -4,6 +4,7 @@ import warnings
 from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
+from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
 from pydantic import Field
 from pydantic import field_validator, model_validator
 
@@ -20,6 +21,7 @@ from ._core import (
     DomainRelationWrite,
     GraphQLCore,
     ResourcesWrite,
+    TimeSeries,
 )
 from ._bid_matrix_information import BidMatrixInformation, BidMatrixInformationWrite
 
@@ -46,12 +48,13 @@ __all__ = [
 ]
 
 
-PartialBidMatrixInformationTextFields = Literal["state", "bid_matrix"]
-PartialBidMatrixInformationFields = Literal["state", "bid_matrix", "resource_cost"]
+PartialBidMatrixInformationTextFields = Literal["state", "bid_matrix", "linked_time_series"]
+PartialBidMatrixInformationFields = Literal["state", "bid_matrix", "linked_time_series", "resource_cost"]
 
 _PARTIALBIDMATRIXINFORMATION_PROPERTIES_BY_FIELD = {
     "state": "state",
     "bid_matrix": "bidMatrix",
+    "linked_time_series": "linkedTimeSeries",
     "resource_cost": "resourceCost",
 }
 
@@ -68,6 +71,7 @@ class PartialBidMatrixInformationGraphQL(GraphQLCore):
         data_record: The data record of the partial bid matrix information node.
         state: The state field.
         bid_matrix: The bid matrix field.
+        linked_time_series: The linked time series field.
         alerts: An array of calculation level Alerts.
         underlying_bid_matrices: An array of intermediate BidMatrices.
         power_asset: The power asset field.
@@ -78,6 +82,7 @@ class PartialBidMatrixInformationGraphQL(GraphQLCore):
     view_id = dm.ViewId("power_ops_core", "PartialBidMatrixInformation", "1")
     state: Optional[str] = None
     bid_matrix: Union[dict, None] = Field(None, alias="bidMatrix")
+    linked_time_series: Union[list[TimeSeries], list[dict], None] = Field(None, alias="linkedTimeSeries")
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
     underlying_bid_matrices: Optional[list[BidMatrixGraphQL]] = Field(
         default=None, repr=False, alias="underlyingBidMatrices"
@@ -98,6 +103,12 @@ class PartialBidMatrixInformationGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+    @field_validator("linked_time_series", mode="before")
+    def clean_list(cls, value: Any) -> Any:
+        if isinstance(value, list):
+            return [v for v in value if v is not None] or None
+        return value
 
     @field_validator("alerts", "underlying_bid_matrices", "power_asset", "partial_bid_configuration", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
@@ -121,6 +132,7 @@ class PartialBidMatrixInformationGraphQL(GraphQLCore):
             ),
             state=self.state,
             bid_matrix=self.bid_matrix["externalId"] if self.bid_matrix and "externalId" in self.bid_matrix else None,
+            linked_time_series=self.linked_time_series,
             alerts=[alert.as_read() for alert in self.alerts or []],
             underlying_bid_matrices=[
                 underlying_bid_matrice.as_read() for underlying_bid_matrice in self.underlying_bid_matrices or []
@@ -142,6 +154,7 @@ class PartialBidMatrixInformationGraphQL(GraphQLCore):
             data_record=DataRecordWrite(existing_version=0),
             state=self.state,
             bid_matrix=self.bid_matrix["externalId"] if self.bid_matrix and "externalId" in self.bid_matrix else None,
+            linked_time_series=self.linked_time_series,
             alerts=[alert.as_write() for alert in self.alerts or []],
             underlying_bid_matrices=[
                 underlying_bid_matrice.as_write() for underlying_bid_matrice in self.underlying_bid_matrices or []
@@ -167,6 +180,7 @@ class PartialBidMatrixInformation(BidMatrixInformation):
         data_record: The data record of the partial bid matrix information node.
         state: The state field.
         bid_matrix: The bid matrix field.
+        linked_time_series: The linked time series field.
         alerts: An array of calculation level Alerts.
         underlying_bid_matrices: An array of intermediate BidMatrices.
         power_asset: The power asset field.
@@ -189,6 +203,7 @@ class PartialBidMatrixInformation(BidMatrixInformation):
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             state=self.state,
             bid_matrix=self.bid_matrix,
+            linked_time_series=self.linked_time_series,
             alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
             underlying_bid_matrices=[
                 (
@@ -228,6 +243,7 @@ class PartialBidMatrixInformationWrite(BidMatrixInformationWrite):
         data_record: The data record of the partial bid matrix information node.
         state: The state field.
         bid_matrix: The bid matrix field.
+        linked_time_series: The linked time series field.
         alerts: An array of calculation level Alerts.
         underlying_bid_matrices: An array of intermediate BidMatrices.
         power_asset: The power asset field.
@@ -264,6 +280,11 @@ class PartialBidMatrixInformationWrite(BidMatrixInformationWrite):
 
         if self.bid_matrix is not None or write_none:
             properties["bidMatrix"] = self.bid_matrix
+
+        if self.linked_time_series is not None or write_none:
+            properties["linkedTimeSeries"] = [
+                value if isinstance(value, str) else value.external_id for value in self.linked_time_series or []
+            ] or None
 
         if self.power_asset is not None:
             properties["powerAsset"] = {
@@ -337,6 +358,9 @@ class PartialBidMatrixInformationWrite(BidMatrixInformationWrite):
         if isinstance(self.partial_bid_configuration, DomainModelWrite):
             other_resources = self.partial_bid_configuration._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
+
+        if isinstance(self.linked_time_series, CogniteTimeSeries):
+            resources.time_series.append(self.linked_time_series)
 
         return resources
 

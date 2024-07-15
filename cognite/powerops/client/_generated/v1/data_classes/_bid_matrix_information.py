@@ -4,6 +4,7 @@ import warnings
 from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
+from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
 from pydantic import Field
 from pydantic import field_validator, model_validator
 
@@ -20,6 +21,7 @@ from ._core import (
     DomainRelationWrite,
     GraphQLCore,
     ResourcesWrite,
+    TimeSeries,
 )
 from ._bid_matrix import BidMatrix, BidMatrixWrite
 
@@ -40,12 +42,13 @@ __all__ = [
 ]
 
 
-BidMatrixInformationTextFields = Literal["state", "bid_matrix"]
-BidMatrixInformationFields = Literal["state", "bid_matrix"]
+BidMatrixInformationTextFields = Literal["state", "bid_matrix", "linked_time_series"]
+BidMatrixInformationFields = Literal["state", "bid_matrix", "linked_time_series"]
 
 _BIDMATRIXINFORMATION_PROPERTIES_BY_FIELD = {
     "state": "state",
     "bid_matrix": "bidMatrix",
+    "linked_time_series": "linkedTimeSeries",
 }
 
 
@@ -61,6 +64,7 @@ class BidMatrixInformationGraphQL(GraphQLCore):
         data_record: The data record of the bid matrix information node.
         state: The state field.
         bid_matrix: The bid matrix field.
+        linked_time_series: The linked time series field.
         alerts: An array of calculation level Alerts.
         underlying_bid_matrices: An array of intermediate BidMatrices.
     """
@@ -68,6 +72,7 @@ class BidMatrixInformationGraphQL(GraphQLCore):
     view_id = dm.ViewId("power_ops_core", "BidMatrixInformation", "1")
     state: Optional[str] = None
     bid_matrix: Union[dict, None] = Field(None, alias="bidMatrix")
+    linked_time_series: Union[list[TimeSeries], list[dict], None] = Field(None, alias="linkedTimeSeries")
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
     underlying_bid_matrices: Optional[list[BidMatrixGraphQL]] = Field(
         default=None, repr=False, alias="underlyingBidMatrices"
@@ -83,6 +88,12 @@ class BidMatrixInformationGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+    @field_validator("linked_time_series", mode="before")
+    def clean_list(cls, value: Any) -> Any:
+        if isinstance(value, list):
+            return [v for v in value if v is not None] or None
+        return value
 
     @field_validator("alerts", "underlying_bid_matrices", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
@@ -106,6 +117,7 @@ class BidMatrixInformationGraphQL(GraphQLCore):
             ),
             state=self.state,
             bid_matrix=self.bid_matrix["externalId"] if self.bid_matrix and "externalId" in self.bid_matrix else None,
+            linked_time_series=self.linked_time_series,
             alerts=[alert.as_read() for alert in self.alerts or []],
             underlying_bid_matrices=[
                 underlying_bid_matrice.as_read() for underlying_bid_matrice in self.underlying_bid_matrices or []
@@ -120,6 +132,7 @@ class BidMatrixInformationGraphQL(GraphQLCore):
             data_record=DataRecordWrite(existing_version=0),
             state=self.state,
             bid_matrix=self.bid_matrix["externalId"] if self.bid_matrix and "externalId" in self.bid_matrix else None,
+            linked_time_series=self.linked_time_series,
             alerts=[alert.as_write() for alert in self.alerts or []],
             underlying_bid_matrices=[
                 underlying_bid_matrice.as_write() for underlying_bid_matrice in self.underlying_bid_matrices or []
@@ -138,11 +151,13 @@ class BidMatrixInformation(BidMatrix):
         data_record: The data record of the bid matrix information node.
         state: The state field.
         bid_matrix: The bid matrix field.
+        linked_time_series: The linked time series field.
         alerts: An array of calculation level Alerts.
         underlying_bid_matrices: An array of intermediate BidMatrices.
     """
 
     node_type: Union[dm.DirectRelationReference, None] = None
+    linked_time_series: Union[list[TimeSeries], list[str], None] = Field(None, alias="linkedTimeSeries")
     alerts: Union[list[Alert], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
     underlying_bid_matrices: Union[list[BidMatrix], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="underlyingBidMatrices"
@@ -156,6 +171,7 @@ class BidMatrixInformation(BidMatrix):
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             state=self.state,
             bid_matrix=self.bid_matrix,
+            linked_time_series=self.linked_time_series,
             alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
             underlying_bid_matrices=[
                 (
@@ -188,11 +204,13 @@ class BidMatrixInformationWrite(BidMatrixWrite):
         data_record: The data record of the bid matrix information node.
         state: The state field.
         bid_matrix: The bid matrix field.
+        linked_time_series: The linked time series field.
         alerts: An array of calculation level Alerts.
         underlying_bid_matrices: An array of intermediate BidMatrices.
     """
 
     node_type: Union[dm.DirectRelationReference, None] = None
+    linked_time_series: Union[list[TimeSeries], list[str], None] = Field(None, alias="linkedTimeSeries")
     alerts: Union[list[AlertWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
     underlying_bid_matrices: Union[list[BidMatrixWrite], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="underlyingBidMatrices"
@@ -220,6 +238,11 @@ class BidMatrixInformationWrite(BidMatrixWrite):
 
         if self.bid_matrix is not None or write_none:
             properties["bidMatrix"] = self.bid_matrix
+
+        if self.linked_time_series is not None or write_none:
+            properties["linkedTimeSeries"] = [
+                value if isinstance(value, str) else value.external_id for value in self.linked_time_series or []
+            ] or None
 
         if properties:
             this_node = dm.NodeApply(
@@ -262,6 +285,9 @@ class BidMatrixInformationWrite(BidMatrixWrite):
                 allow_version_increase=allow_version_increase,
             )
             resources.extend(other_resources)
+
+        if isinstance(self.linked_time_series, CogniteTimeSeries):
+            resources.time_series.append(self.linked_time_series)
 
         return resources
 
