@@ -40,7 +40,7 @@ class PowerOpsClient:
         self.workflow = DayaheadTriggerAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version)
         self.v1 = PowerOpsModelsV1Client(self.cdf)
 
-        DomainModelWrite.external_id_factory = ExternalIdFactory.create_external_id_factory()
+        DomainModelWrite.external_id_factory = ExternalIdFactory.create_external_id_factory(override_external_id=False)
 
     def _apis(self) -> dict[str, str]:
         return {

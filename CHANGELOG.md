@@ -13,6 +13,12 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.97.1] - 2024-07-18
+### Fixed
+* Configure the v1 data model external id factory to not override external_id's as provided since it's default behavior
+  was overriding extneral_id's from object retreived from CDF and converted to write objects for updates given the
+  .as_write() method
+
 ## [0.97.0] - 2024-07-15
 ### Added
 * added linked_time_series to bid_matrix_information view and regenerated the powerops SDK
