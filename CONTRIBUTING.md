@@ -12,16 +12,18 @@ You can control which module is deployed by setting the `selected_module_and_pac
 
 ```yaml
 ...
-  selected_modules_and_packages:
-  - power_model_v1
+   selected_modules_and_packages:
+   - power_model_v1
 ...
 ```
+
 This will only deploy the `power_model_v1` module.
 
 ## Authentication
 
 To authenticate with the `cognite-toolkit` you will have to use a `.env` file in the `power-ops-sdk` root directory,
 which should look like this:
+
 ```dotenv
 CDF_CLUSTER=<CLUSTER>
 CDF_URL=https://<CLUSTER>.cognitedata.com
@@ -56,13 +58,13 @@ Many changes to containers may result in changes to the related views and data m
 versioned in order to avoid breaking changes in the consumption layer.
 
 If a change requires a version change, the following version system should be used (MAJOR.MINOR.PATCH):
+
 - Test changes to data model in `power-ops-dev` with a version bump to the PATCH
 - Test changes to data model along with related resources (functions, workflows, shop) in `power-ops-staging` with a version bump to MINOR
 - Changes deployed to customer environment (dev & prod) should bump the MAJOR version
 - Once deployed to the next environment the previous environment will "rest"
   - If testing is done in `power-ops-dev` with version 1.0.3, then those models will be deployed to `power-ops-staging`
    as 1.1.0. When testing is done in staging and changes get deployed to customer environments the version would become 2
-
 
 ## Local development process
 
@@ -74,7 +76,7 @@ If a change requires a version change, the following version system should be us
 6. Create a PR and request feedback on your suggested changes.
 7. Once PR is approved inform the team that the changes will be deployed to `power-ops-staging`.
 8. Deploy changes manually to **power-ops-staging** ensuring you've used the correct version if needed.
-9.  Regenerate the SDK for the data model changes by calling `python scripts/pygen_generate_clients.py`.
+9. Regenerate the SDK for the data model changes by calling `python scripts/pygen_generate_clients.py`.
 10. Bump the SDK version in `pyproject.toml` and `cognite/powerops/_version.py`.
 11. Update the `CHANGELOG.md` with the changes made.
 12. Get a second approval on the PR.
@@ -82,31 +84,72 @@ If a change requires a version change, the following version system should be us
 ## Manual Deployment
 
 1. Check which environment to deploy to, they are defined in the `cognite` folder in the `config.<ENV>.yaml` files
-   1. config.dev.yaml
-      1. ENV=dev
-      2. CDF_PROJECT=power-ops-dev
-   2. config.staging.yaml
-      1. ENV=staging
-      2. CDF_PROJECT=power-ops-staging
-   3. config.lyse-dev.yaml
-      1. ENV=lyse-dev
-      2. CDF_PROJECT=lyse-dev
-   4. config.heco-dev.yaml
-      1. ENV=heco-dev
-      2. CDF_PROJECT=heco-dev
+   1. **config.dev.yaml**
+      1. CDF_PROJECT: `power-ops-dev`
+      2. ENV: `dev`
+
+         ```bash
+         export ENV="dev"
+         ```
+
+   2. **config.staging.yaml**
+      1. CDF_PROJECT: `power-ops-staging`
+      2. ENV: `staging`
+
+         ```bash
+         export ENV="staging"
+         ```
+
+   3. **config.lyse-dev.yaml**
+      1. CDF_PROJECT: `lyse-dev`
+      2. ENV: `lyse-dev`
+
+         ```bash
+         export ENV="lyse-dev"
+         ```
+
+   4. **config.lyse-prod.yaml**
+      1. CDF_PROJECT: `lyse-prod`
+      2. ENV: `lyse-prod`
+
+         ```bash
+         export ENV="lyse-prod"
+         ```
+
+   5. **config.heco-dev.yaml**
+      1. CDF_PROJECT: `heco-dev`
+      2. ENV: `heco-dev`
+
+         ```bash
+         export ENV="heco-dev"
+         ```
+
+   6. **config.heco-prod.yaml**
+      1. CDF_PROJECT: `heco-prod`
+      2. ENV: `heco-prod`
+
+         ```bash
+         export ENV="heco-prod"
+         ```
+
 2. Ensure the credentials in your `.env` file point to the same environment you want to deploy to
 3. Build the configurations and remove existing files in the build directory:
+
    ```bash
-   cdf-tk build toolkit/ --env ENV
+   cdf-tk build toolkit/ --env=$ENV
    ```
+
 4. Dry-run the deployment to see what changes would be made:
+
    ```bash
-    cdf-tk deploy --env=ENV --dry-run
-    ```
+   cdf-tk deploy --env=$ENV --dry-run
+   ```
+
 5. Deploy the changes if the environment and changes your making won't impact other people's work:
+
    ```bash
-    cdf-tk deploy --env=ENV
-    ```
+   cdf-tk deploy --env=$ENV
+   ```
 
 ### WARNING: Full manual redeploy steps
 
@@ -120,10 +163,13 @@ DO NOT perform these steps unless it has been aligned with the full team and a s
 
 1. Follow the same 1-3 steps from the [Manual Deployment](#manual-deployment) steps
 2. Dry-run the deployment to see what changes would be made with the `drop` flags:
+
    ```bash
-    cdf-tk deploy --drop-data --drop --env=ENV --dry-run
-    ```
+   cdf-tk deploy --drop-data --drop --env=$ENV --dry-run
+   ```
+
 3. Deploy the changes if the environment and changes your making won't impact other people's work:
+
    ```bash
-    cdf-tk deploy --drop-data --drop --env=ENV
-    ```
+   cdf-tk deploy --drop-data --drop --env=$ENV
+   ```
