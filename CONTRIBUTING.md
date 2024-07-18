@@ -25,13 +25,14 @@ To authenticate with the `cognite-toolkit` you will have to use a `.env` file in
 which should look like this:
 
 ```dotenv
+LOGIN_FLOW=client_credentials
 CDF_CLUSTER=<CLUSTER>
 CDF_URL=https://<CLUSTER>.cognitedata.com
 CDF_PROJECT=<PROJECT>
-IDP_TENANT_ID=431fcc8b-74b8-4171-b7c9-e6fab253913b
+IDP_TENANT_ID=<TENANT_ID>
 IDP_CLIENT_ID=***
 IDP_CLIENT_SECRET=***
-IDP_TOKEN_URL="https://login.microsoftonline.com/431fcc8b-74b8-4171-b7c9-e6fab253913b/oauth2/v2.0/token"
+IDP_TOKEN_URL="https://login.microsoftonline.com/<TENANT_ID>/oauth2/v2.0/token"
 SENTRY_ENABLED=false
 ```
 
