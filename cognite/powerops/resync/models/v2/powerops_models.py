@@ -346,7 +346,7 @@ class DataModelLoader:
                         container_property_relation_type = (
                             containers_by_id[prop.container].properties[prop.container_property_identifier].type
                         )
-                        if type(container_property_relation_type) == DirectRelation and not prop.source:
+                        if isinstance(container_property_relation_type, DirectRelation) and not prop.source:
                             direct_relation_missing_source.append(ref_view_id.as_property_ref(prop_name))
                 elif isinstance(prop, SingleHopConnectionDefinitionApply):
                     referred_node_types[NodeId(prop.type.space, prop.type.external_id)].append(
