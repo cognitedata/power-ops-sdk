@@ -17,7 +17,7 @@ from .data_classes import Change, FieldDifference, ModelDifference
 def model_difference(
     current_model: Model, new_model: Model, static_resources: dict[str, AssetList | LabelDefinitionList] | None = None
 ) -> ModelDifference:
-    if type(current_model) != type(new_model):
+    if not isinstance(type(current_model), type(new_model)):
         raise ValueError(f"Cannot compare model of type {type(current_model)} with {type(new_model)}")
     # The dump and load calls are to remove all read only fields
     current_reloaded = current_model.load_from_cdf_resources(current_model.dump_as_cdf_resource(), link="external_id")
@@ -31,7 +31,7 @@ def model_difference(
     for field_name in current_model.model_fields:
         current_value = getattr(current_reloaded, field_name)
         new_value = getattr(new_reloaded, field_name)
-        if type(current_value) != type(new_value):
+        if not isinstance(type(current_value), type(new_value)):
             raise ValueError(f"Cannot compare field {field_name} of type {type(current_value)} with {type(new_value)}")
         diff = _find_diffs(current_value, new_value, "Domain", field_name)
         diffs.append(diff)
