@@ -1,7 +1,9 @@
 environment:
   name: lyse-dev
   project: lyse-dev
-  type: dev
+  # type is set to staging since this field is only used for raising error if project defined here
+  # doesn't match the environment variables (valid options are dev, staging, prod)
+  type: staging
   selected:
     - power_model_v1
 
