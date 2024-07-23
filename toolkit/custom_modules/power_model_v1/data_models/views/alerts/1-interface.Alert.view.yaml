@@ -94,4 +94,4 @@ properties:
       type: container
     containerPropertyIdentifier: calculationRun
     name: calculationRun
-    description: The identifier of the parent Bid Calculation (required so tha alerts can be created befor the BidDocument)
+    description: The identifier of the parent Bid Calculation (required so that alerts can be created before the BidDocument)

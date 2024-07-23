@@ -14,7 +14,7 @@ The configuration files are expected to be checked into a Git repository, and ha
     📦my_config_dir
      ┣ 📂cogshop - The CogSHOP configuration files
      ┣ 📂market - The Market configuration for DayAhead, RKOM, and benchmarking.
-     ┣ 📂production - The physical assets configuration, Watercourse, PriceArea, Genertor, Plant  (SHOP centered)
+     ┣ 📂production - The physical assets configuration, Watercourse, PriceArea, Generator, Plant  (SHOP centered)
      ┗ 📜settings.yaml - Settings for resync.
 ```
 

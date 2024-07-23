@@ -162,7 +162,7 @@ class DayaheadTriggerAPI:
         Args:
             workflow: DayaheadTrigger object to trigger a dayahead workflow from
         Returns:
-            DayaheadWorkflowRun that holds the SHOP run events and the bid calclation events (see DayaheadWorkflowRun
+            DayaheadWorkflowRun that holds the SHOP run events and the bid calculation events (see DayaheadWorkflowRun
             for more info)
         """
 

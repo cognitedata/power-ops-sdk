@@ -16,7 +16,7 @@ Changes are grouped as follows
 ## [0.97.1] - 2024-07-18
 ### Fixed
 * Configure the v1 data model external id factory to not override external_id's as provided since it's default behavior
-  was overriding extneral_id's from object retreived from CDF and converted to write objects for updates given the
+  was overriding external_id's from object retrieved from CDF and converted to write objects for updates given the
   .as_write() method
 
 ## [0.97.0] - 2024-07-15
@@ -197,7 +197,7 @@ scenarioSet in `ShopBasedPartialBidConfiguration` type.
 ## [0.88.0] - 2024-02-21
 ### Changed
 * Changed PriceScenarios container to enable view to be more flexible / fit better with frontend
-* Renamed *.nodes.yaml files to *.powerops-nodes.yaml and accomodate for this in resync init
+* Renamed *.nodes.yaml files to *.powerops-nodes.yaml and accommodate for this in resync init
 * Regenerated pygen sdk with new datamodels v1
 * Changed vies for Scenario and SHOPResult to use Mappings view instead of PriceScenario view
 * Upgraded to cdf-tk v.b9
@@ -341,7 +341,7 @@ their asset names in CDF
 
 ## [0.73.5] - 2023-11-22
 ### Added
-* Workflow events and relationships neccessary to trigger a Dayahead workflow
+* Workflow events and relationships necessary to trigger a Dayahead workflow
 
 ## [0.73.4] - 2023-11-22
 ### Added
@@ -357,7 +357,7 @@ provide this with the instantiation of a DayaheadTrigger
 ### Changed
 * Changes to the shop api for triggering a shop run with a single casefile, and triggering a set of prerunfiles related
 to a Case.
-* Updates to DayaheadTrigger and DayaheadTriggerAPI classes to accomodate this
+* Updates to DayaheadTrigger and DayaheadTriggerAPI classes to accommodate this
 
 ## [0.73.1] - 2023-11-07
 ### Changed
@@ -444,7 +444,7 @@ cog shop config. Validation will require this of the user.
 
 ## [0.62.1] - 2023-09-30
 ### Fixed
-* Remove defaults on `resync` `Produciton` model. This caused changes to be hidden from `recync` and thus
+* Remove defaults on `resync` `Production` model. This caused changes to be hidden from `recync` and thus
   the CDF Assest not been updated.
 
 ## [0.62.0] - 2023-09-29
@@ -472,7 +472,7 @@ cog shop config. Validation will require this of the user.
 * Transformations module that holds all time series transformations.
 * Two types of transformation classes:
   * **Transformation**: static - can be fully configured from a static configuration file
-  * **DynamicTransformation**: dynamic - can be partly configured dynamically at runtime by rynning `pre_apply` function with neccessary input parameters, before running `apply` on time series data
+  * **DynamicTransformation**: dynamic - can be partly configured dynamically at runtime by rynning `pre_apply` function with necessary input parameters, before running `apply` on time series data
 
 ## [0.59.0] - 2023-09-26
 ### Added
@@ -482,7 +482,7 @@ cog shop config. Validation will require this of the user.
 * `cognite.powerops.client._generated` has been regenerated with `pygen` `0.20.5`.
 
 ### Fixed
-* Handle circular dependencies in data model when checcking diffs.
+* Handle circular dependencies in data model when checking diffs.
 
 ## [0.58.4] - 2023-09-25
 ### Fixed
@@ -664,11 +664,11 @@ cog shop config. Validation will require this of the user.
 
 ## [0.43.3] - 2023-09-03
 ### Fixed
-* Third party logger not propagate when runnning CLI.
+* Third party logger not propagate when running CLI.
 
 ## [0.43.2] - 2023-09-03
 ### Fixed
-* Log level of `requests-oauthlib` set to `WARNING` when runnning CLI.
+* Log level of `requests-oauthlib` set to `WARNING` when running CLI.
 
 ## [0.43.1] - 2023-09-03
 ### Fixed
@@ -826,7 +826,7 @@ cog shop config. Validation will require this of the user.
 
 ### Fixed
 
-* The command `powerops plan` failed wtih `CogniteAPIError`. This is now fixed.
+* The command `powerops plan` failed with `CogniteAPIError`. This is now fixed.
 
 
 ## [0.28.0] - 2023-07-16

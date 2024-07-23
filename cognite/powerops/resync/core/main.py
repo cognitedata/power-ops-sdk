@@ -232,7 +232,7 @@ def validate(config_dir: str | Path, market: str) -> Any:
 #     📦config_dir
 #      ┣ 📂cogshop - The CogSHOP configuration
 #      ┣ 📂market - The Market configuration for DayAhead, RKOM, and benchmarking.
-#      ┣ 📂production - The physical assets configuration, Watercourse, PriceArea, Genertor, Plant  (SHOP centered)
+#      ┣ 📂production - The physical assets configuration, Watercourse, PriceArea, Generator, Plant  (SHOP centered)
 #      ┗ 📜settings.yaml - Settings for resync.
 #     ```
 #     """
@@ -268,7 +268,7 @@ def plan(
     📦config_dir
      ┣ 📂cogshop - The CogSHOP configuration
      ┣ 📂market - The Market configuration for DayAhead, RKOM, and benchmarking.
-     ┣ 📂production - The physical assets configuration, Watercourse, PriceArea, Genertor, Plant  (SHOP centered)
+     ┣ 📂production - The physical assets configuration, Watercourse, PriceArea, Generator, Plant  (SHOP centered)
      ┗ 📜settings.yaml - Settings for resync.
     ```
     """
@@ -333,7 +333,7 @@ def apply(
     📦config_dir
      ┣ 📂cogshop - The CogSHOP configuration
      ┣ 📂market - The Market configuration for DayAhead, RKOM, and benchmarking.
-     ┣ 📂production - The physical assets configuration, Watercourse, PriceArea, Genertor, Plant  (SHOP centered)
+     ┣ 📂production - The physical assets configuration, Watercourse, PriceArea, Generator, Plant  (SHOP centered)
      ┗ 📜settings.yaml - Settings for resync.
     ```
     """
@@ -473,8 +473,8 @@ def _remove_resources(differences: ModelDifference, cdf: CogniteClient, auto_yes
         logger.info(f"Remove count: {difference.as_summary().removed}")
         diff_ids = difference.as_ids(5)
         logger.info(f"Sample removed for {diff_ids.field_name}: {diff_ids.removed}")
-        ans = "y" if auto_yes else input("Continue? (y/n)")
-        if ans.lower() != "y":
+        answer = "y" if auto_yes else input("Continue? (y/n)")
+        if answer.lower() != "y":
             logger.info("Aborting")
             continue
 
@@ -516,8 +516,8 @@ def _add_update_resources(
                 logger.info(change.changed_fields)
         if diff_ids.added:
             logger.info(f"Sample added for {diff_ids.field_name}: {diff_ids.added}")
-        ans = "y" if auto_yes else input("Continue? (y/n)")
-        if ans.lower() != "y":
+        answer = "y" if auto_yes else input("Continue? (y/n)")
+        if answer.lower() != "y":
             logger.info("Aborting")
             continue
 

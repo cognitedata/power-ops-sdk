@@ -14,7 +14,7 @@ class RelativeDatapoint:
 class Scenario:
     name: str
     time_series_external_id: str
-    tranformations: dict[str, list[RelativeDatapoint]]
+    transformations: dict[str, list[RelativeDatapoint]]
 
     def to_dict(self) -> dict:
         return {
@@ -22,7 +22,7 @@ class Scenario:
             "time_series_external_id": self.time_series_external_id,
             "transformations": [
                 {"kwargs": {str(rdp.offset_minute): rdp.offset_value for rdp in rpds}, "transformation": trans}
-                for trans, rpds in self.tranformations.items()
+                for trans, rpds in self.transformations.items()
             ],
         }
 
@@ -75,7 +75,7 @@ def generate_price_scenarios(bid_process_generator: BidProcessGenerator) -> list
         scenario = Scenario(
             name=scenario_id,
             time_series_external_id="907677",
-            tranformations={transformation: relative_datapoints},
+            transformations={transformation: relative_datapoints},
         )
 
         scenarios.append(scenario)

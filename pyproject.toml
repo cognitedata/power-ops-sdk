@@ -27,7 +27,7 @@ ignore = [
     "UP007", # Use X | Y for type annotations
     # Typer do function calls when setting up the CLI.
     "B008", # Do not perform function call {name} in argument defaults,
-    "RUF012", # Insistance on using ClassVar to mark class variables
+    "RUF012", # Insists on using ClassVar to mark class variables
 ]
 select = ["E","W","F","I","RUF","TID","UP", "B", "FLY", "PTH", "ERA"]
 fixable = ["ALL"]
@@ -38,7 +38,7 @@ known-third-party = ["cognite.client"]
 [tool.mypy]
 explicit_package_bases = true
 exclude = [
-    # The plan is to gradually add mypy to the code base. As of 18. Juli 2023,
+    # The plan is to gradually add mypy to the code base. As of 18. July 2023,
     # the following packages are not type checked:
     "^cognite/powerops/client/",
     "^cognite/powerops/resync/config/",
