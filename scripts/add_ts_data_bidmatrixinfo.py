@@ -161,11 +161,9 @@ def link_ts_to_bid_matrix_info(power: PowerOpsClient, ts_list: list[TimeSeries])
     """
     upsert_list = []
 
-    for matrix in power.v1.day_ahead_bid.bid_matrix_information.list(limit=5):
-        print(f"before aswrite: {matrix}")
+    for matrix in power.v1.day_ahead_bid.bid_matrix_information.list(limit=None):
         matrix.alerts = None
         matrix_write = matrix.as_write()
-        print(f"after aswrite: {matrix_write}")
         matrix_write.linked_time_series = get_random_item(ts_list)
         print(matrix_write.linked_time_series)
         upsert_list.append(matrix_write)
