@@ -97,7 +97,7 @@ def clean_data_points(client: CogniteClient, ts_list: list[TimeSeries]):
 
 def insert_data_points(client: CogniteClient, ts_list: list[TimeSeries]):
     """
-    Inserts data points into time series according to the type of time series (definined in the metadata)
+    Inserts data points into time series according to the type of time series (defined in the metadata)
 
     Args:
         client (CogniteClient): An authenticated CDF client.
