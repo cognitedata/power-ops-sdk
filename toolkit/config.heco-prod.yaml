@@ -1,5 +1,4 @@
 environment:
-  name: heco-prod
   project: heco-prod
   type: prod
   selected:

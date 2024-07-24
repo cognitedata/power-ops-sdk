@@ -606,19 +606,19 @@ yaml = ["PyYAML (>=6.0,<7.0)"]
 
 [[package]]
 name = "cognite-toolkit"
-version = "0.2.14"
+version = "0.2.16"
 description = "Official Cognite Data Fusion tool for project templates and configuration deployment"
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "cognite_toolkit-0.2.14-py3-none-any.whl", hash = "sha256:a436848d58f0c8d69d873c6881e5e22ac81ab3fa6050ee7de186ac48796b324a"},
-    {file = "cognite_toolkit-0.2.14.tar.gz", hash = "sha256:fff80a91f35d8c455b32d5a441b3a49e821d345435794928a56801fe04d1ed21"},
+    {file = "cognite_toolkit-0.2.16-py3-none-any.whl", hash = "sha256:d0ed3beb12c1d0bfdba8a41727f5fff3830fdfaafe746140d0c6dc6cb5f0f2c5"},
+    {file = "cognite_toolkit-0.2.16.tar.gz", hash = "sha256:0846cdd8d70473068de7cefa3aceca78fa63a653d38a0e9fd3a2506b57342318"},
 ]
 
 [package.dependencies]
 cognite-extractor-utils = ">=7"
 cognite-logger = ">=0.6,<0.7"
-cognite-sdk = {version = ">=7.54.1,<8.0.0", extras = ["pandas"]}
+cognite-sdk = {version = ">=7.54.8,<8.0.0", extras = ["pandas"]}
 mixpanel = ">=4.10.1,<5.0.0"
 packaging = ">=22.0,<25.0"
 pandas = ">=1.5.3,<3.0"
@@ -1238,13 +1238,13 @@ files = [
 
 [[package]]
 name = "importlib-metadata"
-version = "8.0.0"
+version = "8.1.0"
 description = "Read metadata from Python packages"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "importlib_metadata-8.0.0-py3-none-any.whl", hash = "sha256:15584cf2b1bf449d98ff8a6ff1abef57bf20f3ac6454f431736cd3e660921b2f"},
-    {file = "importlib_metadata-8.0.0.tar.gz", hash = "sha256:188bd24e4c346d3f0a933f275c2fec67050326a856b9a359881d7c2a697e8812"},
+    {file = "importlib_metadata-8.1.0-py3-none-any.whl", hash = "sha256:3cd29f739ed65973840b068e3132135ce954c254d48b5b640484467ef7ab3c8c"},
+    {file = "importlib_metadata-8.1.0.tar.gz", hash = "sha256:fcdcb1d5ead7bdf3dd32657bb94ebe9d2aabfe89a19782ddc32da5041d6ebfb4"},
 ]
 
 [package.dependencies]
@@ -2426,13 +2426,13 @@ pygments = ">2.12.0"
 
 [[package]]
 name = "mkdocs-material"
-version = "9.5.29"
+version = "9.5.30"
 description = "Documentation that simply works"
 optional = true
 python-versions = ">=3.8"
 files = [
-    {file = "mkdocs_material-9.5.29-py3-none-any.whl", hash = "sha256:afc1f508e2662ded95f0a35a329e8a5acd73ee88ca07ba73836eb6fcdae5d8b4"},
-    {file = "mkdocs_material-9.5.29.tar.gz", hash = "sha256:3e977598ec15a4ddad5c4dfc9e08edab6023edb51e88f0729bd27be77e3d322a"},
+    {file = "mkdocs_material-9.5.30-py3-none-any.whl", hash = "sha256:fc070689c5250a180e9b9d79d8491ef9a3a7acb240db0728728d6c31eeb131d4"},
+    {file = "mkdocs_material-9.5.30.tar.gz", hash = "sha256:3fd417dd42d679e3ba08b9e2d72cd8b8af142cc4a3969676ad6b00993dd182ec"},
 ]
 
 [package.dependencies]
@@ -4982,4 +4982,4 @@ docs = ["mkdocs", "mkdocs-git-authors-plugin", "mkdocs-git-revision-date-localiz
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.13"
-content-hash = "bc6130d963f09fd72c479fe05d76fbb837129d88c500a1d59c9f31baf359b8ef"
+content-hash = "42c46e94e39a1fa6ece2b7a0e1b118a44a10b17ceda884c0ecd0811c74674289"

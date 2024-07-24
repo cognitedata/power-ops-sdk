@@ -1,5 +1,4 @@
 environment:
-  name: lyse-prod
   project: lyse-prod
   type: prod
   selected:
