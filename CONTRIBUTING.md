@@ -71,7 +71,7 @@ If a change requires a version change, the following version system should be us
 
 1. Make the relevant changes to the `.yaml` files in the `data_models` folder.
 2. Post on slack `#powerops-backend` that you are about to make changes to ensure it doesn't conflict with others work.
-3. Deploy changes manually to **power-ops-dev** using toolkit following bellow steps.
+3. Deploy changes manually to **power-ops-dev** using toolkit following below steps.
 4. Verify in the UI that the changes are as expected.
 5. Iterate until desired changes are completed.
 6. Create a PR and request feedback on your suggested changes.

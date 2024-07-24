@@ -130,7 +130,7 @@ def _create_transformationV2(
     order: int, transformation: dict | TransformationV2 | Transformation
 ) -> cogshop_v1.TransformationApply:
     """
-    Adapter betweeen transformationsV2 pydantic instances to CogShop model 1 FDM instances
+    Adapter between transformationsV2 pydantic instances to CogShop model 1 FDM instances
     """
     if isinstance(transformation, dict):
         transformation = TransformationV2.load(transformation)
