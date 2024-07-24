@@ -78,7 +78,7 @@ See available commands:
 $ powerops --help
 ```
 
-Example of showing planed changes:
+Example of showing planned changes:
 
 ```bash
 $ powerops plan tests/data/demo Dayahead

@@ -4,6 +4,11 @@ repos:
     hooks:
       - id: poetry-check
 
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.3.0
+    hooks:
+      - id: codespell
+
   - repo: https://github.com/psf/black
     rev: 24.4.2
     hooks:

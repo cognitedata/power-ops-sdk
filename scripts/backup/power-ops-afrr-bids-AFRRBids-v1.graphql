@@ -15,7 +15,10 @@ type BidDocument {
   "An array of BidRows containing the Bid data."
   bids: [BidRow]
   "An array of calculation level Alerts."
-  alerts: [Alert] @relation(type: {space : "power-ops-base-bids", externalId : "BidDocument.alerts"})
+  alerts: [Alert]
+    @relation(
+      type: { space: "power-ops-base-bids", externalId: "BidDocument.alerts" }
+    )
 }
 
 "One row in the BidDocument (usually referenced in industry as a Bid)."
@@ -43,7 +46,7 @@ type BidRow {
 
 "Alerts"
 type Alert {
-  "Timestamp that the alert occured (within the workflow)"
+  "Timestamp that the alert occurred (within the workflow)"
   time: Timestamp! @mapping(space: "power-ops-base-bids")
   "Summary description of the alert"
   title: String! @mapping(space: "power-ops-base-bids")
@@ -57,7 +60,7 @@ type Alert {
   statusCode: Int @mapping(space: "power-ops-base-bids")
   "An array of associated alert CDF Events (e.g. SHOP Run events)"
   eventIds: [Int64] @mapping(space: "power-ops-base-bids")
-  "The identifier of the parent Bid Calculation (required so tha alerts can be created befor the BidDocument)"
+  "The identifier of the parent Bid Calculation (required so that alerts can be created before the BidDocument)"
   calculationRun: String @mapping(space: "power-ops-base-bids")
 }
 
