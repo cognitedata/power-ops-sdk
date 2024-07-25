@@ -79,7 +79,7 @@ def _file_settings() -> dict[str, Any]:
     for file_path in settings_files:
         try:
             data = read_toml_file(file_path)
-        except FileNotFoundError:
+        except FileNotFoundError:  # noqa: PERF203
             pass
         else:
             logger.debug(f"Loaded settings from '{file_path}'.")

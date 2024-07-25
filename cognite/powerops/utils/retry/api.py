@@ -62,7 +62,7 @@ def _retry_internal(
     while _tries:
         try:
             return f()
-        except exceptions as e:
+        except exceptions as e:  # noqa: PERF203
             _tries -= 1
             if not _tries:
                 raise

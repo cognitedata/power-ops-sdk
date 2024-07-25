@@ -18,6 +18,7 @@ include = '\.py$'
 [tool.ruff]
 line-length = 120
 target-version = "py39"
+# TODO: remove scripts from exclude if problems are fixed
 exclude = ["scripts", "cognite/powerops/client/_generated"]
 fix = true
 
@@ -25,13 +26,9 @@ fix = true
 ignore = [
     # This is causing issues for pydantic which does not support use of X | Y for type annotations before 3.10
     "UP007", # Use X | Y for type annotations
-    # Typer do function calls when setting up the CLI.
-    "B008", # Do not perform function call {name} in argument defaults,
-    "RUF012", # Insists on using ClassVar to mark class variables
-    "PERF203", # try-except inside a loop
 ]
-# Other rules that could be enabled if we fix existing issues: "C90", "D", "PL", "TRY"
-select = ["F", "E", "W", "I", "N", "UP", "ERA", "RUF", "PD", "PGH", "FLY", "NPY", "PERF", "TID",  "B", "FLY", "PTH", "ERA"]
+# Other rules that could be enabled if we fix existing issues: "C90", "D", "PL", "TRY", "DOC", flake8 rules
+select = ["F", "E", "W", "I", "N", "UP", "B", "TID", "PTH", "ERA", "RUF", "PD", "PGH", "FLY", "NPY", "PERF", "FURB"]
 fixable = ["ALL"]
 
 [tool.ruff.lint.isort]
