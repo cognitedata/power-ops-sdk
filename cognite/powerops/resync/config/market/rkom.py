@@ -172,7 +172,7 @@ class ReserveScenarios(BaseModel):
     def __len__(self) -> int:
         return len(self.list_scenarios())
 
-    def __iter__(self) -> Generator[ReserveScenario, None, None]:  # type: ignore
+    def __iter__(self) -> Generator[ReserveScenario, None, None]:
         yield from self.list_scenarios()
 
     def list_scenarios(self) -> list[ReserveScenario]:
