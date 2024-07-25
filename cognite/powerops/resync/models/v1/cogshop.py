@@ -35,10 +35,12 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
     commands_configs: dict[ExternalID, cogshop_v1.CommandsConfigApply] = Field(default_factory=dict)
 
     @field_validator("base_mappings", mode="after")
+    @classmethod
     def ordering_sequences(cls, value: list[CDFSequence]) -> list[CDFSequence]:
         return sorted(value, key=lambda x: x.external_id)
 
     @field_validator("model_templates", "mappings", "transformations", mode="after")
+    @classmethod
     def ordering_dict(cls, value: dict) -> dict:
         return {k: v for k, v in sorted(value.items(), key=lambda x: x[0])}
 

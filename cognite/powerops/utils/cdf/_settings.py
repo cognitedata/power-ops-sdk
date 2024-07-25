@@ -50,6 +50,7 @@ class PoweropsRunSettings(pydantic.BaseModel):
     shop_as_a_service: bool = False
 
     @field_validator("cogshop_version", mode="before")
+    @classmethod
     def number_to_str(cls, v):
         return str(v) if isinstance(v, (int, float)) else v
 

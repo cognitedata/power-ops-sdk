@@ -68,6 +68,7 @@ class MarketConfig(Config):
     rkom_market: RkomMarketConfig = Field(default_factory=RkomMarketConfig.default)
 
     @field_validator("price_scenario_by_id")
+    @classmethod
     def no_duplicated_scenarios(cls, value: dict[str, PriceScenario]):
         scenarios_by_hash = defaultdict(list)
         for id_, s in value.items():
@@ -82,6 +83,7 @@ class MarketConfig(Config):
         return value
 
     @field_validator("rkom_bid_combination", mode="after")
+    @classmethod
     def valid_process_external_id(cls, value: list[RKOMBidCombinationConfig], values: FieldValidationInfo):
         valid_ids = {process_config.external_id for process_config in values.data["rkom_bid_process"]}
         for combination in value:
@@ -103,6 +105,7 @@ class MarketConfig(Config):
         return cls(**config)
 
     @field_validator("bidprocess", mode="after")
+    @classmethod
     def one_default_per_price_area(cls, value: list[BidProcessConfig]):
         default_configs = Counter(
             bid_config.price_area_name for bid_config in value if bid_config.is_default_config_for_price_area
@@ -170,6 +173,7 @@ class CogShopConfig(Config):
     }
 
     @field_validator("watercourses_shop")
+    @classmethod
     def validate_shop_related_files(cls, value):
         """
         If user has added any of the files above to the configuration, then the "cog_shop_files_config" file

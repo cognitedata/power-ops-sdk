@@ -134,9 +134,9 @@ def _generate_reserve_schedule(volume: int, n_days: int, night: bool = False) ->
     minutes_day = 24 * 60
     for day in range(n_days):
         midnight = day * minutes_day
-        at_5AM = day * minutes_day + minutes_five_hours
+        at_5am = day * minutes_day + minutes_five_hours
         res[f"{midnight}"] = volume if night else 0
-        res[f"{at_5AM}"] = 0 if night else volume
+        res[f"{at_5am}"] = 0 if night else volume
     if not night:
         # only needed if last value was != 0 (i.e. during day)
         res[f"{minutes_day * n_days}"] = 0
@@ -153,10 +153,12 @@ class ReserveScenarios(BaseModel):
     obligation_external_id: Optional[str]
 
     @field_validator("auction", mode="before")
+    @classmethod
     def to_enum(cls, value):
         return Auction[value] if isinstance(value, str) else value
 
     @field_validator("volumes", mode="before")
+    @classmethod
     def valid_volumes(cls, volumes):
         if 0 not in volumes:
             raise ValueError("You probably want 0 MW as one of the volumes!")
@@ -212,10 +214,12 @@ class RKOMBidCombinationConfig(Configuration):
     rkom_bid_config_external_ids: list[str] = Field(alias="bid_rkom_bid_configs")
 
     @field_validator("auction", mode="before")
+    @classmethod
     def to_enum(cls, value):
         return Auction[value] if isinstance(value, str) else value
 
     @field_validator("rkom_bid_config_external_ids", mode="before")
+    @classmethod
     def parse_string(cls, value):
         return [external_id for external_id in ast.literal_eval(value)] if isinstance(value, str) else value
 
@@ -239,6 +243,7 @@ class RKOMBidProcessConfig(Configuration):
     mapping_type: ClassVar[str] = "rkom_incremental_mapping"
 
     @model_validator(mode="before")
+    @classmethod
     def create_reserve_scenarios(cls, value):
         if not isinstance(volumes := value.get("reserve_scenarios"), str):
             return value
@@ -255,10 +260,12 @@ class RKOMBidProcessConfig(Configuration):
         return value
 
     @field_validator("shop_start", "shop_end", mode="before")
+    @classmethod
     def json_loads(cls, value):
         return {"operations": json.loads(value)} if isinstance(value, str) else value
 
     @field_validator("price_scenarios", mode="before")
+    @classmethod
     def literal_eval(cls, value):
         return [{"id": id_} for id_ in ast.literal_eval(value)] if isinstance(value, str) else value
 

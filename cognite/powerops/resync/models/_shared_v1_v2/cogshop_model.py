@@ -24,6 +24,7 @@ class CogShopCore(Model):
     shop_files: list[CDFFile] = Field(default_factory=list)
 
     @field_validator("shop_files", mode="after")
+    @classmethod
     def ordering(cls, value: list[CDFFile]) -> list[CDFFile]:
         return sorted(value, key=lambda x: x.external_id)
 
@@ -126,7 +127,7 @@ def _create_transformation(order: int, transformation: dict | config.Transformat
     )
 
 
-def _create_transformationV2(
+def _create_transformation_v2(
     order: int, transformation: dict | TransformationV2 | Transformation
 ) -> cogshop_v1.TransformationApply:
     """
@@ -155,7 +156,7 @@ def transformations_v2_transformer(
 ) -> TransformationV2:
     """
     Adapter that converts old transformation to an instance of new transformationsV2.
-    From these instances, the transformationsV2 to FDM adapter "_create_transformationV2"
+    From these instances, the transformationsV2 to FDM adapter "_create_transformation_v2"
     can be called to create DM nodes and edges
     """
     if isinstance(transformation, dict):

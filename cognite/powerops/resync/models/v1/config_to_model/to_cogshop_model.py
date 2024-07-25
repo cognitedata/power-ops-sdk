@@ -12,7 +12,7 @@ from cognite.powerops.client.data_classes import cogshop1 as cogshop_v1
 from cognite.powerops.resync import config
 from cognite.powerops.resync.models._shared_v1_v2.cogshop_model import (
     _create_transformation,
-    _create_transformationV2,
+    _create_transformation_v2,
     _to_shop_files,
     _to_shop_model_file,
 )
@@ -114,7 +114,7 @@ def to_cogshop_asset_model(
                         for order, transformation in enumerate(row.transformations or [])
                     ]
                     + [
-                        _create_transformationV2(order, transformation)
+                        _create_transformation_v2(order, transformation)
                         for order, transformation in enumerate(row2.transformations or [])
                     ],
                     retrieve=row.retrieve.name if row.retrieve else None,
@@ -174,7 +174,7 @@ def to_cogshop_asset_model(
                             for j, transformation_data in enumerate(json.loads(mapping.get("transformations", "")))
                         ]
                         + [
-                            _create_transformationV2(j, config.Transformation(**transformation_data))
+                            _create_transformation_v2(j, config.Transformation(**transformation_data))
                             for j, transformation_data in enumerate(json.loads(mapping.get("transformations", "")))
                         ],
                     )

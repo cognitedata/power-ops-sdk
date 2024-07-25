@@ -29,7 +29,8 @@ ignore = [
     "B008", # Do not perform function call {name} in argument defaults,
     "RUF012", # Insists on using ClassVar to mark class variables
 ]
-select = ["E","W","F","I","RUF","TID","UP", "B", "FLY", "PTH", "ERA"]
+# Other rules that could be enabled if we fix existing issues: "C90",
+select = ["F", "E","W","I", "N", "RUF","TID","UP", "B", "FLY", "PTH", "ERA"]
 fixable = ["ALL"]
 
 [tool.ruff.lint.isort]

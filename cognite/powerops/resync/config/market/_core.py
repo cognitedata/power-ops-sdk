@@ -113,7 +113,8 @@ class RelativeTime(BaseModel):
     relative_time_string: Optional[str] = None
     operations: Optional[list[tuple[str, Union[str, dict[str, int]]]]] = None
 
-    @validator("operations", pre=True, always=True)
+    @validator("operations", pre=True, always=True)  # TODO: update to use pydantic v2 field_validator
+    @classmethod
     def to_old_format(cls, value):
         if not isinstance(value, list):
             return value
@@ -128,7 +129,8 @@ class RelativeTime(BaseModel):
                 old_formats.append(v)
         return old_formats
 
-    @validator("operations", pre=True, always=True)
+    @validator("operations", pre=True, always=True)  # TODO: update to use pydantic v2 field_validator
+    @classmethod
     def _parse_relative_time_string(cls, operations, values):
         # NOTE: tuples will be parsed as lists when dumping to string
         if operations:
