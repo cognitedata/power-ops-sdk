@@ -28,9 +28,10 @@ ignore = [
     # Typer do function calls when setting up the CLI.
     "B008", # Do not perform function call {name} in argument defaults,
     "RUF012", # Insists on using ClassVar to mark class variables
+    "PERF203", # try-except inside a loop
 ]
-# Other rules that could be enabled if we fix existing issues: "C90", "D"
-select = ["F", "E", "W", "I", "N", "UP", "ERA", "RUF", "PD", "PGH", "TID",  "B", "FLY", "PTH", "ERA"]
+# Other rules that could be enabled if we fix existing issues: "C90", "D", "PL", "TRY"
+select = ["F", "E", "W", "I", "N", "UP", "ERA", "RUF", "PD", "PGH", "FLY", "NPY", "PERF", "TID",  "B", "FLY", "PTH", "ERA"]
 fixable = ["ALL"]
 
 [tool.ruff.lint.isort]

@@ -40,7 +40,7 @@ class AssetModel(Model, ABC, validate_assignment=True):
             return " ".join(parts).replace("Bid process", "Bid").replace("bid process", "bid")
 
         parent_and_description_ids = set()
-        for _field_name, field in self.model_fields.items():
+        for field in self.model_fields.values():
             annotation, outer = get_pydantic_annotation(field.annotation, self)
             if issubclass(annotation, AssetType) and outer is list:
                 parent_and_description_ids.add((annotation.parent_external_id, annotation.parent_description or ""))

@@ -302,7 +302,7 @@ class DataModelLoader:
                                     if view.implements:
                                         for parent_view_id in view.implements:
                                             if prop_ not in properties_by_view.get(parent_view_id, set()):
-                                                non_existent_view_properties.append(ref_view_id)
+                                                non_existent_view_properties.append(ref_view_id)  # noqa: PERF401
                                     else:
                                         non_existent_view_properties.append(ref_view_id)
                             else:

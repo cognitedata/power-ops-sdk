@@ -250,15 +250,11 @@ class ModelDifferences:
                 ],
                 index=[summary.field_name for summary in summaries if summary.group == "CDF"],
             )
+
             ids = [change.as_ids(limit=5) for change in model if change.group == "CDF"]
-            added_ids = []
-            for id_ in ids:
-                if id_.added:
-                    added_ids.append(f"#### Added {id_.field_name}\n{id_.added}")
-            removed_ids = []
-            for id_ in ids:
-                if id_.removed:
-                    removed_ids.append(f"#### Removed {id_.field_name}\n{id_.removed}")
+            added_ids = [f"#### Added {id_.field_name}\n{id_.added}" for id_ in ids if id_.added]
+            removed_ids = [f"#### Removed {id_.field_name}\n{id_.removed}" for id_ in ids if id_.removed]
+
             changed_samples = []
             for change, id_ in zip((c for c in model if c.group == "CDF"), ids):
                 if change.changed:

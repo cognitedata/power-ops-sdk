@@ -201,9 +201,10 @@ class CogShopConfig(Config):
 
     @classmethod
     def instantiate_from_dict(cls, config: dict) -> CogShopConfig:
-        time_series_mappings_v2 = []
-        for time_series_mapping in config["time_series_mappings_v2"]:
-            time_series_mappings_v2.append(TimeSeriesMappingV2.load_from_dict(time_series_mapping))
+        time_series_mappings_v2 = [
+            TimeSeriesMappingV2.load_from_dict(time_series_mapping)
+            for time_series_mapping in config["time_series_mappings_v2"]
+        ]
         config["time_series_mappings_v2"] = time_series_mappings_v2
         return cls(**config)
 
