@@ -64,7 +64,7 @@ def to_cogshop_asset_model(
             metadata={"shop:watercourse": watercourse.name, "shop:type": "output_definition"},
         )
         # Only default mapping is used
-        df = pd.DataFrame(
+        default_mapping_df = pd.DataFrame(
             [
                 ("market", "sale_price", "price", "EUR/MWh", "True"),
                 ("market", "sale", "sales", "MWh", "True"),
@@ -76,7 +76,7 @@ def to_cogshop_asset_model(
             columns=[c.external_id for c in sequence.columns],
         )
 
-        output_definition = CDFSequence(sequence=sequence, content=df)
+        output_definition = CDFSequence(sequence=sequence, content=default_mapping_df)
 
         model.output_definitions.append(output_definition)
 
