@@ -10,7 +10,7 @@
   add_steps: false
 - name: Plant Lund Step
   method: Water Value Based Bid Generation (WVBBG)
-  power_asset: "[external_id]plant_water_value_based_lund"
+  power_asset: "[name|type:PlantInformation]Lund"
   add_steps: true
 - name: Plant Dalby Step
   method: Water Value Based Bid Generation (WVBBG)
