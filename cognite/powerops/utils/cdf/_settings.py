@@ -50,6 +50,7 @@ class PoweropsRunSettings(pydantic.BaseModel):
     shop_as_a_service: bool = False
 
     @field_validator("cogshop_version", mode="before")
+    @classmethod
     def number_to_str(cls, v):
         return str(v) if isinstance(v, (int, float)) else v
 
@@ -78,7 +79,7 @@ def _file_settings() -> dict[str, Any]:
     for file_path in settings_files:
         try:
             data = read_toml_file(file_path)
-        except FileNotFoundError:
+        except FileNotFoundError:  # noqa: PERF203
             pass
         else:
             logger.debug(f"Loaded settings from '{file_path}'.")

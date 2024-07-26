@@ -30,6 +30,7 @@ class MarketModel(AssetModel):
         "combinations",
         mode="after",
     )
+    @classmethod
     def ordering(cls, value: list[T_Asset_Type]) -> list[T_Asset_Type]:
         # To ensure loading the production model always yields the same result, we sort the assets by external_id.
         return sorted(value, key=lambda x: x.external_id)

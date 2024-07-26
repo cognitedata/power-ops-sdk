@@ -15,6 +15,9 @@ for third_party in ["cognite-sdk", "requests", "urllib3", "msal", "requests_oaut
     third_party_logger.setLevel(logging.WARNING)
     third_party_logger.propagate = False
 
+MODELS_BY_NAME_SORTED = sorted(powerops.resync.MODELS_BY_NAME)
+MODELS_BY_NAME_STR = ", ".join(MODELS_BY_NAME_SORTED)
+
 FORMAT = "%(message)s"
 logging.basicConfig(
     level=logging.INFO, format=FORMAT, datefmt="[%X]", handlers=[RichHandler(console=Console(stderr=True))]
@@ -84,11 +87,11 @@ def validate(
 def plan(
     path: Annotated[Path, typer.Argument(help="Path to configuration files")],
     market: Annotated[str, typer.Argument(help="Selected power market")],
-    models: list[str] = typer.Option(
-        default=sorted(powerops.resync.MODELS_BY_NAME),
-        help=f"The models to run the plan. Available models: {', '.join(powerops.resync.MODELS_BY_NAME)}",
+    models: list[str] = typer.Option(  # noqa: B008
+        default=MODELS_BY_NAME_SORTED,
+        help=f"The models to run the plan. Available models: {MODELS_BY_NAME_STR}",
     ),
-    dump_folder: Optional[Path] = typer.Option(
+    dump_folder: Optional[Path] = typer.Option(  # noqa: B008
         default=None, help="If present, the local and cdf changes will be dumped to this directory."
     ),
     format: str = typer.Option(default=None, help="The format of the output. Available formats: markdown"),
@@ -141,9 +144,9 @@ def plan(
 def apply(
     path: Annotated[Path, typer.Argument(help="Path to configuration files")],
     market: Annotated[str, typer.Argument(help="Selected power market")],
-    models: list[str] = typer.Option(
-        default=sorted(powerops.resync.MODELS_BY_NAME),
-        help=f"The models to run apply. Available models: {', '.join(powerops.resync.MODELS_BY_NAME)}",
+    models: list[str] = typer.Option(  # noqa: B008
+        default=MODELS_BY_NAME_SORTED,
+        help=f"The models to run apply. Available models: {MODELS_BY_NAME_STR}",
     ),
     auto_yes: bool = typer.Option(False, "--yes", "-y", help="Auto confirm all prompts"),
     format: str = typer.Option(default=None, help="The format of the output. Available formats: markdown"),
@@ -160,9 +163,9 @@ def apply(
 
 @app.command("destroy", help="Destroy all the data models created by resync and remove all the data.")
 def destroy(
-    models: list[str] = typer.Option(
-        default=sorted(powerops.resync.MODELS_BY_NAME),
-        help=f"The models to destroy. Available models: {', '.join(powerops.resync.MODELS_BY_NAME)}",
+    models: list[str] = typer.Option(  # noqa: B008
+        default=MODELS_BY_NAME_SORTED,
+        help=f"The models to destroy. Available models: {MODELS_BY_NAME_STR}",
     ),
     dry_run: bool = typer.Option(
         False, "--dry-run", help="Whether to run the command as a dry run, meaning no resources will be destroyed."

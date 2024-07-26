@@ -39,14 +39,17 @@ class RKOMProcess(Process):
     incremental_mapping: list[CDFSequence] = Field(default_factory=list)
 
     @field_validator("incremental_mapping", mode="after")
+    @classmethod
     def ordering(cls, value: list[CDFSequence]) -> list[CDFSequence]:
         return sorted(value, key=lambda x: x.external_id)
 
     @field_validator("process_events", mode="before")
+    @classmethod
     def ordering_events(cls, value: list[str]) -> list[str]:
         return sorted(value)
 
     @field_validator("process_events", mode="before")
+    @classmethod
     def parse_str(cls, value) -> list:
         return try_load_list(value)
 
@@ -61,10 +64,12 @@ class RKOMCombinationBid(NonAssetType):
     rkom_bid_configs: list[str]
 
     @field_validator("rkom_bid_configs", mode="before")
+    @classmethod
     def parse_str(cls, value) -> list:
         return try_load_list(value)
 
     @field_validator("rkom_bid_configs", mode="after")
+    @classmethod
     def ordering(cls, value: list[str]) -> list[str]:
         return sorted(value)
 

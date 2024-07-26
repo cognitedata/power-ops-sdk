@@ -20,7 +20,7 @@ from yaml import CSafeLoader, safe_dump
 try:
     import tomllib  # type: ignore[import]
 except ModuleNotFoundError:  # py < 3.11
-    import tomli as tomllib  # type: ignore
+    import tomli as tomllib  # type: ignore[import-not-found, no-redef, import]
 
 
 def read_toml_file(toml_file: Path | str) -> dict[str, Any]:
@@ -81,7 +81,7 @@ def environment_variables(environ: dict[str, str]) -> Iterator[None]:
         yield
     finally:
         os.environ.clear()
-        os.environ.update(original_environ)  # type: ignore
+        os.environ.update(original_environ)
 
 
 # � character is used to represent unrecognizable characters in utf-8.

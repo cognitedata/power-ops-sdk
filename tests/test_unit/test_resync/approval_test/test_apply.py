@@ -57,7 +57,7 @@ def apply_test_cases():
 @pytest.mark.parametrize(
     "input_dir, market, compare_file_path, cdf_timeseries, model_name",
     list(
-        pytest.param(*case.values, model_name, id=f"{case.id} {model_name}")
+        pytest.param(*case.values, model_name, id=f"{case.id} {model_name}")  # noqa: PD011
         for case, model_name in product(apply_test_cases(), MODELS_BY_NAME)
     ),
 )
@@ -108,7 +108,7 @@ def test_apply_summary(
 @pytest.mark.parametrize(
     "input_dir, market, compare_file_path, cdf_timeseries, model_name",
     list(
-        pytest.param(*case.values, model_name, id=f"{case.id} {model_name}")
+        pytest.param(*case.values, model_name, id=f"{case.id} {model_name}")  # noqa: PD011
         for case, model_name in product(apply_test_cases(), MODELS_BY_NAME)
     ),
 )
