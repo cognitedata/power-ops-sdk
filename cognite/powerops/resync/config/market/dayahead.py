@@ -36,10 +36,12 @@ class BidProcessConfig(Configuration):
     no_shop: bool = Field(False, alias="no_shop")
 
     @field_validator("shop_start", "shop_end", "bid_date", mode="before")
+    @classmethod
     def json_loads(cls, value):
         return {"operations": json.loads(value)} if isinstance(value, str) else value
 
     @field_validator("price_scenarios", mode="after")
+    @classmethod
     def ensure_no_duplicates(cls, value: list[PriceScenarioID], info: FieldValidationInfo):
         scenario_ids = Counter(scenario.id for scenario in value)
         if duplicates := [scenario_id for scenario_id, count in scenario_ids.items() if count > 1]:

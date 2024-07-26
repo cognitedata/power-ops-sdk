@@ -7,7 +7,7 @@ from typing import Optional
 from cognite.client.data_classes import Asset, Label, Relationship
 from pydantic import BaseModel, field_validator
 
-from cognite.powerops.cdf_labels import RelationshipLabel as rl
+from cognite.powerops.cdf_labels import RelationshipLabel
 from cognite.powerops.resync.config._shared import ExternalId
 
 p_min_fallback = 0
@@ -42,6 +42,7 @@ class Plant(BaseModel):
     head_direct_time_series: Optional[ExternalId] = None  # external ID of time series with values in m
 
     @field_validator("penstock_head_loss_factors", mode="before")
+    @classmethod
     def parse_dict(cls, value):
         if isinstance(value, str):
             value = json.loads(value)
@@ -77,31 +78,33 @@ class Plant(BaseModel):
             if rel.target_type == "TIMESERIES" and rel.source_external_id == plant.external_id
         ]
         for ts_ext_id, labels in time_series_ext_ids_and_labels:
-            if rl.INLET_LEVEL_TIME_SERIES in labels:
+            if RelationshipLabel.INLET_LEVEL_TIME_SERIES in labels:
                 plant.inlet_level_time_series = ts_ext_id
-            elif rl.OUTLET_LEVEL_TIME_SERIES in labels:
+            elif RelationshipLabel.OUTLET_LEVEL_TIME_SERIES in labels:
                 plant.outlet_level_time_series = ts_ext_id
-            elif rl.WATER_VALUE_TIME_SERIES in labels:
+            elif RelationshipLabel.WATER_VALUE_TIME_SERIES in labels:
                 plant.water_value_time_series = ts_ext_id
-            elif rl.FEEDING_FEE_TIME_SERIES in labels:
+            elif RelationshipLabel.FEEDING_FEE_TIME_SERIES in labels:
                 plant.feeding_fee_time_series = ts_ext_id
-            elif rl.P_MIN_TIME_SERIES in labels:
+            elif RelationshipLabel.P_MIN_TIME_SERIES in labels:
                 plant.p_min_time_series = ts_ext_id
-            elif rl.P_MAX_TIME_SERIES in labels:
+            elif RelationshipLabel.P_MAX_TIME_SERIES in labels:
                 plant.p_max_time_series = ts_ext_id
-            elif rl.HEAD_DIRECT_TIME_SERIES in labels:
+            elif RelationshipLabel.HEAD_DIRECT_TIME_SERIES in labels:
                 plant.head_direct_time_series = ts_ext_id
 
         # Find generators based on relationships
         plant.generator_ext_ids = [
-            rel.target_external_id for rel in relationships if label_in_labels(rl.GENERATOR, rel.labels or [])
+            rel.target_external_id
+            for rel in relationships
+            if label_in_labels(RelationshipLabel.GENERATOR, rel.labels or [])
         ]
 
         # Find inlet reservoir based on relationships
         for rel in relationships:
             if (
                 rel.target_type == "ASSET"
-                and label_in_labels(rl.INLET_RESERVOIR, rel.labels or [])
+                and label_in_labels(RelationshipLabel.INLET_RESERVOIR, rel.labels or [])
                 and rel.source_external_id == plant.external_id
             ):
                 plant.inlet_reservoir_ext_id = rel.target_external_id
@@ -126,5 +129,6 @@ class PlantTimeSeriesMapping(BaseModel):
     head_direct: Optional[ExternalId] = None
 
     @field_validator("*", mode="before")
+    @classmethod
     def parse_number_to_string(cls, value):
         return str(value) if isinstance(value, (int, float)) else value

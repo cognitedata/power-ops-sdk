@@ -21,10 +21,12 @@ class ProductionPlanTimeSeries(NonAssetType):
     series: list[TimeSeries]
 
     @field_validator("series", mode="after")
+    @classmethod
     def ordering(cls, value: list[TimeSeries]) -> list[TimeSeries]:
         return sorted(value, key=lambda x: x.external_id)
 
     @model_validator(mode="before")
+    @classmethod
     def parse_dict(cls, value) -> dict:
         if isinstance(value, dict):
             name, series = next(iter(value.items()))
@@ -52,22 +54,27 @@ class BenchmarkProcess(Process):
     bid_process_configuration_assets: list[Process] = Field(default_factory=list)
 
     @field_validator("production_plan_time_series", mode="after")
+    @classmethod
     def ordering(cls, value: list[ProductionPlanTimeSeries]) -> list[ProductionPlanTimeSeries]:
         return sorted(value, key=lambda x: x.name)
 
     @field_validator("run_events", mode="after")
+    @classmethod
     def ordering_events(cls, value: list[str]) -> list[str]:
         return sorted(value)
 
     @field_validator("bid_process_configuration_assets", mode="after")
+    @classmethod
     def ordering_processes(cls, value: list[Process]) -> list[Process]:
         return sorted(value, key=lambda x: x.name)
 
     @field_validator("benchmarking_metrics", mode="before")
+    @classmethod
     def parse_str(cls, value) -> dict:
         return try_load_dict(value)
 
     @field_validator("production_plan_time_series", mode="before")
+    @classmethod
     def parse_str_to_list(cls, value) -> list:
         if isinstance(loaded := try_load_list(value), dict):
             return [loaded]

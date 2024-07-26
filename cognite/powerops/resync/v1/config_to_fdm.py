@@ -490,11 +490,10 @@ class ResyncImporter:
                             source_data = source_data[instance_data[match.group(1)]]
                     else:
                         raise ValueError("Source data is not indexable")
+                elif isinstance(source_data, (Sequence, Mapping)):
+                    source_data = source_data[key]
                 else:
-                    if isinstance(source_data, (Sequence, Mapping)):
-                        source_data = source_data[key]
-                    else:
-                        raise ValueError("Source data is not indexable")
+                    raise ValueError("Source data is not indexable")
         except KeyError:
             logger.warning(f"Key {key} not found in {property_configuration.source_file}, using default value")
             return property_configuration.default_value

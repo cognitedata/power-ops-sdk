@@ -124,8 +124,8 @@ def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, 
 
 
 def retrieve_range(client: CogniteClient, external_ids: list[str], start: int, end: int) -> dict[str, pd.Series]:
-    df = _retrieve_range(client=client, external_ids=external_ids, start=start, end=end)
-    return {col: df[col].dropna() for col in df.columns}
+    retrieved_range_df = _retrieve_range(client=client, external_ids=external_ids, start=start, end=end)
+    return {col: retrieved_range_df[col].dropna() for col in retrieved_range_df.columns}
 
 
 # TODO: refactor

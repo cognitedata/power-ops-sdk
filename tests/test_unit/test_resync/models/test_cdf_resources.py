@@ -7,10 +7,10 @@ from cognite.powerops.resync.models.v1 import Generator
 
 def test_sha256_of_dataframe():
     # Arrange
-    df = pd.DataFrame({"a": [1, 2, 3], "b": [4, 5, 6]})
+    sequence_df = pd.DataFrame({"a": [1, 2, 3], "b": [4, 5, 6]})
 
     # Act
-    sha256_hash = CDFSequence.calculate_hash(df)
+    sha256_hash = CDFSequence.calculate_hash(sequence_df)
 
     # Assert
     # The hash below was calculated on Windows 10 with Python 3.9.6 and Pandas 1.3.1

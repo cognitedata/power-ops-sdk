@@ -22,6 +22,7 @@ class DayAheadBid(Bid):
     market_config_external_id: str
 
     @field_validator("price_scenarios", mode="before")
+    @classmethod
     def parse_str(cls, value) -> dict:
         value = try_load_dict(value)
         if isinstance(value, list) and not value:
@@ -41,10 +42,12 @@ class DayAheadProcess(Process):
     incremental_mapping: list[CDFSequence] = Field(default_factory=list)
 
     @field_validator("incremental_mapping", mode="after")
+    @classmethod
     def ordering(cls, value: list[CDFSequence]) -> list[CDFSequence]:
         return sorted(value, key=lambda x: x.external_id)
 
     @field_validator("bid", mode="before")
+    @classmethod
     def parse_str(cls, value) -> dict:
         return try_load_dict(value)
 

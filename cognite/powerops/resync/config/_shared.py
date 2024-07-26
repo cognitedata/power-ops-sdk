@@ -6,7 +6,7 @@ from enum import Enum, auto
 from typing import Annotated, Any, ClassVar, Optional
 
 import pandas as pd
-from pydantic import BaseModel, constr, validator
+from pydantic import BaseModel, constr, field_validator, validator
 from typing_extensions import TypeAlias
 
 from cognite.powerops.prerun_transformations.transformations import Transformation as TransformationV2
@@ -96,7 +96,8 @@ class Transformation(BaseModel):  # type: ignore[no-redef]  # mypy says kwargs i
     transformation: TransformationType
     kwargs: Optional[dict] = None
 
-    @validator("transformation", pre=True)
+    @field_validator("transformation", mode="before")
+    @classmethod
     def to_type(cls, value):
         return TransformationType[value.upper()] if isinstance(value, str) else value
 
@@ -113,19 +114,22 @@ class TimeSeriesMappingEntryV2(BaseModel):
     retrieve: Optional[RetrievalType] = None
     aggregation: Optional[AggregationMethod] = None
 
-    @validator("aggregation", pre=True)
+    @field_validator("aggregation", mode="before")
+    @classmethod
     def to_enum(cls, value):
         return AggregationMethod[value] if isinstance(value, str) else value
 
-    @validator("aggregation", always=True)
+    @validator("aggregation", always=True)  # TODO: update to use pydantic v2 field_validator
+    @classmethod
     def set_default(cls, value, values):
         if value is not None:
             return value
         # TODO: do we want default `None` here or raise error?
         return ATTRIBUTE_DEFAULT_AGGREGATION.get(f"{values.get('object_type')}.{values.get('attribute_name')}")
 
-    @validator("retrieve", pre=True)
-    def to_retrival_enum(cls, value):
+    @field_validator("retrieve", mode="before")
+    @classmethod
+    def to_retrieval_enum(cls, value):
         return RetrievalType[value] if isinstance(value, str) else value
 
     @property
@@ -161,19 +165,22 @@ class TimeSeriesMappingEntry(BaseModel):
     retrieve: Optional[RetrievalType] = None
     aggregation: Optional[AggregationMethod] = None
 
-    @validator("aggregation", pre=True)
+    @field_validator("aggregation", mode="before")
+    @classmethod
     def to_enum(cls, value):
         return AggregationMethod[value] if isinstance(value, str) else value
 
-    @validator("aggregation", always=True)
+    @validator("aggregation", always=True)  # TODO: update to use pydantic v2 field_validator
+    @classmethod
     def set_default(cls, value, values):
         if value is not None:
             return value
         # TODO: do we want default `None` here or raise error?
         return ATTRIBUTE_DEFAULT_AGGREGATION.get(f"{values.get('object_type')}.{values.get('attribute_name')}")
 
-    @validator("retrieve", pre=True)
-    def to_retrival_enum(cls, value):
+    @field_validator("retrieve", mode="before")
+    @classmethod
+    def to_retrieval_enum(cls, value):
         return RetrievalType[value] if isinstance(value, str) else value
 
     @property

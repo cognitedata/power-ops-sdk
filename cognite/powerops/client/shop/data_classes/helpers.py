@@ -73,11 +73,11 @@ def str_datetime_to_ms(str_datetime: str, str_format=None) -> int:
     1609459200000
 
     """
-    DATE_FORMAT = "%Y-%m-%d"
+    date_format = "%Y-%m-%d"
     date_time_formats = {
-        0: DATE_FORMAT,
-        1: f"{DATE_FORMAT} %H:%M",
-        2: f"{DATE_FORMAT} %H:%M:%S",
+        0: date_format,
+        1: f"{date_format} %H:%M",
+        2: f"{date_format} %H:%M:%S",
     }
 
     if not str_format:
