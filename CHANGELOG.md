@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.97.2] - 2024-07-25
+### Added
+* Add py.typed to support type hints when using library and mypy compatibility
+
 ## [0.97.1] - 2024-07-18
 ### Fixed
 * Configure the v1 data model external id factory to not override external_id's as provided since it's default behavior
