@@ -14,7 +14,7 @@ from cognite.powerops.utils.helpers import str_datetime_to_ms
 @dataclass
 class SHOPRunEvent:
     """
-    A cut-down variant of `common.workflow_utils.ShopRun` from
+    A cut-down variant of `common.workflow_utils.SHOPRun` from
     power-ops-functions repo. This variant has no workflow event and
     no mappings.
     """

@@ -43,8 +43,8 @@ class SHOPRunAPI:
     def trigger_case(self, case: Case, shop_version: str) -> tuple[list, list[SHOPRun]]:
         """
         Trigger a collection of shop runs related to one Case (also referred to as watercourse).
-        For each ShopCase the prerun file will be used to trigger a shop run event in cdf,
-        and used to trigger the CogShop container.
+        For each SHOPCase the prerun file will be used to trigger a shop run event in cdf,
+        and used to trigger the CogSHOP container.
         Prerun files must exist in CDF.
         """
         shop_events = []

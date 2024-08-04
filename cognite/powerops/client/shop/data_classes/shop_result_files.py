@@ -21,7 +21,7 @@ FileContentTypeT = TypeVar("FileContentTypeT", bound=Union[str, dict])
 
 
 class SHOPResultFile(abc.ABC, Generic[FileContentTypeT]):
-    """Base class for handling a results file from Shop."""
+    """Base class for handling a results file from SHOP."""
 
     def __init__(self, content: FileContentTypeT, file_metadata: FileMetadata = None, encoding="utf-8") -> None:
         self._file_metadata = file_metadata
