@@ -35,12 +35,14 @@ def get_dict_dot_keys(data_dict: dict, dot_keys: str):
 
     ```
     """
+    # TODO: This function should be simplified. It doesn't pass mypy checks, which have temporarily been disabled.
 
     keys = [int(k) if k.isdigit() else k for k in dot_keys.split(".")]
     while "datetime" in keys:
         i = keys.index("datetime")
-        ts_str_tuple = keys.pop(i + 1).replace("datetime(", "").replace(")", "")
-        dt_ts = datetime.datetime(*[int(x) for x in ts_str_tuple.split(",")])
+        ts_str = str(keys.pop(i + 1))
+        ts_str_tuple = ts_str.replace("datetime(", "").replace(")", "")  # type: ignore[attr-defined]
+        dt_ts = datetime.datetime(*[int(x) for x in ts_str_tuple.split(",")])  # type: ignore[arg-type]
         keys[i] = dt_ts
     return reduce(operator.getitem, keys, data_dict)
 
