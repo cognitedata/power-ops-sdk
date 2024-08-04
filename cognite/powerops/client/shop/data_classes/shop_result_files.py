@@ -11,8 +11,8 @@ import yaml
 from cognite.client.data_classes import FileMetadata
 from matplotlib import pyplot as plt
 
-from cognite.powerops.client.shop.data_classes.helpers import get_dict_dot_keys, is_time_series_dict
 from cognite.powerops.client.shop.data_classes.plotting import ax_plot_time_series, create_time_series_plot
+from cognite.powerops.utils.helpers import get_dict_dot_keys, is_time_series_dict
 
 logger = logging.getLogger(__name__)
 

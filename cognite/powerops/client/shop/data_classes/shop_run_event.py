@@ -8,7 +8,7 @@ from uuid import uuid4
 
 from cognite.client.data_classes import Event
 
-from cognite.powerops.client.shop.data_classes.helpers import str_datetime_to_ms
+from cognite.powerops.utils.helpers import str_datetime_to_ms
 
 
 @dataclass
