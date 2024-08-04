@@ -6,7 +6,7 @@ import arrow
 from cognite.client.data_classes import filters
 from cognite.client.utils._time import datetime_to_ms
 
-from cognite.powerops.client.shop.shop_run import ShopRunEvent
+from cognite.powerops.client.shop.data_classes.shop_run import ShopRunEvent
 
 
 def _custom_contains_any(

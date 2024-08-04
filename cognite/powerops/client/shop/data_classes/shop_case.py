@@ -7,7 +7,7 @@ from pathlib import Path
 import yaml
 from typing_extensions import Self
 
-from cognite.powerops.client.shop.shop_file_reference import SHOPFileReference, SHOPFileType
+from cognite.powerops.client.shop.data_classes.shop_file_reference import SHOPFileReference, SHOPFileType
 
 logger = logging.getLogger(__name__)
 

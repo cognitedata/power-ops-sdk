@@ -14,13 +14,12 @@ from cognite.client.data_classes.events import EventSort
 from cognite.client.exceptions import CogniteAPIError
 
 from cognite.powerops.cdf_labels import RelationshipLabel
-from cognite.powerops.client.shop.shop_run_filter import SHOPRunFilter
+from cognite.powerops.client.shop.data_classes.dayahead_trigger import Case, PrerunFileMetadata, ShopPreRunFile
+from cognite.powerops.client.shop.data_classes.shop_case import SHOPCase, SHOPFileReference, SHOPFileType
+from cognite.powerops.client.shop.data_classes.shop_run import SHOPRun, ShopRunEvent, SHOPRunList
+from cognite.powerops.client.shop.data_classes.shop_run_filter import SHOPRunFilter
 from cognite.powerops.utils.cdf.resource_creation import simple_relationship
-
-from .data_classes.dayahead_trigger import Case, PrerunFileMetadata, ShopPreRunFile
-from .shop_case import SHOPCase, SHOPFileReference, SHOPFileType
-from .shop_run import SHOPRun, ShopRunEvent, SHOPRunList
-from .utils import new_external_id
+from cognite.powerops.utils.identifiers import new_external_id
 
 DEFAULT_READ_LIMIT = 25
 
