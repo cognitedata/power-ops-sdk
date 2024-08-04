@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 FileContentTypeT = TypeVar("FileContentTypeT", bound=Union[str, dict])
 
 
-class ShopResultFile(abc.ABC, Generic[FileContentTypeT]):
+class SHOPResultFile(abc.ABC, Generic[FileContentTypeT]):
     """Base class for handling a results file from Shop."""
 
     def __init__(self, content: FileContentTypeT, file_metadata: FileMetadata = None, encoding="utf-8") -> None:
@@ -74,7 +74,7 @@ class ShopResultFile(abc.ABC, Generic[FileContentTypeT]):
         raise NotImplementedError()
 
 
-class ShopLogFile(ShopResultFile[str]):
+class SHOPLogFile(SHOPResultFile[str]):
     """
     Plain text result file (for SHOP messages and CPlex logs).
     """
@@ -87,7 +87,7 @@ class ShopLogFile(ShopResultFile[str]):
         return self.data
 
 
-class ShopYamlFile(ShopResultFile[dict]):
+class SHOPYamlFile(SHOPResultFile[dict]):
     """
     Yaml-formatted results file (for post_run.yaml file created by SHOP).
     """

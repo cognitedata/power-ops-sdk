@@ -14,9 +14,9 @@ from cognite.client.data_classes.events import EventSort
 from cognite.client.exceptions import CogniteAPIError
 
 from cognite.powerops.cdf_labels import RelationshipLabel
-from cognite.powerops.client.shop.data_classes.dayahead_trigger import Case, PrerunFileMetadata, ShopPreRunFile
+from cognite.powerops.client.shop.data_classes.dayahead_trigger import Case, PrerunFileMetadata, SHOPPreRunFile
 from cognite.powerops.client.shop.data_classes.shop_case import SHOPCase, SHOPFileReference, SHOPFileType
-from cognite.powerops.client.shop.data_classes.shop_run import SHOPRun, ShopRunEvent, SHOPRunList
+from cognite.powerops.client.shop.data_classes.shop_run import SHOPRun, SHOPRunEvent, SHOPRunList
 from cognite.powerops.client.shop.data_classes.shop_run_filter import SHOPRunFilter
 from cognite.powerops.utils.cdf.resource_creation import simple_relationship
 from cognite.powerops.utils.identifiers import new_external_id
@@ -36,9 +36,9 @@ class SHOPRunAPI:
         self._CONCURRENT_CALLS = 5
         self.shop_as_a_service = shop_as_a_service
 
-    def _get_shop_prerun_files(self, file_external_ids: list[str]) -> list[ShopPreRunFile]:
+    def _get_shop_prerun_files(self, file_external_ids: list[str]) -> list[SHOPPreRunFile]:
         prerun_files = self._cdf.files.retrieve_multiple(external_ids=file_external_ids)
-        return [ShopPreRunFile.load_from_metadata(file) for file in prerun_files]
+        return [SHOPPreRunFile.load_from_metadata(file) for file in prerun_files]
 
     def trigger_case(self, case: Case, shop_version: str) -> tuple[list, list[SHOPRun]]:
         """
@@ -214,7 +214,7 @@ class SHOPRunAPI:
         limit: int = DEFAULT_READ_LIMIT,
         event_sort: EventSort = None,
     ) -> SHOPRunList:
-        is_type = filters.Equals("type", ShopRunEvent.event_type)
+        is_type = filters.Equals("type", SHOPRunEvent.event_type)
         events = self._cdf.events.filter(filters.And(is_type, *extra_filters), limit=limit, sort=event_sort)
         return SHOPRunList.load(events)
 

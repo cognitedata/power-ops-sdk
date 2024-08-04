@@ -115,7 +115,7 @@ class PrerunFileMetadata:
     _plants_delimiter: str = ","
 
 
-class ShopPreRunFile(BaseModel):
+class SHOPPreRunFile(BaseModel):
     """
     Represents a single shop run based on a pre-run file.
     """

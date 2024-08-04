@@ -6,7 +6,7 @@ import arrow
 from cognite.client.data_classes import filters
 from cognite.client.utils._time import datetime_to_ms
 
-from cognite.powerops.client.shop.data_classes.shop_run import ShopRunEvent
+from cognite.powerops.client.shop.data_classes.shop_run import SHOPRunEvent
 
 
 def _custom_contains_any(
@@ -91,7 +91,7 @@ class SHOPRunFilter:
     def get_filters(self) -> list[filters.Filter]:
         _filters: list[filters.Filter] = []
         if self.watercourse:
-            _filters.append(_custom_contains_any(["metadata", ShopRunEvent.watercourse], self.watercourse))
+            _filters.append(_custom_contains_any(["metadata", SHOPRunEvent.watercourse], self.watercourse))
         if self.source:
             _filters.append(_custom_contains_any("source", self.source))
         if any((self.start_after, self.start_before, self.end_after, self.end_before)):

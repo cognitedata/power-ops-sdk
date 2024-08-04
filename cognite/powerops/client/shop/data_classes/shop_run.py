@@ -35,7 +35,7 @@ class SHOPProcessEvents:
     started: str = "POWEROPS_PROCESS_STARTED"
 
 
-class ShopRunEvent:
+class SHOPRunEvent:
     event_type: str = "POWEROPS_SHOP_RUN"
     watercourse: str = "shop:watercourse"
     manual_run: str = "shop:manual_run"
@@ -94,13 +94,13 @@ class SHOPRun:
 
         """
         metadata = event.metadata or {}
-        if event.type != ShopRunEvent.event_type:
+        if event.type != SHOPRunEvent.event_type:
             raise ValueError(f"Event {event.external_id} is not a SHOP run event!")
 
         if event._cognite_client is None:
             raise ValueError(f"Event {event.external_id} is not loaded with a cognite client!")
 
-        if preprocessor_raw := metadata.get(ShopRunEvent.preprocessor_data, None):
+        if preprocessor_raw := metadata.get(SHOPRunEvent.preprocessor_data, None):
             preprocessor_data = json.loads(preprocessor_raw)
         else:
             preprocessor_data = {}
@@ -108,16 +108,16 @@ class SHOPRun:
         return cls(
             external_id=event.external_id,
             data_set_id=event.data_set_id,
-            watercourse=metadata.get(ShopRunEvent.watercourse, ""),
+            watercourse=metadata.get(SHOPRunEvent.watercourse, ""),
             start=ms_to_datetime(event.start_time) if event.start_time else None,
             end=ms_to_datetime(event.end_time) if event.end_time else None,
-            shop_version=preprocessor_data.get(ShopRunEvent.shop_version, ""),
-            _case_file_external_id=preprocessor_data.get(ShopRunEvent.case_file, {}).get("external_id"),
-            _shop_files=[SHOPFileReference.load(item) for item in preprocessor_data.get(ShopRunEvent.shop_files, [])],
+            shop_version=preprocessor_data.get(SHOPRunEvent.shop_version, ""),
+            _case_file_external_id=preprocessor_data.get(SHOPRunEvent.case_file, {}).get("external_id"),
+            _shop_files=[SHOPFileReference.load(item) for item in preprocessor_data.get(SHOPRunEvent.shop_files, [])],
             _client=event._cognite_client,
             source=event.source,
-            plants=metadata.get(ShopRunEvent.plants),
-            price_scenario=metadata.get(ShopRunEvent.price_scenario),
+            plants=metadata.get(SHOPRunEvent.plants),
+            price_scenario=metadata.get(SHOPRunEvent.price_scenario),
         )
 
     @property
@@ -129,31 +129,31 @@ class SHOPRun:
         return [shop_file.dump() for shop_file in self._shop_files]
 
     def as_cdf_event(self) -> Event:
-        shop_version_spec = {ShopRunEvent.shop_version: self.shop_version} if self.shop_version else {}
+        shop_version_spec = {SHOPRunEvent.shop_version: self.shop_version} if self.shop_version else {}
         return Event(
             external_id=self.external_id,
-            type=ShopRunEvent.event_type,
-            subtype=ShopRunEvent.event_type,
+            type=SHOPRunEvent.event_type,
+            subtype=SHOPRunEvent.event_type,
             data_set_id=self.data_set_id,
             start_time=datetime_to_ms(self.start),
             end_time=datetime_to_ms(self.end) if self.end else None,
             metadata={
-                ShopRunEvent.watercourse: self.watercourse,
-                ShopRunEvent.manual_run: self._manual_run,
-                ShopRunEvent.plants: self.plants,
-                ShopRunEvent.price_scenario: self.price_scenario,
-                ShopRunEvent.preprocessor_data: json.dumps(
+                SHOPRunEvent.watercourse: self.watercourse,
+                SHOPRunEvent.manual_run: self._manual_run,
+                SHOPRunEvent.plants: self.plants,
+                SHOPRunEvent.price_scenario: self.price_scenario,
+                SHOPRunEvent.preprocessor_data: json.dumps(
                     {
                         **shop_version_spec,
-                        ShopRunEvent.case_file: {"external_id": self._case_file_external_id},
-                        ShopRunEvent.shop_files: [shop_file.dump() for shop_file in self._shop_files],
+                        SHOPRunEvent.case_file: {"external_id": self._case_file_external_id},
+                        SHOPRunEvent.shop_files: [shop_file.dump() for shop_file in self._shop_files],
                     }
                 ),
                 # These are required by the SHOP container
                 # In the functions, create_bid_process_event the end is by default 2 weeks into the future.
-                ShopRunEvent.file_source: self.source,
-                ShopRunEvent.shopstart: self.start.isoformat(),
-                ShopRunEvent.shopend: (self.start + timedelta(days=14)).isoformat(),
+                SHOPRunEvent.file_source: self.source,
+                SHOPRunEvent.shopstart: self.start.isoformat(),
+                SHOPRunEvent.shopend: (self.start + timedelta(days=14)).isoformat(),
             },
             source=self.source,
         )
