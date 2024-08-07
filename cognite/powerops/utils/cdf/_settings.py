@@ -51,7 +51,7 @@ class PoweropsRunSettings(pydantic.BaseModel):
 
     @field_validator("cogshop_version", mode="before")
     @classmethod
-    def number_to_str(cls, v):
+    def number_to_str(cls, v: Any) -> Optional[str]:
         return str(v) if isinstance(v, (int, float)) else v
 
 

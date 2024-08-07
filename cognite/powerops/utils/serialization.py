@@ -18,9 +18,9 @@ from pydantic.v1.typing import evaluate_forwardref
 from yaml import CSafeLoader, safe_dump
 
 try:
-    import tomllib  # type: ignore[import]
+    import tomllib  # type: ignore[import-not-found]
 except ModuleNotFoundError:  # py < 3.11
-    import tomli as tomllib  # type: ignore[import-not-found, no-redef, import]
+    import tomli as tomllib  # type: ignore[import-not-found]
 
 
 def read_toml_file(toml_file: Path | str) -> dict[str, Any]:
@@ -151,33 +151,33 @@ def remove_read_only_fields(cdf_resource: dict[str, Any], remove_empty: bool = T
     return cdf_resource
 
 
-def _validate(yaml_path: Path):
+def _validate(yaml_path: Path) -> None:
     if yaml_path.suffix not in {".yaml", ".yml"}:
         raise ValueError(f"File {yaml_path.name} not a valid yaml {yaml_path.suffix}")
 
 
 @overload
 def load_yaml(
-    yaml_path: Path, expected_return_type: Literal["dict"] = "dict", encoding="utf-8", clean_data: bool = False
+    yaml_path: Path, expected_return_type: Literal["dict"] = "dict", encoding: str = "utf-8", clean_data: bool = False
 ) -> dict: ...
 
 
 @overload
 def load_yaml(
-    yaml_path: Path, expected_return_type: Literal["list"], encoding="utf-8", clean_data: bool = False
+    yaml_path: Path, expected_return_type: Literal["list"], encoding: str = "utf-8", clean_data: bool = False
 ) -> list: ...
 
 
 @overload
 def load_yaml(
-    yaml_path: Path, expected_return_type: Literal["any"], encoding="utf-8", clean_data: bool = False
+    yaml_path: Path, expected_return_type: Literal["any"], encoding: str = "utf-8", clean_data: bool = False
 ) -> list | dict: ...
 
 
 def load_yaml(
     yaml_path: Path,
     expected_return_type: Literal["dict", "list", "any"] = "any",
-    encoding="utf-8",
+    encoding: str = "utf-8",
     clean_data: bool = False,
 ) -> dict | list:
     """
@@ -225,7 +225,7 @@ def load_yaml(
     return output
 
 
-def dump_yaml(yaml_path: Path, data: dict, encoding="utf-8") -> None:
+def dump_yaml(yaml_path: Path, data: dict, encoding: str = "utf-8") -> None:
     """
     Dump a dictionary to a yaml file.
 

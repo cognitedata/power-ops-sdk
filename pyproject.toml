@@ -35,6 +35,19 @@ fixable = ["ALL"]
 known-third-party = ["cognite.client"]
 
 [tool.mypy]
+python_version = "3.9"
+warn_unused_configs = true
+disallow_subclassing_any = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_any_generics = false  # TODO: Enable this when dict type hints are fixed
+disallow_untyped_calls = false  # TODO: Enable this when retry from powerops sdk is typed
+disallow_untyped_decorators = false  # TODO: Enable this when retry from powerops sdk is typed
+warn_redundant_casts = true
+warn_unused_ignores = true
+strict_equality = true
+extra_checks = true
 explicit_package_bases = true
 exclude = [
     # The plan is to gradually add mypy to the code base. As of 18. July 2023,
