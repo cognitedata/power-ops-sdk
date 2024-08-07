@@ -8,26 +8,6 @@ env:
   PYTHON_VERSION: "3.9"
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.9"
-
-      # The installation is required as mypy must be run in the local system environment, not in the pre-commit environment.
-      - name: Install required dependencies
-        run: |
-          python3 -m pip install --upgrade pip poetry
-          poetry config virtualenvs.create false
-          poetry install
-
-      - name: Linting and static code checks
-        run: |
-          pre-commit run --all-files
-
   test_and_release:
     runs-on: ubuntu-latest
     environment: CD
@@ -46,10 +26,11 @@ jobs:
       - name: Test
         env:
           CI: 1
-        run: pytest --skipcdf
+        run: pytest
 
       - uses: codecov/codecov-action@v4
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.xml
 
       - name: Build package

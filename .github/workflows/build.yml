@@ -7,6 +7,7 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    environment: CI
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
@@ -27,6 +28,7 @@ jobs:
 
   tests:
     runs-on: ubuntu-latest
+    environment: CI
     strategy:
       fail-fast: false
       matrix:
@@ -51,10 +53,12 @@ jobs:
       - name: Test
         env:
           CI: 1
-        run: pytest --skipcdf
+        run: pytest
 
       - uses: codecov/codecov-action@v4
+        if: matrix.python-version == '3.9'
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.xml
 
       - name: Build package
@@ -62,6 +66,7 @@ jobs:
 
   build-docs:
     runs-on: ubuntu-latest
+    environment: CI
 
     steps:
       - uses: actions/checkout@v4
