@@ -34,8 +34,8 @@ repos:
         args:
           - --pytest-test-first
         exclude: "constants.py|mock_.*.py"
-      # - id: no-commit-to-branch # Disabled because these hooks are also run on PR merge to main
       - id: trailing-whitespace
+      - id: no-commit-to-branch
 
   - repo: https://github.com/google/yamlfmt
     rev: v0.13.0
