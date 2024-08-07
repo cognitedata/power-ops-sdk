@@ -61,13 +61,12 @@ jobs:
           SETTINGS__COGNITE__CDF_CLUSTER: ${{ vars.CLUSTER }}
           SETTINGS__COGNITE__TENANT_ID: ${{ vars.TENANT_ID }}
           SETTINGS__COGNITE__LOGIN_FLOW: "client_credentials"
-        run: pytest
+        run: pytest --cov --cov-report term --cov-report xml:coverage.xml
 
       - uses: codecov/codecov-action@v4
         if: matrix.python-version == ${{ env.PYTHON_VERSION }}
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage.xml
 
       - name: Build package
         run: poetry build

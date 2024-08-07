@@ -20,7 +20,7 @@ jobs:
     name: Resync Apply "v1" to CDF project ${{ vars.PROJECT }}
 
     environment:
-      name: dev
+      name: CD
 
     runs-on: ubuntu-latest
 

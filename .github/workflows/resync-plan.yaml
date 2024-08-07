@@ -19,7 +19,7 @@ jobs:
     name: Resync Plan "v1" to CDF project ${{ vars.PROJECT }}
 
     environment:
-      name: dev
+      name: CI
 
     runs-on: ubuntu-latest
 
