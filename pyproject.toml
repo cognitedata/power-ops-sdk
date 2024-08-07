@@ -19,6 +19,7 @@ exclude = ["scripts", "cognite/powerops/client/_generated"]
 fix = true
 
 [tool.ruff.format]
+# Matches black formatting style
 quote-style = "double"
 indent-style = "space"
 line-ending = "auto"
