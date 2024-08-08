@@ -8,26 +8,6 @@ env:
   PYTHON_VERSION: "3.9"
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.9"
-
-      # The installation is required as mypy must be run in the local system environment, not in the pre-commit environment.
-      - name: Install required dependencies
-        run: |
-          python3 -m pip install --upgrade pip poetry
-          poetry config virtualenvs.create false
-          poetry install
-
-      - name: Linting and static code checks
-        run: |
-          pre-commit run --all-files
-
   test_and_release:
     runs-on: ubuntu-latest
     environment: CD
@@ -45,12 +25,17 @@ jobs:
 
       - name: Test
         env:
-          CI: 1
-        run: pytest --skipcdf
+          SETTINGS__COGNITE__CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          SETTINGS__COGNITE__CLIENT_ID: ${{ vars.CLIENT_ID }}
+          SETTINGS__COGNITE__PROJECT: ${{ vars.PROJECT }}
+          SETTINGS__COGNITE__CDF_CLUSTER: ${{ vars.CLUSTER }}
+          SETTINGS__COGNITE__TENANT_ID: ${{ vars.TENANT_ID }}
+          SETTINGS__COGNITE__LOGIN_FLOW: "client_credentials"
+        run: pytest --cov --cov-report term --cov-report xml:coverage.xml
 
       - uses: codecov/codecov-action@v4
         with:
-          file: ./coverage.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Build package
         run: poetry build
