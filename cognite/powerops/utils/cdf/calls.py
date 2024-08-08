@@ -156,7 +156,10 @@ def retrieve_latest(client: CogniteClient, external_ids: list[Optional[str]], be
 
 
 def retrieve_time_series_datapoints(
-    client: CogniteClient, mappings, start, end  # : List[TimeSeriesMapping]
+    client: CogniteClient,
+    mappings,
+    start,
+    end,  # : List[TimeSeriesMapping]
 ) -> dict[str, pd.Series]:
     time_series_start = retrieve_latest(
         client=client,

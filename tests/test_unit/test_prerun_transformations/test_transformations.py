@@ -294,7 +294,6 @@ def test_basic_transformations(test_case: TransformationTestCase):
 # TODO: add more scenarios for step logic
 @pytest.mark.skip(reason="sum time series implementation needs to be updated for step logic")
 def test_sum_timeseries():
-
     input_values_1 = [42.0] * 5
     input_values_2 = [20.0] * 5
     input_values_3 = [15] * 10
@@ -332,7 +331,6 @@ def test_sum_timeseries():
 
 # TODO: remove this test once sum timeseries logic has been updated to step
 def test_sum_timeseries_current_logic():
-
     input_values_1 = [42.0] * 5
     input_values_2 = [20.0] * 5
     input_values_3 = [15] * 10
@@ -410,7 +408,6 @@ STATIC_VALUES_TEST_CASES = [
     [pytest.param(test_case, id=test_case.case_id) for test_case in STATIC_VALUES_TEST_CASES],
 )
 def test_static_values(cognite_client_mock: CogniteClient, test_case: TransformationTestCase):
-
     test_case.transformation.pre_apply(
         client=cognite_client_mock, shop_model={}, start=test_case.start_date, end=test_case.start_date
     )
@@ -604,7 +601,6 @@ ADD_WATER_TEST_CASES = [
     [pytest.param(test_case, id=test_case.case_id) for test_case in ADD_WATER_TEST_CASES],
 )
 def test_add_water_in_transit(cognite_client_mock: CogniteClient, test_case: AddWaterInTransitTestCase):
-
     with pytest.raises(test_case.error) if test_case.error else nullcontext():
         transformation = AddWaterInTransit(
             discharge_ts_external_id=test_case.discharge_ts_external_id,
