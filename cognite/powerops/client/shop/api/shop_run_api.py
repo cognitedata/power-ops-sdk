@@ -145,7 +145,6 @@ class ShopRunsAPI:
         return f"https://power-ops-api{stage}.{cluster}.cognite.ai/{project}/run-shop"
 
     def _shop_url_shaas(self) -> str:
-
         project = self._client.config.project
 
         cluster = urlparse(self._client.config.base_url).netloc.split(".", 1)[0]

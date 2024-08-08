@@ -136,7 +136,9 @@ class InstanceAdapter(CogniteAPI[T_Instance]):
             else:
                 try:
                     self.client.data_modeling.instances.apply(
-                        edges=chunk, auto_create_start_nodes=True, auto_create_end_nodes=True  # type: ignore[arg-type]
+                        edges=chunk,  # type: ignore[arg-type]
+                        auto_create_start_nodes=True,
+                        auto_create_end_nodes=True,
                     )
                 except CogniteAPIError:
                     print(f"Failed on {chunk[0].dump()}")
