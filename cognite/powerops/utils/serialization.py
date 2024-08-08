@@ -18,9 +18,9 @@ from pydantic.v1.typing import evaluate_forwardref
 from yaml import CSafeLoader, safe_dump
 
 try:
-    import tomllib  # type: ignore[import-not-found]
+    import tomllib  # type: ignore[import-not-found, unused-ignore]
 except ModuleNotFoundError:  # py < 3.11
-    import tomli as tomllib  # type: ignore[import-not-found]
+    import tomli as tomllib  # type: ignore[import-not-found, unused-ignore]
 
 
 def read_toml_file(toml_file: Path | str) -> dict[str, Any]:
