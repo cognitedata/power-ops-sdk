@@ -10,17 +10,20 @@ homepage = "https://cognite-power-ops-sdk.readthedocs-hosted.com/en/latest/"
 repository = "https://github.com/cognitedata/power-ops-sdk"
 packages = [{include = "cognite", from = "."}]
 
-[tool.black]
-line-length = 120
-target_version = ['py39']
-include = '\.py$'
-
 [tool.ruff]
 line-length = 120
+indent-width = 4
 target-version = "py39"
 # TODO: remove scripts from exclude if problems are fixed
 exclude = ["scripts", "cognite/powerops/client/_generated"]
 fix = true
+
+[tool.ruff.format]
+# Matches black formatting style
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+docstring-code-format = true
 
 [tool.ruff.lint]
 ignore = [
