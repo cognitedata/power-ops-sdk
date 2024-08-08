@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.97.3] - 2024-07-25
+### Added
+* Verify that external IDs are blow the 255 character limit
+
 ## [0.97.2] - 2024-07-25
 ### Added
 * Add py.typed to support type hints when using library and mypy compatibility
