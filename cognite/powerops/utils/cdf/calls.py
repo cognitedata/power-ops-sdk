@@ -106,12 +106,12 @@ def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, 
     # Step interpolation of time series with .is_step=False
     # NOTE: do not need to upsample when forward filling
     # TODO: note 2x ffill()
-    df_step = df_raw[step_columns].ffill().resample("1h").ffill()  # type: ignore[type-var]
+    df_step = df_raw[step_columns].ffill().resample("1h").ffill()
 
     # Linear interpolation of time series with .is_step=False
     # TODO: must upsample before downsampling?
     # TODO: confirm operations
-    intermediate_df = df_raw[linear_columns].resample("1min").interpolate()  # type: ignore[type-var]
+    intermediate_df = df_raw[linear_columns].resample("1min").interpolate()
     df_linear = intermediate_df.resample("1h").interpolate()
 
     # Merge the step interpolated and linearly interpolated DataFrames
@@ -155,11 +155,8 @@ def retrieve_latest(client: CogniteClient, external_ids: list[Optional[str]], be
     return res
 
 
-def retrieve_time_series_datapoints(
-    client: CogniteClient,
-    mappings,
-    start,
-    end,  # : List[TimeSeriesMapping]
+def retrieve_time_series_datapoints(  # type: ignore[no-untyped-def]
+    client: CogniteClient, mappings, start: int, end: int
 ) -> dict[str, pd.Series]:
     time_series_start = retrieve_latest(
         client=client,
