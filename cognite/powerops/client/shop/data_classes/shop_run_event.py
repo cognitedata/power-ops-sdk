@@ -8,13 +8,13 @@ from uuid import uuid4
 
 from cognite.client.data_classes import Event
 
-from cognite.powerops.client.shop.data_classes.helpers import str_datetime_to_ms
+from cognite.powerops.utils.helpers import str_datetime_to_ms
 
 
 @dataclass
-class ShopRunEvent:
+class SHOPRunEvent:
     """
-    A cut-down variant of `common.workflow_utils.ShopRun` from
+    A cut-down variant of `common.workflow_utils.SHOPRun` from
     power-ops-functions repo. This variant has no workflow event and
     no mappings.
     """
@@ -82,12 +82,12 @@ class ShopRunEvent:
             "source": self.source,
         }
 
-    def to_event(self: ShopRunEvent, dataset_id: int) -> Event:
+    def to_event(self: SHOPRunEvent, dataset_id: int) -> Event:
         return Event(**self.to_dict(dataset_id))
 
     @classmethod
-    def from_event(cls, event: Event) -> ShopRunEvent:
-        instance = ShopRunEvent(
+    def from_event(cls, event: Event) -> SHOPRunEvent:
+        instance = SHOPRunEvent(
             watercourse=event.metadata["shop:watercourse"],
             starttime=event.metadata["shop:starttime"],
             endtime=event.metadata["shop:endtime"],

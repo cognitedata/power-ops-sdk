@@ -1,1 +1,1 @@
-::: cognite.powerops.client.shop.api.dayahead_trigger_api.DayaheadTriggerAPI.trigger_workflow
+::: cognite.powerops.client.shop.dayahead_trigger_api.DayaheadTriggerAPI.trigger_workflow

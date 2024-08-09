@@ -8,8 +8,8 @@ from cognite.client.data_classes.data_modeling import ContainerId
 from pydantic import Field, field_validator
 
 from cognite.powerops.client import PowerOpsClient
+from cognite.powerops.client._generated.cogshop1 import data_classes as cogshop_v1
 from cognite.powerops.client._generated.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
-from cognite.powerops.client.data_classes import cogshop1 as cogshop_v1
 from cognite.powerops.resync.models._shared_v1_v2.cogshop_model import CogShopCore, ExternalID
 from cognite.powerops.resync.models.base import CDFFile, CDFSequence, DataModel, PowerOpsGraphQLModel
 

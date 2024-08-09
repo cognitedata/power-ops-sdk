@@ -6,22 +6,22 @@ from typing import TYPE_CHECKING, Callable, Optional, Union
 
 import pandas as pd
 
-from cognite.powerops.client.shop.data_classes.shop_result_files import ShopLogFile, ShopResultFile, ShopYamlFile
+from cognite.powerops.client.shop.data_classes.shop_result_files import SHOPLogFile, SHOPResultFile, SHOPYamlFile
 
 if TYPE_CHECKING:
-    from cognite.powerops.client.shop.data_classes import ShopRun
+    from cognite.powerops.client.shop.data_classes import SHOPRun
 
 logger = logging.getLogger(__name__)
 
 
-class ShopRunResult:
+class SHOPRunResult:
     def __init__(
         self,
-        retrieve_objective_function: Callable[[ShopRun], ObjectiveFunction],
-        shop_run: ShopRun,
-        cplex: ShopLogFile,
-        shop_messages: ShopLogFile,
-        post_run: ShopYamlFile,
+        retrieve_objective_function: Callable[[SHOPRun], ObjectiveFunction],
+        shop_run: SHOPRun,
+        cplex: SHOPLogFile,
+        shop_messages: SHOPLogFile,
+        post_run: SHOPYamlFile,
     ) -> None:
         self._retrieve_objective_function = retrieve_objective_function
         self._shop_run = shop_run
@@ -30,7 +30,7 @@ class ShopRunResult:
         self._post_run = post_run
 
     @cached_property
-    def files(self) -> dict[str, Optional[ShopResultFile]]:
+    def files(self) -> dict[str, Optional[SHOPResultFile]]:
         """
         Returns a dictionary of the files associated with the shop run.
 
@@ -67,7 +67,7 @@ class ShopRunResult:
         return None
 
     @property
-    def post_run(self) -> Optional[ShopYamlFile]:
+    def post_run(self) -> Optional[SHOPYamlFile]:
         """
         Returns the post run yaml file of the shop run.
 
@@ -77,7 +77,7 @@ class ShopRunResult:
         return self._post_run
 
     @property
-    def cplex(self) -> ShopLogFile | None:  # TODO rename to cplex_messages? _logs?
+    def cplex(self) -> SHOPLogFile | None:  # TODO rename to cplex_messages? _logs?
         """
         Returns the cplex log file of the shop run.
 
@@ -87,7 +87,7 @@ class ShopRunResult:
         return self._cplex
 
     @property
-    def shop_messages(self) -> Optional[ShopLogFile]:  # TODO rename to _logs?
+    def shop_messages(self) -> Optional[SHOPLogFile]:  # TODO rename to _logs?
         """
         Returns the shop messages log file of the shop run.
 
@@ -97,7 +97,7 @@ class ShopRunResult:
         return self._shop_messages
 
     def __repr__(self):
-        return f"<ShopRunResult status={self._shop_run.status}>"
+        return f"<SHOPRunResult status={self._shop_run.status}>"
 
 
 class ObjectiveFunction:

@@ -13,7 +13,7 @@ from cognite.powerops.client.shop.data_classes.dayahead_trigger import (
     TotalFunctionEvent,
 )
 from cognite.powerops.client.shop.shop_run_api import SHOPRunAPI
-from cognite.powerops.client.shop.utils import unique_short_str
+from cognite.powerops.utils.identifiers import unique_short_str
 
 
 class DayaheadTriggerAPI:

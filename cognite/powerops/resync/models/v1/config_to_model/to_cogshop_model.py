@@ -8,7 +8,7 @@ import pandas as pd
 import yaml
 from cognite.client.data_classes import Sequence
 
-from cognite.powerops.client.data_classes import cogshop1 as cogshop_v1
+from cognite.powerops.client._generated.cogshop1 import data_classes as cogshop_v1
 from cognite.powerops.resync import config
 from cognite.powerops.resync.models._shared_v1_v2.cogshop_model import (
     _create_transformation,

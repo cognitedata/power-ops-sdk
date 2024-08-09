@@ -2,7 +2,7 @@ from typing import Any
 
 import pytest
 
-from cognite.powerops.client.data_classes import cogshop1
+from cognite.powerops.client._generated.cogshop1 import data_classes as cogshop1
 from cognite.powerops.utils.serialization import get_pydantic_annotation
 
 
