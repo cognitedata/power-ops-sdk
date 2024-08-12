@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import getpass
 import logging
 import os
@@ -51,14 +53,14 @@ class PoweropsRunSettings(pydantic.BaseModel):
 
     @field_validator("cogshop_version", mode="before")
     @classmethod
-    def number_to_str(cls, v):
+    def number_to_str(cls, v: Any) -> Optional[str]:
         return str(v) if isinstance(v, (int, float)) else v
 
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="SETTINGS__", env_nested_delimiter="__")
-    cognite: CogniteSettings = Field(default_factory=dict)
-    powerops: PoweropsRunSettings = Field(default_factory=dict)
+    cognite: CogniteSettings = Field(default_factory=dict)  # type: ignore[assignment]
+    powerops: PoweropsRunSettings = Field(default_factory=dict)  # type: ignore[assignment]
 
     @classmethod
     def settings_customise_sources(

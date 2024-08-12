@@ -17,7 +17,7 @@ from cognite.client import CogniteClient
 from cognite.client.data_classes.data_modeling import DataModelId, MappedProperty, ViewList
 from cognite.client.exceptions import CogniteAPIError
 from cognite_toolkit._cdf_tk.loaders import DataModelLoader as ToolkitDataModelLoader  # type: ignore[import-untyped]
-from cognite_toolkit._cdf_tk.loaders import ViewLoader  # type: ignore[import-untyped]  # type: ignore[import-untyped]
+from cognite_toolkit._cdf_tk.loaders import ViewLoader
 from cognite_toolkit._cdf_tk.utils import CDFToolConfig, calculate_directory_hash  # type: ignore[import-untyped]
 from rich import print
 from rich.panel import Panel
@@ -78,7 +78,7 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
             "IDP_CLIENT_ID": cdf.config.credentials.client_id,  # type: ignore[attr-defined]
             "IDP_CLIENT_SECRET": "dummy",
             "IDP_TOKEN_URL": (
-                cdf.config.credentials.authority_url  # type: ignore[attr-defined]
+                cdf.config.credentials.authority_url
                 if hasattr(cdf.config.credentials, "authority_url")
                 else cdf.config.credentials.token_url  # type: ignore[attr-defined]
             ),
