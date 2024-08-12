@@ -41,7 +41,7 @@ def get_dict_dot_keys(data_dict: dict, dot_keys: str) -> Union[int, str, datetim
     while "datetime" in keys:
         i = keys.index("datetime")
         ts_str = str(keys.pop(i + 1))
-        ts_str_tuple = ts_str.replace("datetime(", "").replace(")", "")  # type: ignore[attr-defined]
+        ts_str_tuple = ts_str.replace("datetime(", "").replace(")", "")
         dt_ts = datetime.datetime(*[int(x) for x in ts_str_tuple.split(",")])  # type: ignore[arg-type]
         keys[i] = dt_ts
     return reduce(operator.getitem, keys, data_dict)
