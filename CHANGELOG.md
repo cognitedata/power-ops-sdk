@@ -13,6 +13,9 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.98.1] - 2024-08-12
+### Added
+* Verify that external IDs are blow the 255 character limit
 
 ## [0.98.0] - 2024-08-09
 ### Changed

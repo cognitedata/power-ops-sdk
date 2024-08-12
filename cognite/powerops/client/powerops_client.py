@@ -18,6 +18,9 @@ from .data_set_api import DataSetsAPI
 from .shop.dayahead_trigger_api import DayaheadTriggerAPI
 from .shop.shop_run_api import SHOPRunAPI
 
+# max_domain = max_total (255) - uuid (32) + separator (1)  noqa: ERA001
+_MAX_DOMAIN_LENGTH = 233
+
 
 class PowerOpsClient:
     def __init__(
@@ -40,7 +43,12 @@ class PowerOpsClient:
         self.workflow = DayaheadTriggerAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version)
         self.v1 = PowerOpsModelsV1Client(self.cdf)
 
-        DomainModelWrite.external_id_factory = ExternalIdFactory.create_external_id_factory(override_external_id=False)
+        DomainModelWrite.external_id_factory = ExternalIdFactory.create_external_id_factory(
+            prefix_ext_id_factory=ExternalIdFactory(
+                ExternalIdFactory.domain_name_factory(), shorten_length=_MAX_DOMAIN_LENGTH
+            ),
+            override_external_id=False,
+        )
 
     def _apis(self) -> dict[str, str]:
         return {
