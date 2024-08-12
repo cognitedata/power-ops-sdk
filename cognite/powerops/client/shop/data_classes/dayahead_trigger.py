@@ -115,7 +115,7 @@ class PrerunFileMetadata:
     _plants_delimiter: str = ","
 
 
-class ShopPreRunFile(BaseModel):
+class SHOPPreRunFile(BaseModel):
     """
     Represents a single shop run based on a pre-run file.
     """
@@ -197,7 +197,7 @@ class BidTimeFrame(BaseModel):
 class DayaheadTrigger(BaseModel):
     """
     Contains the blueprint of a Dayahead workflow definition. Used to trigger one or more cases within a price area
-    along with SHOP prerun files (e.g. no preprocessing to the SHOP file before being run in CogShop)
+    along with SHOP prerun files (e.g. no preprocessing to the SHOP file before being run in CogSHOP)
     This object is used together with the powerops client (DayAheadTriggerAPI) to trigger a workflow from an instance
     of this class.
 
@@ -205,7 +205,7 @@ class DayaheadTrigger(BaseModel):
         price_scenarios: list of price scenarios used in Dayahead run (do not have to exist in CDF, only appended as
                          metadata to the triggering events for reference)
         main_scenario: Main price scenario
-        shop_version: Shop Version to use in the run. The Shop version must be installed to Cogshop or exist as a
+        shop_version: SHOP Version to use in the run. The SHOP version must be installed to Cogshop or exist as a
                       binary file in CDF. For Mesh files specify a SHOP version > 15.4
         price_area: str
         method: Literal["multi_scenario", "price_independent"]

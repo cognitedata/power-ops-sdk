@@ -6,7 +6,7 @@ from typing import Any
 from cognite.client.data_classes import FileMetadata
 from typing_extensions import Self
 
-from cognite.powerops.client.shop.utils import external_id_to_name
+from cognite.powerops.utils.identifiers import external_id_to_name
 
 try:
     from enum import StrEnum
