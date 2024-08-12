@@ -2,7 +2,7 @@ import datetime
 import operator
 import re
 from functools import reduce
-from typing import Any
+from typing import Any, Union
 
 from cognite.client.utils._time import datetime_to_ms
 
@@ -19,7 +19,7 @@ def format_deep_diff_path(path: str) -> str:
     return re.sub(r"['\[\]]", "", path.replace("][", ".").replace("root", ""))
 
 
-def get_dict_dot_keys(data_dict: dict, dot_keys: str):
+def get_dict_dot_keys(data_dict: dict, dot_keys: str) -> Union[int, str, datetime.datetime, Any]:
     """
     Get for arbitrarily nested keys that are dot separated.
     Handles that the yaml parser parses numeric keys as numbers
@@ -47,7 +47,7 @@ def get_dict_dot_keys(data_dict: dict, dot_keys: str):
     return reduce(operator.getitem, keys, data_dict)
 
 
-def get_data_from_nested_dict(data_dict: dict, deep_diff_path: str):
+def get_data_from_nested_dict(data_dict: dict, deep_diff_path: str) -> Union[int, str, datetime.datetime, Any]:
     dot_keys = format_deep_diff_path(deep_diff_path)
     return get_dict_dot_keys(data_dict, dot_keys)
 
@@ -60,7 +60,7 @@ def is_time_series_dict(data: Any) -> bool:
     )
 
 
-def str_datetime_to_ms(str_datetime: str, str_format=None) -> int:
+def str_datetime_to_ms(str_datetime: str, str_format: Union[str, None] = None) -> int:
     """
     Convert a string datetime to milliseconds since epoch.
     If no format is provided, the function will try to guess the format.
