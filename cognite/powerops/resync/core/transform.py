@@ -50,6 +50,6 @@ def transform(config: ReSyncConfig, market_name: str, model_types: set[type[Mode
     if has_data_model:
         if models.PowerAssetModelDM in model_types:
             power_asset_model = to_powerasset_model.to_asset_data_model(config.production)
-            all_models.append(power_asset_model)  # type: ignore[arg-type]
+            all_models.append(power_asset_model)
 
     return all_models

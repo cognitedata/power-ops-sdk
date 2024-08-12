@@ -1,4 +1,4 @@
-def attr_lookup(value, attr_path):
+def attr_lookup(value, attr_path):  # type: ignore[no-untyped-def]
     """
     Retrieve attributes from a nested structure, in a generator.
 
@@ -60,17 +60,17 @@ def attr_lookup(value, attr_path):
             yield from attr_lookup(getattr(value, sub_attr, None), attr_path[1:])
 
 
-def each(items, attr_path):
+def each(items, attr_path):  # type: ignore[no-untyped-def]
     for item in items:
         yield from attr_lookup(item, attr_path)
 
 
-def dict_get(value, attr_path):
+def dict_get(value, attr_path):  # type: ignore[no-untyped-def]
     if isinstance(value, dict):
         yield from attr_lookup(value.get(attr_path[0]), attr_path[1:])
     else:
         yield None
 
 
-def dict_values(value, attr_path):
+def dict_values(value, attr_path):  # type: ignore[no-untyped-def]
     yield from attr_lookup(value.values(), attr_path)

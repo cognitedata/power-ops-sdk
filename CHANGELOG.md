@@ -13,9 +13,14 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.97.3] - 2024-07-25
+## [0.98.1] - 2024-08-12
 ### Added
 * Verify that external IDs are blow the 255 character limit
+
+## [0.98.0] - 2024-08-09
+### Changed
+* Restructure of PowerOps `shop_run_api` to remove duplication of logic
+* Update of example notebooks in `/docs/tutorials/` to reflect current structure of the SDK
 
 ## [0.97.2] - 2024-07-25
 ### Added

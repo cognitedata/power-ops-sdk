@@ -15,7 +15,7 @@ from ._generated.day_ahead_bid import DayAheadBidAPI
 from ._generated.v1 import PowerOpsModelsV1Client
 from ._generated.v1.data_classes._core import DomainModelWrite
 from .data_set_api import DataSetsAPI
-from .shop.api.dayahead_trigger_api import DayaheadTriggerAPI
+from .shop.dayahead_trigger_api import DayaheadTriggerAPI
 from .shop.shop_run_api import SHOPRunAPI
 
 # max_domain = max_total (255) - uuid (32) + separator (1)  noqa: ERA001
