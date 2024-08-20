@@ -16,6 +16,7 @@ from cognite.powerops.client._generated.v1.data_classes import (
     BenchmarkingCalculationInputWrite,
 )
 from cognite.powerops.resync.v1.utils import (
+    check_input_keys,
     ext_id_factory,
     get_data_model_write_classes,
     get_prefix_from_type,
@@ -48,7 +49,7 @@ def test_get_prefix_from_type_non_domain_model_write():
         warning.assert_called_once_with("Type UserNotSubClass is not a subclass of DomainModelWrite")
 
 
-# Tests for get_type_prefix_from_string(type_string: str) -> str:
+# Tests for get_type_prefix_from_string
 
 
 def test_get_type_prefix_from_string():
@@ -58,7 +59,7 @@ def test_get_type_prefix_from_string():
     assert get_type_prefix_from_string("snakecase") == "snakecase"
 
 
-# Tests for get_data_model_write_classes(data_model_client: Any) -> dict[str, type]:
+# Tests for get_data_model_write_classes
 
 
 class DataModelClient:
@@ -95,7 +96,7 @@ def test_get_data_model_write_classes():
         pytest.fail('The value should have "Write" at the end')
 
 
-# Tests for ext_id_factory(domain_model_type: type, data: dict) -> str:
+# Tests for ext_id_factory
 
 
 # TODO: what's the special handling of GeneratorEfficiencyCurveWrite and TurbineEfficiencyCurveWrite? identify and test
@@ -135,7 +136,7 @@ def test_ext_id_factory():
     # then test for it here
 
 
-# Tests for get_property_type_from_annotation_string(annotation: str)
+# Tests for get_property_type_from_annotation_string
 
 
 def test_get_property_type_from_annotation_string():
@@ -160,6 +161,26 @@ def test_get_property_type_from_annotation_string_no_match():
     with pytest.raises(ValueError) as excinfo:
         get_property_type_from_annotation_string("InvalidType")
     assert "Invalid property for type reference InvalidType" in str(excinfo.value)
+
+
+# Test for check_input_keys
+
+
+def test_check_input_keys():
+    properties = ["name", "type", "value"]
+    data = {"name": "test", "type": "example", "value": 42}
+
+    try:
+        check_input_keys(data, properties)
+    except ValueError:
+        pytest.fail("Unexpected ValueError raised with valid data")
+
+    # invalid case: key in data not in domain model properties
+    invalid_data = {"name": "test", "invalid_key": "example"}
+
+    with pytest.raises(ValueError) as excinfo:
+        check_input_keys(invalid_data, properties)
+    assert "Key invalid_key not in domain model properties" in str(excinfo.value)
 
 
 if __name__ == "__main__":
