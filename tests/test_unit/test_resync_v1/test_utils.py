@@ -19,13 +19,13 @@ from cognite.powerops.resync.v1.utils import (
     ext_id_factory,
     get_data_model_write_classes,
     get_prefix_from_type,
+    get_property_type_from_annotation_string,
     get_type_prefix_from_string,
 )
 
 DomainModelWrite = v1_data_classes.DomainModelWrite
 GeneratorEfficiencyCurveWrite = v1_data_classes.GeneratorEfficiencyCurveWrite
 TurbineEfficiencyCurveWrite = v1_data_classes.TurbineEfficiencyCurveWrite
-
 
 logger = logging.getLogger(__name__)
 
@@ -133,6 +133,33 @@ def test_ext_id_factory():
 
     # TODO: in the actual function: raise value error if data is not a dictionary,
     # then test for it here
+
+
+# Tests for get_property_type_from_annotation_string(annotation: str)
+
+
+def test_get_property_type_from_annotation_string():
+    assert get_property_type_from_annotation_string("DomainModelWrite") == DomainModelWrite
+    assert get_property_type_from_annotation_string("AlertWrite") == AlertWrite
+    assert (
+        get_property_type_from_annotation_string("BenchmarkingCalculationInputWrite")
+        == BenchmarkingCalculationInputWrite
+    )
+
+
+# TODO in the actual function: adding "Write" to the end of the string, if not there already:
+
+
+def test_get_property_type_from_annotation_string_type_not_supported():
+    with pytest.raises(ValueError) as excinfo:
+        get_property_type_from_annotation_string("UserWrite")
+    assert "Type UserWrite is not supported, add import to type" in str(excinfo.value)
+
+
+def test_get_property_type_from_annotation_string_no_match():
+    with pytest.raises(ValueError) as excinfo:
+        get_property_type_from_annotation_string("InvalidType")
+    assert "Invalid property for type reference InvalidType" in str(excinfo.value)
 
 
 if __name__ == "__main__":
