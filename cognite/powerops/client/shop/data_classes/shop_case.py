@@ -58,7 +58,7 @@ class SHOPCase:
             raise ValueError("Cannot specify both data and file_path")
 
         if data:
-            self._case_string = data
+            self._case_string = data.lstrip("\n")
         else:
             self._case_string = self.load_case_file(file_path)
 
