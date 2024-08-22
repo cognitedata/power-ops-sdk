@@ -46,7 +46,7 @@ foo:
   - baz1
   - baz2
   zzz: 42
-""".strip("\n")
+""".lstrip("\n")
     assert expected == case.yaml
 
 
