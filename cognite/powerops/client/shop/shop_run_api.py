@@ -75,7 +75,7 @@ class SHOPRunAPI:
                 )
             )
 
-        [create_event(self._cdf, new_event.as_cdf_event()) for new_event in shop_events]
+        self._cdf.events.create([new_event.as_cdf_event() for new_event in shop_events])
 
         with ThreadPoolExecutor(max_workers=self._CONCURRENT_CALLS) as executor:
             futures = [executor.submit(self._trigger_shop_container, shop_event) for shop_event in shop_events]
@@ -131,7 +131,7 @@ class SHOPRunAPI:
             source=source,
         )
 
-        external_id = new_external_id(now=now) if shop_run_external_id is None else shop_run_external_id
+        external_id = shop_run_external_id or new_external_id(now=now)
 
         shop_run = SHOPRun(
             external_id=external_id,
