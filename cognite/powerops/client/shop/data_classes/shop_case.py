@@ -3,9 +3,9 @@ from __future__ import annotations
 import logging
 from collections.abc import Sequence as SequenceType
 from pathlib import Path
+from typing import Union
 
 import yaml
-from typing_extensions import Self
 
 from cognite.powerops.client.shop.data_classes.shop_file_reference import SHOPFileReference, SHOPFileType
 
@@ -18,6 +18,7 @@ class SHOPCase:
 
     Main features:
      * Values can be retrieved or set / changed like with a dict.
+     * Data will be lazily loaded to a dict, only where the data is accessed; otherwise, it is kept as a string.
      * Can hold references to additional files ("extra files").
         * These are just externalID values of files in CDF, their content is not accessed here.
      * Loading from string or file (with `SHOPCase(filepath=path_to_yaml)`).
@@ -55,30 +56,40 @@ class SHOPCase:
     ) -> None:
         if data and file_path:
             raise ValueError("Cannot specify both data and file_path")
-        self.data = {}
-        self.excess_yaml_parts: list[str] = []
+
         if data:
-            self.load_case_data(data)
-        elif file_path:
-            self.load_case_file(file_path)
+            self._case_string = data
+        else:
+            self._case_string = self.load_case_file(file_path)
+
+        self._data: Union[dict, None] = None
+        self.excess_yaml_parts: list[str] = []
+
         self._shop_files: list[SHOPFileReference] = list(shop_files)
         self.watercourse = watercourse
         self.shop_version = shop_version
 
-    def load_case_data(self, data: str) -> None:
-        self.data = {}
+    def load_case_data(self) -> None:
         self.excess_yaml_parts = []
         try:
-            if yaml_docs := list(yaml.safe_load_all(data)):
-                self.data = yaml_docs[0]
+            if yaml_docs := list(yaml.safe_load_all(self._case_string)):
+                self._data = yaml_docs[0]
                 self._handle_excess_yaml_parts(yaml_docs[1:])
         except yaml.YAMLError as e:
             raise ValueError("Could not parse case data") from e
 
-    def load_case_file(self, file_path: str, encoding: str = "utf-8") -> Self:
+    @staticmethod
+    def load_case_file(file_path: str, encoding: str = "utf-8") -> str:
         with Path(file_path).open(encoding=encoding) as file:
-            self.load_case_data(file.read())
-        return self
+            return file.read()
+
+    @property
+    def data(self) -> dict:
+        if self._data is None:
+            self.load_case_data()
+
+        assert self._data is not None
+        return self._data
 
     @property
     def shop_files(self) -> list[SHOPFileReference]:
@@ -91,6 +102,9 @@ class SHOPCase:
 
     @property
     def yaml(self) -> str:
+        if self._data is None:
+            return self._case_string
+
         case_data = yaml.dump(self.data, sort_keys=False)
         if not case_data.endswith("\n"):
             case_data += "\n"
