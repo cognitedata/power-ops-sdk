@@ -3,7 +3,6 @@ from __future__ import annotations
 import logging
 from collections.abc import Sequence as SequenceType
 from pathlib import Path
-from typing import Union
 
 import yaml
 
@@ -60,9 +59,9 @@ class SHOPCase:
         if data:
             self._case_string = data.lstrip("\n")
         else:
-            self._case_string = self.load_case_file(file_path)
+            self._case_string = SHOPCase.load_case_file(file_path)
 
-        self._data: Union[dict, None] = None
+        self._data = {}
         self.excess_yaml_parts: list[str] = []
 
         self._shop_files: list[SHOPFileReference] = list(shop_files)
@@ -85,10 +84,9 @@ class SHOPCase:
 
     @property
     def data(self) -> dict:
-        if self._data is None:
+        if not self._data:
             self.load_case_data()
 
-        assert self._data is not None
         return self._data
 
     @property
