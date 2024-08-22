@@ -18,7 +18,7 @@ Changes are grouped as follows
 * Added optional shop_run_external_id to shop.shop_run_api.trigger_single_casefile
 
 ### Changed
-* Added lazy loading of shop.data_classes.SHOPCase case to a dictionary, to improve performance where data is not being accessed or changed.
+* Swithced to lazy loading of shop.data_classes.SHOPCase case to a dictionary, to improve performance where data is not being accessed or changed.
 
 ## [0.98.1] - 2024-08-12
 ### Added
