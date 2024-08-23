@@ -18,6 +18,7 @@ from cognite.powerops.client.shop.data_classes.dayahead_trigger import Case, Pre
 from cognite.powerops.client.shop.data_classes.shop_case import SHOPCase, SHOPFileReference, SHOPFileType
 from cognite.powerops.client.shop.data_classes.shop_run import SHOPRun, SHOPRunEvent, SHOPRunList
 from cognite.powerops.client.shop.data_classes.shop_run_filter import SHOPRunFilter
+from cognite.powerops.utils.cdf.calls import create_event
 from cognite.powerops.utils.cdf.resource_creation import simple_relationship
 from cognite.powerops.utils.identifiers import new_external_id
 
@@ -73,6 +74,7 @@ class SHOPRunAPI:
                     source="DayaheadTrigger",
                 )
             )
+
         self._cdf.events.create([new_event.as_cdf_event() for new_event in shop_events])
 
         with ThreadPoolExecutor(max_workers=self._CONCURRENT_CALLS) as executor:
@@ -84,7 +86,9 @@ class SHOPRunAPI:
 
         return list(set(plants_per_case)), shop_events
 
-    def trigger_single_casefile(self, case: SHOPCase, source: str | None = None) -> SHOPRun:
+    def trigger_single_casefile(
+        self, case: SHOPCase, source: str | None = None, shop_run_external_id: str | None = None
+    ) -> SHOPRun:
         """
         Trigger SHOP for a given case file.
 
@@ -92,6 +96,8 @@ class SHOPRunAPI:
             case: SHOPCase instance, contains data for the main case file and references to additional SHOP input files.
             source: The source of the SHOP trigger. If nothing is passed, the method will
                 try to detect the service principal of the current user.
+            shop_run_external_id: External ID for the SHOP run event, must be unique within the CDF project. If nothing
+                is passed, a new external ID will be generated.
 
         Returns:
             The new SHOP run created.
@@ -125,8 +131,10 @@ class SHOPRunAPI:
             source=source,
         )
 
+        external_id = shop_run_external_id or new_external_id(now=now)
+
         shop_run = SHOPRun(
-            external_id=new_external_id(now=now),
+            external_id=external_id,
             watercourse=case.watercourse,
             data_set_id=self._dataset_id,
             start=now,
@@ -137,8 +145,10 @@ class SHOPRunAPI:
             _client=self._cdf,
             source=source,
         )
+
         event = shop_run.as_cdf_event()
-        self._cdf.events.create(shop_run.as_cdf_event())
+        create_event(self._cdf, event)
+
         relationships = [
             simple_relationship(source=event, target=case_file_meta, label_external_id=RelationshipLabel.CASE_FILE)
         ]

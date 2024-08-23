@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 from cognite.client import CogniteClient
 from cognite.client.data_classes import DatapointsList, Event, LabelFilter, RelationshipList
+from cognite.client.exceptions import CogniteDuplicatedError
 from cognite.client.utils import ms_to_datetime
 from cognite.client.utils.useful_types import SequenceNotStr
 
@@ -182,3 +183,11 @@ def retrieve_time_series_datapoints(  # type: ignore[no-untyped-def]
     logger.debug(f"Not retrieving datapoints for {_time_series_none}")
 
     return merge_dicts(time_series_start, time_series_end, time_series_range)
+
+
+def create_event(client: CogniteClient, event: Event) -> None:
+    try:
+        client.events.create(event)
+    except CogniteDuplicatedError:
+        logger.warning(f"Event with external_id '{event.external_id}' already exists")
+        exit(1)

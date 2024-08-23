@@ -13,6 +13,13 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.98.2] - 2024-08-22
+### Added
+* Added optional shop_run_external_id to shop.shop_run_api.trigger_single_casefile
+
+### Changed
+* Switched to lazy loading of shop.data_classes.SHOPCase case to a dictionary, to improve performance where data is not being accessed or changed.
+
 ## [0.98.1] - 2024-08-12
 ### Added
 * Verify that external IDs are blow the 255 character limit
