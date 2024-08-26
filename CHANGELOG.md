@@ -14,6 +14,9 @@ Changes are grouped as follows
 - `Security` in case of vulnerabilities.
 
 ## [0.98.3] - 2024-08-26
+### Added
+* Added SHOPcase to public modules of data_classes
+
 ### Changed
 * Fixed bug in lazy loading shop.data_classes.SHOPCase
 
