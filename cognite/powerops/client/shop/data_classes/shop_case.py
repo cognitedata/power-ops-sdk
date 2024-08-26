@@ -100,7 +100,7 @@ class SHOPCase:
 
     @property
     def yaml(self) -> str:
-        if self._data is None:
+        if not self._data:
             return self._case_string
 
         case_data = yaml.dump(self.data, sort_keys=False)

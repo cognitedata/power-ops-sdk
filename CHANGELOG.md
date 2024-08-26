@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.98.3] - 2024-08-26
+### Changed
+* Fixed bug in lazy loading shop.data_classes.SHOPCase
+
 ## [0.98.2] - 2024-08-22
 ### Added
 * Added optional shop_run_external_id to shop.shop_run_api.trigger_single_casefile
