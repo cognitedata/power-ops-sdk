@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.98.4] - 2024-09-09
+### Fix
+* Unpinned SDK dependency against toolkit and only used pinned version with dev dependencies
+
 ## [0.98.3] - 2024-08-26
 ### Added
 * Added SHOPcase to public modules of data_classes
