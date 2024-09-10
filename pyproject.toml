@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cognite-power-ops"
-version = "0.97.1"
+version = "0.98.4"
 description = "SDK for power markets operations on Cognite Data Fusion"
 readme = "README.md"
 authors = ["Cognite <support@cognite.com>"]
@@ -10,32 +10,47 @@ homepage = "https://cognite-power-ops-sdk.readthedocs-hosted.com/en/latest/"
 repository = "https://github.com/cognitedata/power-ops-sdk"
 packages = [{include = "cognite", from = "."}]
 
-[tool.black]
-line-length = 120
-target_version = ['py39']
-include = '\.py$'
-
 [tool.ruff]
 line-length = 120
+indent-width = 4
 target-version = "py39"
+# TODO: remove scripts from exclude if problems are fixed
 exclude = ["scripts", "cognite/powerops/client/_generated"]
 fix = true
+
+[tool.ruff.format]
+# Matches black formatting style
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+docstring-code-format = true
 
 [tool.ruff.lint]
 ignore = [
     # This is causing issues for pydantic which does not support use of X | Y for type annotations before 3.10
     "UP007", # Use X | Y for type annotations
-    # Typer do function calls when setting up the CLI.
-    "B008", # Do not perform function call {name} in argument defaults,
-    "RUF012", # Insists on using ClassVar to mark class variables
 ]
-select = ["E","W","F","I","RUF","TID","UP", "B", "FLY", "PTH", "ERA"]
+# Other rules that could be enabled if we fix existing issues: "C90", "D", "PL", "TRY", "DOC", flake8 rules
+select = ["F", "E", "W", "I", "N", "UP", "B", "TID", "PTH", "ERA", "RUF", "PD", "PGH", "FLY", "NPY", "PERF", "FURB"]
 fixable = ["ALL"]
 
 [tool.ruff.lint.isort]
 known-third-party = ["cognite.client"]
 
 [tool.mypy]
+python_version = "3.9"
+warn_unused_configs = true
+disallow_subclassing_any = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_any_generics = false  # TODO: Enable this when dict type hints are fixed
+disallow_untyped_calls = false  # TODO: Enable this when retry from powerops sdk is typed
+disallow_untyped_decorators = false  # TODO: Enable this when retry from powerops sdk is typed
+warn_redundant_casts = true
+warn_unused_ignores = true
+strict_equality = true
+extra_checks = true
 explicit_package_bases = true
 exclude = [
     # The plan is to gradually add mypy to the code base. As of 18. July 2023,
@@ -45,6 +60,12 @@ exclude = [
     "^cognite/powerops/resync/models/",
 ]
 allow_redefinition = true
+plugins = ["pydantic.mypy"]
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = false
 
 
 [tool.poetry.dependencies]
@@ -78,7 +99,7 @@ mkdocs-glightbox = {version="*", optional=true}
 pymdown-extensions = {version="*", optional=true}
 mkdocstrings = {version="*", optional=true, extras=["python"]}
 cachelib = "^0.13.0"
-cognite-toolkit = "0.2.16"
+cognite-toolkit = "^0.2.16"
 
 [tool.poetry.extras]
 docs = ["mkdocs", "mkdocs-jupyter", "mkdocs-material", "mkdocs-material-extensions", "mkdocs-git-revision-date-localized-plugin",
@@ -88,6 +109,7 @@ docs = ["mkdocs", "mkdocs-jupyter", "mkdocs-material", "mkdocs-material-extensio
 powerops = "cognite.powerops.cli:main"
 
 [tool.poetry.group.dev.dependencies]
+cognite-toolkit = "0.2.16"
 pre-commit = "^3.2.2"
 profilehooks = "^1.12.0"
 pytest-mock = "^3.10.0"

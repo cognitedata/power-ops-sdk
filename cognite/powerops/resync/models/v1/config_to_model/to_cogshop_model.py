@@ -8,11 +8,11 @@ import pandas as pd
 import yaml
 from cognite.client.data_classes import Sequence
 
-from cognite.powerops.client.data_classes import cogshop1 as cogshop_v1
+from cognite.powerops.client._generated.cogshop1 import data_classes as cogshop_v1
 from cognite.powerops.resync import config
 from cognite.powerops.resync.models._shared_v1_v2.cogshop_model import (
     _create_transformation,
-    _create_transformationV2,
+    _create_transformation_v2,
     _to_shop_files,
     _to_shop_model_file,
 )
@@ -64,7 +64,7 @@ def to_cogshop_asset_model(
             metadata={"shop:watercourse": watercourse.name, "shop:type": "output_definition"},
         )
         # Only default mapping is used
-        df = pd.DataFrame(
+        default_mapping_df = pd.DataFrame(
             [
                 ("market", "sale_price", "price", "EUR/MWh", "True"),
                 ("market", "sale", "sales", "MWh", "True"),
@@ -76,7 +76,7 @@ def to_cogshop_asset_model(
             columns=[c.external_id for c in sequence.columns],
         )
 
-        output_definition = CDFSequence(sequence=sequence, content=df)
+        output_definition = CDFSequence(sequence=sequence, content=default_mapping_df)
 
         model.output_definitions.append(output_definition)
 
@@ -114,7 +114,7 @@ def to_cogshop_asset_model(
                         for order, transformation in enumerate(row.transformations or [])
                     ]
                     + [
-                        _create_transformationV2(order, transformation)
+                        _create_transformation_v2(order, transformation)
                         for order, transformation in enumerate(row2.transformations or [])
                     ],
                     retrieve=row.retrieve.name if row.retrieve else None,
@@ -174,7 +174,7 @@ def to_cogshop_asset_model(
                             for j, transformation_data in enumerate(json.loads(mapping.get("transformations", "")))
                         ]
                         + [
-                            _create_transformationV2(j, config.Transformation(**transformation_data))
+                            _create_transformation_v2(j, config.Transformation(**transformation_data))
                             for j, transformation_data in enumerate(json.loads(mapping.get("transformations", "")))
                         ],
                     )

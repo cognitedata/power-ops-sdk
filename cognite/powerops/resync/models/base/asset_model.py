@@ -25,8 +25,8 @@ class AssetModel(Model, ABC, validate_assignment=True):
     def relationships(self) -> list[Relationship]:
         return [edge for item in self._asset_types() for edge in item.relationships()]
 
-    def parent_assets(cls, include_root: bool = True) -> AssetList:
-        if not cls.root_asset:
+    def parent_assets(self, include_root: bool = True) -> AssetList:
+        if not self.root_asset:
             return AssetList([])
 
         def _to_name(external_id: str) -> str:
@@ -40,19 +40,19 @@ class AssetModel(Model, ABC, validate_assignment=True):
             return " ".join(parts).replace("Bid process", "Bid").replace("bid process", "bid")
 
         parent_and_description_ids = set()
-        for _field_name, field in cls.model_fields.items():
-            annotation, outer = get_pydantic_annotation(field.annotation, cls)
+        for field in self.model_fields.values():
+            annotation, outer = get_pydantic_annotation(field.annotation, self)
             if issubclass(annotation, AssetType) and outer is list:
                 parent_and_description_ids.add((annotation.parent_external_id, annotation.parent_description or ""))
 
         return AssetList(
             sorted(
-                ([cls.root_asset] if include_root else [])
+                ([self.root_asset] if include_root else [])
                 + [
                     Asset(
                         external_id=parent_id,
                         name=_to_name(parent_id),
-                        parent_external_id=cls.root_asset.external_id,
+                        parent_external_id=self.root_asset.external_id,
                         description=description,
                     )
                     for parent_id, description in parent_and_description_ids

@@ -94,10 +94,10 @@ class SequenceAdapter(CogniteAPI[CogniteSequence]):
         for item in items:
             if item.external_id is None:
                 raise ValueError("Missing external id for sequence")
-            df = self.sequence_by_id[item.external_id].content
-            if df is None:
+            cdf_sequence_df = self.sequence_by_id[item.external_id].content
+            if cdf_sequence_df is None:
                 raise ValueError(f"Missing sequence content for {item.external_id}")
-            self.client.sequences.data.insert_dataframe(df, external_id=item.external_id)
+            self.client.sequences.data.insert_dataframe(cdf_sequence_df, external_id=item.external_id)
 
     def delete(self, external_id: str | SequenceNotStr[str]) -> Any:
         self.client.sequences.delete(external_id=external_id)
@@ -136,7 +136,9 @@ class InstanceAdapter(CogniteAPI[T_Instance]):
             else:
                 try:
                     self.client.data_modeling.instances.apply(
-                        edges=chunk, auto_create_start_nodes=True, auto_create_end_nodes=True  # type: ignore[arg-type]
+                        edges=chunk,  # type: ignore[arg-type]
+                        auto_create_start_nodes=True,
+                        auto_create_end_nodes=True,
                     )
                 except CogniteAPIError:
                     print(f"Failed on {chunk[0].dump()}")

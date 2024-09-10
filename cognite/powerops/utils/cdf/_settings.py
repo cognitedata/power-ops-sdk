@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import getpass
 import logging
 import os
@@ -50,14 +52,15 @@ class PoweropsRunSettings(pydantic.BaseModel):
     shop_as_a_service: bool = False
 
     @field_validator("cogshop_version", mode="before")
-    def number_to_str(cls, v):
+    @classmethod
+    def number_to_str(cls, v: Any) -> Optional[str]:
         return str(v) if isinstance(v, (int, float)) else v
 
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="SETTINGS__", env_nested_delimiter="__")
-    cognite: CogniteSettings = Field(default_factory=dict)
-    powerops: PoweropsRunSettings = Field(default_factory=dict)
+    cognite: CogniteSettings = Field(default_factory=dict)  # type: ignore[assignment]
+    powerops: PoweropsRunSettings = Field(default_factory=dict)  # type: ignore[assignment]
 
     @classmethod
     def settings_customise_sources(
@@ -78,7 +81,7 @@ def _file_settings() -> dict[str, Any]:
     for file_path in settings_files:
         try:
             data = read_toml_file(file_path)
-        except FileNotFoundError:
+        except FileNotFoundError:  # noqa: PERF203
             pass
         else:
             logger.debug(f"Loaded settings from '{file_path}'.")

@@ -128,7 +128,6 @@ class ResyncImporter:
         external_ids: list[str] = []
 
         for folder in self.folders_to_process:
-
             all_data_model_files = list((folder).glob("*.yaml"))
 
             data_model_configuration_file = folder / "data_model_configuration.yaml"
@@ -229,7 +228,7 @@ class ResyncImporter:
 
     @staticmethod
     def _split_data_by_parsing_method(
-        raw_data: dict[str, Any]
+        raw_data: dict[str, Any],
     ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
         """Splits an unparsed dictionary into a dictionary for each type of parsing should be applied.
 
@@ -490,11 +489,10 @@ class ResyncImporter:
                             source_data = source_data[instance_data[match.group(1)]]
                     else:
                         raise ValueError("Source data is not indexable")
+                elif isinstance(source_data, (Sequence, Mapping)):
+                    source_data = source_data[key]
                 else:
-                    if isinstance(source_data, (Sequence, Mapping)):
-                        source_data = source_data[key]
-                    else:
-                        raise ValueError("Source data is not indexable")
+                    raise ValueError("Source data is not indexable")
         except KeyError:
             logger.warning(f"Key {key} not found in {property_configuration.source_file}, using default value")
             return property_configuration.default_value

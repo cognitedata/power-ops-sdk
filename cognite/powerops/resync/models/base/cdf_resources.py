@@ -50,6 +50,7 @@ class CDFSequence(CDFResource):
         return self.sequence
 
     @model_validator(mode="before")
+    @classmethod
     def parse_dict(cls, value):
         if isinstance(value, dict) and "sequence" not in value:
             return {"sequence": Sequence._load(value)}
@@ -98,6 +99,7 @@ class CDFFile(CDFResource):
         return self.meta
 
     @model_validator(mode="before")
+    @classmethod
     def parse_dict(cls, value):
         if isinstance(value, dict) and "meta" not in value:
             return {"meta": FileMetadata._load(value)}

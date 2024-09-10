@@ -76,7 +76,7 @@ class AssetType(ResourceType, ABC, arbitrary_types_allowed=True, validate_assign
 
     def _relationships(self, to: BaseModel) -> list[Relationship]:
         relationships = []
-        for field_name, _field in to.model_fields.items():
+        for field_name in to.model_fields.keys():
             field_value = getattr(to, field_name)
             if not field_value:
                 continue

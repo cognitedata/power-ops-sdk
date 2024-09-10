@@ -3,19 +3,19 @@ from pathlib import Path
 import pytest
 import yaml
 
-from cognite.powerops.client.shop.shop_case import SHOPCase
+from cognite.powerops.client.shop.data_classes.shop_case import SHOPCase
 
 
 @pytest.fixture
 def case():
     return SHOPCase(
         """
-        foo:
-          bar:
-           - baz1
-           - baz2
-          zzz: 42
-        """
+foo:
+  bar:
+  - baz1
+  - baz2
+  zzz: 42
+""".lstrip("\n")
     )
 
 
@@ -40,12 +40,13 @@ baz: zzz
 
 
 def test_yaml(case):
-    expected = """foo:
+    expected = """
+foo:
   bar:
   - baz1
   - baz2
   zzz: 42
-"""
+""".lstrip("\n")
     assert expected == case.yaml
 
 
@@ -72,5 +73,5 @@ def test_load_yaml(tmp_path: Path):
     with (tmp_path / "test_load.yaml").open("w") as fh:
         fh.write("foo:\n  bar")
         fh.flush()
-        case = SHOPCase().load_case_file(fh.name)
-    assert case.data == {"foo": "bar"}
+        case = SHOPCase(file_path=fh.name)
+        assert case.data == {"foo": "bar"}

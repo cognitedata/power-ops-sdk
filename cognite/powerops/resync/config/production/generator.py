@@ -24,10 +24,12 @@ class Generator(BaseModel):
         return f"generator_{self.name}"
 
     @field_validator("penstock", mode="before")
+    @classmethod
     def to_string(cls, value):
         return str(value)
 
     @field_validator("startcost", mode="before")
+    @classmethod
     def to_float(cls, value):
         if isinstance(value, dict) and len(value) >= 1:
             # Timeseries with one value
@@ -42,5 +44,6 @@ class GeneratorTimeSeriesMapping(BaseModel):
     is_available: Optional[ExternalId] = None
 
     @field_validator("start_stop_cost", "is_available", mode="before")
-    def parset_number_to_string(cls, value):
+    @classmethod
+    def parse_number_to_string(cls, value):
         return str(value) if isinstance(value, (int, float)) else value

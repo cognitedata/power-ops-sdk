@@ -86,7 +86,7 @@ class PipelineRun:
             raise TypeError(f"Data must be a dict, got {type(data)}")
         return self
 
-    def __exit__(self, exc_type=None, exc_value=None, traceback_=None) -> bool:
+    def __exit__(self, exc_type=None, exc_value=None, traceback_=None) -> bool:  # type: ignore[no-untyped-def]
         suppress_exception = False
 
         if any((exc_type, exc_value, traceback_)):
@@ -229,7 +229,7 @@ class ExtractionPipelineCreate:
             log_file_prefix=log_file_prefix,
         )
 
-    def get_or_create(self, client: CogniteClient):
+    def get_or_create(self, client: CogniteClient) -> ExtractionPipelineCreate:
         extraction_pipeline = client.extraction_pipelines.retrieve(external_id=self.external_id)
         if extraction_pipeline is None:
             self._data_set_id = self._get_data_set_it(client)

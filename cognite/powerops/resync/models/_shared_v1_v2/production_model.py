@@ -52,7 +52,7 @@ def _create_turbine_efficiency_curve(
             {"valueType": "DOUBLE", "externalId": y_col_name},
         ],
     )
-    df = pd.DataFrame(
+    efficiency_df = pd.DataFrame(
         {
             ref_col_name: [entry["ref"] for entry in data for _ in range(len(entry["x"]))],
             x_col_name: [item for entry in data for item in entry["x"]],
@@ -60,7 +60,7 @@ def _create_turbine_efficiency_curve(
         },
         dtype=float,
     )
-    turbine_efficiency_curve = CDFSequence(sequence=sequence, content=df)
+    turbine_efficiency_curve = CDFSequence(sequence=sequence, content=efficiency_df)
     return turbine_efficiency_curve
 
 

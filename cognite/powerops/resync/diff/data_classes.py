@@ -12,7 +12,7 @@ from cognite.client.data_classes import FileMetadata, Sequence
 from cognite.client.data_classes._base import CogniteResource
 from cognite.client.data_classes.data_modeling.ids import AbstractDataclass
 from cognite.client.data_classes.data_modeling.instances import InstanceCore
-from deepdiff import DeepDiff  # type: ignore[import]
+from deepdiff import DeepDiff  # type: ignore[import-untyped]
 from typing_extensions import TypeAlias
 
 from cognite.powerops.resync.models.base.cdf_resources import CDFResource
@@ -174,13 +174,13 @@ class ModelDifference:
     def __iter__(self) -> Iterator[FieldDifference]:
         return iter(self.changes.values())
 
-    def __contains__(self, item):
+    def __contains__(self, item):  # type: ignore[no-untyped-def]
         return item in self.changes
 
-    def __getitem__(self, item):
+    def __getitem__(self, item):  # type: ignore[no-untyped-def]
         return self.changes[item]
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key, value):  # type: ignore[no-untyped-def]
         self.changes[key] = value
 
     def __add__(self, other: ModelDifference) -> ModelDifference:
@@ -250,15 +250,11 @@ class ModelDifferences:
                 ],
                 index=[summary.field_name for summary in summaries if summary.group == "CDF"],
             )
+
             ids = [change.as_ids(limit=5) for change in model if change.group == "CDF"]
-            added_ids = []
-            for id_ in ids:
-                if id_.added:
-                    added_ids.append(f"#### Added {id_.field_name}\n{id_.added}")
-            removed_ids = []
-            for id_ in ids:
-                if id_.removed:
-                    removed_ids.append(f"#### Removed {id_.field_name}\n{id_.removed}")
+            added_ids = [f"#### Added {id_.field_name}\n{id_.added}" for id_ in ids if id_.added]
+            removed_ids = [f"#### Removed {id_.field_name}\n{id_.removed}" for id_ in ids if id_.removed]
+
             changed_samples = []
             for change, id_ in zip((c for c in model if c.group == "CDF"), ids):
                 if change.changed:

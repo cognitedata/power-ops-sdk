@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 from cognite.client import CogniteClient
 from cognite.client.data_classes import DatapointsList, Event, LabelFilter, RelationshipList
+from cognite.client.exceptions import CogniteDuplicatedError
 from cognite.client.utils import ms_to_datetime
 from cognite.client.utils.useful_types import SequenceNotStr
 
@@ -106,12 +107,12 @@ def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, 
     # Step interpolation of time series with .is_step=False
     # NOTE: do not need to upsample when forward filling
     # TODO: note 2x ffill()
-    df_step = df_raw[step_columns].ffill().resample("1h").ffill()  # type: ignore[type-var]
+    df_step = df_raw[step_columns].ffill().resample("1h").ffill()
 
     # Linear interpolation of time series with .is_step=False
     # TODO: must upsample before downsampling?
     # TODO: confirm operations
-    intermediate_df = df_raw[linear_columns].resample("1min").interpolate()  # type: ignore[type-var]
+    intermediate_df = df_raw[linear_columns].resample("1min").interpolate()
     df_linear = intermediate_df.resample("1h").interpolate()
 
     # Merge the step interpolated and linearly interpolated DataFrames
@@ -124,8 +125,8 @@ def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, 
 
 
 def retrieve_range(client: CogniteClient, external_ids: list[str], start: int, end: int) -> dict[str, pd.Series]:
-    df = _retrieve_range(client=client, external_ids=external_ids, start=start, end=end)
-    return {col: df[col].dropna() for col in df.columns}
+    retrieved_range_df = _retrieve_range(client=client, external_ids=external_ids, start=start, end=end)
+    return {col: retrieved_range_df[col].dropna() for col in retrieved_range_df.columns}
 
 
 # TODO: refactor
@@ -155,8 +156,8 @@ def retrieve_latest(client: CogniteClient, external_ids: list[Optional[str]], be
     return res
 
 
-def retrieve_time_series_datapoints(
-    client: CogniteClient, mappings, start, end  # : List[TimeSeriesMapping]
+def retrieve_time_series_datapoints(  # type: ignore[no-untyped-def]
+    client: CogniteClient, mappings, start: int, end: int
 ) -> dict[str, pd.Series]:
     time_series_start = retrieve_latest(
         client=client,
@@ -182,3 +183,11 @@ def retrieve_time_series_datapoints(
     logger.debug(f"Not retrieving datapoints for {_time_series_none}")
 
     return merge_dicts(time_series_start, time_series_end, time_series_range)
+
+
+def create_event(client: CogniteClient, event: Event) -> None:
+    try:
+        client.events.create(event)
+    except CogniteDuplicatedError:
+        logger.warning(f"Event with external_id '{event.external_id}' already exists")
+        exit(1)

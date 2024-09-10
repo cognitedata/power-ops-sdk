@@ -17,8 +17,8 @@ class BenchmarkingConfig(Configuration):
         default_factory=dict, alias="bid_production_plan_time_series"
     )
     market_config_external_id: str = Field(alias="bid_market_config_external_id")
-    bid_process_configuration_assets: list[str] = []
-    relevant_shop_objective_metrics: dict[str, str] = {
+    bid_process_configuration_assets: list[str] = []  # noqa: RUF012
+    relevant_shop_objective_metrics: dict[str, str] = {  # noqa: RUF012
         "grand_total": "Grand Total",
         "total": "Total",
         "sum_penalties": "Sum Penalties",
@@ -43,5 +43,6 @@ class BenchmarkingConfig(Configuration):
     #  assets (or remove the optional part that uses those relationships in power-ops-functions)
 
     @field_validator("shop_start", "shop_end", "bid_date", mode="before")
+    @classmethod
     def json_loads(cls, value):
         return {"operations": json.loads(value)} if isinstance(value, str) else value
