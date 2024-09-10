@@ -1,0 +1,24 @@
+# ShopModel view definition
+# - name: String!
+#   version: String
+#   shopVersion: String!
+#   penaltyLimit: Float
+#   model: File!
+#   cogShopFilesConfig: [ShopFile]
+#   extraFiles: [File]
+#   baseAttributeMappings: [ShopAttributeMapping]
+
+- name: Fornebu no time series
+  model_version: "1"
+  shop_version: "15.4.1.1"
+  penalty_limit: 0.0
+  model: "[external_id]fornebu_model_with_time_series_values_base"
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu no time series
+  model_version: "1"
+  shop_version: "15.4.1.1"
+  penalty_limit: 0.0
+  model: "[external_id]fornebu_model_with_time_series_values_price_plus_200"
+  cog_shop_files_config: []
+  base_attribute_mappings: []

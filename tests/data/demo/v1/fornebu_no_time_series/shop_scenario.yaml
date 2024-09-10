@@ -1,0 +1,26 @@
+# ShopScenario view definition
+# - name: String!
+#   model: ShopModel
+#   commands: ShopCommands
+#   source: String
+#   output_definition: [ShopOutputTimeSeriesDefinition]
+#   attribute_mappings_override: [ShopAttributeMapping]
+
+- name: "Fornebu no time series base"
+  model: "[name]Fornebu"
+  commands: "[name|type:ShopCommands]default"
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - "[name]market price"
+    - "[name]plant production"
+    - "[name]plant consumption"
+- name: "Fornebu no time series price plus 200"
+  model: "[name]Fornebu"
+  commands: "[name|type:ShopCommands]default"
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - "[name]market price"
+    - "[name]plant production"
+    - "[name]plant consumption"

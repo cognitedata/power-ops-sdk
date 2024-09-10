@@ -22,3 +22,13 @@ file_configuration:
         key1: "value1"
         key2: "value2"
       directory: "/files" # needs to be unix style path
+    - name: fornebu_model_with_time_series_values_base.yaml # copy of file from staging with external ID POWEROPS_SHOP_pre-run-1718114393214_bda614fa
+      external_id: fornebu_model_with_time_series_values_base
+      source: resync
+      mime_type: "application/yaml"
+      directory: "/files"
+    - name: fornebu_model_with_time_series_values_price_plus_200.yaml # copy of file from staging with external ID POWEROPS_SHOP_pre-run-1718114528490_8798653a
+      external_id: fornebu_model_with_time_series_values_price_plus_200
+      source: resync
+      mime_type: "application/yaml"
+      directory: "/files"

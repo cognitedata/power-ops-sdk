@@ -1,0 +1,92 @@
+generator:
+  production_min:
+    source_file: "files/model.yaml"
+    extraction_path: "model.generator.[name].p_min"
+    is_list: False
+    default_value: 0.0
+    cast_type: float
+  penstock_number:
+    source_file: "files/model.yaml"
+    extraction_path: "model.generator.[name].penstock"
+    is_list: False
+    default_value: 0 # TODO: Check if this is correct
+    cast_type: int
+  start_stop_cost:
+    source_file: "files/model.yaml"
+    extraction_path: "model.generator.[name].startcost.value"
+    is_list: False
+    default_value: 0.0 # TODO: Check if this is correct
+    cast_type: float
+  generator_efficiency_curve:
+    is_subtype: True
+    cast_type: generator_efficiency_curve
+    is_list: False
+  turbine_efficiency_curves:
+    is_subtype: True
+    cast_type: turbine_efficiency_curve
+    is_list: True
+    source_file: "files/model.yaml"
+    extraction_path: "model.generator.[name].turb_eff_curves"
+
+generator_efficiency_curve:
+  power:
+    source_file: "files/model.yaml"
+    extraction_path: "model.generator.[name].gen_eff_curve.x"
+    is_list: True
+    default_value: [0.0, 10000.0] # Defining it for a wide range (from 0 to a lot)
+    cast_type: float
+  efficiency:
+    source_file: "files/model.yaml"
+    extraction_path: "model.generator.[name].gen_eff_curve.y"
+    is_list: True
+    default_value: [100.0, 100.0] # 100 % efficiency
+    cast_type: float
+
+turbine_efficiency_curve:
+  head:
+    source_file: "files/model.yaml"
+    extraction_path: "ref"
+    is_list: False
+    default_value: 0.0
+    cast_type: float
+  flow:
+    source_file: "files/model.yaml"
+    extraction_path: "x"
+    is_list: True
+    default_value: [0.0, 10000.0] # Defining it for a wide range (from 0 to a lot)
+    cast_type: float
+  efficiency:
+    source_file: "files/model.yaml"
+    extraction_path: "y"
+    is_list: True
+    default_value: [100.0, 100.0] # 100 % efficiency
+    cast_type: float
+
+plant_information:
+  head_loss_factor:
+    source_file: "files/model.yaml"
+    extraction_path: "model.plant.[name].main_loss.[0]"
+  outlet_level:
+    source_file: "files/model.yaml"
+    extraction_path: "model.plant.[name].outlet_line"
+  production_max:
+    source_file: "files/model.yaml"
+    extraction_path: "model.plant.[name].p_max"
+    default_value: 10_000_000_000_000_000_000.0
+  production_min:
+    source_file: "files/model.yaml"
+    extraction_path: "model.plant.[name].p_min"
+    default_value: 0.0
+  penstock_head_loss_factors:
+    cast_type: float
+    is_list: True
+    source_file: "files/model.yaml"
+    extraction_path: "model.plant.[name].penstock_loss"
+    # generators: "connections"
+    # connection_losses: "???" # from model file??
+
+shop_attribute_mapping:
+  retrieve:
+    default_value: "RANGE"
+  aggregation:
+    default_value: "MEAN"

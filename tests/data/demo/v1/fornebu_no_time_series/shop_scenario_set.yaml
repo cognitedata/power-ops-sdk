@@ -1,0 +1,12 @@
+# ShopScenarioSet view definition
+# - name: String!
+#   start_specification: DateSpecification
+#   end_specification: DateSpecification
+#   scenarios: [ShopScenario]
+
+- name: 2 scenarios no time series
+  start_specification: "[name]Default Start"
+  end_specification: "[name]Default End"
+  scenarios:
+    - "[name]Fornebu no time series base"
+    - "[name]Fornebu no time series price plus 200"
