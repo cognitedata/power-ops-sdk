@@ -1,0 +1,15 @@
+environment:
+  project: oe-dev
+  # type is set to staging since this field is only used for raising error if project defined here
+  # doesn't match the environment variables (valid options are dev, staging, prod)
+  type: staging
+  selected:
+    - power_model_v1
+
+variables:
+  custom_modules:
+    power_model_v1:
+      power_ops_type_space: "power_ops_types"
+      power_ops_instance_space: "power_ops_instances"
+      power_ops_models: "power_ops_core"
+      version: "1"

@@ -133,6 +133,22 @@ If a change requires a version change, the following version system should be us
          export ENV="heco-prod"
          ```
 
+   7. **config.oe-dev.yaml**
+      1. CDF_PROJECT: `oe-dev`
+      2. ENV: `oe-dev`
+
+         ```bash
+         export ENV="oe-dev"
+         ```
+
+   8. **config.oe-prod.yaml**
+      1. CDF_PROJECT: `oe-prod`
+      2. ENV: `oe-prod`
+
+         ```bash
+         export ENV="oe-prod"
+         ```
+
 2. Ensure the credentials in your `.env` file point to the same environment you want to deploy to
 3. Build the configurations and remove existing files in the build directory:
 

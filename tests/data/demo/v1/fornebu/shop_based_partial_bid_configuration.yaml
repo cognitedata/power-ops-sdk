@@ -5,183 +5,318 @@
 #   add_steps: Boolean!
 #   scenario_set: ShopScenarioSet
 
-- name: Strand_krv 2 step
-  method: multi scenario 2
-  power_asset: "[external_id]plant_information_strand_krv"
-  add_steps: True
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
-- name: Strand_krv 3 step
-  method: multi scenario 3
-  power_asset: "[external_id]plant_information_strand_krv"
-  add_steps: True
-  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
-- name: Strand_krv 2
-  method: multi scenario 2
-  power_asset: "[external_id]plant_information_strand_krv"
-  add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
-- name: Strand_krv 3
-  method: multi scenario 3
-  power_asset: "[external_id]plant_information_strand_krv"
-  add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
-- name: Rull2 2 step
-  method: multi scenario 2
-  power_asset: "[external_id]plant_information_rull2"
-  add_steps: True
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
-- name: Rull2 3 step
-  method: multi scenario 3
-  power_asset: "[external_id]plant_information_rull2"
-  add_steps: True
-  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
-- name: Rull2 2
-  method: multi scenario 2
-  power_asset: "[external_id]plant_information_rull2"
-  add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
-- name: Rull2 3
-  method: multi scenario 3
-  power_asset: "[external_id]plant_information_rull2"
-  add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
-- name: Rull1 2 step
-  method: multi scenario 2
-  power_asset: "[external_id]plant_information_rull1"
-  add_steps: True
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
-- name: Rull1 3 step
-  method: multi scenario 3
-  power_asset: "[external_id]plant_information_rull1"
-  add_steps: True
-  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
-- name: Rull1 2
-  method: multi scenario 2
-  power_asset: "[external_id]plant_information_rull1"
-  add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
-- name: Rull1 3
-  method: multi scenario 3
-  power_asset: "[external_id]plant_information_rull1"
-  add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
-- name: Lien_krv 2 step
-  method: multi scenario 2
-  power_asset: "[external_id]plant_information_lien_krv"
-  add_steps: True
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
-- name: Lien_krv 3 step
-  method: multi scenario 3
-  power_asset: "[external_id]plant_information_lien_krv"
-  add_steps: True
-  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
-- name: Lien_krv 2
-  method: multi scenario 2
-  power_asset: "[external_id]plant_information_lien_krv"
-  add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
-- name: Lien_krv 3
-  method: multi scenario 3
-  power_asset: "[external_id]plant_information_lien_krv"
-  add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
-- name: Dalby 2 step
-  method: multi scenario 2
-  power_asset: "[external_id]plant_information_dalby"
-  add_steps: True
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
-- name: Dalby 3 step
-  method: multi scenario 3
-  power_asset: "[external_id]plant_information_dalby"
-  add_steps: True
-  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
-- name: Dalby 2
-  method: multi scenario 2
-  power_asset: "[external_id]plant_information_dalby"
-  add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
-- name: Dalby 3
-  method: multi scenario 3
-  power_asset: "[external_id]plant_information_dalby"
-  add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
-- name: Holen 2 step
-  method: multi scenario 2
-  power_asset: "[external_id]plant_information_holen"
-  add_steps: True
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
-- name: Holen 3 step
-  method: multi scenario 3
-  power_asset: "[external_id]plant_information_holen"
-  add_steps: True
-  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
-- name: Holen 2
-  method: multi scenario 2
-  power_asset: "[external_id]plant_information_holen"
-  add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
-- name: Holen 3
-  method: multi scenario 3
-  power_asset: "[external_id]plant_information_holen"
-  add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
-- name: Landet 2 step
-  method: multi scenario 2
-  power_asset: "[external_id]plant_information_landet"
-  add_steps: True
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
-- name: Landet 3 step
-  method: multi scenario 3
-  power_asset: "[external_id]plant_information_landet"
-  add_steps: True
-  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
-- name: Landet 2
-  method: multi scenario 2
-  power_asset: "[external_id]plant_information_landet"
-  add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
-- name: Landet 3
-  method: multi scenario 3
-  power_asset: "[external_id]plant_information_landet"
-  add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
-- name: Scott 2 step
-  method: multi scenario 2
-  power_asset: "[external_id]plant_information_scott"
-  add_steps: True
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
-- name: Scott 3 step
-  method: multi scenario 3
-  power_asset: "[external_id]plant_information_scott"
-  add_steps: True
-  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
-- name: Scott 2
-  method: multi scenario 2
-  power_asset: "[external_id]plant_information_scott"
-  add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
-- name: Scott 3
-  method: multi scenario 3
-  power_asset: "[external_id]plant_information_scott"
-  add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
 - name: Lund 2 step
   method: multi scenario 2
   power_asset: "[external_id]plant_information_lund"
   add_steps: True
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
+  scenario_set: "[name]Fornebu 2 scenarios"
 - name: Lund 3 step
   method: multi scenario 3
   power_asset: "[external_id]plant_information_lund"
   add_steps: True
-  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
+  scenario_set: "[name]Fornebu 3 scenarios"
+- name: Lund 20 step
+  method: multi scenario 20
+  power_asset: "[external_id]plant_information_lund"
+  add_steps: True
+  scenario_set: "[name]Fornebu 20 scenarios"
+- name: Lund 1
+  method: price independent
+  power_asset: "[external_id]plant_information_lund"
+  add_steps: False
+  scenario_set: "[name]Fornebu 1 scenario"
 - name: Lund 2
   method: multi scenario 2
   power_asset: "[external_id]plant_information_lund"
   add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios"
+  scenario_set: "[name]Fornebu 2 scenarios"
 - name: Lund 3
   method: multi scenario 3
   power_asset: "[external_id]plant_information_lund"
   add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]3 scenarios"
+  scenario_set: "[name]Fornebu 3 scenarios"
+- name: Lund 20
+  method: multi scenario 20
+  power_asset: "[external_id]plant_information_lund"
+  add_steps: False
+  scenario_set: "[name]Fornebu 20 scenarios"
+- name: Rull2 2 step
+  method: multi scenario 2
+  power_asset: "[external_id]plant_information_rull2"
+  add_steps: True
+  scenario_set: "[name]Fornebu 2 scenarios"
+- name: Rull2 3 step
+  method: multi scenario 3
+  power_asset: "[external_id]plant_information_rull2"
+  add_steps: True
+  scenario_set: "[name]Fornebu 3 scenarios"
+- name: Rull2 20 step
+  method: multi scenario 20
+  power_asset: "[external_id]plant_information_rull2"
+  add_steps: True
+  scenario_set: "[name]Fornebu 20 scenarios"
+- name: Rull2 1
+  method: price independent
+  power_asset: "[external_id]plant_information_rull2"
+  add_steps: False
+  scenario_set: "[name]Fornebu 1 scenario"
+- name: Rull2 2
+  method: multi scenario 2
+  power_asset: "[external_id]plant_information_rull2"
+  add_steps: False
+  scenario_set: "[name]Fornebu 2 scenarios"
+- name: Rull2 3
+  method: multi scenario 3
+  power_asset: "[external_id]plant_information_rull2"
+  add_steps: False
+  scenario_set: "[name]Fornebu 3 scenarios"
+- name: Rull2 20
+  method: multi scenario 20
+  power_asset: "[external_id]plant_information_rull2"
+  add_steps: False
+  scenario_set: "[name]Fornebu 20 scenarios"
+- name: Scott 2 step
+  method: multi scenario 2
+  power_asset: "[external_id]plant_information_scott"
+  add_steps: True
+  scenario_set: "[name]Fornebu 2 scenarios"
+- name: Scott 3 step
+  method: multi scenario 3
+  power_asset: "[external_id]plant_information_scott"
+  add_steps: True
+  scenario_set: "[name]Fornebu 3 scenarios"
+- name: Scott 20 step
+  method: multi scenario 20
+  power_asset: "[external_id]plant_information_scott"
+  add_steps: True
+  scenario_set: "[name]Fornebu 20 scenarios"
+- name: Scott 1
+  method: price independent
+  power_asset: "[external_id]plant_information_scott"
+  add_steps: False
+  scenario_set: "[name]Fornebu 1 scenario"
+- name: Scott 2
+  method: multi scenario 2
+  power_asset: "[external_id]plant_information_scott"
+  add_steps: False
+  scenario_set: "[name]Fornebu 2 scenarios"
+- name: Scott 3
+  method: multi scenario 3
+  power_asset: "[external_id]plant_information_scott"
+  add_steps: False
+  scenario_set: "[name]Fornebu 3 scenarios"
+- name: Scott 20
+  method: multi scenario 20
+  power_asset: "[external_id]plant_information_scott"
+  add_steps: False
+  scenario_set: "[name]Fornebu 20 scenarios"
+- name: Strand_krv 2 step
+  method: multi scenario 2
+  power_asset: "[external_id]plant_information_strand_krv"
+  add_steps: True
+  scenario_set: "[name]Fornebu 2 scenarios"
+- name: Strand_krv 3 step
+  method: multi scenario 3
+  power_asset: "[external_id]plant_information_strand_krv"
+  add_steps: True
+  scenario_set: "[name]Fornebu 3 scenarios"
+- name: Strand_krv 20 step
+  method: multi scenario 20
+  power_asset: "[external_id]plant_information_strand_krv"
+  add_steps: True
+  scenario_set: "[name]Fornebu 20 scenarios"
+- name: Strand_krv 1
+  method: price independent
+  power_asset: "[external_id]plant_information_strand_krv"
+  add_steps: False
+  scenario_set: "[name]Fornebu 1 scenario"
+- name: Strand_krv 2
+  method: multi scenario 2
+  power_asset: "[external_id]plant_information_strand_krv"
+  add_steps: False
+  scenario_set: "[name]Fornebu 2 scenarios"
+- name: Strand_krv 3
+  method: multi scenario 3
+  power_asset: "[external_id]plant_information_strand_krv"
+  add_steps: False
+  scenario_set: "[name]Fornebu 3 scenarios"
+- name: Strand_krv 20
+  method: multi scenario 20
+  power_asset: "[external_id]plant_information_strand_krv"
+  add_steps: False
+  scenario_set: "[name]Fornebu 20 scenarios"
+- name: Dalby 2 step
+  method: multi scenario 2
+  power_asset: "[external_id]plant_information_dalby"
+  add_steps: True
+  scenario_set: "[name]Fornebu 2 scenarios"
+- name: Dalby 3 step
+  method: multi scenario 3
+  power_asset: "[external_id]plant_information_dalby"
+  add_steps: True
+  scenario_set: "[name]Fornebu 3 scenarios"
+- name: Dalby 20 step
+  method: multi scenario 20
+  power_asset: "[external_id]plant_information_dalby"
+  add_steps: True
+  scenario_set: "[name]Fornebu 20 scenarios"
+- name: Dalby 1
+  method: price independent
+  power_asset: "[external_id]plant_information_dalby"
+  add_steps: False
+  scenario_set: "[name]Fornebu 1 scenario"
+- name: Dalby 2
+  method: multi scenario 2
+  power_asset: "[external_id]plant_information_dalby"
+  add_steps: False
+  scenario_set: "[name]Fornebu 2 scenarios"
+- name: Dalby 3
+  method: multi scenario 3
+  power_asset: "[external_id]plant_information_dalby"
+  add_steps: False
+  scenario_set: "[name]Fornebu 3 scenarios"
+- name: Dalby 20
+  method: multi scenario 20
+  power_asset: "[external_id]plant_information_dalby"
+  add_steps: False
+  scenario_set: "[name]Fornebu 20 scenarios"
+- name: Landet 2 step
+  method: multi scenario 2
+  power_asset: "[external_id]plant_information_landet"
+  add_steps: True
+  scenario_set: "[name]Fornebu 2 scenarios"
+- name: Landet 3 step
+  method: multi scenario 3
+  power_asset: "[external_id]plant_information_landet"
+  add_steps: True
+  scenario_set: "[name]Fornebu 3 scenarios"
+- name: Landet 20 step
+  method: multi scenario 20
+  power_asset: "[external_id]plant_information_landet"
+  add_steps: True
+  scenario_set: "[name]Fornebu 20 scenarios"
+- name: Landet 1
+  method: price independent
+  power_asset: "[external_id]plant_information_landet"
+  add_steps: False
+  scenario_set: "[name]Fornebu 1 scenario"
+- name: Landet 2
+  method: multi scenario 2
+  power_asset: "[external_id]plant_information_landet"
+  add_steps: False
+  scenario_set: "[name]Fornebu 2 scenarios"
+- name: Landet 3
+  method: multi scenario 3
+  power_asset: "[external_id]plant_information_landet"
+  add_steps: False
+  scenario_set: "[name]Fornebu 3 scenarios"
+- name: Landet 20
+  method: multi scenario 20
+  power_asset: "[external_id]plant_information_landet"
+  add_steps: False
+  scenario_set: "[name]Fornebu 20 scenarios"
+- name: Rull1 2 step
+  method: multi scenario 2
+  power_asset: "[external_id]plant_information_rull1"
+  add_steps: True
+  scenario_set: "[name]Fornebu 2 scenarios"
+- name: Rull1 3 step
+  method: multi scenario 3
+  power_asset: "[external_id]plant_information_rull1"
+  add_steps: True
+  scenario_set: "[name]Fornebu 3 scenarios"
+- name: Rull1 20 step
+  method: multi scenario 20
+  power_asset: "[external_id]plant_information_rull1"
+  add_steps: True
+  scenario_set: "[name]Fornebu 20 scenarios"
+- name: Rull1 1
+  method: price independent
+  power_asset: "[external_id]plant_information_rull1"
+  add_steps: False
+  scenario_set: "[name]Fornebu 1 scenario"
+- name: Rull1 2
+  method: multi scenario 2
+  power_asset: "[external_id]plant_information_rull1"
+  add_steps: False
+  scenario_set: "[name]Fornebu 2 scenarios"
+- name: Rull1 3
+  method: multi scenario 3
+  power_asset: "[external_id]plant_information_rull1"
+  add_steps: False
+  scenario_set: "[name]Fornebu 3 scenarios"
+- name: Rull1 20
+  method: multi scenario 20
+  power_asset: "[external_id]plant_information_rull1"
+  add_steps: False
+  scenario_set: "[name]Fornebu 20 scenarios"
+- name: Lien_krv 2 step
+  method: multi scenario 2
+  power_asset: "[external_id]plant_information_lien_krv"
+  add_steps: True
+  scenario_set: "[name]Fornebu 2 scenarios"
+- name: Lien_krv 3 step
+  method: multi scenario 3
+  power_asset: "[external_id]plant_information_lien_krv"
+  add_steps: True
+  scenario_set: "[name]Fornebu 3 scenarios"
+- name: Lien_krv 20 step
+  method: multi scenario 20
+  power_asset: "[external_id]plant_information_lien_krv"
+  add_steps: True
+  scenario_set: "[name]Fornebu 20 scenarios"
+- name: Lien_krv 1
+  method: price independent
+  power_asset: "[external_id]plant_information_lien_krv"
+  add_steps: False
+  scenario_set: "[name]Fornebu 1 scenario"
+- name: Lien_krv 2
+  method: multi scenario 2
+  power_asset: "[external_id]plant_information_lien_krv"
+  add_steps: False
+  scenario_set: "[name]Fornebu 2 scenarios"
+- name: Lien_krv 3
+  method: multi scenario 3
+  power_asset: "[external_id]plant_information_lien_krv"
+  add_steps: False
+  scenario_set: "[name]Fornebu 3 scenarios"
+- name: Lien_krv 20
+  method: multi scenario 20
+  power_asset: "[external_id]plant_information_lien_krv"
+  add_steps: False
+  scenario_set: "[name]Fornebu 20 scenarios"
+- name: Holen 2 step
+  method: multi scenario 2
+  power_asset: "[external_id]plant_information_holen"
+  add_steps: True
+  scenario_set: "[name]Fornebu 2 scenarios"
+- name: Holen 3 step
+  method: multi scenario 3
+  power_asset: "[external_id]plant_information_holen"
+  add_steps: True
+  scenario_set: "[name]Fornebu 3 scenarios"
+- name: Holen 20 step
+  method: multi scenario 20
+  power_asset: "[external_id]plant_information_holen"
+  add_steps: True
+  scenario_set: "[name]Fornebu 20 scenarios"
+- name: Holen 1
+  method: price independent
+  power_asset: "[external_id]plant_information_holen"
+  add_steps: False
+  scenario_set: "[name]Fornebu 1 scenario"
+- name: Holen 2
+  method: multi scenario 2
+  power_asset: "[external_id]plant_information_holen"
+  add_steps: False
+  scenario_set: "[name]Fornebu 2 scenarios"
+- name: Holen 3
+  method: multi scenario 3
+  power_asset: "[external_id]plant_information_holen"
+  add_steps: False
+  scenario_set: "[name]Fornebu 3 scenarios"
+- name: Holen 20
+  method: multi scenario 20
+  power_asset: "[external_id]plant_information_holen"
+  add_steps: False
+  scenario_set: "[name]Fornebu 20 scenarios"

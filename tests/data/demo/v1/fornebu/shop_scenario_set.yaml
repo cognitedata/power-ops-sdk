@@ -4,21 +4,45 @@
 #   end_specification: DateSpecification
 #   scenarios: [ShopScenario]
 
-- name: 1 scenario
+- name: Fornebu 1 scenario
   start_specification: "[name]Default Start"
   end_specification: "[name]Default End"
   scenarios:
     - "[name]Fornebu base"
-- name: 2 scenarios
+- name: Fornebu 2 scenarios
   start_specification: "[name]Default Start"
   end_specification: "[name]Default End"
   scenarios:
     - "[name]Fornebu base"
-    - "[name]Fornebu price offset 200"
-- name: 3 scenarios
+    - "[name]Fornebu price plus 200 first 24h"
+- name: Fornebu 3 scenarios
   start_specification: "[name]Default Start"
   end_specification: "[name]Default End"
   scenarios:
+    - "[name|type:ShopScenario]Fornebu price minus 200 first 24h"
     - "[name]Fornebu base"
-    - "[name|type:ShopScenario]Fornebu price offset -200"
-    - "[name]Fornebu price offset 200"
+    - "[name]Fornebu price plus 200 first 24h"
+- name: Fornebu 20 scenarios
+  start_specification: "[name]Default Start"
+  end_specification: "[name]Default End"
+  scenarios:
+    - "[name]Fornebu price minus 500 first 24h"
+    - "[name]Fornebu price multiply 0 first 24h"
+    - "[name]Fornebu price minus 50 first 24h"
+    - "[name]Fornebu price minus 40 first 24h"
+    - "[name]Fornebu price minus 30 first 24h"
+    - "[name]Fornebu price minus 20 first 24h"
+    - "[name]Fornebu price minus 15 first 24h"
+    - "[name]Fornebu price minus 10 first 24h"
+    - "[name]Fornebu price minus 5 first 24h"
+    - "[name]Fornebu base"
+    - "[name]Fornebu price plus 5 first 24h"
+    - "[name]Fornebu price plus 10 first 24h"
+    - "[name]Fornebu price plus 15 first 24h"
+    - "[name]Fornebu price plus 20 first 24h"
+    - "[name]Fornebu price plus 30 first 24h"
+    - "[name]Fornebu price plus 40 first 24h"
+    - "[name]Fornebu price plus 50 first 24h"
+    - "[name]Fornebu price plus 70 first 24h"
+    - "[name]Fornebu price plus 100 first 24h"
+    - "[name]Fornebu price plus 2000 first 24h"
