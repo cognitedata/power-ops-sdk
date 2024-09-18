@@ -128,7 +128,6 @@ class ResyncImporter:
         external_ids: list[str] = []
 
         for folder in self.folders_to_process:
-
             all_data_model_files = list((folder).glob("*.yaml"))
 
             data_model_configuration_file = folder / "data_model_configuration.yaml"
@@ -229,7 +228,7 @@ class ResyncImporter:
 
     @staticmethod
     def _split_data_by_parsing_method(
-        raw_data: dict[str, Any]
+        raw_data: dict[str, Any],
     ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
         """Splits an unparsed dictionary into a dictionary for each type of parsing should be applied.
 

@@ -13,7 +13,7 @@ def require(value: Optional[_T]) -> _T: ...
 def require(value: Any, as_type: type[_T]) -> _T: ...
 
 
-def require(value, as_type=None):
+def require(value: Any, as_type: Any = None) -> Any:
     if value is None:
         raise ValueError("Value is required")
     if as_type is not None and not isinstance(value, as_type):

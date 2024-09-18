@@ -7,18 +7,19 @@ import logging
 import random
 import time
 from functools import partial, wraps
+from typing import Any
 
 logging_logger = logging.getLogger(__name__)
 
 
-def decorator(caller):
+def decorator(caller):  # type: ignore[no-untyped-def]
     """
     Turns caller into a decorator.
     """
 
-    def decor(f):
+    def decor(f):  # type: ignore[no-untyped-def]
         @wraps(f)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args, **kwargs):  # type: ignore[no-untyped-def]
             return caller(f, *args, **kwargs)
 
         return wrapper
@@ -26,7 +27,7 @@ def decorator(caller):
     return decor
 
 
-def _retry_internal(
+def _retry_internal(  # type: ignore[no-untyped-def]
     f, exceptions=Exception, tries=-1, delay=0, max_delay=None, backoff=1, jitter=0, logger=logging_logger
 ):
     """
@@ -82,7 +83,7 @@ def _retry_internal(
                 _delay = min(_delay, max_delay)
 
 
-def retry(exceptions=Exception, tries=-1, delay=0, max_delay=None, backoff=1, jitter=0, logger=logging_logger):
+def retry(exceptions=Exception, tries=-1, delay=0, max_delay=None, backoff=1, jitter=0, logger=logging_logger):  # type: ignore[no-untyped-def]
     """
     Returns a retry decorator.
 
@@ -112,8 +113,8 @@ def retry(exceptions=Exception, tries=-1, delay=0, max_delay=None, backoff=1, ji
     """
 
     @decorator
-    def retry_decorator(f, *fargs, **fkwargs):
-        args = fargs or []
+    def retry_decorator(f, *fargs, **fkwargs):  # type: ignore[no-untyped-def]
+        args: Any = fargs or []
         kwargs = fkwargs or {}
         return _retry_internal(
             partial(f, *args, **kwargs), exceptions, tries, delay, max_delay, backoff, jitter, logger
@@ -122,7 +123,7 @@ def retry(exceptions=Exception, tries=-1, delay=0, max_delay=None, backoff=1, ji
     return retry_decorator
 
 
-def retry_call(
+def retry_call(  # type: ignore[no-untyped-def]
     f,
     fargs=None,
     fkwargs=None,

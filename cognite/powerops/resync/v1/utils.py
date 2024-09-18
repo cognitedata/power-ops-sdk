@@ -77,7 +77,6 @@ def get_data_model_write_classes(data_model_client: Any) -> dict[str, type]:
 
     expected_types_mapping = {}
     for read_class in data_model_read_classes.keys():
-
         write_class_name = read_class.__name__ + "Write"
 
         read_name = to_snake(read_class.__name__)

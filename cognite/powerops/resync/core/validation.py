@@ -5,12 +5,12 @@ import logging
 from cognite.client import CogniteClient
 
 from cognite.powerops.resync.diff import ModelDifference
-from cognite.powerops.resync.models.base import AssetModel, Model  # type: ignore[attr-defined]
+from cognite.powerops.resync.models.base import AssetModel, Model
 
 logger = logging.getLogger(__name__)
 
 
-def _clean_relationships(client: CogniteClient, differences: ModelDifference, new_model: Model):
+def _clean_relationships(client: CogniteClient, differences: ModelDifference, new_model: Model) -> None:
     if isinstance(new_model, AssetModel):
         not_create = _find_relationship_with_missing_time_series_target(client, new_model)
         relationship_diff = next((d for d in differences if d.field_name == "relationships"), None)

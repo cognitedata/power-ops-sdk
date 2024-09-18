@@ -9,17 +9,15 @@ repos:
     hooks:
       - id: codespell
 
-  - repo: https://github.com/psf/black
-    rev: 24.4.2
-    hooks:
-      - id: black
-
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: "v0.5.5"
+    rev: "v0.6.0"
     hooks:
       - id: ruff
         args:
           - --exit-non-zero-on-fix
+          - --config=pyproject.toml
+      - id: ruff-format
+        args:
           - --config=pyproject.toml
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -36,18 +34,13 @@ repos:
         args:
           - --pytest-test-first
         exclude: "constants.py|mock_.*.py"
-      # - id: no-commit-to-branch # Disabled because these hooks are also run on PR merge to main
       - id: trailing-whitespace
+      - id: no-commit-to-branch
 
   - repo: https://github.com/google/yamlfmt
     rev: v0.13.0
     hooks:
       - id: yamlfmt
-
-  - repo: https://github.com/frnhr/pre-commit-nocommit
-    rev: 0.0.1
-    hooks:
-      - id: check-nocommit
 
   # Mypy must be run in the local system environment, not in the pre-commit environment.
   - repo: local

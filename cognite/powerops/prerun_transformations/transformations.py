@@ -513,6 +513,7 @@ class HeightToVolume(DynamicTransformation):
         Example:
         ```python
         from cognite.client import CogniteClient
+
         start_time = datetime.timestamp(datetime(2000, 1, 1, 12))
         end_time = datetime.timestamp(datetime(2000, 1, 10, 12))
         model = {"reservoir": {"Lundevatn": {"vol_head": {"x": [10, 20, 40, 80, 160], "y": [2, 4, 6, 8, 10]}}}}
@@ -842,7 +843,6 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
     def add_water_in_transit(
         inflow: pd.Series, discharge: pd.Series, shape: dict[int, float], start: datetime, end: datetime
     ) -> pd.Series:
-
         # Forward fill discharge for all (hour) timestamps until start
         one_hour = pd.Timedelta("1h")
         if start - one_hour not in discharge.index:
@@ -906,7 +906,6 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         """
         single_ts = time_series_data[0]
         if single_ts.empty or self.discharge.empty:
-
             return single_ts
 
         if self.pre_apply_has_run:

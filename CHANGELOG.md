@@ -13,6 +13,33 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.98.4] - 2024-09-09
+### Fix
+* Unpinned SDK dependency against toolkit and only used pinned version with dev dependencies
+
+## [0.98.3] - 2024-08-26
+### Added
+* Added SHOPcase to public modules of data_classes
+
+### Changed
+* Fixed bug in lazy loading shop.data_classes.SHOPCase
+
+## [0.98.2] - 2024-08-22
+### Added
+* Added optional shop_run_external_id to shop.shop_run_api.trigger_single_casefile
+
+### Changed
+* Switched to lazy loading of shop.data_classes.SHOPCase case to a dictionary, to improve performance where data is not being accessed or changed.
+
+## [0.98.1] - 2024-08-12
+### Added
+* Verify that external IDs are blow the 255 character limit
+
+## [0.98.0] - 2024-08-09
+### Changed
+* Restructure of PowerOps `shop_run_api` to remove duplication of logic
+* Update of example notebooks in `/docs/tutorials/` to reflect current structure of the SDK
+
 ## [0.97.2] - 2024-07-25
 ### Added
 * Add py.typed to support type hints when using library and mypy compatibility

@@ -14,13 +14,13 @@ from cognite.client.data_classes.events import EventSort
 from cognite.client.exceptions import CogniteAPIError
 
 from cognite.powerops.cdf_labels import RelationshipLabel
-from cognite.powerops.client.shop.shop_run_filter import SHOPRunFilter
+from cognite.powerops.client.shop.data_classes.dayahead_trigger import Case, PrerunFileMetadata, SHOPPreRunFile
+from cognite.powerops.client.shop.data_classes.shop_case import SHOPCase, SHOPFileReference, SHOPFileType
+from cognite.powerops.client.shop.data_classes.shop_run import SHOPRun, SHOPRunEvent, SHOPRunList
+from cognite.powerops.client.shop.data_classes.shop_run_filter import SHOPRunFilter
+from cognite.powerops.utils.cdf.calls import create_event
 from cognite.powerops.utils.cdf.resource_creation import simple_relationship
-
-from .data_classes.dayahead_trigger import Case, PrerunFileMetadata, ShopPreRunFile
-from .shop_case import SHOPCase, SHOPFileReference, SHOPFileType
-from .shop_run import SHOPRun, ShopRunEvent, SHOPRunList
-from .utils import new_external_id
+from cognite.powerops.utils.identifiers import new_external_id
 
 DEFAULT_READ_LIMIT = 25
 
@@ -37,15 +37,15 @@ class SHOPRunAPI:
         self._CONCURRENT_CALLS = 5
         self.shop_as_a_service = shop_as_a_service
 
-    def _get_shop_prerun_files(self, file_external_ids: list[str]) -> list[ShopPreRunFile]:
+    def _get_shop_prerun_files(self, file_external_ids: list[str]) -> list[SHOPPreRunFile]:
         prerun_files = self._cdf.files.retrieve_multiple(external_ids=file_external_ids)
-        return [ShopPreRunFile.load_from_metadata(file) for file in prerun_files]
+        return [SHOPPreRunFile.load_from_metadata(file) for file in prerun_files]
 
     def trigger_case(self, case: Case, shop_version: str) -> tuple[list, list[SHOPRun]]:
         """
         Trigger a collection of shop runs related to one Case (also referred to as watercourse).
-        For each ShopCase the prerun file will be used to trigger a shop run event in cdf,
-        and used to trigger the CogShop container.
+        For each SHOPCase the prerun file will be used to trigger a shop run event in cdf,
+        and used to trigger the CogSHOP container.
         Prerun files must exist in CDF.
         """
         shop_events = []
@@ -74,6 +74,7 @@ class SHOPRunAPI:
                     source="DayaheadTrigger",
                 )
             )
+
         self._cdf.events.create([new_event.as_cdf_event() for new_event in shop_events])
 
         with ThreadPoolExecutor(max_workers=self._CONCURRENT_CALLS) as executor:
@@ -85,7 +86,9 @@ class SHOPRunAPI:
 
         return list(set(plants_per_case)), shop_events
 
-    def trigger_single_casefile(self, case: SHOPCase, source: str | None = None) -> SHOPRun:
+    def trigger_single_casefile(
+        self, case: SHOPCase, source: str | None = None, shop_run_external_id: str | None = None
+    ) -> SHOPRun:
         """
         Trigger SHOP for a given case file.
 
@@ -93,6 +96,8 @@ class SHOPRunAPI:
             case: SHOPCase instance, contains data for the main case file and references to additional SHOP input files.
             source: The source of the SHOP trigger. If nothing is passed, the method will
                 try to detect the service principal of the current user.
+            shop_run_external_id: External ID for the SHOP run event, must be unique within the CDF project. If nothing
+                is passed, a new external ID will be generated.
 
         Returns:
             The new SHOP run created.
@@ -126,8 +131,10 @@ class SHOPRunAPI:
             source=source,
         )
 
+        external_id = shop_run_external_id or new_external_id(now=now)
+
         shop_run = SHOPRun(
-            external_id=new_external_id(now=now),
+            external_id=external_id,
             watercourse=case.watercourse,
             data_set_id=self._dataset_id,
             start=now,
@@ -138,8 +145,10 @@ class SHOPRunAPI:
             _client=self._cdf,
             source=source,
         )
+
         event = shop_run.as_cdf_event()
-        self._cdf.events.create(shop_run.as_cdf_event())
+        create_event(self._cdf, event)
+
         relationships = [
             simple_relationship(source=event, target=case_file_meta, label_external_id=RelationshipLabel.CASE_FILE)
         ]
@@ -175,7 +184,6 @@ class SHOPRunAPI:
         return f"https://power-ops-api{stage}.{cluster}.cognite.ai/{project}/run-shop"
 
     def _shop_url_shaas(self) -> str:
-
         project = self._cdf.config.project
 
         cluster = urlparse(self._cdf.config.base_url).netloc.split(".", 1)[0]
@@ -215,7 +223,7 @@ class SHOPRunAPI:
         limit: int = DEFAULT_READ_LIMIT,
         event_sort: EventSort = None,
     ) -> SHOPRunList:
-        is_type = filters.Equals("type", ShopRunEvent.event_type)
+        is_type = filters.Equals("type", SHOPRunEvent.event_type)
         events = self._cdf.events.filter(filters.And(is_type, *extra_filters), limit=limit, sort=event_sort)
         return SHOPRunList.load(events)
 
