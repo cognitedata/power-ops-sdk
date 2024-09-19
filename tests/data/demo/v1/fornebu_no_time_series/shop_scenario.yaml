@@ -7,7 +7,7 @@
 #   attribute_mappings_override: [ShopAttributeMapping]
 
 - name: "Fornebu no time series base"
-  model: "[name]Fornebu"
+  model: "[name]Fornebu no time series"
   commands: "[name|type:ShopCommands]default"
   source: resync
   attribute_mappings_override: []
@@ -16,7 +16,7 @@
     - "[name]plant production"
     - "[name]plant consumption"
 - name: "Fornebu no time series price plus 200"
-  model: "[name]Fornebu"
+  model: "[name]Fornebu no time series"
   commands: "[name|type:ShopCommands]default"
   source: resync
   attribute_mappings_override: []
