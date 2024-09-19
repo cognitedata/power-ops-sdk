@@ -8,14 +8,14 @@
 #   extraFiles: [File]
 #   baseAttributeMappings: [ShopAttributeMapping]
 
-- name: Fornebu no time series
+- name: Fornebu with time series values base
   model_version: "1"
   shop_version: "15.4.1.1"
   penalty_limit: 0.0
   model: "[external_id]fornebu_model_with_time_series_values_base"
   cog_shop_files_config: []
   base_attribute_mappings: []
-- name: Fornebu no time series
+- name: Fornebu with time series values price plus 200
   model_version: "1"
   shop_version: "15.4.1.1"
   penalty_limit: 0.0
