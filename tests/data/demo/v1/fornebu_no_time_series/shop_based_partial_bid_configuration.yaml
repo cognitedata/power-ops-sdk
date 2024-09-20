@@ -6,47 +6,47 @@
 #   scenario_set: ShopScenarioSet
 
 - name: Strand_krv no time series
-  method: multi scenario 2
+  method: multi scenario 100
   power_asset: "[external_id]plant_information_strand_krv"
   add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios no time series"
+  scenario_set: "[name|type:ShopScenarioSet]100 scenarios no time series"
 - name: Rull2 no time series
-  method: multi scenario 2
+  method: multi scenario 100
   power_asset: "[external_id]plant_information_rull2"
   add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios no time series"
+  scenario_set: "[name|type:ShopScenarioSet]100 scenarios no time series"
 - name: Rull1 no time series
-  method: multi scenario 2
+  method: multi scenario 100
   power_asset: "[external_id]plant_information_rull1"
   add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios no time series"
+  scenario_set: "[name|type:ShopScenarioSet]100 scenarios no time series"
 - name: Lien_krv no time series
-  method: multi scenario 2
+  method: multi scenario 100
   power_asset: "[external_id]plant_information_lien_krv"
   add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios no time series"
+  scenario_set: "[name|type:ShopScenarioSet]100 scenarios no time series"
 - name: Dalby no time series
-  method: multi scenario 2
+  method: multi scenario 100
   power_asset: "[external_id]plant_information_dalby"
   add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios no time series"
+  scenario_set: "[name|type:ShopScenarioSet]100 scenarios no time series"
 - name: Holen no time series
-  method: multi scenario 2
+  method: multi scenario 100
   power_asset: "[external_id]plant_information_holen"
   add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios no time series"
+  scenario_set: "[name|type:ShopScenarioSet]100 scenarios no time series"
 - name: Landet no time series
-  method: multi scenario 2
+  method: multi scenario 100
   power_asset: "[external_id]plant_information_landet"
   add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios no time series"
+  scenario_set: "[name|type:ShopScenarioSet]100 scenarios no time series"
 - name: Scott no time series
-  method: multi scenario 2
+  method: multi scenario 100
   power_asset: "[external_id]plant_information_scott"
   add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios no time series"
+  scenario_set: "[name|type:ShopScenarioSet]100 scenarios no time series"
 - name: Lund no time series
-  method: multi scenario 2
+  method: multi scenario 100
   power_asset: "[external_id]plant_information_lund"
   add_steps: False
-  scenario_set: "[name|type:ShopScenarioSet]2 scenarios no time series"
+  scenario_set: "[name|type:ShopScenarioSet]100 scenarios no time series"

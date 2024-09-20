@@ -1,24 +1,700 @@
-# ShopModel view definition
-# - name: String!
-#   version: String
-#   shopVersion: String!
-#   penaltyLimit: Float
-#   model: File!
-#   cogShopFilesConfig: [ShopFile]
-#   extraFiles: [File]
-#   baseAttributeMappings: [ShopAttributeMapping]
-
 - name: Fornebu with time series values base
-  model_version: "1"
-  shop_version: "15.4.1.1"
+  model_version: '1'
+  shop_version: 15.4.1.1
   penalty_limit: 0.0
-  model: "[external_id]fornebu_model_with_time_series_values_base"
+  model: '[external_id]fornebu_model_with_time_series_values_base'
   cog_shop_files_config: []
   base_attribute_mappings: []
 - name: Fornebu with time series values price plus 200
-  model_version: "1"
-  shop_version: "15.4.1.1"
+  model_version: '1'
+  shop_version: 15.4.1.1
   penalty_limit: 0.0
-  model: "[external_id]fornebu_model_with_time_series_values_price_plus_200"
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_200'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 400
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_400'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 390
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_390'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 380
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_380'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 370
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_370'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 360
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_360'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 350
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_350'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 340
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_340'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 330
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_330'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 320
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_320'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 310
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_310'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 300
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_300'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 290
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_290'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 280
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_280'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 270
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_270'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 260
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_260'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 250
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_250'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 240
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_240'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 230
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_230'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 220
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_220'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 210
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_210'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 200
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_200'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 190
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_190'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 180
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_180'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 170
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_170'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 160
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_160'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 150
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_150'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 140
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_140'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 130
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_130'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 120
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_120'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 110
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_110'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 100
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_100'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 90
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_90'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 80
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_80'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 70
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_70'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 60
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_60'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 50
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_50'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 40
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_40'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 30
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_30'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 20
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_20'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price minus 10
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_minus_10'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 10
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_10'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 20
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_20'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 30
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_30'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 40
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_40'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 50
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_50'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 60
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_60'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 70
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_70'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 80
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_80'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 90
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_90'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 100
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_100'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 110
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_110'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 120
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_120'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 130
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_130'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 140
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_140'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 150
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_150'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 160
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_160'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 170
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_170'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 180
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_180'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 190
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_190'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 210
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_210'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 220
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_220'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 230
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_230'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 240
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_240'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 250
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_250'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 260
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_260'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 270
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_270'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 280
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_280'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 290
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_290'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 300
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_300'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 310
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_310'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 320
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_320'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 330
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_330'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 340
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_340'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 350
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_350'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 360
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_360'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 370
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_370'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 380
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_380'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 390
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_390'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 400
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_400'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 410
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_410'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 420
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_420'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 430
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_430'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 440
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_440'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 450
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_450'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 460
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_460'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 470
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_470'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 480
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_480'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 490
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_490'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 500
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_500'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 510
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_510'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 520
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_520'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 530
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_530'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 540
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_540'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 550
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_550'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 560
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_560'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 570
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_570'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 580
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_580'
+  cog_shop_files_config: []
+  base_attribute_mappings: []
+- name: Fornebu with time series values price plus 590
+  model_version: '1'
+  shop_version: 15.4.1.1
+  penalty_limit: 10000.0
+  model: '[external_id]fornebu_model_with_time_series_values_price_plus_590'
   cog_shop_files_config: []
   base_attribute_mappings: []

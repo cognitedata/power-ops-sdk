@@ -1,26 +1,900 @@
-# ShopScenario view definition
-# - name: String!
-#   model: ShopModel
-#   commands: ShopCommands
-#   source: String
-#   output_definition: [ShopOutputTimeSeriesDefinition]
-#   attribute_mappings_override: [ShopAttributeMapping]
-
-- name: "Fornebu no time series base"
-  model: "[name]Fornebu with time series values base"
-  commands: "[name|type:ShopCommands]default"
+- name: Fornebu no time series base
+  model: '[name]Fornebu with time series values base'
+  commands: '[name|type:ShopCommands]default'
   source: resync
   attribute_mappings_override: []
   output_definition:
-    - "[name]market price"
-    - "[name]plant production"
-    - "[name]plant consumption"
-- name: "Fornebu no time series price plus 200"
-  model: "[name]Fornebu with time series values price plus 200"
-  commands: "[name|type:ShopCommands]default"
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 200
+  model: '[name]Fornebu with time series values price plus 200'
+  commands: '[name|type:ShopCommands]default'
   source: resync
   attribute_mappings_override: []
   output_definition:
-    - "[name]market price"
-    - "[name]plant production"
-    - "[name]plant consumption"
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 400
+  model: '[name]Fornebu with time series values price minus 400'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 390
+  model: '[name]Fornebu with time series values price minus 390'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 380
+  model: '[name]Fornebu with time series values price minus 380'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 370
+  model: '[name]Fornebu with time series values price minus 370'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 360
+  model: '[name]Fornebu with time series values price minus 360'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 350
+  model: '[name]Fornebu with time series values price minus 350'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 340
+  model: '[name]Fornebu with time series values price minus 340'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 330
+  model: '[name]Fornebu with time series values price minus 330'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 320
+  model: '[name]Fornebu with time series values price minus 320'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 310
+  model: '[name]Fornebu with time series values price minus 310'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 300
+  model: '[name]Fornebu with time series values price minus 300'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 290
+  model: '[name]Fornebu with time series values price minus 290'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 280
+  model: '[name]Fornebu with time series values price minus 280'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 270
+  model: '[name]Fornebu with time series values price minus 270'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 260
+  model: '[name]Fornebu with time series values price minus 260'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 250
+  model: '[name]Fornebu with time series values price minus 250'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 240
+  model: '[name]Fornebu with time series values price minus 240'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 230
+  model: '[name]Fornebu with time series values price minus 230'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 220
+  model: '[name]Fornebu with time series values price minus 220'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 210
+  model: '[name]Fornebu with time series values price minus 210'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 200
+  model: '[name]Fornebu with time series values price minus 200'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 190
+  model: '[name]Fornebu with time series values price minus 190'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 180
+  model: '[name]Fornebu with time series values price minus 180'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 170
+  model: '[name]Fornebu with time series values price minus 170'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 160
+  model: '[name]Fornebu with time series values price minus 160'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 150
+  model: '[name]Fornebu with time series values price minus 150'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 140
+  model: '[name]Fornebu with time series values price minus 140'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 130
+  model: '[name]Fornebu with time series values price minus 130'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 120
+  model: '[name]Fornebu with time series values price minus 120'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 110
+  model: '[name]Fornebu with time series values price minus 110'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 100
+  model: '[name]Fornebu with time series values price minus 100'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 90
+  model: '[name]Fornebu with time series values price minus 90'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 80
+  model: '[name]Fornebu with time series values price minus 80'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 70
+  model: '[name]Fornebu with time series values price minus 70'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 60
+  model: '[name]Fornebu with time series values price minus 60'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 50
+  model: '[name]Fornebu with time series values price minus 50'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 40
+  model: '[name]Fornebu with time series values price minus 40'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 30
+  model: '[name]Fornebu with time series values price minus 30'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 20
+  model: '[name]Fornebu with time series values price minus 20'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price minus 10
+  model: '[name]Fornebu with time series values price minus 10'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 10
+  model: '[name]Fornebu with time series values price plus 10'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 20
+  model: '[name]Fornebu with time series values price plus 20'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 30
+  model: '[name]Fornebu with time series values price plus 30'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 40
+  model: '[name]Fornebu with time series values price plus 40'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 50
+  model: '[name]Fornebu with time series values price plus 50'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 60
+  model: '[name]Fornebu with time series values price plus 60'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 70
+  model: '[name]Fornebu with time series values price plus 70'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 80
+  model: '[name]Fornebu with time series values price plus 80'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 90
+  model: '[name]Fornebu with time series values price plus 90'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 100
+  model: '[name]Fornebu with time series values price plus 100'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 110
+  model: '[name]Fornebu with time series values price plus 110'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 120
+  model: '[name]Fornebu with time series values price plus 120'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 130
+  model: '[name]Fornebu with time series values price plus 130'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 140
+  model: '[name]Fornebu with time series values price plus 140'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 150
+  model: '[name]Fornebu with time series values price plus 150'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 160
+  model: '[name]Fornebu with time series values price plus 160'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 170
+  model: '[name]Fornebu with time series values price plus 170'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 180
+  model: '[name]Fornebu with time series values price plus 180'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 190
+  model: '[name]Fornebu with time series values price plus 190'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 210
+  model: '[name]Fornebu with time series values price plus 210'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 220
+  model: '[name]Fornebu with time series values price plus 220'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 230
+  model: '[name]Fornebu with time series values price plus 230'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 240
+  model: '[name]Fornebu with time series values price plus 240'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 250
+  model: '[name]Fornebu with time series values price plus 250'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 260
+  model: '[name]Fornebu with time series values price plus 260'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 270
+  model: '[name]Fornebu with time series values price plus 270'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 280
+  model: '[name]Fornebu with time series values price plus 280'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 290
+  model: '[name]Fornebu with time series values price plus 290'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 300
+  model: '[name]Fornebu with time series values price plus 300'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 310
+  model: '[name]Fornebu with time series values price plus 310'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 320
+  model: '[name]Fornebu with time series values price plus 320'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 330
+  model: '[name]Fornebu with time series values price plus 330'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 340
+  model: '[name]Fornebu with time series values price plus 340'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 350
+  model: '[name]Fornebu with time series values price plus 350'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 360
+  model: '[name]Fornebu with time series values price plus 360'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 370
+  model: '[name]Fornebu with time series values price plus 370'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 380
+  model: '[name]Fornebu with time series values price plus 380'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 390
+  model: '[name]Fornebu with time series values price plus 390'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 400
+  model: '[name]Fornebu with time series values price plus 400'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 410
+  model: '[name]Fornebu with time series values price plus 410'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 420
+  model: '[name]Fornebu with time series values price plus 420'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 430
+  model: '[name]Fornebu with time series values price plus 430'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 440
+  model: '[name]Fornebu with time series values price plus 440'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 450
+  model: '[name]Fornebu with time series values price plus 450'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 460
+  model: '[name]Fornebu with time series values price plus 460'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 470
+  model: '[name]Fornebu with time series values price plus 470'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 480
+  model: '[name]Fornebu with time series values price plus 480'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 490
+  model: '[name]Fornebu with time series values price plus 490'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 500
+  model: '[name]Fornebu with time series values price plus 500'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 510
+  model: '[name]Fornebu with time series values price plus 510'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 520
+  model: '[name]Fornebu with time series values price plus 520'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 530
+  model: '[name]Fornebu with time series values price plus 530'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 540
+  model: '[name]Fornebu with time series values price plus 540'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 550
+  model: '[name]Fornebu with time series values price plus 550'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 560
+  model: '[name]Fornebu with time series values price plus 560'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 570
+  model: '[name]Fornebu with time series values price plus 570'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 580
+  model: '[name]Fornebu with time series values price plus 580'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'
+- name: Fornebu no time series price plus 590
+  model: '[name]Fornebu with time series values price plus 590'
+  commands: '[name|type:ShopCommands]default'
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - '[name]market price'
+    - '[name]plant production'
+    - '[name]plant consumption'

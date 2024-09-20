@@ -103,10 +103,10 @@
     - "[external_id]shop_based_partial_bid_configuration_scott_20_step"
     - "[external_id]shop_based_partial_bid_configuration_lund_20_step"
 
-- name: No time series multi scenario 2
+- name: No time series multi scenario 100
   market_configuration: "[name]Nord Pool Day-Ahead"
   price_area: "[external_id]price_area_information_no2"
-  bid_date_specification: "[name]Default BidDate"
+  bid_date_specification: "[name]July 8 last year"
   partials:
     - "[external_id]shop_based_partial_bid_configuration_strand_krv_no_time_series"
     - "[external_id]shop_based_partial_bid_configuration_rull2_no_time_series"
