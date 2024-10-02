@@ -29,13 +29,15 @@ _APICallableForSHOPRunT = Callable[[Union[SHOPRun, Sequence[SHOPRun]]], Union[SH
 
 class SHOPRunAPI:
     def __init__(
-        self, client: CogniteClient, dataset_id: int, cogshop_version: str = "", shop_as_a_service: bool = False
+        self,
+        client: CogniteClient,
+        dataset_id: int,
+        cogshop_version: str = "",
     ):
         self._cdf = client
         self._dataset_id = dataset_id
         self.cogshop_version = cogshop_version
         self._CONCURRENT_CALLS = 5
-        self.shop_as_a_service = shop_as_a_service
 
     def _get_shop_prerun_files(self, file_external_ids: list[str]) -> list[SHOPPreRunFile]:
         prerun_files = self._cdf.files.retrieve_multiple(external_ids=file_external_ids)
@@ -168,21 +170,6 @@ class SHOPRunAPI:
         self._trigger_shop_container(shop_run)
         return shop_run
 
-    def _shop_url(self) -> str:
-        project = self._cdf.config.project
-
-        cluster = urlparse(self._cdf.config.base_url).netloc.split(".", 1)[0]
-
-        environment = project.split("-")[-1]
-        if environment in {"dev", "staging"}:
-            stage = ".staging"
-        elif environment == "prod":
-            stage = ""
-        else:
-            raise ValueError(f"Can't detect prod/staging from project name: {project!r}")
-
-        return f"https://power-ops-api{stage}.{cluster}.cognite.ai/{project}/run-shop"
-
     def _shop_url_shaas(self) -> str:
         project = self._cdf.config.project
 
@@ -190,25 +177,22 @@ class SHOPRunAPI:
 
         if project == "power-ops-staging":
             environment = ".staging"
-        elif project in {"lyse-dev", "lyse-prod", "heco-dev", "heco-prod"}:
+        elif project in {"lyse-dev", "lyse-prod", "heco-dev", "heco-prod", "oe-dev", "oe-prod"}:
             environment = ""
         else:
             raise ValueError(f"SHOP As A Service has not been configured for project name: {project!r}")
 
         return f"https://power-ops-api{environment}.{cluster}.cognite.ai/{project}/run-shop-as-service"
 
+    # todo: changes to calling logic here -- for switch to fdm
     def _trigger_shop_container(self, shop_run: SHOPRun):
         def auth(r: requests.PreparedRequest) -> requests.PreparedRequest:
             auth_header_name, auth_header_value = self._cdf._config.credentials.authorization_header()
             r.headers[auth_header_name] = auth_header_value
             return r
 
-        if self.shop_as_a_service:
-            shop_url = self._shop_url_shaas()
-            shop_body = {"mode": "asset", "runs": [{"event_external_id": shop_run.external_id}]}
-        else:
-            shop_url = self._shop_url()
-            shop_body = {"shopEventExternalId": shop_run.external_id, "cogShopVersion": self.cogshop_version}
+        shop_url = self._shop_url_shaas()
+        shop_body = {"mode": "asset", "runs": [{"event_external_id": shop_run.external_id}]}
 
         response = requests.post(
             url=shop_url,

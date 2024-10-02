@@ -30,7 +30,6 @@ class PowerOpsClient:
         cogshop_version: str,
         config: ClientConfig,
         monitor_dataset: str | None = None,
-        shop_as_a_service: bool = False,
     ):
         self.cdf = CogniteClient(config)
         self.cogshop_version = cogshop_version
@@ -39,7 +38,7 @@ class PowerOpsClient:
         self.assets = PowerAssetAPI(self.cdf)
         self.afrr_bid = AFRRBidAPI(self.cdf)
         self.day_ahead_bid = DayAheadBidAPI(self.cdf)
-        self.shop = SHOPRunAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version, shop_as_a_service)
+        self.shop = SHOPRunAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version)
         self.workflow = DayaheadTriggerAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version)
         self.v1 = PowerOpsModelsV1Client(self.cdf)
 
@@ -81,7 +80,6 @@ class PowerOpsClient:
         write_dataset: str | None = None,
         cogshop_version: str | None = None,
         monitor_dataset: str | None = None,
-        shop_as_a_service: bool | None = None,
     ) -> PowerOpsClient:
         """
         Create a PowerOpsClient from a CogniteClient object.
@@ -104,7 +102,6 @@ class PowerOpsClient:
             write_dataset=write_dataset,
             cogshop_version=cogshop_version,
             monitor_dataset=monitor_dataset,
-            shop_as_a_service=shop_as_a_service,
         )
 
     @classmethod
@@ -117,7 +114,6 @@ class PowerOpsClient:
         write_dataset: str | None = None,
         cogshop_version: str | None = None,
         monitor_dataset: str | None = None,
-        shop_as_a_service: bool | None = None,
     ) -> PowerOpsClient:
         """
         Create a PowerOpsClient from a Settings object.
@@ -147,9 +143,6 @@ class PowerOpsClient:
             write_dataset=write_dataset if write_dataset is not None else settings.powerops.write_dataset,
             monitor_dataset=monitor_dataset if monitor_dataset is not None else settings.powerops.monitor_dataset,
             cogshop_version=cogshop_version if cogshop_version is not None else settings.powerops.cogshop_version,
-            shop_as_a_service=(
-                shop_as_a_service if shop_as_a_service is not None else settings.powerops.shop_as_a_service
-            ),
         )
 
     @classmethod
