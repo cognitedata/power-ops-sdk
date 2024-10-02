@@ -6,7 +6,7 @@ import os
 from typing import Any, Literal, Optional
 
 import pydantic
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field
 from pydantic_settings import BaseSettings, PydanticBaseSettingsSource, SettingsConfigDict
 
 __all__ = ["Settings", "CogniteSettings", "PoweropsRunSettings"]
@@ -48,12 +48,6 @@ class PoweropsRunSettings(pydantic.BaseModel):
     read_dataset: Optional[str] = None
     write_dataset: Optional[str] = None
     monitor_dataset: Optional[str] = None
-    cogshop_version: Optional[str] = None
-
-    @field_validator("cogshop_version", mode="before")
-    @classmethod
-    def number_to_str(cls, v: Any) -> Optional[str]:
-        return str(v) if isinstance(v, (int, float)) else v
 
 
 class Settings(BaseSettings):

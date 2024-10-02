@@ -17,10 +17,10 @@ from cognite.powerops.utils.identifiers import unique_short_str
 
 
 class DayaheadTriggerAPI:
-    def __init__(self, client: CogniteClient, data_set: int, cogshop_version: str = ""):
+    def __init__(self, client: CogniteClient, data_set: int):
         self._client = client
         self._data_set_api = data_set
-        self.shop_run = SHOPRunAPI(client, data_set, cogshop_version=cogshop_version)
+        self.shop_run = SHOPRunAPI(client, data_set)
 
     def _create_partial_function_events(
         self,

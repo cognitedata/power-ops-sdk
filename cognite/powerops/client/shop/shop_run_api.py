@@ -32,11 +32,9 @@ class SHOPRunAPI:
         self,
         client: CogniteClient,
         dataset_id: int,
-        cogshop_version: str = "",
     ):
         self._cdf = client
         self._dataset_id = dataset_id
-        self.cogshop_version = cogshop_version
         self._CONCURRENT_CALLS = 5
 
     def _get_shop_prerun_files(self, file_external_ids: list[str]) -> list[SHOPPreRunFile]:

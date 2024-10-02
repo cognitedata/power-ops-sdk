@@ -27,19 +27,17 @@ class PowerOpsClient:
         self,
         read_dataset: str,
         write_dataset: str,
-        cogshop_version: str,
         config: ClientConfig,
         monitor_dataset: str | None = None,
     ):
         self.cdf = CogniteClient(config)
-        self.cogshop_version = cogshop_version
         self.datasets = DataSetsAPI(self.cdf, read_dataset, write_dataset, monitor_dataset)
         self.cog_shop1 = CogShop1Client(self.cdf)
         self.assets = PowerAssetAPI(self.cdf)
         self.afrr_bid = AFRRBidAPI(self.cdf)
         self.day_ahead_bid = DayAheadBidAPI(self.cdf)
-        self.shop = SHOPRunAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version)
-        self.workflow = DayaheadTriggerAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version)
+        self.shop = SHOPRunAPI(self.cdf, self.datasets.write_dataset_id)
+        self.workflow = DayaheadTriggerAPI(self.cdf, self.datasets.write_dataset_id)
         self.v1 = PowerOpsModelsV1Client(self.cdf)
 
         DomainModelWrite.external_id_factory = ExternalIdFactory.create_external_id_factory(
@@ -78,7 +76,6 @@ class PowerOpsClient:
         *,
         read_dataset: str | None = None,
         write_dataset: str | None = None,
-        cogshop_version: str | None = None,
         monitor_dataset: str | None = None,
     ) -> PowerOpsClient:
         """
@@ -91,7 +88,6 @@ class PowerOpsClient:
             read_dataset: externalId of read data set. Optional, by default loaded from the settings object.
             write_dataset: externalId of write data set. Optional, by default loaded from the settings object.
             monitor_dataset: externalId of monitor data set. Optional, by default loaded from the settings object.
-            cogshop_version: tag for the "cog-shop" Docker image. Optional, by default loaded from the settings object.
 
         Returns:
             A PowerOpsClient object.
@@ -100,7 +96,6 @@ class PowerOpsClient:
             config=client.config,
             read_dataset=read_dataset,
             write_dataset=write_dataset,
-            cogshop_version=cogshop_version,
             monitor_dataset=monitor_dataset,
         )
 
@@ -112,7 +107,6 @@ class PowerOpsClient:
         config: ClientConfig | None = None,
         read_dataset: str | None = None,
         write_dataset: str | None = None,
-        cogshop_version: str | None = None,
         monitor_dataset: str | None = None,
     ) -> PowerOpsClient:
         """
@@ -128,7 +122,6 @@ class PowerOpsClient:
             read_dataset: externalId of read data set. Optional, by default loaded from the settings object.
             write_dataset: externalId of write data set. Optional, by default loaded from the settings object.
             monitor_dataset: externalId of monitor data set. Optional, by default loaded from the settings object.
-            cogshop_version: tag for the "cog-shop" Docker image. Optional, by default loaded from the settings object.
 
         Returns:
             A PowerOpsClient object.
@@ -142,7 +135,6 @@ class PowerOpsClient:
             read_dataset=read_dataset if read_dataset is not None else settings.powerops.read_dataset,
             write_dataset=write_dataset if write_dataset is not None else settings.powerops.write_dataset,
             monitor_dataset=monitor_dataset if monitor_dataset is not None else settings.powerops.monitor_dataset,
-            cogshop_version=cogshop_version if cogshop_version is not None else settings.powerops.cogshop_version,
         )
 
     @classmethod
