@@ -90,7 +90,6 @@ from cognite.powerops.client import PowerOpsClient
 
 client = PowerOpsClient.from_settings()
 
-client.shop.runs.trigger()
 ```
 
 For more examples, see the examples section of the documentation.
