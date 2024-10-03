@@ -15,6 +15,8 @@ from cognite.powerops.client.shop.data_classes.dayahead_trigger import (
 from cognite.powerops.client.shop.shop_run_api import SHOPRunAPI
 from cognite.powerops.utils.identifiers import unique_short_str
 
+# todo: evaluate if still needed or needs a refactor
+
 
 class DayaheadTriggerAPI:
     def __init__(self, client: CogniteClient, data_set: int):
@@ -37,7 +39,10 @@ class DayaheadTriggerAPI:
 
         for plant in plants_per_workflow:
             partial_matrix_event_external_id = f"{PartialFunctionEvent.external_id_prefix}{suffix_run_id}_{plant}"
-            metadata = {PartialFunctionEvent.plant: plant, PartialFunctionEvent.method: workflow.method}
+            metadata = {
+                PartialFunctionEvent.plant: plant,
+                PartialFunctionEvent.method: workflow.method,
+            }
             if workflow.plant_names_override:
                 metadata[PartialFunctionEvent.plant_name_override] = workflow.plant_names_override[plant]
 
@@ -65,7 +70,10 @@ class DayaheadTriggerAPI:
         return events_and_relationships
 
     def _create_total_matrix_event(
-        self, workflow: DayaheadTrigger, workflow_event_external_id: str, suffix_run_id: str
+        self,
+        workflow: DayaheadTrigger,
+        workflow_event_external_id: str,
+        suffix_run_id: str,
     ) -> tuple[Event, Relationship]:
         total_event_external_id = f"{TotalFunctionEvent.external_id_prefix}{suffix_run_id}"
         total_event = TotalFunctionEvent.as_cdf_event(
@@ -113,7 +121,10 @@ class DayaheadTriggerAPI:
         )
 
     def _create_and_wire_workflow_events(
-        self, workflow: DayaheadTrigger, shop_runs_as_cdf_events: list[Event], plants_per_workflow: list[str]
+        self,
+        workflow: DayaheadTrigger,
+        shop_runs_as_cdf_events: list[Event],
+        plants_per_workflow: list[str],
     ) -> DayaheadWorkflowRun:
         suffix_run_id = unique_short_str(3)
 
@@ -143,7 +154,11 @@ class DayaheadTriggerAPI:
             for shop_event in shop_runs_as_cdf_events
         ]
         self._client.relationships.create(
-            [*partial_events_and_relationships["relationships"], total_event_relationship, *shop_relationships]
+            [
+                *partial_events_and_relationships["relationships"],
+                total_event_relationship,
+                *shop_relationships,
+            ]
         )
 
         return DayaheadWorkflowRun(

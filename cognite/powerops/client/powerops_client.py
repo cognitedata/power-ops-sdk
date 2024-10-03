@@ -4,6 +4,7 @@ from pathlib import Path
 
 from cognite.client import ClientConfig, CogniteClient
 
+from cognite.powerops.client.shop.cogshop_api import CogShopAPI
 from cognite.powerops.utils.cdf import Settings, get_client_config
 from cognite.powerops.utils.serialization import read_toml_file
 from cognite.pygen.utils.external_id_factories import ExternalIdFactory
@@ -37,6 +38,7 @@ class PowerOpsClient:
         self.afrr_bid = AFRRBidAPI(self.cdf)
         self.day_ahead_bid = DayAheadBidAPI(self.cdf)
         self.shop = SHOPRunAPI(self.cdf, self.datasets.write_dataset_id)
+        self.cogshop = CogShopAPI(self.cdf, self.datasets.write_dataset_id)
         self.workflow = DayaheadTriggerAPI(self.cdf, self.datasets.write_dataset_id)
         self.v1 = PowerOpsModelsV1Client(self.cdf)
 
