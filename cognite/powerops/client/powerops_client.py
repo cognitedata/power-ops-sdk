@@ -37,14 +37,22 @@ class PowerOpsClient:
         self.assets = PowerAssetAPI(self.cdf)
         self.afrr_bid = AFRRBidAPI(self.cdf)
         self.day_ahead_bid = DayAheadBidAPI(self.cdf)
+        print(
+            "The generated modules `cog_shop1`, `assets`, `afrr_bid`, and `day_ahead_bid`"
+            " are deprecated and will be removed."
+        )
         self.shop = SHOPRunAPI(self.cdf, self.datasets.write_dataset_id)
-        self.cogshop = CogShopAPI(self.cdf, self.datasets.write_dataset_id)
+        print("shop/SHOPRunAPI is deprecated and will be removed. Use `cogshop` instead.")
         self.workflow = DayaheadTriggerAPI(self.cdf, self.datasets.write_dataset_id)
+        print("workflow/DayaheadTriggerAPI is deprecated and will be remove")
+
+        self.cogshop = CogShopAPI(self.cdf, self.datasets.write_dataset_id)
         self.v1 = PowerOpsModelsV1Client(self.cdf)
 
         DomainModelWrite.external_id_factory = ExternalIdFactory.create_external_id_factory(
             prefix_ext_id_factory=ExternalIdFactory(
-                ExternalIdFactory.domain_name_factory(), shorten_length=_MAX_DOMAIN_LENGTH
+                ExternalIdFactory.domain_name_factory(),
+                shorten_length=_MAX_DOMAIN_LENGTH,
             ),
             override_external_id=False,
         )
@@ -52,13 +60,15 @@ class PowerOpsClient:
     def _apis(self) -> dict[str, str]:
         return {
             "cdf": "The regular Cognite Client",
-            "cog_shop1": "The CogSHOP client, this is used by cogshop",
-            "assets": "The PowerOps Assets model. For example, plants, generators etc",
-            "afrr_bid": "The AFRR bid model, the model used to represent AFRR bids",
-            "production": "(will be deprecated) The production model",
-            "day_ahead_bid": "The day ahead bid model, the model used to represent day-ahead bids",
-            "shop": "The shop model, this is used to trigger individual SHOP runs",
-            "workflow": "The workflow model, this is used to trigger set of SHOP runs",
+            "cog_shop1": " (Deprecated, use cogshop instead) The CogSHOP client, this is used by cogshop",
+            "assets": "(Deprecated) The PowerOps Assets model. For example, plants, generators etc",
+            "afrr_bid": "(Deprecated) The AFRR bid model, the model used to represent AFRR bids",
+            "day_ahead_bid": "(Deprecated) The day ahead bid model, the model used to represent day-ahead bids",
+            "shop": "(Deprecated, use cogshop instead) The shop model, this is used to trigger individual SHOP runs",
+            "workflow": "(Deprecated) The workflow model, this is used to trigger set of SHOP runs",
+            "cogshop": "The CogShop client, this is used to trigger SHOP runs",
+            "v1": "The PowerOps Data Models client, this is used to interact with the PowerOps Models API"
+            " Will be moved to top level in the future",
         }
 
     def _repr_html_(self) -> str:
@@ -134,9 +144,9 @@ class PowerOpsClient:
 
         return PowerOpsClient(
             config=client_config,
-            read_dataset=read_dataset if read_dataset is not None else settings.powerops.read_dataset,
-            write_dataset=write_dataset if write_dataset is not None else settings.powerops.write_dataset,
-            monitor_dataset=monitor_dataset if monitor_dataset is not None else settings.powerops.monitor_dataset,
+            read_dataset=(read_dataset if read_dataset is not None else settings.powerops.read_dataset),
+            write_dataset=(write_dataset if write_dataset is not None else settings.powerops.write_dataset),
+            monitor_dataset=(monitor_dataset if monitor_dataset is not None else settings.powerops.monitor_dataset),
         )
 
     @classmethod

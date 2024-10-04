@@ -15,7 +15,7 @@ from cognite.powerops.client.shop.data_classes.dayahead_trigger import (
 from cognite.powerops.client.shop.shop_run_api import SHOPRunAPI
 from cognite.powerops.utils.identifiers import unique_short_str
 
-# todo: evaluate if still needed or needs a refactor
+# ! Marked for deprecation, will be removed
 
 
 class DayaheadTriggerAPI:
