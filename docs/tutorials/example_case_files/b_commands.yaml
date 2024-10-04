@@ -1,0 +1,4 @@
+commands:
+  - start sim 2
+  - set code /incremental
+  - start sim 2
