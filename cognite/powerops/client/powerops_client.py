@@ -42,9 +42,9 @@ class PowerOpsClient:
             " are deprecated and will be removed."
         )
         self.shop = SHOPRunAPI(self.cdf, self.datasets.write_dataset_id)
-        print("`shop`/SHOPRunAPI is deprecated and will be removed.")
+        print("Module `shop` (SHOPRunAPI) is deprecated and will be removed.")
         self.workflow = DayaheadTriggerAPI(self.cdf, self.datasets.write_dataset_id)
-        print("`workflow`/DayaheadTriggerAPI is deprecated and will be removed.")
+        print("Module `workflow` (DayaheadTriggerAPI) is deprecated and will be removed.")
 
         self.cogshop = CogShopAPI(self.cdf)
         self.v1 = PowerOpsModelsV1Client(self.cdf)
