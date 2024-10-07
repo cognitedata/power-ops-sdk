@@ -13,6 +13,19 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+
+## [0.99.0] - 2024-10-07
+### Added
+* Support for triggering Shop using the ShopCase Data Model
+* Tutorial for usage of the generated SDK in relation to Shop
+
+### Removed
+* `shop_as_a_service` boolean to PowerOps Client instantiation
+* `cogshop_version` image tag to PowerOps Client instantiation
+
+### Deprecated
+* Marked asset based shop trigger, as well as other modules, for deprecation.
+
 ## [0.98.4] - 2024-09-09
 ### Fix
 * Unpinned SDK dependency against toolkit and only used pinned version with dev dependencies
