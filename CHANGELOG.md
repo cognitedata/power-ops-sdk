@@ -16,7 +16,7 @@ Changes are grouped as follows
 
 ## [0.99.0] - 2024-10-07
 ### Added
-* Support for triggering Shop using the ShopCase Data Model
+* Support for triggering Shop using a ShopCase instance
 * Tutorial for usage of the generated SDK in relation to Shop
 
 ### Removed
