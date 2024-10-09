@@ -13,11 +13,12 @@ from cognite.powerops.client.shop.data_classes.dayahead_trigger import (
     TotalFunctionEvent,
 )
 from cognite.powerops.client.shop.shop_run_api import SHOPRunAPI
+from cognite.powerops.utils.deprecation import deprecated_class
 from cognite.powerops.utils.identifiers import unique_short_str
 
+
 # ! Marked for deprecation, will be removed
-
-
+@deprecated_class
 class DayaheadTriggerAPI:
     def __init__(self, client: CogniteClient, data_set: int):
         self._client = client

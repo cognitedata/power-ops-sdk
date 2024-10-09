@@ -37,14 +37,8 @@ class PowerOpsClient:
         self.assets = PowerAssetAPI(self.cdf)
         self.afrr_bid = AFRRBidAPI(self.cdf)
         self.day_ahead_bid = DayAheadBidAPI(self.cdf)
-        print(
-            "The generated modules `cog_shop1`, `assets`, `afrr_bid`, and `day_ahead_bid`"
-            " are deprecated and will be removed."
-        )
         self.shop = SHOPRunAPI(self.cdf, self.datasets.write_dataset_id)
-        print("Module `shop` (SHOPRunAPI) is deprecated and will be removed.")
         self.workflow = DayaheadTriggerAPI(self.cdf, self.datasets.write_dataset_id)
-        print("Module `workflow` (DayaheadTriggerAPI) is deprecated and will be removed.")
 
         self.cogshop = CogShopAPI(self.cdf)
         self.v1 = PowerOpsModelsV1Client(self.cdf)

@@ -32,6 +32,7 @@ from cognite.powerops.client.shop.data_classes.shop_run import (
 from cognite.powerops.client.shop.data_classes.shop_run_filter import SHOPRunFilter
 from cognite.powerops.utils.cdf.calls import create_event
 from cognite.powerops.utils.cdf.resource_creation import simple_relationship
+from cognite.powerops.utils.deprecation import deprecated_class
 from cognite.powerops.utils.identifiers import new_external_id
 
 DEFAULT_READ_LIMIT = 25
@@ -39,7 +40,8 @@ DEFAULT_READ_LIMIT = 25
 _APICallableForSHOPRunT = Callable[[Union[SHOPRun, Sequence[SHOPRun]]], Union[SHOPRun, Sequence[SHOPRun]]]
 
 
-#! Marked for deprecation -- will be replaced by `cogshop_api.py`
+#! Will be replaced by `cogshop_api.py`
+@deprecated_class
 class SHOPRunAPI:
     def __init__(
         self,
