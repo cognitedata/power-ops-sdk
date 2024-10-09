@@ -51,7 +51,6 @@ Example of settings files:
   read_dataset = "uc:000:powerops"
   write_dataset = "uc:000:powerops"
   monitor_dataset = "uc:po:monitoring"
-  cogshop_version = ""
 ```
 
 `.secrets.toml`

@@ -7,6 +7,7 @@ from typing import Any, Sequence
 from cognite.client import ClientConfig, CogniteClient, data_modeling as dm
 from cognite.client.data_classes import TimeSeriesList
 from cognite.client.credentials import OAuthClientCredentials
+from cognite.powerops.utils.deprecation import deprecated_class
 
 from ._api.bid_method import BidMethodAPI
 from ._api.generator import GeneratorAPI
@@ -20,7 +21,7 @@ from ._api._core import SequenceNotStr, GraphQLQueryResponse
 from .data_classes._core import DEFAULT_INSTANCE_SPACE, GraphQLList
 from . import data_classes
 
-
+@deprecated_class
 class PowerAssetAPI:
     """
     PowerAssetAPI
