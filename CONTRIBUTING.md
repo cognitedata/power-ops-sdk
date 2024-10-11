@@ -60,23 +60,22 @@ versioned in order to avoid breaking changes in the consumption layer.
 
 If a change requires a version change, the following version system should be used (MAJOR.MINOR.PATCH):
 
-- Test changes to data model in `power-ops-dev` with a version bump to the PATCH
-- Test changes to data model along with related resources (functions, workflows, shop) in `power-ops-staging` with a version bump to MINOR
+- Test changes to data model along with related resources (functions, workflows, shop) in `power-ops-staging` with a version bump
 - Changes deployed to customer environment (dev & prod) should bump the MAJOR version
 - Once deployed to the next environment the previous environment will "rest"
-  - If testing is done in `power-ops-dev` with version 1.0.3, then those models will be deployed to `power-ops-staging`
-   as 1.1.0. When testing is done in staging and changes get deployed to customer environments the version would become 2
+  - If testing is done in `power-ops-staging` with version 1.0.3, then those models will be deployed to `customer-dev`
+   as 1.1.0. Likewise, if testing is done with `power-ops-staging` at 1.1.0, then in `customer-dev` it would become version 2.0.0.
 
 ## Local development process
 
 1. Make the relevant changes to the `.yaml` files in the `data_models` folder.
-2. Post on slack `#powerops-backend` that you are about to make changes to ensure it doesn't conflict with others work.
-3. Deploy changes manually to **power-ops-dev** using toolkit following below steps.
+2. Post on slack `#powerops-core-team` that you are about to make changes to ensure it doesn't conflict with others work.
+<!-- 3. Deploy changes manually to **power-ops-staging** using toolkit following below steps. -->
 4. Verify in the UI that the changes are as expected.
 5. Iterate until desired changes are completed.
 6. Create a PR and request feedback on your suggested changes.
 7. Once PR is approved inform the team that the changes will be deployed to `power-ops-staging`.
-8. Deploy changes manually to **power-ops-staging** ensuring you've used the correct version if needed.
+<!-- 8. Deploy changes manually to **power-ops-staging** ensuring you've used the correct version if needed. -->
 9. Regenerate the SDK for the data model changes by calling `python scripts/pygen_generate_clients.py`.
 10. Bump the SDK version in `pyproject.toml` and `cognite/powerops/_version.py`.
 11. Update the `CHANGELOG.md` with the changes made.
@@ -85,13 +84,6 @@ If a change requires a version change, the following version system should be us
 ## Manual Deployment
 
 1. Check which environment to deploy to, they are defined in the `cognite` folder in the `config.<ENV>.yaml` files
-   1. **config.dev.yaml**
-      1. CDF_PROJECT: `power-ops-dev`
-      2. ENV: `dev`
-
-         ```bash
-         export ENV="dev"
-         ```
 
    2. **config.staging.yaml**
       1. CDF_PROJECT: `power-ops-staging`
