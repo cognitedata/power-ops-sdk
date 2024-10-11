@@ -9,15 +9,15 @@ from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INS
 
 class ShopModelWithAssetsProductionObligationsAPI(EdgeAPI):
     def list(
-        self,
-        from_shop_model_with_asset: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        from_shop_model_with_asset_space: str = DEFAULT_INSTANCE_SPACE,
-        to_benchmarking_production_obligation_day_ahead: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        to_benchmarking_production_obligation_day_ahead_space: str = DEFAULT_INSTANCE_SPACE,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit=DEFAULT_LIMIT_READ,
-    ) -> dm.EdgeList:
+            self,
+            from_shop_model_with_asset: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+            from_shop_model_with_asset_space: str = DEFAULT_INSTANCE_SPACE,
+            to_benchmarking_production_obligation_day_ahead: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+            to_benchmarking_production_obligation_day_ahead_space: str = DEFAULT_INSTANCE_SPACE,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit=DEFAULT_LIMIT_READ,
+    ) ->dm.EdgeList:
         """List production obligation edges of a shop model with asset.
 
         Args:
@@ -44,6 +44,7 @@ class ShopModelWithAssetsProductionObligationsAPI(EdgeAPI):
         """
         filter_ = _create_edge_filter(
             dm.DirectRelationReference("power_ops_core", "ShopModelWithAssets"),
+
             from_shop_model_with_asset,
             from_shop_model_with_asset_space,
             to_benchmarking_production_obligation_day_ahead,

@@ -7,7 +7,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -25,57 +25,39 @@ from cognite.powerops.client._generated.v1.data_classes._water_value_based_parti
     _WATERVALUEBASEDPARTIALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD,
     _create_water_value_based_partial_bid_matrix_calculation_input_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
-from .water_value_based_partial_bid_matrix_calculation_input_query import (
-    WaterValueBasedPartialBidMatrixCalculationInputQueryAPI,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
+from .water_value_based_partial_bid_matrix_calculation_input_query import WaterValueBasedPartialBidMatrixCalculationInputQueryAPI
 
 
-class WaterValueBasedPartialBidMatrixCalculationInputAPI(
-    NodeAPI[
-        WaterValueBasedPartialBidMatrixCalculationInput,
-        WaterValueBasedPartialBidMatrixCalculationInputWrite,
-        WaterValueBasedPartialBidMatrixCalculationInputList,
-    ]
-):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[WaterValueBasedPartialBidMatrixCalculationInput]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=WaterValueBasedPartialBidMatrixCalculationInput,
-            class_list=WaterValueBasedPartialBidMatrixCalculationInputList,
-            class_write_list=WaterValueBasedPartialBidMatrixCalculationInputWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class WaterValueBasedPartialBidMatrixCalculationInputAPI(NodeAPI[WaterValueBasedPartialBidMatrixCalculationInput, WaterValueBasedPartialBidMatrixCalculationInputWrite, WaterValueBasedPartialBidMatrixCalculationInputList, WaterValueBasedPartialBidMatrixCalculationInputWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "WaterValueBasedPartialBidMatrixCalculationInput", "1")
+    _properties_by_field = _WATERVALUEBASEDPARTIALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD
+    _class_type = WaterValueBasedPartialBidMatrixCalculationInput
+    _class_list = WaterValueBasedPartialBidMatrixCalculationInputList
+    _class_write_list = WaterValueBasedPartialBidMatrixCalculationInputWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
 
     def __call__(
-        self,
-        workflow_execution_id: str | list[str] | None = None,
-        workflow_execution_id_prefix: str | None = None,
-        min_workflow_step: int | None = None,
-        max_workflow_step: int | None = None,
-        function_name: str | list[str] | None = None,
-        function_name_prefix: str | None = None,
-        function_call_id: str | list[str] | None = None,
-        function_call_id_prefix: str | None = None,
-        min_bid_date: datetime.date | None = None,
-        max_bid_date: datetime.date | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            workflow_execution_id: str | list[str] | None = None,
+            workflow_execution_id_prefix: str | None = None,
+            min_workflow_step: int | None = None,
+            max_workflow_step: int | None = None,
+            function_name: str | list[str] | None = None,
+            function_name_prefix: str | None = None,
+            function_call_id: str | list[str] | None = None,
+            function_call_id_prefix: str | None = None,
+            min_bid_date: datetime.date | None = None,
+            max_bid_date: datetime.date | None = None,
+            bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> WaterValueBasedPartialBidMatrixCalculationInputQueryAPI[WaterValueBasedPartialBidMatrixCalculationInputList]:
         """Query starting at water value based partial bid matrix calculation inputs.
 
@@ -121,16 +103,12 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(WaterValueBasedPartialBidMatrixCalculationInputList)
-        return WaterValueBasedPartialBidMatrixCalculationInputQueryAPI(
-            self._client, builder, self._view_by_read_class, filter_, limit
-        )
+        return WaterValueBasedPartialBidMatrixCalculationInputQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
-        water_value_based_partial_bid_matrix_calculation_input: (
-            WaterValueBasedPartialBidMatrixCalculationInputWrite
-            | Sequence[WaterValueBasedPartialBidMatrixCalculationInputWrite]
-        ),
+        water_value_based_partial_bid_matrix_calculation_input: WaterValueBasedPartialBidMatrixCalculationInputWrite | Sequence[WaterValueBasedPartialBidMatrixCalculationInputWrite],
         replace: bool = False,
         write_none: bool = False,
     ) -> ResourcesWriteResult:
@@ -168,9 +146,7 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
         )
         return self._apply(water_value_based_partial_bid_matrix_calculation_input, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more water value based partial bid matrix calculation input.
 
         Args:
@@ -200,18 +176,14 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(
-        self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE
-    ) -> WaterValueBasedPartialBidMatrixCalculationInput | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> WaterValueBasedPartialBidMatrixCalculationInput | None:
+        ...
 
     @overload
-    def retrieve(
-        self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> WaterValueBasedPartialBidMatrixCalculationInputList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> WaterValueBasedPartialBidMatrixCalculationInputList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> WaterValueBasedPartialBidMatrixCalculationInput | WaterValueBasedPartialBidMatrixCalculationInputList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> WaterValueBasedPartialBidMatrixCalculationInput | WaterValueBasedPartialBidMatrixCalculationInputList | None:
         """Retrieve one or more water value based partial bid matrix calculation inputs by id(s).
 
         Args:
@@ -235,11 +207,7 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
     def search(
         self,
         query: str,
-        properties: (
-            WaterValueBasedPartialBidMatrixCalculationInputTextFields
-            | Sequence[WaterValueBasedPartialBidMatrixCalculationInputTextFields]
-            | None
-        ) = None,
+        properties: WaterValueBasedPartialBidMatrixCalculationInputTextFields | SequenceNotStr[WaterValueBasedPartialBidMatrixCalculationInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -254,8 +222,11 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
         partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: WaterValueBasedPartialBidMatrixCalculationInputFields | SequenceNotStr[WaterValueBasedPartialBidMatrixCalculationInputFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> WaterValueBasedPartialBidMatrixCalculationInputList:
         """Search water value based partial bid matrix calculation inputs
 
@@ -278,6 +249,11 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
             space: The space to filter on.
             limit: Maximum number of water value based partial bid matrix calculation inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             Search results water value based partial bid matrix calculation inputs matching the query.
@@ -310,35 +286,23 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
             filter,
         )
         return self._search(
-            self._view_id,
-            query,
-            _WATERVALUEBASEDPARTIALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD,
-            properties,
-            filter_,
-            limit,
+            query=query,
+            properties=properties,
+            filter_=filter_,
+            limit=limit,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
         )
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: (
-            WaterValueBasedPartialBidMatrixCalculationInputFields
-            | Sequence[WaterValueBasedPartialBidMatrixCalculationInputFields]
-            | None
-        ) = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: WaterValueBasedPartialBidMatrixCalculationInputFields | SequenceNotStr[WaterValueBasedPartialBidMatrixCalculationInputFields] | None = None,
         query: str | None = None,
-        search_properties: (
-            WaterValueBasedPartialBidMatrixCalculationInputTextFields
-            | Sequence[WaterValueBasedPartialBidMatrixCalculationInputTextFields]
-            | None
-        ) = None,
+        search_property: WaterValueBasedPartialBidMatrixCalculationInputTextFields | SequenceNotStr[WaterValueBasedPartialBidMatrixCalculationInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -353,34 +317,19 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
         partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: (
-            WaterValueBasedPartialBidMatrixCalculationInputFields
-            | Sequence[WaterValueBasedPartialBidMatrixCalculationInputFields]
-            | None
-        ) = None,
-        group_by: (
-            WaterValueBasedPartialBidMatrixCalculationInputFields
-            | Sequence[WaterValueBasedPartialBidMatrixCalculationInputFields]
-        ) = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: WaterValueBasedPartialBidMatrixCalculationInputFields | SequenceNotStr[WaterValueBasedPartialBidMatrixCalculationInputFields] | None = None,
         query: str | None = None,
-        search_properties: (
-            WaterValueBasedPartialBidMatrixCalculationInputTextFields
-            | Sequence[WaterValueBasedPartialBidMatrixCalculationInputTextFields]
-            | None
-        ) = None,
+        search_property: WaterValueBasedPartialBidMatrixCalculationInputTextFields | SequenceNotStr[WaterValueBasedPartialBidMatrixCalculationInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -395,34 +344,49 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
         partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: WaterValueBasedPartialBidMatrixCalculationInputFields | SequenceNotStr[WaterValueBasedPartialBidMatrixCalculationInputFields],
+        property: WaterValueBasedPartialBidMatrixCalculationInputFields | SequenceNotStr[WaterValueBasedPartialBidMatrixCalculationInputFields] | None = None,
+        query: str | None = None,
+        search_property: WaterValueBasedPartialBidMatrixCalculationInputTextFields | SequenceNotStr[WaterValueBasedPartialBidMatrixCalculationInputTextFields] | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
+        function_name: str | list[str] | None = None,
+        function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
+        min_bid_date: datetime.date | None = None,
+        max_bid_date: datetime.date | None = None,
+        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: (
-            WaterValueBasedPartialBidMatrixCalculationInputFields
-            | Sequence[WaterValueBasedPartialBidMatrixCalculationInputFields]
-            | None
-        ) = None,
-        group_by: (
-            WaterValueBasedPartialBidMatrixCalculationInputFields
-            | Sequence[WaterValueBasedPartialBidMatrixCalculationInputFields]
-            | None
-        ) = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: WaterValueBasedPartialBidMatrixCalculationInputFields | SequenceNotStr[WaterValueBasedPartialBidMatrixCalculationInputFields] | None = None,
+        property: WaterValueBasedPartialBidMatrixCalculationInputFields | SequenceNotStr[WaterValueBasedPartialBidMatrixCalculationInputFields] | None = None,
         query: str | None = None,
-        search_property: (
-            WaterValueBasedPartialBidMatrixCalculationInputTextFields
-            | Sequence[WaterValueBasedPartialBidMatrixCalculationInputTextFields]
-            | None
-        ) = None,
+        search_property: WaterValueBasedPartialBidMatrixCalculationInputTextFields | SequenceNotStr[WaterValueBasedPartialBidMatrixCalculationInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -437,15 +401,19 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
         partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across water value based partial bid matrix calculation inputs
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             query: The query to search for in the text field.
             search_property: The text field to search in.
             workflow_execution_id: The workflow execution id to filter on.
@@ -497,15 +465,13 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _WATERVALUEBASEDPARTIALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            query,
-            search_property,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=query,
+            search_properties=search_property,  # type: ignore[arg-type]
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -513,11 +479,7 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
         property: WaterValueBasedPartialBidMatrixCalculationInputFields,
         interval: float,
         query: str | None = None,
-        search_property: (
-            WaterValueBasedPartialBidMatrixCalculationInputTextFields
-            | Sequence[WaterValueBasedPartialBidMatrixCalculationInputTextFields]
-            | None
-        ) = None,
+        search_property: WaterValueBasedPartialBidMatrixCalculationInputTextFields | SequenceNotStr[WaterValueBasedPartialBidMatrixCalculationInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -532,7 +494,7 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
         partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for water value based partial bid matrix calculation inputs
@@ -582,15 +544,14 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _WATERVALUEBASEDPARTIALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD,
             query,
-            search_property,
+            search_property,  # type: ignore[arg-type]
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -608,14 +569,11 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
         partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-        sort_by: (
-            WaterValueBasedPartialBidMatrixCalculationInputFields
-            | Sequence[WaterValueBasedPartialBidMatrixCalculationInputFields]
-            | None
-        ) = None,
+        sort_by: WaterValueBasedPartialBidMatrixCalculationInputFields | Sequence[WaterValueBasedPartialBidMatrixCalculationInputFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> WaterValueBasedPartialBidMatrixCalculationInputList:
         """List/filter water value based partial bid matrix calculation inputs
 
@@ -638,6 +596,9 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             List of requested water value based partial bid matrix calculation inputs
@@ -672,7 +633,7 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_WATERVALUEBASEDPARTIALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
         )

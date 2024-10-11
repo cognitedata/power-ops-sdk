@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from typing import TYPE_CHECKING, Any, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -13,7 +13,6 @@ from ._core import (
     DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
-    DomainModelCore,
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
@@ -35,6 +34,7 @@ __all__ = [
     "PartialBidConfigurationApplyList",
     "PartialBidConfigurationFields",
     "PartialBidConfigurationTextFields",
+    "PartialBidConfigurationGraphQL",
 ]
 
 
@@ -46,7 +46,6 @@ _PARTIALBIDCONFIGURATION_PROPERTIES_BY_FIELD = {
     "method": "method",
     "add_steps": "addSteps",
 }
-
 
 class PartialBidConfigurationGraphQL(GraphQLCore):
     """This represents the reading version of partial bid configuration, used
@@ -63,8 +62,7 @@ class PartialBidConfigurationGraphQL(GraphQLCore):
         power_asset: TODO description
         add_steps: TODO definition
     """
-
-    view_id = dm.ViewId("power_ops_core", "PartialBidConfiguration", "1")
+    view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PartialBidConfiguration", "1")
     name: Optional[str] = None
     method: Optional[str] = None
     power_asset: Optional[PowerAssetGraphQL] = Field(default=None, repr=False, alias="powerAsset")
@@ -80,7 +78,6 @@ class PartialBidConfigurationGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
-
     @field_validator("power_asset", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -89,6 +86,8 @@ class PartialBidConfigurationGraphQL(GraphQLCore):
             return value["items"]
         return value
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> PartialBidConfiguration:
         """Convert this GraphQL format of partial bid configuration to the reading format."""
         if self.data_record is None:
@@ -107,6 +106,9 @@ class PartialBidConfigurationGraphQL(GraphQLCore):
             add_steps=self.add_steps,
         )
 
+
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> PartialBidConfigurationWrite:
         """Convert this GraphQL format of partial bid configuration to the writing format."""
         return PartialBidConfigurationWrite(
@@ -134,6 +136,7 @@ class PartialBidConfiguration(DomainModel):
         power_asset: TODO description
         add_steps: TODO definition
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PartialBidConfiguration", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
@@ -178,6 +181,7 @@ class PartialBidConfigurationWrite(DomainModelWrite):
         power_asset: TODO description
         add_steps: TODO definition
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PartialBidConfiguration", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
@@ -189,17 +193,12 @@ class PartialBidConfigurationWrite(DomainModelWrite):
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
-
-        write_view = (view_by_read_class or {}).get(
-            PartialBidConfiguration, dm.ViewId("power_ops_core", "PartialBidConfiguration", "1")
-        )
 
         properties: dict[str, Any] = {}
 
@@ -211,12 +210,13 @@ class PartialBidConfigurationWrite(DomainModelWrite):
 
         if self.power_asset is not None:
             properties["powerAsset"] = {
-                "space": self.space if isinstance(self.power_asset, str) else self.power_asset.space,
+                "space":  self.space if isinstance(self.power_asset, str) else self.power_asset.space,
                 "externalId": self.power_asset if isinstance(self.power_asset, str) else self.power_asset.external_id,
             }
 
         if self.add_steps is not None:
             properties["addSteps"] = self.add_steps
+
 
         if properties:
             this_node = dm.NodeApply(
@@ -226,16 +226,17 @@ class PartialBidConfigurationWrite(DomainModelWrite):
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
-                        source=write_view,
+                        source=self._view_id,
                         properties=properties,
-                    )
-                ],
+                )],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
+
+
         if isinstance(self.power_asset, DomainModelWrite):
-            other_resources = self.power_asset._to_instances_write(cache, view_by_read_class)
+            other_resources = self.power_asset._to_instances_write(cache)
             resources.extend(other_resources)
 
         return resources
@@ -277,8 +278,8 @@ class PartialBidConfigurationWriteList(DomainModelWriteList[PartialBidConfigurat
 
     _INSTANCE = PartialBidConfigurationWrite
 
-
 class PartialBidConfigurationApplyList(PartialBidConfigurationWriteList): ...
+
 
 
 def _create_partial_bid_configuration_filter(
@@ -293,7 +294,7 @@ def _create_partial_bid_configuration_filter(
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
-    filters = []
+    filters: list[dm.Filter] = []
     if isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
@@ -307,32 +308,13 @@ def _create_partial_bid_configuration_filter(
     if method_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("method"), value=method_prefix))
     if power_asset and isinstance(power_asset, str):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("powerAsset"),
-                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": power_asset},
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("powerAsset"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": power_asset}))
     if power_asset and isinstance(power_asset, tuple):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("powerAsset"), value={"space": power_asset[0], "externalId": power_asset[1]}
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("powerAsset"), value={"space": power_asset[0], "externalId": power_asset[1]}))
     if power_asset and isinstance(power_asset, list) and isinstance(power_asset[0], str):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("powerAsset"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in power_asset],
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("powerAsset"), values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in power_asset]))
     if power_asset and isinstance(power_asset, list) and isinstance(power_asset[0], tuple):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("powerAsset"),
-                values=[{"space": item[0], "externalId": item[1]} for item in power_asset],
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("powerAsset"), values=[{"space": item[0], "externalId": item[1]} for item in power_asset]))
     if isinstance(add_steps, bool):
         filters.append(dm.filters.Equals(view_id.as_property_ref("addSteps"), value=add_steps))
     if external_id_prefix is not None:

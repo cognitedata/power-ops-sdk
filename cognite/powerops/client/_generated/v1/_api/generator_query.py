@@ -20,16 +20,18 @@ if TYPE_CHECKING:
     from .turbine_efficiency_curve_query import TurbineEfficiencyCurveQueryAPI
 
 
+
 class GeneratorQueryAPI(QueryAPI[T_DomainModelList]):
+    _view_id = dm.ViewId("power_ops_core", "Generator", "1")
+
     def __init__(
         self,
         client: CogniteClient,
         builder: QueryBuilder[T_DomainModelList],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId],
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
-        super().__init__(client, builder, view_by_read_class)
+        super().__init__(client, builder)
 
         self._builder.append(
             QueryStep(
@@ -38,7 +40,7 @@ class GeneratorQueryAPI(QueryAPI[T_DomainModelList]):
                     from_=self._builder[-1].name if self._builder else None,
                     filter=filter_,
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(self._view_by_read_class[Generator], ["*"])]),
+                select=dm.query.Select([dm.query.SourceSelector(self._view_id, ["*"])]),
                 result_cls=Generator,
                 max_retrieve_limit=limit,
             )
@@ -53,7 +55,7 @@ class GeneratorQueryAPI(QueryAPI[T_DomainModelList]):
         external_id_prefix_edge: str | None = None,
         space_edge: str | list[str] | None = None,
         filter: dm.Filter | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
+        limit: int = DEFAULT_QUERY_LIMIT,
         retrieve_generator_efficiency_curve: bool = False,
     ) -> TurbineEfficiencyCurveQueryAPI[T_DomainModelList]:
         """Query along the turbine efficiency curve edges of the generator.
@@ -78,6 +80,7 @@ class GeneratorQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = self._builder[-1].name
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "isSubAssetOf"),
+
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -94,7 +97,7 @@ class GeneratorQueryAPI(QueryAPI[T_DomainModelList]):
             )
         )
 
-        view_id = self._view_by_read_class[TurbineEfficiencyCurve]
+        view_id = TurbineEfficiencyCurveQueryAPI._view_id
         has_data = dm.filters.HasData(views=[view_id])
         node_filer = _create_turbine_efficiency_curve_filter(
             view_id,
@@ -106,7 +109,7 @@ class GeneratorQueryAPI(QueryAPI[T_DomainModelList]):
         )
         if retrieve_generator_efficiency_curve:
             self._query_append_generator_efficiency_curve(from_)
-        return TurbineEfficiencyCurveQueryAPI(self._client, self._builder, self._view_by_read_class, node_filer, limit)
+        return TurbineEfficiencyCurveQueryAPI(self._client, self._builder, node_filer, limit)
 
     def query(
         self,
@@ -127,14 +130,14 @@ class GeneratorQueryAPI(QueryAPI[T_DomainModelList]):
         return self._query()
 
     def _query_append_generator_efficiency_curve(self, from_: str) -> None:
-        view_id = self._view_by_read_class[GeneratorEfficiencyCurve]
+        view_id = GeneratorEfficiencyCurve._view_id
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("generator_efficiency_curve"),
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_read_class[Generator].as_property_ref("generatorEfficiencyCurve"),
+                    through=self._view_id.as_property_ref("generatorEfficiencyCurve"),
                     direction="outwards",
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),

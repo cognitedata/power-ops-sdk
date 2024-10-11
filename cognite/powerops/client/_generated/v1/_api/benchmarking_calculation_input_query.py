@@ -19,16 +19,18 @@ if TYPE_CHECKING:
     from .shop_result_query import ShopResultQueryAPI
 
 
+
 class BenchmarkingCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
+    _view_id = dm.ViewId("power_ops_core", "BenchmarkingCalculationInput", "1")
+
     def __init__(
         self,
         client: CogniteClient,
         builder: QueryBuilder[T_DomainModelList],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId],
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
-        super().__init__(client, builder, view_by_read_class)
+        super().__init__(client, builder)
 
         self._builder.append(
             QueryStep(
@@ -37,9 +39,7 @@ class BenchmarkingCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
                     from_=self._builder[-1].name if self._builder else None,
                     filter=filter_,
                 ),
-                select=dm.query.Select(
-                    [dm.query.SourceSelector(self._view_by_read_class[BenchmarkingCalculationInput], ["*"])]
-                ),
+                select=dm.query.Select([dm.query.SourceSelector(self._view_id, ["*"])]),
                 result_cls=BenchmarkingCalculationInput,
                 max_retrieve_limit=limit,
             )
@@ -53,7 +53,7 @@ class BenchmarkingCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
         external_id_prefix_edge: str | None = None,
         space_edge: str | list[str] | None = None,
         filter: dm.Filter | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
+        limit: int = DEFAULT_QUERY_LIMIT,
     ) -> ShopResultQueryAPI[T_DomainModelList]:
         """Query along the shop result edges of the benchmarking calculation input.
 
@@ -75,6 +75,7 @@ class BenchmarkingCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = self._builder[-1].name
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "ShopResults"),
+
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -91,7 +92,7 @@ class BenchmarkingCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
             )
         )
 
-        view_id = self._view_by_read_class[ShopResult]
+        view_id = ShopResultQueryAPI._view_id
         has_data = dm.filters.HasData(views=[view_id])
         node_filer = _create_shop_result_filter(
             view_id,
@@ -100,7 +101,7 @@ class BenchmarkingCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        return ShopResultQueryAPI(self._client, self._builder, self._view_by_read_class, node_filer, limit)
+        return ShopResultQueryAPI(self._client, self._builder, node_filer, limit)
 
     def query(
         self,

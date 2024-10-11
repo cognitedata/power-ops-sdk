@@ -26,16 +26,18 @@ if TYPE_CHECKING:
     from .shop_attribute_mapping_query import ShopAttributeMappingQueryAPI
 
 
+
 class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
+    _view_id = dm.ViewId("power_ops_core", "ShopScenario", "1")
+
     def __init__(
         self,
         client: CogniteClient,
         builder: QueryBuilder[T_DomainModelList],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId],
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
-        super().__init__(client, builder, view_by_read_class)
+        super().__init__(client, builder)
 
         self._builder.append(
             QueryStep(
@@ -44,7 +46,7 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
                     from_=self._builder[-1].name if self._builder else None,
                     filter=filter_,
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(self._view_by_read_class[ShopScenario], ["*"])]),
+                select=dm.query.Select([dm.query.SourceSelector(self._view_id, ["*"])]),
                 result_cls=ShopScenario,
                 max_retrieve_limit=limit,
             )
@@ -68,7 +70,7 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
         external_id_prefix_edge: str | None = None,
         space_edge: str | list[str] | None = None,
         filter: dm.Filter | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
+        limit: int = DEFAULT_QUERY_LIMIT,
         retrieve_model: bool = False,
         retrieve_commands: bool = False,
     ) -> ShopOutputTimeSeriesDefinitionQueryAPI[T_DomainModelList]:
@@ -104,6 +106,7 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = self._builder[-1].name
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "ShopOutputTimeSeriesDefinition"),
+
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -120,7 +123,7 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
             )
         )
 
-        view_id = self._view_by_read_class[ShopOutputTimeSeriesDefinition]
+        view_id = ShopOutputTimeSeriesDefinitionQueryAPI._view_id
         has_data = dm.filters.HasData(views=[view_id])
         node_filer = _create_shop_output_time_series_definition_filter(
             view_id,
@@ -143,9 +146,7 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
             self._query_append_model(from_)
         if retrieve_commands:
             self._query_append_commands(from_)
-        return ShopOutputTimeSeriesDefinitionQueryAPI(
-            self._client, self._builder, self._view_by_read_class, node_filer, limit
-        )
+        return ShopOutputTimeSeriesDefinitionQueryAPI(self._client, self._builder, node_filer, limit)
 
     def attribute_mappings_override(
         self,
@@ -164,7 +165,7 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
         external_id_prefix_edge: str | None = None,
         space_edge: str | list[str] | None = None,
         filter: dm.Filter | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
+        limit: int = DEFAULT_QUERY_LIMIT,
         retrieve_model: bool = False,
         retrieve_commands: bool = False,
     ) -> ShopAttributeMappingQueryAPI[T_DomainModelList]:
@@ -199,6 +200,7 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = self._builder[-1].name
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "ShopAttributeMapping"),
+
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -215,7 +217,7 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
             )
         )
 
-        view_id = self._view_by_read_class[ShopAttributeMapping]
+        view_id = ShopAttributeMappingQueryAPI._view_id
         has_data = dm.filters.HasData(views=[view_id])
         node_filer = _create_shop_attribute_mapping_filter(
             view_id,
@@ -237,7 +239,7 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
             self._query_append_model(from_)
         if retrieve_commands:
             self._query_append_commands(from_)
-        return ShopAttributeMappingQueryAPI(self._client, self._builder, self._view_by_read_class, node_filer, limit)
+        return ShopAttributeMappingQueryAPI(self._client, self._builder, node_filer, limit)
 
     def query(
         self,
@@ -262,14 +264,14 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
         return self._query()
 
     def _query_append_model(self, from_: str) -> None:
-        view_id = self._view_by_read_class[ShopModel]
+        view_id = ShopModel._view_id
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("model"),
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_read_class[ShopScenario].as_property_ref("model"),
+                    through=self._view_id.as_property_ref("model"),
                     direction="outwards",
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
@@ -280,14 +282,14 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
         )
 
     def _query_append_commands(self, from_: str) -> None:
-        view_id = self._view_by_read_class[ShopCommands]
+        view_id = ShopCommands._view_id
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("commands"),
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_read_class[ShopScenario].as_property_ref("commands"),
+                    through=self._view_id.as_property_ref("commands"),
                     direction="outwards",
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),

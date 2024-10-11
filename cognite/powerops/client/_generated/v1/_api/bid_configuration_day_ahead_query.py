@@ -22,16 +22,18 @@ if TYPE_CHECKING:
     from .partial_bid_configuration_query import PartialBidConfigurationQueryAPI
 
 
+
 class BidConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
+    _view_id = dm.ViewId("power_ops_core", "BidConfigurationDayAhead", "1")
+
     def __init__(
         self,
         client: CogniteClient,
         builder: QueryBuilder[T_DomainModelList],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId],
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
-        super().__init__(client, builder, view_by_read_class)
+        super().__init__(client, builder)
 
         self._builder.append(
             QueryStep(
@@ -40,9 +42,7 @@ class BidConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
                     from_=self._builder[-1].name if self._builder else None,
                     filter=filter_,
                 ),
-                select=dm.query.Select(
-                    [dm.query.SourceSelector(self._view_by_read_class[BidConfigurationDayAhead], ["*"])]
-                ),
+                select=dm.query.Select([dm.query.SourceSelector(self._view_id, ["*"])]),
                 result_cls=BidConfigurationDayAhead,
                 max_retrieve_limit=limit,
             )
@@ -61,7 +61,7 @@ class BidConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         external_id_prefix_edge: str | None = None,
         space_edge: str | list[str] | None = None,
         filter: dm.Filter | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
+        limit: int = DEFAULT_QUERY_LIMIT,
         retrieve_market_configuration: bool = False,
         retrieve_price_area: bool = False,
         retrieve_bid_date_specification: bool = False,
@@ -94,6 +94,7 @@ class BidConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = self._builder[-1].name
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "BidConfiguration.partials"),
+
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -110,7 +111,7 @@ class BidConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
             )
         )
 
-        view_id = self._view_by_read_class[PartialBidConfiguration]
+        view_id = PartialBidConfigurationQueryAPI._view_id
         has_data = dm.filters.HasData(views=[view_id])
         node_filer = _create_partial_bid_configuration_filter(
             view_id,
@@ -130,7 +131,7 @@ class BidConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
             self._query_append_price_area(from_)
         if retrieve_bid_date_specification:
             self._query_append_bid_date_specification(from_)
-        return PartialBidConfigurationQueryAPI(self._client, self._builder, self._view_by_read_class, node_filer, limit)
+        return PartialBidConfigurationQueryAPI(self._client, self._builder, node_filer, limit)
 
     def query(
         self,
@@ -159,14 +160,14 @@ class BidConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         return self._query()
 
     def _query_append_market_configuration(self, from_: str) -> None:
-        view_id = self._view_by_read_class[MarketConfiguration]
+        view_id = MarketConfiguration._view_id
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("market_configuration"),
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_read_class[BidConfigurationDayAhead].as_property_ref("marketConfiguration"),
+                    through=self._view_id.as_property_ref("marketConfiguration"),
                     direction="outwards",
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
@@ -177,14 +178,14 @@ class BidConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         )
 
     def _query_append_price_area(self, from_: str) -> None:
-        view_id = self._view_by_read_class[PriceAreaDayAhead]
+        view_id = PriceAreaDayAhead._view_id
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("price_area"),
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_read_class[BidConfigurationDayAhead].as_property_ref("priceArea"),
+                    through=self._view_id.as_property_ref("priceArea"),
                     direction="outwards",
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
@@ -195,14 +196,14 @@ class BidConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         )
 
     def _query_append_bid_date_specification(self, from_: str) -> None:
-        view_id = self._view_by_read_class[DateSpecification]
+        view_id = DateSpecification._view_id
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("bid_date_specification"),
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_read_class[BidConfigurationDayAhead].as_property_ref("bidDateSpecification"),
+                    through=self._view_id.as_property_ref("bidDateSpecification"),
                     direction="outwards",
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),

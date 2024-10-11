@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import datetime
+import sys
 import warnings
 from abc import abstractmethod, ABC
 from collections import UserList
@@ -9,6 +10,7 @@ from dataclasses import dataclass, field
 from typing import (
     Annotated,
     Callable,
+    cast,
     ClassVar,
     Generic,
     Optional,
@@ -17,6 +19,7 @@ from typing import (
     TypeVar,
     overload,
     Union,
+    SupportsIndex,
 )
 
 import pandas as pd
@@ -26,12 +29,17 @@ from cognite.client.data_classes import TimeSeriesList
 from cognite.client.data_classes.data_modeling.instances import (
     Instance,
     InstanceApply,
-    InstanceCore,
     Properties,
     PropertyValue,
 )
-from pydantic import BaseModel, BeforeValidator, Extra, Field, model_validator
+from pydantic import BaseModel, BeforeValidator, Field, model_validator
 from pydantic.functional_serializers import PlainSerializer
+
+if sys.version_info >= (3, 11):
+    from typing import Self
+else:
+    from typing_extensions import Self
+
 
 TimeSeries = Annotated[
     CogniteTimeSeries,
@@ -88,6 +96,9 @@ class Core(BaseModel, arbitrary_types_allowed=True, populate_by_name=True):
         return self.model_dump(by_alias=by_alias)
 
 
+T_Core = TypeVar("T_Core", bound=Core)
+
+
 class DataRecordGraphQL(Core):
     last_updated_time: Optional[datetime.datetime] = Field(None, alias="lastUpdatedTime")
     created_time: Optional[datetime.datetime] = Field(None, alias="createdTime")
@@ -112,7 +123,7 @@ class PageInfo(BaseModel):
 
 
 class GraphQLList(UserList):
-    def __init__(self, nodes: Collection[GraphQLCore] = None):
+    def __init__(self, nodes: Collection[GraphQLCore] | None = None):
         super().__init__(nodes or [])
         self.page_info: PageInfo | None = None
 
@@ -121,18 +132,16 @@ class GraphQLList(UserList):
         return super().__iter__()
 
     @overload
-    def __getitem__(self, item: int) -> GraphQLCore: ...
+    def __getitem__(self, item: SupportsIndex) -> GraphQLCore: ...
 
     @overload
-    def __getitem__(self, item: slice) -> GraphQLCore: ...
+    def __getitem__(self, item: slice) -> GraphQLList: ...
 
-    def __getitem__(self, item: int | slice) -> GraphQLCore | GraphQLList:
+    def __getitem__(self, item: SupportsIndex | slice) -> GraphQLCore | GraphQLList:
+        value = self.data[item]
         if isinstance(item, slice):
-            return self.__class__(self.data[item])
-        elif isinstance(item, int):
-            return self.data[item]
-        else:
-            raise TypeError(f"Expected int or slice, got {type(item)}")
+            return type(self)(value)
+        return cast(GraphQLCore, value)
 
     def dump(self) -> list[dict[str, Any]]:
         return [node.model_dump() for node in self.data]
@@ -160,7 +169,7 @@ class GraphQLList(UserList):
         return self.to_pandas()._repr_html_()  # type: ignore[operator]
 
 
-class DomainModelCore(Core):
+class DomainModelCore(Core, ABC):
     space: str
     external_id: str = Field(min_length=1, max_length=255, alias="externalId")
 
@@ -169,11 +178,6 @@ class DomainModelCore(Core):
 
     def as_direct_reference(self) -> dm.DirectRelationReference:
         return dm.DirectRelationReference(space=self.space, external_id=self.external_id)
-
-    @classmethod
-    @abstractmethod
-    def from_instance(cls: type[T_DomainModelCore], instance: InstanceCore) -> T_DomainModelCore:
-        raise NotImplementedError()
 
 
 T_DomainModelCore = TypeVar("T_DomainModelCore", bound=DomainModelCore)
@@ -195,14 +199,15 @@ class DataRecord(BaseModel):
     deleted_time: Optional[datetime.datetime] = None
 
 
-class DomainModel(DomainModelCore):
+class DomainModel(DomainModelCore, ABC):
     data_record: DataRecord
+    node_type: Optional[dm.DirectRelationReference] = None
 
     def as_id(self) -> dm.NodeId:
         return dm.NodeId(space=self.space, external_id=self.external_id)
 
     @classmethod
-    def from_instance(cls: type[T_DomainModel], instance: Instance) -> T_DomainModel:
+    def from_instance(cls, instance: Instance) -> Self:
         data = instance.dump(camel_case=False)
         node_type = data.pop("type", None)
         space = data.pop("space")
@@ -236,6 +241,8 @@ T_DataRecord = TypeVar("T_DataRecord", bound=Union[DataRecord, DataRecordWrite])
 
 
 class _DataRecordListCore(UserList, Generic[T_DataRecord]):
+    _INSTANCE: type[T_DataRecord]
+
     def __init__(self, nodes: Collection[T_DataRecord] | None = None):
         super().__init__(nodes or [])
 
@@ -244,20 +251,16 @@ class _DataRecordListCore(UserList, Generic[T_DataRecord]):
         return super().__iter__()
 
     @overload
-    def __getitem__(self, item: int) -> T_DataRecord: ...
+    def __getitem__(self, item: SupportsIndex) -> T_DataRecord: ...
 
     @overload
-    def __getitem__(
-        self: type[_DataRecordListCore[T_DataRecord]], item: slice
-    ) -> type[_DataRecordListCore[T_DataRecord]]: ...
+    def __getitem__(self, item: slice) -> _DataRecordListCore[T_DataRecord]: ...
 
-    def __getitem__(self, item: int | slice) -> T_DataRecord | type[_DataRecordListCore[T_DataRecord]]:
+    def __getitem__(self, item: SupportsIndex | slice) -> T_DataRecord | _DataRecordListCore[T_DataRecord]:
+        value = self.data[item]
         if isinstance(item, slice):
-            return self.__class__(self.data[item])
-        elif isinstance(item, int):
-            return self.data[item]
-        else:
-            raise TypeError(f"Expected int or slice, got {type(item)}")
+            return type(self)(value)
+        return cast(T_DataRecord, value)
 
     def to_pandas(self) -> pd.DataFrame:
         """
@@ -283,33 +286,30 @@ class DataRecordWriteList(_DataRecordListCore[DataRecordWrite]):
     _INSTANCE = DataRecordWrite
 
 
-class DomainModelWrite(DomainModelCore, extra=Extra.ignore, populate_by_name=True):
+class DomainModelWrite(DomainModelCore, extra="ignore", populate_by_name=True):
     external_id_factory: ClassVar[Optional[Callable[[type[DomainModelWrite], dict], str]]] = None
     data_record: DataRecordWrite = Field(default_factory=DataRecordWrite)
+    node_type: Optional[dm.DirectRelationReference] = None
 
     def to_instances_write(
         self,
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None = None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
-        return self._to_instances_write(set(), view_by_read_class, write_none, allow_version_increase)
+        return self._to_instances_write(set(), write_none, allow_version_increase)
 
-    def to_instances_apply(
-        self, view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None = None, write_none: bool = False
-    ) -> ResourcesWrite:
+    def to_instances_apply(self, write_none: bool = False) -> ResourcesWrite:
         warnings.warn(
             "to_instances_apply is deprecated and will be removed in v1.0. Use to_instances_write instead.",
             UserWarning,
             stacklevel=2,
         )
-        return self.to_instances_write(view_by_read_class, write_none)
+        return self.to_instances_write(write_none)
 
     @abstractmethod
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
@@ -349,30 +349,28 @@ class DomainModelWrite(DomainModelCore, extra=Extra.ignore, populate_by_name=Tru
 T_DomainModelWrite = TypeVar("T_DomainModelWrite", bound=DomainModelWrite)
 
 
-class CoreList(UserList, Generic[T_DomainModelCore]):
-    _INSTANCE: type[T_DomainModelCore]
-    _PARENT_CLASS: type[DomainModelCore]
+class CoreList(UserList, Generic[T_Core]):
+    _INSTANCE: type[T_Core]
+    _PARENT_CLASS: type[Core]
 
-    def __init__(self, nodes: Collection[T_DomainModelCore] = None):
+    def __init__(self, nodes: Collection[T_Core] | None = None):
         super().__init__(nodes or [])
 
     # The dunder implementations are to get proper type hints
-    def __iter__(self) -> Iterator[T_DomainModelCore]:
+    def __iter__(self) -> Iterator[T_Core]:
         return super().__iter__()
 
     @overload
-    def __getitem__(self, item: int) -> T_DomainModelCore: ...
+    def __getitem__(self, item: SupportsIndex) -> T_Core: ...
 
     @overload
-    def __getitem__(self: type[T_DomainModelList], item: slice) -> T_DomainModelList: ...
+    def __getitem__(self, item: slice) -> Self: ...
 
-    def __getitem__(self, item: int | slice) -> T_DomainModelCore | T_DomainModelList:
+    def __getitem__(self, item: SupportsIndex | slice) -> T_Core | Self:
+        value = self.data[item]
         if isinstance(item, slice):
-            return self.__class__(self.data[item])
-        elif isinstance(item, int):
-            return self.data[item]
-        else:
-            raise TypeError(f"Expected int or slice, got {type(item)}")
+            return type(self)(value)
+        return cast(T_Core, value)
 
     def dump(self) -> list[dict[str, Any]]:
         return [node.model_dump() for node in self.data]
@@ -403,52 +401,49 @@ class CoreList(UserList, Generic[T_DomainModelCore]):
         return self.to_pandas()._repr_html_()  # type: ignore[operator]
 
 
-class DomainModelList(CoreList[T_DomainModelCore]):
+class DomainModelList(CoreList[T_DomainModel]):
     _PARENT_CLASS = DomainModel
-
-    def __init__(self, nodes: Collection[T_DomainModelCore] = None):
-        super().__init__(nodes or [])
 
     @property
     def data_records(self) -> DataRecordList:
-        return DataRecordList([node.data_record for node in self])
+        return DataRecordList([node.data_record for node in self.data])
 
     def as_node_ids(self) -> list[dm.NodeId]:
-        return [dm.NodeId(space=node.space, external_id=node.external_id) for node in self]
+        return [dm.NodeId(space=node.space, external_id=node.external_id) for node in self.data]
 
 
 T_DomainModelList = TypeVar("T_DomainModelList", bound=DomainModelList, covariant=True)
 
 
-class DomainModelWriteList(DomainModelList[T_DomainModelWrite]):
+class DomainModelWriteList(CoreList[T_DomainModelWrite]):
     _PARENT_CLASS = DomainModelWrite
 
     @property
     def data_records(self) -> DataRecordWriteList:
         return DataRecordWriteList([node.data_record for node in self])
 
+    def as_node_ids(self) -> list[dm.NodeId]:
+        return [dm.NodeId(space=node.space, external_id=node.external_id) for node in self]
+
     def to_instances_write(
         self,
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None = None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         cache: set[tuple[str, str]] = set()
         domains = ResourcesWrite()
         for node in self:
-            result = node._to_instances_write(cache, view_by_read_class, write_none, allow_version_increase)
+            result = node._to_instances_write(cache, write_none, allow_version_increase)
             domains.extend(result)
         return domains
 
-    def to_instances_apply(
-        self, view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None = None, write_none: bool = False
-    ) -> ResourcesWrite:
+    def to_instances_apply(self, write_none: bool = False) -> ResourcesWrite:
         warnings.warn(
             "to_instances_apply is deprecated and will be removed in v1.0. Use to_instances_write instead.",
             UserWarning,
             stacklevel=2,
         )
-        return self.to_instances_write(view_by_read_class, write_none)
+        return self.to_instances_write(write_none)
 
 
 T_DomainModelWriteList = TypeVar("T_DomainModelWriteList", bound=DomainModelWriteList, covariant=True)
@@ -457,17 +452,14 @@ T_DomainModelWriteList = TypeVar("T_DomainModelWriteList", bound=DomainModelWrit
 class DomainRelation(DomainModelCore):
     edge_type: dm.DirectRelationReference
     start_node: dm.DirectRelationReference
+    end_node: Any
     data_record: DataRecord
-
-    @property
-    def data_records(self) -> DataRecordList:
-        return DataRecordList([node.data_record for node in self])
 
     def as_id(self) -> dm.EdgeId:
         return dm.EdgeId(space=self.space, external_id=self.external_id)
 
     @classmethod
-    def from_instance(cls: type[T_DomainModel], instance: Instance) -> T_DomainModel:
+    def from_instance(cls, instance: Instance) -> Self:
         data = instance.dump(camel_case=False)
         data.pop("instance_type", None)
         edge_type = data.pop("type", None)
@@ -499,7 +491,7 @@ def default_edge_external_id_factory(
     return f"{start}:{end}"
 
 
-class DomainRelationWrite(BaseModel, extra=Extra.forbid, populate_by_name=True):
+class DomainRelationWrite(Core, extra="forbid", populate_by_name=True):
     external_id_factory: ClassVar[
         Callable[
             [
@@ -519,7 +511,6 @@ class DomainRelationWrite(BaseModel, extra=Extra.forbid, populate_by_name=True):
         cache: set[tuple[str, str]],
         start_node: DomainModelWrite,
         edge_type: dm.DirectRelationReference,
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
@@ -572,7 +563,6 @@ class DomainRelationWrite(BaseModel, extra=Extra.forbid, populate_by_name=True):
         start_node: DomainModelWrite | str | dm.NodeId,
         end_node: DomainModelWrite | str | dm.NodeId,
         edge_type: dm.DirectRelationReference,
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None = None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
@@ -586,7 +576,6 @@ class DomainRelationWrite(BaseModel, extra=Extra.forbid, populate_by_name=True):
         if isinstance(end_node, DomainModelWrite):
             other_resources = end_node._to_instances_write(
                 cache,
-                view_by_read_class,
                 write_none,
                 allow_version_increase,
             )
@@ -594,7 +583,6 @@ class DomainRelationWrite(BaseModel, extra=Extra.forbid, populate_by_name=True):
         if isinstance(start_node, DomainModelWrite):
             other_resources = start_node._to_instances_write(
                 cache,
-                view_by_read_class,
                 write_none,
                 allow_version_increase,
             )
@@ -614,18 +602,29 @@ class DomainRelationList(CoreList[T_DomainRelation]):
     _PARENT_CLASS = DomainRelation
 
     def as_edge_ids(self) -> list[dm.EdgeId]:
-        return [edge.as_id() for edge in self]
+        return [edge.as_id() for edge in self.data]
+
+    @property
+    def data_records(self) -> DataRecordList:
+        return DataRecordList([connection.data_record for connection in self.data])
+
+
+class DomainRelationWriteList(CoreList[T_DomainRelationWrite]):
+    _PARENT_CLASS = DomainRelationWrite
 
     @property
     def data_records(self) -> DataRecordWriteList:
-        return DataRecordWriteList([connection.data_record for connection in self])
+        return DataRecordWriteList([connection.data_record for connection in self.data])
+
+    def as_edge_ids(self) -> list[dm.EdgeId]:
+        return [edge.as_id() for edge in self.data]
 
 
 T_DomainRelationList = TypeVar("T_DomainRelationList", bound=DomainRelationList)
 
 
-def unpack_properties(properties: Properties) -> Mapping[str, PropertyValue]:
-    unpacked: dict[str, PropertyValue] = {}
+def unpack_properties(properties: Properties) -> Mapping[str, PropertyValue | dm.NodeId]:
+    unpacked: dict[str, PropertyValue | dm.NodeId] = {}
     for view_properties in properties.values():
         for prop_name, prop_value in view_properties.items():
             if isinstance(prop_value, dict) and "externalId" in prop_value and "space" in prop_value:

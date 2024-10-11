@@ -7,7 +7,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -25,53 +25,43 @@ from cognite.powerops.client._generated.v1.data_classes._shop_penalty_report imp
     _SHOPPENALTYREPORT_PROPERTIES_BY_FIELD,
     _create_shop_penalty_report_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
 from .shop_penalty_report_query import ShopPenaltyReportQueryAPI
 
 
-class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, ShopPenaltyReportList]):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[ShopPenaltyReport]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=ShopPenaltyReport,
-            class_list=ShopPenaltyReportList,
-            class_write_list=ShopPenaltyReportWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, ShopPenaltyReportList, ShopPenaltyReportWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "ShopPenaltyReport", "1")
+    _properties_by_field = _SHOPPENALTYREPORT_PROPERTIES_BY_FIELD
+    _class_type = ShopPenaltyReport
+    _class_list = ShopPenaltyReportList
+    _class_write_list = ShopPenaltyReportWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
 
     def __call__(
-        self,
-        min_time: datetime.datetime | None = None,
-        max_time: datetime.datetime | None = None,
-        workflow_execution_id: str | list[str] | None = None,
-        workflow_execution_id_prefix: str | None = None,
-        title: str | list[str] | None = None,
-        title_prefix: str | None = None,
-        description: str | list[str] | None = None,
-        description_prefix: str | None = None,
-        severity: str | list[str] | None = None,
-        severity_prefix: str | None = None,
-        alert_type: str | list[str] | None = None,
-        alert_type_prefix: str | None = None,
-        min_status_code: int | None = None,
-        max_status_code: int | None = None,
-        calculation_run: str | list[str] | None = None,
-        calculation_run_prefix: str | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            min_time: datetime.datetime | None = None,
+            max_time: datetime.datetime | None = None,
+            workflow_execution_id: str | list[str] | None = None,
+            workflow_execution_id_prefix: str | None = None,
+            title: str | list[str] | None = None,
+            title_prefix: str | None = None,
+            description: str | list[str] | None = None,
+            description_prefix: str | None = None,
+            severity: str | list[str] | None = None,
+            severity_prefix: str | None = None,
+            alert_type: str | list[str] | None = None,
+            alert_type_prefix: str | None = None,
+            min_status_code: int | None = None,
+            max_status_code: int | None = None,
+            calculation_run: str | list[str] | None = None,
+            calculation_run_prefix: str | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> ShopPenaltyReportQueryAPI[ShopPenaltyReportList]:
         """Query starting at shop penalty reports.
 
@@ -125,7 +115,8 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(ShopPenaltyReportList)
-        return ShopPenaltyReportQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        return ShopPenaltyReportQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
@@ -167,9 +158,7 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
         )
         return self._apply(shop_penalty_report, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more shop penalty report.
 
         Args:
@@ -199,16 +188,14 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopPenaltyReport | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopPenaltyReport | None:
+        ...
 
     @overload
-    def retrieve(
-        self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> ShopPenaltyReportList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopPenaltyReportList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> ShopPenaltyReport | ShopPenaltyReportList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopPenaltyReport | ShopPenaltyReportList | None:
         """Retrieve one or more shop penalty reports by id(s).
 
         Args:
@@ -232,7 +219,7 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
     def search(
         self,
         query: str,
-        properties: ShopPenaltyReportTextFields | Sequence[ShopPenaltyReportTextFields] | None = None,
+        properties: ShopPenaltyReportTextFields | SequenceNotStr[ShopPenaltyReportTextFields] | None = None,
         min_time: datetime.datetime | None = None,
         max_time: datetime.datetime | None = None,
         workflow_execution_id: str | list[str] | None = None,
@@ -251,8 +238,11 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
         calculation_run_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: ShopPenaltyReportFields | SequenceNotStr[ShopPenaltyReportFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> ShopPenaltyReportList:
         """Search shop penalty reports
 
@@ -279,6 +269,11 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
             space: The space to filter on.
             limit: Maximum number of shop penalty reports to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             Search results shop penalty reports matching the query.
@@ -314,21 +309,24 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
             space,
             filter,
         )
-        return self._search(self._view_id, query, _SHOPPENALTYREPORT_PROPERTIES_BY_FIELD, properties, filter_, limit)
+        return self._search(
+            query=query,
+            properties=properties,
+            filter_=filter_,
+            limit=limit,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
+        )
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: ShopPenaltyReportFields | Sequence[ShopPenaltyReportFields] | None = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: ShopPenaltyReportFields | SequenceNotStr[ShopPenaltyReportFields] | None = None,
         query: str | None = None,
-        search_properties: ShopPenaltyReportTextFields | Sequence[ShopPenaltyReportTextFields] | None = None,
+        search_property: ShopPenaltyReportTextFields | SequenceNotStr[ShopPenaltyReportTextFields] | None = None,
         min_time: datetime.datetime | None = None,
         max_time: datetime.datetime | None = None,
         workflow_execution_id: str | list[str] | None = None,
@@ -347,23 +345,19 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
         calculation_run_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: ShopPenaltyReportFields | Sequence[ShopPenaltyReportFields] | None = None,
-        group_by: ShopPenaltyReportFields | Sequence[ShopPenaltyReportFields] = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: ShopPenaltyReportFields | SequenceNotStr[ShopPenaltyReportFields] | None = None,
         query: str | None = None,
-        search_properties: ShopPenaltyReportTextFields | Sequence[ShopPenaltyReportTextFields] | None = None,
+        search_property: ShopPenaltyReportTextFields | SequenceNotStr[ShopPenaltyReportTextFields] | None = None,
         min_time: datetime.datetime | None = None,
         max_time: datetime.datetime | None = None,
         workflow_execution_id: str | list[str] | None = None,
@@ -382,22 +376,53 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
         calculation_run_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: ShopPenaltyReportFields | SequenceNotStr[ShopPenaltyReportFields],
+        property: ShopPenaltyReportFields | SequenceNotStr[ShopPenaltyReportFields] | None = None,
+        query: str | None = None,
+        search_property: ShopPenaltyReportTextFields | SequenceNotStr[ShopPenaltyReportTextFields] | None = None,
+        min_time: datetime.datetime | None = None,
+        max_time: datetime.datetime | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        title: str | list[str] | None = None,
+        title_prefix: str | None = None,
+        description: str | list[str] | None = None,
+        description_prefix: str | None = None,
+        severity: str | list[str] | None = None,
+        severity_prefix: str | None = None,
+        alert_type: str | list[str] | None = None,
+        alert_type_prefix: str | None = None,
+        min_status_code: int | None = None,
+        max_status_code: int | None = None,
+        calculation_run: str | list[str] | None = None,
+        calculation_run_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: ShopPenaltyReportFields | Sequence[ShopPenaltyReportFields] | None = None,
-        group_by: ShopPenaltyReportFields | Sequence[ShopPenaltyReportFields] | None = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: ShopPenaltyReportFields | SequenceNotStr[ShopPenaltyReportFields] | None = None,
+        property: ShopPenaltyReportFields | SequenceNotStr[ShopPenaltyReportFields] | None = None,
         query: str | None = None,
-        search_property: ShopPenaltyReportTextFields | Sequence[ShopPenaltyReportTextFields] | None = None,
+        search_property: ShopPenaltyReportTextFields | SequenceNotStr[ShopPenaltyReportTextFields] | None = None,
         min_time: datetime.datetime | None = None,
         max_time: datetime.datetime | None = None,
         workflow_execution_id: str | list[str] | None = None,
@@ -416,15 +441,19 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
         calculation_run_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across shop penalty reports
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             query: The query to search for in the text field.
             search_property: The text field to search in.
             min_time: The minimum value of the time to filter on.
@@ -484,15 +513,13 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _SHOPPENALTYREPORT_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            query,
-            search_property,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=query,
+            search_properties=search_property,  # type: ignore[arg-type]
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -500,7 +527,7 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
         property: ShopPenaltyReportFields,
         interval: float,
         query: str | None = None,
-        search_property: ShopPenaltyReportTextFields | Sequence[ShopPenaltyReportTextFields] | None = None,
+        search_property: ShopPenaltyReportTextFields | SequenceNotStr[ShopPenaltyReportTextFields] | None = None,
         min_time: datetime.datetime | None = None,
         max_time: datetime.datetime | None = None,
         workflow_execution_id: str | list[str] | None = None,
@@ -519,7 +546,7 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
         calculation_run_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for shop penalty reports
@@ -577,15 +604,14 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _SHOPPENALTYREPORT_PROPERTIES_BY_FIELD,
             query,
-            search_property,
+            search_property,  # type: ignore[arg-type]
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -607,10 +633,11 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
         calculation_run_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         sort_by: ShopPenaltyReportFields | Sequence[ShopPenaltyReportFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> ShopPenaltyReportList:
         """List/filter shop penalty reports
 
@@ -637,6 +664,9 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             List of requested shop penalty reports
@@ -675,7 +705,7 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_SHOPPENALTYREPORT_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
         )

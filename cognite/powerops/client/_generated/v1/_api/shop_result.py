@@ -6,7 +6,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -23,42 +23,32 @@ from cognite.powerops.client._generated.v1.data_classes._shop_result import (
     _SHOPRESULT_PROPERTIES_BY_FIELD,
     _create_shop_result_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
 from .shop_result_alerts import ShopResultAlertsAPI
 from .shop_result_output_time_series import ShopResultOutputTimeSeriesAPI
 from .shop_result_query import ShopResultQueryAPI
 
 
-class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList]):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[ShopResult]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=ShopResult,
-            class_list=ShopResultList,
-            class_write_list=ShopResultWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopResultWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "ShopResult", "1")
+    _properties_by_field = _SHOPRESULT_PROPERTIES_BY_FIELD
+    _class_type = ShopResult
+    _class_list = ShopResultList
+    _class_write_list = ShopResultWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
         self.alerts_edge = ShopResultAlertsAPI(client)
         self.output_time_series_edge = ShopResultOutputTimeSeriesAPI(client)
 
     def __call__(
-        self,
-        case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> ShopResultQueryAPI[ShopResultList]:
         """Query starting at shop results.
 
@@ -82,7 +72,8 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList]):
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(ShopResultList)
-        return ShopResultQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        return ShopResultQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
@@ -128,9 +119,7 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList]):
         )
         return self._apply(shop_result, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more shop result.
 
         Args:
@@ -160,14 +149,14 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList]):
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopResult | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopResult | None:
+        ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopResultList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopResultList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> ShopResult | ShopResultList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopResult | ShopResultList | None:
         """Retrieve one or more shop results by id(s).
 
         Args:
@@ -205,67 +194,78 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList]):
                     "outwards",
                     dm.ViewId("power_ops_core", "ShopTimeSeries", "1"),
                 ),
-            ],
+                                               ]
         )
 
+
+
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: ShopResultFields | Sequence[ShopResultFields] | None = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: ShopResultFields | SequenceNotStr[ShopResultFields] | None = None,
         case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: ShopResultFields | Sequence[ShopResultFields] | None = None,
-        group_by: ShopResultFields | Sequence[ShopResultFields] = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: ShopResultFields | SequenceNotStr[ShopResultFields] | None = None,
         case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: ShopResultFields | SequenceNotStr[ShopResultFields],
+        property: ShopResultFields | SequenceNotStr[ShopResultFields] | None = None,
+        case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: ShopResultFields | Sequence[ShopResultFields] | None = None,
-        group_by: ShopResultFields | Sequence[ShopResultFields] | None = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: ShopResultFields | SequenceNotStr[ShopResultFields] | None = None,
+        property: ShopResultFields | SequenceNotStr[ShopResultFields] | None = None,
         case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across shop results
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             case: The case to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -293,15 +293,13 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList]):
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _SHOPRESULT_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            None,
-            None,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=None,
+            search_properties=None,
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -311,7 +309,7 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList]):
         case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for shop results
@@ -337,25 +335,25 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList]):
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _SHOPRESULT_PROPERTIES_BY_FIELD,
             None,
             None,
             limit,
             filter_,
         )
 
+
     def list(
         self,
         case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         sort_by: ShopResultFields | Sequence[ShopResultFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
         retrieve_edges: bool = True,
     ) -> ShopResultList:
         """List/filter shop results
@@ -368,6 +366,9 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList]):
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
             retrieve_edges: Whether to retrieve `alerts` or `output_time_series` external ids for the shop results. Defaults to True.
 
         Returns:
@@ -393,9 +394,9 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList]):
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_SHOPRESULT_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
             retrieve_edges=retrieve_edges,
             edge_api_name_type_direction_view_id_penta=[
                 (
@@ -412,5 +413,5 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList]):
                     "outwards",
                     dm.ViewId("power_ops_core", "ShopTimeSeries", "1"),
                 ),
-            ],
+                                               ]
         )

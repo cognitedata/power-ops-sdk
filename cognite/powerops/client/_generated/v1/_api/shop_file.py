@@ -6,7 +6,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -24,46 +24,36 @@ from cognite.powerops.client._generated.v1.data_classes._shop_file import (
     _SHOPFILE_PROPERTIES_BY_FIELD,
     _create_shop_file_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
 from .shop_file_query import ShopFileQueryAPI
 
 
-class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList]):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[ShopFile]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=ShopFile,
-            class_list=ShopFileList,
-            class_write_list=ShopFileWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "ShopFile", "1")
+    _properties_by_field = _SHOPFILE_PROPERTIES_BY_FIELD
+    _class_type = ShopFile
+    _class_list = ShopFileList
+    _class_write_list = ShopFileWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
 
     def __call__(
-        self,
-        name: str | list[str] | None = None,
-        name_prefix: str | None = None,
-        label: str | list[str] | None = None,
-        label_prefix: str | None = None,
-        file_reference_prefix: str | list[str] | None = None,
-        file_reference_prefix_prefix: str | None = None,
-        min_order: int | None = None,
-        max_order: int | None = None,
-        is_ascii: bool | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            name: str | list[str] | None = None,
+            name_prefix: str | None = None,
+            label: str | list[str] | None = None,
+            label_prefix: str | None = None,
+            file_reference_prefix: str | list[str] | None = None,
+            file_reference_prefix_prefix: str | None = None,
+            min_order: int | None = None,
+            max_order: int | None = None,
+            is_ascii: bool | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> ShopFileQueryAPI[ShopFileList]:
         """Query starting at shop files.
 
@@ -103,7 +93,8 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList]):
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(ShopFileList)
-        return ShopFileQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        return ShopFileQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
@@ -145,9 +136,7 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList]):
         )
         return self._apply(shop_file, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more shop file.
 
         Args:
@@ -177,14 +166,14 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList]):
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopFile | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopFile | None:
+        ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopFileList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopFileList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> ShopFile | ShopFileList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopFile | ShopFileList | None:
         """Retrieve one or more shop files by id(s).
 
         Args:
@@ -208,7 +197,7 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList]):
     def search(
         self,
         query: str,
-        properties: ShopFileTextFields | Sequence[ShopFileTextFields] | None = None,
+        properties: ShopFileTextFields | SequenceNotStr[ShopFileTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         label: str | list[str] | None = None,
@@ -220,8 +209,11 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList]):
         is_ascii: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: ShopFileFields | SequenceNotStr[ShopFileFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> ShopFileList:
         """Search shop files
 
@@ -241,6 +233,11 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList]):
             space: The space to filter on.
             limit: Maximum number of shop files to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             Search results shop files matching the query.
@@ -269,21 +266,24 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList]):
             space,
             filter,
         )
-        return self._search(self._view_id, query, _SHOPFILE_PROPERTIES_BY_FIELD, properties, filter_, limit)
+        return self._search(
+            query=query,
+            properties=properties,
+            filter_=filter_,
+            limit=limit,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
+        )
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: ShopFileFields | Sequence[ShopFileFields] | None = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: ShopFileFields | SequenceNotStr[ShopFileFields] | None = None,
         query: str | None = None,
-        search_properties: ShopFileTextFields | Sequence[ShopFileTextFields] | None = None,
+        search_property: ShopFileTextFields | SequenceNotStr[ShopFileTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         label: str | list[str] | None = None,
@@ -295,23 +295,19 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList]):
         is_ascii: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: ShopFileFields | Sequence[ShopFileFields] | None = None,
-        group_by: ShopFileFields | Sequence[ShopFileFields] = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: ShopFileFields | SequenceNotStr[ShopFileFields] | None = None,
         query: str | None = None,
-        search_properties: ShopFileTextFields | Sequence[ShopFileTextFields] | None = None,
+        search_property: ShopFileTextFields | SequenceNotStr[ShopFileTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         label: str | list[str] | None = None,
@@ -323,22 +319,46 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList]):
         is_ascii: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: ShopFileFields | SequenceNotStr[ShopFileFields],
+        property: ShopFileFields | SequenceNotStr[ShopFileFields] | None = None,
+        query: str | None = None,
+        search_property: ShopFileTextFields | SequenceNotStr[ShopFileTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        label: str | list[str] | None = None,
+        label_prefix: str | None = None,
+        file_reference_prefix: str | list[str] | None = None,
+        file_reference_prefix_prefix: str | None = None,
+        min_order: int | None = None,
+        max_order: int | None = None,
+        is_ascii: bool | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: ShopFileFields | Sequence[ShopFileFields] | None = None,
-        group_by: ShopFileFields | Sequence[ShopFileFields] | None = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: ShopFileFields | SequenceNotStr[ShopFileFields] | None = None,
+        property: ShopFileFields | SequenceNotStr[ShopFileFields] | None = None,
         query: str | None = None,
-        search_property: ShopFileTextFields | Sequence[ShopFileTextFields] | None = None,
+        search_property: ShopFileTextFields | SequenceNotStr[ShopFileTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         label: str | list[str] | None = None,
@@ -350,15 +370,19 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList]):
         is_ascii: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across shop files
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             query: The query to search for in the text field.
             search_property: The text field to search in.
             name: The name to filter on.
@@ -404,15 +428,13 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList]):
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _SHOPFILE_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            query,
-            search_property,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=query,
+            search_properties=search_property,  # type: ignore[arg-type]
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -420,7 +442,7 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList]):
         property: ShopFileFields,
         interval: float,
         query: str | None = None,
-        search_property: ShopFileTextFields | Sequence[ShopFileTextFields] | None = None,
+        search_property: ShopFileTextFields | SequenceNotStr[ShopFileTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         label: str | list[str] | None = None,
@@ -432,7 +454,7 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList]):
         is_ascii: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for shop files
@@ -476,15 +498,14 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList]):
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _SHOPFILE_PROPERTIES_BY_FIELD,
             query,
-            search_property,
+            search_property,  # type: ignore[arg-type]
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -499,10 +520,11 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList]):
         is_ascii: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         sort_by: ShopFileFields | Sequence[ShopFileFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> ShopFileList:
         """List/filter shop files
 
@@ -522,6 +544,9 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList]):
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             List of requested shop files
@@ -553,7 +578,7 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList]):
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_SHOPFILE_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
         )

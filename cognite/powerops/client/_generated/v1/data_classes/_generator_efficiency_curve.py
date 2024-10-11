@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from typing import Any, Literal, Optional, Union
+from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import field_validator, model_validator
@@ -12,7 +12,6 @@ from ._core import (
     DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
-    DomainModelCore,
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
@@ -30,6 +29,8 @@ __all__ = [
     "GeneratorEfficiencyCurveWriteList",
     "GeneratorEfficiencyCurveApplyList",
     "GeneratorEfficiencyCurveFields",
+
+    "GeneratorEfficiencyCurveGraphQL",
 ]
 
 GeneratorEfficiencyCurveFields = Literal["power", "efficiency"]
@@ -38,7 +39,6 @@ _GENERATOREFFICIENCYCURVE_PROPERTIES_BY_FIELD = {
     "power": "power",
     "efficiency": "efficiency",
 }
-
 
 class GeneratorEfficiencyCurveGraphQL(GraphQLCore):
     """This represents the reading version of generator efficiency curve, used
@@ -53,8 +53,7 @@ class GeneratorEfficiencyCurveGraphQL(GraphQLCore):
         power: The generator power values
         efficiency: The generator efficiency values
     """
-
-    view_id = dm.ViewId("power_ops_core", "GeneratorEfficiencyCurve", "1")
+    view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "GeneratorEfficiencyCurve", "1")
     power: Optional[list[float]] = None
     efficiency: Optional[list[float]] = None
 
@@ -69,6 +68,8 @@ class GeneratorEfficiencyCurveGraphQL(GraphQLCore):
             )
         return values
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> GeneratorEfficiencyCurve:
         """Convert this GraphQL format of generator efficiency curve to the reading format."""
         if self.data_record is None:
@@ -85,6 +86,9 @@ class GeneratorEfficiencyCurveGraphQL(GraphQLCore):
             efficiency=self.efficiency,
         )
 
+
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> GeneratorEfficiencyCurveWrite:
         """Convert this GraphQL format of generator efficiency curve to the writing format."""
         return GeneratorEfficiencyCurveWrite(
@@ -108,13 +112,12 @@ class GeneratorEfficiencyCurve(DomainModel):
         power: The generator power values
         efficiency: The generator efficiency values
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "GeneratorEfficiencyCurve", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "GeneratorEfficiencyCurve"
-    )
-    power: Optional[list[float]] = None
-    efficiency: Optional[list[float]] = None
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "GeneratorEfficiencyCurve")
+    power: list[float]
+    efficiency: list[float]
 
     def as_write(self) -> GeneratorEfficiencyCurveWrite:
         """Convert this read version of generator efficiency curve to the writing version."""
@@ -148,28 +151,22 @@ class GeneratorEfficiencyCurveWrite(DomainModelWrite):
         power: The generator power values
         efficiency: The generator efficiency values
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "GeneratorEfficiencyCurve", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "GeneratorEfficiencyCurve"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "GeneratorEfficiencyCurve")
     power: list[float]
     efficiency: list[float]
 
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
-
-        write_view = (view_by_read_class or {}).get(
-            GeneratorEfficiencyCurve, dm.ViewId("power_ops_core", "GeneratorEfficiencyCurve", "1")
-        )
 
         properties: dict[str, Any] = {}
 
@@ -179,6 +176,7 @@ class GeneratorEfficiencyCurveWrite(DomainModelWrite):
         if self.efficiency is not None:
             properties["efficiency"] = self.efficiency
 
+
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -187,13 +185,14 @@ class GeneratorEfficiencyCurveWrite(DomainModelWrite):
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
-                        source=write_view,
+                        source=self._view_id,
                         properties=properties,
-                    )
-                ],
+                )],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
+
+
 
         return resources
 
@@ -234,8 +233,8 @@ class GeneratorEfficiencyCurveWriteList(DomainModelWriteList[GeneratorEfficiency
 
     _INSTANCE = GeneratorEfficiencyCurveWrite
 
-
 class GeneratorEfficiencyCurveApplyList(GeneratorEfficiencyCurveWriteList): ...
+
 
 
 def _create_generator_efficiency_curve_filter(
@@ -244,7 +243,7 @@ def _create_generator_efficiency_curve_filter(
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
-    filters = []
+    filters: list[dm.Filter] = []
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):

@@ -6,7 +6,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -24,45 +24,35 @@ from cognite.powerops.client._generated.v1.data_classes._power_asset import (
     _POWERASSET_PROPERTIES_BY_FIELD,
     _create_power_asset_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
 from .power_asset_query import PowerAssetQueryAPI
 
 
-class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList]):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[PowerAsset]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=PowerAsset,
-            class_list=PowerAssetList,
-            class_write_list=PowerAssetWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList, PowerAssetWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "PowerAsset", "1")
+    _properties_by_field = _POWERASSET_PROPERTIES_BY_FIELD
+    _class_type = PowerAsset
+    _class_list = PowerAssetList
+    _class_write_list = PowerAssetWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
 
     def __call__(
-        self,
-        name: str | list[str] | None = None,
-        name_prefix: str | None = None,
-        display_name: str | list[str] | None = None,
-        display_name_prefix: str | None = None,
-        min_ordering: int | None = None,
-        max_ordering: int | None = None,
-        asset_type: str | list[str] | None = None,
-        asset_type_prefix: str | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            name: str | list[str] | None = None,
+            name_prefix: str | None = None,
+            display_name: str | list[str] | None = None,
+            display_name_prefix: str | None = None,
+            min_ordering: int | None = None,
+            max_ordering: int | None = None,
+            asset_type: str | list[str] | None = None,
+            asset_type_prefix: str | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> PowerAssetQueryAPI[PowerAssetList]:
         """Query starting at power assets.
 
@@ -100,7 +90,8 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList]):
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(PowerAssetList)
-        return PowerAssetQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        return PowerAssetQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
@@ -142,9 +133,7 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList]):
         )
         return self._apply(power_asset, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more power asset.
 
         Args:
@@ -174,14 +163,14 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList]):
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> PowerAsset | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> PowerAsset | None:
+        ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PowerAssetList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PowerAssetList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> PowerAsset | PowerAssetList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PowerAsset | PowerAssetList | None:
         """Retrieve one or more power assets by id(s).
 
         Args:
@@ -205,7 +194,7 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList]):
     def search(
         self,
         query: str,
-        properties: PowerAssetTextFields | Sequence[PowerAssetTextFields] | None = None,
+        properties: PowerAssetTextFields | SequenceNotStr[PowerAssetTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         display_name: str | list[str] | None = None,
@@ -216,8 +205,11 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList]):
         asset_type_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: PowerAssetFields | SequenceNotStr[PowerAssetFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> PowerAssetList:
         """Search power assets
 
@@ -236,6 +228,11 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList]):
             space: The space to filter on.
             limit: Maximum number of power assets to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             Search results power assets matching the query.
@@ -263,21 +260,24 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList]):
             space,
             filter,
         )
-        return self._search(self._view_id, query, _POWERASSET_PROPERTIES_BY_FIELD, properties, filter_, limit)
+        return self._search(
+            query=query,
+            properties=properties,
+            filter_=filter_,
+            limit=limit,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
+        )
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: PowerAssetFields | Sequence[PowerAssetFields] | None = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: PowerAssetFields | SequenceNotStr[PowerAssetFields] | None = None,
         query: str | None = None,
-        search_properties: PowerAssetTextFields | Sequence[PowerAssetTextFields] | None = None,
+        search_property: PowerAssetTextFields | SequenceNotStr[PowerAssetTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         display_name: str | list[str] | None = None,
@@ -288,23 +288,19 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList]):
         asset_type_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: PowerAssetFields | Sequence[PowerAssetFields] | None = None,
-        group_by: PowerAssetFields | Sequence[PowerAssetFields] = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: PowerAssetFields | SequenceNotStr[PowerAssetFields] | None = None,
         query: str | None = None,
-        search_properties: PowerAssetTextFields | Sequence[PowerAssetTextFields] | None = None,
+        search_property: PowerAssetTextFields | SequenceNotStr[PowerAssetTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         display_name: str | list[str] | None = None,
@@ -315,22 +311,45 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList]):
         asset_type_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: PowerAssetFields | SequenceNotStr[PowerAssetFields],
+        property: PowerAssetFields | SequenceNotStr[PowerAssetFields] | None = None,
+        query: str | None = None,
+        search_property: PowerAssetTextFields | SequenceNotStr[PowerAssetTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: PowerAssetFields | Sequence[PowerAssetFields] | None = None,
-        group_by: PowerAssetFields | Sequence[PowerAssetFields] | None = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: PowerAssetFields | SequenceNotStr[PowerAssetFields] | None = None,
+        property: PowerAssetFields | SequenceNotStr[PowerAssetFields] | None = None,
         query: str | None = None,
-        search_property: PowerAssetTextFields | Sequence[PowerAssetTextFields] | None = None,
+        search_property: PowerAssetTextFields | SequenceNotStr[PowerAssetTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         display_name: str | list[str] | None = None,
@@ -341,15 +360,19 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList]):
         asset_type_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across power assets
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             query: The query to search for in the text field.
             search_property: The text field to search in.
             name: The name to filter on.
@@ -393,15 +416,13 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList]):
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _POWERASSET_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            query,
-            search_property,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=query,
+            search_properties=search_property,  # type: ignore[arg-type]
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -409,7 +430,7 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList]):
         property: PowerAssetFields,
         interval: float,
         query: str | None = None,
-        search_property: PowerAssetTextFields | Sequence[PowerAssetTextFields] | None = None,
+        search_property: PowerAssetTextFields | SequenceNotStr[PowerAssetTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         display_name: str | list[str] | None = None,
@@ -420,7 +441,7 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList]):
         asset_type_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for power assets
@@ -462,15 +483,14 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList]):
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _POWERASSET_PROPERTIES_BY_FIELD,
             query,
-            search_property,
+            search_property,  # type: ignore[arg-type]
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -484,10 +504,11 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList]):
         asset_type_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         sort_by: PowerAssetFields | Sequence[PowerAssetFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> PowerAssetList:
         """List/filter power assets
 
@@ -506,6 +527,9 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList]):
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             List of requested power assets
@@ -536,7 +560,7 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList]):
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_POWERASSET_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
         )

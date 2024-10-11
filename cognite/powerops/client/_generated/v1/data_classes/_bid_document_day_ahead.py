@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 import warnings
-from typing import TYPE_CHECKING, Any, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -14,7 +14,6 @@ from ._core import (
     DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
-    DomainModelCore,
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
@@ -26,17 +25,9 @@ from ._bid_document import BidDocument, BidDocumentWrite
 
 if TYPE_CHECKING:
     from ._alert import Alert, AlertGraphQL, AlertWrite
-    from ._bid_configuration_day_ahead import (
-        BidConfigurationDayAhead,
-        BidConfigurationDayAheadGraphQL,
-        BidConfigurationDayAheadWrite,
-    )
+    from ._bid_configuration_day_ahead import BidConfigurationDayAhead, BidConfigurationDayAheadGraphQL, BidConfigurationDayAheadWrite
     from ._bid_matrix_information import BidMatrixInformation, BidMatrixInformationGraphQL, BidMatrixInformationWrite
-    from ._partial_bid_matrix_information import (
-        PartialBidMatrixInformation,
-        PartialBidMatrixInformationGraphQL,
-        PartialBidMatrixInformationWrite,
-    )
+    from ._partial_bid_matrix_information import PartialBidMatrixInformation, PartialBidMatrixInformationGraphQL, PartialBidMatrixInformationWrite
 
 
 __all__ = [
@@ -48,13 +39,12 @@ __all__ = [
     "BidDocumentDayAheadApplyList",
     "BidDocumentDayAheadFields",
     "BidDocumentDayAheadTextFields",
+    "BidDocumentDayAheadGraphQL",
 ]
 
 
 BidDocumentDayAheadTextFields = Literal["name", "workflow_execution_id"]
-BidDocumentDayAheadFields = Literal[
-    "name", "workflow_execution_id", "delivery_date", "start_calculation", "end_calculation", "is_complete"
-]
+BidDocumentDayAheadFields = Literal["name", "workflow_execution_id", "delivery_date", "start_calculation", "end_calculation", "is_complete"]
 
 _BIDDOCUMENTDAYAHEAD_PROPERTIES_BY_FIELD = {
     "name": "name",
@@ -64,7 +54,6 @@ _BIDDOCUMENTDAYAHEAD_PROPERTIES_BY_FIELD = {
     "end_calculation": "endCalculation",
     "is_complete": "isComplete",
 }
-
 
 class BidDocumentDayAheadGraphQL(GraphQLCore):
     """This represents the reading version of bid document day ahead, used
@@ -87,8 +76,7 @@ class BidDocumentDayAheadGraphQL(GraphQLCore):
         total: The total field.
         partials: The partial field.
     """
-
-    view_id = dm.ViewId("power_ops_core", "BidDocumentDayAhead", "1")
+    view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidDocumentDayAhead", "1")
     name: Optional[str] = None
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     delivery_date: Optional[datetime.date] = Field(None, alias="deliveryDate")
@@ -96,9 +84,7 @@ class BidDocumentDayAheadGraphQL(GraphQLCore):
     end_calculation: Optional[datetime.datetime] = Field(None, alias="endCalculation")
     is_complete: Optional[bool] = Field(None, alias="isComplete")
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
-    bid_configuration: Optional[BidConfigurationDayAheadGraphQL] = Field(
-        default=None, repr=False, alias="bidConfiguration"
-    )
+    bid_configuration: Optional[BidConfigurationDayAheadGraphQL] = Field(default=None, repr=False, alias="bidConfiguration")
     total: Optional[BidMatrixInformationGraphQL] = Field(default=None, repr=False)
     partials: Optional[list[PartialBidMatrixInformationGraphQL]] = Field(default=None, repr=False)
 
@@ -112,7 +98,6 @@ class BidDocumentDayAheadGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
-
     @field_validator("alerts", "bid_configuration", "total", "partials", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -121,6 +106,8 @@ class BidDocumentDayAheadGraphQL(GraphQLCore):
             return value["items"]
         return value
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> BidDocumentDayAhead:
         """Convert this GraphQL format of bid document day ahead to the reading format."""
         if self.data_record is None:
@@ -140,15 +127,14 @@ class BidDocumentDayAheadGraphQL(GraphQLCore):
             end_calculation=self.end_calculation,
             is_complete=self.is_complete,
             alerts=[alert.as_read() for alert in self.alerts or []],
-            bid_configuration=(
-                self.bid_configuration.as_read()
-                if isinstance(self.bid_configuration, GraphQLCore)
-                else self.bid_configuration
-            ),
+            bid_configuration=self.bid_configuration.as_read() if isinstance(self.bid_configuration, GraphQLCore) else self.bid_configuration,
             total=self.total.as_read() if isinstance(self.total, GraphQLCore) else self.total,
             partials=[partial.as_read() for partial in self.partials or []],
         )
 
+
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> BidDocumentDayAheadWrite:
         """Convert this GraphQL format of bid document day ahead to the writing format."""
         return BidDocumentDayAheadWrite(
@@ -162,11 +148,7 @@ class BidDocumentDayAheadGraphQL(GraphQLCore):
             end_calculation=self.end_calculation,
             is_complete=self.is_complete,
             alerts=[alert.as_write() for alert in self.alerts or []],
-            bid_configuration=(
-                self.bid_configuration.as_write()
-                if isinstance(self.bid_configuration, GraphQLCore)
-                else self.bid_configuration
-            ),
+            bid_configuration=self.bid_configuration.as_write() if isinstance(self.bid_configuration, GraphQLCore) else self.bid_configuration,
             total=self.total.as_write() if isinstance(self.total, GraphQLCore) else self.total,
             partials=[partial.as_write() for partial in self.partials or []],
         )
@@ -192,17 +174,12 @@ class BidDocumentDayAhead(BidDocument):
         total: The total field.
         partials: The partial field.
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidDocumentDayAhead", "1")
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "DayAheadBidDocument"
-    )
-    bid_configuration: Union[BidConfigurationDayAhead, str, dm.NodeId, None] = Field(
-        default=None, repr=False, alias="bidConfiguration"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "DayAheadBidDocument")
+    bid_configuration: Union[BidConfigurationDayAhead, str, dm.NodeId, None] = Field(default=None, repr=False, alias="bidConfiguration")
     total: Union[BidMatrixInformation, str, dm.NodeId, None] = Field(default=None, repr=False)
-    partials: Union[list[PartialBidMatrixInformation], list[str], list[dm.NodeId], None] = Field(
-        default=None, repr=False
-    )
+    partials: Optional[list[Union[PartialBidMatrixInformation, str, dm.NodeId]]] = Field(default=None, repr=False)
 
     def as_write(self) -> BidDocumentDayAheadWrite:
         """Convert this read version of bid document day ahead to the writing version."""
@@ -217,15 +194,9 @@ class BidDocumentDayAhead(BidDocument):
             end_calculation=self.end_calculation,
             is_complete=self.is_complete,
             alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            bid_configuration=(
-                self.bid_configuration.as_write()
-                if isinstance(self.bid_configuration, DomainModel)
-                else self.bid_configuration
-            ),
+            bid_configuration=self.bid_configuration.as_write() if isinstance(self.bid_configuration, DomainModel) else self.bid_configuration,
             total=self.total.as_write() if isinstance(self.total, DomainModel) else self.total,
-            partials=[
-                partial.as_write() if isinstance(partial, DomainModel) else partial for partial in self.partials or []
-            ],
+            partials=[partial.as_write() if isinstance(partial, DomainModel) else partial for partial in self.partials or []],
         )
 
     def as_apply(self) -> BidDocumentDayAheadWrite:
@@ -258,32 +229,22 @@ class BidDocumentDayAheadWrite(BidDocumentWrite):
         total: The total field.
         partials: The partial field.
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidDocumentDayAhead", "1")
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "DayAheadBidDocument"
-    )
-    bid_configuration: Union[BidConfigurationDayAheadWrite, str, dm.NodeId, None] = Field(
-        default=None, repr=False, alias="bidConfiguration"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "DayAheadBidDocument")
+    bid_configuration: Union[BidConfigurationDayAheadWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="bidConfiguration")
     total: Union[BidMatrixInformationWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
-    partials: Union[list[PartialBidMatrixInformationWrite], list[str], list[dm.NodeId], None] = Field(
-        default=None, repr=False
-    )
+    partials: Optional[list[Union[PartialBidMatrixInformationWrite, str, dm.NodeId]]] = Field(default=None, repr=False)
 
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
-
-        write_view = (view_by_read_class or {}).get(
-            BidDocumentDayAhead, dm.ViewId("power_ops_core", "BidDocumentDayAhead", "1")
-        )
 
         properties: dict[str, Any] = {}
 
@@ -297,33 +258,26 @@ class BidDocumentDayAheadWrite(BidDocumentWrite):
             properties["deliveryDate"] = self.delivery_date.isoformat() if self.delivery_date else None
 
         if self.start_calculation is not None or write_none:
-            properties["startCalculation"] = (
-                self.start_calculation.isoformat(timespec="milliseconds") if self.start_calculation else None
-            )
+            properties["startCalculation"] = self.start_calculation.isoformat(timespec="milliseconds") if self.start_calculation else None
 
         if self.end_calculation is not None or write_none:
-            properties["endCalculation"] = (
-                self.end_calculation.isoformat(timespec="milliseconds") if self.end_calculation else None
-            )
+            properties["endCalculation"] = self.end_calculation.isoformat(timespec="milliseconds") if self.end_calculation else None
 
         if self.is_complete is not None or write_none:
             properties["isComplete"] = self.is_complete
 
         if self.bid_configuration is not None:
             properties["bidConfiguration"] = {
-                "space": self.space if isinstance(self.bid_configuration, str) else self.bid_configuration.space,
-                "externalId": (
-                    self.bid_configuration
-                    if isinstance(self.bid_configuration, str)
-                    else self.bid_configuration.external_id
-                ),
+                "space":  self.space if isinstance(self.bid_configuration, str) else self.bid_configuration.space,
+                "externalId": self.bid_configuration if isinstance(self.bid_configuration, str) else self.bid_configuration.external_id,
             }
 
         if self.total is not None:
             properties["total"] = {
-                "space": self.space if isinstance(self.total, str) else self.total.space,
+                "space":  self.space if isinstance(self.total, str) else self.total.space,
                 "externalId": self.total if isinstance(self.total, str) else self.total.external_id,
             }
+
 
         if properties:
             this_node = dm.NodeApply(
@@ -333,13 +287,14 @@ class BidDocumentDayAheadWrite(BidDocumentWrite):
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
-                        source=write_view,
+                        source=self._view_id,
                         properties=properties,
-                    )
-                ],
+                )],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
+
+
 
         edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
@@ -348,7 +303,6 @@ class BidDocumentDayAheadWrite(BidDocumentWrite):
                 start_node=self,
                 end_node=alert,
                 edge_type=edge_type,
-                view_by_read_class=view_by_read_class,
                 write_none=write_none,
                 allow_version_increase=allow_version_increase,
             )
@@ -361,18 +315,17 @@ class BidDocumentDayAheadWrite(BidDocumentWrite):
                 start_node=self,
                 end_node=partial,
                 edge_type=edge_type,
-                view_by_read_class=view_by_read_class,
                 write_none=write_none,
                 allow_version_increase=allow_version_increase,
             )
             resources.extend(other_resources)
 
         if isinstance(self.bid_configuration, DomainModelWrite):
-            other_resources = self.bid_configuration._to_instances_write(cache, view_by_read_class)
+            other_resources = self.bid_configuration._to_instances_write(cache)
             resources.extend(other_resources)
 
         if isinstance(self.total, DomainModelWrite):
-            other_resources = self.total._to_instances_write(cache, view_by_read_class)
+            other_resources = self.total._to_instances_write(cache)
             resources.extend(other_resources)
 
         return resources
@@ -414,8 +367,8 @@ class BidDocumentDayAheadWriteList(DomainModelWriteList[BidDocumentDayAheadWrite
 
     _INSTANCE = BidDocumentDayAheadWrite
 
-
 class BidDocumentDayAheadApplyList(BidDocumentDayAheadWriteList): ...
+
 
 
 def _create_bid_document_day_ahead_filter(
@@ -437,7 +390,7 @@ def _create_bid_document_day_ahead_filter(
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
-    filters = []
+    filters: list[dm.Filter] = []
     if isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
@@ -449,86 +402,31 @@ def _create_bid_document_day_ahead_filter(
     if workflow_execution_id and isinstance(workflow_execution_id, list):
         filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
     if workflow_execution_id_prefix is not None:
-        filters.append(
-            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
-        )
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix))
     if min_delivery_date is not None or max_delivery_date is not None:
-        filters.append(
-            dm.filters.Range(
-                view_id.as_property_ref("deliveryDate"),
-                gte=min_delivery_date.isoformat() if min_delivery_date else None,
-                lte=max_delivery_date.isoformat() if max_delivery_date else None,
-            )
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("deliveryDate"), gte=min_delivery_date.isoformat() if min_delivery_date else None, lte=max_delivery_date.isoformat() if max_delivery_date else None))
     if min_start_calculation is not None or max_start_calculation is not None:
-        filters.append(
-            dm.filters.Range(
-                view_id.as_property_ref("startCalculation"),
-                gte=min_start_calculation.isoformat(timespec="milliseconds") if min_start_calculation else None,
-                lte=max_start_calculation.isoformat(timespec="milliseconds") if max_start_calculation else None,
-            )
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("startCalculation"), gte=min_start_calculation.isoformat(timespec="milliseconds") if min_start_calculation else None, lte=max_start_calculation.isoformat(timespec="milliseconds") if max_start_calculation else None))
     if min_end_calculation is not None or max_end_calculation is not None:
-        filters.append(
-            dm.filters.Range(
-                view_id.as_property_ref("endCalculation"),
-                gte=min_end_calculation.isoformat(timespec="milliseconds") if min_end_calculation else None,
-                lte=max_end_calculation.isoformat(timespec="milliseconds") if max_end_calculation else None,
-            )
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("endCalculation"), gte=min_end_calculation.isoformat(timespec="milliseconds") if min_end_calculation else None, lte=max_end_calculation.isoformat(timespec="milliseconds") if max_end_calculation else None))
     if isinstance(is_complete, bool):
         filters.append(dm.filters.Equals(view_id.as_property_ref("isComplete"), value=is_complete))
     if bid_configuration and isinstance(bid_configuration, str):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("bidConfiguration"),
-                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": bid_configuration},
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("bidConfiguration"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": bid_configuration}))
     if bid_configuration and isinstance(bid_configuration, tuple):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("bidConfiguration"),
-                value={"space": bid_configuration[0], "externalId": bid_configuration[1]},
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("bidConfiguration"), value={"space": bid_configuration[0], "externalId": bid_configuration[1]}))
     if bid_configuration and isinstance(bid_configuration, list) and isinstance(bid_configuration[0], str):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("bidConfiguration"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in bid_configuration],
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("bidConfiguration"), values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in bid_configuration]))
     if bid_configuration and isinstance(bid_configuration, list) and isinstance(bid_configuration[0], tuple):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("bidConfiguration"),
-                values=[{"space": item[0], "externalId": item[1]} for item in bid_configuration],
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("bidConfiguration"), values=[{"space": item[0], "externalId": item[1]} for item in bid_configuration]))
     if total and isinstance(total, str):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("total"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": total}
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("total"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": total}))
     if total and isinstance(total, tuple):
-        filters.append(
-            dm.filters.Equals(view_id.as_property_ref("total"), value={"space": total[0], "externalId": total[1]})
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("total"), value={"space": total[0], "externalId": total[1]}))
     if total and isinstance(total, list) and isinstance(total[0], str):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("total"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in total],
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("total"), values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in total]))
     if total and isinstance(total, list) and isinstance(total[0], tuple):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("total"), values=[{"space": item[0], "externalId": item[1]} for item in total]
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("total"), values=[{"space": item[0], "externalId": item[1]} for item in total]))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from typing import Any, Literal, Optional, Union
+from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import field_validator, model_validator
@@ -12,7 +12,6 @@ from ._core import (
     DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
-    DomainModelCore,
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
@@ -30,6 +29,8 @@ __all__ = [
     "TurbineEfficiencyCurveWriteList",
     "TurbineEfficiencyCurveApplyList",
     "TurbineEfficiencyCurveFields",
+
+    "TurbineEfficiencyCurveGraphQL",
 ]
 
 TurbineEfficiencyCurveFields = Literal["head", "flow", "efficiency"]
@@ -39,7 +40,6 @@ _TURBINEEFFICIENCYCURVE_PROPERTIES_BY_FIELD = {
     "flow": "flow",
     "efficiency": "efficiency",
 }
-
 
 class TurbineEfficiencyCurveGraphQL(GraphQLCore):
     """This represents the reading version of turbine efficiency curve, used
@@ -55,8 +55,7 @@ class TurbineEfficiencyCurveGraphQL(GraphQLCore):
         flow: The flow values
         efficiency: The turbine efficiency values
     """
-
-    view_id = dm.ViewId("power_ops_core", "TurbineEfficiencyCurve", "1")
+    view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "TurbineEfficiencyCurve", "1")
     head: Optional[float] = None
     flow: Optional[list[float]] = None
     efficiency: Optional[list[float]] = None
@@ -72,6 +71,8 @@ class TurbineEfficiencyCurveGraphQL(GraphQLCore):
             )
         return values
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> TurbineEfficiencyCurve:
         """Convert this GraphQL format of turbine efficiency curve to the reading format."""
         if self.data_record is None:
@@ -89,6 +90,9 @@ class TurbineEfficiencyCurveGraphQL(GraphQLCore):
             efficiency=self.efficiency,
         )
 
+
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> TurbineEfficiencyCurveWrite:
         """Convert this GraphQL format of turbine efficiency curve to the writing format."""
         return TurbineEfficiencyCurveWrite(
@@ -114,14 +118,13 @@ class TurbineEfficiencyCurve(DomainModel):
         flow: The flow values
         efficiency: The turbine efficiency values
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "TurbineEfficiencyCurve", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "TurbineEfficiencyCurve"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "TurbineEfficiencyCurve")
     head: Optional[float] = None
-    flow: Optional[list[float]] = None
-    efficiency: Optional[list[float]] = None
+    flow: list[float]
+    efficiency: list[float]
 
     def as_write(self) -> TurbineEfficiencyCurveWrite:
         """Convert this read version of turbine efficiency curve to the writing version."""
@@ -157,11 +160,10 @@ class TurbineEfficiencyCurveWrite(DomainModelWrite):
         flow: The flow values
         efficiency: The turbine efficiency values
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "TurbineEfficiencyCurve", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "TurbineEfficiencyCurve"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "TurbineEfficiencyCurve")
     head: Optional[float] = None
     flow: list[float]
     efficiency: list[float]
@@ -169,17 +171,12 @@ class TurbineEfficiencyCurveWrite(DomainModelWrite):
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
-
-        write_view = (view_by_read_class or {}).get(
-            TurbineEfficiencyCurve, dm.ViewId("power_ops_core", "TurbineEfficiencyCurve", "1")
-        )
 
         properties: dict[str, Any] = {}
 
@@ -192,6 +189,7 @@ class TurbineEfficiencyCurveWrite(DomainModelWrite):
         if self.efficiency is not None:
             properties["efficiency"] = self.efficiency
 
+
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -200,13 +198,14 @@ class TurbineEfficiencyCurveWrite(DomainModelWrite):
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
-                        source=write_view,
+                        source=self._view_id,
                         properties=properties,
-                    )
-                ],
+                )],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
+
+
 
         return resources
 
@@ -247,8 +246,8 @@ class TurbineEfficiencyCurveWriteList(DomainModelWriteList[TurbineEfficiencyCurv
 
     _INSTANCE = TurbineEfficiencyCurveWrite
 
-
 class TurbineEfficiencyCurveApplyList(TurbineEfficiencyCurveWriteList): ...
+
 
 
 def _create_turbine_efficiency_curve_filter(
@@ -259,7 +258,7 @@ def _create_turbine_efficiency_curve_filter(
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
-    filters = []
+    filters: list[dm.Filter] = []
     if min_head is not None or max_head is not None:
         filters.append(dm.filters.Range(view_id.as_property_ref("head"), gte=min_head, lte=max_head))
     if external_id_prefix is not None:

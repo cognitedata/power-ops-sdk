@@ -9,15 +9,15 @@ from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INS
 
 class FunctionOutputAlertsAPI(EdgeAPI):
     def list(
-        self,
-        from_function_output: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        from_function_output_space: str = DEFAULT_INSTANCE_SPACE,
-        to_alert: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        to_alert_space: str = DEFAULT_INSTANCE_SPACE,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit=DEFAULT_LIMIT_READ,
-    ) -> dm.EdgeList:
+            self,
+            from_function_output: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+            from_function_output_space: str = DEFAULT_INSTANCE_SPACE,
+            to_alert: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+            to_alert_space: str = DEFAULT_INSTANCE_SPACE,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit=DEFAULT_LIMIT_READ,
+    ) ->dm.EdgeList:
         """List alert edges of a function output.
 
         Args:
@@ -44,6 +44,7 @@ class FunctionOutputAlertsAPI(EdgeAPI):
         """
         filter_ = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "calculationIssue"),
+
             from_function_output,
             from_function_output_space,
             to_alert,

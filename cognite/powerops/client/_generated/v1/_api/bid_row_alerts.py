@@ -9,15 +9,15 @@ from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INS
 
 class BidRowAlertsAPI(EdgeAPI):
     def list(
-        self,
-        from_bid_row: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        from_bid_row_space: str = DEFAULT_INSTANCE_SPACE,
-        to_alert: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        to_alert_space: str = DEFAULT_INSTANCE_SPACE,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit=DEFAULT_LIMIT_READ,
-    ) -> dm.EdgeList:
+            self,
+            from_bid_row: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+            from_bid_row_space: str = DEFAULT_INSTANCE_SPACE,
+            to_alert: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+            to_alert_space: str = DEFAULT_INSTANCE_SPACE,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit=DEFAULT_LIMIT_READ,
+    ) ->dm.EdgeList:
         """List alert edges of a bid row.
 
         Args:
@@ -44,6 +44,7 @@ class BidRowAlertsAPI(EdgeAPI):
         """
         filter_ = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "calculationIssue"),
+
             from_bid_row,
             from_bid_row_space,
             to_alert,

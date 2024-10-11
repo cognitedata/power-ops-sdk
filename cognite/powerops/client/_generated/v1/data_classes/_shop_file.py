@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from typing import Any, Literal, Optional, Union
+from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -13,7 +13,6 @@ from ._core import (
     DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
-    DomainModelCore,
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
@@ -32,6 +31,7 @@ __all__ = [
     "ShopFileApplyList",
     "ShopFileFields",
     "ShopFileTextFields",
+    "ShopFileGraphQL",
 ]
 
 
@@ -46,7 +46,6 @@ _SHOPFILE_PROPERTIES_BY_FIELD = {
     "order": "order",
     "is_ascii": "isAscii",
 }
-
 
 class ShopFileGraphQL(GraphQLCore):
     """This represents the reading version of shop file, used
@@ -65,8 +64,7 @@ class ShopFileGraphQL(GraphQLCore):
         order: The order in which the file should be loaded into pyshop
         is_ascii: The file extension of the file
     """
-
-    view_id = dm.ViewId("power_ops_core", "ShopFile", "1")
+    view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopFile", "1")
     name: Optional[str] = None
     label: Optional[str] = None
     file_reference: Union[dict, None] = Field(None, alias="fileReference")
@@ -85,6 +83,8 @@ class ShopFileGraphQL(GraphQLCore):
             )
         return values
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> ShopFile:
         """Convert this GraphQL format of shop file to the reading format."""
         if self.data_record is None:
@@ -99,16 +99,15 @@ class ShopFileGraphQL(GraphQLCore):
             ),
             name=self.name,
             label=self.label,
-            file_reference=(
-                self.file_reference["externalId"]
-                if self.file_reference and "externalId" in self.file_reference
-                else None
-            ),
+            file_reference=self.file_reference["externalId"] if self.file_reference and "externalId" in self.file_reference else None,
             file_reference_prefix=self.file_reference_prefix,
             order=self.order,
             is_ascii=self.is_ascii,
         )
 
+
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopFileWrite:
         """Convert this GraphQL format of shop file to the writing format."""
         return ShopFileWrite(
@@ -117,11 +116,7 @@ class ShopFileGraphQL(GraphQLCore):
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,
             label=self.label,
-            file_reference=(
-                self.file_reference["externalId"]
-                if self.file_reference and "externalId" in self.file_reference
-                else None
-            ),
+            file_reference=self.file_reference["externalId"] if self.file_reference and "externalId" in self.file_reference else None,
             file_reference_prefix=self.file_reference_prefix,
             order=self.order,
             is_ascii=self.is_ascii,
@@ -144,6 +139,7 @@ class ShopFile(DomainModel):
         order: The order in which the file should be loaded into pyshop
         is_ascii: The file extension of the file
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopFile", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopFile")
@@ -194,6 +190,7 @@ class ShopFileWrite(DomainModelWrite):
         order: The order in which the file should be loaded into pyshop
         is_ascii: The file extension of the file
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopFile", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopFile")
@@ -207,15 +204,12 @@ class ShopFileWrite(DomainModelWrite):
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
-
-        write_view = (view_by_read_class or {}).get(ShopFile, dm.ViewId("power_ops_core", "ShopFile", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -237,6 +231,7 @@ class ShopFileWrite(DomainModelWrite):
         if self.is_ascii is not None:
             properties["isAscii"] = self.is_ascii
 
+
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -245,13 +240,14 @@ class ShopFileWrite(DomainModelWrite):
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
-                        source=write_view,
+                        source=self._view_id,
                         properties=properties,
-                    )
-                ],
+                )],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
+
+
 
         return resources
 
@@ -292,8 +288,8 @@ class ShopFileWriteList(DomainModelWriteList[ShopFileWrite]):
 
     _INSTANCE = ShopFileWrite
 
-
 class ShopFileApplyList(ShopFileWriteList): ...
+
 
 
 def _create_shop_file_filter(
@@ -311,7 +307,7 @@ def _create_shop_file_filter(
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
-    filters = []
+    filters: list[dm.Filter] = []
     if isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
@@ -329,9 +325,7 @@ def _create_shop_file_filter(
     if file_reference_prefix and isinstance(file_reference_prefix, list):
         filters.append(dm.filters.In(view_id.as_property_ref("fileReferencePrefix"), values=file_reference_prefix))
     if file_reference_prefix_prefix is not None:
-        filters.append(
-            dm.filters.Prefix(view_id.as_property_ref("fileReferencePrefix"), value=file_reference_prefix_prefix)
-        )
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("fileReferencePrefix"), value=file_reference_prefix_prefix))
     if min_order is not None or max_order is not None:
         filters.append(dm.filters.Range(view_id.as_property_ref("order"), gte=min_order, lte=max_order))
     if isinstance(is_ascii, bool):

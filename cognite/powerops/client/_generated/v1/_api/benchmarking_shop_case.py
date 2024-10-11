@@ -7,7 +7,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -24,49 +24,39 @@ from cognite.powerops.client._generated.v1.data_classes._benchmarking_shop_case 
     _BENCHMARKINGSHOPCASE_PROPERTIES_BY_FIELD,
     _create_benchmarking_shop_case_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
 from .benchmarking_shop_case_shop_files import BenchmarkingShopCaseShopFilesAPI
 from .benchmarking_shop_case_query import BenchmarkingShopCaseQueryAPI
 
 
-class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCaseWrite, BenchmarkingShopCaseList]):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[BenchmarkingShopCase]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=BenchmarkingShopCase,
-            class_list=BenchmarkingShopCaseList,
-            class_write_list=BenchmarkingShopCaseWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCaseWrite, BenchmarkingShopCaseList, BenchmarkingShopCaseWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "BenchmarkingShopCase", "1")
+    _properties_by_field = _BENCHMARKINGSHOPCASE_PROPERTIES_BY_FIELD
+    _class_type = BenchmarkingShopCase
+    _class_list = BenchmarkingShopCaseList
+    _class_write_list = BenchmarkingShopCaseWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
         self.shop_files_edge = BenchmarkingShopCaseShopFilesAPI(client)
 
     def __call__(
-        self,
-        scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        min_start_time: datetime.datetime | None = None,
-        max_start_time: datetime.datetime | None = None,
-        min_end_time: datetime.datetime | None = None,
-        max_end_time: datetime.datetime | None = None,
-        bid_source: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        min_delivery_date: datetime.date | None = None,
-        max_delivery_date: datetime.date | None = None,
-        min_bid_generated: datetime.datetime | None = None,
-        max_bid_generated: datetime.datetime | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            min_start_time: datetime.datetime | None = None,
+            max_start_time: datetime.datetime | None = None,
+            min_end_time: datetime.datetime | None = None,
+            max_end_time: datetime.datetime | None = None,
+            bid_source: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            min_delivery_date: datetime.date | None = None,
+            max_delivery_date: datetime.date | None = None,
+            min_bid_generated: datetime.datetime | None = None,
+            max_bid_generated: datetime.datetime | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> BenchmarkingShopCaseQueryAPI[BenchmarkingShopCaseList]:
         """Query starting at benchmarking shop cases.
 
@@ -108,7 +98,8 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(BenchmarkingShopCaseList)
-        return BenchmarkingShopCaseQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        return BenchmarkingShopCaseQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
@@ -154,9 +145,7 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         )
         return self._apply(benchmarking_shop_case, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more benchmarking shop case.
 
         Args:
@@ -186,16 +175,14 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingShopCase | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingShopCase | None:
+        ...
 
     @overload
-    def retrieve(
-        self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> BenchmarkingShopCaseList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingShopCaseList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> BenchmarkingShopCase | BenchmarkingShopCaseList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingShopCase | BenchmarkingShopCaseList | None:
         """Retrieve one or more benchmarking shop cases by id(s).
 
         Args:
@@ -226,20 +213,17 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
                     "outwards",
                     dm.ViewId("power_ops_core", "ShopFile", "1"),
                 ),
-            ],
+                                               ]
         )
 
+
+
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: BenchmarkingShopCaseFields | Sequence[BenchmarkingShopCaseFields] | None = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: BenchmarkingShopCaseFields | SequenceNotStr[BenchmarkingShopCaseFields] | None = None,
         scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
@@ -252,21 +236,17 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         max_bid_generated: datetime.datetime | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: BenchmarkingShopCaseFields | Sequence[BenchmarkingShopCaseFields] | None = None,
-        group_by: BenchmarkingShopCaseFields | Sequence[BenchmarkingShopCaseFields] = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: BenchmarkingShopCaseFields | SequenceNotStr[BenchmarkingShopCaseFields] | None = None,
         scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
@@ -279,20 +259,43 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         max_bid_generated: datetime.datetime | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: BenchmarkingShopCaseFields | SequenceNotStr[BenchmarkingShopCaseFields],
+        property: BenchmarkingShopCaseFields | SequenceNotStr[BenchmarkingShopCaseFields] | None = None,
+        scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_start_time: datetime.datetime | None = None,
+        max_start_time: datetime.datetime | None = None,
+        min_end_time: datetime.datetime | None = None,
+        max_end_time: datetime.datetime | None = None,
+        bid_source: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_delivery_date: datetime.date | None = None,
+        max_delivery_date: datetime.date | None = None,
+        min_bid_generated: datetime.datetime | None = None,
+        max_bid_generated: datetime.datetime | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: BenchmarkingShopCaseFields | Sequence[BenchmarkingShopCaseFields] | None = None,
-        group_by: BenchmarkingShopCaseFields | Sequence[BenchmarkingShopCaseFields] | None = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: BenchmarkingShopCaseFields | SequenceNotStr[BenchmarkingShopCaseFields] | None = None,
+        property: BenchmarkingShopCaseFields | SequenceNotStr[BenchmarkingShopCaseFields] | None = None,
         scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
@@ -305,15 +308,19 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         max_bid_generated: datetime.datetime | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across benchmarking shop cases
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             scenario: The scenario to filter on.
             min_start_time: The minimum value of the start time to filter on.
             max_start_time: The maximum value of the start time to filter on.
@@ -359,15 +366,13 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _BENCHMARKINGSHOPCASE_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            None,
-            None,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=None,
+            search_properties=None,
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -386,7 +391,7 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         max_bid_generated: datetime.datetime | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for benchmarking shop cases
@@ -430,15 +435,14 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _BENCHMARKINGSHOPCASE_PROPERTIES_BY_FIELD,
             None,
             None,
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -454,10 +458,11 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         max_bid_generated: datetime.datetime | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         sort_by: BenchmarkingShopCaseFields | Sequence[BenchmarkingShopCaseFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
         retrieve_edges: bool = True,
     ) -> BenchmarkingShopCaseList:
         """List/filter benchmarking shop cases
@@ -479,6 +484,9 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
             retrieve_edges: Whether to retrieve `shop_files` external ids for the benchmarking shop cases. Defaults to True.
 
         Returns:
@@ -513,9 +521,9 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_BENCHMARKINGSHOPCASE_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
             retrieve_edges=retrieve_edges,
             edge_api_name_type_direction_view_id_penta=[
                 (
@@ -525,5 +533,5 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
                     "outwards",
                     dm.ViewId("power_ops_core", "ShopFile", "1"),
                 ),
-            ],
+                                               ]
         )

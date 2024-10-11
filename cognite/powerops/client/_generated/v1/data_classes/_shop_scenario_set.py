@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from typing import TYPE_CHECKING, Any, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -13,7 +13,6 @@ from ._core import (
     DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
-    DomainModelCore,
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
@@ -36,6 +35,7 @@ __all__ = [
     "ShopScenarioSetApplyList",
     "ShopScenarioSetFields",
     "ShopScenarioSetTextFields",
+    "ShopScenarioSetGraphQL",
 ]
 
 
@@ -45,7 +45,6 @@ ShopScenarioSetFields = Literal["name"]
 _SHOPSCENARIOSET_PROPERTIES_BY_FIELD = {
     "name": "name",
 }
-
 
 class ShopScenarioSetGraphQL(GraphQLCore):
     """This represents the reading version of shop scenario set, used
@@ -62,12 +61,9 @@ class ShopScenarioSetGraphQL(GraphQLCore):
         end_specification: TODO description
         scenarios: Configuration of the partial bids that make up the total bid configuration
     """
-
-    view_id = dm.ViewId("power_ops_core", "ShopScenarioSet", "1")
+    view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopScenarioSet", "1")
     name: Optional[str] = None
-    start_specification: Optional[DateSpecificationGraphQL] = Field(
-        default=None, repr=False, alias="startSpecification"
-    )
+    start_specification: Optional[DateSpecificationGraphQL] = Field(default=None, repr=False, alias="startSpecification")
     end_specification: Optional[DateSpecificationGraphQL] = Field(default=None, repr=False, alias="endSpecification")
     scenarios: Optional[list[ShopScenarioGraphQL]] = Field(default=None, repr=False)
 
@@ -81,7 +77,6 @@ class ShopScenarioSetGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
-
     @field_validator("start_specification", "end_specification", "scenarios", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -90,6 +85,8 @@ class ShopScenarioSetGraphQL(GraphQLCore):
             return value["items"]
         return value
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> ShopScenarioSet:
         """Convert this GraphQL format of shop scenario set to the reading format."""
         if self.data_record is None:
@@ -103,19 +100,14 @@ class ShopScenarioSetGraphQL(GraphQLCore):
                 created_time=self.data_record.created_time,
             ),
             name=self.name,
-            start_specification=(
-                self.start_specification.as_read()
-                if isinstance(self.start_specification, GraphQLCore)
-                else self.start_specification
-            ),
-            end_specification=(
-                self.end_specification.as_read()
-                if isinstance(self.end_specification, GraphQLCore)
-                else self.end_specification
-            ),
+            start_specification=self.start_specification.as_read() if isinstance(self.start_specification, GraphQLCore) else self.start_specification,
+            end_specification=self.end_specification.as_read() if isinstance(self.end_specification, GraphQLCore) else self.end_specification,
             scenarios=[scenario.as_read() for scenario in self.scenarios or []],
         )
 
+
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopScenarioSetWrite:
         """Convert this GraphQL format of shop scenario set to the writing format."""
         return ShopScenarioSetWrite(
@@ -123,16 +115,8 @@ class ShopScenarioSetGraphQL(GraphQLCore):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,
-            start_specification=(
-                self.start_specification.as_write()
-                if isinstance(self.start_specification, GraphQLCore)
-                else self.start_specification
-            ),
-            end_specification=(
-                self.end_specification.as_write()
-                if isinstance(self.end_specification, GraphQLCore)
-                else self.end_specification
-            ),
+            start_specification=self.start_specification.as_write() if isinstance(self.start_specification, GraphQLCore) else self.start_specification,
+            end_specification=self.end_specification.as_write() if isinstance(self.end_specification, GraphQLCore) else self.end_specification,
             scenarios=[scenario.as_write() for scenario in self.scenarios or []],
         )
 
@@ -151,17 +135,14 @@ class ShopScenarioSet(DomainModel):
         end_specification: TODO description
         scenarios: Configuration of the partial bids that make up the total bid configuration
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopScenarioSet", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
     name: str
-    start_specification: Union[DateSpecification, str, dm.NodeId, None] = Field(
-        default=None, repr=False, alias="startSpecification"
-    )
-    end_specification: Union[DateSpecification, str, dm.NodeId, None] = Field(
-        default=None, repr=False, alias="endSpecification"
-    )
-    scenarios: Union[list[ShopScenario], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
+    start_specification: Union[DateSpecification, str, dm.NodeId, None] = Field(default=None, repr=False, alias="startSpecification")
+    end_specification: Union[DateSpecification, str, dm.NodeId, None] = Field(default=None, repr=False, alias="endSpecification")
+    scenarios: Optional[list[Union[ShopScenario, str, dm.NodeId]]] = Field(default=None, repr=False)
 
     def as_write(self) -> ShopScenarioSetWrite:
         """Convert this read version of shop scenario set to the writing version."""
@@ -170,20 +151,9 @@ class ShopScenarioSet(DomainModel):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             name=self.name,
-            start_specification=(
-                self.start_specification.as_write()
-                if isinstance(self.start_specification, DomainModel)
-                else self.start_specification
-            ),
-            end_specification=(
-                self.end_specification.as_write()
-                if isinstance(self.end_specification, DomainModel)
-                else self.end_specification
-            ),
-            scenarios=[
-                scenario.as_write() if isinstance(scenario, DomainModel) else scenario
-                for scenario in self.scenarios or []
-            ],
+            start_specification=self.start_specification.as_write() if isinstance(self.start_specification, DomainModel) else self.start_specification,
+            end_specification=self.end_specification.as_write() if isinstance(self.end_specification, DomainModel) else self.end_specification,
+            scenarios=[scenario.as_write() if isinstance(scenario, DomainModel) else scenario for scenario in self.scenarios or []],
         )
 
     def as_apply(self) -> ShopScenarioSetWrite:
@@ -210,32 +180,24 @@ class ShopScenarioSetWrite(DomainModelWrite):
         end_specification: TODO description
         scenarios: Configuration of the partial bids that make up the total bid configuration
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopScenarioSet", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
     name: str
-    start_specification: Union[DateSpecificationWrite, str, dm.NodeId, None] = Field(
-        default=None, repr=False, alias="startSpecification"
-    )
-    end_specification: Union[DateSpecificationWrite, str, dm.NodeId, None] = Field(
-        default=None, repr=False, alias="endSpecification"
-    )
-    scenarios: Union[list[ShopScenarioWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
+    start_specification: Union[DateSpecificationWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="startSpecification")
+    end_specification: Union[DateSpecificationWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="endSpecification")
+    scenarios: Optional[list[Union[ShopScenarioWrite, str, dm.NodeId]]] = Field(default=None, repr=False)
 
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
-
-        write_view = (view_by_read_class or {}).get(
-            ShopScenarioSet, dm.ViewId("power_ops_core", "ShopScenarioSet", "1")
-        )
 
         properties: dict[str, Any] = {}
 
@@ -244,23 +206,16 @@ class ShopScenarioSetWrite(DomainModelWrite):
 
         if self.start_specification is not None:
             properties["startSpecification"] = {
-                "space": self.space if isinstance(self.start_specification, str) else self.start_specification.space,
-                "externalId": (
-                    self.start_specification
-                    if isinstance(self.start_specification, str)
-                    else self.start_specification.external_id
-                ),
+                "space":  self.space if isinstance(self.start_specification, str) else self.start_specification.space,
+                "externalId": self.start_specification if isinstance(self.start_specification, str) else self.start_specification.external_id,
             }
 
         if self.end_specification is not None:
             properties["endSpecification"] = {
-                "space": self.space if isinstance(self.end_specification, str) else self.end_specification.space,
-                "externalId": (
-                    self.end_specification
-                    if isinstance(self.end_specification, str)
-                    else self.end_specification.external_id
-                ),
+                "space":  self.space if isinstance(self.end_specification, str) else self.end_specification.space,
+                "externalId": self.end_specification if isinstance(self.end_specification, str) else self.end_specification.external_id,
             }
+
 
         if properties:
             this_node = dm.NodeApply(
@@ -270,13 +225,14 @@ class ShopScenarioSetWrite(DomainModelWrite):
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
-                        source=write_view,
+                        source=self._view_id,
                         properties=properties,
-                    )
-                ],
+                )],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
+
+
 
         edge_type = dm.DirectRelationReference("power_ops_types", "ShopScenarioSet.scenarios")
         for scenario in self.scenarios or []:
@@ -285,18 +241,17 @@ class ShopScenarioSetWrite(DomainModelWrite):
                 start_node=self,
                 end_node=scenario,
                 edge_type=edge_type,
-                view_by_read_class=view_by_read_class,
                 write_none=write_none,
                 allow_version_increase=allow_version_increase,
             )
             resources.extend(other_resources)
 
         if isinstance(self.start_specification, DomainModelWrite):
-            other_resources = self.start_specification._to_instances_write(cache, view_by_read_class)
+            other_resources = self.start_specification._to_instances_write(cache)
             resources.extend(other_resources)
 
         if isinstance(self.end_specification, DomainModelWrite):
-            other_resources = self.end_specification._to_instances_write(cache, view_by_read_class)
+            other_resources = self.end_specification._to_instances_write(cache)
             resources.extend(other_resources)
 
         return resources
@@ -338,8 +293,8 @@ class ShopScenarioSetWriteList(DomainModelWriteList[ShopScenarioSetWrite]):
 
     _INSTANCE = ShopScenarioSetWrite
 
-
 class ShopScenarioSetApplyList(ShopScenarioSetWriteList): ...
+
 
 
 def _create_shop_scenario_set_filter(
@@ -352,7 +307,7 @@ def _create_shop_scenario_set_filter(
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
-    filters = []
+    filters: list[dm.Filter] = []
     if isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
@@ -360,61 +315,21 @@ def _create_shop_scenario_set_filter(
     if name_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
     if start_specification and isinstance(start_specification, str):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("startSpecification"),
-                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": start_specification},
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("startSpecification"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": start_specification}))
     if start_specification and isinstance(start_specification, tuple):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("startSpecification"),
-                value={"space": start_specification[0], "externalId": start_specification[1]},
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("startSpecification"), value={"space": start_specification[0], "externalId": start_specification[1]}))
     if start_specification and isinstance(start_specification, list) and isinstance(start_specification[0], str):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("startSpecification"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in start_specification],
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("startSpecification"), values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in start_specification]))
     if start_specification and isinstance(start_specification, list) and isinstance(start_specification[0], tuple):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("startSpecification"),
-                values=[{"space": item[0], "externalId": item[1]} for item in start_specification],
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("startSpecification"), values=[{"space": item[0], "externalId": item[1]} for item in start_specification]))
     if end_specification and isinstance(end_specification, str):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("endSpecification"),
-                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": end_specification},
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("endSpecification"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": end_specification}))
     if end_specification and isinstance(end_specification, tuple):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("endSpecification"),
-                value={"space": end_specification[0], "externalId": end_specification[1]},
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("endSpecification"), value={"space": end_specification[0], "externalId": end_specification[1]}))
     if end_specification and isinstance(end_specification, list) and isinstance(end_specification[0], str):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("endSpecification"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in end_specification],
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("endSpecification"), values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in end_specification]))
     if end_specification and isinstance(end_specification, list) and isinstance(end_specification[0], tuple):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("endSpecification"),
-                values=[{"space": item[0], "externalId": item[1]} for item in end_specification],
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("endSpecification"), values=[{"space": item[0], "externalId": item[1]} for item in end_specification]))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):

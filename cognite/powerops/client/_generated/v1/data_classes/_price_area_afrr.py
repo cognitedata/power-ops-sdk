@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from typing import Any, Literal, Optional, Union
+from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
@@ -14,7 +14,6 @@ from ._core import (
     DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
-    DomainModelCore,
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
@@ -35,38 +34,12 @@ __all__ = [
     "PriceAreaAFRRApplyList",
     "PriceAreaAFRRFields",
     "PriceAreaAFRRTextFields",
+    "PriceAreaAFRRGraphQL",
 ]
 
 
-PriceAreaAFRRTextFields = Literal[
-    "name",
-    "display_name",
-    "asset_type",
-    "capacity_price_up",
-    "capacity_price_down",
-    "activation_price_up",
-    "activation_price_down",
-    "relative_activation",
-    "total_capacity_allocation_up",
-    "total_capacity_allocation_down",
-    "own_capacity_allocation_up",
-    "own_capacity_allocation_down",
-]
-PriceAreaAFRRFields = Literal[
-    "name",
-    "display_name",
-    "ordering",
-    "asset_type",
-    "capacity_price_up",
-    "capacity_price_down",
-    "activation_price_up",
-    "activation_price_down",
-    "relative_activation",
-    "total_capacity_allocation_up",
-    "total_capacity_allocation_down",
-    "own_capacity_allocation_up",
-    "own_capacity_allocation_down",
-]
+PriceAreaAFRRTextFields = Literal["name", "display_name", "asset_type", "capacity_price_up", "capacity_price_down", "activation_price_up", "activation_price_down", "relative_activation", "total_capacity_allocation_up", "total_capacity_allocation_down", "own_capacity_allocation_up", "own_capacity_allocation_down"]
+PriceAreaAFRRFields = Literal["name", "display_name", "ordering", "asset_type", "capacity_price_up", "capacity_price_down", "activation_price_up", "activation_price_down", "relative_activation", "total_capacity_allocation_up", "total_capacity_allocation_down", "own_capacity_allocation_up", "own_capacity_allocation_down"]
 
 _PRICEAREAAFRR_PROPERTIES_BY_FIELD = {
     "name": "name",
@@ -83,7 +56,6 @@ _PRICEAREAAFRR_PROPERTIES_BY_FIELD = {
     "own_capacity_allocation_up": "ownCapacityAllocationUp",
     "own_capacity_allocation_down": "ownCapacityAllocationDown",
 }
-
 
 class PriceAreaAFRRGraphQL(GraphQLCore):
     """This represents the reading version of price area afrr, used
@@ -109,8 +81,7 @@ class PriceAreaAFRRGraphQL(GraphQLCore):
         own_capacity_allocation_up: The own capacity allocation up field.
         own_capacity_allocation_down: The own capacity allocation down field.
     """
-
-    view_id = dm.ViewId("power_ops_core", "PriceAreaAFRR", "1")
+    view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceAreaAFRR", "1")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
@@ -136,6 +107,8 @@ class PriceAreaAFRRGraphQL(GraphQLCore):
             )
         return values
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> PriceAreaAFRR:
         """Convert this GraphQL format of price area afrr to the reading format."""
         if self.data_record is None:
@@ -163,6 +136,9 @@ class PriceAreaAFRRGraphQL(GraphQLCore):
             own_capacity_allocation_down=self.own_capacity_allocation_down,
         )
 
+
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> PriceAreaAFRRWrite:
         """Convert this GraphQL format of price area afrr to the writing format."""
         return PriceAreaAFRRWrite(
@@ -208,6 +184,7 @@ class PriceAreaAFRR(PriceArea):
         own_capacity_allocation_up: The own capacity allocation up field.
         own_capacity_allocation_down: The own capacity allocation down field.
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceAreaAFRR", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = None
     capacity_price_up: Union[TimeSeries, str, None] = Field(None, alias="capacityPriceUp")
@@ -274,6 +251,7 @@ class PriceAreaAFRRWrite(PriceAreaWrite):
         own_capacity_allocation_up: The own capacity allocation up field.
         own_capacity_allocation_down: The own capacity allocation down field.
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceAreaAFRR", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = None
     capacity_price_up: Union[TimeSeries, str, None] = Field(None, alias="capacityPriceUp")
@@ -289,15 +267,12 @@ class PriceAreaAFRRWrite(PriceAreaWrite):
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
-
-        write_view = (view_by_read_class or {}).get(PriceAreaAFRR, dm.ViewId("power_ops_core", "PriceAreaAFRR", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -314,67 +289,32 @@ class PriceAreaAFRRWrite(PriceAreaWrite):
             properties["assetType"] = self.asset_type
 
         if self.capacity_price_up is not None or write_none:
-            properties["capacityPriceUp"] = (
-                self.capacity_price_up
-                if isinstance(self.capacity_price_up, str) or self.capacity_price_up is None
-                else self.capacity_price_up.external_id
-            )
+            properties["capacityPriceUp"] = self.capacity_price_up if isinstance(self.capacity_price_up, str) or self.capacity_price_up is None else self.capacity_price_up.external_id
 
         if self.capacity_price_down is not None or write_none:
-            properties["capacityPriceDown"] = (
-                self.capacity_price_down
-                if isinstance(self.capacity_price_down, str) or self.capacity_price_down is None
-                else self.capacity_price_down.external_id
-            )
+            properties["capacityPriceDown"] = self.capacity_price_down if isinstance(self.capacity_price_down, str) or self.capacity_price_down is None else self.capacity_price_down.external_id
 
         if self.activation_price_up is not None or write_none:
-            properties["activationPriceUp"] = (
-                self.activation_price_up
-                if isinstance(self.activation_price_up, str) or self.activation_price_up is None
-                else self.activation_price_up.external_id
-            )
+            properties["activationPriceUp"] = self.activation_price_up if isinstance(self.activation_price_up, str) or self.activation_price_up is None else self.activation_price_up.external_id
 
         if self.activation_price_down is not None or write_none:
-            properties["activationPriceDown"] = (
-                self.activation_price_down
-                if isinstance(self.activation_price_down, str) or self.activation_price_down is None
-                else self.activation_price_down.external_id
-            )
+            properties["activationPriceDown"] = self.activation_price_down if isinstance(self.activation_price_down, str) or self.activation_price_down is None else self.activation_price_down.external_id
 
         if self.relative_activation is not None or write_none:
-            properties["relativeActivation"] = (
-                self.relative_activation
-                if isinstance(self.relative_activation, str) or self.relative_activation is None
-                else self.relative_activation.external_id
-            )
+            properties["relativeActivation"] = self.relative_activation if isinstance(self.relative_activation, str) or self.relative_activation is None else self.relative_activation.external_id
 
         if self.total_capacity_allocation_up is not None or write_none:
-            properties["totalCapacityAllocationUp"] = (
-                self.total_capacity_allocation_up
-                if isinstance(self.total_capacity_allocation_up, str) or self.total_capacity_allocation_up is None
-                else self.total_capacity_allocation_up.external_id
-            )
+            properties["totalCapacityAllocationUp"] = self.total_capacity_allocation_up if isinstance(self.total_capacity_allocation_up, str) or self.total_capacity_allocation_up is None else self.total_capacity_allocation_up.external_id
 
         if self.total_capacity_allocation_down is not None or write_none:
-            properties["totalCapacityAllocationDown"] = (
-                self.total_capacity_allocation_down
-                if isinstance(self.total_capacity_allocation_down, str) or self.total_capacity_allocation_down is None
-                else self.total_capacity_allocation_down.external_id
-            )
+            properties["totalCapacityAllocationDown"] = self.total_capacity_allocation_down if isinstance(self.total_capacity_allocation_down, str) or self.total_capacity_allocation_down is None else self.total_capacity_allocation_down.external_id
 
         if self.own_capacity_allocation_up is not None or write_none:
-            properties["ownCapacityAllocationUp"] = (
-                self.own_capacity_allocation_up
-                if isinstance(self.own_capacity_allocation_up, str) or self.own_capacity_allocation_up is None
-                else self.own_capacity_allocation_up.external_id
-            )
+            properties["ownCapacityAllocationUp"] = self.own_capacity_allocation_up if isinstance(self.own_capacity_allocation_up, str) or self.own_capacity_allocation_up is None else self.own_capacity_allocation_up.external_id
 
         if self.own_capacity_allocation_down is not None or write_none:
-            properties["ownCapacityAllocationDown"] = (
-                self.own_capacity_allocation_down
-                if isinstance(self.own_capacity_allocation_down, str) or self.own_capacity_allocation_down is None
-                else self.own_capacity_allocation_down.external_id
-            )
+            properties["ownCapacityAllocationDown"] = self.own_capacity_allocation_down if isinstance(self.own_capacity_allocation_down, str) or self.own_capacity_allocation_down is None else self.own_capacity_allocation_down.external_id
+
 
         if properties:
             this_node = dm.NodeApply(
@@ -384,13 +324,14 @@ class PriceAreaAFRRWrite(PriceAreaWrite):
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
-                        source=write_view,
+                        source=self._view_id,
                         properties=properties,
-                    )
-                ],
+                )],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
+
+
 
         if isinstance(self.capacity_price_up, CogniteTimeSeries):
             resources.time_series.append(self.capacity_price_up)
@@ -458,8 +399,8 @@ class PriceAreaAFRRWriteList(DomainModelWriteList[PriceAreaAFRRWrite]):
 
     _INSTANCE = PriceAreaAFRRWrite
 
-
 class PriceAreaAFRRApplyList(PriceAreaAFRRWriteList): ...
+
 
 
 def _create_price_area_afrr_filter(
@@ -476,7 +417,7 @@ def _create_price_area_afrr_filter(
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
-    filters = []
+    filters: list[dm.Filter] = []
     if isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):

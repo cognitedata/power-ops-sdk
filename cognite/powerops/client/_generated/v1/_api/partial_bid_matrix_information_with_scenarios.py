@@ -6,7 +6,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -24,63 +24,41 @@ from cognite.powerops.client._generated.v1.data_classes._partial_bid_matrix_info
     _PARTIALBIDMATRIXINFORMATIONWITHSCENARIOS_PROPERTIES_BY_FIELD,
     _create_partial_bid_matrix_information_with_scenario_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
 from .partial_bid_matrix_information_with_scenarios_alerts import PartialBidMatrixInformationWithScenariosAlertsAPI
-from .partial_bid_matrix_information_with_scenarios_underlying_bid_matrices import (
-    PartialBidMatrixInformationWithScenariosUnderlyingBidMatricesAPI,
-)
-from .partial_bid_matrix_information_with_scenarios_multi_scenario_input import (
-    PartialBidMatrixInformationWithScenariosMultiScenarioInputAPI,
-)
-from .partial_bid_matrix_information_with_scenarios_linked_time_series import (
-    PartialBidMatrixInformationWithScenariosLinkedTimeSeriesAPI,
-)
+from .partial_bid_matrix_information_with_scenarios_underlying_bid_matrices import PartialBidMatrixInformationWithScenariosUnderlyingBidMatricesAPI
+from .partial_bid_matrix_information_with_scenarios_multi_scenario_input import PartialBidMatrixInformationWithScenariosMultiScenarioInputAPI
+from .partial_bid_matrix_information_with_scenarios_linked_time_series import PartialBidMatrixInformationWithScenariosLinkedTimeSeriesAPI
 from .partial_bid_matrix_information_with_scenarios_query import PartialBidMatrixInformationWithScenariosQueryAPI
 
 
-class PartialBidMatrixInformationWithScenariosAPI(
-    NodeAPI[
-        PartialBidMatrixInformationWithScenarios,
-        PartialBidMatrixInformationWithScenariosWrite,
-        PartialBidMatrixInformationWithScenariosList,
-    ]
-):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[PartialBidMatrixInformationWithScenarios]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=PartialBidMatrixInformationWithScenarios,
-            class_list=PartialBidMatrixInformationWithScenariosList,
-            class_write_list=PartialBidMatrixInformationWithScenariosWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class PartialBidMatrixInformationWithScenariosAPI(NodeAPI[PartialBidMatrixInformationWithScenarios, PartialBidMatrixInformationWithScenariosWrite, PartialBidMatrixInformationWithScenariosList, PartialBidMatrixInformationWithScenariosWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "PartialBidMatrixInformationWithScenarios", "1")
+    _properties_by_field = _PARTIALBIDMATRIXINFORMATIONWITHSCENARIOS_PROPERTIES_BY_FIELD
+    _class_type = PartialBidMatrixInformationWithScenarios
+    _class_list = PartialBidMatrixInformationWithScenariosList
+    _class_write_list = PartialBidMatrixInformationWithScenariosWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
         self.alerts_edge = PartialBidMatrixInformationWithScenariosAlertsAPI(client)
         self.underlying_bid_matrices_edge = PartialBidMatrixInformationWithScenariosUnderlyingBidMatricesAPI(client)
         self.multi_scenario_input_edge = PartialBidMatrixInformationWithScenariosMultiScenarioInputAPI(client)
-        self.linked_time_series = PartialBidMatrixInformationWithScenariosLinkedTimeSeriesAPI(client, view_id)
+        self.linked_time_series = PartialBidMatrixInformationWithScenariosLinkedTimeSeriesAPI(client, self._view_id)
 
     def __call__(
-        self,
-        state: str | list[str] | None = None,
-        state_prefix: str | None = None,
-        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        min_resource_cost: float | None = None,
-        max_resource_cost: float | None = None,
-        partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            state: str | list[str] | None = None,
+            state_prefix: str | None = None,
+            power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            min_resource_cost: float | None = None,
+            max_resource_cost: float | None = None,
+            partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> PartialBidMatrixInformationWithScenariosQueryAPI[PartialBidMatrixInformationWithScenariosList]:
         """Query starting at partial bid matrix information with scenarios.
 
@@ -114,15 +92,12 @@ class PartialBidMatrixInformationWithScenariosAPI(
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(PartialBidMatrixInformationWithScenariosList)
-        return PartialBidMatrixInformationWithScenariosQueryAPI(
-            self._client, builder, self._view_by_read_class, filter_, limit
-        )
+        return PartialBidMatrixInformationWithScenariosQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
-        partial_bid_matrix_information_with_scenario: (
-            PartialBidMatrixInformationWithScenariosWrite | Sequence[PartialBidMatrixInformationWithScenariosWrite]
-        ),
+        partial_bid_matrix_information_with_scenario: PartialBidMatrixInformationWithScenariosWrite | Sequence[PartialBidMatrixInformationWithScenariosWrite],
         replace: bool = False,
         write_none: bool = False,
     ) -> ResourcesWriteResult:
@@ -164,9 +139,7 @@ class PartialBidMatrixInformationWithScenariosAPI(
         )
         return self._apply(partial_bid_matrix_information_with_scenario, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more partial bid matrix information with scenario.
 
         Args:
@@ -196,18 +169,14 @@ class PartialBidMatrixInformationWithScenariosAPI(
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(
-        self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE
-    ) -> PartialBidMatrixInformationWithScenarios | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> PartialBidMatrixInformationWithScenarios | None:
+        ...
 
     @overload
-    def retrieve(
-        self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> PartialBidMatrixInformationWithScenariosList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PartialBidMatrixInformationWithScenariosList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> PartialBidMatrixInformationWithScenarios | PartialBidMatrixInformationWithScenariosList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PartialBidMatrixInformationWithScenarios | PartialBidMatrixInformationWithScenariosList | None:
         """Retrieve one or more partial bid matrix information with scenarios by id(s).
 
         Args:
@@ -252,17 +221,14 @@ class PartialBidMatrixInformationWithScenariosAPI(
                     "outwards",
                     dm.ViewId("power_ops_core", "PriceProduction", "1"),
                 ),
-            ],
+                                               ]
         )
+
 
     def search(
         self,
         query: str,
-        properties: (
-            PartialBidMatrixInformationWithScenariosTextFields
-            | Sequence[PartialBidMatrixInformationWithScenariosTextFields]
-            | None
-        ) = None,
+        properties: PartialBidMatrixInformationWithScenariosTextFields | SequenceNotStr[PartialBidMatrixInformationWithScenariosTextFields] | None = None,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
         power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
@@ -271,8 +237,11 @@ class PartialBidMatrixInformationWithScenariosAPI(
         partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: PartialBidMatrixInformationWithScenariosFields | SequenceNotStr[PartialBidMatrixInformationWithScenariosFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> PartialBidMatrixInformationWithScenariosList:
         """Search partial bid matrix information with scenarios
 
@@ -289,6 +258,11 @@ class PartialBidMatrixInformationWithScenariosAPI(
             space: The space to filter on.
             limit: Maximum number of partial bid matrix information with scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             Search results partial bid matrix information with scenarios matching the query.
@@ -315,35 +289,23 @@ class PartialBidMatrixInformationWithScenariosAPI(
             filter,
         )
         return self._search(
-            self._view_id,
-            query,
-            _PARTIALBIDMATRIXINFORMATIONWITHSCENARIOS_PROPERTIES_BY_FIELD,
-            properties,
-            filter_,
-            limit,
+            query=query,
+            properties=properties,
+            filter_=filter_,
+            limit=limit,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
         )
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: (
-            PartialBidMatrixInformationWithScenariosFields
-            | Sequence[PartialBidMatrixInformationWithScenariosFields]
-            | None
-        ) = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: PartialBidMatrixInformationWithScenariosFields | SequenceNotStr[PartialBidMatrixInformationWithScenariosFields] | None = None,
         query: str | None = None,
-        search_properties: (
-            PartialBidMatrixInformationWithScenariosTextFields
-            | Sequence[PartialBidMatrixInformationWithScenariosTextFields]
-            | None
-        ) = None,
+        search_property: PartialBidMatrixInformationWithScenariosTextFields | SequenceNotStr[PartialBidMatrixInformationWithScenariosTextFields] | None = None,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
         power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
@@ -352,33 +314,19 @@ class PartialBidMatrixInformationWithScenariosAPI(
         partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: (
-            PartialBidMatrixInformationWithScenariosFields
-            | Sequence[PartialBidMatrixInformationWithScenariosFields]
-            | None
-        ) = None,
-        group_by: (
-            PartialBidMatrixInformationWithScenariosFields | Sequence[PartialBidMatrixInformationWithScenariosFields]
-        ) = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: PartialBidMatrixInformationWithScenariosFields | SequenceNotStr[PartialBidMatrixInformationWithScenariosFields] | None = None,
         query: str | None = None,
-        search_properties: (
-            PartialBidMatrixInformationWithScenariosTextFields
-            | Sequence[PartialBidMatrixInformationWithScenariosTextFields]
-            | None
-        ) = None,
+        search_property: PartialBidMatrixInformationWithScenariosTextFields | SequenceNotStr[PartialBidMatrixInformationWithScenariosTextFields] | None = None,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
         power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
@@ -387,34 +335,43 @@ class PartialBidMatrixInformationWithScenariosAPI(
         partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: PartialBidMatrixInformationWithScenariosFields | SequenceNotStr[PartialBidMatrixInformationWithScenariosFields],
+        property: PartialBidMatrixInformationWithScenariosFields | SequenceNotStr[PartialBidMatrixInformationWithScenariosFields] | None = None,
+        query: str | None = None,
+        search_property: PartialBidMatrixInformationWithScenariosTextFields | SequenceNotStr[PartialBidMatrixInformationWithScenariosTextFields] | None = None,
+        state: str | list[str] | None = None,
+        state_prefix: str | None = None,
+        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_resource_cost: float | None = None,
+        max_resource_cost: float | None = None,
+        partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: (
-            PartialBidMatrixInformationWithScenariosFields
-            | Sequence[PartialBidMatrixInformationWithScenariosFields]
-            | None
-        ) = None,
-        group_by: (
-            PartialBidMatrixInformationWithScenariosFields
-            | Sequence[PartialBidMatrixInformationWithScenariosFields]
-            | None
-        ) = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: PartialBidMatrixInformationWithScenariosFields | SequenceNotStr[PartialBidMatrixInformationWithScenariosFields] | None = None,
+        property: PartialBidMatrixInformationWithScenariosFields | SequenceNotStr[PartialBidMatrixInformationWithScenariosFields] | None = None,
         query: str | None = None,
-        search_property: (
-            PartialBidMatrixInformationWithScenariosTextFields
-            | Sequence[PartialBidMatrixInformationWithScenariosTextFields]
-            | None
-        ) = None,
+        search_property: PartialBidMatrixInformationWithScenariosTextFields | SequenceNotStr[PartialBidMatrixInformationWithScenariosTextFields] | None = None,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
         power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
@@ -423,15 +380,19 @@ class PartialBidMatrixInformationWithScenariosAPI(
         partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across partial bid matrix information with scenarios
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             query: The query to search for in the text field.
             search_property: The text field to search in.
             state: The state to filter on.
@@ -471,15 +432,13 @@ class PartialBidMatrixInformationWithScenariosAPI(
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _PARTIALBIDMATRIXINFORMATIONWITHSCENARIOS_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            query,
-            search_property,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=query,
+            search_properties=search_property,  # type: ignore[arg-type]
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -487,11 +446,7 @@ class PartialBidMatrixInformationWithScenariosAPI(
         property: PartialBidMatrixInformationWithScenariosFields,
         interval: float,
         query: str | None = None,
-        search_property: (
-            PartialBidMatrixInformationWithScenariosTextFields
-            | Sequence[PartialBidMatrixInformationWithScenariosTextFields]
-            | None
-        ) = None,
+        search_property: PartialBidMatrixInformationWithScenariosTextFields | SequenceNotStr[PartialBidMatrixInformationWithScenariosTextFields] | None = None,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
         power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
@@ -500,7 +455,7 @@ class PartialBidMatrixInformationWithScenariosAPI(
         partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for partial bid matrix information with scenarios
@@ -538,15 +493,14 @@ class PartialBidMatrixInformationWithScenariosAPI(
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _PARTIALBIDMATRIXINFORMATIONWITHSCENARIOS_PROPERTIES_BY_FIELD,
             query,
-            search_property,
+            search_property,  # type: ignore[arg-type]
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -558,14 +512,11 @@ class PartialBidMatrixInformationWithScenariosAPI(
         partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-        sort_by: (
-            PartialBidMatrixInformationWithScenariosFields
-            | Sequence[PartialBidMatrixInformationWithScenariosFields]
-            | None
-        ) = None,
+        sort_by: PartialBidMatrixInformationWithScenariosFields | Sequence[PartialBidMatrixInformationWithScenariosFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
         retrieve_edges: bool = True,
     ) -> PartialBidMatrixInformationWithScenariosList:
         """List/filter partial bid matrix information with scenarios
@@ -583,6 +534,9 @@ class PartialBidMatrixInformationWithScenariosAPI(
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
             retrieve_edges: Whether to retrieve `alerts`, `underlying_bid_matrices` or `multi_scenario_input` external ids for the partial bid matrix information with scenarios. Defaults to True.
 
         Returns:
@@ -613,9 +567,9 @@ class PartialBidMatrixInformationWithScenariosAPI(
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_PARTIALBIDMATRIXINFORMATIONWITHSCENARIOS_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
             retrieve_edges=retrieve_edges,
             edge_api_name_type_direction_view_id_penta=[
                 (
@@ -639,5 +593,5 @@ class PartialBidMatrixInformationWithScenariosAPI(
                     "outwards",
                     dm.ViewId("power_ops_core", "PriceProduction", "1"),
                 ),
-            ],
+                                               ]
         )

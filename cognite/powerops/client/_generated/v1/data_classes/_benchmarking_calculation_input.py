@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from typing import TYPE_CHECKING, Any, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -13,7 +13,6 @@ from ._core import (
     DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
-    DomainModelCore,
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
@@ -36,13 +35,12 @@ __all__ = [
     "BenchmarkingCalculationInputApplyList",
     "BenchmarkingCalculationInputFields",
     "BenchmarkingCalculationInputTextFields",
+    "BenchmarkingCalculationInputGraphQL",
 ]
 
 
 BenchmarkingCalculationInputTextFields = Literal["workflow_execution_id", "function_name", "function_call_id"]
-BenchmarkingCalculationInputFields = Literal[
-    "workflow_execution_id", "workflow_step", "function_name", "function_call_id"
-]
+BenchmarkingCalculationInputFields = Literal["workflow_execution_id", "workflow_step", "function_name", "function_call_id"]
 
 _BENCHMARKINGCALCULATIONINPUT_PROPERTIES_BY_FIELD = {
     "workflow_execution_id": "workflowExecutionId",
@@ -50,7 +48,6 @@ _BENCHMARKINGCALCULATIONINPUT_PROPERTIES_BY_FIELD = {
     "function_name": "functionName",
     "function_call_id": "functionCallId",
 }
-
 
 class BenchmarkingCalculationInputGraphQL(GraphQLCore):
     """This represents the reading version of benchmarking calculation input, used
@@ -68,8 +65,7 @@ class BenchmarkingCalculationInputGraphQL(GraphQLCore):
         function_call_id: The function call id
         shop_results: An array of shop results.
     """
-
-    view_id = dm.ViewId("power_ops_core", "BenchmarkingCalculationInput", "1")
+    view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingCalculationInput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
@@ -86,7 +82,6 @@ class BenchmarkingCalculationInputGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
-
     @field_validator("shop_results", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -95,6 +90,8 @@ class BenchmarkingCalculationInputGraphQL(GraphQLCore):
             return value["items"]
         return value
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> BenchmarkingCalculationInput:
         """Convert this GraphQL format of benchmarking calculation input to the reading format."""
         if self.data_record is None:
@@ -114,6 +111,9 @@ class BenchmarkingCalculationInputGraphQL(GraphQLCore):
             shop_results=[shop_result.as_read() for shop_result in self.shop_results or []],
         )
 
+
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> BenchmarkingCalculationInputWrite:
         """Convert this GraphQL format of benchmarking calculation input to the writing format."""
         return BenchmarkingCalculationInputWrite(
@@ -143,13 +143,10 @@ class BenchmarkingCalculationInput(FunctionInput):
         function_call_id: The function call id
         shop_results: An array of shop results.
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingCalculationInput", "1")
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "BenchmarkingCalculationInput"
-    )
-    shop_results: Union[list[ShopResult], list[str], list[dm.NodeId], None] = Field(
-        default=None, repr=False, alias="shopResults"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingCalculationInput")
+    shop_results: Optional[list[Union[ShopResult, str, dm.NodeId]]] = Field(default=None, repr=False, alias="shopResults")
 
     def as_write(self) -> BenchmarkingCalculationInputWrite:
         """Convert this read version of benchmarking calculation input to the writing version."""
@@ -161,10 +158,7 @@ class BenchmarkingCalculationInput(FunctionInput):
             workflow_step=self.workflow_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
-            shop_results=[
-                shop_result.as_write() if isinstance(shop_result, DomainModel) else shop_result
-                for shop_result in self.shop_results or []
-            ],
+            shop_results=[shop_result.as_write() if isinstance(shop_result, DomainModel) else shop_result for shop_result in self.shop_results or []],
         )
 
     def as_apply(self) -> BenchmarkingCalculationInputWrite:
@@ -192,28 +186,20 @@ class BenchmarkingCalculationInputWrite(FunctionInputWrite):
         function_call_id: The function call id
         shop_results: An array of shop results.
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingCalculationInput", "1")
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "BenchmarkingCalculationInput"
-    )
-    shop_results: Union[list[ShopResultWrite], list[str], list[dm.NodeId], None] = Field(
-        default=None, repr=False, alias="shopResults"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingCalculationInput")
+    shop_results: Optional[list[Union[ShopResultWrite, str, dm.NodeId]]] = Field(default=None, repr=False, alias="shopResults")
 
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
-
-        write_view = (view_by_read_class or {}).get(
-            BenchmarkingCalculationInput, dm.ViewId("power_ops_core", "BenchmarkingCalculationInput", "1")
-        )
 
         properties: dict[str, Any] = {}
 
@@ -229,6 +215,7 @@ class BenchmarkingCalculationInputWrite(FunctionInputWrite):
         if self.function_call_id is not None:
             properties["functionCallId"] = self.function_call_id
 
+
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -237,13 +224,14 @@ class BenchmarkingCalculationInputWrite(FunctionInputWrite):
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
-                        source=write_view,
+                        source=self._view_id,
                         properties=properties,
-                    )
-                ],
+                )],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
+
+
 
         edge_type = dm.DirectRelationReference("power_ops_types", "ShopResults")
         for shop_result in self.shop_results or []:
@@ -252,7 +240,6 @@ class BenchmarkingCalculationInputWrite(FunctionInputWrite):
                 start_node=self,
                 end_node=shop_result,
                 edge_type=edge_type,
-                view_by_read_class=view_by_read_class,
                 write_none=write_none,
                 allow_version_increase=allow_version_increase,
             )
@@ -297,8 +284,8 @@ class BenchmarkingCalculationInputWriteList(DomainModelWriteList[BenchmarkingCal
 
     _INSTANCE = BenchmarkingCalculationInputWrite
 
-
 class BenchmarkingCalculationInputApplyList(BenchmarkingCalculationInputWriteList): ...
+
 
 
 def _create_benchmarking_calculation_input_filter(
@@ -315,19 +302,15 @@ def _create_benchmarking_calculation_input_filter(
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
-    filters = []
+    filters: list[dm.Filter] = []
     if isinstance(workflow_execution_id, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id))
     if workflow_execution_id and isinstance(workflow_execution_id, list):
         filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
     if workflow_execution_id_prefix is not None:
-        filters.append(
-            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
-        )
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix))
     if min_workflow_step is not None or max_workflow_step is not None:
-        filters.append(
-            dm.filters.Range(view_id.as_property_ref("workflowStep"), gte=min_workflow_step, lte=max_workflow_step)
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("workflowStep"), gte=min_workflow_step, lte=max_workflow_step))
     if isinstance(function_name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("functionName"), value=function_name))
     if function_name and isinstance(function_name, list):

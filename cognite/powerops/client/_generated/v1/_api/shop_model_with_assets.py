@@ -20,43 +20,33 @@ from cognite.powerops.client._generated.v1.data_classes import (
 from cognite.powerops.client._generated.v1.data_classes._shop_model_with_assets import (
     _create_shop_model_with_asset_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
 from .shop_model_with_assets_power_assets import ShopModelWithAssetsPowerAssetsAPI
 from .shop_model_with_assets_production_obligations import ShopModelWithAssetsProductionObligationsAPI
 from .shop_model_with_assets_query import ShopModelWithAssetsQueryAPI
 
 
-class ShopModelWithAssetsAPI(NodeAPI[ShopModelWithAssets, ShopModelWithAssetsWrite, ShopModelWithAssetsList]):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[ShopModelWithAssets]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=ShopModelWithAssets,
-            class_list=ShopModelWithAssetsList,
-            class_write_list=ShopModelWithAssetsWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class ShopModelWithAssetsAPI(NodeAPI[ShopModelWithAssets, ShopModelWithAssetsWrite, ShopModelWithAssetsList, ShopModelWithAssetsWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "ShopModelWithAssets", "1")
+    _properties_by_field = {}
+    _class_type = ShopModelWithAssets
+    _class_list = ShopModelWithAssetsList
+    _class_write_list = ShopModelWithAssetsWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
         self.power_assets_edge = ShopModelWithAssetsPowerAssetsAPI(client)
         self.production_obligations_edge = ShopModelWithAssetsProductionObligationsAPI(client)
 
     def __call__(
-        self,
-        shop_model: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        shop_commands: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            shop_model: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            shop_commands: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> ShopModelWithAssetsQueryAPI[ShopModelWithAssetsList]:
         """Query starting at shop model with assets.
 
@@ -82,7 +72,8 @@ class ShopModelWithAssetsAPI(NodeAPI[ShopModelWithAssets, ShopModelWithAssetsWri
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(ShopModelWithAssetsList)
-        return ShopModelWithAssetsQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        return ShopModelWithAssetsQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
@@ -128,9 +119,7 @@ class ShopModelWithAssetsAPI(NodeAPI[ShopModelWithAssets, ShopModelWithAssetsWri
         )
         return self._apply(shop_model_with_asset, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more shop model with asset.
 
         Args:
@@ -160,16 +149,14 @@ class ShopModelWithAssetsAPI(NodeAPI[ShopModelWithAssets, ShopModelWithAssetsWri
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopModelWithAssets | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopModelWithAssets | None:
+        ...
 
     @overload
-    def retrieve(
-        self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> ShopModelWithAssetsList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopModelWithAssetsList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> ShopModelWithAssets | ShopModelWithAssetsList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopModelWithAssets | ShopModelWithAssetsList | None:
         """Retrieve one or more shop model with assets by id(s).
 
         Args:
@@ -207,8 +194,11 @@ class ShopModelWithAssetsAPI(NodeAPI[ShopModelWithAssets, ShopModelWithAssetsWri
                     "outwards",
                     dm.ViewId("power_ops_core", "BenchmarkingProductionObligationDayAhead", "1"),
                 ),
-            ],
+                                               ]
         )
+
+
+
 
     def list(
         self,
@@ -216,10 +206,8 @@ class ShopModelWithAssetsAPI(NodeAPI[ShopModelWithAssets, ShopModelWithAssetsWri
         shop_commands: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-        sort_by: ShopModelWithAssetsFields | Sequence[ShopModelWithAssetsFields] | None = None,
-        direction: Literal["ascending", "descending"] = "ascending",
         retrieve_edges: bool = True,
     ) -> ShopModelWithAssetsList:
         """List/filter shop model with assets
@@ -231,8 +219,6 @@ class ShopModelWithAssetsAPI(NodeAPI[ShopModelWithAssets, ShopModelWithAssetsWri
             space: The space to filter on.
             limit: Maximum number of shop model with assets to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            sort_by: The property to sort by.
-            direction: The direction to sort by, either 'ascending' or 'descending'.
             retrieve_edges: Whether to retrieve `power_assets` or `production_obligations` external ids for the shop model with assets. Defaults to True.
 
         Returns:
@@ -259,9 +245,6 @@ class ShopModelWithAssetsAPI(NodeAPI[ShopModelWithAssets, ShopModelWithAssetsWri
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_SHOPMODELWITHASSETS_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
-            direction=direction,
             retrieve_edges=retrieve_edges,
             edge_api_name_type_direction_view_id_penta=[
                 (
@@ -278,5 +261,5 @@ class ShopModelWithAssetsAPI(NodeAPI[ShopModelWithAssets, ShopModelWithAssetsWri
                     "outwards",
                     dm.ViewId("power_ops_core", "BenchmarkingProductionObligationDayAhead", "1"),
                 ),
-            ],
+                                               ]
         )

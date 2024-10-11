@@ -7,7 +7,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -24,44 +24,34 @@ from cognite.powerops.client._generated.v1.data_classes._shop_case import (
     _SHOPCASE_PROPERTIES_BY_FIELD,
     _create_shop_case_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
 from .shop_case_shop_files import ShopCaseShopFilesAPI
 from .shop_case_query import ShopCaseQueryAPI
 
 
-class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList]):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[ShopCase]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=ShopCase,
-            class_list=ShopCaseList,
-            class_write_list=ShopCaseWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList, ShopCaseWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "ShopCase", "1")
+    _properties_by_field = _SHOPCASE_PROPERTIES_BY_FIELD
+    _class_type = ShopCase
+    _class_list = ShopCaseList
+    _class_write_list = ShopCaseWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
         self.shop_files_edge = ShopCaseShopFilesAPI(client)
 
     def __call__(
-        self,
-        scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        min_start_time: datetime.datetime | None = None,
-        max_start_time: datetime.datetime | None = None,
-        min_end_time: datetime.datetime | None = None,
-        max_end_time: datetime.datetime | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            min_start_time: datetime.datetime | None = None,
+            max_start_time: datetime.datetime | None = None,
+            min_end_time: datetime.datetime | None = None,
+            max_end_time: datetime.datetime | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> ShopCaseQueryAPI[ShopCaseList]:
         """Query starting at shop cases.
 
@@ -93,7 +83,8 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList]):
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(ShopCaseList)
-        return ShopCaseQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        return ShopCaseQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
@@ -139,9 +130,7 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList]):
         )
         return self._apply(shop_case, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more shop case.
 
         Args:
@@ -171,14 +160,14 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList]):
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopCase | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopCase | None:
+        ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopCaseList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopCaseList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> ShopCase | ShopCaseList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopCase | ShopCaseList | None:
         """Retrieve one or more shop cases by id(s).
 
         Args:
@@ -209,20 +198,17 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList]):
                     "outwards",
                     dm.ViewId("power_ops_core", "ShopFile", "1"),
                 ),
-            ],
+                                               ]
         )
 
+
+
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: ShopCaseFields | Sequence[ShopCaseFields] | None = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: ShopCaseFields | SequenceNotStr[ShopCaseFields] | None = None,
         scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
@@ -230,21 +216,17 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList]):
         max_end_time: datetime.datetime | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: ShopCaseFields | Sequence[ShopCaseFields] | None = None,
-        group_by: ShopCaseFields | Sequence[ShopCaseFields] = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: ShopCaseFields | SequenceNotStr[ShopCaseFields] | None = None,
         scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
@@ -252,20 +234,38 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList]):
         max_end_time: datetime.datetime | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: ShopCaseFields | SequenceNotStr[ShopCaseFields],
+        property: ShopCaseFields | SequenceNotStr[ShopCaseFields] | None = None,
+        scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_start_time: datetime.datetime | None = None,
+        max_start_time: datetime.datetime | None = None,
+        min_end_time: datetime.datetime | None = None,
+        max_end_time: datetime.datetime | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: ShopCaseFields | Sequence[ShopCaseFields] | None = None,
-        group_by: ShopCaseFields | Sequence[ShopCaseFields] | None = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: ShopCaseFields | SequenceNotStr[ShopCaseFields] | None = None,
+        property: ShopCaseFields | SequenceNotStr[ShopCaseFields] | None = None,
         scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
@@ -273,15 +273,19 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList]):
         max_end_time: datetime.datetime | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across shop cases
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             scenario: The scenario to filter on.
             min_start_time: The minimum value of the start time to filter on.
             max_start_time: The maximum value of the start time to filter on.
@@ -317,15 +321,13 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList]):
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _SHOPCASE_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            None,
-            None,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=None,
+            search_properties=None,
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -339,7 +341,7 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList]):
         max_end_time: datetime.datetime | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for shop cases
@@ -373,15 +375,14 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList]):
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _SHOPCASE_PROPERTIES_BY_FIELD,
             None,
             None,
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -392,10 +393,11 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList]):
         max_end_time: datetime.datetime | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         sort_by: ShopCaseFields | Sequence[ShopCaseFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
         retrieve_edges: bool = True,
     ) -> ShopCaseList:
         """List/filter shop cases
@@ -412,6 +414,9 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList]):
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
             retrieve_edges: Whether to retrieve `shop_files` external ids for the shop cases. Defaults to True.
 
         Returns:
@@ -441,9 +446,9 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList]):
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_SHOPCASE_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
             retrieve_edges=retrieve_edges,
             edge_api_name_type_direction_view_id_penta=[
                 (
@@ -453,5 +458,5 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList]):
                     "outwards",
                     dm.ViewId("power_ops_core", "ShopFile", "1"),
                 ),
-            ],
+                                               ]
         )
