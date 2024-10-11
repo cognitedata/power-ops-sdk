@@ -69,7 +69,7 @@ class AlertGraphQL(GraphQLCore):
         alert_type: Classification of the alert (not in current alerting implementation)
         status_code: Unique status code for the alert. May be used by the frontend to avoid use of hardcoded description (i.e. like a translation)
         event_ids: An array of associated alert CDF Events (e.g. SHOP Run events)
-        calculation_run: The identifier of the parent Bid Calculation (required so tha alerts can be created befor the BidDocument)
+        calculation_run: The identifier of the parent Bid Calculation (required so that alerts can be created before the BidDocument)
     """
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "Alert", "1")
     time: Optional[datetime.datetime] = None
@@ -156,7 +156,7 @@ class Alert(DomainModel):
         alert_type: Classification of the alert (not in current alerting implementation)
         status_code: Unique status code for the alert. May be used by the frontend to avoid use of hardcoded description (i.e. like a translation)
         event_ids: An array of associated alert CDF Events (e.g. SHOP Run events)
-        calculation_run: The identifier of the parent Bid Calculation (required so tha alerts can be created befor the BidDocument)
+        calculation_run: The identifier of the parent Bid Calculation (required so that alerts can be created before the BidDocument)
     """
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "Alert", "1")
 
@@ -216,7 +216,7 @@ class AlertWrite(DomainModelWrite):
         alert_type: Classification of the alert (not in current alerting implementation)
         status_code: Unique status code for the alert. May be used by the frontend to avoid use of hardcoded description (i.e. like a translation)
         event_ids: An array of associated alert CDF Events (e.g. SHOP Run events)
-        calculation_run: The identifier of the parent Bid Calculation (required so tha alerts can be created befor the BidDocument)
+        calculation_run: The identifier of the parent Bid Calculation (required so that alerts can be created before the BidDocument)
     """
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "Alert", "1")
 
