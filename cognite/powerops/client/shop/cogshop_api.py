@@ -8,7 +8,7 @@ class CogShopAPI:
     def __init__(self, client: CogniteClient):
         self._cdf = client
 
-    def _shop_url_shaas(self) -> str:
+    def _shop_url_cshaas(self) -> str:
         project = self._cdf.config.project
 
         cluster = urlparse(self._cdf.config.base_url).netloc.split(".", 1)[0]
@@ -23,7 +23,7 @@ class CogShopAPI:
             r.headers[auth_header_name] = auth_header_value
             return r
 
-        shop_url = self._shop_url_shaas()
+        shop_url = self._shop_url_cshaas()
         shop_body = {
             "mode": "fdm",
             "runs": [{"case_external_id": shop_case_external_id}],
