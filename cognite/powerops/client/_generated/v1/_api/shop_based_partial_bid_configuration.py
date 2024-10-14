@@ -6,7 +6,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -24,48 +24,34 @@ from cognite.powerops.client._generated.v1.data_classes._shop_based_partial_bid_
     _SHOPBASEDPARTIALBIDCONFIGURATION_PROPERTIES_BY_FIELD,
     _create_shop_based_partial_bid_configuration_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
 from .shop_based_partial_bid_configuration_query import ShopBasedPartialBidConfigurationQueryAPI
 
 
-class ShopBasedPartialBidConfigurationAPI(
-    NodeAPI[
-        ShopBasedPartialBidConfiguration, ShopBasedPartialBidConfigurationWrite, ShopBasedPartialBidConfigurationList
-    ]
-):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[ShopBasedPartialBidConfiguration]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=ShopBasedPartialBidConfiguration,
-            class_list=ShopBasedPartialBidConfigurationList,
-            class_write_list=ShopBasedPartialBidConfigurationWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class ShopBasedPartialBidConfigurationAPI(NodeAPI[ShopBasedPartialBidConfiguration, ShopBasedPartialBidConfigurationWrite, ShopBasedPartialBidConfigurationList, ShopBasedPartialBidConfigurationWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "ShopBasedPartialBidConfiguration", "1")
+    _properties_by_field = _SHOPBASEDPARTIALBIDCONFIGURATION_PROPERTIES_BY_FIELD
+    _class_type = ShopBasedPartialBidConfiguration
+    _class_list = ShopBasedPartialBidConfigurationList
+    _class_write_list = ShopBasedPartialBidConfigurationWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
 
     def __call__(
-        self,
-        name: str | list[str] | None = None,
-        name_prefix: str | None = None,
-        method: str | list[str] | None = None,
-        method_prefix: str | None = None,
-        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        add_steps: bool | None = None,
-        scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            name: str | list[str] | None = None,
+            name_prefix: str | None = None,
+            method: str | list[str] | None = None,
+            method_prefix: str | None = None,
+            power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            add_steps: bool | None = None,
+            scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> ShopBasedPartialBidConfigurationQueryAPI[ShopBasedPartialBidConfigurationList]:
         """Query starting at shop based partial bid configurations.
 
@@ -101,13 +87,12 @@ class ShopBasedPartialBidConfigurationAPI(
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(ShopBasedPartialBidConfigurationList)
-        return ShopBasedPartialBidConfigurationQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        return ShopBasedPartialBidConfigurationQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
-        shop_based_partial_bid_configuration: (
-            ShopBasedPartialBidConfigurationWrite | Sequence[ShopBasedPartialBidConfigurationWrite]
-        ),
+        shop_based_partial_bid_configuration: ShopBasedPartialBidConfigurationWrite | Sequence[ShopBasedPartialBidConfigurationWrite],
         replace: bool = False,
         write_none: bool = False,
     ) -> ResourcesWriteResult:
@@ -145,9 +130,7 @@ class ShopBasedPartialBidConfigurationAPI(
         )
         return self._apply(shop_based_partial_bid_configuration, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more shop based partial bid configuration.
 
         Args:
@@ -177,18 +160,14 @@ class ShopBasedPartialBidConfigurationAPI(
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(
-        self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE
-    ) -> ShopBasedPartialBidConfiguration | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopBasedPartialBidConfiguration | None:
+        ...
 
     @overload
-    def retrieve(
-        self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> ShopBasedPartialBidConfigurationList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopBasedPartialBidConfigurationList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> ShopBasedPartialBidConfiguration | ShopBasedPartialBidConfigurationList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopBasedPartialBidConfiguration | ShopBasedPartialBidConfigurationList | None:
         """Retrieve one or more shop based partial bid configurations by id(s).
 
         Args:
@@ -212,9 +191,7 @@ class ShopBasedPartialBidConfigurationAPI(
     def search(
         self,
         query: str,
-        properties: (
-            ShopBasedPartialBidConfigurationTextFields | Sequence[ShopBasedPartialBidConfigurationTextFields] | None
-        ) = None,
+        properties: ShopBasedPartialBidConfigurationTextFields | SequenceNotStr[ShopBasedPartialBidConfigurationTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
@@ -224,8 +201,11 @@ class ShopBasedPartialBidConfigurationAPI(
         scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: ShopBasedPartialBidConfigurationFields | SequenceNotStr[ShopBasedPartialBidConfigurationFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> ShopBasedPartialBidConfigurationList:
         """Search shop based partial bid configurations
 
@@ -243,6 +223,11 @@ class ShopBasedPartialBidConfigurationAPI(
             space: The space to filter on.
             limit: Maximum number of shop based partial bid configurations to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             Search results shop based partial bid configurations matching the query.
@@ -270,26 +255,23 @@ class ShopBasedPartialBidConfigurationAPI(
             filter,
         )
         return self._search(
-            self._view_id, query, _SHOPBASEDPARTIALBIDCONFIGURATION_PROPERTIES_BY_FIELD, properties, filter_, limit
+            query=query,
+            properties=properties,
+            filter_=filter_,
+            limit=limit,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
         )
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: (
-            ShopBasedPartialBidConfigurationFields | Sequence[ShopBasedPartialBidConfigurationFields] | None
-        ) = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: ShopBasedPartialBidConfigurationFields | SequenceNotStr[ShopBasedPartialBidConfigurationFields] | None = None,
         query: str | None = None,
-        search_properties: (
-            ShopBasedPartialBidConfigurationTextFields | Sequence[ShopBasedPartialBidConfigurationTextFields] | None
-        ) = None,
+        search_property: ShopBasedPartialBidConfigurationTextFields | SequenceNotStr[ShopBasedPartialBidConfigurationTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
@@ -299,27 +281,19 @@ class ShopBasedPartialBidConfigurationAPI(
         scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: (
-            ShopBasedPartialBidConfigurationFields | Sequence[ShopBasedPartialBidConfigurationFields] | None
-        ) = None,
-        group_by: ShopBasedPartialBidConfigurationFields | Sequence[ShopBasedPartialBidConfigurationFields] = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: ShopBasedPartialBidConfigurationFields | SequenceNotStr[ShopBasedPartialBidConfigurationFields] | None = None,
         query: str | None = None,
-        search_properties: (
-            ShopBasedPartialBidConfigurationTextFields | Sequence[ShopBasedPartialBidConfigurationTextFields] | None
-        ) = None,
+        search_property: ShopBasedPartialBidConfigurationTextFields | SequenceNotStr[ShopBasedPartialBidConfigurationTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
@@ -329,28 +303,44 @@ class ShopBasedPartialBidConfigurationAPI(
         scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: ShopBasedPartialBidConfigurationFields | SequenceNotStr[ShopBasedPartialBidConfigurationFields],
+        property: ShopBasedPartialBidConfigurationFields | SequenceNotStr[ShopBasedPartialBidConfigurationFields] | None = None,
+        query: str | None = None,
+        search_property: ShopBasedPartialBidConfigurationTextFields | SequenceNotStr[ShopBasedPartialBidConfigurationTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        method: str | list[str] | None = None,
+        method_prefix: str | None = None,
+        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        add_steps: bool | None = None,
+        scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: (
-            ShopBasedPartialBidConfigurationFields | Sequence[ShopBasedPartialBidConfigurationFields] | None
-        ) = None,
-        group_by: (
-            ShopBasedPartialBidConfigurationFields | Sequence[ShopBasedPartialBidConfigurationFields] | None
-        ) = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: ShopBasedPartialBidConfigurationFields | SequenceNotStr[ShopBasedPartialBidConfigurationFields] | None = None,
+        property: ShopBasedPartialBidConfigurationFields | SequenceNotStr[ShopBasedPartialBidConfigurationFields] | None = None,
         query: str | None = None,
-        search_property: (
-            ShopBasedPartialBidConfigurationTextFields | Sequence[ShopBasedPartialBidConfigurationTextFields] | None
-        ) = None,
+        search_property: ShopBasedPartialBidConfigurationTextFields | SequenceNotStr[ShopBasedPartialBidConfigurationTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
@@ -360,15 +350,19 @@ class ShopBasedPartialBidConfigurationAPI(
         scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across shop based partial bid configurations
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             query: The query to search for in the text field.
             search_property: The text field to search in.
             name: The name to filter on.
@@ -410,15 +404,13 @@ class ShopBasedPartialBidConfigurationAPI(
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _SHOPBASEDPARTIALBIDCONFIGURATION_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            query,
-            search_property,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=query,
+            search_properties=search_property,  # type: ignore[arg-type]
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -426,9 +418,7 @@ class ShopBasedPartialBidConfigurationAPI(
         property: ShopBasedPartialBidConfigurationFields,
         interval: float,
         query: str | None = None,
-        search_property: (
-            ShopBasedPartialBidConfigurationTextFields | Sequence[ShopBasedPartialBidConfigurationTextFields] | None
-        ) = None,
+        search_property: ShopBasedPartialBidConfigurationTextFields | SequenceNotStr[ShopBasedPartialBidConfigurationTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
@@ -438,7 +428,7 @@ class ShopBasedPartialBidConfigurationAPI(
         scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for shop based partial bid configurations
@@ -478,15 +468,14 @@ class ShopBasedPartialBidConfigurationAPI(
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _SHOPBASEDPARTIALBIDCONFIGURATION_PROPERTIES_BY_FIELD,
             query,
-            search_property,
+            search_property,  # type: ignore[arg-type]
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -499,12 +488,11 @@ class ShopBasedPartialBidConfigurationAPI(
         scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-        sort_by: (
-            ShopBasedPartialBidConfigurationFields | Sequence[ShopBasedPartialBidConfigurationFields] | None
-        ) = None,
+        sort_by: ShopBasedPartialBidConfigurationFields | Sequence[ShopBasedPartialBidConfigurationFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> ShopBasedPartialBidConfigurationList:
         """List/filter shop based partial bid configurations
 
@@ -522,6 +510,9 @@ class ShopBasedPartialBidConfigurationAPI(
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             List of requested shop based partial bid configurations
@@ -551,7 +542,7 @@ class ShopBasedPartialBidConfigurationAPI(
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_SHOPBASEDPARTIALBIDCONFIGURATION_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
         )

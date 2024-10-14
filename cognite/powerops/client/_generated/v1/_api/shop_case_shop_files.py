@@ -9,15 +9,15 @@ from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INS
 
 class ShopCaseShopFilesAPI(EdgeAPI):
     def list(
-        self,
-        from_shop_case: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        from_shop_case_space: str = DEFAULT_INSTANCE_SPACE,
-        to_shop_file: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        to_shop_file_space: str = DEFAULT_INSTANCE_SPACE,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit=DEFAULT_LIMIT_READ,
-    ) -> dm.EdgeList:
+            self,
+            from_shop_case: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+            from_shop_case_space: str = DEFAULT_INSTANCE_SPACE,
+            to_shop_file: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+            to_shop_file_space: str = DEFAULT_INSTANCE_SPACE,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit=DEFAULT_LIMIT_READ,
+    ) ->dm.EdgeList:
         """List shop file edges of a shop case.
 
         Args:
@@ -44,6 +44,7 @@ class ShopCaseShopFilesAPI(EdgeAPI):
         """
         filter_ = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "ShopCase.shopFiles"),
+
             from_shop_case,
             from_shop_case_space,
             to_shop_file,

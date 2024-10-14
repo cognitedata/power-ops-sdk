@@ -21,16 +21,18 @@ if TYPE_CHECKING:
     from .price_production_query import PriceProductionQueryAPI
 
 
+
 class MultiScenarioPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
+    _view_id = dm.ViewId("power_ops_core", "MultiScenarioPartialBidMatrixCalculationInput", "1")
+
     def __init__(
         self,
         client: CogniteClient,
         builder: QueryBuilder[T_DomainModelList],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId],
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
-        super().__init__(client, builder, view_by_read_class)
+        super().__init__(client, builder)
 
         self._builder.append(
             QueryStep(
@@ -39,13 +41,7 @@ class MultiScenarioPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainMod
                     from_=self._builder[-1].name if self._builder else None,
                     filter=filter_,
                 ),
-                select=dm.query.Select(
-                    [
-                        dm.query.SourceSelector(
-                            self._view_by_read_class[MultiScenarioPartialBidMatrixCalculationInput], ["*"]
-                        )
-                    ]
-                ),
+                select=dm.query.Select([dm.query.SourceSelector(self._view_id, ["*"])]),
                 result_cls=MultiScenarioPartialBidMatrixCalculationInput,
                 max_retrieve_limit=limit,
             )
@@ -61,7 +57,7 @@ class MultiScenarioPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainMod
         external_id_prefix_edge: str | None = None,
         space_edge: str | list[str] | None = None,
         filter: dm.Filter | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
+        limit: int = DEFAULT_QUERY_LIMIT,
         retrieve_bid_configuration: bool = False,
         retrieve_partial_bid_configuration: bool = False,
     ) -> PriceProductionQueryAPI[T_DomainModelList]:
@@ -89,6 +85,7 @@ class MultiScenarioPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainMod
         from_ = self._builder[-1].name
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "PriceProduction"),
+
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -105,7 +102,7 @@ class MultiScenarioPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainMod
             )
         )
 
-        view_id = self._view_by_read_class[PriceProduction]
+        view_id = PriceProductionQueryAPI._view_id
         has_data = dm.filters.HasData(views=[view_id])
         node_filer = _create_price_production_filter(
             view_id,
@@ -120,7 +117,7 @@ class MultiScenarioPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainMod
             self._query_append_bid_configuration(from_)
         if retrieve_partial_bid_configuration:
             self._query_append_partial_bid_configuration(from_)
-        return PriceProductionQueryAPI(self._client, self._builder, self._view_by_read_class, node_filer, limit)
+        return PriceProductionQueryAPI(self._client, self._builder, node_filer, limit)
 
     def query(
         self,
@@ -145,16 +142,14 @@ class MultiScenarioPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainMod
         return self._query()
 
     def _query_append_bid_configuration(self, from_: str) -> None:
-        view_id = self._view_by_read_class[BidConfigurationDayAhead]
+        view_id = BidConfigurationDayAhead._view_id
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("bid_configuration"),
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_read_class[MultiScenarioPartialBidMatrixCalculationInput].as_property_ref(
-                        "bidConfiguration"
-                    ),
+                    through=self._view_id.as_property_ref("bidConfiguration"),
                     direction="outwards",
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
@@ -165,16 +160,14 @@ class MultiScenarioPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainMod
         )
 
     def _query_append_partial_bid_configuration(self, from_: str) -> None:
-        view_id = self._view_by_read_class[ShopBasedPartialBidConfiguration]
+        view_id = ShopBasedPartialBidConfiguration._view_id
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("partial_bid_configuration"),
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_read_class[MultiScenarioPartialBidMatrixCalculationInput].as_property_ref(
-                        "partialBidConfiguration"
-                    ),
+                    through=self._view_id.as_property_ref("partialBidConfiguration"),
                     direction="outwards",
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),

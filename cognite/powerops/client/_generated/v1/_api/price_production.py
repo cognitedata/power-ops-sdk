@@ -6,7 +6,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -24,44 +24,34 @@ from cognite.powerops.client._generated.v1.data_classes._price_production import
     _PRICEPRODUCTION_PROPERTIES_BY_FIELD,
     _create_price_production_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
 from .price_production_price import PriceProductionPriceAPI
 from .price_production_production import PriceProductionProductionAPI
 from .price_production_query import PriceProductionQueryAPI
 
 
-class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PriceProductionList]):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[PriceProduction]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=PriceProduction,
-            class_list=PriceProductionList,
-            class_write_list=PriceProductionWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
-        self.price = PriceProductionPriceAPI(client, view_id)
-        self.production = PriceProductionProductionAPI(client, view_id)
+class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PriceProductionList, PriceProductionWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "PriceProduction", "1")
+    _properties_by_field = _PRICEPRODUCTION_PROPERTIES_BY_FIELD
+    _class_type = PriceProduction
+    _class_list = PriceProductionList
+    _class_write_list = PriceProductionWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
+        self.price = PriceProductionPriceAPI(client, self._view_id)
+        self.production = PriceProductionProductionAPI(client, self._view_id)
 
     def __call__(
-        self,
-        name: str | list[str] | None = None,
-        name_prefix: str | None = None,
-        shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            name: str | list[str] | None = None,
+            name_prefix: str | None = None,
+            shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> PriceProductionQueryAPI[PriceProductionList]:
         """Query starting at price productions.
 
@@ -89,7 +79,8 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(PriceProductionList)
-        return PriceProductionQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        return PriceProductionQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
@@ -131,9 +122,7 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         )
         return self._apply(price_production, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more price production.
 
         Args:
@@ -163,16 +152,14 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> PriceProduction | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> PriceProduction | None:
+        ...
 
     @overload
-    def retrieve(
-        self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> PriceProductionList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PriceProductionList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> PriceProduction | PriceProductionList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PriceProduction | PriceProductionList | None:
         """Retrieve one or more price productions by id(s).
 
         Args:
@@ -196,14 +183,17 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
     def search(
         self,
         query: str,
-        properties: PriceProductionTextFields | Sequence[PriceProductionTextFields] | None = None,
+        properties: PriceProductionTextFields | SequenceNotStr[PriceProductionTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: PriceProductionFields | SequenceNotStr[PriceProductionFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> PriceProductionList:
         """Search price productions
 
@@ -217,6 +207,11 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
             space: The space to filter on.
             limit: Maximum number of price productions to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             Search results price productions matching the query.
@@ -239,78 +234,99 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
             space,
             filter,
         )
-        return self._search(self._view_id, query, _PRICEPRODUCTION_PROPERTIES_BY_FIELD, properties, filter_, limit)
+        return self._search(
+            query=query,
+            properties=properties,
+            filter_=filter_,
+            limit=limit,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
+        )
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: PriceProductionFields | Sequence[PriceProductionFields] | None = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: PriceProductionFields | SequenceNotStr[PriceProductionFields] | None = None,
         query: str | None = None,
-        search_properties: PriceProductionTextFields | Sequence[PriceProductionTextFields] | None = None,
+        search_property: PriceProductionTextFields | SequenceNotStr[PriceProductionTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: PriceProductionFields | Sequence[PriceProductionFields] | None = None,
-        group_by: PriceProductionFields | Sequence[PriceProductionFields] = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: PriceProductionFields | SequenceNotStr[PriceProductionFields] | None = None,
         query: str | None = None,
-        search_properties: PriceProductionTextFields | Sequence[PriceProductionTextFields] | None = None,
+        search_property: PriceProductionTextFields | SequenceNotStr[PriceProductionTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: PriceProductionFields | SequenceNotStr[PriceProductionFields],
+        property: PriceProductionFields | SequenceNotStr[PriceProductionFields] | None = None,
+        query: str | None = None,
+        search_property: PriceProductionTextFields | SequenceNotStr[PriceProductionTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: PriceProductionFields | Sequence[PriceProductionFields] | None = None,
-        group_by: PriceProductionFields | Sequence[PriceProductionFields] | None = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: PriceProductionFields | SequenceNotStr[PriceProductionFields] | None = None,
+        property: PriceProductionFields | SequenceNotStr[PriceProductionFields] | None = None,
         query: str | None = None,
-        search_property: PriceProductionTextFields | Sequence[PriceProductionTextFields] | None = None,
+        search_property: PriceProductionTextFields | SequenceNotStr[PriceProductionTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across price productions
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             query: The query to search for in the text field.
             search_property: The text field to search in.
             name: The name to filter on.
@@ -344,15 +360,13 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _PRICEPRODUCTION_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            query,
-            search_property,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=query,
+            search_properties=search_property,  # type: ignore[arg-type]
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -360,13 +374,13 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         property: PriceProductionFields,
         interval: float,
         query: str | None = None,
-        search_property: PriceProductionTextFields | Sequence[PriceProductionTextFields] | None = None,
+        search_property: PriceProductionTextFields | SequenceNotStr[PriceProductionTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for price productions
@@ -398,15 +412,14 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _PRICEPRODUCTION_PROPERTIES_BY_FIELD,
             query,
-            search_property,
+            search_property,  # type: ignore[arg-type]
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -415,10 +428,11 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         sort_by: PriceProductionFields | Sequence[PriceProductionFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> PriceProductionList:
         """List/filter price productions
 
@@ -432,6 +446,9 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             List of requested price productions
@@ -457,7 +474,7 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_PRICEPRODUCTION_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
         )

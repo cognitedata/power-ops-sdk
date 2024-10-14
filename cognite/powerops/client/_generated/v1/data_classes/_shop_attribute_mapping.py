@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from typing import Any, Literal, Optional, Union
+from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
@@ -14,7 +14,6 @@ from ._core import (
     DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
-    DomainModelCore,
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
@@ -34,15 +33,12 @@ __all__ = [
     "ShopAttributeMappingApplyList",
     "ShopAttributeMappingFields",
     "ShopAttributeMappingTextFields",
+    "ShopAttributeMappingGraphQL",
 ]
 
 
-ShopAttributeMappingTextFields = Literal[
-    "object_type", "object_name", "attribute_name", "time_series", "retrieve", "aggregation"
-]
-ShopAttributeMappingFields = Literal[
-    "object_type", "object_name", "attribute_name", "time_series", "transformations", "retrieve", "aggregation"
-]
+ShopAttributeMappingTextFields = Literal["object_type", "object_name", "attribute_name", "time_series", "retrieve", "aggregation"]
+ShopAttributeMappingFields = Literal["object_type", "object_name", "attribute_name", "time_series", "transformations", "retrieve", "aggregation"]
 
 _SHOPATTRIBUTEMAPPING_PROPERTIES_BY_FIELD = {
     "object_type": "objectType",
@@ -53,7 +49,6 @@ _SHOPATTRIBUTEMAPPING_PROPERTIES_BY_FIELD = {
     "retrieve": "retrieve",
     "aggregation": "aggregation",
 }
-
 
 class ShopAttributeMappingGraphQL(GraphQLCore):
     """This represents the reading version of shop attribute mapping, used
@@ -73,8 +68,7 @@ class ShopAttributeMappingGraphQL(GraphQLCore):
         retrieve: How to retrieve time series data
         aggregation: How to aggregate time series data
     """
-
-    view_id = dm.ViewId("power_ops_core", "ShopAttributeMapping", "1")
+    view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopAttributeMapping", "1")
     object_type: Optional[str] = Field(None, alias="objectType")
     object_name: Optional[str] = Field(None, alias="objectName")
     attribute_name: Optional[str] = Field(None, alias="attributeName")
@@ -94,6 +88,8 @@ class ShopAttributeMappingGraphQL(GraphQLCore):
             )
         return values
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> ShopAttributeMapping:
         """Convert this GraphQL format of shop attribute mapping to the reading format."""
         if self.data_record is None:
@@ -115,6 +111,9 @@ class ShopAttributeMappingGraphQL(GraphQLCore):
             aggregation=self.aggregation,
         )
 
+
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopAttributeMappingWrite:
         """Convert this GraphQL format of shop attribute mapping to the writing format."""
         return ShopAttributeMappingWrite(
@@ -148,11 +147,10 @@ class ShopAttributeMapping(DomainModel):
         retrieve: How to retrieve time series data
         aggregation: How to aggregate time series data
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopAttributeMapping", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "ShopAttributeMapping"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopAttributeMapping")
     object_type: str = Field(alias="objectType")
     object_name: str = Field(alias="objectName")
     attribute_name: str = Field(alias="attributeName")
@@ -203,11 +201,10 @@ class ShopAttributeMappingWrite(DomainModelWrite):
         retrieve: How to retrieve time series data
         aggregation: How to aggregate time series data
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopAttributeMapping", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "ShopAttributeMapping"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopAttributeMapping")
     object_type: str = Field(alias="objectType")
     object_name: str = Field(alias="objectName")
     attribute_name: str = Field(alias="attributeName")
@@ -219,17 +216,12 @@ class ShopAttributeMappingWrite(DomainModelWrite):
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
-
-        write_view = (view_by_read_class or {}).get(
-            ShopAttributeMapping, dm.ViewId("power_ops_core", "ShopAttributeMapping", "1")
-        )
 
         properties: dict[str, Any] = {}
 
@@ -243,11 +235,7 @@ class ShopAttributeMappingWrite(DomainModelWrite):
             properties["attributeName"] = self.attribute_name
 
         if self.time_series is not None or write_none:
-            properties["timeSeries"] = (
-                self.time_series
-                if isinstance(self.time_series, str) or self.time_series is None
-                else self.time_series.external_id
-            )
+            properties["timeSeries"] = self.time_series if isinstance(self.time_series, str) or self.time_series is None else self.time_series.external_id
 
         if self.transformations is not None or write_none:
             properties["transformations"] = self.transformations
@@ -258,6 +246,7 @@ class ShopAttributeMappingWrite(DomainModelWrite):
         if self.aggregation is not None or write_none:
             properties["aggregation"] = self.aggregation
 
+
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -266,13 +255,14 @@ class ShopAttributeMappingWrite(DomainModelWrite):
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
-                        source=write_view,
+                        source=self._view_id,
                         properties=properties,
-                    )
-                ],
+                )],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
+
+
 
         if isinstance(self.time_series, CogniteTimeSeries):
             resources.time_series.append(self.time_series)
@@ -316,8 +306,8 @@ class ShopAttributeMappingWriteList(DomainModelWriteList[ShopAttributeMappingWri
 
     _INSTANCE = ShopAttributeMappingWrite
 
-
 class ShopAttributeMappingApplyList(ShopAttributeMappingWriteList): ...
+
 
 
 def _create_shop_attribute_mapping_filter(
@@ -336,7 +326,7 @@ def _create_shop_attribute_mapping_filter(
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
-    filters = []
+    filters: list[dm.Filter] = []
     if isinstance(object_type, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("objectType"), value=object_type))
     if object_type and isinstance(object_type, list):

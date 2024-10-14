@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from typing import Any, Literal, Optional, Union
+from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -13,7 +13,6 @@ from ._core import (
     DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
-    DomainModelCore,
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
@@ -32,6 +31,7 @@ __all__ = [
     "PowerAssetApplyList",
     "PowerAssetFields",
     "PowerAssetTextFields",
+    "PowerAssetGraphQL",
 ]
 
 
@@ -44,7 +44,6 @@ _POWERASSET_PROPERTIES_BY_FIELD = {
     "ordering": "ordering",
     "asset_type": "assetType",
 }
-
 
 class PowerAssetGraphQL(GraphQLCore):
     """This represents the reading version of power asset, used
@@ -61,8 +60,7 @@ class PowerAssetGraphQL(GraphQLCore):
         ordering: The ordering of the asset
         asset_type: The type of the asset
     """
-
-    view_id = dm.ViewId("power_ops_core", "PowerAsset", "1")
+    view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PowerAsset", "1")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
@@ -79,6 +77,8 @@ class PowerAssetGraphQL(GraphQLCore):
             )
         return values
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> PowerAsset:
         """Convert this GraphQL format of power asset to the reading format."""
         if self.data_record is None:
@@ -97,6 +97,9 @@ class PowerAssetGraphQL(GraphQLCore):
             asset_type=self.asset_type,
         )
 
+
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> PowerAssetWrite:
         """Convert this GraphQL format of power asset to the writing format."""
         return PowerAssetWrite(
@@ -124,6 +127,7 @@ class PowerAsset(DomainModel):
         ordering: The ordering of the asset
         asset_type: The type of the asset
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PowerAsset", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
@@ -168,6 +172,7 @@ class PowerAssetWrite(DomainModelWrite):
         ordering: The ordering of the asset
         asset_type: The type of the asset
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PowerAsset", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
@@ -179,15 +184,12 @@ class PowerAssetWrite(DomainModelWrite):
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
-
-        write_view = (view_by_read_class or {}).get(PowerAsset, dm.ViewId("power_ops_core", "PowerAsset", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -203,6 +205,7 @@ class PowerAssetWrite(DomainModelWrite):
         if self.asset_type is not None or write_none:
             properties["assetType"] = self.asset_type
 
+
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -211,13 +214,14 @@ class PowerAssetWrite(DomainModelWrite):
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
-                        source=write_view,
+                        source=self._view_id,
                         properties=properties,
-                    )
-                ],
+                )],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
+
+
 
         return resources
 
@@ -258,8 +262,8 @@ class PowerAssetWriteList(DomainModelWriteList[PowerAssetWrite]):
 
     _INSTANCE = PowerAssetWrite
 
-
 class PowerAssetApplyList(PowerAssetWriteList): ...
+
 
 
 def _create_power_asset_filter(
@@ -276,7 +280,7 @@ def _create_power_asset_filter(
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
-    filters = []
+    filters: list[dm.Filter] = []
     if isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):

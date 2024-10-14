@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from typing import TYPE_CHECKING, Any, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -13,7 +13,6 @@ from ._core import (
     DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
-    DomainModelCore,
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
@@ -24,7 +23,6 @@ from ._core import (
 
 if TYPE_CHECKING:
     from ._alert import Alert, AlertGraphQL, AlertWrite
-    from ._bid_row import BidRow, BidRowGraphQL, BidRowWrite
     from ._power_asset import PowerAsset, PowerAssetGraphQL, PowerAssetWrite
 
 
@@ -37,13 +35,12 @@ __all__ = [
     "BidRowApplyList",
     "BidRowFields",
     "BidRowTextFields",
+    "BidRowGraphQL",
 ]
 
 
 BidRowTextFields = Literal["product", "exclusive_group_id"]
-BidRowFields = Literal[
-    "price", "quantity_per_hour", "product", "is_divisible", "min_quantity", "is_block", "exclusive_group_id"
-]
+BidRowFields = Literal["price", "quantity_per_hour", "product", "is_divisible", "min_quantity", "is_block", "exclusive_group_id"]
 
 _BIDROW_PROPERTIES_BY_FIELD = {
     "price": "price",
@@ -54,7 +51,6 @@ _BIDROW_PROPERTIES_BY_FIELD = {
     "is_block": "isBlock",
     "exclusive_group_id": "exclusiveGroupId",
 }
-
 
 class BidRowGraphQL(GraphQLCore):
     """This represents the reading version of bid row, used
@@ -77,8 +73,7 @@ class BidRowGraphQL(GraphQLCore):
         power_asset: TODO description
         alerts: An array of associated alerts.
     """
-
-    view_id = dm.ViewId("power_ops_core", "BidRow", "1")
+    view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidRow", "1")
     price: Optional[float] = None
     quantity_per_hour: Optional[list[float]] = Field(None, alias="quantityPerHour")
     product: Optional[str] = None
@@ -100,7 +95,6 @@ class BidRowGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
-
     @field_validator("linked_bid", "power_asset", "alerts", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -109,6 +103,8 @@ class BidRowGraphQL(GraphQLCore):
             return value["items"]
         return value
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> BidRow:
         """Convert this GraphQL format of bid row to the reading format."""
         if self.data_record is None:
@@ -133,6 +129,9 @@ class BidRowGraphQL(GraphQLCore):
             alerts=[alert.as_read() for alert in self.alerts or []],
         )
 
+
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> BidRowWrite:
         """Convert this GraphQL format of bid row to the writing format."""
         return BidRowWrite(
@@ -172,6 +171,7 @@ class BidRow(DomainModel):
         power_asset: TODO description
         alerts: An array of associated alerts.
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidRow", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "BidRow")
@@ -184,7 +184,7 @@ class BidRow(DomainModel):
     exclusive_group_id: Optional[str] = Field(None, alias="exclusiveGroupId")
     linked_bid: Union[BidRow, str, dm.NodeId, None] = Field(default=None, repr=False, alias="linkedBid")
     power_asset: Union[PowerAsset, str, dm.NodeId, None] = Field(default=None, repr=False, alias="powerAsset")
-    alerts: Union[list[Alert], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
+    alerts: Optional[list[Union[Alert, str, dm.NodeId]]] = Field(default=None, repr=False)
 
     def as_write(self) -> BidRowWrite:
         """Convert this read version of bid row to the writing version."""
@@ -234,6 +234,7 @@ class BidRowWrite(DomainModelWrite):
         power_asset: TODO description
         alerts: An array of associated alerts.
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidRow", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "BidRow")
@@ -246,20 +247,17 @@ class BidRowWrite(DomainModelWrite):
     exclusive_group_id: Optional[str] = Field(None, alias="exclusiveGroupId")
     linked_bid: Union[BidRowWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="linkedBid")
     power_asset: Union[PowerAssetWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="powerAsset")
-    alerts: Union[list[AlertWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
+    alerts: Optional[list[Union[AlertWrite, str, dm.NodeId]]] = Field(default=None, repr=False)
 
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
-
-        write_view = (view_by_read_class or {}).get(BidRow, dm.ViewId("power_ops_core", "BidRow", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -286,15 +284,16 @@ class BidRowWrite(DomainModelWrite):
 
         if self.linked_bid is not None:
             properties["linkedBid"] = {
-                "space": self.space if isinstance(self.linked_bid, str) else self.linked_bid.space,
+                "space":  self.space if isinstance(self.linked_bid, str) else self.linked_bid.space,
                 "externalId": self.linked_bid if isinstance(self.linked_bid, str) else self.linked_bid.external_id,
             }
 
         if self.power_asset is not None:
             properties["powerAsset"] = {
-                "space": self.space if isinstance(self.power_asset, str) else self.power_asset.space,
+                "space":  self.space if isinstance(self.power_asset, str) else self.power_asset.space,
                 "externalId": self.power_asset if isinstance(self.power_asset, str) else self.power_asset.external_id,
             }
+
 
         if properties:
             this_node = dm.NodeApply(
@@ -304,13 +303,14 @@ class BidRowWrite(DomainModelWrite):
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
-                        source=write_view,
+                        source=self._view_id,
                         properties=properties,
-                    )
-                ],
+                )],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
+
+
 
         edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
@@ -319,18 +319,17 @@ class BidRowWrite(DomainModelWrite):
                 start_node=self,
                 end_node=alert,
                 edge_type=edge_type,
-                view_by_read_class=view_by_read_class,
                 write_none=write_none,
                 allow_version_increase=allow_version_increase,
             )
             resources.extend(other_resources)
 
         if isinstance(self.linked_bid, DomainModelWrite):
-            other_resources = self.linked_bid._to_instances_write(cache, view_by_read_class)
+            other_resources = self.linked_bid._to_instances_write(cache)
             resources.extend(other_resources)
 
         if isinstance(self.power_asset, DomainModelWrite):
-            other_resources = self.power_asset._to_instances_write(cache, view_by_read_class)
+            other_resources = self.power_asset._to_instances_write(cache)
             resources.extend(other_resources)
 
         return resources
@@ -372,8 +371,8 @@ class BidRowWriteList(DomainModelWriteList[BidRowWrite]):
 
     _INSTANCE = BidRowWrite
 
-
 class BidRowApplyList(BidRowWriteList): ...
+
 
 
 def _create_bid_row_filter(
@@ -392,7 +391,7 @@ def _create_bid_row_filter(
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
-    filters = []
+    filters: list[dm.Filter] = []
     if min_price is not None or max_price is not None:
         filters.append(dm.filters.Range(view_id.as_property_ref("price"), gte=min_price, lte=max_price))
     if isinstance(product, str):
@@ -412,58 +411,21 @@ def _create_bid_row_filter(
     if exclusive_group_id_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("exclusiveGroupId"), value=exclusive_group_id_prefix))
     if linked_bid and isinstance(linked_bid, str):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("linkedBid"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": linked_bid}
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("linkedBid"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": linked_bid}))
     if linked_bid and isinstance(linked_bid, tuple):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("linkedBid"), value={"space": linked_bid[0], "externalId": linked_bid[1]}
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("linkedBid"), value={"space": linked_bid[0], "externalId": linked_bid[1]}))
     if linked_bid and isinstance(linked_bid, list) and isinstance(linked_bid[0], str):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("linkedBid"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in linked_bid],
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("linkedBid"), values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in linked_bid]))
     if linked_bid and isinstance(linked_bid, list) and isinstance(linked_bid[0], tuple):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("linkedBid"),
-                values=[{"space": item[0], "externalId": item[1]} for item in linked_bid],
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("linkedBid"), values=[{"space": item[0], "externalId": item[1]} for item in linked_bid]))
     if power_asset and isinstance(power_asset, str):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("powerAsset"),
-                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": power_asset},
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("powerAsset"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": power_asset}))
     if power_asset and isinstance(power_asset, tuple):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("powerAsset"), value={"space": power_asset[0], "externalId": power_asset[1]}
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("powerAsset"), value={"space": power_asset[0], "externalId": power_asset[1]}))
     if power_asset and isinstance(power_asset, list) and isinstance(power_asset[0], str):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("powerAsset"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in power_asset],
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("powerAsset"), values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in power_asset]))
     if power_asset and isinstance(power_asset, list) and isinstance(power_asset[0], tuple):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("powerAsset"),
-                values=[{"space": item[0], "externalId": item[1]} for item in power_asset],
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("powerAsset"), values=[{"space": item[0], "externalId": item[1]} for item in power_asset]))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):

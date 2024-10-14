@@ -6,7 +6,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -24,48 +24,38 @@ from cognite.powerops.client._generated.v1.data_classes._function_output import 
     _FUNCTIONOUTPUT_PROPERTIES_BY_FIELD,
     _create_function_output_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
 from .function_output_alerts import FunctionOutputAlertsAPI
 from .function_output_query import FunctionOutputQueryAPI
 
 
-class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOutputList]):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[FunctionOutput]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=FunctionOutput,
-            class_list=FunctionOutputList,
-            class_write_list=FunctionOutputWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOutputList, FunctionOutputWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "FunctionOutput", "1")
+    _properties_by_field = _FUNCTIONOUTPUT_PROPERTIES_BY_FIELD
+    _class_type = FunctionOutput
+    _class_list = FunctionOutputList
+    _class_write_list = FunctionOutputWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
         self.alerts_edge = FunctionOutputAlertsAPI(client)
 
     def __call__(
-        self,
-        workflow_execution_id: str | list[str] | None = None,
-        workflow_execution_id_prefix: str | None = None,
-        min_workflow_step: int | None = None,
-        max_workflow_step: int | None = None,
-        function_name: str | list[str] | None = None,
-        function_name_prefix: str | None = None,
-        function_call_id: str | list[str] | None = None,
-        function_call_id_prefix: str | None = None,
-        function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            workflow_execution_id: str | list[str] | None = None,
+            workflow_execution_id_prefix: str | None = None,
+            min_workflow_step: int | None = None,
+            max_workflow_step: int | None = None,
+            function_name: str | list[str] | None = None,
+            function_name_prefix: str | None = None,
+            function_call_id: str | list[str] | None = None,
+            function_call_id_prefix: str | None = None,
+            function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> FunctionOutputQueryAPI[FunctionOutputList]:
         """Query starting at function outputs.
 
@@ -105,7 +95,8 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(FunctionOutputList)
-        return FunctionOutputQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        return FunctionOutputQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
@@ -151,9 +142,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         )
         return self._apply(function_output, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more function output.
 
         Args:
@@ -183,14 +172,14 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> FunctionOutput | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> FunctionOutput | None:
+        ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> FunctionOutputList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> FunctionOutputList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> FunctionOutput | FunctionOutputList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> FunctionOutput | FunctionOutputList | None:
         """Retrieve one or more function outputs by id(s).
 
         Args:
@@ -221,13 +210,14 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
                     "outwards",
                     dm.ViewId("power_ops_core", "Alert", "1"),
                 ),
-            ],
+                                               ]
         )
+
 
     def search(
         self,
         query: str,
-        properties: FunctionOutputTextFields | Sequence[FunctionOutputTextFields] | None = None,
+        properties: FunctionOutputTextFields | SequenceNotStr[FunctionOutputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -239,8 +229,11 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: FunctionOutputFields | SequenceNotStr[FunctionOutputFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> FunctionOutputList:
         """Search function outputs
 
@@ -260,6 +253,11 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
             space: The space to filter on.
             limit: Maximum number of function outputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             Search results function outputs matching the query.
@@ -288,21 +286,24 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
             space,
             filter,
         )
-        return self._search(self._view_id, query, _FUNCTIONOUTPUT_PROPERTIES_BY_FIELD, properties, filter_, limit)
+        return self._search(
+            query=query,
+            properties=properties,
+            filter_=filter_,
+            limit=limit,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
+        )
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: FunctionOutputFields | Sequence[FunctionOutputFields] | None = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: FunctionOutputFields | SequenceNotStr[FunctionOutputFields] | None = None,
         query: str | None = None,
-        search_properties: FunctionOutputTextFields | Sequence[FunctionOutputTextFields] | None = None,
+        search_property: FunctionOutputTextFields | SequenceNotStr[FunctionOutputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -314,23 +315,19 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: FunctionOutputFields | Sequence[FunctionOutputFields] | None = None,
-        group_by: FunctionOutputFields | Sequence[FunctionOutputFields] = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: FunctionOutputFields | SequenceNotStr[FunctionOutputFields] | None = None,
         query: str | None = None,
-        search_properties: FunctionOutputTextFields | Sequence[FunctionOutputTextFields] | None = None,
+        search_property: FunctionOutputTextFields | SequenceNotStr[FunctionOutputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -342,22 +339,46 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: FunctionOutputFields | SequenceNotStr[FunctionOutputFields],
+        property: FunctionOutputFields | SequenceNotStr[FunctionOutputFields] | None = None,
+        query: str | None = None,
+        search_property: FunctionOutputTextFields | SequenceNotStr[FunctionOutputTextFields] | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
+        function_name: str | list[str] | None = None,
+        function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
+        function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: FunctionOutputFields | Sequence[FunctionOutputFields] | None = None,
-        group_by: FunctionOutputFields | Sequence[FunctionOutputFields] | None = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: FunctionOutputFields | SequenceNotStr[FunctionOutputFields] | None = None,
+        property: FunctionOutputFields | SequenceNotStr[FunctionOutputFields] | None = None,
         query: str | None = None,
-        search_property: FunctionOutputTextFields | Sequence[FunctionOutputTextFields] | None = None,
+        search_property: FunctionOutputTextFields | SequenceNotStr[FunctionOutputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -369,15 +390,19 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across function outputs
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             query: The query to search for in the text field.
             search_property: The text field to search in.
             workflow_execution_id: The workflow execution id to filter on.
@@ -423,15 +448,13 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _FUNCTIONOUTPUT_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            query,
-            search_property,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=query,
+            search_properties=search_property,  # type: ignore[arg-type]
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -439,7 +462,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         property: FunctionOutputFields,
         interval: float,
         query: str | None = None,
-        search_property: FunctionOutputTextFields | Sequence[FunctionOutputTextFields] | None = None,
+        search_property: FunctionOutputTextFields | SequenceNotStr[FunctionOutputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -451,7 +474,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for function outputs
@@ -495,15 +518,14 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _FUNCTIONOUTPUT_PROPERTIES_BY_FIELD,
             query,
-            search_property,
+            search_property,  # type: ignore[arg-type]
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -518,10 +540,11 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         sort_by: FunctionOutputFields | Sequence[FunctionOutputFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
         retrieve_edges: bool = True,
     ) -> FunctionOutputList:
         """List/filter function outputs
@@ -542,6 +565,9 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
             retrieve_edges: Whether to retrieve `alerts` external ids for the function outputs. Defaults to True.
 
         Returns:
@@ -575,9 +601,9 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_FUNCTIONOUTPUT_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
             retrieve_edges=retrieve_edges,
             edge_api_name_type_direction_view_id_penta=[
                 (
@@ -587,5 +613,5 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
                     "outwards",
                     dm.ViewId("power_ops_core", "Alert", "1"),
                 ),
-            ],
+                                               ]
         )

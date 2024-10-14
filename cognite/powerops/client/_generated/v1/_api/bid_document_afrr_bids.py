@@ -9,15 +9,15 @@ from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INS
 
 class BidDocumentAFRRBidsAPI(EdgeAPI):
     def list(
-        self,
-        from_bid_document_afrr: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        from_bid_document_afrr_space: str = DEFAULT_INSTANCE_SPACE,
-        to_bid_row: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        to_bid_row_space: str = DEFAULT_INSTANCE_SPACE,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit=DEFAULT_LIMIT_READ,
-    ) -> dm.EdgeList:
+            self,
+            from_bid_document_afrr: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+            from_bid_document_afrr_space: str = DEFAULT_INSTANCE_SPACE,
+            to_bid_row: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+            to_bid_row_space: str = DEFAULT_INSTANCE_SPACE,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit=DEFAULT_LIMIT_READ,
+    ) ->dm.EdgeList:
         """List bid edges of a bid document afrr.
 
         Args:
@@ -44,6 +44,7 @@ class BidDocumentAFRRBidsAPI(EdgeAPI):
         """
         filter_ = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "partialBid"),
+
             from_bid_document_afrr,
             from_bid_document_afrr_space,
             to_bid_row,

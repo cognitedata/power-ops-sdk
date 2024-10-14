@@ -20,16 +20,18 @@ if TYPE_CHECKING:
     from .shop_file_query import ShopFileQueryAPI
 
 
+
 class BenchmarkingShopCaseQueryAPI(QueryAPI[T_DomainModelList]):
+    _view_id = dm.ViewId("power_ops_core", "BenchmarkingShopCase", "1")
+
     def __init__(
         self,
         client: CogniteClient,
         builder: QueryBuilder[T_DomainModelList],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId],
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
-        super().__init__(client, builder, view_by_read_class)
+        super().__init__(client, builder)
 
         self._builder.append(
             QueryStep(
@@ -38,9 +40,7 @@ class BenchmarkingShopCaseQueryAPI(QueryAPI[T_DomainModelList]):
                     from_=self._builder[-1].name if self._builder else None,
                     filter=filter_,
                 ),
-                select=dm.query.Select(
-                    [dm.query.SourceSelector(self._view_by_read_class[BenchmarkingShopCase], ["*"])]
-                ),
+                select=dm.query.Select([dm.query.SourceSelector(self._view_id, ["*"])]),
                 result_cls=BenchmarkingShopCase,
                 max_retrieve_limit=limit,
             )
@@ -62,7 +62,7 @@ class BenchmarkingShopCaseQueryAPI(QueryAPI[T_DomainModelList]):
         external_id_prefix_edge: str | None = None,
         space_edge: str | list[str] | None = None,
         filter: dm.Filter | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
+        limit: int = DEFAULT_QUERY_LIMIT,
         retrieve_scenario: bool = False,
     ) -> ShopFileQueryAPI[T_DomainModelList]:
         """Query along the shop file edges of the benchmarking shop case.
@@ -94,6 +94,7 @@ class BenchmarkingShopCaseQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = self._builder[-1].name
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "ShopCase.shopFiles"),
+
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -110,7 +111,7 @@ class BenchmarkingShopCaseQueryAPI(QueryAPI[T_DomainModelList]):
             )
         )
 
-        view_id = self._view_by_read_class[ShopFile]
+        view_id = ShopFileQueryAPI._view_id
         has_data = dm.filters.HasData(views=[view_id])
         node_filer = _create_shop_file_filter(
             view_id,
@@ -129,7 +130,7 @@ class BenchmarkingShopCaseQueryAPI(QueryAPI[T_DomainModelList]):
         )
         if retrieve_scenario:
             self._query_append_scenario(from_)
-        return ShopFileQueryAPI(self._client, self._builder, self._view_by_read_class, node_filer, limit)
+        return ShopFileQueryAPI(self._client, self._builder, node_filer, limit)
 
     def query(
         self,
@@ -150,14 +151,14 @@ class BenchmarkingShopCaseQueryAPI(QueryAPI[T_DomainModelList]):
         return self._query()
 
     def _query_append_scenario(self, from_: str) -> None:
-        view_id = self._view_by_read_class[ShopScenario]
+        view_id = ShopScenario._view_id
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("scenario"),
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_read_class[BenchmarkingShopCase].as_property_ref("scenario"),
+                    through=self._view_id.as_property_ref("scenario"),
                     direction="outwards",
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 import warnings
-from typing import TYPE_CHECKING, Any, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -14,7 +14,6 @@ from ._core import (
     DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
-    DomainModelCore,
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
@@ -37,13 +36,12 @@ __all__ = [
     "BenchmarkingResultDayAheadApplyList",
     "BenchmarkingResultDayAheadFields",
     "BenchmarkingResultDayAheadTextFields",
+    "BenchmarkingResultDayAheadGraphQL",
 ]
 
 
 BenchmarkingResultDayAheadTextFields = Literal["name", "workflow_execution_id"]
-BenchmarkingResultDayAheadFields = Literal[
-    "name", "workflow_execution_id", "delivery_date", "bid_generated", "is_selected", "value"
-]
+BenchmarkingResultDayAheadFields = Literal["name", "workflow_execution_id", "delivery_date", "bid_generated", "is_selected", "value"]
 
 _BENCHMARKINGRESULTDAYAHEAD_PROPERTIES_BY_FIELD = {
     "name": "name",
@@ -53,7 +51,6 @@ _BENCHMARKINGRESULTDAYAHEAD_PROPERTIES_BY_FIELD = {
     "is_selected": "isSelected",
     "value": "value",
 }
-
 
 class BenchmarkingResultDayAheadGraphQL(GraphQLCore):
     """This represents the reading version of benchmarking result day ahead, used
@@ -75,8 +72,7 @@ class BenchmarkingResultDayAheadGraphQL(GraphQLCore):
         value: This would normally be the objective value ('grand total') from the Shop result, or maybe the difference between the objective value in this run and for 'upper bound', but it should be possible to override it (e. g. if the difference is above some limit)
         alerts: An array of benchmarking calculation level Alerts.
     """
-
-    view_id = dm.ViewId("power_ops_core", "BenchmarkingResultDayAhead", "1")
+    view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingResultDayAhead", "1")
     name: Optional[str] = None
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     bid_source: Optional[str] = Field(default=None, alias="bidSource")
@@ -97,7 +93,6 @@ class BenchmarkingResultDayAheadGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
-
     @field_validator("bid_source", "shop_result", "alerts", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -106,6 +101,8 @@ class BenchmarkingResultDayAheadGraphQL(GraphQLCore):
             return value["items"]
         return value
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> BenchmarkingResultDayAhead:
         """Convert this GraphQL format of benchmarking result day ahead to the reading format."""
         if self.data_record is None:
@@ -129,6 +126,9 @@ class BenchmarkingResultDayAheadGraphQL(GraphQLCore):
             alerts=[alert.as_read() for alert in self.alerts or []],
         )
 
+
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> BenchmarkingResultDayAheadWrite:
         """Convert this GraphQL format of benchmarking result day ahead to the writing format."""
         return BenchmarkingResultDayAheadWrite(
@@ -166,11 +166,10 @@ class BenchmarkingResultDayAhead(DomainModel):
         value: This would normally be the objective value ('grand total') from the Shop result, or maybe the difference between the objective value in this run and for 'upper bound', but it should be possible to override it (e. g. if the difference is above some limit)
         alerts: An array of benchmarking calculation level Alerts.
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingResultDayAhead", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "BenchmarkingResultDayAhead"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingResultDayAhead")
     name: Optional[str] = None
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     bid_source: Union[str, dm.NodeId, None] = Field(default=None, alias="bidSource")
@@ -179,7 +178,7 @@ class BenchmarkingResultDayAhead(DomainModel):
     shop_result: Union[ShopResult, str, dm.NodeId, None] = Field(default=None, repr=False, alias="shopResult")
     is_selected: Optional[bool] = Field(None, alias="isSelected")
     value: Optional[float] = None
-    alerts: Union[list[Alert], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
+    alerts: Optional[list[Union[Alert, str, dm.NodeId]]] = Field(default=None, repr=False)
 
     def as_write(self) -> BenchmarkingResultDayAheadWrite:
         """Convert this read version of benchmarking result day ahead to the writing version."""
@@ -227,11 +226,10 @@ class BenchmarkingResultDayAheadWrite(DomainModelWrite):
         value: This would normally be the objective value ('grand total') from the Shop result, or maybe the difference between the objective value in this run and for 'upper bound', but it should be possible to override it (e. g. if the difference is above some limit)
         alerts: An array of benchmarking calculation level Alerts.
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingResultDayAhead", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "BenchmarkingResultDayAhead"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingResultDayAhead")
     name: Optional[str] = None
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     bid_source: Union[str, dm.NodeId, None] = Field(default=None, alias="bidSource")
@@ -240,22 +238,17 @@ class BenchmarkingResultDayAheadWrite(DomainModelWrite):
     shop_result: Union[ShopResultWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="shopResult")
     is_selected: Optional[bool] = Field(None, alias="isSelected")
     value: Optional[float] = None
-    alerts: Union[list[AlertWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
+    alerts: Optional[list[Union[AlertWrite, str, dm.NodeId]]] = Field(default=None, repr=False)
 
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
-
-        write_view = (view_by_read_class or {}).get(
-            BenchmarkingResultDayAhead, dm.ViewId("power_ops_core", "BenchmarkingResultDayAhead", "1")
-        )
 
         properties: dict[str, Any] = {}
 
@@ -267,7 +260,7 @@ class BenchmarkingResultDayAheadWrite(DomainModelWrite):
 
         if self.bid_source is not None:
             properties["bidSource"] = {
-                "space": self.space if isinstance(self.bid_source, str) else self.bid_source.space,
+                "space":  self.space if isinstance(self.bid_source, str) else self.bid_source.space,
                 "externalId": self.bid_source if isinstance(self.bid_source, str) else self.bid_source.external_id,
             }
 
@@ -275,13 +268,11 @@ class BenchmarkingResultDayAheadWrite(DomainModelWrite):
             properties["deliveryDate"] = self.delivery_date.isoformat() if self.delivery_date else None
 
         if self.bid_generated is not None or write_none:
-            properties["bidGenerated"] = (
-                self.bid_generated.isoformat(timespec="milliseconds") if self.bid_generated else None
-            )
+            properties["bidGenerated"] = self.bid_generated.isoformat(timespec="milliseconds") if self.bid_generated else None
 
         if self.shop_result is not None:
             properties["shopResult"] = {
-                "space": self.space if isinstance(self.shop_result, str) else self.shop_result.space,
+                "space":  self.space if isinstance(self.shop_result, str) else self.shop_result.space,
                 "externalId": self.shop_result if isinstance(self.shop_result, str) else self.shop_result.external_id,
             }
 
@@ -291,6 +282,7 @@ class BenchmarkingResultDayAheadWrite(DomainModelWrite):
         if self.value is not None or write_none:
             properties["value"] = self.value
 
+
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -299,13 +291,14 @@ class BenchmarkingResultDayAheadWrite(DomainModelWrite):
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
-                        source=write_view,
+                        source=self._view_id,
                         properties=properties,
-                    )
-                ],
+                )],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
+
+
 
         edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
@@ -314,14 +307,13 @@ class BenchmarkingResultDayAheadWrite(DomainModelWrite):
                 start_node=self,
                 end_node=alert,
                 edge_type=edge_type,
-                view_by_read_class=view_by_read_class,
                 write_none=write_none,
                 allow_version_increase=allow_version_increase,
             )
             resources.extend(other_resources)
 
         if isinstance(self.shop_result, DomainModelWrite):
-            other_resources = self.shop_result._to_instances_write(cache, view_by_read_class)
+            other_resources = self.shop_result._to_instances_write(cache)
             resources.extend(other_resources)
 
         return resources
@@ -363,8 +355,8 @@ class BenchmarkingResultDayAheadWriteList(DomainModelWriteList[BenchmarkingResul
 
     _INSTANCE = BenchmarkingResultDayAheadWrite
 
-
 class BenchmarkingResultDayAheadApplyList(BenchmarkingResultDayAheadWriteList): ...
+
 
 
 def _create_benchmarking_result_day_ahead_filter(
@@ -386,7 +378,7 @@ def _create_benchmarking_result_day_ahead_filter(
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
-    filters = []
+    filters: list[dm.Filter] = []
     if isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
@@ -398,78 +390,27 @@ def _create_benchmarking_result_day_ahead_filter(
     if workflow_execution_id and isinstance(workflow_execution_id, list):
         filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
     if workflow_execution_id_prefix is not None:
-        filters.append(
-            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
-        )
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix))
     if bid_source and isinstance(bid_source, str):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("bidSource"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": bid_source}
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("bidSource"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": bid_source}))
     if bid_source and isinstance(bid_source, tuple):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("bidSource"), value={"space": bid_source[0], "externalId": bid_source[1]}
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("bidSource"), value={"space": bid_source[0], "externalId": bid_source[1]}))
     if bid_source and isinstance(bid_source, list) and isinstance(bid_source[0], str):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("bidSource"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in bid_source],
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("bidSource"), values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in bid_source]))
     if bid_source and isinstance(bid_source, list) and isinstance(bid_source[0], tuple):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("bidSource"),
-                values=[{"space": item[0], "externalId": item[1]} for item in bid_source],
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("bidSource"), values=[{"space": item[0], "externalId": item[1]} for item in bid_source]))
     if min_delivery_date is not None or max_delivery_date is not None:
-        filters.append(
-            dm.filters.Range(
-                view_id.as_property_ref("deliveryDate"),
-                gte=min_delivery_date.isoformat() if min_delivery_date else None,
-                lte=max_delivery_date.isoformat() if max_delivery_date else None,
-            )
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("deliveryDate"), gte=min_delivery_date.isoformat() if min_delivery_date else None, lte=max_delivery_date.isoformat() if max_delivery_date else None))
     if min_bid_generated is not None or max_bid_generated is not None:
-        filters.append(
-            dm.filters.Range(
-                view_id.as_property_ref("bidGenerated"),
-                gte=min_bid_generated.isoformat(timespec="milliseconds") if min_bid_generated else None,
-                lte=max_bid_generated.isoformat(timespec="milliseconds") if max_bid_generated else None,
-            )
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("bidGenerated"), gte=min_bid_generated.isoformat(timespec="milliseconds") if min_bid_generated else None, lte=max_bid_generated.isoformat(timespec="milliseconds") if max_bid_generated else None))
     if shop_result and isinstance(shop_result, str):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("shopResult"),
-                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": shop_result},
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("shopResult"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": shop_result}))
     if shop_result and isinstance(shop_result, tuple):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("shopResult"), value={"space": shop_result[0], "externalId": shop_result[1]}
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("shopResult"), value={"space": shop_result[0], "externalId": shop_result[1]}))
     if shop_result and isinstance(shop_result, list) and isinstance(shop_result[0], str):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("shopResult"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in shop_result],
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("shopResult"), values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in shop_result]))
     if shop_result and isinstance(shop_result, list) and isinstance(shop_result[0], tuple):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("shopResult"),
-                values=[{"space": item[0], "externalId": item[1]} for item in shop_result],
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("shopResult"), values=[{"space": item[0], "externalId": item[1]} for item in shop_result]))
     if isinstance(is_selected, bool):
         filters.append(dm.filters.Equals(view_id.as_property_ref("isSelected"), value=is_selected))
     if min_value is not None or max_value is not None:

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 import warnings
-from typing import TYPE_CHECKING, Any, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -14,7 +14,6 @@ from ._core import (
     DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
-    DomainModelCore,
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
@@ -25,11 +24,7 @@ from ._core import (
 from ._function_input import FunctionInput, FunctionInputWrite
 
 if TYPE_CHECKING:
-    from ._benchmarking_configuration_day_ahead import (
-        BenchmarkingConfigurationDayAhead,
-        BenchmarkingConfigurationDayAheadGraphQL,
-        BenchmarkingConfigurationDayAheadWrite,
-    )
+    from ._benchmarking_configuration_day_ahead import BenchmarkingConfigurationDayAhead, BenchmarkingConfigurationDayAheadGraphQL, BenchmarkingConfigurationDayAheadWrite
 
 
 __all__ = [
@@ -41,15 +36,12 @@ __all__ = [
     "BenchmarkingTaskDispatcherInputDayAheadApplyList",
     "BenchmarkingTaskDispatcherInputDayAheadFields",
     "BenchmarkingTaskDispatcherInputDayAheadTextFields",
+    "BenchmarkingTaskDispatcherInputDayAheadGraphQL",
 ]
 
 
-BenchmarkingTaskDispatcherInputDayAheadTextFields = Literal[
-    "workflow_execution_id", "function_name", "function_call_id"
-]
-BenchmarkingTaskDispatcherInputDayAheadFields = Literal[
-    "workflow_execution_id", "workflow_step", "function_name", "function_call_id", "delivery_date"
-]
+BenchmarkingTaskDispatcherInputDayAheadTextFields = Literal["workflow_execution_id", "function_name", "function_call_id"]
+BenchmarkingTaskDispatcherInputDayAheadFields = Literal["workflow_execution_id", "workflow_step", "function_name", "function_call_id", "delivery_date"]
 
 _BENCHMARKINGTASKDISPATCHERINPUTDAYAHEAD_PROPERTIES_BY_FIELD = {
     "workflow_execution_id": "workflowExecutionId",
@@ -58,7 +50,6 @@ _BENCHMARKINGTASKDISPATCHERINPUTDAYAHEAD_PROPERTIES_BY_FIELD = {
     "function_call_id": "functionCallId",
     "delivery_date": "deliveryDate",
 }
-
 
 class BenchmarkingTaskDispatcherInputDayAheadGraphQL(GraphQLCore):
     """This represents the reading version of benchmarking task dispatcher input day ahead, used
@@ -77,15 +68,12 @@ class BenchmarkingTaskDispatcherInputDayAheadGraphQL(GraphQLCore):
         benchmarking_config: The benchmarking config field.
         delivery_date: The timestamp for the delivery date
     """
-
-    view_id = dm.ViewId("power_ops_core", "BenchmarkingTaskDispatcherInputDayAhead", "1")
+    view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingTaskDispatcherInputDayAhead", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
     function_call_id: Optional[str] = Field(None, alias="functionCallId")
-    benchmarking_config: Optional[BenchmarkingConfigurationDayAheadGraphQL] = Field(
-        default=None, repr=False, alias="benchmarkingConfig"
-    )
+    benchmarking_config: Optional[BenchmarkingConfigurationDayAheadGraphQL] = Field(default=None, repr=False, alias="benchmarkingConfig")
     delivery_date: Optional[datetime.datetime] = Field(None, alias="deliveryDate")
 
     @model_validator(mode="before")
@@ -98,7 +86,6 @@ class BenchmarkingTaskDispatcherInputDayAheadGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
-
     @field_validator("benchmarking_config", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -107,6 +94,8 @@ class BenchmarkingTaskDispatcherInputDayAheadGraphQL(GraphQLCore):
             return value["items"]
         return value
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> BenchmarkingTaskDispatcherInputDayAhead:
         """Convert this GraphQL format of benchmarking task dispatcher input day ahead to the reading format."""
         if self.data_record is None:
@@ -123,14 +112,13 @@ class BenchmarkingTaskDispatcherInputDayAheadGraphQL(GraphQLCore):
             workflow_step=self.workflow_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
-            benchmarking_config=(
-                self.benchmarking_config.as_read()
-                if isinstance(self.benchmarking_config, GraphQLCore)
-                else self.benchmarking_config
-            ),
+            benchmarking_config=self.benchmarking_config.as_read() if isinstance(self.benchmarking_config, GraphQLCore) else self.benchmarking_config,
             delivery_date=self.delivery_date,
         )
 
+
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> BenchmarkingTaskDispatcherInputDayAheadWrite:
         """Convert this GraphQL format of benchmarking task dispatcher input day ahead to the writing format."""
         return BenchmarkingTaskDispatcherInputDayAheadWrite(
@@ -141,11 +129,7 @@ class BenchmarkingTaskDispatcherInputDayAheadGraphQL(GraphQLCore):
             workflow_step=self.workflow_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
-            benchmarking_config=(
-                self.benchmarking_config.as_write()
-                if isinstance(self.benchmarking_config, GraphQLCore)
-                else self.benchmarking_config
-            ),
+            benchmarking_config=self.benchmarking_config.as_write() if isinstance(self.benchmarking_config, GraphQLCore) else self.benchmarking_config,
             delivery_date=self.delivery_date,
         )
 
@@ -166,13 +150,10 @@ class BenchmarkingTaskDispatcherInputDayAhead(FunctionInput):
         benchmarking_config: The benchmarking config field.
         delivery_date: The timestamp for the delivery date
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingTaskDispatcherInputDayAhead", "1")
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "BenchmarkingTaskDispatcherInputDayAhead"
-    )
-    benchmarking_config: Union[BenchmarkingConfigurationDayAhead, str, dm.NodeId, None] = Field(
-        default=None, repr=False, alias="benchmarkingConfig"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingTaskDispatcherInputDayAhead")
+    benchmarking_config: Union[BenchmarkingConfigurationDayAhead, str, dm.NodeId, None] = Field(default=None, repr=False, alias="benchmarkingConfig")
     delivery_date: Optional[datetime.datetime] = Field(None, alias="deliveryDate")
 
     def as_write(self) -> BenchmarkingTaskDispatcherInputDayAheadWrite:
@@ -185,11 +166,7 @@ class BenchmarkingTaskDispatcherInputDayAhead(FunctionInput):
             workflow_step=self.workflow_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
-            benchmarking_config=(
-                self.benchmarking_config.as_write()
-                if isinstance(self.benchmarking_config, DomainModel)
-                else self.benchmarking_config
-            ),
+            benchmarking_config=self.benchmarking_config.as_write() if isinstance(self.benchmarking_config, DomainModel) else self.benchmarking_config,
             delivery_date=self.delivery_date,
         )
 
@@ -219,30 +196,21 @@ class BenchmarkingTaskDispatcherInputDayAheadWrite(FunctionInputWrite):
         benchmarking_config: The benchmarking config field.
         delivery_date: The timestamp for the delivery date
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingTaskDispatcherInputDayAhead", "1")
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "BenchmarkingTaskDispatcherInputDayAhead"
-    )
-    benchmarking_config: Union[BenchmarkingConfigurationDayAheadWrite, str, dm.NodeId, None] = Field(
-        default=None, repr=False, alias="benchmarkingConfig"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingTaskDispatcherInputDayAhead")
+    benchmarking_config: Union[BenchmarkingConfigurationDayAheadWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="benchmarkingConfig")
     delivery_date: Optional[datetime.datetime] = Field(None, alias="deliveryDate")
 
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
-
-        write_view = (view_by_read_class or {}).get(
-            BenchmarkingTaskDispatcherInputDayAhead,
-            dm.ViewId("power_ops_core", "BenchmarkingTaskDispatcherInputDayAhead", "1"),
-        )
 
         properties: dict[str, Any] = {}
 
@@ -260,18 +228,13 @@ class BenchmarkingTaskDispatcherInputDayAheadWrite(FunctionInputWrite):
 
         if self.benchmarking_config is not None:
             properties["benchmarkingConfig"] = {
-                "space": self.space if isinstance(self.benchmarking_config, str) else self.benchmarking_config.space,
-                "externalId": (
-                    self.benchmarking_config
-                    if isinstance(self.benchmarking_config, str)
-                    else self.benchmarking_config.external_id
-                ),
+                "space":  self.space if isinstance(self.benchmarking_config, str) else self.benchmarking_config.space,
+                "externalId": self.benchmarking_config if isinstance(self.benchmarking_config, str) else self.benchmarking_config.external_id,
             }
 
         if self.delivery_date is not None or write_none:
-            properties["deliveryDate"] = (
-                self.delivery_date.isoformat(timespec="milliseconds") if self.delivery_date else None
-            )
+            properties["deliveryDate"] = self.delivery_date.isoformat(timespec="milliseconds") if self.delivery_date else None
+
 
         if properties:
             this_node = dm.NodeApply(
@@ -281,16 +244,17 @@ class BenchmarkingTaskDispatcherInputDayAheadWrite(FunctionInputWrite):
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
-                        source=write_view,
+                        source=self._view_id,
                         properties=properties,
-                    )
-                ],
+                )],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
+
+
         if isinstance(self.benchmarking_config, DomainModelWrite):
-            other_resources = self.benchmarking_config._to_instances_write(cache, view_by_read_class)
+            other_resources = self.benchmarking_config._to_instances_write(cache)
             resources.extend(other_resources)
 
         return resources
@@ -327,15 +291,13 @@ class BenchmarkingTaskDispatcherInputDayAheadList(DomainModelList[BenchmarkingTa
         return self.as_write()
 
 
-class BenchmarkingTaskDispatcherInputDayAheadWriteList(
-    DomainModelWriteList[BenchmarkingTaskDispatcherInputDayAheadWrite]
-):
+class BenchmarkingTaskDispatcherInputDayAheadWriteList(DomainModelWriteList[BenchmarkingTaskDispatcherInputDayAheadWrite]):
     """List of benchmarking task dispatcher input day aheads in the writing version."""
 
     _INSTANCE = BenchmarkingTaskDispatcherInputDayAheadWrite
 
-
 class BenchmarkingTaskDispatcherInputDayAheadApplyList(BenchmarkingTaskDispatcherInputDayAheadWriteList): ...
+
 
 
 def _create_benchmarking_task_dispatcher_input_day_ahead_filter(
@@ -355,19 +317,15 @@ def _create_benchmarking_task_dispatcher_input_day_ahead_filter(
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
-    filters = []
+    filters: list[dm.Filter] = []
     if isinstance(workflow_execution_id, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id))
     if workflow_execution_id and isinstance(workflow_execution_id, list):
         filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
     if workflow_execution_id_prefix is not None:
-        filters.append(
-            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
-        )
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix))
     if min_workflow_step is not None or max_workflow_step is not None:
-        filters.append(
-            dm.filters.Range(view_id.as_property_ref("workflowStep"), gte=min_workflow_step, lte=max_workflow_step)
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("workflowStep"), gte=min_workflow_step, lte=max_workflow_step))
     if isinstance(function_name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("functionName"), value=function_name))
     if function_name and isinstance(function_name, list):
@@ -381,41 +339,15 @@ def _create_benchmarking_task_dispatcher_input_day_ahead_filter(
     if function_call_id_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("functionCallId"), value=function_call_id_prefix))
     if benchmarking_config and isinstance(benchmarking_config, str):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("benchmarkingConfig"),
-                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": benchmarking_config},
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("benchmarkingConfig"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": benchmarking_config}))
     if benchmarking_config and isinstance(benchmarking_config, tuple):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("benchmarkingConfig"),
-                value={"space": benchmarking_config[0], "externalId": benchmarking_config[1]},
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("benchmarkingConfig"), value={"space": benchmarking_config[0], "externalId": benchmarking_config[1]}))
     if benchmarking_config and isinstance(benchmarking_config, list) and isinstance(benchmarking_config[0], str):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("benchmarkingConfig"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in benchmarking_config],
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("benchmarkingConfig"), values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in benchmarking_config]))
     if benchmarking_config and isinstance(benchmarking_config, list) and isinstance(benchmarking_config[0], tuple):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("benchmarkingConfig"),
-                values=[{"space": item[0], "externalId": item[1]} for item in benchmarking_config],
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("benchmarkingConfig"), values=[{"space": item[0], "externalId": item[1]} for item in benchmarking_config]))
     if min_delivery_date is not None or max_delivery_date is not None:
-        filters.append(
-            dm.filters.Range(
-                view_id.as_property_ref("deliveryDate"),
-                gte=min_delivery_date.isoformat(timespec="milliseconds") if min_delivery_date else None,
-                lte=max_delivery_date.isoformat(timespec="milliseconds") if max_delivery_date else None,
-            )
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("deliveryDate"), gte=min_delivery_date.isoformat(timespec="milliseconds") if min_delivery_date else None, lte=max_delivery_date.isoformat(timespec="milliseconds") if max_delivery_date else None))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):

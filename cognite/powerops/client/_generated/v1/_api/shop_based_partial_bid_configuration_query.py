@@ -14,16 +14,18 @@ from cognite.powerops.client._generated.v1.data_classes import (
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
 
+
 class ShopBasedPartialBidConfigurationQueryAPI(QueryAPI[T_DomainModelList]):
+    _view_id = dm.ViewId("power_ops_core", "ShopBasedPartialBidConfiguration", "1")
+
     def __init__(
         self,
         client: CogniteClient,
         builder: QueryBuilder[T_DomainModelList],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId],
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
-        super().__init__(client, builder, view_by_read_class)
+        super().__init__(client, builder)
 
         self._builder.append(
             QueryStep(
@@ -32,9 +34,7 @@ class ShopBasedPartialBidConfigurationQueryAPI(QueryAPI[T_DomainModelList]):
                     from_=self._builder[-1].name if self._builder else None,
                     filter=filter_,
                 ),
-                select=dm.query.Select(
-                    [dm.query.SourceSelector(self._view_by_read_class[ShopBasedPartialBidConfiguration], ["*"])]
-                ),
+                select=dm.query.Select([dm.query.SourceSelector(self._view_id, ["*"])]),
                 result_cls=ShopBasedPartialBidConfiguration,
                 max_retrieve_limit=limit,
             )
@@ -63,14 +63,14 @@ class ShopBasedPartialBidConfigurationQueryAPI(QueryAPI[T_DomainModelList]):
         return self._query()
 
     def _query_append_power_asset(self, from_: str) -> None:
-        view_id = self._view_by_read_class[PowerAsset]
+        view_id = PowerAsset._view_id
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("power_asset"),
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_read_class[ShopBasedPartialBidConfiguration].as_property_ref("powerAsset"),
+                    through=self._view_id.as_property_ref("powerAsset"),
                     direction="outwards",
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
@@ -81,14 +81,14 @@ class ShopBasedPartialBidConfigurationQueryAPI(QueryAPI[T_DomainModelList]):
         )
 
     def _query_append_scenario_set(self, from_: str) -> None:
-        view_id = self._view_by_read_class[ShopScenarioSet]
+        view_id = ShopScenarioSet._view_id
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("scenario_set"),
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_read_class[ShopBasedPartialBidConfiguration].as_property_ref("scenarioSet"),
+                    through=self._view_id.as_property_ref("scenarioSet"),
                     direction="outwards",
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),

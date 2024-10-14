@@ -6,7 +6,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -24,49 +24,39 @@ from cognite.powerops.client._generated.v1.data_classes._shop_trigger_input impo
     _SHOPTRIGGERINPUT_PROPERTIES_BY_FIELD,
     _create_shop_trigger_input_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
 from .shop_trigger_input_query import ShopTriggerInputQueryAPI
 
 
-class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopTriggerInputList]):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[ShopTriggerInput]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=ShopTriggerInput,
-            class_list=ShopTriggerInputList,
-            class_write_list=ShopTriggerInputWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopTriggerInputList, ShopTriggerInputWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "ShopTriggerInput", "1")
+    _properties_by_field = _SHOPTRIGGERINPUT_PROPERTIES_BY_FIELD
+    _class_type = ShopTriggerInput
+    _class_list = ShopTriggerInputList
+    _class_write_list = ShopTriggerInputWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
 
     def __call__(
-        self,
-        workflow_execution_id: str | list[str] | None = None,
-        workflow_execution_id_prefix: str | None = None,
-        min_workflow_step: int | None = None,
-        max_workflow_step: int | None = None,
-        function_name: str | list[str] | None = None,
-        function_name_prefix: str | None = None,
-        function_call_id: str | list[str] | None = None,
-        function_call_id_prefix: str | None = None,
-        cog_shop_tag: str | list[str] | None = None,
-        cog_shop_tag_prefix: str | None = None,
-        preprocessor_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            workflow_execution_id: str | list[str] | None = None,
+            workflow_execution_id_prefix: str | None = None,
+            min_workflow_step: int | None = None,
+            max_workflow_step: int | None = None,
+            function_name: str | list[str] | None = None,
+            function_name_prefix: str | None = None,
+            function_call_id: str | list[str] | None = None,
+            function_call_id_prefix: str | None = None,
+            cog_shop_tag: str | list[str] | None = None,
+            cog_shop_tag_prefix: str | None = None,
+            preprocessor_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> ShopTriggerInputQueryAPI[ShopTriggerInputList]:
         """Query starting at shop trigger inputs.
 
@@ -112,7 +102,8 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(ShopTriggerInputList)
-        return ShopTriggerInputQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        return ShopTriggerInputQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
@@ -154,9 +145,7 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
         )
         return self._apply(shop_trigger_input, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more shop trigger input.
 
         Args:
@@ -186,16 +175,14 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopTriggerInput | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopTriggerInput | None:
+        ...
 
     @overload
-    def retrieve(
-        self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> ShopTriggerInputList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopTriggerInputList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> ShopTriggerInput | ShopTriggerInputList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopTriggerInput | ShopTriggerInputList | None:
         """Retrieve one or more shop trigger inputs by id(s).
 
         Args:
@@ -219,7 +206,7 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
     def search(
         self,
         query: str,
-        properties: ShopTriggerInputTextFields | Sequence[ShopTriggerInputTextFields] | None = None,
+        properties: ShopTriggerInputTextFields | SequenceNotStr[ShopTriggerInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -234,8 +221,11 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
         case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: ShopTriggerInputFields | SequenceNotStr[ShopTriggerInputFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> ShopTriggerInputList:
         """Search shop trigger inputs
 
@@ -258,6 +248,11 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
             space: The space to filter on.
             limit: Maximum number of shop trigger inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             Search results shop trigger inputs matching the query.
@@ -289,21 +284,24 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
             space,
             filter,
         )
-        return self._search(self._view_id, query, _SHOPTRIGGERINPUT_PROPERTIES_BY_FIELD, properties, filter_, limit)
+        return self._search(
+            query=query,
+            properties=properties,
+            filter_=filter_,
+            limit=limit,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
+        )
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: ShopTriggerInputFields | Sequence[ShopTriggerInputFields] | None = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: ShopTriggerInputFields | SequenceNotStr[ShopTriggerInputFields] | None = None,
         query: str | None = None,
-        search_properties: ShopTriggerInputTextFields | Sequence[ShopTriggerInputTextFields] | None = None,
+        search_property: ShopTriggerInputTextFields | SequenceNotStr[ShopTriggerInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -318,23 +316,19 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
         case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: ShopTriggerInputFields | Sequence[ShopTriggerInputFields] | None = None,
-        group_by: ShopTriggerInputFields | Sequence[ShopTriggerInputFields] = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: ShopTriggerInputFields | SequenceNotStr[ShopTriggerInputFields] | None = None,
         query: str | None = None,
-        search_properties: ShopTriggerInputTextFields | Sequence[ShopTriggerInputTextFields] | None = None,
+        search_property: ShopTriggerInputTextFields | SequenceNotStr[ShopTriggerInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -349,22 +343,49 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
         case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: ShopTriggerInputFields | SequenceNotStr[ShopTriggerInputFields],
+        property: ShopTriggerInputFields | SequenceNotStr[ShopTriggerInputFields] | None = None,
+        query: str | None = None,
+        search_property: ShopTriggerInputTextFields | SequenceNotStr[ShopTriggerInputTextFields] | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
+        function_name: str | list[str] | None = None,
+        function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
+        cog_shop_tag: str | list[str] | None = None,
+        cog_shop_tag_prefix: str | None = None,
+        preprocessor_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: ShopTriggerInputFields | Sequence[ShopTriggerInputFields] | None = None,
-        group_by: ShopTriggerInputFields | Sequence[ShopTriggerInputFields] | None = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: ShopTriggerInputFields | SequenceNotStr[ShopTriggerInputFields] | None = None,
+        property: ShopTriggerInputFields | SequenceNotStr[ShopTriggerInputFields] | None = None,
         query: str | None = None,
-        search_property: ShopTriggerInputTextFields | Sequence[ShopTriggerInputTextFields] | None = None,
+        search_property: ShopTriggerInputTextFields | SequenceNotStr[ShopTriggerInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -379,15 +400,19 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
         case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across shop trigger inputs
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             query: The query to search for in the text field.
             search_property: The text field to search in.
             workflow_execution_id: The workflow execution id to filter on.
@@ -439,15 +464,13 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _SHOPTRIGGERINPUT_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            query,
-            search_property,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=query,
+            search_properties=search_property,  # type: ignore[arg-type]
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -455,7 +478,7 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
         property: ShopTriggerInputFields,
         interval: float,
         query: str | None = None,
-        search_property: ShopTriggerInputTextFields | Sequence[ShopTriggerInputTextFields] | None = None,
+        search_property: ShopTriggerInputTextFields | SequenceNotStr[ShopTriggerInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -470,7 +493,7 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
         case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for shop trigger inputs
@@ -520,15 +543,14 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _SHOPTRIGGERINPUT_PROPERTIES_BY_FIELD,
             query,
-            search_property,
+            search_property,  # type: ignore[arg-type]
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -546,10 +568,11 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
         case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         sort_by: ShopTriggerInputFields | Sequence[ShopTriggerInputFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> ShopTriggerInputList:
         """List/filter shop trigger inputs
 
@@ -572,6 +595,9 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             List of requested shop trigger inputs
@@ -606,7 +632,7 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_SHOPTRIGGERINPUT_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
         )

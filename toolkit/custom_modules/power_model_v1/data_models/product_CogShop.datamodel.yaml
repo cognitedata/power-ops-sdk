@@ -24,7 +24,15 @@ views:
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: PowerAsset
+  - externalId: ShopResult
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: ShopTimeSeries
+    space: "{{power_ops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: Alert
     space: "{{power_ops_models}}"
     type: view
     version: "{{version}}"

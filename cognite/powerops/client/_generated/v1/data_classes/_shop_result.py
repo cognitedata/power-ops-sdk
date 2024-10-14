@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from typing import TYPE_CHECKING, Any, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -13,7 +13,6 @@ from ._core import (
     DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
-    DomainModelCore,
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
@@ -37,6 +36,7 @@ __all__ = [
     "ShopResultApplyList",
     "ShopResultFields",
     "ShopResultTextFields",
+    "ShopResultGraphQL",
 ]
 
 
@@ -50,7 +50,6 @@ _SHOPRESULT_PROPERTIES_BY_FIELD = {
     "messages": "messages",
     "cplex_logs": "cplexLogs",
 }
-
 
 class ShopResultGraphQL(GraphQLCore):
     """This represents the reading version of shop result, used
@@ -71,8 +70,7 @@ class ShopResultGraphQL(GraphQLCore):
         alerts: An array of calculation level Alerts.
         output_time_series: TODO
     """
-
-    view_id = dm.ViewId("power_ops_core", "ShopResult", "1")
+    view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopResult", "1")
     case: Optional[ShopCaseGraphQL] = Field(default=None, repr=False)
     objective_value: Optional[dict] = Field(None, alias="objectiveValue")
     pre_run: Union[dict, None] = Field(None, alias="preRun")
@@ -80,9 +78,7 @@ class ShopResultGraphQL(GraphQLCore):
     messages: Union[dict, None] = None
     cplex_logs: Union[dict, None] = Field(None, alias="cplexLogs")
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
-    output_time_series: Optional[list[ShopTimeSeriesGraphQL]] = Field(
-        default=None, repr=False, alias="outputTimeSeries"
-    )
+    output_time_series: Optional[list[ShopTimeSeriesGraphQL]] = Field(default=None, repr=False, alias="outputTimeSeries")
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -94,7 +90,6 @@ class ShopResultGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
-
     @field_validator("case", "alerts", "output_time_series", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -103,6 +98,8 @@ class ShopResultGraphQL(GraphQLCore):
             return value["items"]
         return value
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> ShopResult:
         """Convert this GraphQL format of shop result to the reading format."""
         if self.data_record is None:
@@ -125,6 +122,9 @@ class ShopResultGraphQL(GraphQLCore):
             output_time_series=[output_time_series.as_read() for output_time_series in self.output_time_series or []],
         )
 
+
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopResultWrite:
         """Convert this GraphQL format of shop result to the writing format."""
         return ShopResultWrite(
@@ -160,6 +160,7 @@ class ShopResult(DomainModel):
         alerts: An array of calculation level Alerts.
         output_time_series: TODO
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopResult", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
@@ -169,10 +170,8 @@ class ShopResult(DomainModel):
     post_run: Union[str, None] = Field(None, alias="postRun")
     messages: Union[str, None] = None
     cplex_logs: Union[str, None] = Field(None, alias="cplexLogs")
-    alerts: Union[list[Alert], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
-    output_time_series: Union[list[ShopTimeSeries], list[str], list[dm.NodeId], None] = Field(
-        default=None, repr=False, alias="outputTimeSeries"
-    )
+    alerts: Optional[list[Union[Alert, str, dm.NodeId]]] = Field(default=None, repr=False)
+    output_time_series: Optional[list[Union[ShopTimeSeries, str, dm.NodeId]]] = Field(default=None, repr=False, alias="outputTimeSeries")
 
     def as_write(self) -> ShopResultWrite:
         """Convert this read version of shop result to the writing version."""
@@ -187,10 +186,7 @@ class ShopResult(DomainModel):
             messages=self.messages,
             cplex_logs=self.cplex_logs,
             alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            output_time_series=[
-                output_time_series.as_write() if isinstance(output_time_series, DomainModel) else output_time_series
-                for output_time_series in self.output_time_series or []
-            ],
+            output_time_series=[output_time_series.as_write() if isinstance(output_time_series, DomainModel) else output_time_series for output_time_series in self.output_time_series or []],
         )
 
     def as_apply(self) -> ShopResultWrite:
@@ -221,6 +217,7 @@ class ShopResultWrite(DomainModelWrite):
         alerts: An array of calculation level Alerts.
         output_time_series: TODO
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopResult", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
@@ -230,15 +227,12 @@ class ShopResultWrite(DomainModelWrite):
     post_run: Union[str, None] = Field(None, alias="postRun")
     messages: Union[str, None] = None
     cplex_logs: Union[str, None] = Field(None, alias="cplexLogs")
-    alerts: Union[list[AlertWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
-    output_time_series: Union[list[ShopTimeSeriesWrite], list[str], list[dm.NodeId], None] = Field(
-        default=None, repr=False, alias="outputTimeSeries"
-    )
+    alerts: Optional[list[Union[AlertWrite, str, dm.NodeId]]] = Field(default=None, repr=False)
+    output_time_series: Optional[list[Union[ShopTimeSeriesWrite, str, dm.NodeId]]] = Field(default=None, repr=False, alias="outputTimeSeries")
 
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
@@ -246,13 +240,11 @@ class ShopResultWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(ShopResult, dm.ViewId("power_ops_core", "ShopResult", "1"))
-
         properties: dict[str, Any] = {}
 
         if self.case is not None:
             properties["case"] = {
-                "space": self.space if isinstance(self.case, str) else self.case.space,
+                "space":  self.space if isinstance(self.case, str) else self.case.space,
                 "externalId": self.case if isinstance(self.case, str) else self.case.external_id,
             }
 
@@ -271,6 +263,7 @@ class ShopResultWrite(DomainModelWrite):
         if self.cplex_logs is not None or write_none:
             properties["cplexLogs"] = self.cplex_logs
 
+
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -279,13 +272,14 @@ class ShopResultWrite(DomainModelWrite):
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
-                        source=write_view,
+                        source=self._view_id,
                         properties=properties,
-                    )
-                ],
+                )],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
+
+
 
         edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
@@ -294,7 +288,6 @@ class ShopResultWrite(DomainModelWrite):
                 start_node=self,
                 end_node=alert,
                 edge_type=edge_type,
-                view_by_read_class=view_by_read_class,
                 write_none=write_none,
                 allow_version_increase=allow_version_increase,
             )
@@ -307,14 +300,13 @@ class ShopResultWrite(DomainModelWrite):
                 start_node=self,
                 end_node=output_time_series,
                 edge_type=edge_type,
-                view_by_read_class=view_by_read_class,
                 write_none=write_none,
                 allow_version_increase=allow_version_increase,
             )
             resources.extend(other_resources)
 
         if isinstance(self.case, DomainModelWrite):
-            other_resources = self.case._to_instances_write(cache, view_by_read_class)
+            other_resources = self.case._to_instances_write(cache)
             resources.extend(other_resources)
 
         return resources
@@ -356,8 +348,8 @@ class ShopResultWriteList(DomainModelWriteList[ShopResultWrite]):
 
     _INSTANCE = ShopResultWrite
 
-
 class ShopResultApplyList(ShopResultWriteList): ...
+
 
 
 def _create_shop_result_filter(
@@ -367,30 +359,15 @@ def _create_shop_result_filter(
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
-    filters = []
+    filters: list[dm.Filter] = []
     if case and isinstance(case, str):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("case"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": case}
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("case"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": case}))
     if case and isinstance(case, tuple):
-        filters.append(
-            dm.filters.Equals(view_id.as_property_ref("case"), value={"space": case[0], "externalId": case[1]})
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("case"), value={"space": case[0], "externalId": case[1]}))
     if case and isinstance(case, list) and isinstance(case[0], str):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("case"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in case],
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("case"), values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in case]))
     if case and isinstance(case, list) and isinstance(case[0], tuple):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("case"), values=[{"space": item[0], "externalId": item[1]} for item in case]
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("case"), values=[{"space": item[0], "externalId": item[1]} for item in case]))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):

@@ -9,13 +9,10 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import Datapoints, DatapointsArrayList, DatapointsList, TimeSeriesList
 from cognite.client.data_classes.datapoints import Aggregate
-from cognite.powerops.client._generated.v1.data_classes._partial_bid_matrix_information_with_scenarios import (
-    _create_partial_bid_matrix_information_with_scenario_filter,
-)
+from cognite.powerops.client._generated.v1.data_classes._partial_bid_matrix_information_with_scenarios import _create_partial_bid_matrix_information_with_scenario_filter
 from ._core import DEFAULT_LIMIT_READ, INSTANCE_QUERY_LIMIT
 
 ColumnNames = Literal["state", "bidMatrix", "linkedTimeSeries", "resourceCost"]
-
 
 class PartialBidMatrixInformationWithScenariosLinkedTimeSeriesQuery:
     def __init__(
@@ -75,11 +72,12 @@ class PartialBidMatrixInformationWithScenariosLinkedTimeSeriesQuery:
         """
         external_ids = self._retrieve_timeseries_external_ids_with_extra()
         if external_ids:
-            return self._client.time_series.data.retrieve(
+            # Missing overload in SDK
+            return self._client.time_series.data.retrieve(  # type: ignore[return-value]
                 external_id=list(external_ids),
                 start=start,
                 end=end,
-                aggregates=aggregates,
+                aggregates=aggregates,  # type: ignore[arg-type]
                 granularity=granularity,
                 target_unit=target_unit,
                 target_unit_system=target_unit_system,
@@ -134,11 +132,12 @@ class PartialBidMatrixInformationWithScenariosLinkedTimeSeriesQuery:
         """
         external_ids = self._retrieve_timeseries_external_ids_with_extra()
         if external_ids:
-            return self._client.time_series.data.retrieve_arrays(
+            # Missing overload in SDK
+            return self._client.time_series.data.retrieve_arrays(  # type: ignore[return-value]
                 external_id=list(external_ids),
                 start=start,
                 end=end,
-                aggregates=aggregates,
+                aggregates=aggregates,  # type: ignore[arg-type]
                 granularity=granularity,
                 target_unit=target_unit,
                 target_unit_system=target_unit_system,
@@ -206,7 +205,7 @@ class PartialBidMatrixInformationWithScenariosLinkedTimeSeriesQuery:
                 external_id=list(external_ids),
                 start=start,
                 end=end,
-                aggregates=aggregates,
+                aggregates=aggregates,  # type: ignore[arg-type]
                 granularity=granularity,
                 target_unit=target_unit,
                 target_unit_system=target_unit_system,
@@ -290,7 +289,7 @@ class PartialBidMatrixInformationWithScenariosLinkedTimeSeriesQuery:
                 external_id=list(external_ids),
                 start=start,
                 end=end,
-                aggregates=aggregates,
+                aggregates=aggregates,  # type: ignore[arg-type]
                 granularity=granularity,
                 target_unit=target_unit,
                 target_unit_system=target_unit_system,
@@ -345,10 +344,10 @@ class PartialBidMatrixInformationWithScenariosLinkedTimeSeriesQuery:
             return df
         splits = sum(included for included in [include_aggregate_name, include_granularity_name])
         if splits == 0:
-            df.columns = ["-".join(external_ids[external_id]) for external_id in df.columns]
+            df.columns = ["-".join(external_ids[external_id]) for external_id in df.columns]  # type: ignore[assignment]
         else:
             column_parts = (col.rsplit("|", maxsplit=splits) for col in df.columns)
-            df.columns = [
+            df.columns = [  # type: ignore[assignment]
                 "-".join(external_ids[external_id]) + "|" + "|".join(parts) for external_id, *parts in column_parts
             ]
         return df
@@ -470,9 +469,7 @@ class PartialBidMatrixInformationWithScenariosLinkedTimeSeriesAPI:
             space,
             filter,
         )
-        external_ids = _retrieve_timeseries_external_ids_with_extra_linked_time_series(
-            self._client, self._view_id, filter_, limit
-        )
+        external_ids = _retrieve_timeseries_external_ids_with_extra_linked_time_series(self._client, self._view_id, filter_, limit)
         if external_ids:
             return self._client.time_series.retrieve_multiple(external_ids=list(external_ids))
         else:
@@ -486,7 +483,7 @@ def _retrieve_timeseries_external_ids_with_extra_linked_time_series(
     limit: int,
     extra_properties: ColumnNames | list[ColumnNames] = "linkedTimeSeries",
 ) -> dict[str, list[str]]:
-    limit = float("inf") if limit is None or limit == -1 else limit
+    limit_input = float("inf") if limit is None or limit == -1 else limit
     properties = ["linkedTimeSeries"]
     if extra_properties == "linkedTimeSeries":
         ...
@@ -509,8 +506,8 @@ def _retrieve_timeseries_external_ids_with_extra_linked_time_series(
     external_ids: dict[str, list[str]] = {}
     total_retrieved = 0
     while True:
-        query_limit = max(min(INSTANCE_QUERY_LIMIT, limit - total_retrieved), 0)
-        selected_nodes = dm.query.NodeResultSetExpression(filter=filter_, limit=query_limit)
+        query_limit = max(min(INSTANCE_QUERY_LIMIT, limit_input - total_retrieved), 0)
+        selected_nodes = dm.query.NodeResultSetExpression(filter=filter_, limit=int(query_limit))
         query = dm.query.Query(
             with_={
                 "nodes": selected_nodes,
@@ -524,14 +521,12 @@ def _retrieve_timeseries_external_ids_with_extra_linked_time_series(
         )
         result = client.data_modeling.instances.query(query)
         batch_external_ids = {
-            node.properties[view_id]["linkedTimeSeries"]: [
-                node.properties[view_id].get(prop, "") for prop in extra_list
-            ]
+            node.properties[view_id]["linkedTimeSeries"]: [node.properties[view_id].get(prop, "") for prop in extra_list]
             for node in result.data["nodes"].data
         }
         total_retrieved += len(batch_external_ids)
         external_ids.update(batch_external_ids)
         cursor = result.cursors["nodes"]
-        if total_retrieved >= limit or cursor is None:
+        if total_retrieved >= limit_input or cursor is None:
             break
     return external_ids

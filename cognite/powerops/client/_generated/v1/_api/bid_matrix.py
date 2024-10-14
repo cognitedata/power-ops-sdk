@@ -6,7 +6,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -24,39 +24,29 @@ from cognite.powerops.client._generated.v1.data_classes._bid_matrix import (
     _BIDMATRIX_PROPERTIES_BY_FIELD,
     _create_bid_matrix_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
 from .bid_matrix_query import BidMatrixQueryAPI
 
 
-class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[BidMatrix]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=BidMatrix,
-            class_list=BidMatrixList,
-            class_write_list=BidMatrixWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList, BidMatrixWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "BidMatrix", "1")
+    _properties_by_field = _BIDMATRIX_PROPERTIES_BY_FIELD
+    _class_type = BidMatrix
+    _class_list = BidMatrixList
+    _class_write_list = BidMatrixWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
 
     def __call__(
-        self,
-        state: str | list[str] | None = None,
-        state_prefix: str | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            state: str | list[str] | None = None,
+            state_prefix: str | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> BidMatrixQueryAPI[BidMatrixList]:
         """Query starting at bid matrixes.
 
@@ -82,7 +72,8 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(BidMatrixList)
-        return BidMatrixQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        return BidMatrixQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
@@ -124,9 +115,7 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
         )
         return self._apply(bid_matrix, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more bid matrix.
 
         Args:
@@ -156,14 +145,14 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> BidMatrix | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> BidMatrix | None:
+        ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BidMatrixList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BidMatrixList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> BidMatrix | BidMatrixList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BidMatrix | BidMatrixList | None:
         """Retrieve one or more bid matrixes by id(s).
 
         Args:
@@ -187,13 +176,16 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
     def search(
         self,
         query: str,
-        properties: BidMatrixTextFields | Sequence[BidMatrixTextFields] | None = None,
+        properties: BidMatrixTextFields | SequenceNotStr[BidMatrixTextFields] | None = None,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: BidMatrixFields | SequenceNotStr[BidMatrixFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> BidMatrixList:
         """Search bid matrixes
 
@@ -206,6 +198,11 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
             space: The space to filter on.
             limit: Maximum number of bid matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             Search results bid matrixes matching the query.
@@ -227,75 +224,95 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
             space,
             filter,
         )
-        return self._search(self._view_id, query, _BIDMATRIX_PROPERTIES_BY_FIELD, properties, filter_, limit)
+        return self._search(
+            query=query,
+            properties=properties,
+            filter_=filter_,
+            limit=limit,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
+        )
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: BidMatrixFields | Sequence[BidMatrixFields] | None = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: BidMatrixFields | SequenceNotStr[BidMatrixFields] | None = None,
         query: str | None = None,
-        search_properties: BidMatrixTextFields | Sequence[BidMatrixTextFields] | None = None,
+        search_property: BidMatrixTextFields | SequenceNotStr[BidMatrixTextFields] | None = None,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: BidMatrixFields | Sequence[BidMatrixFields] | None = None,
-        group_by: BidMatrixFields | Sequence[BidMatrixFields] = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: BidMatrixFields | SequenceNotStr[BidMatrixFields] | None = None,
         query: str | None = None,
-        search_properties: BidMatrixTextFields | Sequence[BidMatrixTextFields] | None = None,
+        search_property: BidMatrixTextFields | SequenceNotStr[BidMatrixTextFields] | None = None,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: BidMatrixFields | SequenceNotStr[BidMatrixFields],
+        property: BidMatrixFields | SequenceNotStr[BidMatrixFields] | None = None,
+        query: str | None = None,
+        search_property: BidMatrixTextFields | SequenceNotStr[BidMatrixTextFields] | None = None,
+        state: str | list[str] | None = None,
+        state_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: BidMatrixFields | Sequence[BidMatrixFields] | None = None,
-        group_by: BidMatrixFields | Sequence[BidMatrixFields] | None = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: BidMatrixFields | SequenceNotStr[BidMatrixFields] | None = None,
+        property: BidMatrixFields | SequenceNotStr[BidMatrixFields] | None = None,
         query: str | None = None,
-        search_property: BidMatrixTextFields | Sequence[BidMatrixTextFields] | None = None,
+        search_property: BidMatrixTextFields | SequenceNotStr[BidMatrixTextFields] | None = None,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across bid matrixes
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             query: The query to search for in the text field.
             search_property: The text field to search in.
             state: The state to filter on.
@@ -327,15 +344,13 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _BIDMATRIX_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            query,
-            search_property,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=query,
+            search_properties=search_property,  # type: ignore[arg-type]
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -343,12 +358,12 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
         property: BidMatrixFields,
         interval: float,
         query: str | None = None,
-        search_property: BidMatrixTextFields | Sequence[BidMatrixTextFields] | None = None,
+        search_property: BidMatrixTextFields | SequenceNotStr[BidMatrixTextFields] | None = None,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for bid matrixes
@@ -378,15 +393,14 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _BIDMATRIX_PROPERTIES_BY_FIELD,
             query,
-            search_property,
+            search_property,  # type: ignore[arg-type]
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -394,10 +408,11 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
         state_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         sort_by: BidMatrixFields | Sequence[BidMatrixFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> BidMatrixList:
         """List/filter bid matrixes
 
@@ -410,6 +425,9 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             List of requested bid matrixes
@@ -434,7 +452,7 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_BIDMATRIX_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
         )

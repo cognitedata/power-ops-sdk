@@ -6,7 +6,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -24,49 +24,39 @@ from cognite.powerops.client._generated.v1.data_classes._shop_attribute_mapping 
     _SHOPATTRIBUTEMAPPING_PROPERTIES_BY_FIELD,
     _create_shop_attribute_mapping_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
 from .shop_attribute_mapping_time_series import ShopAttributeMappingTimeSeriesAPI
 from .shop_attribute_mapping_query import ShopAttributeMappingQueryAPI
 
 
-class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMappingWrite, ShopAttributeMappingList]):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[ShopAttributeMapping]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=ShopAttributeMapping,
-            class_list=ShopAttributeMappingList,
-            class_write_list=ShopAttributeMappingWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
-        self.time_series = ShopAttributeMappingTimeSeriesAPI(client, view_id)
+class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMappingWrite, ShopAttributeMappingList, ShopAttributeMappingWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "ShopAttributeMapping", "1")
+    _properties_by_field = _SHOPATTRIBUTEMAPPING_PROPERTIES_BY_FIELD
+    _class_type = ShopAttributeMapping
+    _class_list = ShopAttributeMappingList
+    _class_write_list = ShopAttributeMappingWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
+        self.time_series = ShopAttributeMappingTimeSeriesAPI(client, self._view_id)
 
     def __call__(
-        self,
-        object_type: str | list[str] | None = None,
-        object_type_prefix: str | None = None,
-        object_name: str | list[str] | None = None,
-        object_name_prefix: str | None = None,
-        attribute_name: str | list[str] | None = None,
-        attribute_name_prefix: str | None = None,
-        retrieve: str | list[str] | None = None,
-        retrieve_prefix: str | None = None,
-        aggregation: str | list[str] | None = None,
-        aggregation_prefix: str | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            object_type: str | list[str] | None = None,
+            object_type_prefix: str | None = None,
+            object_name: str | list[str] | None = None,
+            object_name_prefix: str | None = None,
+            attribute_name: str | list[str] | None = None,
+            attribute_name_prefix: str | None = None,
+            retrieve: str | list[str] | None = None,
+            retrieve_prefix: str | None = None,
+            aggregation: str | list[str] | None = None,
+            aggregation_prefix: str | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> ShopAttributeMappingQueryAPI[ShopAttributeMappingList]:
         """Query starting at shop attribute mappings.
 
@@ -108,7 +98,8 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(ShopAttributeMappingList)
-        return ShopAttributeMappingQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        return ShopAttributeMappingQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
@@ -150,9 +141,7 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
         )
         return self._apply(shop_attribute_mapping, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more shop attribute mapping.
 
         Args:
@@ -182,16 +171,14 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopAttributeMapping | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopAttributeMapping | None:
+        ...
 
     @overload
-    def retrieve(
-        self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> ShopAttributeMappingList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopAttributeMappingList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> ShopAttributeMapping | ShopAttributeMappingList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopAttributeMapping | ShopAttributeMappingList | None:
         """Retrieve one or more shop attribute mappings by id(s).
 
         Args:
@@ -215,7 +202,7 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
     def search(
         self,
         query: str,
-        properties: ShopAttributeMappingTextFields | Sequence[ShopAttributeMappingTextFields] | None = None,
+        properties: ShopAttributeMappingTextFields | SequenceNotStr[ShopAttributeMappingTextFields] | None = None,
         object_type: str | list[str] | None = None,
         object_type_prefix: str | None = None,
         object_name: str | list[str] | None = None,
@@ -228,8 +215,11 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
         aggregation_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: ShopAttributeMappingFields | SequenceNotStr[ShopAttributeMappingFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> ShopAttributeMappingList:
         """Search shop attribute mappings
 
@@ -250,6 +240,11 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
             space: The space to filter on.
             limit: Maximum number of shop attribute mappings to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             Search results shop attribute mappings matching the query.
@@ -279,21 +274,24 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
             space,
             filter,
         )
-        return self._search(self._view_id, query, _SHOPATTRIBUTEMAPPING_PROPERTIES_BY_FIELD, properties, filter_, limit)
+        return self._search(
+            query=query,
+            properties=properties,
+            filter_=filter_,
+            limit=limit,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
+        )
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: ShopAttributeMappingFields | Sequence[ShopAttributeMappingFields] | None = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: ShopAttributeMappingFields | SequenceNotStr[ShopAttributeMappingFields] | None = None,
         query: str | None = None,
-        search_properties: ShopAttributeMappingTextFields | Sequence[ShopAttributeMappingTextFields] | None = None,
+        search_property: ShopAttributeMappingTextFields | SequenceNotStr[ShopAttributeMappingTextFields] | None = None,
         object_type: str | list[str] | None = None,
         object_type_prefix: str | None = None,
         object_name: str | list[str] | None = None,
@@ -306,23 +304,19 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
         aggregation_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: ShopAttributeMappingFields | Sequence[ShopAttributeMappingFields] | None = None,
-        group_by: ShopAttributeMappingFields | Sequence[ShopAttributeMappingFields] = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: ShopAttributeMappingFields | SequenceNotStr[ShopAttributeMappingFields] | None = None,
         query: str | None = None,
-        search_properties: ShopAttributeMappingTextFields | Sequence[ShopAttributeMappingTextFields] | None = None,
+        search_property: ShopAttributeMappingTextFields | SequenceNotStr[ShopAttributeMappingTextFields] | None = None,
         object_type: str | list[str] | None = None,
         object_type_prefix: str | None = None,
         object_name: str | list[str] | None = None,
@@ -335,22 +329,47 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
         aggregation_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: ShopAttributeMappingFields | SequenceNotStr[ShopAttributeMappingFields],
+        property: ShopAttributeMappingFields | SequenceNotStr[ShopAttributeMappingFields] | None = None,
+        query: str | None = None,
+        search_property: ShopAttributeMappingTextFields | SequenceNotStr[ShopAttributeMappingTextFields] | None = None,
+        object_type: str | list[str] | None = None,
+        object_type_prefix: str | None = None,
+        object_name: str | list[str] | None = None,
+        object_name_prefix: str | None = None,
+        attribute_name: str | list[str] | None = None,
+        attribute_name_prefix: str | None = None,
+        retrieve: str | list[str] | None = None,
+        retrieve_prefix: str | None = None,
+        aggregation: str | list[str] | None = None,
+        aggregation_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: ShopAttributeMappingFields | Sequence[ShopAttributeMappingFields] | None = None,
-        group_by: ShopAttributeMappingFields | Sequence[ShopAttributeMappingFields] | None = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: ShopAttributeMappingFields | SequenceNotStr[ShopAttributeMappingFields] | None = None,
+        property: ShopAttributeMappingFields | SequenceNotStr[ShopAttributeMappingFields] | None = None,
         query: str | None = None,
-        search_property: ShopAttributeMappingTextFields | Sequence[ShopAttributeMappingTextFields] | None = None,
+        search_property: ShopAttributeMappingTextFields | SequenceNotStr[ShopAttributeMappingTextFields] | None = None,
         object_type: str | list[str] | None = None,
         object_type_prefix: str | None = None,
         object_name: str | list[str] | None = None,
@@ -363,15 +382,19 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
         aggregation_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across shop attribute mappings
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             query: The query to search for in the text field.
             search_property: The text field to search in.
             object_type: The object type to filter on.
@@ -419,15 +442,13 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _SHOPATTRIBUTEMAPPING_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            query,
-            search_property,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=query,
+            search_properties=search_property,  # type: ignore[arg-type]
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -435,7 +456,7 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
         property: ShopAttributeMappingFields,
         interval: float,
         query: str | None = None,
-        search_property: ShopAttributeMappingTextFields | Sequence[ShopAttributeMappingTextFields] | None = None,
+        search_property: ShopAttributeMappingTextFields | SequenceNotStr[ShopAttributeMappingTextFields] | None = None,
         object_type: str | list[str] | None = None,
         object_type_prefix: str | None = None,
         object_name: str | list[str] | None = None,
@@ -448,7 +469,7 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
         aggregation_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for shop attribute mappings
@@ -494,15 +515,14 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _SHOPATTRIBUTEMAPPING_PROPERTIES_BY_FIELD,
             query,
-            search_property,
+            search_property,  # type: ignore[arg-type]
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -518,10 +538,11 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
         aggregation_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         sort_by: ShopAttributeMappingFields | Sequence[ShopAttributeMappingFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> ShopAttributeMappingList:
         """List/filter shop attribute mappings
 
@@ -542,6 +563,9 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             List of requested shop attribute mappings
@@ -574,7 +598,7 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_SHOPATTRIBUTEMAPPING_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
         )

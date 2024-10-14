@@ -9,15 +9,15 @@ from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INS
 
 class BenchmarkingCalculationInputShopResultsAPI(EdgeAPI):
     def list(
-        self,
-        from_benchmarking_calculation_input: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        from_benchmarking_calculation_input_space: str = DEFAULT_INSTANCE_SPACE,
-        to_shop_result: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        to_shop_result_space: str = DEFAULT_INSTANCE_SPACE,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit=DEFAULT_LIMIT_READ,
-    ) -> dm.EdgeList:
+            self,
+            from_benchmarking_calculation_input: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+            from_benchmarking_calculation_input_space: str = DEFAULT_INSTANCE_SPACE,
+            to_shop_result: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+            to_shop_result_space: str = DEFAULT_INSTANCE_SPACE,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit=DEFAULT_LIMIT_READ,
+    ) ->dm.EdgeList:
         """List shop result edges of a benchmarking calculation input.
 
         Args:
@@ -44,6 +44,7 @@ class BenchmarkingCalculationInputShopResultsAPI(EdgeAPI):
         """
         filter_ = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "ShopResults"),
+
             from_benchmarking_calculation_input,
             from_benchmarking_calculation_input_space,
             to_shop_result,

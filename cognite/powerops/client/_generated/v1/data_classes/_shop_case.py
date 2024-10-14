@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 import warnings
-from typing import TYPE_CHECKING, Any, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -14,7 +14,6 @@ from ._core import (
     DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
-    DomainModelCore,
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
@@ -36,6 +35,8 @@ __all__ = [
     "ShopCaseWriteList",
     "ShopCaseApplyList",
     "ShopCaseFields",
+
+    "ShopCaseGraphQL",
 ]
 
 ShopCaseFields = Literal["start_time", "end_time"]
@@ -44,7 +45,6 @@ _SHOPCASE_PROPERTIES_BY_FIELD = {
     "start_time": "startTime",
     "end_time": "endTime",
 }
-
 
 class ShopCaseGraphQL(GraphQLCore):
     """This represents the reading version of shop case, used
@@ -61,8 +61,7 @@ class ShopCaseGraphQL(GraphQLCore):
         end_time: The end time of the case
         shop_files: The list of shop files that are used in a shop run. This encompasses all shop files such as case, module series, cut files etc.
     """
-
-    view_id = dm.ViewId("power_ops_core", "ShopCase", "1")
+    view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopCase", "1")
     scenario: Optional[ShopScenarioGraphQL] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
@@ -78,7 +77,6 @@ class ShopCaseGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
-
     @field_validator("scenario", "shop_files", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -87,6 +85,8 @@ class ShopCaseGraphQL(GraphQLCore):
             return value["items"]
         return value
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> ShopCase:
         """Convert this GraphQL format of shop case to the reading format."""
         if self.data_record is None:
@@ -105,6 +105,9 @@ class ShopCaseGraphQL(GraphQLCore):
             shop_files=[shop_file.as_read() for shop_file in self.shop_files or []],
         )
 
+
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopCaseWrite:
         """Convert this GraphQL format of shop case to the writing format."""
         return ShopCaseWrite(
@@ -132,15 +135,14 @@ class ShopCase(DomainModel):
         end_time: The end time of the case
         shop_files: The list of shop files that are used in a shop run. This encompasses all shop files such as case, module series, cut files etc.
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopCase", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
     scenario: Union[ShopScenario, str, dm.NodeId, None] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
-    shop_files: Union[list[ShopFile], list[str], list[dm.NodeId], None] = Field(
-        default=None, repr=False, alias="shopFiles"
-    )
+    shop_files: Optional[list[Union[ShopFile, str, dm.NodeId]]] = Field(default=None, repr=False, alias="shopFiles")
 
     def as_write(self) -> ShopCaseWrite:
         """Convert this read version of shop case to the writing version."""
@@ -151,10 +153,7 @@ class ShopCase(DomainModel):
             scenario=self.scenario.as_write() if isinstance(self.scenario, DomainModel) else self.scenario,
             start_time=self.start_time,
             end_time=self.end_time,
-            shop_files=[
-                shop_file.as_write() if isinstance(shop_file, DomainModel) else shop_file
-                for shop_file in self.shop_files or []
-            ],
+            shop_files=[shop_file.as_write() if isinstance(shop_file, DomainModel) else shop_file for shop_file in self.shop_files or []],
         )
 
     def as_apply(self) -> ShopCaseWrite:
@@ -181,20 +180,18 @@ class ShopCaseWrite(DomainModelWrite):
         end_time: The end time of the case
         shop_files: The list of shop files that are used in a shop run. This encompasses all shop files such as case, module series, cut files etc.
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopCase", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
     scenario: Union[ShopScenarioWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
-    shop_files: Union[list[ShopFileWrite], list[str], list[dm.NodeId], None] = Field(
-        default=None, repr=False, alias="shopFiles"
-    )
+    shop_files: Optional[list[Union[ShopFileWrite, str, dm.NodeId]]] = Field(default=None, repr=False, alias="shopFiles")
 
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
@@ -202,13 +199,11 @@ class ShopCaseWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(ShopCase, dm.ViewId("power_ops_core", "ShopCase", "1"))
-
         properties: dict[str, Any] = {}
 
         if self.scenario is not None:
             properties["scenario"] = {
-                "space": self.space if isinstance(self.scenario, str) else self.scenario.space,
+                "space":  self.space if isinstance(self.scenario, str) else self.scenario.space,
                 "externalId": self.scenario if isinstance(self.scenario, str) else self.scenario.external_id,
             }
 
@@ -218,6 +213,7 @@ class ShopCaseWrite(DomainModelWrite):
         if self.end_time is not None or write_none:
             properties["endTime"] = self.end_time.isoformat(timespec="milliseconds") if self.end_time else None
 
+
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -226,13 +222,14 @@ class ShopCaseWrite(DomainModelWrite):
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
-                        source=write_view,
+                        source=self._view_id,
                         properties=properties,
-                    )
-                ],
+                )],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
+
+
 
         edge_type = dm.DirectRelationReference("power_ops_types", "ShopCase.shopFiles")
         for shop_file in self.shop_files or []:
@@ -241,14 +238,13 @@ class ShopCaseWrite(DomainModelWrite):
                 start_node=self,
                 end_node=shop_file,
                 edge_type=edge_type,
-                view_by_read_class=view_by_read_class,
                 write_none=write_none,
                 allow_version_increase=allow_version_increase,
             )
             resources.extend(other_resources)
 
         if isinstance(self.scenario, DomainModelWrite):
-            other_resources = self.scenario._to_instances_write(cache, view_by_read_class)
+            other_resources = self.scenario._to_instances_write(cache)
             resources.extend(other_resources)
 
         return resources
@@ -290,8 +286,8 @@ class ShopCaseWriteList(DomainModelWriteList[ShopCaseWrite]):
 
     _INSTANCE = ShopCaseWrite
 
-
 class ShopCaseApplyList(ShopCaseWriteList): ...
+
 
 
 def _create_shop_case_filter(
@@ -305,49 +301,19 @@ def _create_shop_case_filter(
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
-    filters = []
+    filters: list[dm.Filter] = []
     if scenario and isinstance(scenario, str):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("scenario"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": scenario}
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("scenario"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": scenario}))
     if scenario and isinstance(scenario, tuple):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("scenario"), value={"space": scenario[0], "externalId": scenario[1]}
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("scenario"), value={"space": scenario[0], "externalId": scenario[1]}))
     if scenario and isinstance(scenario, list) and isinstance(scenario[0], str):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("scenario"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in scenario],
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("scenario"), values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in scenario]))
     if scenario and isinstance(scenario, list) and isinstance(scenario[0], tuple):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("scenario"),
-                values=[{"space": item[0], "externalId": item[1]} for item in scenario],
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("scenario"), values=[{"space": item[0], "externalId": item[1]} for item in scenario]))
     if min_start_time is not None or max_start_time is not None:
-        filters.append(
-            dm.filters.Range(
-                view_id.as_property_ref("startTime"),
-                gte=min_start_time.isoformat(timespec="milliseconds") if min_start_time else None,
-                lte=max_start_time.isoformat(timespec="milliseconds") if max_start_time else None,
-            )
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("startTime"), gte=min_start_time.isoformat(timespec="milliseconds") if min_start_time else None, lte=max_start_time.isoformat(timespec="milliseconds") if max_start_time else None))
     if min_end_time is not None or max_end_time is not None:
-        filters.append(
-            dm.filters.Range(
-                view_id.as_property_ref("endTime"),
-                gte=min_end_time.isoformat(timespec="milliseconds") if min_end_time else None,
-                lte=max_end_time.isoformat(timespec="milliseconds") if max_end_time else None,
-            )
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("endTime"), gte=min_end_time.isoformat(timespec="milliseconds") if min_end_time else None, lte=max_end_time.isoformat(timespec="milliseconds") if max_end_time else None))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):

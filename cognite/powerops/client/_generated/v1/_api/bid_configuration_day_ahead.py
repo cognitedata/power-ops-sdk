@@ -6,7 +6,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -24,46 +24,34 @@ from cognite.powerops.client._generated.v1.data_classes._bid_configuration_day_a
     _BIDCONFIGURATIONDAYAHEAD_PROPERTIES_BY_FIELD,
     _create_bid_configuration_day_ahead_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
 from .bid_configuration_day_ahead_partials import BidConfigurationDayAheadPartialsAPI
 from .bid_configuration_day_ahead_query import BidConfigurationDayAheadQueryAPI
 
 
-class BidConfigurationDayAheadAPI(
-    NodeAPI[BidConfigurationDayAhead, BidConfigurationDayAheadWrite, BidConfigurationDayAheadList]
-):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[BidConfigurationDayAhead]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=BidConfigurationDayAhead,
-            class_list=BidConfigurationDayAheadList,
-            class_write_list=BidConfigurationDayAheadWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class BidConfigurationDayAheadAPI(NodeAPI[BidConfigurationDayAhead, BidConfigurationDayAheadWrite, BidConfigurationDayAheadList, BidConfigurationDayAheadWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "BidConfigurationDayAhead", "1")
+    _properties_by_field = _BIDCONFIGURATIONDAYAHEAD_PROPERTIES_BY_FIELD
+    _class_type = BidConfigurationDayAhead
+    _class_list = BidConfigurationDayAheadList
+    _class_write_list = BidConfigurationDayAheadWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
         self.partials_edge = BidConfigurationDayAheadPartialsAPI(client)
 
     def __call__(
-        self,
-        name: str | list[str] | None = None,
-        name_prefix: str | None = None,
-        market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        bid_date_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            name: str | list[str] | None = None,
+            name_prefix: str | None = None,
+            market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            bid_date_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> BidConfigurationDayAheadQueryAPI[BidConfigurationDayAheadList]:
         """Query starting at bid configuration day aheads.
 
@@ -95,7 +83,8 @@ class BidConfigurationDayAheadAPI(
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(BidConfigurationDayAheadList)
-        return BidConfigurationDayAheadQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        return BidConfigurationDayAheadQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
@@ -141,9 +130,7 @@ class BidConfigurationDayAheadAPI(
         )
         return self._apply(bid_configuration_day_ahead, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more bid configuration day ahead.
 
         Args:
@@ -173,16 +160,14 @@ class BidConfigurationDayAheadAPI(
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> BidConfigurationDayAhead | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> BidConfigurationDayAhead | None:
+        ...
 
     @overload
-    def retrieve(
-        self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> BidConfigurationDayAheadList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BidConfigurationDayAheadList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> BidConfigurationDayAhead | BidConfigurationDayAheadList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BidConfigurationDayAhead | BidConfigurationDayAheadList | None:
         """Retrieve one or more bid configuration day aheads by id(s).
 
         Args:
@@ -213,13 +198,14 @@ class BidConfigurationDayAheadAPI(
                     "outwards",
                     dm.ViewId("power_ops_core", "PartialBidConfiguration", "1"),
                 ),
-            ],
+                                               ]
         )
+
 
     def search(
         self,
         query: str,
-        properties: BidConfigurationDayAheadTextFields | Sequence[BidConfigurationDayAheadTextFields] | None = None,
+        properties: BidConfigurationDayAheadTextFields | SequenceNotStr[BidConfigurationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
@@ -227,8 +213,11 @@ class BidConfigurationDayAheadAPI(
         bid_date_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: BidConfigurationDayAheadFields | SequenceNotStr[BidConfigurationDayAheadFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> BidConfigurationDayAheadList:
         """Search bid configuration day aheads
 
@@ -244,6 +233,11 @@ class BidConfigurationDayAheadAPI(
             space: The space to filter on.
             limit: Maximum number of bid configuration day aheads to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             Search results bid configuration day aheads matching the query.
@@ -269,24 +263,23 @@ class BidConfigurationDayAheadAPI(
             filter,
         )
         return self._search(
-            self._view_id, query, _BIDCONFIGURATIONDAYAHEAD_PROPERTIES_BY_FIELD, properties, filter_, limit
+            query=query,
+            properties=properties,
+            filter_=filter_,
+            limit=limit,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
         )
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: BidConfigurationDayAheadFields | Sequence[BidConfigurationDayAheadFields] | None = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: BidConfigurationDayAheadFields | SequenceNotStr[BidConfigurationDayAheadFields] | None = None,
         query: str | None = None,
-        search_properties: (
-            BidConfigurationDayAheadTextFields | Sequence[BidConfigurationDayAheadTextFields] | None
-        ) = None,
+        search_property: BidConfigurationDayAheadTextFields | SequenceNotStr[BidConfigurationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
@@ -294,25 +287,19 @@ class BidConfigurationDayAheadAPI(
         bid_date_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: BidConfigurationDayAheadFields | Sequence[BidConfigurationDayAheadFields] | None = None,
-        group_by: BidConfigurationDayAheadFields | Sequence[BidConfigurationDayAheadFields] = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: BidConfigurationDayAheadFields | SequenceNotStr[BidConfigurationDayAheadFields] | None = None,
         query: str | None = None,
-        search_properties: (
-            BidConfigurationDayAheadTextFields | Sequence[BidConfigurationDayAheadTextFields] | None
-        ) = None,
+        search_property: BidConfigurationDayAheadTextFields | SequenceNotStr[BidConfigurationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
@@ -320,24 +307,42 @@ class BidConfigurationDayAheadAPI(
         bid_date_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: BidConfigurationDayAheadFields | SequenceNotStr[BidConfigurationDayAheadFields],
+        property: BidConfigurationDayAheadFields | SequenceNotStr[BidConfigurationDayAheadFields] | None = None,
+        query: str | None = None,
+        search_property: BidConfigurationDayAheadTextFields | SequenceNotStr[BidConfigurationDayAheadTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_date_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: BidConfigurationDayAheadFields | Sequence[BidConfigurationDayAheadFields] | None = None,
-        group_by: BidConfigurationDayAheadFields | Sequence[BidConfigurationDayAheadFields] | None = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: BidConfigurationDayAheadFields | SequenceNotStr[BidConfigurationDayAheadFields] | None = None,
+        property: BidConfigurationDayAheadFields | SequenceNotStr[BidConfigurationDayAheadFields] | None = None,
         query: str | None = None,
-        search_property: (
-            BidConfigurationDayAheadTextFields | Sequence[BidConfigurationDayAheadTextFields] | None
-        ) = None,
+        search_property: BidConfigurationDayAheadTextFields | SequenceNotStr[BidConfigurationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
@@ -345,15 +350,19 @@ class BidConfigurationDayAheadAPI(
         bid_date_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across bid configuration day aheads
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             query: The query to search for in the text field.
             search_property: The text field to search in.
             name: The name to filter on.
@@ -391,15 +400,13 @@ class BidConfigurationDayAheadAPI(
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _BIDCONFIGURATIONDAYAHEAD_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            query,
-            search_property,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=query,
+            search_properties=search_property,  # type: ignore[arg-type]
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -407,9 +414,7 @@ class BidConfigurationDayAheadAPI(
         property: BidConfigurationDayAheadFields,
         interval: float,
         query: str | None = None,
-        search_property: (
-            BidConfigurationDayAheadTextFields | Sequence[BidConfigurationDayAheadTextFields] | None
-        ) = None,
+        search_property: BidConfigurationDayAheadTextFields | SequenceNotStr[BidConfigurationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
@@ -417,7 +422,7 @@ class BidConfigurationDayAheadAPI(
         bid_date_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for bid configuration day aheads
@@ -453,15 +458,14 @@ class BidConfigurationDayAheadAPI(
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _BIDCONFIGURATIONDAYAHEAD_PROPERTIES_BY_FIELD,
             query,
-            search_property,
+            search_property,  # type: ignore[arg-type]
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -472,10 +476,11 @@ class BidConfigurationDayAheadAPI(
         bid_date_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         sort_by: BidConfigurationDayAheadFields | Sequence[BidConfigurationDayAheadFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
         retrieve_edges: bool = True,
     ) -> BidConfigurationDayAheadList:
         """List/filter bid configuration day aheads
@@ -492,6 +497,9 @@ class BidConfigurationDayAheadAPI(
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
             retrieve_edges: Whether to retrieve `partials` external ids for the bid configuration day aheads. Defaults to True.
 
         Returns:
@@ -521,9 +529,9 @@ class BidConfigurationDayAheadAPI(
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_BIDCONFIGURATIONDAYAHEAD_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
             retrieve_edges=retrieve_edges,
             edge_api_name_type_direction_view_id_penta=[
                 (
@@ -533,5 +541,5 @@ class BidConfigurationDayAheadAPI(
                     "outwards",
                     dm.ViewId("power_ops_core", "PartialBidConfiguration", "1"),
                 ),
-            ],
+                                               ]
         )

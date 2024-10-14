@@ -6,7 +6,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -23,41 +23,29 @@ from cognite.powerops.client._generated.v1.data_classes._turbine_efficiency_curv
     _TURBINEEFFICIENCYCURVE_PROPERTIES_BY_FIELD,
     _create_turbine_efficiency_curve_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
 from .turbine_efficiency_curve_query import TurbineEfficiencyCurveQueryAPI
 
 
-class TurbineEfficiencyCurveAPI(
-    NodeAPI[TurbineEfficiencyCurve, TurbineEfficiencyCurveWrite, TurbineEfficiencyCurveList]
-):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[TurbineEfficiencyCurve]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=TurbineEfficiencyCurve,
-            class_list=TurbineEfficiencyCurveList,
-            class_write_list=TurbineEfficiencyCurveWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class TurbineEfficiencyCurveAPI(NodeAPI[TurbineEfficiencyCurve, TurbineEfficiencyCurveWrite, TurbineEfficiencyCurveList, TurbineEfficiencyCurveWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "TurbineEfficiencyCurve", "1")
+    _properties_by_field = _TURBINEEFFICIENCYCURVE_PROPERTIES_BY_FIELD
+    _class_type = TurbineEfficiencyCurve
+    _class_list = TurbineEfficiencyCurveList
+    _class_write_list = TurbineEfficiencyCurveWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
 
     def __call__(
-        self,
-        min_head: float | None = None,
-        max_head: float | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            min_head: float | None = None,
+            max_head: float | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> TurbineEfficiencyCurveQueryAPI[TurbineEfficiencyCurveList]:
         """Query starting at turbine efficiency curves.
 
@@ -83,7 +71,8 @@ class TurbineEfficiencyCurveAPI(
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(TurbineEfficiencyCurveList)
-        return TurbineEfficiencyCurveQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        return TurbineEfficiencyCurveQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
@@ -125,9 +114,7 @@ class TurbineEfficiencyCurveAPI(
         )
         return self._apply(turbine_efficiency_curve, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more turbine efficiency curve.
 
         Args:
@@ -157,16 +144,14 @@ class TurbineEfficiencyCurveAPI(
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> TurbineEfficiencyCurve | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> TurbineEfficiencyCurve | None:
+        ...
 
     @overload
-    def retrieve(
-        self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> TurbineEfficiencyCurveList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> TurbineEfficiencyCurveList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> TurbineEfficiencyCurve | TurbineEfficiencyCurveList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> TurbineEfficiencyCurve | TurbineEfficiencyCurveList | None:
         """Retrieve one or more turbine efficiency curves by id(s).
 
         Args:
@@ -187,67 +172,78 @@ class TurbineEfficiencyCurveAPI(
         """
         return self._retrieve(external_id, space)
 
+
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: TurbineEfficiencyCurveFields | Sequence[TurbineEfficiencyCurveFields] | None = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: TurbineEfficiencyCurveFields | SequenceNotStr[TurbineEfficiencyCurveFields] | None = None,
         min_head: float | None = None,
         max_head: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: TurbineEfficiencyCurveFields | Sequence[TurbineEfficiencyCurveFields] | None = None,
-        group_by: TurbineEfficiencyCurveFields | Sequence[TurbineEfficiencyCurveFields] = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: TurbineEfficiencyCurveFields | SequenceNotStr[TurbineEfficiencyCurveFields] | None = None,
         min_head: float | None = None,
         max_head: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: TurbineEfficiencyCurveFields | SequenceNotStr[TurbineEfficiencyCurveFields],
+        property: TurbineEfficiencyCurveFields | SequenceNotStr[TurbineEfficiencyCurveFields] | None = None,
+        min_head: float | None = None,
+        max_head: float | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: TurbineEfficiencyCurveFields | Sequence[TurbineEfficiencyCurveFields] | None = None,
-        group_by: TurbineEfficiencyCurveFields | Sequence[TurbineEfficiencyCurveFields] | None = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: TurbineEfficiencyCurveFields | SequenceNotStr[TurbineEfficiencyCurveFields] | None = None,
+        property: TurbineEfficiencyCurveFields | SequenceNotStr[TurbineEfficiencyCurveFields] | None = None,
         min_head: float | None = None,
         max_head: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across turbine efficiency curves
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             min_head: The minimum value of the head to filter on.
             max_head: The maximum value of the head to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
@@ -277,15 +273,13 @@ class TurbineEfficiencyCurveAPI(
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _TURBINEEFFICIENCYCURVE_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            None,
-            None,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=None,
+            search_properties=None,
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -296,7 +290,7 @@ class TurbineEfficiencyCurveAPI(
         max_head: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for turbine efficiency curves
@@ -324,15 +318,14 @@ class TurbineEfficiencyCurveAPI(
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _TURBINEEFFICIENCYCURVE_PROPERTIES_BY_FIELD,
             None,
             None,
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -340,10 +333,11 @@ class TurbineEfficiencyCurveAPI(
         max_head: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         sort_by: TurbineEfficiencyCurveFields | Sequence[TurbineEfficiencyCurveFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> TurbineEfficiencyCurveList:
         """List/filter turbine efficiency curves
 
@@ -356,6 +350,9 @@ class TurbineEfficiencyCurveAPI(
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             List of requested turbine efficiency curves
@@ -380,7 +377,7 @@ class TurbineEfficiencyCurveAPI(
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_TURBINEEFFICIENCYCURVE_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
         )

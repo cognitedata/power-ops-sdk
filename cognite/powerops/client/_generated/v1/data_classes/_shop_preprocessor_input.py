@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 import warnings
-from typing import TYPE_CHECKING, Any, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -14,7 +14,6 @@ from ._core import (
     DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
-    DomainModelCore,
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
@@ -37,13 +36,12 @@ __all__ = [
     "ShopPreprocessorInputApplyList",
     "ShopPreprocessorInputFields",
     "ShopPreprocessorInputTextFields",
+    "ShopPreprocessorInputGraphQL",
 ]
 
 
 ShopPreprocessorInputTextFields = Literal["workflow_execution_id", "function_name", "function_call_id"]
-ShopPreprocessorInputFields = Literal[
-    "workflow_execution_id", "workflow_step", "function_name", "function_call_id", "start_time", "end_time"
-]
+ShopPreprocessorInputFields = Literal["workflow_execution_id", "workflow_step", "function_name", "function_call_id", "start_time", "end_time"]
 
 _SHOPPREPROCESSORINPUT_PROPERTIES_BY_FIELD = {
     "workflow_execution_id": "workflowExecutionId",
@@ -53,7 +51,6 @@ _SHOPPREPROCESSORINPUT_PROPERTIES_BY_FIELD = {
     "start_time": "startTime",
     "end_time": "endTime",
 }
-
 
 class ShopPreprocessorInputGraphQL(GraphQLCore):
     """This represents the reading version of shop preprocessor input, used
@@ -73,8 +70,7 @@ class ShopPreprocessorInputGraphQL(GraphQLCore):
         start_time: Start date of bid period TODO
         end_time: End date of bid period TODO
     """
-
-    view_id = dm.ViewId("power_ops_core", "ShopPreprocessorInput", "1")
+    view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopPreprocessorInput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
@@ -93,7 +89,6 @@ class ShopPreprocessorInputGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
-
     @field_validator("scenario", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -102,6 +97,8 @@ class ShopPreprocessorInputGraphQL(GraphQLCore):
             return value["items"]
         return value
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> ShopPreprocessorInput:
         """Convert this GraphQL format of shop preprocessor input to the reading format."""
         if self.data_record is None:
@@ -123,6 +120,9 @@ class ShopPreprocessorInputGraphQL(GraphQLCore):
             end_time=self.end_time,
         )
 
+
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopPreprocessorInputWrite:
         """Convert this GraphQL format of shop preprocessor input to the writing format."""
         return ShopPreprocessorInputWrite(
@@ -156,10 +156,9 @@ class ShopPreprocessorInput(FunctionInput):
         start_time: Start date of bid period TODO
         end_time: End date of bid period TODO
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopPreprocessorInput", "1")
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "ShopPreprocessorInput"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopPreprocessorInput")
     scenario: Union[ShopScenario, str, dm.NodeId, None] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
@@ -206,10 +205,9 @@ class ShopPreprocessorInputWrite(FunctionInputWrite):
         start_time: Start date of bid period TODO
         end_time: End date of bid period TODO
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopPreprocessorInput", "1")
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "ShopPreprocessorInput"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopPreprocessorInput")
     scenario: Union[ShopScenarioWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
@@ -217,17 +215,12 @@ class ShopPreprocessorInputWrite(FunctionInputWrite):
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
-
-        write_view = (view_by_read_class or {}).get(
-            ShopPreprocessorInput, dm.ViewId("power_ops_core", "ShopPreprocessorInput", "1")
-        )
 
         properties: dict[str, Any] = {}
 
@@ -245,7 +238,7 @@ class ShopPreprocessorInputWrite(FunctionInputWrite):
 
         if self.scenario is not None:
             properties["scenario"] = {
-                "space": self.space if isinstance(self.scenario, str) else self.scenario.space,
+                "space":  self.space if isinstance(self.scenario, str) else self.scenario.space,
                 "externalId": self.scenario if isinstance(self.scenario, str) else self.scenario.external_id,
             }
 
@@ -255,6 +248,7 @@ class ShopPreprocessorInputWrite(FunctionInputWrite):
         if self.end_time is not None or write_none:
             properties["endTime"] = self.end_time.isoformat(timespec="milliseconds") if self.end_time else None
 
+
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -263,16 +257,17 @@ class ShopPreprocessorInputWrite(FunctionInputWrite):
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
-                        source=write_view,
+                        source=self._view_id,
                         properties=properties,
-                    )
-                ],
+                )],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
+
+
         if isinstance(self.scenario, DomainModelWrite):
-            other_resources = self.scenario._to_instances_write(cache, view_by_read_class)
+            other_resources = self.scenario._to_instances_write(cache)
             resources.extend(other_resources)
 
         return resources
@@ -314,8 +309,8 @@ class ShopPreprocessorInputWriteList(DomainModelWriteList[ShopPreprocessorInputW
 
     _INSTANCE = ShopPreprocessorInputWrite
 
-
 class ShopPreprocessorInputApplyList(ShopPreprocessorInputWriteList): ...
+
 
 
 def _create_shop_preprocessor_input_filter(
@@ -337,19 +332,15 @@ def _create_shop_preprocessor_input_filter(
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
-    filters = []
+    filters: list[dm.Filter] = []
     if isinstance(workflow_execution_id, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id))
     if workflow_execution_id and isinstance(workflow_execution_id, list):
         filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
     if workflow_execution_id_prefix is not None:
-        filters.append(
-            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
-        )
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix))
     if min_workflow_step is not None or max_workflow_step is not None:
-        filters.append(
-            dm.filters.Range(view_id.as_property_ref("workflowStep"), gte=min_workflow_step, lte=max_workflow_step)
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("workflowStep"), gte=min_workflow_step, lte=max_workflow_step))
     if isinstance(function_name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("functionName"), value=function_name))
     if function_name and isinstance(function_name, list):
@@ -363,47 +354,17 @@ def _create_shop_preprocessor_input_filter(
     if function_call_id_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("functionCallId"), value=function_call_id_prefix))
     if scenario and isinstance(scenario, str):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("scenario"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": scenario}
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("scenario"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": scenario}))
     if scenario and isinstance(scenario, tuple):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("scenario"), value={"space": scenario[0], "externalId": scenario[1]}
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("scenario"), value={"space": scenario[0], "externalId": scenario[1]}))
     if scenario and isinstance(scenario, list) and isinstance(scenario[0], str):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("scenario"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in scenario],
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("scenario"), values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in scenario]))
     if scenario and isinstance(scenario, list) and isinstance(scenario[0], tuple):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("scenario"),
-                values=[{"space": item[0], "externalId": item[1]} for item in scenario],
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("scenario"), values=[{"space": item[0], "externalId": item[1]} for item in scenario]))
     if min_start_time is not None or max_start_time is not None:
-        filters.append(
-            dm.filters.Range(
-                view_id.as_property_ref("startTime"),
-                gte=min_start_time.isoformat(timespec="milliseconds") if min_start_time else None,
-                lte=max_start_time.isoformat(timespec="milliseconds") if max_start_time else None,
-            )
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("startTime"), gte=min_start_time.isoformat(timespec="milliseconds") if min_start_time else None, lte=max_start_time.isoformat(timespec="milliseconds") if max_start_time else None))
     if min_end_time is not None or max_end_time is not None:
-        filters.append(
-            dm.filters.Range(
-                view_id.as_property_ref("endTime"),
-                gte=min_end_time.isoformat(timespec="milliseconds") if min_end_time else None,
-                lte=max_end_time.isoformat(timespec="milliseconds") if max_end_time else None,
-            )
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("endTime"), gte=min_end_time.isoformat(timespec="milliseconds") if min_end_time else None, lte=max_end_time.isoformat(timespec="milliseconds") if max_end_time else None))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):

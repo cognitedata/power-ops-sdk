@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 import warnings
-from typing import TYPE_CHECKING, Any, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -14,7 +14,6 @@ from ._core import (
     DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
-    DomainModelCore,
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
@@ -36,13 +35,12 @@ __all__ = [
     "BidDocumentApplyList",
     "BidDocumentFields",
     "BidDocumentTextFields",
+    "BidDocumentGraphQL",
 ]
 
 
 BidDocumentTextFields = Literal["name", "workflow_execution_id"]
-BidDocumentFields = Literal[
-    "name", "workflow_execution_id", "delivery_date", "start_calculation", "end_calculation", "is_complete"
-]
+BidDocumentFields = Literal["name", "workflow_execution_id", "delivery_date", "start_calculation", "end_calculation", "is_complete"]
 
 _BIDDOCUMENT_PROPERTIES_BY_FIELD = {
     "name": "name",
@@ -52,7 +50,6 @@ _BIDDOCUMENT_PROPERTIES_BY_FIELD = {
     "end_calculation": "endCalculation",
     "is_complete": "isComplete",
 }
-
 
 class BidDocumentGraphQL(GraphQLCore):
     """This represents the reading version of bid document, used
@@ -72,8 +69,7 @@ class BidDocumentGraphQL(GraphQLCore):
         is_complete: Indicates that the Bid calculation workflow has completed (although has not necessarily succeeded).
         alerts: An array of calculation level Alerts.
     """
-
-    view_id = dm.ViewId("power_ops_core", "BidDocument", "1")
+    view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidDocument", "1")
     name: Optional[str] = None
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     delivery_date: Optional[datetime.date] = Field(None, alias="deliveryDate")
@@ -92,7 +88,6 @@ class BidDocumentGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
-
     @field_validator("alerts", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -101,6 +96,8 @@ class BidDocumentGraphQL(GraphQLCore):
             return value["items"]
         return value
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> BidDocument:
         """Convert this GraphQL format of bid document to the reading format."""
         if self.data_record is None:
@@ -122,6 +119,9 @@ class BidDocumentGraphQL(GraphQLCore):
             alerts=[alert.as_read() for alert in self.alerts or []],
         )
 
+
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> BidDocumentWrite:
         """Convert this GraphQL format of bid document to the writing format."""
         return BidDocumentWrite(
@@ -155,6 +155,7 @@ class BidDocument(DomainModel):
         is_complete: Indicates that the Bid calculation workflow has completed (although has not necessarily succeeded).
         alerts: An array of calculation level Alerts.
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidDocument", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
@@ -164,7 +165,7 @@ class BidDocument(DomainModel):
     start_calculation: Optional[datetime.datetime] = Field(None, alias="startCalculation")
     end_calculation: Optional[datetime.datetime] = Field(None, alias="endCalculation")
     is_complete: Optional[bool] = Field(None, alias="isComplete")
-    alerts: Union[list[Alert], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
+    alerts: Optional[list[Union[Alert, str, dm.NodeId]]] = Field(default=None, repr=False)
 
     def as_write(self) -> BidDocumentWrite:
         """Convert this read version of bid document to the writing version."""
@@ -208,6 +209,7 @@ class BidDocumentWrite(DomainModelWrite):
         is_complete: Indicates that the Bid calculation workflow has completed (although has not necessarily succeeded).
         alerts: An array of calculation level Alerts.
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidDocument", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
@@ -217,20 +219,17 @@ class BidDocumentWrite(DomainModelWrite):
     start_calculation: Optional[datetime.datetime] = Field(None, alias="startCalculation")
     end_calculation: Optional[datetime.datetime] = Field(None, alias="endCalculation")
     is_complete: Optional[bool] = Field(None, alias="isComplete")
-    alerts: Union[list[AlertWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
+    alerts: Optional[list[Union[AlertWrite, str, dm.NodeId]]] = Field(default=None, repr=False)
 
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
-
-        write_view = (view_by_read_class or {}).get(BidDocument, dm.ViewId("power_ops_core", "BidDocument", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -244,17 +243,14 @@ class BidDocumentWrite(DomainModelWrite):
             properties["deliveryDate"] = self.delivery_date.isoformat() if self.delivery_date else None
 
         if self.start_calculation is not None or write_none:
-            properties["startCalculation"] = (
-                self.start_calculation.isoformat(timespec="milliseconds") if self.start_calculation else None
-            )
+            properties["startCalculation"] = self.start_calculation.isoformat(timespec="milliseconds") if self.start_calculation else None
 
         if self.end_calculation is not None or write_none:
-            properties["endCalculation"] = (
-                self.end_calculation.isoformat(timespec="milliseconds") if self.end_calculation else None
-            )
+            properties["endCalculation"] = self.end_calculation.isoformat(timespec="milliseconds") if self.end_calculation else None
 
         if self.is_complete is not None or write_none:
             properties["isComplete"] = self.is_complete
+
 
         if properties:
             this_node = dm.NodeApply(
@@ -264,13 +260,14 @@ class BidDocumentWrite(DomainModelWrite):
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
-                        source=write_view,
+                        source=self._view_id,
                         properties=properties,
-                    )
-                ],
+                )],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
+
+
 
         edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
@@ -279,7 +276,6 @@ class BidDocumentWrite(DomainModelWrite):
                 start_node=self,
                 end_node=alert,
                 edge_type=edge_type,
-                view_by_read_class=view_by_read_class,
                 write_none=write_none,
                 allow_version_increase=allow_version_increase,
             )
@@ -324,8 +320,8 @@ class BidDocumentWriteList(DomainModelWriteList[BidDocumentWrite]):
 
     _INSTANCE = BidDocumentWrite
 
-
 class BidDocumentApplyList(BidDocumentWriteList): ...
+
 
 
 def _create_bid_document_filter(
@@ -345,7 +341,7 @@ def _create_bid_document_filter(
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
-    filters = []
+    filters: list[dm.Filter] = []
     if isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
@@ -357,33 +353,13 @@ def _create_bid_document_filter(
     if workflow_execution_id and isinstance(workflow_execution_id, list):
         filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
     if workflow_execution_id_prefix is not None:
-        filters.append(
-            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
-        )
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix))
     if min_delivery_date is not None or max_delivery_date is not None:
-        filters.append(
-            dm.filters.Range(
-                view_id.as_property_ref("deliveryDate"),
-                gte=min_delivery_date.isoformat() if min_delivery_date else None,
-                lte=max_delivery_date.isoformat() if max_delivery_date else None,
-            )
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("deliveryDate"), gte=min_delivery_date.isoformat() if min_delivery_date else None, lte=max_delivery_date.isoformat() if max_delivery_date else None))
     if min_start_calculation is not None or max_start_calculation is not None:
-        filters.append(
-            dm.filters.Range(
-                view_id.as_property_ref("startCalculation"),
-                gte=min_start_calculation.isoformat(timespec="milliseconds") if min_start_calculation else None,
-                lte=max_start_calculation.isoformat(timespec="milliseconds") if max_start_calculation else None,
-            )
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("startCalculation"), gte=min_start_calculation.isoformat(timespec="milliseconds") if min_start_calculation else None, lte=max_start_calculation.isoformat(timespec="milliseconds") if max_start_calculation else None))
     if min_end_calculation is not None or max_end_calculation is not None:
-        filters.append(
-            dm.filters.Range(
-                view_id.as_property_ref("endCalculation"),
-                gte=min_end_calculation.isoformat(timespec="milliseconds") if min_end_calculation else None,
-                lte=max_end_calculation.isoformat(timespec="milliseconds") if max_end_calculation else None,
-            )
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("endCalculation"), gte=min_end_calculation.isoformat(timespec="milliseconds") if min_end_calculation else None, lte=max_end_calculation.isoformat(timespec="milliseconds") if max_end_calculation else None))
     if isinstance(is_complete, bool):
         filters.append(dm.filters.Equals(view_id.as_property_ref("isComplete"), value=is_complete))
     if external_id_prefix is not None:

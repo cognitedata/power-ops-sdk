@@ -25,16 +25,18 @@ if TYPE_CHECKING:
     from .benchmarking_result_day_ahead_query import BenchmarkingResultDayAheadQueryAPI
 
 
+
 class BenchmarkingCalculationOutputQueryAPI(QueryAPI[T_DomainModelList]):
+    _view_id = dm.ViewId("power_ops_core", "BenchmarkingCalculationOutput", "1")
+
     def __init__(
         self,
         client: CogniteClient,
         builder: QueryBuilder[T_DomainModelList],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId],
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
-        super().__init__(client, builder, view_by_read_class)
+        super().__init__(client, builder)
 
         self._builder.append(
             QueryStep(
@@ -43,9 +45,7 @@ class BenchmarkingCalculationOutputQueryAPI(QueryAPI[T_DomainModelList]):
                     from_=self._builder[-1].name if self._builder else None,
                     filter=filter_,
                 ),
-                select=dm.query.Select(
-                    [dm.query.SourceSelector(self._view_by_read_class[BenchmarkingCalculationOutput], ["*"])]
-                ),
+                select=dm.query.Select([dm.query.SourceSelector(self._view_id, ["*"])]),
                 result_cls=BenchmarkingCalculationOutput,
                 max_retrieve_limit=limit,
             )
@@ -74,7 +74,7 @@ class BenchmarkingCalculationOutputQueryAPI(QueryAPI[T_DomainModelList]):
         external_id_prefix_edge: str | None = None,
         space_edge: str | list[str] | None = None,
         filter: dm.Filter | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
+        limit: int = DEFAULT_QUERY_LIMIT,
         retrieve_function_input: bool = False,
     ) -> AlertQueryAPI[T_DomainModelList]:
         """Query along the alert edges of the benchmarking calculation output.
@@ -113,6 +113,7 @@ class BenchmarkingCalculationOutputQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = self._builder[-1].name
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "calculationIssue"),
+
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -129,7 +130,7 @@ class BenchmarkingCalculationOutputQueryAPI(QueryAPI[T_DomainModelList]):
             )
         )
 
-        view_id = self._view_by_read_class[Alert]
+        view_id = AlertQueryAPI._view_id
         has_data = dm.filters.HasData(views=[view_id])
         node_filer = _create_alert_filter(
             view_id,
@@ -155,7 +156,7 @@ class BenchmarkingCalculationOutputQueryAPI(QueryAPI[T_DomainModelList]):
         )
         if retrieve_function_input:
             self._query_append_function_input(from_)
-        return AlertQueryAPI(self._client, self._builder, self._view_by_read_class, node_filer, limit)
+        return AlertQueryAPI(self._client, self._builder, node_filer, limit)
 
     def benchmarking_results(
         self,
@@ -177,7 +178,7 @@ class BenchmarkingCalculationOutputQueryAPI(QueryAPI[T_DomainModelList]):
         external_id_prefix_edge: str | None = None,
         space_edge: str | list[str] | None = None,
         filter: dm.Filter | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
+        limit: int = DEFAULT_QUERY_LIMIT,
         retrieve_function_input: bool = False,
     ) -> BenchmarkingResultDayAheadQueryAPI[T_DomainModelList]:
         """Query along the benchmarking result edges of the benchmarking calculation output.
@@ -213,6 +214,7 @@ class BenchmarkingCalculationOutputQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = self._builder[-1].name
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "BenchmarkingResultsDayAhead"),
+
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -229,7 +231,7 @@ class BenchmarkingCalculationOutputQueryAPI(QueryAPI[T_DomainModelList]):
             )
         )
 
-        view_id = self._view_by_read_class[BenchmarkingResultDayAhead]
+        view_id = BenchmarkingResultDayAheadQueryAPI._view_id
         has_data = dm.filters.HasData(views=[view_id])
         node_filer = _create_benchmarking_result_day_ahead_filter(
             view_id,
@@ -252,9 +254,7 @@ class BenchmarkingCalculationOutputQueryAPI(QueryAPI[T_DomainModelList]):
         )
         if retrieve_function_input:
             self._query_append_function_input(from_)
-        return BenchmarkingResultDayAheadQueryAPI(
-            self._client, self._builder, self._view_by_read_class, node_filer, limit
-        )
+        return BenchmarkingResultDayAheadQueryAPI(self._client, self._builder, node_filer, limit)
 
     def query(
         self,
@@ -275,14 +275,14 @@ class BenchmarkingCalculationOutputQueryAPI(QueryAPI[T_DomainModelList]):
         return self._query()
 
     def _query_append_function_input(self, from_: str) -> None:
-        view_id = self._view_by_read_class[BenchmarkingCalculationInput]
+        view_id = BenchmarkingCalculationInput._view_id
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("function_input"),
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_read_class[BenchmarkingCalculationOutput].as_property_ref("functionInput"),
+                    through=self._view_id.as_property_ref("functionInput"),
                     direction="outwards",
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),

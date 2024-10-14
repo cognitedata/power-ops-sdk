@@ -9,15 +9,15 @@ from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INS
 
 class PartialBidMatrixInformationWithScenariosMultiScenarioInputAPI(EdgeAPI):
     def list(
-        self,
-        from_partial_bid_matrix_information_with_scenario: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        from_partial_bid_matrix_information_with_scenario_space: str = DEFAULT_INSTANCE_SPACE,
-        to_price_production: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        to_price_production_space: str = DEFAULT_INSTANCE_SPACE,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit=DEFAULT_LIMIT_READ,
-    ) -> dm.EdgeList:
+            self,
+            from_partial_bid_matrix_information_with_scenario: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+            from_partial_bid_matrix_information_with_scenario_space: str = DEFAULT_INSTANCE_SPACE,
+            to_price_production: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+            to_price_production_space: str = DEFAULT_INSTANCE_SPACE,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit=DEFAULT_LIMIT_READ,
+    ) ->dm.EdgeList:
         """List multi scenario input edges of a partial bid matrix information with scenario.
 
         Args:
@@ -44,6 +44,7 @@ class PartialBidMatrixInformationWithScenariosMultiScenarioInputAPI(EdgeAPI):
         """
         filter_ = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "calculationIssue"),
+
             from_partial_bid_matrix_information_with_scenario,
             from_partial_bid_matrix_information_with_scenario_space,
             to_price_production,

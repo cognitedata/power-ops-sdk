@@ -14,7 +14,7 @@ Changes are grouped as follows
 - `Security` in case of vulnerabilities.
 
 
-## [0.99.0] - 2024-10-07
+## [0.100.0] - 2024-10-014
 ### Added
 * Support for triggering Shop using a ShopCase instance
 * Tutorial for usage of the generated SDK in relation to Shop
@@ -25,6 +25,10 @@ Changes are grouped as follows
 
 ### Deprecated
 * Marked asset based shop trigger, as well as other modules, for deprecation.
+## [0.99.0] - 2024-10-11
+### Changed
+* Removed `PowerAsset` from `product_CogShop`-data model and added `ShopResult`, `ShopTimeSeries`, and `Alert`
+
 
 ## [0.98.4] - 2024-09-09
 ### Fix

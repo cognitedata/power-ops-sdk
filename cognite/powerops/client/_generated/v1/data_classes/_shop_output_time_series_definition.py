@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from typing import Any, Literal, Optional, Union
+from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -13,7 +13,6 @@ from ._core import (
     DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
-    DomainModelCore,
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
@@ -32,13 +31,12 @@ __all__ = [
     "ShopOutputTimeSeriesDefinitionApplyList",
     "ShopOutputTimeSeriesDefinitionFields",
     "ShopOutputTimeSeriesDefinitionTextFields",
+    "ShopOutputTimeSeriesDefinitionGraphQL",
 ]
 
 
 ShopOutputTimeSeriesDefinitionTextFields = Literal["name", "object_type", "object_name", "attribute_name", "unit"]
-ShopOutputTimeSeriesDefinitionFields = Literal[
-    "name", "object_type", "object_name", "attribute_name", "unit", "is_step"
-]
+ShopOutputTimeSeriesDefinitionFields = Literal["name", "object_type", "object_name", "attribute_name", "unit", "is_step"]
 
 _SHOPOUTPUTTIMESERIESDEFINITION_PROPERTIES_BY_FIELD = {
     "name": "name",
@@ -48,7 +46,6 @@ _SHOPOUTPUTTIMESERIESDEFINITION_PROPERTIES_BY_FIELD = {
     "unit": "unit",
     "is_step": "isStep",
 }
-
 
 class ShopOutputTimeSeriesDefinitionGraphQL(GraphQLCore):
     """This represents the reading version of shop output time series definition, used
@@ -67,8 +64,7 @@ class ShopOutputTimeSeriesDefinitionGraphQL(GraphQLCore):
         unit: The unit of the object
         is_step: The name of the attribute
     """
-
-    view_id = dm.ViewId("power_ops_core", "ShopOutputTimeSeriesDefinition", "1")
+    view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopOutputTimeSeriesDefinition", "1")
     name: Optional[str] = None
     object_type: Optional[str] = Field(None, alias="objectType")
     object_name: Optional[str] = Field(None, alias="objectName")
@@ -87,6 +83,8 @@ class ShopOutputTimeSeriesDefinitionGraphQL(GraphQLCore):
             )
         return values
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> ShopOutputTimeSeriesDefinition:
         """Convert this GraphQL format of shop output time series definition to the reading format."""
         if self.data_record is None:
@@ -107,6 +105,9 @@ class ShopOutputTimeSeriesDefinitionGraphQL(GraphQLCore):
             is_step=self.is_step,
         )
 
+
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopOutputTimeSeriesDefinitionWrite:
         """Convert this GraphQL format of shop output time series definition to the writing format."""
         return ShopOutputTimeSeriesDefinitionWrite(
@@ -138,11 +139,10 @@ class ShopOutputTimeSeriesDefinition(DomainModel):
         unit: The unit of the object
         is_step: The name of the attribute
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopOutputTimeSeriesDefinition", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "ShopOutputTimeSeriesDefinition"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopOutputTimeSeriesDefinition")
     name: str
     object_type: str = Field(alias="objectType")
     object_name: str = Field(alias="objectName")
@@ -190,11 +190,10 @@ class ShopOutputTimeSeriesDefinitionWrite(DomainModelWrite):
         unit: The unit of the object
         is_step: The name of the attribute
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopOutputTimeSeriesDefinition", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "ShopOutputTimeSeriesDefinition"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopOutputTimeSeriesDefinition")
     name: str
     object_type: str = Field(alias="objectType")
     object_name: str = Field(alias="objectName")
@@ -205,17 +204,12 @@ class ShopOutputTimeSeriesDefinitionWrite(DomainModelWrite):
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
-
-        write_view = (view_by_read_class or {}).get(
-            ShopOutputTimeSeriesDefinition, dm.ViewId("power_ops_core", "ShopOutputTimeSeriesDefinition", "1")
-        )
 
         properties: dict[str, Any] = {}
 
@@ -237,6 +231,7 @@ class ShopOutputTimeSeriesDefinitionWrite(DomainModelWrite):
         if self.is_step is not None or write_none:
             properties["isStep"] = self.is_step
 
+
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -245,13 +240,14 @@ class ShopOutputTimeSeriesDefinitionWrite(DomainModelWrite):
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
-                        source=write_view,
+                        source=self._view_id,
                         properties=properties,
-                    )
-                ],
+                )],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
+
+
 
         return resources
 
@@ -292,8 +288,8 @@ class ShopOutputTimeSeriesDefinitionWriteList(DomainModelWriteList[ShopOutputTim
 
     _INSTANCE = ShopOutputTimeSeriesDefinitionWrite
 
-
 class ShopOutputTimeSeriesDefinitionApplyList(ShopOutputTimeSeriesDefinitionWriteList): ...
+
 
 
 def _create_shop_output_time_series_definition_filter(
@@ -313,7 +309,7 @@ def _create_shop_output_time_series_definition_filter(
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
-    filters = []
+    filters: list[dm.Filter] = []
     if isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
