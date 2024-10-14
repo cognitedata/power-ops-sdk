@@ -206,19 +206,7 @@ class SHOPRunAPI:
 
         cluster = urlparse(self._cdf.config.base_url).netloc.split(".", 1)[0]
 
-        if project == "power-ops-staging":
-            environment = ".staging"
-        elif project in {
-            "lyse-dev",
-            "lyse-prod",
-            "heco-dev",
-            "heco-prod",
-            "oe-dev",
-            "oe-prod",
-        }:
-            environment = ""
-        else:
-            raise ValueError(f"SHOP As A Service has not been configured for project name: {project!r}")
+        environment = ".staging" if project == "power-ops-staging" else ""
 
         return f"https://power-ops-api{environment}.{cluster}.cognite.ai/{project}/run-shop-as-service"
 
