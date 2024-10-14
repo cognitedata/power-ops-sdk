@@ -6,7 +6,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -24,55 +24,45 @@ from cognite.powerops.client._generated.v1.data_classes._market_configuration im
     _MARKETCONFIGURATION_PROPERTIES_BY_FIELD,
     _create_market_configuration_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
 from .market_configuration_query import MarketConfigurationQueryAPI
 
 
-class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWrite, MarketConfigurationList]):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[MarketConfiguration]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=MarketConfiguration,
-            class_list=MarketConfigurationList,
-            class_write_list=MarketConfigurationWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWrite, MarketConfigurationList, MarketConfigurationWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "MarketConfiguration", "1")
+    _properties_by_field = _MARKETCONFIGURATION_PROPERTIES_BY_FIELD
+    _class_type = MarketConfiguration
+    _class_list = MarketConfigurationList
+    _class_write_list = MarketConfigurationWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
 
     def __call__(
-        self,
-        name: str | list[str] | None = None,
-        name_prefix: str | None = None,
-        min_max_price: float | None = None,
-        max_max_price: float | None = None,
-        min_min_price: float | None = None,
-        max_min_price: float | None = None,
-        timezone: str | list[str] | None = None,
-        timezone_prefix: str | None = None,
-        price_unit: str | list[str] | None = None,
-        price_unit_prefix: str | None = None,
-        min_price_steps: int | None = None,
-        max_price_steps: int | None = None,
-        min_tick_size: float | None = None,
-        max_tick_size: float | None = None,
-        time_unit: str | list[str] | None = None,
-        time_unit_prefix: str | None = None,
-        min_trade_lot: float | None = None,
-        max_trade_lot: float | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            name: str | list[str] | None = None,
+            name_prefix: str | None = None,
+            min_max_price: float | None = None,
+            max_max_price: float | None = None,
+            min_min_price: float | None = None,
+            max_min_price: float | None = None,
+            timezone: str | list[str] | None = None,
+            timezone_prefix: str | None = None,
+            price_unit: str | list[str] | None = None,
+            price_unit_prefix: str | None = None,
+            min_price_steps: int | None = None,
+            max_price_steps: int | None = None,
+            min_tick_size: float | None = None,
+            max_tick_size: float | None = None,
+            time_unit: str | list[str] | None = None,
+            time_unit_prefix: str | None = None,
+            min_trade_lot: float | None = None,
+            max_trade_lot: float | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> MarketConfigurationQueryAPI[MarketConfigurationList]:
         """Query starting at market configurations.
 
@@ -130,7 +120,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(MarketConfigurationList)
-        return MarketConfigurationQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        return MarketConfigurationQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
@@ -172,9 +163,7 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         )
         return self._apply(market_configuration, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more market configuration.
 
         Args:
@@ -204,16 +193,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> MarketConfiguration | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> MarketConfiguration | None:
+        ...
 
     @overload
-    def retrieve(
-        self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> MarketConfigurationList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> MarketConfigurationList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> MarketConfiguration | MarketConfigurationList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> MarketConfiguration | MarketConfigurationList | None:
         """Retrieve one or more market configurations by id(s).
 
         Args:
@@ -237,7 +224,7 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
     def search(
         self,
         query: str,
-        properties: MarketConfigurationTextFields | Sequence[MarketConfigurationTextFields] | None = None,
+        properties: MarketConfigurationTextFields | SequenceNotStr[MarketConfigurationTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         min_max_price: float | None = None,
@@ -258,8 +245,11 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         max_trade_lot: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: MarketConfigurationFields | SequenceNotStr[MarketConfigurationFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> MarketConfigurationList:
         """Search market configurations
 
@@ -288,6 +278,11 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             space: The space to filter on.
             limit: Maximum number of market configurations to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             Search results market configurations matching the query.
@@ -325,21 +320,24 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             space,
             filter,
         )
-        return self._search(self._view_id, query, _MARKETCONFIGURATION_PROPERTIES_BY_FIELD, properties, filter_, limit)
+        return self._search(
+            query=query,
+            properties=properties,
+            filter_=filter_,
+            limit=limit,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
+        )
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: MarketConfigurationFields | Sequence[MarketConfigurationFields] | None = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: MarketConfigurationFields | SequenceNotStr[MarketConfigurationFields] | None = None,
         query: str | None = None,
-        search_properties: MarketConfigurationTextFields | Sequence[MarketConfigurationTextFields] | None = None,
+        search_property: MarketConfigurationTextFields | SequenceNotStr[MarketConfigurationTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         min_max_price: float | None = None,
@@ -360,23 +358,19 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         max_trade_lot: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: MarketConfigurationFields | Sequence[MarketConfigurationFields] | None = None,
-        group_by: MarketConfigurationFields | Sequence[MarketConfigurationFields] = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: MarketConfigurationFields | SequenceNotStr[MarketConfigurationFields] | None = None,
         query: str | None = None,
-        search_properties: MarketConfigurationTextFields | Sequence[MarketConfigurationTextFields] | None = None,
+        search_property: MarketConfigurationTextFields | SequenceNotStr[MarketConfigurationTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         min_max_price: float | None = None,
@@ -397,22 +391,55 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         max_trade_lot: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: MarketConfigurationFields | SequenceNotStr[MarketConfigurationFields],
+        property: MarketConfigurationFields | SequenceNotStr[MarketConfigurationFields] | None = None,
+        query: str | None = None,
+        search_property: MarketConfigurationTextFields | SequenceNotStr[MarketConfigurationTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        min_max_price: float | None = None,
+        max_max_price: float | None = None,
+        min_min_price: float | None = None,
+        max_min_price: float | None = None,
+        timezone: str | list[str] | None = None,
+        timezone_prefix: str | None = None,
+        price_unit: str | list[str] | None = None,
+        price_unit_prefix: str | None = None,
+        min_price_steps: int | None = None,
+        max_price_steps: int | None = None,
+        min_tick_size: float | None = None,
+        max_tick_size: float | None = None,
+        time_unit: str | list[str] | None = None,
+        time_unit_prefix: str | None = None,
+        min_trade_lot: float | None = None,
+        max_trade_lot: float | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: MarketConfigurationFields | Sequence[MarketConfigurationFields] | None = None,
-        group_by: MarketConfigurationFields | Sequence[MarketConfigurationFields] | None = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: MarketConfigurationFields | SequenceNotStr[MarketConfigurationFields] | None = None,
+        property: MarketConfigurationFields | SequenceNotStr[MarketConfigurationFields] | None = None,
         query: str | None = None,
-        search_property: MarketConfigurationTextFields | Sequence[MarketConfigurationTextFields] | None = None,
+        search_property: MarketConfigurationTextFields | SequenceNotStr[MarketConfigurationTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         min_max_price: float | None = None,
@@ -433,15 +460,19 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         max_trade_lot: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across market configurations
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             query: The query to search for in the text field.
             search_property: The text field to search in.
             name: The name to filter on.
@@ -505,15 +536,13 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _MARKETCONFIGURATION_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            query,
-            search_property,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=query,
+            search_properties=search_property,  # type: ignore[arg-type]
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -521,7 +550,7 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         property: MarketConfigurationFields,
         interval: float,
         query: str | None = None,
-        search_property: MarketConfigurationTextFields | Sequence[MarketConfigurationTextFields] | None = None,
+        search_property: MarketConfigurationTextFields | SequenceNotStr[MarketConfigurationTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         min_max_price: float | None = None,
@@ -542,7 +571,7 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         max_trade_lot: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for market configurations
@@ -604,15 +633,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _MARKETCONFIGURATION_PROPERTIES_BY_FIELD,
             query,
-            search_property,
+            search_property,  # type: ignore[arg-type]
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -636,10 +664,11 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         max_trade_lot: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         sort_by: MarketConfigurationFields | Sequence[MarketConfigurationFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> MarketConfigurationList:
         """List/filter market configurations
 
@@ -668,6 +697,9 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             List of requested market configurations
@@ -708,7 +740,7 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_MARKETCONFIGURATION_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
         )

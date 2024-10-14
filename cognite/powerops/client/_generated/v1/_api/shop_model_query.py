@@ -24,16 +24,18 @@ if TYPE_CHECKING:
     from .shop_attribute_mapping_query import ShopAttributeMappingQueryAPI
 
 
+
 class ShopModelQueryAPI(QueryAPI[T_DomainModelList]):
+    _view_id = dm.ViewId("power_ops_core", "ShopModel", "1")
+
     def __init__(
         self,
         client: CogniteClient,
         builder: QueryBuilder[T_DomainModelList],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId],
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
-        super().__init__(client, builder, view_by_read_class)
+        super().__init__(client, builder)
 
         self._builder.append(
             QueryStep(
@@ -42,7 +44,7 @@ class ShopModelQueryAPI(QueryAPI[T_DomainModelList]):
                     from_=self._builder[-1].name if self._builder else None,
                     filter=filter_,
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(self._view_by_read_class[ShopModel], ["*"])]),
+                select=dm.query.Select([dm.query.SourceSelector(self._view_id, ["*"])]),
                 result_cls=ShopModel,
                 max_retrieve_limit=limit,
             )
@@ -64,7 +66,7 @@ class ShopModelQueryAPI(QueryAPI[T_DomainModelList]):
         external_id_prefix_edge: str | None = None,
         space_edge: str | list[str] | None = None,
         filter: dm.Filter | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
+        limit: int = DEFAULT_QUERY_LIMIT,
     ) -> ShopFileQueryAPI[T_DomainModelList]:
         """Query along the cog shop files config edges of the shop model.
 
@@ -94,6 +96,7 @@ class ShopModelQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = self._builder[-1].name
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "ShopModel.cogShopFilesConfig"),
+
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -110,7 +113,7 @@ class ShopModelQueryAPI(QueryAPI[T_DomainModelList]):
             )
         )
 
-        view_id = self._view_by_read_class[ShopFile]
+        view_id = ShopFileQueryAPI._view_id
         has_data = dm.filters.HasData(views=[view_id])
         node_filer = _create_shop_file_filter(
             view_id,
@@ -127,7 +130,7 @@ class ShopModelQueryAPI(QueryAPI[T_DomainModelList]):
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        return ShopFileQueryAPI(self._client, self._builder, self._view_by_read_class, node_filer, limit)
+        return ShopFileQueryAPI(self._client, self._builder, node_filer, limit)
 
     def base_attribute_mappings(
         self,
@@ -146,7 +149,7 @@ class ShopModelQueryAPI(QueryAPI[T_DomainModelList]):
         external_id_prefix_edge: str | None = None,
         space_edge: str | list[str] | None = None,
         filter: dm.Filter | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
+        limit: int = DEFAULT_QUERY_LIMIT,
     ) -> ShopAttributeMappingQueryAPI[T_DomainModelList]:
         """Query along the base attribute mapping edges of the shop model.
 
@@ -177,6 +180,7 @@ class ShopModelQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = self._builder[-1].name
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "ShopModel.baseAttributeMappings"),
+
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -193,7 +197,7 @@ class ShopModelQueryAPI(QueryAPI[T_DomainModelList]):
             )
         )
 
-        view_id = self._view_by_read_class[ShopAttributeMapping]
+        view_id = ShopAttributeMappingQueryAPI._view_id
         has_data = dm.filters.HasData(views=[view_id])
         node_filer = _create_shop_attribute_mapping_filter(
             view_id,
@@ -211,7 +215,7 @@ class ShopModelQueryAPI(QueryAPI[T_DomainModelList]):
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        return ShopAttributeMappingQueryAPI(self._client, self._builder, self._view_by_read_class, node_filer, limit)
+        return ShopAttributeMappingQueryAPI(self._client, self._builder, node_filer, limit)
 
     def query(
         self,

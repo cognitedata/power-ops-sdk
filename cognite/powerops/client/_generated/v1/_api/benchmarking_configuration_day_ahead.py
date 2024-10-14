@@ -6,7 +6,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -24,54 +24,36 @@ from cognite.powerops.client._generated.v1.data_classes._benchmarking_configurat
     _BENCHMARKINGCONFIGURATIONDAYAHEAD_PROPERTIES_BY_FIELD,
     _create_benchmarking_configuration_day_ahead_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
-from .benchmarking_configuration_day_ahead_bid_configurations import (
-    BenchmarkingConfigurationDayAheadBidConfigurationsAPI,
-)
-from .benchmarking_configuration_day_ahead_assets_per_shop_model import (
-    BenchmarkingConfigurationDayAheadAssetsPerShopModelAPI,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
+from .benchmarking_configuration_day_ahead_bid_configurations import BenchmarkingConfigurationDayAheadBidConfigurationsAPI
+from .benchmarking_configuration_day_ahead_assets_per_shop_model import BenchmarkingConfigurationDayAheadAssetsPerShopModelAPI
 from .benchmarking_configuration_day_ahead_query import BenchmarkingConfigurationDayAheadQueryAPI
 
 
-class BenchmarkingConfigurationDayAheadAPI(
-    NodeAPI[
-        BenchmarkingConfigurationDayAhead, BenchmarkingConfigurationDayAheadWrite, BenchmarkingConfigurationDayAheadList
-    ]
-):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[BenchmarkingConfigurationDayAhead]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=BenchmarkingConfigurationDayAhead,
-            class_list=BenchmarkingConfigurationDayAheadList,
-            class_write_list=BenchmarkingConfigurationDayAheadWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class BenchmarkingConfigurationDayAheadAPI(NodeAPI[BenchmarkingConfigurationDayAhead, BenchmarkingConfigurationDayAheadWrite, BenchmarkingConfigurationDayAheadList, BenchmarkingConfigurationDayAheadWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "BenchmarkingConfigurationDayAhead", "1")
+    _properties_by_field = _BENCHMARKINGCONFIGURATIONDAYAHEAD_PROPERTIES_BY_FIELD
+    _class_type = BenchmarkingConfigurationDayAhead
+    _class_list = BenchmarkingConfigurationDayAheadList
+    _class_write_list = BenchmarkingConfigurationDayAheadWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
         self.bid_configurations_edge = BenchmarkingConfigurationDayAheadBidConfigurationsAPI(client)
         self.assets_per_shop_model_edge = BenchmarkingConfigurationDayAheadAssetsPerShopModelAPI(client)
 
     def __call__(
-        self,
-        name: str | list[str] | None = None,
-        name_prefix: str | None = None,
-        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        shop_start_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        shop_end_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            name: str | list[str] | None = None,
+            name_prefix: str | None = None,
+            price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            shop_start_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            shop_end_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> BenchmarkingConfigurationDayAheadQueryAPI[BenchmarkingConfigurationDayAheadList]:
         """Query starting at benchmarking configuration day aheads.
 
@@ -103,15 +85,12 @@ class BenchmarkingConfigurationDayAheadAPI(
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(BenchmarkingConfigurationDayAheadList)
-        return BenchmarkingConfigurationDayAheadQueryAPI(
-            self._client, builder, self._view_by_read_class, filter_, limit
-        )
+        return BenchmarkingConfigurationDayAheadQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
-        benchmarking_configuration_day_ahead: (
-            BenchmarkingConfigurationDayAheadWrite | Sequence[BenchmarkingConfigurationDayAheadWrite]
-        ),
+        benchmarking_configuration_day_ahead: BenchmarkingConfigurationDayAheadWrite | Sequence[BenchmarkingConfigurationDayAheadWrite],
         replace: bool = False,
         write_none: bool = False,
     ) -> ResourcesWriteResult:
@@ -153,9 +132,7 @@ class BenchmarkingConfigurationDayAheadAPI(
         )
         return self._apply(benchmarking_configuration_day_ahead, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more benchmarking configuration day ahead.
 
         Args:
@@ -185,18 +162,14 @@ class BenchmarkingConfigurationDayAheadAPI(
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(
-        self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE
-    ) -> BenchmarkingConfigurationDayAhead | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingConfigurationDayAhead | None:
+        ...
 
     @overload
-    def retrieve(
-        self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> BenchmarkingConfigurationDayAheadList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingConfigurationDayAheadList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> BenchmarkingConfigurationDayAhead | BenchmarkingConfigurationDayAheadList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingConfigurationDayAhead | BenchmarkingConfigurationDayAheadList | None:
         """Retrieve one or more benchmarking configuration day aheads by id(s).
 
         Args:
@@ -234,15 +207,14 @@ class BenchmarkingConfigurationDayAheadAPI(
                     "outwards",
                     dm.ViewId("power_ops_core", "ShopModelWithAssets", "1"),
                 ),
-            ],
+                                               ]
         )
+
 
     def search(
         self,
         query: str,
-        properties: (
-            BenchmarkingConfigurationDayAheadTextFields | Sequence[BenchmarkingConfigurationDayAheadTextFields] | None
-        ) = None,
+        properties: BenchmarkingConfigurationDayAheadTextFields | SequenceNotStr[BenchmarkingConfigurationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
@@ -250,8 +222,11 @@ class BenchmarkingConfigurationDayAheadAPI(
         shop_end_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: BenchmarkingConfigurationDayAheadFields | SequenceNotStr[BenchmarkingConfigurationDayAheadFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> BenchmarkingConfigurationDayAheadList:
         """Search benchmarking configuration day aheads
 
@@ -267,6 +242,11 @@ class BenchmarkingConfigurationDayAheadAPI(
             space: The space to filter on.
             limit: Maximum number of benchmarking configuration day aheads to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             Search results benchmarking configuration day aheads matching the query.
@@ -292,26 +272,23 @@ class BenchmarkingConfigurationDayAheadAPI(
             filter,
         )
         return self._search(
-            self._view_id, query, _BENCHMARKINGCONFIGURATIONDAYAHEAD_PROPERTIES_BY_FIELD, properties, filter_, limit
+            query=query,
+            properties=properties,
+            filter_=filter_,
+            limit=limit,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
         )
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: (
-            BenchmarkingConfigurationDayAheadFields | Sequence[BenchmarkingConfigurationDayAheadFields] | None
-        ) = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: BenchmarkingConfigurationDayAheadFields | SequenceNotStr[BenchmarkingConfigurationDayAheadFields] | None = None,
         query: str | None = None,
-        search_properties: (
-            BenchmarkingConfigurationDayAheadTextFields | Sequence[BenchmarkingConfigurationDayAheadTextFields] | None
-        ) = None,
+        search_property: BenchmarkingConfigurationDayAheadTextFields | SequenceNotStr[BenchmarkingConfigurationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
@@ -319,27 +296,19 @@ class BenchmarkingConfigurationDayAheadAPI(
         shop_end_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: (
-            BenchmarkingConfigurationDayAheadFields | Sequence[BenchmarkingConfigurationDayAheadFields] | None
-        ) = None,
-        group_by: BenchmarkingConfigurationDayAheadFields | Sequence[BenchmarkingConfigurationDayAheadFields] = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: BenchmarkingConfigurationDayAheadFields | SequenceNotStr[BenchmarkingConfigurationDayAheadFields] | None = None,
         query: str | None = None,
-        search_properties: (
-            BenchmarkingConfigurationDayAheadTextFields | Sequence[BenchmarkingConfigurationDayAheadTextFields] | None
-        ) = None,
+        search_property: BenchmarkingConfigurationDayAheadTextFields | SequenceNotStr[BenchmarkingConfigurationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
@@ -347,28 +316,42 @@ class BenchmarkingConfigurationDayAheadAPI(
         shop_end_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: BenchmarkingConfigurationDayAheadFields | SequenceNotStr[BenchmarkingConfigurationDayAheadFields],
+        property: BenchmarkingConfigurationDayAheadFields | SequenceNotStr[BenchmarkingConfigurationDayAheadFields] | None = None,
+        query: str | None = None,
+        search_property: BenchmarkingConfigurationDayAheadTextFields | SequenceNotStr[BenchmarkingConfigurationDayAheadTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        shop_start_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        shop_end_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: (
-            BenchmarkingConfigurationDayAheadFields | Sequence[BenchmarkingConfigurationDayAheadFields] | None
-        ) = None,
-        group_by: (
-            BenchmarkingConfigurationDayAheadFields | Sequence[BenchmarkingConfigurationDayAheadFields] | None
-        ) = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: BenchmarkingConfigurationDayAheadFields | SequenceNotStr[BenchmarkingConfigurationDayAheadFields] | None = None,
+        property: BenchmarkingConfigurationDayAheadFields | SequenceNotStr[BenchmarkingConfigurationDayAheadFields] | None = None,
         query: str | None = None,
-        search_property: (
-            BenchmarkingConfigurationDayAheadTextFields | Sequence[BenchmarkingConfigurationDayAheadTextFields] | None
-        ) = None,
+        search_property: BenchmarkingConfigurationDayAheadTextFields | SequenceNotStr[BenchmarkingConfigurationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
@@ -376,15 +359,19 @@ class BenchmarkingConfigurationDayAheadAPI(
         shop_end_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across benchmarking configuration day aheads
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             query: The query to search for in the text field.
             search_property: The text field to search in.
             name: The name to filter on.
@@ -422,15 +409,13 @@ class BenchmarkingConfigurationDayAheadAPI(
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _BENCHMARKINGCONFIGURATIONDAYAHEAD_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            query,
-            search_property,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=query,
+            search_properties=search_property,  # type: ignore[arg-type]
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -438,9 +423,7 @@ class BenchmarkingConfigurationDayAheadAPI(
         property: BenchmarkingConfigurationDayAheadFields,
         interval: float,
         query: str | None = None,
-        search_property: (
-            BenchmarkingConfigurationDayAheadTextFields | Sequence[BenchmarkingConfigurationDayAheadTextFields] | None
-        ) = None,
+        search_property: BenchmarkingConfigurationDayAheadTextFields | SequenceNotStr[BenchmarkingConfigurationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
@@ -448,7 +431,7 @@ class BenchmarkingConfigurationDayAheadAPI(
         shop_end_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for benchmarking configuration day aheads
@@ -484,15 +467,14 @@ class BenchmarkingConfigurationDayAheadAPI(
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _BENCHMARKINGCONFIGURATIONDAYAHEAD_PROPERTIES_BY_FIELD,
             query,
-            search_property,
+            search_property,  # type: ignore[arg-type]
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -503,12 +485,11 @@ class BenchmarkingConfigurationDayAheadAPI(
         shop_end_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-        sort_by: (
-            BenchmarkingConfigurationDayAheadFields | Sequence[BenchmarkingConfigurationDayAheadFields] | None
-        ) = None,
+        sort_by: BenchmarkingConfigurationDayAheadFields | Sequence[BenchmarkingConfigurationDayAheadFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
         retrieve_edges: bool = True,
     ) -> BenchmarkingConfigurationDayAheadList:
         """List/filter benchmarking configuration day aheads
@@ -525,6 +506,9 @@ class BenchmarkingConfigurationDayAheadAPI(
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
             retrieve_edges: Whether to retrieve `bid_configurations` or `assets_per_shop_model` external ids for the benchmarking configuration day aheads. Defaults to True.
 
         Returns:
@@ -554,9 +538,9 @@ class BenchmarkingConfigurationDayAheadAPI(
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_BENCHMARKINGCONFIGURATIONDAYAHEAD_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
             retrieve_edges=retrieve_edges,
             edge_api_name_type_direction_view_id_penta=[
                 (
@@ -573,5 +557,5 @@ class BenchmarkingConfigurationDayAheadAPI(
                     "outwards",
                     dm.ViewId("power_ops_core", "ShopModelWithAssets", "1"),
                 ),
-            ],
+                                               ]
         )

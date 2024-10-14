@@ -7,7 +7,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -25,53 +25,43 @@ from cognite.powerops.client._generated.v1.data_classes._alert import (
     _ALERT_PROPERTIES_BY_FIELD,
     _create_alert_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
 from .alert_query import AlertQueryAPI
 
 
-class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[Alert]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=Alert,
-            class_list=AlertList,
-            class_write_list=AlertWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList, AlertWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "Alert", "1")
+    _properties_by_field = _ALERT_PROPERTIES_BY_FIELD
+    _class_type = Alert
+    _class_list = AlertList
+    _class_write_list = AlertWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
 
     def __call__(
-        self,
-        min_time: datetime.datetime | None = None,
-        max_time: datetime.datetime | None = None,
-        workflow_execution_id: str | list[str] | None = None,
-        workflow_execution_id_prefix: str | None = None,
-        title: str | list[str] | None = None,
-        title_prefix: str | None = None,
-        description: str | list[str] | None = None,
-        description_prefix: str | None = None,
-        severity: str | list[str] | None = None,
-        severity_prefix: str | None = None,
-        alert_type: str | list[str] | None = None,
-        alert_type_prefix: str | None = None,
-        min_status_code: int | None = None,
-        max_status_code: int | None = None,
-        calculation_run: str | list[str] | None = None,
-        calculation_run_prefix: str | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            min_time: datetime.datetime | None = None,
+            max_time: datetime.datetime | None = None,
+            workflow_execution_id: str | list[str] | None = None,
+            workflow_execution_id_prefix: str | None = None,
+            title: str | list[str] | None = None,
+            title_prefix: str | None = None,
+            description: str | list[str] | None = None,
+            description_prefix: str | None = None,
+            severity: str | list[str] | None = None,
+            severity_prefix: str | None = None,
+            alert_type: str | list[str] | None = None,
+            alert_type_prefix: str | None = None,
+            min_status_code: int | None = None,
+            max_status_code: int | None = None,
+            calculation_run: str | list[str] | None = None,
+            calculation_run_prefix: str | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> AlertQueryAPI[AlertList]:
         """Query starting at alerts.
 
@@ -125,7 +115,8 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(AlertList)
-        return AlertQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        return AlertQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
@@ -167,9 +158,7 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
         )
         return self._apply(alert, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more alert.
 
         Args:
@@ -199,14 +188,14 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> Alert | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> Alert | None:
+        ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> AlertList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> AlertList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> Alert | AlertList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> Alert | AlertList | None:
         """Retrieve one or more alerts by id(s).
 
         Args:
@@ -230,7 +219,7 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
     def search(
         self,
         query: str,
-        properties: AlertTextFields | Sequence[AlertTextFields] | None = None,
+        properties: AlertTextFields | SequenceNotStr[AlertTextFields] | None = None,
         min_time: datetime.datetime | None = None,
         max_time: datetime.datetime | None = None,
         workflow_execution_id: str | list[str] | None = None,
@@ -249,8 +238,11 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
         calculation_run_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: AlertFields | SequenceNotStr[AlertFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> AlertList:
         """Search alerts
 
@@ -277,6 +269,11 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
             space: The space to filter on.
             limit: Maximum number of alerts to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             Search results alerts matching the query.
@@ -312,21 +309,24 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
             space,
             filter,
         )
-        return self._search(self._view_id, query, _ALERT_PROPERTIES_BY_FIELD, properties, filter_, limit)
+        return self._search(
+            query=query,
+            properties=properties,
+            filter_=filter_,
+            limit=limit,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
+        )
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: AlertFields | Sequence[AlertFields] | None = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: AlertFields | SequenceNotStr[AlertFields] | None = None,
         query: str | None = None,
-        search_properties: AlertTextFields | Sequence[AlertTextFields] | None = None,
+        search_property: AlertTextFields | SequenceNotStr[AlertTextFields] | None = None,
         min_time: datetime.datetime | None = None,
         max_time: datetime.datetime | None = None,
         workflow_execution_id: str | list[str] | None = None,
@@ -345,23 +345,19 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
         calculation_run_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: AlertFields | Sequence[AlertFields] | None = None,
-        group_by: AlertFields | Sequence[AlertFields] = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: AlertFields | SequenceNotStr[AlertFields] | None = None,
         query: str | None = None,
-        search_properties: AlertTextFields | Sequence[AlertTextFields] | None = None,
+        search_property: AlertTextFields | SequenceNotStr[AlertTextFields] | None = None,
         min_time: datetime.datetime | None = None,
         max_time: datetime.datetime | None = None,
         workflow_execution_id: str | list[str] | None = None,
@@ -380,22 +376,53 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
         calculation_run_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: AlertFields | SequenceNotStr[AlertFields],
+        property: AlertFields | SequenceNotStr[AlertFields] | None = None,
+        query: str | None = None,
+        search_property: AlertTextFields | SequenceNotStr[AlertTextFields] | None = None,
+        min_time: datetime.datetime | None = None,
+        max_time: datetime.datetime | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        title: str | list[str] | None = None,
+        title_prefix: str | None = None,
+        description: str | list[str] | None = None,
+        description_prefix: str | None = None,
+        severity: str | list[str] | None = None,
+        severity_prefix: str | None = None,
+        alert_type: str | list[str] | None = None,
+        alert_type_prefix: str | None = None,
+        min_status_code: int | None = None,
+        max_status_code: int | None = None,
+        calculation_run: str | list[str] | None = None,
+        calculation_run_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: AlertFields | Sequence[AlertFields] | None = None,
-        group_by: AlertFields | Sequence[AlertFields] | None = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: AlertFields | SequenceNotStr[AlertFields] | None = None,
+        property: AlertFields | SequenceNotStr[AlertFields] | None = None,
         query: str | None = None,
-        search_property: AlertTextFields | Sequence[AlertTextFields] | None = None,
+        search_property: AlertTextFields | SequenceNotStr[AlertTextFields] | None = None,
         min_time: datetime.datetime | None = None,
         max_time: datetime.datetime | None = None,
         workflow_execution_id: str | list[str] | None = None,
@@ -414,15 +441,19 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
         calculation_run_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across alerts
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             query: The query to search for in the text field.
             search_property: The text field to search in.
             min_time: The minimum value of the time to filter on.
@@ -482,15 +513,13 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _ALERT_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            query,
-            search_property,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=query,
+            search_properties=search_property,  # type: ignore[arg-type]
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -498,7 +527,7 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
         property: AlertFields,
         interval: float,
         query: str | None = None,
-        search_property: AlertTextFields | Sequence[AlertTextFields] | None = None,
+        search_property: AlertTextFields | SequenceNotStr[AlertTextFields] | None = None,
         min_time: datetime.datetime | None = None,
         max_time: datetime.datetime | None = None,
         workflow_execution_id: str | list[str] | None = None,
@@ -517,7 +546,7 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
         calculation_run_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for alerts
@@ -575,15 +604,14 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _ALERT_PROPERTIES_BY_FIELD,
             query,
-            search_property,
+            search_property,  # type: ignore[arg-type]
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -605,10 +633,11 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
         calculation_run_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         sort_by: AlertFields | Sequence[AlertFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> AlertList:
         """List/filter alerts
 
@@ -635,6 +664,9 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             List of requested alerts
@@ -673,7 +705,7 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_ALERT_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
         )

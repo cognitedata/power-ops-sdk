@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from typing import Any, Literal, Optional, Union
+from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -13,7 +13,6 @@ from ._core import (
     DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
-    DomainModelCore,
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
@@ -32,13 +31,12 @@ __all__ = [
     "MarketConfigurationApplyList",
     "MarketConfigurationFields",
     "MarketConfigurationTextFields",
+    "MarketConfigurationGraphQL",
 ]
 
 
 MarketConfigurationTextFields = Literal["name", "timezone", "price_unit", "time_unit"]
-MarketConfigurationFields = Literal[
-    "name", "max_price", "min_price", "timezone", "price_unit", "price_steps", "tick_size", "time_unit", "trade_lot"
-]
+MarketConfigurationFields = Literal["name", "max_price", "min_price", "timezone", "price_unit", "price_steps", "tick_size", "time_unit", "trade_lot"]
 
 _MARKETCONFIGURATION_PROPERTIES_BY_FIELD = {
     "name": "name",
@@ -51,7 +49,6 @@ _MARKETCONFIGURATION_PROPERTIES_BY_FIELD = {
     "time_unit": "timeUnit",
     "trade_lot": "tradeLot",
 }
-
 
 class MarketConfigurationGraphQL(GraphQLCore):
     """This represents the reading version of market configuration, used
@@ -73,8 +70,7 @@ class MarketConfigurationGraphQL(GraphQLCore):
         time_unit: The time unit ('1h')
         trade_lot: 'Granularity' of the volumes; trade lot = 0.2 means that volumes must be 'rounded to nearest 0.2' (i. e. 66.5 is not allowed, but 66.4 is)
     """
-
-    view_id = dm.ViewId("power_ops_core", "MarketConfiguration", "1")
+    view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "MarketConfiguration", "1")
     name: Optional[str] = None
     max_price: Optional[float] = Field(None, alias="maxPrice")
     min_price: Optional[float] = Field(None, alias="minPrice")
@@ -96,6 +92,8 @@ class MarketConfigurationGraphQL(GraphQLCore):
             )
         return values
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> MarketConfiguration:
         """Convert this GraphQL format of market configuration to the reading format."""
         if self.data_record is None:
@@ -119,6 +117,9 @@ class MarketConfigurationGraphQL(GraphQLCore):
             trade_lot=self.trade_lot,
         )
 
+
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> MarketConfigurationWrite:
         """Convert this GraphQL format of market configuration to the writing format."""
         return MarketConfigurationWrite(
@@ -156,11 +157,10 @@ class MarketConfiguration(DomainModel):
         time_unit: The time unit ('1h')
         trade_lot: 'Granularity' of the volumes; trade lot = 0.2 means that volumes must be 'rounded to nearest 0.2' (i. e. 66.5 is not allowed, but 66.4 is)
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "MarketConfiguration", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "MarketConfiguration"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "MarketConfiguration")
     name: str
     max_price: float = Field(alias="maxPrice")
     min_price: float = Field(alias="minPrice")
@@ -217,11 +217,10 @@ class MarketConfigurationWrite(DomainModelWrite):
         time_unit: The time unit ('1h')
         trade_lot: 'Granularity' of the volumes; trade lot = 0.2 means that volumes must be 'rounded to nearest 0.2' (i. e. 66.5 is not allowed, but 66.4 is)
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "MarketConfiguration", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "MarketConfiguration"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "MarketConfiguration")
     name: str
     max_price: float = Field(alias="maxPrice")
     min_price: float = Field(alias="minPrice")
@@ -235,17 +234,12 @@ class MarketConfigurationWrite(DomainModelWrite):
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
-
-        write_view = (view_by_read_class or {}).get(
-            MarketConfiguration, dm.ViewId("power_ops_core", "MarketConfiguration", "1")
-        )
 
         properties: dict[str, Any] = {}
 
@@ -276,6 +270,7 @@ class MarketConfigurationWrite(DomainModelWrite):
         if self.trade_lot is not None:
             properties["tradeLot"] = self.trade_lot
 
+
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -284,13 +279,14 @@ class MarketConfigurationWrite(DomainModelWrite):
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
-                        source=write_view,
+                        source=self._view_id,
                         properties=properties,
-                    )
-                ],
+                )],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
+
+
 
         return resources
 
@@ -331,8 +327,8 @@ class MarketConfigurationWriteList(DomainModelWriteList[MarketConfigurationWrite
 
     _INSTANCE = MarketConfigurationWrite
 
-
 class MarketConfigurationApplyList(MarketConfigurationWriteList): ...
+
 
 
 def _create_market_configuration_filter(
@@ -359,7 +355,7 @@ def _create_market_configuration_filter(
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
-    filters = []
+    filters: list[dm.Filter] = []
     if isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
@@ -383,9 +379,7 @@ def _create_market_configuration_filter(
     if price_unit_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("priceUnit"), value=price_unit_prefix))
     if min_price_steps is not None or max_price_steps is not None:
-        filters.append(
-            dm.filters.Range(view_id.as_property_ref("priceSteps"), gte=min_price_steps, lte=max_price_steps)
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("priceSteps"), gte=min_price_steps, lte=max_price_steps))
     if min_tick_size is not None or max_tick_size is not None:
         filters.append(dm.filters.Range(view_id.as_property_ref("tickSize"), gte=min_tick_size, lte=max_tick_size))
     if isinstance(time_unit, str):

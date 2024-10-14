@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from typing import Any, Literal, Optional, Union
+from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -13,7 +13,6 @@ from ._core import (
     DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
-    DomainModelCore,
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
@@ -32,13 +31,12 @@ __all__ = [
     "DateSpecificationApplyList",
     "DateSpecificationFields",
     "DateSpecificationTextFields",
+    "DateSpecificationGraphQL",
 ]
 
 
 DateSpecificationTextFields = Literal["name", "processing_timezone", "resulting_timezone", "floor_frame"]
-DateSpecificationFields = Literal[
-    "name", "processing_timezone", "resulting_timezone", "floor_frame", "shift_definition"
-]
+DateSpecificationFields = Literal["name", "processing_timezone", "resulting_timezone", "floor_frame", "shift_definition"]
 
 _DATESPECIFICATION_PROPERTIES_BY_FIELD = {
     "name": "name",
@@ -47,7 +45,6 @@ _DATESPECIFICATION_PROPERTIES_BY_FIELD = {
     "floor_frame": "floorFrame",
     "shift_definition": "shiftDefinition",
 }
-
 
 class DateSpecificationGraphQL(GraphQLCore):
     """This represents the reading version of date specification, used
@@ -65,8 +62,7 @@ class DateSpecificationGraphQL(GraphQLCore):
         floor_frame: TODO description
         shift_definition: TODO description
     """
-
-    view_id = dm.ViewId("power_ops_core", "DateSpecification", "1")
+    view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "DateSpecification", "1")
     name: Optional[str] = None
     processing_timezone: Optional[str] = Field(None, alias="processingTimezone")
     resulting_timezone: Optional[str] = Field(None, alias="resultingTimezone")
@@ -84,6 +80,8 @@ class DateSpecificationGraphQL(GraphQLCore):
             )
         return values
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> DateSpecification:
         """Convert this GraphQL format of date specification to the reading format."""
         if self.data_record is None:
@@ -103,6 +101,9 @@ class DateSpecificationGraphQL(GraphQLCore):
             shift_definition=self.shift_definition,
         )
 
+
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> DateSpecificationWrite:
         """Convert this GraphQL format of date specification to the writing format."""
         return DateSpecificationWrite(
@@ -132,11 +133,10 @@ class DateSpecification(DomainModel):
         floor_frame: TODO description
         shift_definition: TODO description
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "DateSpecification", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "DateSpecification"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "DateSpecification")
     name: str
     processing_timezone: Optional[str] = Field(None, alias="processingTimezone")
     resulting_timezone: Optional[str] = Field(None, alias="resultingTimezone")
@@ -181,11 +181,10 @@ class DateSpecificationWrite(DomainModelWrite):
         floor_frame: TODO description
         shift_definition: TODO description
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "DateSpecification", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "DateSpecification"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "DateSpecification")
     name: str
     processing_timezone: Optional[str] = Field("UTC", alias="processingTimezone")
     resulting_timezone: Optional[str] = Field("UTC", alias="resultingTimezone")
@@ -195,17 +194,12 @@ class DateSpecificationWrite(DomainModelWrite):
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
-
-        write_view = (view_by_read_class or {}).get(
-            DateSpecification, dm.ViewId("power_ops_core", "DateSpecification", "1")
-        )
 
         properties: dict[str, Any] = {}
 
@@ -224,6 +218,7 @@ class DateSpecificationWrite(DomainModelWrite):
         if self.shift_definition is not None or write_none:
             properties["shiftDefinition"] = self.shift_definition
 
+
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -232,13 +227,14 @@ class DateSpecificationWrite(DomainModelWrite):
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
-                        source=write_view,
+                        source=self._view_id,
                         properties=properties,
-                    )
-                ],
+                )],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
+
+
 
         return resources
 
@@ -279,8 +275,8 @@ class DateSpecificationWriteList(DomainModelWriteList[DateSpecificationWrite]):
 
     _INSTANCE = DateSpecificationWrite
 
-
 class DateSpecificationApplyList(DateSpecificationWriteList): ...
+
 
 
 def _create_date_specification_filter(
@@ -297,7 +293,7 @@ def _create_date_specification_filter(
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
-    filters = []
+    filters: list[dm.Filter] = []
     if isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
@@ -309,9 +305,7 @@ def _create_date_specification_filter(
     if processing_timezone and isinstance(processing_timezone, list):
         filters.append(dm.filters.In(view_id.as_property_ref("processingTimezone"), values=processing_timezone))
     if processing_timezone_prefix is not None:
-        filters.append(
-            dm.filters.Prefix(view_id.as_property_ref("processingTimezone"), value=processing_timezone_prefix)
-        )
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("processingTimezone"), value=processing_timezone_prefix))
     if isinstance(resulting_timezone, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("resultingTimezone"), value=resulting_timezone))
     if resulting_timezone and isinstance(resulting_timezone, list):

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from typing import TYPE_CHECKING, Any, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
@@ -14,7 +14,6 @@ from ._core import (
     DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
-    DomainModelCore,
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
@@ -37,6 +36,7 @@ __all__ = [
     "PriceProductionApplyList",
     "PriceProductionFields",
     "PriceProductionTextFields",
+    "PriceProductionGraphQL",
 ]
 
 
@@ -48,7 +48,6 @@ _PRICEPRODUCTION_PROPERTIES_BY_FIELD = {
     "price": "price",
     "production": "production",
 }
-
 
 class PriceProductionGraphQL(GraphQLCore):
     """This represents the reading version of price production, used
@@ -65,8 +64,7 @@ class PriceProductionGraphQL(GraphQLCore):
         production: The production field.
         shop_result: The shop result field.
     """
-
-    view_id = dm.ViewId("power_ops_core", "PriceProduction", "1")
+    view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceProduction", "1")
     name: Optional[str] = None
     price: Union[TimeSeries, dict, None] = None
     production: Union[TimeSeries, dict, None] = None
@@ -82,7 +80,6 @@ class PriceProductionGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
-
     @field_validator("shop_result", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -91,6 +88,8 @@ class PriceProductionGraphQL(GraphQLCore):
             return value["items"]
         return value
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> PriceProduction:
         """Convert this GraphQL format of price production to the reading format."""
         if self.data_record is None:
@@ -109,6 +108,9 @@ class PriceProductionGraphQL(GraphQLCore):
             shop_result=self.shop_result.as_read() if isinstance(self.shop_result, GraphQLCore) else self.shop_result,
         )
 
+
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> PriceProductionWrite:
         """Convert this GraphQL format of price production to the writing format."""
         return PriceProductionWrite(
@@ -136,11 +138,10 @@ class PriceProduction(DomainModel):
         production: The production field.
         shop_result: The shop result field.
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceProduction", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "PriceProduction"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "PriceProduction")
     name: str
     price: Union[TimeSeries, str, None] = None
     production: Union[TimeSeries, str, None] = None
@@ -182,11 +183,10 @@ class PriceProductionWrite(DomainModelWrite):
         production: The production field.
         shop_result: The shop result field.
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceProduction", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "PriceProduction"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "PriceProduction")
     name: str
     price: Union[TimeSeries, str, None] = None
     production: Union[TimeSeries, str, None] = None
@@ -195,7 +195,6 @@ class PriceProductionWrite(DomainModelWrite):
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
@@ -203,32 +202,23 @@ class PriceProductionWrite(DomainModelWrite):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(
-            PriceProduction, dm.ViewId("power_ops_core", "PriceProduction", "1")
-        )
-
         properties: dict[str, Any] = {}
 
         if self.name is not None:
             properties["name"] = self.name
 
         if self.price is not None or write_none:
-            properties["price"] = (
-                self.price if isinstance(self.price, str) or self.price is None else self.price.external_id
-            )
+            properties["price"] = self.price if isinstance(self.price, str) or self.price is None else self.price.external_id
 
         if self.production is not None or write_none:
-            properties["production"] = (
-                self.production
-                if isinstance(self.production, str) or self.production is None
-                else self.production.external_id
-            )
+            properties["production"] = self.production if isinstance(self.production, str) or self.production is None else self.production.external_id
 
         if self.shop_result is not None:
             properties["shopResult"] = {
-                "space": self.space if isinstance(self.shop_result, str) else self.shop_result.space,
+                "space":  self.space if isinstance(self.shop_result, str) else self.shop_result.space,
                 "externalId": self.shop_result if isinstance(self.shop_result, str) else self.shop_result.external_id,
             }
+
 
         if properties:
             this_node = dm.NodeApply(
@@ -238,16 +228,17 @@ class PriceProductionWrite(DomainModelWrite):
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
-                        source=write_view,
+                        source=self._view_id,
                         properties=properties,
-                    )
-                ],
+                )],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
+
+
         if isinstance(self.shop_result, DomainModelWrite):
-            other_resources = self.shop_result._to_instances_write(cache, view_by_read_class)
+            other_resources = self.shop_result._to_instances_write(cache)
             resources.extend(other_resources)
 
         if isinstance(self.price, CogniteTimeSeries):
@@ -295,8 +286,8 @@ class PriceProductionWriteList(DomainModelWriteList[PriceProductionWrite]):
 
     _INSTANCE = PriceProductionWrite
 
-
 class PriceProductionApplyList(PriceProductionWriteList): ...
+
 
 
 def _create_price_production_filter(
@@ -308,7 +299,7 @@ def _create_price_production_filter(
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
-    filters = []
+    filters: list[dm.Filter] = []
     if isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
@@ -316,32 +307,13 @@ def _create_price_production_filter(
     if name_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
     if shop_result and isinstance(shop_result, str):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("shopResult"),
-                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": shop_result},
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("shopResult"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": shop_result}))
     if shop_result and isinstance(shop_result, tuple):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("shopResult"), value={"space": shop_result[0], "externalId": shop_result[1]}
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("shopResult"), value={"space": shop_result[0], "externalId": shop_result[1]}))
     if shop_result and isinstance(shop_result, list) and isinstance(shop_result[0], str):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("shopResult"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in shop_result],
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("shopResult"), values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in shop_result]))
     if shop_result and isinstance(shop_result, list) and isinstance(shop_result[0], tuple):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("shopResult"),
-                values=[{"space": item[0], "externalId": item[1]} for item in shop_result],
-            )
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("shopResult"), values=[{"space": item[0], "externalId": item[1]} for item in shop_result]))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):

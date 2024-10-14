@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from typing import Any, Literal, Optional, Union
+from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -13,7 +13,6 @@ from ._core import (
     DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
-    DomainModelCore,
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
@@ -32,6 +31,7 @@ __all__ = [
     "FunctionInputApplyList",
     "FunctionInputFields",
     "FunctionInputTextFields",
+    "FunctionInputGraphQL",
 ]
 
 
@@ -44,7 +44,6 @@ _FUNCTIONINPUT_PROPERTIES_BY_FIELD = {
     "function_name": "functionName",
     "function_call_id": "functionCallId",
 }
-
 
 class FunctionInputGraphQL(GraphQLCore):
     """This represents the reading version of function input, used
@@ -61,8 +60,7 @@ class FunctionInputGraphQL(GraphQLCore):
         function_name: The name of the function
         function_call_id: The function call id
     """
-
-    view_id = dm.ViewId("power_ops_core", "FunctionInput", "1")
+    view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "FunctionInput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
@@ -79,6 +77,8 @@ class FunctionInputGraphQL(GraphQLCore):
             )
         return values
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> FunctionInput:
         """Convert this GraphQL format of function input to the reading format."""
         if self.data_record is None:
@@ -97,6 +97,9 @@ class FunctionInputGraphQL(GraphQLCore):
             function_call_id=self.function_call_id,
         )
 
+
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> FunctionInputWrite:
         """Convert this GraphQL format of function input to the writing format."""
         return FunctionInputWrite(
@@ -124,6 +127,7 @@ class FunctionInput(DomainModel):
         function_name: The name of the function
         function_call_id: The function call id
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "FunctionInput", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
@@ -168,6 +172,7 @@ class FunctionInputWrite(DomainModelWrite):
         function_name: The name of the function
         function_call_id: The function call id
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "FunctionInput", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
@@ -179,15 +184,12 @@ class FunctionInputWrite(DomainModelWrite):
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
-
-        write_view = (view_by_read_class or {}).get(FunctionInput, dm.ViewId("power_ops_core", "FunctionInput", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -203,6 +205,7 @@ class FunctionInputWrite(DomainModelWrite):
         if self.function_call_id is not None:
             properties["functionCallId"] = self.function_call_id
 
+
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -211,13 +214,14 @@ class FunctionInputWrite(DomainModelWrite):
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
-                        source=write_view,
+                        source=self._view_id,
                         properties=properties,
-                    )
-                ],
+                )],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
+
+
 
         return resources
 
@@ -258,8 +262,8 @@ class FunctionInputWriteList(DomainModelWriteList[FunctionInputWrite]):
 
     _INSTANCE = FunctionInputWrite
 
-
 class FunctionInputApplyList(FunctionInputWriteList): ...
+
 
 
 def _create_function_input_filter(
@@ -276,19 +280,15 @@ def _create_function_input_filter(
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
-    filters = []
+    filters: list[dm.Filter] = []
     if isinstance(workflow_execution_id, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id))
     if workflow_execution_id and isinstance(workflow_execution_id, list):
         filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
     if workflow_execution_id_prefix is not None:
-        filters.append(
-            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
-        )
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix))
     if min_workflow_step is not None or max_workflow_step is not None:
-        filters.append(
-            dm.filters.Range(view_id.as_property_ref("workflowStep"), gte=min_workflow_step, lte=max_workflow_step)
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("workflowStep"), gte=min_workflow_step, lte=max_workflow_step))
     if isinstance(function_name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("functionName"), value=function_name))
     if function_name and isinstance(function_name, list):

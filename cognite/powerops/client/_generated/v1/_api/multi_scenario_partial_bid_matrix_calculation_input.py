@@ -7,7 +7,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -25,61 +25,41 @@ from cognite.powerops.client._generated.v1.data_classes._multi_scenario_partial_
     _MULTISCENARIOPARTIALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD,
     _create_multi_scenario_partial_bid_matrix_calculation_input_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
-from .multi_scenario_partial_bid_matrix_calculation_input_price_production import (
-    MultiScenarioPartialBidMatrixCalculationInputPriceProductionAPI,
-)
-from .multi_scenario_partial_bid_matrix_calculation_input_query import (
-    MultiScenarioPartialBidMatrixCalculationInputQueryAPI,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
+from .multi_scenario_partial_bid_matrix_calculation_input_price_production import MultiScenarioPartialBidMatrixCalculationInputPriceProductionAPI
+from .multi_scenario_partial_bid_matrix_calculation_input_query import MultiScenarioPartialBidMatrixCalculationInputQueryAPI
 
 
-class MultiScenarioPartialBidMatrixCalculationInputAPI(
-    NodeAPI[
-        MultiScenarioPartialBidMatrixCalculationInput,
-        MultiScenarioPartialBidMatrixCalculationInputWrite,
-        MultiScenarioPartialBidMatrixCalculationInputList,
-    ]
-):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[MultiScenarioPartialBidMatrixCalculationInput]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=MultiScenarioPartialBidMatrixCalculationInput,
-            class_list=MultiScenarioPartialBidMatrixCalculationInputList,
-            class_write_list=MultiScenarioPartialBidMatrixCalculationInputWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class MultiScenarioPartialBidMatrixCalculationInputAPI(NodeAPI[MultiScenarioPartialBidMatrixCalculationInput, MultiScenarioPartialBidMatrixCalculationInputWrite, MultiScenarioPartialBidMatrixCalculationInputList, MultiScenarioPartialBidMatrixCalculationInputWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "MultiScenarioPartialBidMatrixCalculationInput", "1")
+    _properties_by_field = _MULTISCENARIOPARTIALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD
+    _class_type = MultiScenarioPartialBidMatrixCalculationInput
+    _class_list = MultiScenarioPartialBidMatrixCalculationInputList
+    _class_write_list = MultiScenarioPartialBidMatrixCalculationInputWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
         self.price_production_edge = MultiScenarioPartialBidMatrixCalculationInputPriceProductionAPI(client)
 
     def __call__(
-        self,
-        workflow_execution_id: str | list[str] | None = None,
-        workflow_execution_id_prefix: str | None = None,
-        min_workflow_step: int | None = None,
-        max_workflow_step: int | None = None,
-        function_name: str | list[str] | None = None,
-        function_name_prefix: str | None = None,
-        function_call_id: str | list[str] | None = None,
-        function_call_id_prefix: str | None = None,
-        min_bid_date: datetime.date | None = None,
-        max_bid_date: datetime.date | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            workflow_execution_id: str | list[str] | None = None,
+            workflow_execution_id_prefix: str | None = None,
+            min_workflow_step: int | None = None,
+            max_workflow_step: int | None = None,
+            function_name: str | list[str] | None = None,
+            function_name_prefix: str | None = None,
+            function_call_id: str | list[str] | None = None,
+            function_call_id_prefix: str | None = None,
+            min_bid_date: datetime.date | None = None,
+            max_bid_date: datetime.date | None = None,
+            bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> MultiScenarioPartialBidMatrixCalculationInputQueryAPI[MultiScenarioPartialBidMatrixCalculationInputList]:
         """Query starting at multi scenario partial bid matrix calculation inputs.
 
@@ -125,16 +105,12 @@ class MultiScenarioPartialBidMatrixCalculationInputAPI(
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(MultiScenarioPartialBidMatrixCalculationInputList)
-        return MultiScenarioPartialBidMatrixCalculationInputQueryAPI(
-            self._client, builder, self._view_by_read_class, filter_, limit
-        )
+        return MultiScenarioPartialBidMatrixCalculationInputQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
-        multi_scenario_partial_bid_matrix_calculation_input: (
-            MultiScenarioPartialBidMatrixCalculationInputWrite
-            | Sequence[MultiScenarioPartialBidMatrixCalculationInputWrite]
-        ),
+        multi_scenario_partial_bid_matrix_calculation_input: MultiScenarioPartialBidMatrixCalculationInputWrite | Sequence[MultiScenarioPartialBidMatrixCalculationInputWrite],
         replace: bool = False,
         write_none: bool = False,
     ) -> ResourcesWriteResult:
@@ -176,9 +152,7 @@ class MultiScenarioPartialBidMatrixCalculationInputAPI(
         )
         return self._apply(multi_scenario_partial_bid_matrix_calculation_input, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more multi scenario partial bid matrix calculation input.
 
         Args:
@@ -208,18 +182,14 @@ class MultiScenarioPartialBidMatrixCalculationInputAPI(
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(
-        self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE
-    ) -> MultiScenarioPartialBidMatrixCalculationInput | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> MultiScenarioPartialBidMatrixCalculationInput | None:
+        ...
 
     @overload
-    def retrieve(
-        self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> MultiScenarioPartialBidMatrixCalculationInputList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> MultiScenarioPartialBidMatrixCalculationInputList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> MultiScenarioPartialBidMatrixCalculationInput | MultiScenarioPartialBidMatrixCalculationInputList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> MultiScenarioPartialBidMatrixCalculationInput | MultiScenarioPartialBidMatrixCalculationInputList | None:
         """Retrieve one or more multi scenario partial bid matrix calculation inputs by id(s).
 
         Args:
@@ -250,17 +220,14 @@ class MultiScenarioPartialBidMatrixCalculationInputAPI(
                     "outwards",
                     dm.ViewId("power_ops_core", "PriceProduction", "1"),
                 ),
-            ],
+                                               ]
         )
+
 
     def search(
         self,
         query: str,
-        properties: (
-            MultiScenarioPartialBidMatrixCalculationInputTextFields
-            | Sequence[MultiScenarioPartialBidMatrixCalculationInputTextFields]
-            | None
-        ) = None,
+        properties: MultiScenarioPartialBidMatrixCalculationInputTextFields | SequenceNotStr[MultiScenarioPartialBidMatrixCalculationInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -275,8 +242,11 @@ class MultiScenarioPartialBidMatrixCalculationInputAPI(
         partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: MultiScenarioPartialBidMatrixCalculationInputFields | SequenceNotStr[MultiScenarioPartialBidMatrixCalculationInputFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> MultiScenarioPartialBidMatrixCalculationInputList:
         """Search multi scenario partial bid matrix calculation inputs
 
@@ -299,6 +269,11 @@ class MultiScenarioPartialBidMatrixCalculationInputAPI(
             space: The space to filter on.
             limit: Maximum number of multi scenario partial bid matrix calculation inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             Search results multi scenario partial bid matrix calculation inputs matching the query.
@@ -331,35 +306,23 @@ class MultiScenarioPartialBidMatrixCalculationInputAPI(
             filter,
         )
         return self._search(
-            self._view_id,
-            query,
-            _MULTISCENARIOPARTIALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD,
-            properties,
-            filter_,
-            limit,
+            query=query,
+            properties=properties,
+            filter_=filter_,
+            limit=limit,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
         )
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: (
-            MultiScenarioPartialBidMatrixCalculationInputFields
-            | Sequence[MultiScenarioPartialBidMatrixCalculationInputFields]
-            | None
-        ) = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: MultiScenarioPartialBidMatrixCalculationInputFields | SequenceNotStr[MultiScenarioPartialBidMatrixCalculationInputFields] | None = None,
         query: str | None = None,
-        search_properties: (
-            MultiScenarioPartialBidMatrixCalculationInputTextFields
-            | Sequence[MultiScenarioPartialBidMatrixCalculationInputTextFields]
-            | None
-        ) = None,
+        search_property: MultiScenarioPartialBidMatrixCalculationInputTextFields | SequenceNotStr[MultiScenarioPartialBidMatrixCalculationInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -374,34 +337,19 @@ class MultiScenarioPartialBidMatrixCalculationInputAPI(
         partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: (
-            MultiScenarioPartialBidMatrixCalculationInputFields
-            | Sequence[MultiScenarioPartialBidMatrixCalculationInputFields]
-            | None
-        ) = None,
-        group_by: (
-            MultiScenarioPartialBidMatrixCalculationInputFields
-            | Sequence[MultiScenarioPartialBidMatrixCalculationInputFields]
-        ) = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: MultiScenarioPartialBidMatrixCalculationInputFields | SequenceNotStr[MultiScenarioPartialBidMatrixCalculationInputFields] | None = None,
         query: str | None = None,
-        search_properties: (
-            MultiScenarioPartialBidMatrixCalculationInputTextFields
-            | Sequence[MultiScenarioPartialBidMatrixCalculationInputTextFields]
-            | None
-        ) = None,
+        search_property: MultiScenarioPartialBidMatrixCalculationInputTextFields | SequenceNotStr[MultiScenarioPartialBidMatrixCalculationInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -416,34 +364,49 @@ class MultiScenarioPartialBidMatrixCalculationInputAPI(
         partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: MultiScenarioPartialBidMatrixCalculationInputFields | SequenceNotStr[MultiScenarioPartialBidMatrixCalculationInputFields],
+        property: MultiScenarioPartialBidMatrixCalculationInputFields | SequenceNotStr[MultiScenarioPartialBidMatrixCalculationInputFields] | None = None,
+        query: str | None = None,
+        search_property: MultiScenarioPartialBidMatrixCalculationInputTextFields | SequenceNotStr[MultiScenarioPartialBidMatrixCalculationInputTextFields] | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
+        function_name: str | list[str] | None = None,
+        function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
+        min_bid_date: datetime.date | None = None,
+        max_bid_date: datetime.date | None = None,
+        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: (
-            MultiScenarioPartialBidMatrixCalculationInputFields
-            | Sequence[MultiScenarioPartialBidMatrixCalculationInputFields]
-            | None
-        ) = None,
-        group_by: (
-            MultiScenarioPartialBidMatrixCalculationInputFields
-            | Sequence[MultiScenarioPartialBidMatrixCalculationInputFields]
-            | None
-        ) = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: MultiScenarioPartialBidMatrixCalculationInputFields | SequenceNotStr[MultiScenarioPartialBidMatrixCalculationInputFields] | None = None,
+        property: MultiScenarioPartialBidMatrixCalculationInputFields | SequenceNotStr[MultiScenarioPartialBidMatrixCalculationInputFields] | None = None,
         query: str | None = None,
-        search_property: (
-            MultiScenarioPartialBidMatrixCalculationInputTextFields
-            | Sequence[MultiScenarioPartialBidMatrixCalculationInputTextFields]
-            | None
-        ) = None,
+        search_property: MultiScenarioPartialBidMatrixCalculationInputTextFields | SequenceNotStr[MultiScenarioPartialBidMatrixCalculationInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -458,15 +421,19 @@ class MultiScenarioPartialBidMatrixCalculationInputAPI(
         partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across multi scenario partial bid matrix calculation inputs
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             query: The query to search for in the text field.
             search_property: The text field to search in.
             workflow_execution_id: The workflow execution id to filter on.
@@ -518,15 +485,13 @@ class MultiScenarioPartialBidMatrixCalculationInputAPI(
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _MULTISCENARIOPARTIALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            query,
-            search_property,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=query,
+            search_properties=search_property,  # type: ignore[arg-type]
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -534,11 +499,7 @@ class MultiScenarioPartialBidMatrixCalculationInputAPI(
         property: MultiScenarioPartialBidMatrixCalculationInputFields,
         interval: float,
         query: str | None = None,
-        search_property: (
-            MultiScenarioPartialBidMatrixCalculationInputTextFields
-            | Sequence[MultiScenarioPartialBidMatrixCalculationInputTextFields]
-            | None
-        ) = None,
+        search_property: MultiScenarioPartialBidMatrixCalculationInputTextFields | SequenceNotStr[MultiScenarioPartialBidMatrixCalculationInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -553,7 +514,7 @@ class MultiScenarioPartialBidMatrixCalculationInputAPI(
         partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for multi scenario partial bid matrix calculation inputs
@@ -603,15 +564,14 @@ class MultiScenarioPartialBidMatrixCalculationInputAPI(
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _MULTISCENARIOPARTIALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD,
             query,
-            search_property,
+            search_property,  # type: ignore[arg-type]
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -629,14 +589,11 @@ class MultiScenarioPartialBidMatrixCalculationInputAPI(
         partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-        sort_by: (
-            MultiScenarioPartialBidMatrixCalculationInputFields
-            | Sequence[MultiScenarioPartialBidMatrixCalculationInputFields]
-            | None
-        ) = None,
+        sort_by: MultiScenarioPartialBidMatrixCalculationInputFields | Sequence[MultiScenarioPartialBidMatrixCalculationInputFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
         retrieve_edges: bool = True,
     ) -> MultiScenarioPartialBidMatrixCalculationInputList:
         """List/filter multi scenario partial bid matrix calculation inputs
@@ -660,6 +617,9 @@ class MultiScenarioPartialBidMatrixCalculationInputAPI(
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
             retrieve_edges: Whether to retrieve `price_production` external ids for the multi scenario partial bid matrix calculation inputs. Defaults to True.
 
         Returns:
@@ -696,9 +656,9 @@ class MultiScenarioPartialBidMatrixCalculationInputAPI(
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_MULTISCENARIOPARTIALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
             retrieve_edges=retrieve_edges,
             edge_api_name_type_direction_view_id_penta=[
                 (
@@ -708,5 +668,5 @@ class MultiScenarioPartialBidMatrixCalculationInputAPI(
                     "outwards",
                     dm.ViewId("power_ops_core", "PriceProduction", "1"),
                 ),
-            ],
+                                               ]
         )

@@ -7,7 +7,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -25,53 +25,43 @@ from cognite.powerops.client._generated.v1.data_classes._bid_document_afrr impor
     _BIDDOCUMENTAFRR_PROPERTIES_BY_FIELD,
     _create_bid_document_afrr_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
 from .bid_document_afrr_alerts import BidDocumentAFRRAlertsAPI
 from .bid_document_afrr_bids import BidDocumentAFRRBidsAPI
 from .bid_document_afrr_query import BidDocumentAFRRQueryAPI
 
 
-class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocumentAFRRList]):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[BidDocumentAFRR]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=BidDocumentAFRR,
-            class_list=BidDocumentAFRRList,
-            class_write_list=BidDocumentAFRRWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocumentAFRRList, BidDocumentAFRRWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "BidDocumentAFRR", "1")
+    _properties_by_field = _BIDDOCUMENTAFRR_PROPERTIES_BY_FIELD
+    _class_type = BidDocumentAFRR
+    _class_list = BidDocumentAFRRList
+    _class_write_list = BidDocumentAFRRWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
         self.alerts_edge = BidDocumentAFRRAlertsAPI(client)
         self.bids_edge = BidDocumentAFRRBidsAPI(client)
 
     def __call__(
-        self,
-        name: str | list[str] | None = None,
-        name_prefix: str | None = None,
-        workflow_execution_id: str | list[str] | None = None,
-        workflow_execution_id_prefix: str | None = None,
-        min_delivery_date: datetime.date | None = None,
-        max_delivery_date: datetime.date | None = None,
-        min_start_calculation: datetime.datetime | None = None,
-        max_start_calculation: datetime.datetime | None = None,
-        min_end_calculation: datetime.datetime | None = None,
-        max_end_calculation: datetime.datetime | None = None,
-        is_complete: bool | None = None,
-        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            name: str | list[str] | None = None,
+            name_prefix: str | None = None,
+            workflow_execution_id: str | list[str] | None = None,
+            workflow_execution_id_prefix: str | None = None,
+            min_delivery_date: datetime.date | None = None,
+            max_delivery_date: datetime.date | None = None,
+            min_start_calculation: datetime.datetime | None = None,
+            max_start_calculation: datetime.datetime | None = None,
+            min_end_calculation: datetime.datetime | None = None,
+            max_end_calculation: datetime.datetime | None = None,
+            is_complete: bool | None = None,
+            price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> BidDocumentAFRRQueryAPI[BidDocumentAFRRList]:
         """Query starting at bid document afrrs.
 
@@ -117,7 +107,8 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(BidDocumentAFRRList)
-        return BidDocumentAFRRQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        return BidDocumentAFRRQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
@@ -163,9 +154,7 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
         )
         return self._apply(bid_document_afrr, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more bid document afrr.
 
         Args:
@@ -195,16 +184,14 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> BidDocumentAFRR | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> BidDocumentAFRR | None:
+        ...
 
     @overload
-    def retrieve(
-        self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> BidDocumentAFRRList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BidDocumentAFRRList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> BidDocumentAFRR | BidDocumentAFRRList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BidDocumentAFRR | BidDocumentAFRRList | None:
         """Retrieve one or more bid document afrrs by id(s).
 
         Args:
@@ -242,13 +229,14 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
                     "outwards",
                     dm.ViewId("power_ops_core", "BidRow", "1"),
                 ),
-            ],
+                                               ]
         )
+
 
     def search(
         self,
         query: str,
-        properties: BidDocumentAFRRTextFields | Sequence[BidDocumentAFRRTextFields] | None = None,
+        properties: BidDocumentAFRRTextFields | SequenceNotStr[BidDocumentAFRRTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         workflow_execution_id: str | list[str] | None = None,
@@ -263,8 +251,11 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
         price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: BidDocumentAFRRFields | SequenceNotStr[BidDocumentAFRRFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> BidDocumentAFRRList:
         """Search bid document afrrs
 
@@ -287,6 +278,11 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
             space: The space to filter on.
             limit: Maximum number of bid document afrrs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             Search results bid document afrrs matching the query.
@@ -318,21 +314,24 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
             space,
             filter,
         )
-        return self._search(self._view_id, query, _BIDDOCUMENTAFRR_PROPERTIES_BY_FIELD, properties, filter_, limit)
+        return self._search(
+            query=query,
+            properties=properties,
+            filter_=filter_,
+            limit=limit,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
+        )
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: BidDocumentAFRRFields | Sequence[BidDocumentAFRRFields] | None = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: BidDocumentAFRRFields | SequenceNotStr[BidDocumentAFRRFields] | None = None,
         query: str | None = None,
-        search_properties: BidDocumentAFRRTextFields | Sequence[BidDocumentAFRRTextFields] | None = None,
+        search_property: BidDocumentAFRRTextFields | SequenceNotStr[BidDocumentAFRRTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         workflow_execution_id: str | list[str] | None = None,
@@ -347,23 +346,19 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
         price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: BidDocumentAFRRFields | Sequence[BidDocumentAFRRFields] | None = None,
-        group_by: BidDocumentAFRRFields | Sequence[BidDocumentAFRRFields] = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: BidDocumentAFRRFields | SequenceNotStr[BidDocumentAFRRFields] | None = None,
         query: str | None = None,
-        search_properties: BidDocumentAFRRTextFields | Sequence[BidDocumentAFRRTextFields] | None = None,
+        search_property: BidDocumentAFRRTextFields | SequenceNotStr[BidDocumentAFRRTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         workflow_execution_id: str | list[str] | None = None,
@@ -378,22 +373,49 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
         price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: BidDocumentAFRRFields | SequenceNotStr[BidDocumentAFRRFields],
+        property: BidDocumentAFRRFields | SequenceNotStr[BidDocumentAFRRFields] | None = None,
+        query: str | None = None,
+        search_property: BidDocumentAFRRTextFields | SequenceNotStr[BidDocumentAFRRTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_delivery_date: datetime.date | None = None,
+        max_delivery_date: datetime.date | None = None,
+        min_start_calculation: datetime.datetime | None = None,
+        max_start_calculation: datetime.datetime | None = None,
+        min_end_calculation: datetime.datetime | None = None,
+        max_end_calculation: datetime.datetime | None = None,
+        is_complete: bool | None = None,
+        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: BidDocumentAFRRFields | Sequence[BidDocumentAFRRFields] | None = None,
-        group_by: BidDocumentAFRRFields | Sequence[BidDocumentAFRRFields] | None = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: BidDocumentAFRRFields | SequenceNotStr[BidDocumentAFRRFields] | None = None,
+        property: BidDocumentAFRRFields | SequenceNotStr[BidDocumentAFRRFields] | None = None,
         query: str | None = None,
-        search_property: BidDocumentAFRRTextFields | Sequence[BidDocumentAFRRTextFields] | None = None,
+        search_property: BidDocumentAFRRTextFields | SequenceNotStr[BidDocumentAFRRTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         workflow_execution_id: str | list[str] | None = None,
@@ -408,15 +430,19 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
         price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across bid document afrrs
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             query: The query to search for in the text field.
             search_property: The text field to search in.
             name: The name to filter on.
@@ -468,15 +494,13 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _BIDDOCUMENTAFRR_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            query,
-            search_property,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=query,
+            search_properties=search_property,  # type: ignore[arg-type]
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -484,7 +508,7 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
         property: BidDocumentAFRRFields,
         interval: float,
         query: str | None = None,
-        search_property: BidDocumentAFRRTextFields | Sequence[BidDocumentAFRRTextFields] | None = None,
+        search_property: BidDocumentAFRRTextFields | SequenceNotStr[BidDocumentAFRRTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         workflow_execution_id: str | list[str] | None = None,
@@ -499,7 +523,7 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
         price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for bid document afrrs
@@ -549,15 +573,14 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _BIDDOCUMENTAFRR_PROPERTIES_BY_FIELD,
             query,
-            search_property,
+            search_property,  # type: ignore[arg-type]
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -575,10 +598,11 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
         price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         sort_by: BidDocumentAFRRFields | Sequence[BidDocumentAFRRFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
         retrieve_edges: bool = True,
     ) -> BidDocumentAFRRList:
         """List/filter bid document afrrs
@@ -602,6 +626,9 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
             retrieve_edges: Whether to retrieve `alerts` or `bids` external ids for the bid document afrrs. Defaults to True.
 
         Returns:
@@ -638,9 +665,9 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_BIDDOCUMENTAFRR_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
             retrieve_edges=retrieve_edges,
             edge_api_name_type_direction_view_id_penta=[
                 (
@@ -657,5 +684,5 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
                     "outwards",
                     dm.ViewId("power_ops_core", "BidRow", "1"),
                 ),
-            ],
+                                               ]
         )

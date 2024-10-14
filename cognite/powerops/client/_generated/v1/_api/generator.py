@@ -6,7 +6,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -24,58 +24,48 @@ from cognite.powerops.client._generated.v1.data_classes._generator import (
     _GENERATOR_PROPERTIES_BY_FIELD,
     _create_generator_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
 from .generator_turbine_efficiency_curves import GeneratorTurbineEfficiencyCurvesAPI
 from .generator_start_stop_cost_time_series import GeneratorStartStopCostTimeSeriesAPI
 from .generator_availability_time_series import GeneratorAvailabilityTimeSeriesAPI
 from .generator_query import GeneratorQueryAPI
 
 
-class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList]):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[Generator]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=Generator,
-            class_list=GeneratorList,
-            class_write_list=GeneratorWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList, GeneratorWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "Generator", "1")
+    _properties_by_field = _GENERATOR_PROPERTIES_BY_FIELD
+    _class_type = Generator
+    _class_list = GeneratorList
+    _class_write_list = GeneratorWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
         self.turbine_efficiency_curves_edge = GeneratorTurbineEfficiencyCurvesAPI(client)
-        self.start_stop_cost_time_series = GeneratorStartStopCostTimeSeriesAPI(client, view_id)
-        self.availability_time_series = GeneratorAvailabilityTimeSeriesAPI(client, view_id)
+        self.start_stop_cost_time_series = GeneratorStartStopCostTimeSeriesAPI(client, self._view_id)
+        self.availability_time_series = GeneratorAvailabilityTimeSeriesAPI(client, self._view_id)
 
     def __call__(
-        self,
-        name: str | list[str] | None = None,
-        name_prefix: str | None = None,
-        display_name: str | list[str] | None = None,
-        display_name_prefix: str | None = None,
-        min_ordering: int | None = None,
-        max_ordering: int | None = None,
-        asset_type: str | list[str] | None = None,
-        asset_type_prefix: str | None = None,
-        min_production_min: float | None = None,
-        max_production_min: float | None = None,
-        min_penstock_number: int | None = None,
-        max_penstock_number: int | None = None,
-        min_start_stop_cost: float | None = None,
-        max_start_stop_cost: float | None = None,
-        generator_efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            name: str | list[str] | None = None,
+            name_prefix: str | None = None,
+            display_name: str | list[str] | None = None,
+            display_name_prefix: str | None = None,
+            min_ordering: int | None = None,
+            max_ordering: int | None = None,
+            asset_type: str | list[str] | None = None,
+            asset_type_prefix: str | None = None,
+            min_production_min: float | None = None,
+            max_production_min: float | None = None,
+            min_penstock_number: int | None = None,
+            max_penstock_number: int | None = None,
+            min_start_stop_cost: float | None = None,
+            max_start_stop_cost: float | None = None,
+            generator_efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> GeneratorQueryAPI[GeneratorList]:
         """Query starting at generators.
 
@@ -127,7 +117,8 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList]):
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(GeneratorList)
-        return GeneratorQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        return GeneratorQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
@@ -173,9 +164,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList]):
         )
         return self._apply(generator, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more generator.
 
         Args:
@@ -205,14 +194,14 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList]):
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> Generator | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> Generator | None:
+        ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> GeneratorList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> GeneratorList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> Generator | GeneratorList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> Generator | GeneratorList | None:
         """Retrieve one or more generators by id(s).
 
         Args:
@@ -243,13 +232,14 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList]):
                     "outwards",
                     dm.ViewId("power_ops_core", "TurbineEfficiencyCurve", "1"),
                 ),
-            ],
+                                               ]
         )
+
 
     def search(
         self,
         query: str,
-        properties: GeneratorTextFields | Sequence[GeneratorTextFields] | None = None,
+        properties: GeneratorTextFields | SequenceNotStr[GeneratorTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         display_name: str | list[str] | None = None,
@@ -267,8 +257,11 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList]):
         generator_efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: GeneratorFields | SequenceNotStr[GeneratorFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> GeneratorList:
         """Search generators
 
@@ -294,6 +287,11 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList]):
             space: The space to filter on.
             limit: Maximum number of generators to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             Search results generators matching the query.
@@ -328,21 +326,24 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList]):
             space,
             filter,
         )
-        return self._search(self._view_id, query, _GENERATOR_PROPERTIES_BY_FIELD, properties, filter_, limit)
+        return self._search(
+            query=query,
+            properties=properties,
+            filter_=filter_,
+            limit=limit,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
+        )
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: GeneratorFields | Sequence[GeneratorFields] | None = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: GeneratorFields | SequenceNotStr[GeneratorFields] | None = None,
         query: str | None = None,
-        search_properties: GeneratorTextFields | Sequence[GeneratorTextFields] | None = None,
+        search_property: GeneratorTextFields | SequenceNotStr[GeneratorTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         display_name: str | list[str] | None = None,
@@ -360,23 +361,19 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList]):
         generator_efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: GeneratorFields | Sequence[GeneratorFields] | None = None,
-        group_by: GeneratorFields | Sequence[GeneratorFields] = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: GeneratorFields | SequenceNotStr[GeneratorFields] | None = None,
         query: str | None = None,
-        search_properties: GeneratorTextFields | Sequence[GeneratorTextFields] | None = None,
+        search_property: GeneratorTextFields | SequenceNotStr[GeneratorTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         display_name: str | list[str] | None = None,
@@ -394,22 +391,52 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList]):
         generator_efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: GeneratorFields | SequenceNotStr[GeneratorFields],
+        property: GeneratorFields | SequenceNotStr[GeneratorFields] | None = None,
+        query: str | None = None,
+        search_property: GeneratorTextFields | SequenceNotStr[GeneratorTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
+        min_production_min: float | None = None,
+        max_production_min: float | None = None,
+        min_penstock_number: int | None = None,
+        max_penstock_number: int | None = None,
+        min_start_stop_cost: float | None = None,
+        max_start_stop_cost: float | None = None,
+        generator_efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: GeneratorFields | Sequence[GeneratorFields] | None = None,
-        group_by: GeneratorFields | Sequence[GeneratorFields] | None = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: GeneratorFields | SequenceNotStr[GeneratorFields] | None = None,
+        property: GeneratorFields | SequenceNotStr[GeneratorFields] | None = None,
         query: str | None = None,
-        search_property: GeneratorTextFields | Sequence[GeneratorTextFields] | None = None,
+        search_property: GeneratorTextFields | SequenceNotStr[GeneratorTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         display_name: str | list[str] | None = None,
@@ -427,15 +454,19 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList]):
         generator_efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across generators
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             query: The query to search for in the text field.
             search_property: The text field to search in.
             name: The name to filter on.
@@ -493,15 +524,13 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList]):
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _GENERATOR_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            query,
-            search_property,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=query,
+            search_properties=search_property,  # type: ignore[arg-type]
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -509,7 +538,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList]):
         property: GeneratorFields,
         interval: float,
         query: str | None = None,
-        search_property: GeneratorTextFields | Sequence[GeneratorTextFields] | None = None,
+        search_property: GeneratorTextFields | SequenceNotStr[GeneratorTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         display_name: str | list[str] | None = None,
@@ -527,7 +556,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList]):
         generator_efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for generators
@@ -583,15 +612,14 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList]):
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _GENERATOR_PROPERTIES_BY_FIELD,
             query,
-            search_property,
+            search_property,  # type: ignore[arg-type]
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -612,10 +640,11 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList]):
         generator_efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         sort_by: GeneratorFields | Sequence[GeneratorFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
         retrieve_edges: bool = True,
     ) -> GeneratorList:
         """List/filter generators
@@ -642,6 +671,9 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList]):
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
             retrieve_edges: Whether to retrieve `turbine_efficiency_curves` external ids for the generators. Defaults to True.
 
         Returns:
@@ -681,9 +713,9 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList]):
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_GENERATOR_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
             retrieve_edges=retrieve_edges,
             edge_api_name_type_direction_view_id_penta=[
                 (
@@ -693,5 +725,5 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList]):
                     "outwards",
                     dm.ViewId("power_ops_core", "TurbineEfficiencyCurve", "1"),
                 ),
-            ],
+                                               ]
         )

@@ -13,16 +13,18 @@ from cognite.powerops.client._generated.v1.data_classes import (
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
 
+
 class BenchmarkingTaskDispatcherInputDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
+    _view_id = dm.ViewId("power_ops_core", "BenchmarkingTaskDispatcherInputDayAhead", "1")
+
     def __init__(
         self,
         client: CogniteClient,
         builder: QueryBuilder[T_DomainModelList],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId],
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
-        super().__init__(client, builder, view_by_read_class)
+        super().__init__(client, builder)
 
         self._builder.append(
             QueryStep(
@@ -31,9 +33,7 @@ class BenchmarkingTaskDispatcherInputDayAheadQueryAPI(QueryAPI[T_DomainModelList
                     from_=self._builder[-1].name if self._builder else None,
                     filter=filter_,
                 ),
-                select=dm.query.Select(
-                    [dm.query.SourceSelector(self._view_by_read_class[BenchmarkingTaskDispatcherInputDayAhead], ["*"])]
-                ),
+                select=dm.query.Select([dm.query.SourceSelector(self._view_id, ["*"])]),
                 result_cls=BenchmarkingTaskDispatcherInputDayAhead,
                 max_retrieve_limit=limit,
             )
@@ -58,16 +58,14 @@ class BenchmarkingTaskDispatcherInputDayAheadQueryAPI(QueryAPI[T_DomainModelList
         return self._query()
 
     def _query_append_benchmarking_config(self, from_: str) -> None:
-        view_id = self._view_by_read_class[BenchmarkingConfigurationDayAhead]
+        view_id = BenchmarkingConfigurationDayAhead._view_id
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("benchmarking_config"),
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_read_class[BenchmarkingTaskDispatcherInputDayAhead].as_property_ref(
-                        "benchmarkingConfig"
-                    ),
+                    through=self._view_id.as_property_ref("benchmarkingConfig"),
                     direction="outwards",
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),

@@ -7,7 +7,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -25,50 +25,40 @@ from cognite.powerops.client._generated.v1.data_classes._shop_preprocessor_input
     _SHOPPREPROCESSORINPUT_PROPERTIES_BY_FIELD,
     _create_shop_preprocessor_input_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
 from .shop_preprocessor_input_query import ShopPreprocessorInputQueryAPI
 
 
-class ShopPreprocessorInputAPI(NodeAPI[ShopPreprocessorInput, ShopPreprocessorInputWrite, ShopPreprocessorInputList]):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[ShopPreprocessorInput]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=ShopPreprocessorInput,
-            class_list=ShopPreprocessorInputList,
-            class_write_list=ShopPreprocessorInputWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class ShopPreprocessorInputAPI(NodeAPI[ShopPreprocessorInput, ShopPreprocessorInputWrite, ShopPreprocessorInputList, ShopPreprocessorInputWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "ShopPreprocessorInput", "1")
+    _properties_by_field = _SHOPPREPROCESSORINPUT_PROPERTIES_BY_FIELD
+    _class_type = ShopPreprocessorInput
+    _class_list = ShopPreprocessorInputList
+    _class_write_list = ShopPreprocessorInputWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
 
     def __call__(
-        self,
-        workflow_execution_id: str | list[str] | None = None,
-        workflow_execution_id_prefix: str | None = None,
-        min_workflow_step: int | None = None,
-        max_workflow_step: int | None = None,
-        function_name: str | list[str] | None = None,
-        function_name_prefix: str | None = None,
-        function_call_id: str | list[str] | None = None,
-        function_call_id_prefix: str | None = None,
-        scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        min_start_time: datetime.datetime | None = None,
-        max_start_time: datetime.datetime | None = None,
-        min_end_time: datetime.datetime | None = None,
-        max_end_time: datetime.datetime | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            workflow_execution_id: str | list[str] | None = None,
+            workflow_execution_id_prefix: str | None = None,
+            min_workflow_step: int | None = None,
+            max_workflow_step: int | None = None,
+            function_name: str | list[str] | None = None,
+            function_name_prefix: str | None = None,
+            function_call_id: str | list[str] | None = None,
+            function_call_id_prefix: str | None = None,
+            scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            min_start_time: datetime.datetime | None = None,
+            max_start_time: datetime.datetime | None = None,
+            min_end_time: datetime.datetime | None = None,
+            max_end_time: datetime.datetime | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> ShopPreprocessorInputQueryAPI[ShopPreprocessorInputList]:
         """Query starting at shop preprocessor inputs.
 
@@ -116,7 +106,8 @@ class ShopPreprocessorInputAPI(NodeAPI[ShopPreprocessorInput, ShopPreprocessorIn
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(ShopPreprocessorInputList)
-        return ShopPreprocessorInputQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        return ShopPreprocessorInputQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
@@ -158,9 +149,7 @@ class ShopPreprocessorInputAPI(NodeAPI[ShopPreprocessorInput, ShopPreprocessorIn
         )
         return self._apply(shop_preprocessor_input, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more shop preprocessor input.
 
         Args:
@@ -190,16 +179,14 @@ class ShopPreprocessorInputAPI(NodeAPI[ShopPreprocessorInput, ShopPreprocessorIn
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopPreprocessorInput | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopPreprocessorInput | None:
+        ...
 
     @overload
-    def retrieve(
-        self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> ShopPreprocessorInputList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopPreprocessorInputList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> ShopPreprocessorInput | ShopPreprocessorInputList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopPreprocessorInput | ShopPreprocessorInputList | None:
         """Retrieve one or more shop preprocessor inputs by id(s).
 
         Args:
@@ -223,7 +210,7 @@ class ShopPreprocessorInputAPI(NodeAPI[ShopPreprocessorInput, ShopPreprocessorIn
     def search(
         self,
         query: str,
-        properties: ShopPreprocessorInputTextFields | Sequence[ShopPreprocessorInputTextFields] | None = None,
+        properties: ShopPreprocessorInputTextFields | SequenceNotStr[ShopPreprocessorInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -239,8 +226,11 @@ class ShopPreprocessorInputAPI(NodeAPI[ShopPreprocessorInput, ShopPreprocessorIn
         max_end_time: datetime.datetime | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: ShopPreprocessorInputFields | SequenceNotStr[ShopPreprocessorInputFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> ShopPreprocessorInputList:
         """Search shop preprocessor inputs
 
@@ -264,6 +254,11 @@ class ShopPreprocessorInputAPI(NodeAPI[ShopPreprocessorInput, ShopPreprocessorIn
             space: The space to filter on.
             limit: Maximum number of shop preprocessor inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             Search results shop preprocessor inputs matching the query.
@@ -297,22 +292,23 @@ class ShopPreprocessorInputAPI(NodeAPI[ShopPreprocessorInput, ShopPreprocessorIn
             filter,
         )
         return self._search(
-            self._view_id, query, _SHOPPREPROCESSORINPUT_PROPERTIES_BY_FIELD, properties, filter_, limit
+            query=query,
+            properties=properties,
+            filter_=filter_,
+            limit=limit,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
         )
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: ShopPreprocessorInputFields | Sequence[ShopPreprocessorInputFields] | None = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: ShopPreprocessorInputFields | SequenceNotStr[ShopPreprocessorInputFields] | None = None,
         query: str | None = None,
-        search_properties: ShopPreprocessorInputTextFields | Sequence[ShopPreprocessorInputTextFields] | None = None,
+        search_property: ShopPreprocessorInputTextFields | SequenceNotStr[ShopPreprocessorInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -328,23 +324,19 @@ class ShopPreprocessorInputAPI(NodeAPI[ShopPreprocessorInput, ShopPreprocessorIn
         max_end_time: datetime.datetime | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: ShopPreprocessorInputFields | Sequence[ShopPreprocessorInputFields] | None = None,
-        group_by: ShopPreprocessorInputFields | Sequence[ShopPreprocessorInputFields] = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: ShopPreprocessorInputFields | SequenceNotStr[ShopPreprocessorInputFields] | None = None,
         query: str | None = None,
-        search_properties: ShopPreprocessorInputTextFields | Sequence[ShopPreprocessorInputTextFields] | None = None,
+        search_property: ShopPreprocessorInputTextFields | SequenceNotStr[ShopPreprocessorInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -360,22 +352,50 @@ class ShopPreprocessorInputAPI(NodeAPI[ShopPreprocessorInput, ShopPreprocessorIn
         max_end_time: datetime.datetime | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: ShopPreprocessorInputFields | SequenceNotStr[ShopPreprocessorInputFields],
+        property: ShopPreprocessorInputFields | SequenceNotStr[ShopPreprocessorInputFields] | None = None,
+        query: str | None = None,
+        search_property: ShopPreprocessorInputTextFields | SequenceNotStr[ShopPreprocessorInputTextFields] | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
+        function_name: str | list[str] | None = None,
+        function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
+        scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_start_time: datetime.datetime | None = None,
+        max_start_time: datetime.datetime | None = None,
+        min_end_time: datetime.datetime | None = None,
+        max_end_time: datetime.datetime | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: ShopPreprocessorInputFields | Sequence[ShopPreprocessorInputFields] | None = None,
-        group_by: ShopPreprocessorInputFields | Sequence[ShopPreprocessorInputFields] | None = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: ShopPreprocessorInputFields | SequenceNotStr[ShopPreprocessorInputFields] | None = None,
+        property: ShopPreprocessorInputFields | SequenceNotStr[ShopPreprocessorInputFields] | None = None,
         query: str | None = None,
-        search_property: ShopPreprocessorInputTextFields | Sequence[ShopPreprocessorInputTextFields] | None = None,
+        search_property: ShopPreprocessorInputTextFields | SequenceNotStr[ShopPreprocessorInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -391,15 +411,19 @@ class ShopPreprocessorInputAPI(NodeAPI[ShopPreprocessorInput, ShopPreprocessorIn
         max_end_time: datetime.datetime | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across shop preprocessor inputs
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             query: The query to search for in the text field.
             search_property: The text field to search in.
             workflow_execution_id: The workflow execution id to filter on.
@@ -453,15 +477,13 @@ class ShopPreprocessorInputAPI(NodeAPI[ShopPreprocessorInput, ShopPreprocessorIn
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _SHOPPREPROCESSORINPUT_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            query,
-            search_property,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=query,
+            search_properties=search_property,  # type: ignore[arg-type]
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -469,7 +491,7 @@ class ShopPreprocessorInputAPI(NodeAPI[ShopPreprocessorInput, ShopPreprocessorIn
         property: ShopPreprocessorInputFields,
         interval: float,
         query: str | None = None,
-        search_property: ShopPreprocessorInputTextFields | Sequence[ShopPreprocessorInputTextFields] | None = None,
+        search_property: ShopPreprocessorInputTextFields | SequenceNotStr[ShopPreprocessorInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -485,7 +507,7 @@ class ShopPreprocessorInputAPI(NodeAPI[ShopPreprocessorInput, ShopPreprocessorIn
         max_end_time: datetime.datetime | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for shop preprocessor inputs
@@ -537,15 +559,14 @@ class ShopPreprocessorInputAPI(NodeAPI[ShopPreprocessorInput, ShopPreprocessorIn
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _SHOPPREPROCESSORINPUT_PROPERTIES_BY_FIELD,
             query,
-            search_property,
+            search_property,  # type: ignore[arg-type]
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -564,10 +585,11 @@ class ShopPreprocessorInputAPI(NodeAPI[ShopPreprocessorInput, ShopPreprocessorIn
         max_end_time: datetime.datetime | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         sort_by: ShopPreprocessorInputFields | Sequence[ShopPreprocessorInputFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> ShopPreprocessorInputList:
         """List/filter shop preprocessor inputs
 
@@ -591,6 +613,9 @@ class ShopPreprocessorInputAPI(NodeAPI[ShopPreprocessorInput, ShopPreprocessorIn
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             List of requested shop preprocessor inputs
@@ -626,7 +651,7 @@ class ShopPreprocessorInputAPI(NodeAPI[ShopPreprocessorInput, ShopPreprocessorIn
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_SHOPPREPROCESSORINPUT_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
         )

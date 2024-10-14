@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from typing import Any, Literal, Optional, Union
+from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import field_validator, model_validator
@@ -12,7 +12,6 @@ from ._core import (
     DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
-    DomainModelCore,
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
@@ -31,6 +30,7 @@ __all__ = [
     "ShopCommandsApplyList",
     "ShopCommandsFields",
     "ShopCommandsTextFields",
+    "ShopCommandsGraphQL",
 ]
 
 
@@ -41,7 +41,6 @@ _SHOPCOMMANDS_PROPERTIES_BY_FIELD = {
     "name": "name",
     "commands": "commands",
 }
-
 
 class ShopCommandsGraphQL(GraphQLCore):
     """This represents the reading version of shop command, used
@@ -56,8 +55,7 @@ class ShopCommandsGraphQL(GraphQLCore):
         name: Name for the ShopCommands
         commands: The commands used in the shop model file
     """
-
-    view_id = dm.ViewId("power_ops_core", "ShopCommands", "1")
+    view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopCommands", "1")
     name: Optional[str] = None
     commands: Optional[list[str]] = None
 
@@ -72,6 +70,8 @@ class ShopCommandsGraphQL(GraphQLCore):
             )
         return values
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> ShopCommands:
         """Convert this GraphQL format of shop command to the reading format."""
         if self.data_record is None:
@@ -88,6 +88,9 @@ class ShopCommandsGraphQL(GraphQLCore):
             commands=self.commands,
         )
 
+
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopCommandsWrite:
         """Convert this GraphQL format of shop command to the writing format."""
         return ShopCommandsWrite(
@@ -111,11 +114,12 @@ class ShopCommands(DomainModel):
         name: Name for the ShopCommands
         commands: The commands used in the shop model file
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopCommands", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopCommands")
     name: str
-    commands: Optional[list[str]] = None
+    commands: list[str]
 
     def as_write(self) -> ShopCommandsWrite:
         """Convert this read version of shop command to the writing version."""
@@ -149,6 +153,7 @@ class ShopCommandsWrite(DomainModelWrite):
         name: Name for the ShopCommands
         commands: The commands used in the shop model file
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopCommands", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopCommands")
@@ -158,15 +163,12 @@ class ShopCommandsWrite(DomainModelWrite):
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
-
-        write_view = (view_by_read_class or {}).get(ShopCommands, dm.ViewId("power_ops_core", "ShopCommands", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -176,6 +178,7 @@ class ShopCommandsWrite(DomainModelWrite):
         if self.commands is not None:
             properties["commands"] = self.commands
 
+
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -184,13 +187,14 @@ class ShopCommandsWrite(DomainModelWrite):
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
-                        source=write_view,
+                        source=self._view_id,
                         properties=properties,
-                    )
-                ],
+                )],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
+
+
 
         return resources
 
@@ -231,8 +235,8 @@ class ShopCommandsWriteList(DomainModelWriteList[ShopCommandsWrite]):
 
     _INSTANCE = ShopCommandsWrite
 
-
 class ShopCommandsApplyList(ShopCommandsWriteList): ...
+
 
 
 def _create_shop_command_filter(
@@ -243,7 +247,7 @@ def _create_shop_command_filter(
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
-    filters = []
+    filters: list[dm.Filter] = []
     if isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 import warnings
-from typing import Any, Literal, Optional, Union
+from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -14,7 +14,6 @@ from ._core import (
     DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
-    DomainModelCore,
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
@@ -34,24 +33,12 @@ __all__ = [
     "ShopPenaltyReportApplyList",
     "ShopPenaltyReportFields",
     "ShopPenaltyReportTextFields",
+    "ShopPenaltyReportGraphQL",
 ]
 
 
-ShopPenaltyReportTextFields = Literal[
-    "workflow_execution_id", "title", "description", "severity", "alert_type", "calculation_run"
-]
-ShopPenaltyReportFields = Literal[
-    "time",
-    "workflow_execution_id",
-    "title",
-    "description",
-    "severity",
-    "alert_type",
-    "status_code",
-    "event_ids",
-    "calculation_run",
-    "penalties",
-]
+ShopPenaltyReportTextFields = Literal["workflow_execution_id", "title", "description", "severity", "alert_type", "calculation_run"]
+ShopPenaltyReportFields = Literal["time", "workflow_execution_id", "title", "description", "severity", "alert_type", "status_code", "event_ids", "calculation_run", "penalties"]
 
 _SHOPPENALTYREPORT_PROPERTIES_BY_FIELD = {
     "time": "time",
@@ -65,7 +52,6 @@ _SHOPPENALTYREPORT_PROPERTIES_BY_FIELD = {
     "calculation_run": "calculationRun",
     "penalties": "penalties",
 }
-
 
 class ShopPenaltyReportGraphQL(GraphQLCore):
     """This represents the reading version of shop penalty report, used
@@ -85,11 +71,10 @@ class ShopPenaltyReportGraphQL(GraphQLCore):
         alert_type: Classification of the alert (not in current alerting implementation)
         status_code: Unique status code for the alert. May be used by the frontend to avoid use of hardcoded description (i.e. like a translation)
         event_ids: An array of associated alert CDF Events (e.g. SHOP Run events)
-        calculation_run: The identifier of the parent Bid Calculation (required so tha alerts can be created befor the BidDocument)
+        calculation_run: The identifier of the parent Bid Calculation (required so that alerts can be created before the BidDocument)
         penalties: TODO
     """
-
-    view_id = dm.ViewId("power_ops_core", "ShopPenaltyReport", "1")
+    view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopPenaltyReport", "1")
     time: Optional[datetime.datetime] = None
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     title: Optional[str] = None
@@ -112,6 +97,8 @@ class ShopPenaltyReportGraphQL(GraphQLCore):
             )
         return values
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> ShopPenaltyReport:
         """Convert this GraphQL format of shop penalty report to the reading format."""
         if self.data_record is None:
@@ -136,6 +123,9 @@ class ShopPenaltyReportGraphQL(GraphQLCore):
             penalties=self.penalties,
         )
 
+
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopPenaltyReportWrite:
         """Convert this GraphQL format of shop penalty report to the writing format."""
         return ShopPenaltyReportWrite(
@@ -172,13 +162,12 @@ class ShopPenaltyReport(Alert):
         alert_type: Classification of the alert (not in current alerting implementation)
         status_code: Unique status code for the alert. May be used by the frontend to avoid use of hardcoded description (i.e. like a translation)
         event_ids: An array of associated alert CDF Events (e.g. SHOP Run events)
-        calculation_run: The identifier of the parent Bid Calculation (required so tha alerts can be created befor the BidDocument)
+        calculation_run: The identifier of the parent Bid Calculation (required so that alerts can be created before the BidDocument)
         penalties: TODO
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopPenaltyReport", "1")
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "ShopPenaltyReport"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopPenaltyReport")
     penalties: Optional[list[dict]] = None
 
     def as_write(self) -> ShopPenaltyReportWrite:
@@ -226,29 +215,23 @@ class ShopPenaltyReportWrite(AlertWrite):
         alert_type: Classification of the alert (not in current alerting implementation)
         status_code: Unique status code for the alert. May be used by the frontend to avoid use of hardcoded description (i.e. like a translation)
         event_ids: An array of associated alert CDF Events (e.g. SHOP Run events)
-        calculation_run: The identifier of the parent Bid Calculation (required so tha alerts can be created befor the BidDocument)
+        calculation_run: The identifier of the parent Bid Calculation (required so that alerts can be created before the BidDocument)
         penalties: TODO
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopPenaltyReport", "1")
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "ShopPenaltyReport"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopPenaltyReport")
     penalties: Optional[list[dict]] = None
 
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
-
-        write_view = (view_by_read_class or {}).get(
-            ShopPenaltyReport, dm.ViewId("power_ops_core", "ShopPenaltyReport", "1")
-        )
 
         properties: dict[str, Any] = {}
 
@@ -282,6 +265,7 @@ class ShopPenaltyReportWrite(AlertWrite):
         if self.penalties is not None or write_none:
             properties["penalties"] = self.penalties
 
+
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -290,13 +274,14 @@ class ShopPenaltyReportWrite(AlertWrite):
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
-                        source=write_view,
+                        source=self._view_id,
                         properties=properties,
-                    )
-                ],
+                )],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
+
+
 
         return resources
 
@@ -337,8 +322,8 @@ class ShopPenaltyReportWriteList(DomainModelWriteList[ShopPenaltyReportWrite]):
 
     _INSTANCE = ShopPenaltyReportWrite
 
-
 class ShopPenaltyReportApplyList(ShopPenaltyReportWriteList): ...
+
 
 
 def _create_shop_penalty_report_filter(
@@ -363,23 +348,15 @@ def _create_shop_penalty_report_filter(
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
-    filters = []
+    filters: list[dm.Filter] = []
     if min_time is not None or max_time is not None:
-        filters.append(
-            dm.filters.Range(
-                view_id.as_property_ref("time"),
-                gte=min_time.isoformat(timespec="milliseconds") if min_time else None,
-                lte=max_time.isoformat(timespec="milliseconds") if max_time else None,
-            )
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("time"), gte=min_time.isoformat(timespec="milliseconds") if min_time else None, lte=max_time.isoformat(timespec="milliseconds") if max_time else None))
     if isinstance(workflow_execution_id, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id))
     if workflow_execution_id and isinstance(workflow_execution_id, list):
         filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
     if workflow_execution_id_prefix is not None:
-        filters.append(
-            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
-        )
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix))
     if isinstance(title, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("title"), value=title))
     if title and isinstance(title, list):
@@ -405,9 +382,7 @@ def _create_shop_penalty_report_filter(
     if alert_type_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("alertType"), value=alert_type_prefix))
     if min_status_code is not None or max_status_code is not None:
-        filters.append(
-            dm.filters.Range(view_id.as_property_ref("statusCode"), gte=min_status_code, lte=max_status_code)
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("statusCode"), gte=min_status_code, lte=max_status_code))
     if isinstance(calculation_run, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("calculationRun"), value=calculation_run))
     if calculation_run and isinstance(calculation_run, list):

@@ -9,15 +9,15 @@ from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INS
 
 class ShopModelBaseAttributeMappingsAPI(EdgeAPI):
     def list(
-        self,
-        from_shop_model: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        from_shop_model_space: str = DEFAULT_INSTANCE_SPACE,
-        to_shop_attribute_mapping: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        to_shop_attribute_mapping_space: str = DEFAULT_INSTANCE_SPACE,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit=DEFAULT_LIMIT_READ,
-    ) -> dm.EdgeList:
+            self,
+            from_shop_model: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+            from_shop_model_space: str = DEFAULT_INSTANCE_SPACE,
+            to_shop_attribute_mapping: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+            to_shop_attribute_mapping_space: str = DEFAULT_INSTANCE_SPACE,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit=DEFAULT_LIMIT_READ,
+    ) ->dm.EdgeList:
         """List base attribute mapping edges of a shop model.
 
         Args:
@@ -44,6 +44,7 @@ class ShopModelBaseAttributeMappingsAPI(EdgeAPI):
         """
         filter_ = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "ShopModel.baseAttributeMappings"),
+
             from_shop_model,
             from_shop_model_space,
             to_shop_attribute_mapping,

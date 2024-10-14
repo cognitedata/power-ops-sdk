@@ -20,16 +20,18 @@ if TYPE_CHECKING:
     from .alert_query import AlertQueryAPI
 
 
+
 class BenchmarkingResultDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
+    _view_id = dm.ViewId("power_ops_core", "BenchmarkingResultDayAhead", "1")
+
     def __init__(
         self,
         client: CogniteClient,
         builder: QueryBuilder[T_DomainModelList],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId],
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
-        super().__init__(client, builder, view_by_read_class)
+        super().__init__(client, builder)
 
         self._builder.append(
             QueryStep(
@@ -38,9 +40,7 @@ class BenchmarkingResultDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
                     from_=self._builder[-1].name if self._builder else None,
                     filter=filter_,
                 ),
-                select=dm.query.Select(
-                    [dm.query.SourceSelector(self._view_by_read_class[BenchmarkingResultDayAhead], ["*"])]
-                ),
+                select=dm.query.Select([dm.query.SourceSelector(self._view_id, ["*"])]),
                 result_cls=BenchmarkingResultDayAhead,
                 max_retrieve_limit=limit,
             )
@@ -69,7 +69,7 @@ class BenchmarkingResultDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         external_id_prefix_edge: str | None = None,
         space_edge: str | list[str] | None = None,
         filter: dm.Filter | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
+        limit: int = DEFAULT_QUERY_LIMIT,
         retrieve_shop_result: bool = False,
     ) -> AlertQueryAPI[T_DomainModelList]:
         """Query along the alert edges of the benchmarking result day ahead.
@@ -108,6 +108,7 @@ class BenchmarkingResultDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = self._builder[-1].name
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "calculationIssue"),
+
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -124,7 +125,7 @@ class BenchmarkingResultDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
             )
         )
 
-        view_id = self._view_by_read_class[Alert]
+        view_id = AlertQueryAPI._view_id
         has_data = dm.filters.HasData(views=[view_id])
         node_filer = _create_alert_filter(
             view_id,
@@ -150,7 +151,7 @@ class BenchmarkingResultDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         )
         if retrieve_shop_result:
             self._query_append_shop_result(from_)
-        return AlertQueryAPI(self._client, self._builder, self._view_by_read_class, node_filer, limit)
+        return AlertQueryAPI(self._client, self._builder, node_filer, limit)
 
     def query(
         self,
@@ -171,14 +172,14 @@ class BenchmarkingResultDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         return self._query()
 
     def _query_append_shop_result(self, from_: str) -> None:
-        view_id = self._view_by_read_class[ShopResult]
+        view_id = ShopResult._view_id
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("shop_result"),
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_read_class[BenchmarkingResultDayAhead].as_property_ref("shopResult"),
+                    through=self._view_id.as_property_ref("shopResult"),
                     direction="outwards",
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),

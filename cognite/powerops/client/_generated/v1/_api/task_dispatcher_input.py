@@ -7,7 +7,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -25,48 +25,38 @@ from cognite.powerops.client._generated.v1.data_classes._task_dispatcher_input i
     _TASKDISPATCHERINPUT_PROPERTIES_BY_FIELD,
     _create_task_dispatcher_input_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
 from .task_dispatcher_input_query import TaskDispatcherInputQueryAPI
 
 
-class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWrite, TaskDispatcherInputList]):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[TaskDispatcherInput]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=TaskDispatcherInput,
-            class_list=TaskDispatcherInputList,
-            class_write_list=TaskDispatcherInputWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWrite, TaskDispatcherInputList, TaskDispatcherInputWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "TaskDispatcherInput", "1")
+    _properties_by_field = _TASKDISPATCHERINPUT_PROPERTIES_BY_FIELD
+    _class_type = TaskDispatcherInput
+    _class_list = TaskDispatcherInputList
+    _class_write_list = TaskDispatcherInputWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
 
     def __call__(
-        self,
-        workflow_execution_id: str | list[str] | None = None,
-        workflow_execution_id_prefix: str | None = None,
-        min_workflow_step: int | None = None,
-        max_workflow_step: int | None = None,
-        function_name: str | list[str] | None = None,
-        function_name_prefix: str | None = None,
-        function_call_id: str | list[str] | None = None,
-        function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        min_bid_date: datetime.date | None = None,
-        max_bid_date: datetime.date | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            workflow_execution_id: str | list[str] | None = None,
+            workflow_execution_id_prefix: str | None = None,
+            min_workflow_step: int | None = None,
+            max_workflow_step: int | None = None,
+            function_name: str | list[str] | None = None,
+            function_name_prefix: str | None = None,
+            function_call_id: str | list[str] | None = None,
+            function_call_id_prefix: str | None = None,
+            bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            min_bid_date: datetime.date | None = None,
+            max_bid_date: datetime.date | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> TaskDispatcherInputQueryAPI[TaskDispatcherInputList]:
         """Query starting at task dispatcher inputs.
 
@@ -110,7 +100,8 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(TaskDispatcherInputList)
-        return TaskDispatcherInputQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        return TaskDispatcherInputQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
@@ -152,9 +143,7 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         )
         return self._apply(task_dispatcher_input, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more task dispatcher input.
 
         Args:
@@ -184,16 +173,14 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> TaskDispatcherInput | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> TaskDispatcherInput | None:
+        ...
 
     @overload
-    def retrieve(
-        self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> TaskDispatcherInputList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> TaskDispatcherInputList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> TaskDispatcherInput | TaskDispatcherInputList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> TaskDispatcherInput | TaskDispatcherInputList | None:
         """Retrieve one or more task dispatcher inputs by id(s).
 
         Args:
@@ -217,7 +204,7 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
     def search(
         self,
         query: str,
-        properties: TaskDispatcherInputTextFields | Sequence[TaskDispatcherInputTextFields] | None = None,
+        properties: TaskDispatcherInputTextFields | SequenceNotStr[TaskDispatcherInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -231,8 +218,11 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: TaskDispatcherInputFields | SequenceNotStr[TaskDispatcherInputFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> TaskDispatcherInputList:
         """Search task dispatcher inputs
 
@@ -254,6 +244,11 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
             space: The space to filter on.
             limit: Maximum number of task dispatcher inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             Search results task dispatcher inputs matching the query.
@@ -284,21 +279,24 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
             space,
             filter,
         )
-        return self._search(self._view_id, query, _TASKDISPATCHERINPUT_PROPERTIES_BY_FIELD, properties, filter_, limit)
+        return self._search(
+            query=query,
+            properties=properties,
+            filter_=filter_,
+            limit=limit,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
+        )
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: TaskDispatcherInputFields | Sequence[TaskDispatcherInputFields] | None = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: TaskDispatcherInputFields | SequenceNotStr[TaskDispatcherInputFields] | None = None,
         query: str | None = None,
-        search_properties: TaskDispatcherInputTextFields | Sequence[TaskDispatcherInputTextFields] | None = None,
+        search_property: TaskDispatcherInputTextFields | SequenceNotStr[TaskDispatcherInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -312,23 +310,19 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: TaskDispatcherInputFields | Sequence[TaskDispatcherInputFields] | None = None,
-        group_by: TaskDispatcherInputFields | Sequence[TaskDispatcherInputFields] = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: TaskDispatcherInputFields | SequenceNotStr[TaskDispatcherInputFields] | None = None,
         query: str | None = None,
-        search_properties: TaskDispatcherInputTextFields | Sequence[TaskDispatcherInputTextFields] | None = None,
+        search_property: TaskDispatcherInputTextFields | SequenceNotStr[TaskDispatcherInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -342,22 +336,48 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: TaskDispatcherInputFields | SequenceNotStr[TaskDispatcherInputFields],
+        property: TaskDispatcherInputFields | SequenceNotStr[TaskDispatcherInputFields] | None = None,
+        query: str | None = None,
+        search_property: TaskDispatcherInputTextFields | SequenceNotStr[TaskDispatcherInputTextFields] | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
+        function_name: str | list[str] | None = None,
+        function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
+        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_bid_date: datetime.date | None = None,
+        max_bid_date: datetime.date | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: TaskDispatcherInputFields | Sequence[TaskDispatcherInputFields] | None = None,
-        group_by: TaskDispatcherInputFields | Sequence[TaskDispatcherInputFields] | None = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: TaskDispatcherInputFields | SequenceNotStr[TaskDispatcherInputFields] | None = None,
+        property: TaskDispatcherInputFields | SequenceNotStr[TaskDispatcherInputFields] | None = None,
         query: str | None = None,
-        search_property: TaskDispatcherInputTextFields | Sequence[TaskDispatcherInputTextFields] | None = None,
+        search_property: TaskDispatcherInputTextFields | SequenceNotStr[TaskDispatcherInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -371,15 +391,19 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across task dispatcher inputs
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             query: The query to search for in the text field.
             search_property: The text field to search in.
             workflow_execution_id: The workflow execution id to filter on.
@@ -429,15 +453,13 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _TASKDISPATCHERINPUT_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            query,
-            search_property,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=query,
+            search_properties=search_property,  # type: ignore[arg-type]
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -445,7 +467,7 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         property: TaskDispatcherInputFields,
         interval: float,
         query: str | None = None,
-        search_property: TaskDispatcherInputTextFields | Sequence[TaskDispatcherInputTextFields] | None = None,
+        search_property: TaskDispatcherInputTextFields | SequenceNotStr[TaskDispatcherInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -459,7 +481,7 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for task dispatcher inputs
@@ -507,15 +529,14 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _TASKDISPATCHERINPUT_PROPERTIES_BY_FIELD,
             query,
-            search_property,
+            search_property,  # type: ignore[arg-type]
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -532,10 +553,11 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         sort_by: TaskDispatcherInputFields | Sequence[TaskDispatcherInputFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> TaskDispatcherInputList:
         """List/filter task dispatcher inputs
 
@@ -557,6 +579,9 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             List of requested task dispatcher inputs
@@ -590,7 +615,7 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_TASKDISPATCHERINPUT_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
         )

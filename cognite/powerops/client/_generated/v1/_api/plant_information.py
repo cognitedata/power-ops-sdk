@@ -6,7 +6,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -24,15 +24,7 @@ from cognite.powerops.client._generated.v1.data_classes._plant_information impor
     _PLANTINFORMATION_PROPERTIES_BY_FIELD,
     _create_plant_information_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
 from .plant_information_generators import PlantInformationGeneratorsAPI
 from .plant_information_production_max_time_series import PlantInformationProductionMaxTimeSeriesAPI
 from .plant_information_production_min_time_series import PlantInformationProductionMinTimeSeriesAPI
@@ -44,51 +36,49 @@ from .plant_information_head_direct_time_series import PlantInformationHeadDirec
 from .plant_information_query import PlantInformationQueryAPI
 
 
-class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, PlantInformationList]):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[PlantInformation]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=PlantInformation,
-            class_list=PlantInformationList,
-            class_write_list=PlantInformationWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, PlantInformationList, PlantInformationWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "PlantInformation", "1")
+    _properties_by_field = _PLANTINFORMATION_PROPERTIES_BY_FIELD
+    _class_type = PlantInformation
+    _class_list = PlantInformationList
+    _class_write_list = PlantInformationWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
         self.generators_edge = PlantInformationGeneratorsAPI(client)
-        self.production_max_time_series = PlantInformationProductionMaxTimeSeriesAPI(client, view_id)
-        self.production_min_time_series = PlantInformationProductionMinTimeSeriesAPI(client, view_id)
-        self.water_value_time_series = PlantInformationWaterValueTimeSeriesAPI(client, view_id)
-        self.feeding_fee_time_series = PlantInformationFeedingFeeTimeSeriesAPI(client, view_id)
-        self.outlet_level_time_series = PlantInformationOutletLevelTimeSeriesAPI(client, view_id)
-        self.inlet_level_time_series = PlantInformationInletLevelTimeSeriesAPI(client, view_id)
-        self.head_direct_time_series = PlantInformationHeadDirectTimeSeriesAPI(client, view_id)
+        self.production_max_time_series = PlantInformationProductionMaxTimeSeriesAPI(client, self._view_id)
+        self.production_min_time_series = PlantInformationProductionMinTimeSeriesAPI(client, self._view_id)
+        self.water_value_time_series = PlantInformationWaterValueTimeSeriesAPI(client, self._view_id)
+        self.feeding_fee_time_series = PlantInformationFeedingFeeTimeSeriesAPI(client, self._view_id)
+        self.outlet_level_time_series = PlantInformationOutletLevelTimeSeriesAPI(client, self._view_id)
+        self.inlet_level_time_series = PlantInformationInletLevelTimeSeriesAPI(client, self._view_id)
+        self.head_direct_time_series = PlantInformationHeadDirectTimeSeriesAPI(client, self._view_id)
 
     def __call__(
-        self,
-        name: str | list[str] | None = None,
-        name_prefix: str | None = None,
-        display_name: str | list[str] | None = None,
-        display_name_prefix: str | None = None,
-        min_ordering: int | None = None,
-        max_ordering: int | None = None,
-        asset_type: str | list[str] | None = None,
-        asset_type_prefix: str | None = None,
-        min_head_loss_factor: float | None = None,
-        max_head_loss_factor: float | None = None,
-        min_outlet_level: float | None = None,
-        max_outlet_level: float | None = None,
-        min_production_max: float | None = None,
-        max_production_max: float | None = None,
-        min_production_min: float | None = None,
-        max_production_min: float | None = None,
-        min_connection_losses: float | None = None,
-        max_connection_losses: float | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            name: str | list[str] | None = None,
+            name_prefix: str | None = None,
+            display_name: str | list[str] | None = None,
+            display_name_prefix: str | None = None,
+            min_ordering: int | None = None,
+            max_ordering: int | None = None,
+            asset_type: str | list[str] | None = None,
+            asset_type_prefix: str | None = None,
+            min_head_loss_factor: float | None = None,
+            max_head_loss_factor: float | None = None,
+            min_outlet_level: float | None = None,
+            max_outlet_level: float | None = None,
+            min_production_max: float | None = None,
+            max_production_max: float | None = None,
+            min_production_min: float | None = None,
+            max_production_min: float | None = None,
+            min_connection_losses: float | None = None,
+            max_connection_losses: float | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> PlantInformationQueryAPI[PlantInformationList]:
         """Query starting at plant information.
 
@@ -146,7 +136,8 @@ class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, Plant
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(PlantInformationList)
-        return PlantInformationQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        return PlantInformationQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
@@ -192,9 +183,7 @@ class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, Plant
         )
         return self._apply(plant_information, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more plant information.
 
         Args:
@@ -224,16 +213,14 @@ class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, Plant
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> PlantInformation | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> PlantInformation | None:
+        ...
 
     @overload
-    def retrieve(
-        self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> PlantInformationList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PlantInformationList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> PlantInformation | PlantInformationList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PlantInformation | PlantInformationList | None:
         """Retrieve one or more plant information by id(s).
 
         Args:
@@ -264,13 +251,14 @@ class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, Plant
                     "outwards",
                     dm.ViewId("power_ops_core", "Generator", "1"),
                 ),
-            ],
+                                               ]
         )
+
 
     def search(
         self,
         query: str,
-        properties: PlantInformationTextFields | Sequence[PlantInformationTextFields] | None = None,
+        properties: PlantInformationTextFields | SequenceNotStr[PlantInformationTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         display_name: str | list[str] | None = None,
@@ -291,8 +279,11 @@ class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, Plant
         max_connection_losses: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: PlantInformationFields | SequenceNotStr[PlantInformationFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> PlantInformationList:
         """Search plant information
 
@@ -321,6 +312,11 @@ class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, Plant
             space: The space to filter on.
             limit: Maximum number of plant information to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             Search results plant information matching the query.
@@ -358,21 +354,24 @@ class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, Plant
             space,
             filter,
         )
-        return self._search(self._view_id, query, _PLANTINFORMATION_PROPERTIES_BY_FIELD, properties, filter_, limit)
+        return self._search(
+            query=query,
+            properties=properties,
+            filter_=filter_,
+            limit=limit,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
+        )
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: PlantInformationFields | Sequence[PlantInformationFields] | None = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: PlantInformationFields | SequenceNotStr[PlantInformationFields] | None = None,
         query: str | None = None,
-        search_properties: PlantInformationTextFields | Sequence[PlantInformationTextFields] | None = None,
+        search_property: PlantInformationTextFields | SequenceNotStr[PlantInformationTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         display_name: str | list[str] | None = None,
@@ -393,23 +392,19 @@ class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, Plant
         max_connection_losses: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: PlantInformationFields | Sequence[PlantInformationFields] | None = None,
-        group_by: PlantInformationFields | Sequence[PlantInformationFields] = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: PlantInformationFields | SequenceNotStr[PlantInformationFields] | None = None,
         query: str | None = None,
-        search_properties: PlantInformationTextFields | Sequence[PlantInformationTextFields] | None = None,
+        search_property: PlantInformationTextFields | SequenceNotStr[PlantInformationTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         display_name: str | list[str] | None = None,
@@ -430,22 +425,55 @@ class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, Plant
         max_connection_losses: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: PlantInformationFields | SequenceNotStr[PlantInformationFields],
+        property: PlantInformationFields | SequenceNotStr[PlantInformationFields] | None = None,
+        query: str | None = None,
+        search_property: PlantInformationTextFields | SequenceNotStr[PlantInformationTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
+        min_head_loss_factor: float | None = None,
+        max_head_loss_factor: float | None = None,
+        min_outlet_level: float | None = None,
+        max_outlet_level: float | None = None,
+        min_production_max: float | None = None,
+        max_production_max: float | None = None,
+        min_production_min: float | None = None,
+        max_production_min: float | None = None,
+        min_connection_losses: float | None = None,
+        max_connection_losses: float | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: PlantInformationFields | Sequence[PlantInformationFields] | None = None,
-        group_by: PlantInformationFields | Sequence[PlantInformationFields] | None = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: PlantInformationFields | SequenceNotStr[PlantInformationFields] | None = None,
+        property: PlantInformationFields | SequenceNotStr[PlantInformationFields] | None = None,
         query: str | None = None,
-        search_property: PlantInformationTextFields | Sequence[PlantInformationTextFields] | None = None,
+        search_property: PlantInformationTextFields | SequenceNotStr[PlantInformationTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         display_name: str | list[str] | None = None,
@@ -466,15 +494,19 @@ class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, Plant
         max_connection_losses: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across plant information
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             query: The query to search for in the text field.
             search_property: The text field to search in.
             name: The name to filter on.
@@ -538,15 +570,13 @@ class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, Plant
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _PLANTINFORMATION_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            query,
-            search_property,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=query,
+            search_properties=search_property,  # type: ignore[arg-type]
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -554,7 +584,7 @@ class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, Plant
         property: PlantInformationFields,
         interval: float,
         query: str | None = None,
-        search_property: PlantInformationTextFields | Sequence[PlantInformationTextFields] | None = None,
+        search_property: PlantInformationTextFields | SequenceNotStr[PlantInformationTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         display_name: str | list[str] | None = None,
@@ -575,7 +605,7 @@ class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, Plant
         max_connection_losses: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for plant information
@@ -637,15 +667,14 @@ class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, Plant
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _PLANTINFORMATION_PROPERTIES_BY_FIELD,
             query,
-            search_property,
+            search_property,  # type: ignore[arg-type]
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -669,10 +698,11 @@ class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, Plant
         max_connection_losses: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         sort_by: PlantInformationFields | Sequence[PlantInformationFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
         retrieve_edges: bool = True,
     ) -> PlantInformationList:
         """List/filter plant information
@@ -702,6 +732,9 @@ class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, Plant
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
             retrieve_edges: Whether to retrieve `generators` external ids for the plant information. Defaults to True.
 
         Returns:
@@ -744,9 +777,9 @@ class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, Plant
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_PLANTINFORMATION_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
             retrieve_edges=retrieve_edges,
             edge_api_name_type_direction_view_id_penta=[
                 (
@@ -756,5 +789,5 @@ class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, Plant
                     "outwards",
                     dm.ViewId("power_ops_core", "Generator", "1"),
                 ),
-            ],
+                                               ]
         )

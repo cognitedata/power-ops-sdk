@@ -6,7 +6,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -24,45 +24,33 @@ from cognite.powerops.client._generated.v1.data_classes._partial_bid_configurati
     _PARTIALBIDCONFIGURATION_PROPERTIES_BY_FIELD,
     _create_partial_bid_configuration_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
 from .partial_bid_configuration_query import PartialBidConfigurationQueryAPI
 
 
-class PartialBidConfigurationAPI(
-    NodeAPI[PartialBidConfiguration, PartialBidConfigurationWrite, PartialBidConfigurationList]
-):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[PartialBidConfiguration]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=PartialBidConfiguration,
-            class_list=PartialBidConfigurationList,
-            class_write_list=PartialBidConfigurationWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class PartialBidConfigurationAPI(NodeAPI[PartialBidConfiguration, PartialBidConfigurationWrite, PartialBidConfigurationList, PartialBidConfigurationWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "PartialBidConfiguration", "1")
+    _properties_by_field = _PARTIALBIDCONFIGURATION_PROPERTIES_BY_FIELD
+    _class_type = PartialBidConfiguration
+    _class_list = PartialBidConfigurationList
+    _class_write_list = PartialBidConfigurationWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
 
     def __call__(
-        self,
-        name: str | list[str] | None = None,
-        name_prefix: str | None = None,
-        method: str | list[str] | None = None,
-        method_prefix: str | None = None,
-        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        add_steps: bool | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            name: str | list[str] | None = None,
+            name_prefix: str | None = None,
+            method: str | list[str] | None = None,
+            method_prefix: str | None = None,
+            power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            add_steps: bool | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> PartialBidConfigurationQueryAPI[PartialBidConfigurationList]:
         """Query starting at partial bid configurations.
 
@@ -96,7 +84,8 @@ class PartialBidConfigurationAPI(
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(PartialBidConfigurationList)
-        return PartialBidConfigurationQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        return PartialBidConfigurationQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
@@ -138,9 +127,7 @@ class PartialBidConfigurationAPI(
         )
         return self._apply(partial_bid_configuration, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more partial bid configuration.
 
         Args:
@@ -170,16 +157,14 @@ class PartialBidConfigurationAPI(
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> PartialBidConfiguration | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> PartialBidConfiguration | None:
+        ...
 
     @overload
-    def retrieve(
-        self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> PartialBidConfigurationList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PartialBidConfigurationList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> PartialBidConfiguration | PartialBidConfigurationList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PartialBidConfiguration | PartialBidConfigurationList | None:
         """Retrieve one or more partial bid configurations by id(s).
 
         Args:
@@ -203,7 +188,7 @@ class PartialBidConfigurationAPI(
     def search(
         self,
         query: str,
-        properties: PartialBidConfigurationTextFields | Sequence[PartialBidConfigurationTextFields] | None = None,
+        properties: PartialBidConfigurationTextFields | SequenceNotStr[PartialBidConfigurationTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
@@ -212,8 +197,11 @@ class PartialBidConfigurationAPI(
         add_steps: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: PartialBidConfigurationFields | SequenceNotStr[PartialBidConfigurationFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> PartialBidConfigurationList:
         """Search partial bid configurations
 
@@ -230,6 +218,11 @@ class PartialBidConfigurationAPI(
             space: The space to filter on.
             limit: Maximum number of partial bid configurations to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             Search results partial bid configurations matching the query.
@@ -256,24 +249,23 @@ class PartialBidConfigurationAPI(
             filter,
         )
         return self._search(
-            self._view_id, query, _PARTIALBIDCONFIGURATION_PROPERTIES_BY_FIELD, properties, filter_, limit
+            query=query,
+            properties=properties,
+            filter_=filter_,
+            limit=limit,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
         )
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: PartialBidConfigurationFields | Sequence[PartialBidConfigurationFields] | None = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: PartialBidConfigurationFields | SequenceNotStr[PartialBidConfigurationFields] | None = None,
         query: str | None = None,
-        search_properties: (
-            PartialBidConfigurationTextFields | Sequence[PartialBidConfigurationTextFields] | None
-        ) = None,
+        search_property: PartialBidConfigurationTextFields | SequenceNotStr[PartialBidConfigurationTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
@@ -282,25 +274,19 @@ class PartialBidConfigurationAPI(
         add_steps: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: PartialBidConfigurationFields | Sequence[PartialBidConfigurationFields] | None = None,
-        group_by: PartialBidConfigurationFields | Sequence[PartialBidConfigurationFields] = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: PartialBidConfigurationFields | SequenceNotStr[PartialBidConfigurationFields] | None = None,
         query: str | None = None,
-        search_properties: (
-            PartialBidConfigurationTextFields | Sequence[PartialBidConfigurationTextFields] | None
-        ) = None,
+        search_property: PartialBidConfigurationTextFields | SequenceNotStr[PartialBidConfigurationTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
@@ -309,22 +295,43 @@ class PartialBidConfigurationAPI(
         add_steps: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: PartialBidConfigurationFields | SequenceNotStr[PartialBidConfigurationFields],
+        property: PartialBidConfigurationFields | SequenceNotStr[PartialBidConfigurationFields] | None = None,
+        query: str | None = None,
+        search_property: PartialBidConfigurationTextFields | SequenceNotStr[PartialBidConfigurationTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        method: str | list[str] | None = None,
+        method_prefix: str | None = None,
+        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        add_steps: bool | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: PartialBidConfigurationFields | Sequence[PartialBidConfigurationFields] | None = None,
-        group_by: PartialBidConfigurationFields | Sequence[PartialBidConfigurationFields] | None = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: PartialBidConfigurationFields | SequenceNotStr[PartialBidConfigurationFields] | None = None,
+        property: PartialBidConfigurationFields | SequenceNotStr[PartialBidConfigurationFields] | None = None,
         query: str | None = None,
-        search_property: PartialBidConfigurationTextFields | Sequence[PartialBidConfigurationTextFields] | None = None,
+        search_property: PartialBidConfigurationTextFields | SequenceNotStr[PartialBidConfigurationTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
@@ -333,15 +340,19 @@ class PartialBidConfigurationAPI(
         add_steps: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across partial bid configurations
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             query: The query to search for in the text field.
             search_property: The text field to search in.
             name: The name to filter on.
@@ -381,15 +392,13 @@ class PartialBidConfigurationAPI(
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _PARTIALBIDCONFIGURATION_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            query,
-            search_property,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=query,
+            search_properties=search_property,  # type: ignore[arg-type]
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -397,7 +406,7 @@ class PartialBidConfigurationAPI(
         property: PartialBidConfigurationFields,
         interval: float,
         query: str | None = None,
-        search_property: PartialBidConfigurationTextFields | Sequence[PartialBidConfigurationTextFields] | None = None,
+        search_property: PartialBidConfigurationTextFields | SequenceNotStr[PartialBidConfigurationTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
@@ -406,7 +415,7 @@ class PartialBidConfigurationAPI(
         add_steps: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for partial bid configurations
@@ -444,15 +453,14 @@ class PartialBidConfigurationAPI(
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _PARTIALBIDCONFIGURATION_PROPERTIES_BY_FIELD,
             query,
-            search_property,
+            search_property,  # type: ignore[arg-type]
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -464,10 +472,11 @@ class PartialBidConfigurationAPI(
         add_steps: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         sort_by: PartialBidConfigurationFields | Sequence[PartialBidConfigurationFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> PartialBidConfigurationList:
         """List/filter partial bid configurations
 
@@ -484,6 +493,9 @@ class PartialBidConfigurationAPI(
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             List of requested partial bid configurations
@@ -512,7 +524,7 @@ class PartialBidConfigurationAPI(
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_PARTIALBIDCONFIGURATION_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
         )

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 import warnings
-from typing import Any, Literal, Optional, Union
+from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -14,7 +14,6 @@ from ._core import (
     DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
-    DomainModelCore,
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
@@ -33,21 +32,12 @@ __all__ = [
     "AlertApplyList",
     "AlertFields",
     "AlertTextFields",
+    "AlertGraphQL",
 ]
 
 
 AlertTextFields = Literal["workflow_execution_id", "title", "description", "severity", "alert_type", "calculation_run"]
-AlertFields = Literal[
-    "time",
-    "workflow_execution_id",
-    "title",
-    "description",
-    "severity",
-    "alert_type",
-    "status_code",
-    "event_ids",
-    "calculation_run",
-]
+AlertFields = Literal["time", "workflow_execution_id", "title", "description", "severity", "alert_type", "status_code", "event_ids", "calculation_run"]
 
 _ALERT_PROPERTIES_BY_FIELD = {
     "time": "time",
@@ -60,7 +50,6 @@ _ALERT_PROPERTIES_BY_FIELD = {
     "event_ids": "eventIds",
     "calculation_run": "calculationRun",
 }
-
 
 class AlertGraphQL(GraphQLCore):
     """This represents the reading version of alert, used
@@ -80,10 +69,9 @@ class AlertGraphQL(GraphQLCore):
         alert_type: Classification of the alert (not in current alerting implementation)
         status_code: Unique status code for the alert. May be used by the frontend to avoid use of hardcoded description (i.e. like a translation)
         event_ids: An array of associated alert CDF Events (e.g. SHOP Run events)
-        calculation_run: The identifier of the parent Bid Calculation (required so tha alerts can be created befor the BidDocument)
+        calculation_run: The identifier of the parent Bid Calculation (required so that alerts can be created before the BidDocument)
     """
-
-    view_id = dm.ViewId("power_ops_core", "Alert", "1")
+    view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "Alert", "1")
     time: Optional[datetime.datetime] = None
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     title: Optional[str] = None
@@ -105,6 +93,8 @@ class AlertGraphQL(GraphQLCore):
             )
         return values
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> Alert:
         """Convert this GraphQL format of alert to the reading format."""
         if self.data_record is None:
@@ -128,6 +118,9 @@ class AlertGraphQL(GraphQLCore):
             calculation_run=self.calculation_run,
         )
 
+
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> AlertWrite:
         """Convert this GraphQL format of alert to the writing format."""
         return AlertWrite(
@@ -163,8 +156,9 @@ class Alert(DomainModel):
         alert_type: Classification of the alert (not in current alerting implementation)
         status_code: Unique status code for the alert. May be used by the frontend to avoid use of hardcoded description (i.e. like a translation)
         event_ids: An array of associated alert CDF Events (e.g. SHOP Run events)
-        calculation_run: The identifier of the parent Bid Calculation (required so tha alerts can be created befor the BidDocument)
+        calculation_run: The identifier of the parent Bid Calculation (required so that alerts can be created before the BidDocument)
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "Alert", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
@@ -222,8 +216,9 @@ class AlertWrite(DomainModelWrite):
         alert_type: Classification of the alert (not in current alerting implementation)
         status_code: Unique status code for the alert. May be used by the frontend to avoid use of hardcoded description (i.e. like a translation)
         event_ids: An array of associated alert CDF Events (e.g. SHOP Run events)
-        calculation_run: The identifier of the parent Bid Calculation (required so tha alerts can be created befor the BidDocument)
+        calculation_run: The identifier of the parent Bid Calculation (required so that alerts can be created before the BidDocument)
     """
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "Alert", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
@@ -240,15 +235,12 @@ class AlertWrite(DomainModelWrite):
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
-        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
-
-        write_view = (view_by_read_class or {}).get(Alert, dm.ViewId("power_ops_core", "Alert", "1"))
 
         properties: dict[str, Any] = {}
 
@@ -279,6 +271,7 @@ class AlertWrite(DomainModelWrite):
         if self.calculation_run is not None or write_none:
             properties["calculationRun"] = self.calculation_run
 
+
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -287,13 +280,14 @@ class AlertWrite(DomainModelWrite):
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
-                        source=write_view,
+                        source=self._view_id,
                         properties=properties,
-                    )
-                ],
+                )],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
+
+
 
         return resources
 
@@ -334,8 +328,8 @@ class AlertWriteList(DomainModelWriteList[AlertWrite]):
 
     _INSTANCE = AlertWrite
 
-
 class AlertApplyList(AlertWriteList): ...
+
 
 
 def _create_alert_filter(
@@ -360,23 +354,15 @@ def _create_alert_filter(
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
-    filters = []
+    filters: list[dm.Filter] = []
     if min_time is not None or max_time is not None:
-        filters.append(
-            dm.filters.Range(
-                view_id.as_property_ref("time"),
-                gte=min_time.isoformat(timespec="milliseconds") if min_time else None,
-                lte=max_time.isoformat(timespec="milliseconds") if max_time else None,
-            )
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("time"), gte=min_time.isoformat(timespec="milliseconds") if min_time else None, lte=max_time.isoformat(timespec="milliseconds") if max_time else None))
     if isinstance(workflow_execution_id, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id))
     if workflow_execution_id and isinstance(workflow_execution_id, list):
         filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
     if workflow_execution_id_prefix is not None:
-        filters.append(
-            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
-        )
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix))
     if isinstance(title, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("title"), value=title))
     if title and isinstance(title, list):
@@ -402,9 +388,7 @@ def _create_alert_filter(
     if alert_type_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("alertType"), value=alert_type_prefix))
     if min_status_code is not None or max_status_code is not None:
-        filters.append(
-            dm.filters.Range(view_id.as_property_ref("statusCode"), gte=min_status_code, lte=max_status_code)
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("statusCode"), gte=min_status_code, lte=max_status_code))
     if isinstance(calculation_run, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("calculationRun"), value=calculation_run))
     if calculation_run and isinstance(calculation_run, list):

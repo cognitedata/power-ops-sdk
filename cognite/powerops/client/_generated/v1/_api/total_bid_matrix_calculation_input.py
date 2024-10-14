@@ -7,7 +7,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -25,52 +25,40 @@ from cognite.powerops.client._generated.v1.data_classes._total_bid_matrix_calcul
     _TOTALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD,
     _create_total_bid_matrix_calculation_input_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
 from .total_bid_matrix_calculation_input_partial_bid_matrices import TotalBidMatrixCalculationInputPartialBidMatricesAPI
 from .total_bid_matrix_calculation_input_query import TotalBidMatrixCalculationInputQueryAPI
 
 
-class TotalBidMatrixCalculationInputAPI(
-    NodeAPI[TotalBidMatrixCalculationInput, TotalBidMatrixCalculationInputWrite, TotalBidMatrixCalculationInputList]
-):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[TotalBidMatrixCalculationInput]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=TotalBidMatrixCalculationInput,
-            class_list=TotalBidMatrixCalculationInputList,
-            class_write_list=TotalBidMatrixCalculationInputWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, TotalBidMatrixCalculationInputWrite, TotalBidMatrixCalculationInputList, TotalBidMatrixCalculationInputWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "TotalBidMatrixCalculationInput", "1")
+    _properties_by_field = _TOTALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD
+    _class_type = TotalBidMatrixCalculationInput
+    _class_list = TotalBidMatrixCalculationInputList
+    _class_write_list = TotalBidMatrixCalculationInputWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
         self.partial_bid_matrices_edge = TotalBidMatrixCalculationInputPartialBidMatricesAPI(client)
 
     def __call__(
-        self,
-        workflow_execution_id: str | list[str] | None = None,
-        workflow_execution_id_prefix: str | None = None,
-        min_workflow_step: int | None = None,
-        max_workflow_step: int | None = None,
-        function_name: str | list[str] | None = None,
-        function_name_prefix: str | None = None,
-        function_call_id: str | list[str] | None = None,
-        function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        min_bid_date: datetime.date | None = None,
-        max_bid_date: datetime.date | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            workflow_execution_id: str | list[str] | None = None,
+            workflow_execution_id_prefix: str | None = None,
+            min_workflow_step: int | None = None,
+            max_workflow_step: int | None = None,
+            function_name: str | list[str] | None = None,
+            function_name_prefix: str | None = None,
+            function_call_id: str | list[str] | None = None,
+            function_call_id_prefix: str | None = None,
+            bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            min_bid_date: datetime.date | None = None,
+            max_bid_date: datetime.date | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> TotalBidMatrixCalculationInputQueryAPI[TotalBidMatrixCalculationInputList]:
         """Query starting at total bid matrix calculation inputs.
 
@@ -114,13 +102,12 @@ class TotalBidMatrixCalculationInputAPI(
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(TotalBidMatrixCalculationInputList)
-        return TotalBidMatrixCalculationInputQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        return TotalBidMatrixCalculationInputQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
-        total_bid_matrix_calculation_input: (
-            TotalBidMatrixCalculationInputWrite | Sequence[TotalBidMatrixCalculationInputWrite]
-        ),
+        total_bid_matrix_calculation_input: TotalBidMatrixCalculationInputWrite | Sequence[TotalBidMatrixCalculationInputWrite],
         replace: bool = False,
         write_none: bool = False,
     ) -> ResourcesWriteResult:
@@ -162,9 +149,7 @@ class TotalBidMatrixCalculationInputAPI(
         )
         return self._apply(total_bid_matrix_calculation_input, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more total bid matrix calculation input.
 
         Args:
@@ -194,18 +179,14 @@ class TotalBidMatrixCalculationInputAPI(
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(
-        self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE
-    ) -> TotalBidMatrixCalculationInput | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> TotalBidMatrixCalculationInput | None:
+        ...
 
     @overload
-    def retrieve(
-        self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> TotalBidMatrixCalculationInputList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> TotalBidMatrixCalculationInputList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> TotalBidMatrixCalculationInput | TotalBidMatrixCalculationInputList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> TotalBidMatrixCalculationInput | TotalBidMatrixCalculationInputList | None:
         """Retrieve one or more total bid matrix calculation inputs by id(s).
 
         Args:
@@ -236,15 +217,14 @@ class TotalBidMatrixCalculationInputAPI(
                     "outwards",
                     dm.ViewId("power_ops_core", "BidMatrix", "1"),
                 ),
-            ],
+                                               ]
         )
+
 
     def search(
         self,
         query: str,
-        properties: (
-            TotalBidMatrixCalculationInputTextFields | Sequence[TotalBidMatrixCalculationInputTextFields] | None
-        ) = None,
+        properties: TotalBidMatrixCalculationInputTextFields | SequenceNotStr[TotalBidMatrixCalculationInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -258,8 +238,11 @@ class TotalBidMatrixCalculationInputAPI(
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: TotalBidMatrixCalculationInputFields | SequenceNotStr[TotalBidMatrixCalculationInputFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> TotalBidMatrixCalculationInputList:
         """Search total bid matrix calculation inputs
 
@@ -281,6 +264,11 @@ class TotalBidMatrixCalculationInputAPI(
             space: The space to filter on.
             limit: Maximum number of total bid matrix calculation inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             Search results total bid matrix calculation inputs matching the query.
@@ -312,24 +300,23 @@ class TotalBidMatrixCalculationInputAPI(
             filter,
         )
         return self._search(
-            self._view_id, query, _TOTALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD, properties, filter_, limit
+            query=query,
+            properties=properties,
+            filter_=filter_,
+            limit=limit,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
         )
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: TotalBidMatrixCalculationInputFields | Sequence[TotalBidMatrixCalculationInputFields] | None = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: TotalBidMatrixCalculationInputFields | SequenceNotStr[TotalBidMatrixCalculationInputFields] | None = None,
         query: str | None = None,
-        search_properties: (
-            TotalBidMatrixCalculationInputTextFields | Sequence[TotalBidMatrixCalculationInputTextFields] | None
-        ) = None,
+        search_property: TotalBidMatrixCalculationInputTextFields | SequenceNotStr[TotalBidMatrixCalculationInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -343,25 +330,19 @@ class TotalBidMatrixCalculationInputAPI(
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: TotalBidMatrixCalculationInputFields | Sequence[TotalBidMatrixCalculationInputFields] | None = None,
-        group_by: TotalBidMatrixCalculationInputFields | Sequence[TotalBidMatrixCalculationInputFields] = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: TotalBidMatrixCalculationInputFields | SequenceNotStr[TotalBidMatrixCalculationInputFields] | None = None,
         query: str | None = None,
-        search_properties: (
-            TotalBidMatrixCalculationInputTextFields | Sequence[TotalBidMatrixCalculationInputTextFields] | None
-        ) = None,
+        search_property: TotalBidMatrixCalculationInputTextFields | SequenceNotStr[TotalBidMatrixCalculationInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -375,24 +356,48 @@ class TotalBidMatrixCalculationInputAPI(
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: TotalBidMatrixCalculationInputFields | SequenceNotStr[TotalBidMatrixCalculationInputFields],
+        property: TotalBidMatrixCalculationInputFields | SequenceNotStr[TotalBidMatrixCalculationInputFields] | None = None,
+        query: str | None = None,
+        search_property: TotalBidMatrixCalculationInputTextFields | SequenceNotStr[TotalBidMatrixCalculationInputTextFields] | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
+        function_name: str | list[str] | None = None,
+        function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
+        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_bid_date: datetime.date | None = None,
+        max_bid_date: datetime.date | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: TotalBidMatrixCalculationInputFields | Sequence[TotalBidMatrixCalculationInputFields] | None = None,
-        group_by: TotalBidMatrixCalculationInputFields | Sequence[TotalBidMatrixCalculationInputFields] | None = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: TotalBidMatrixCalculationInputFields | SequenceNotStr[TotalBidMatrixCalculationInputFields] | None = None,
+        property: TotalBidMatrixCalculationInputFields | SequenceNotStr[TotalBidMatrixCalculationInputFields] | None = None,
         query: str | None = None,
-        search_property: (
-            TotalBidMatrixCalculationInputTextFields | Sequence[TotalBidMatrixCalculationInputTextFields] | None
-        ) = None,
+        search_property: TotalBidMatrixCalculationInputTextFields | SequenceNotStr[TotalBidMatrixCalculationInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -406,15 +411,19 @@ class TotalBidMatrixCalculationInputAPI(
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across total bid matrix calculation inputs
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             query: The query to search for in the text field.
             search_property: The text field to search in.
             workflow_execution_id: The workflow execution id to filter on.
@@ -464,15 +473,13 @@ class TotalBidMatrixCalculationInputAPI(
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _TOTALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            query,
-            search_property,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=query,
+            search_properties=search_property,  # type: ignore[arg-type]
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -480,9 +487,7 @@ class TotalBidMatrixCalculationInputAPI(
         property: TotalBidMatrixCalculationInputFields,
         interval: float,
         query: str | None = None,
-        search_property: (
-            TotalBidMatrixCalculationInputTextFields | Sequence[TotalBidMatrixCalculationInputTextFields] | None
-        ) = None,
+        search_property: TotalBidMatrixCalculationInputTextFields | SequenceNotStr[TotalBidMatrixCalculationInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -496,7 +501,7 @@ class TotalBidMatrixCalculationInputAPI(
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for total bid matrix calculation inputs
@@ -544,15 +549,14 @@ class TotalBidMatrixCalculationInputAPI(
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _TOTALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD,
             query,
-            search_property,
+            search_property,  # type: ignore[arg-type]
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -569,10 +573,11 @@ class TotalBidMatrixCalculationInputAPI(
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         sort_by: TotalBidMatrixCalculationInputFields | Sequence[TotalBidMatrixCalculationInputFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
         retrieve_edges: bool = True,
     ) -> TotalBidMatrixCalculationInputList:
         """List/filter total bid matrix calculation inputs
@@ -595,6 +600,9 @@ class TotalBidMatrixCalculationInputAPI(
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
             retrieve_edges: Whether to retrieve `partial_bid_matrices` external ids for the total bid matrix calculation inputs. Defaults to True.
 
         Returns:
@@ -630,9 +638,9 @@ class TotalBidMatrixCalculationInputAPI(
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_TOTALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
             retrieve_edges=retrieve_edges,
             edge_api_name_type_direction_view_id_penta=[
                 (
@@ -642,5 +650,5 @@ class TotalBidMatrixCalculationInputAPI(
                     "outwards",
                     dm.ViewId("power_ops_core", "BidMatrix", "1"),
                 ),
-            ],
+                                               ]
         )

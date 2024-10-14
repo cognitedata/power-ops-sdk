@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.99.0] - 2024-10-11
+### Changed
+* Removed `PowerAsset` from `product_CogShop`-data model and added `ShopResult`, `ShopTimeSeries`, and `Alert`
+
+
 ## [0.98.4] - 2024-09-09
 ### Fix
 * Unpinned SDK dependency against toolkit and only used pinned version with dev dependencies

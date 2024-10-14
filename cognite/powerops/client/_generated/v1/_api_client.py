@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import warnings
 from pathlib import Path
-from typing import Sequence
+from typing import Any, Sequence
 
 from cognite.client import ClientConfig, CogniteClient, data_modeling as dm
 from cognite.client.data_classes import TimeSeriesList
@@ -68,9 +68,7 @@ from ._api.total_bid_matrix_calculation_input import TotalBidMatrixCalculationIn
 from ._api.total_bid_matrix_calculation_output import TotalBidMatrixCalculationOutputAPI
 from ._api.turbine_efficiency_curve import TurbineEfficiencyCurveAPI
 from ._api.water_value_based_partial_bid_configuration import WaterValueBasedPartialBidConfigurationAPI
-from ._api.water_value_based_partial_bid_matrix_calculation_input import (
-    WaterValueBasedPartialBidMatrixCalculationInputAPI,
-)
+from ._api.water_value_based_partial_bid_matrix_calculation_input import WaterValueBasedPartialBidMatrixCalculationInputAPI
 from ._api.watercourse import WatercourseAPI
 from ._api._core import SequenceNotStr, GraphQLQueryResponse
 from .data_classes._core import DEFAULT_INSTANCE_SPACE, GraphQLList
@@ -89,96 +87,45 @@ class BenchmarkingDayAheadAPIs:
     """
 
     def __init__(self, client: CogniteClient):
-        view_by_read_class = {
-            data_classes.Alert: dm.ViewId("power_ops_core", "Alert", "1"),
-            data_classes.BenchmarkingCalculationInput: dm.ViewId("power_ops_core", "BenchmarkingCalculationInput", "1"),
-            data_classes.BenchmarkingCalculationOutput: dm.ViewId(
-                "power_ops_core", "BenchmarkingCalculationOutput", "1"
-            ),
-            data_classes.BenchmarkingConfigurationDayAhead: dm.ViewId(
-                "power_ops_core", "BenchmarkingConfigurationDayAhead", "1"
-            ),
-            data_classes.BenchmarkingProductionObligationDayAhead: dm.ViewId(
-                "power_ops_core", "BenchmarkingProductionObligationDayAhead", "1"
-            ),
-            data_classes.BenchmarkingResultDayAhead: dm.ViewId("power_ops_core", "BenchmarkingResultDayAhead", "1"),
-            data_classes.BenchmarkingShopCase: dm.ViewId("power_ops_core", "BenchmarkingShopCase", "1"),
-            data_classes.BenchmarkingTaskDispatcherInputDayAhead: dm.ViewId(
-                "power_ops_core", "BenchmarkingTaskDispatcherInputDayAhead", "1"
-            ),
-            data_classes.BenchmarkingTaskDispatcherOutputDayAhead: dm.ViewId(
-                "power_ops_core", "BenchmarkingTaskDispatcherOutputDayAhead", "1"
-            ),
-            data_classes.BidConfigurationDayAhead: dm.ViewId("power_ops_core", "BidConfigurationDayAhead", "1"),
-            data_classes.DateSpecification: dm.ViewId("power_ops_core", "DateSpecification", "1"),
-            data_classes.FunctionInput: dm.ViewId("power_ops_core", "FunctionInput", "1"),
-            data_classes.FunctionOutput: dm.ViewId("power_ops_core", "FunctionOutput", "1"),
-            data_classes.MarketConfiguration: dm.ViewId("power_ops_core", "MarketConfiguration", "1"),
-            data_classes.PartialBidConfiguration: dm.ViewId("power_ops_core", "PartialBidConfiguration", "1"),
-            data_classes.PowerAsset: dm.ViewId("power_ops_core", "PowerAsset", "1"),
-            data_classes.PriceArea: dm.ViewId("power_ops_core", "PriceArea", "1"),
-            data_classes.PriceAreaDayAhead: dm.ViewId("power_ops_core", "PriceAreaDayAhead", "1"),
-            data_classes.ShopAttributeMapping: dm.ViewId("power_ops_core", "ShopAttributeMapping", "1"),
-            data_classes.ShopCase: dm.ViewId("power_ops_core", "ShopCase", "1"),
-            data_classes.ShopCommands: dm.ViewId("power_ops_core", "ShopCommands", "1"),
-            data_classes.ShopFile: dm.ViewId("power_ops_core", "ShopFile", "1"),
-            data_classes.ShopModel: dm.ViewId("power_ops_core", "ShopModel", "1"),
-            data_classes.ShopModelWithAssets: dm.ViewId("power_ops_core", "ShopModelWithAssets", "1"),
-            data_classes.ShopOutputTimeSeriesDefinition: dm.ViewId(
-                "power_ops_core", "ShopOutputTimeSeriesDefinition", "1"
-            ),
-            data_classes.ShopPreprocessorInput: dm.ViewId("power_ops_core", "ShopPreprocessorInput", "1"),
-            data_classes.ShopResult: dm.ViewId("power_ops_core", "ShopResult", "1"),
-            data_classes.ShopScenario: dm.ViewId("power_ops_core", "ShopScenario", "1"),
-            data_classes.ShopTimeSeries: dm.ViewId("power_ops_core", "ShopTimeSeries", "1"),
-            data_classes.ShopTriggerInput: dm.ViewId("power_ops_core", "ShopTriggerInput", "1"),
-        }
-        self._view_by_read_class = view_by_read_class
         self._client = client
 
-        self.alert = AlertAPI(client, view_by_read_class)
-        self.benchmarking_calculation_input = BenchmarkingCalculationInputAPI(client, view_by_read_class)
-        self.benchmarking_calculation_output = BenchmarkingCalculationOutputAPI(client, view_by_read_class)
-        self.benchmarking_configuration_day_ahead = BenchmarkingConfigurationDayAheadAPI(client, view_by_read_class)
-        self.benchmarking_production_obligation_day_ahead = BenchmarkingProductionObligationDayAheadAPI(
-            client, view_by_read_class
-        )
-        self.benchmarking_result_day_ahead = BenchmarkingResultDayAheadAPI(client, view_by_read_class)
-        self.benchmarking_shop_case = BenchmarkingShopCaseAPI(client, view_by_read_class)
-        self.benchmarking_task_dispatcher_input_day_ahead = BenchmarkingTaskDispatcherInputDayAheadAPI(
-            client, view_by_read_class
-        )
-        self.benchmarking_task_dispatcher_output_day_ahead = BenchmarkingTaskDispatcherOutputDayAheadAPI(
-            client, view_by_read_class
-        )
-        self.bid_configuration_day_ahead = BidConfigurationDayAheadAPI(client, view_by_read_class)
-        self.date_specification = DateSpecificationAPI(client, view_by_read_class)
-        self.function_input = FunctionInputAPI(client, view_by_read_class)
-        self.function_output = FunctionOutputAPI(client, view_by_read_class)
-        self.market_configuration = MarketConfigurationAPI(client, view_by_read_class)
-        self.partial_bid_configuration = PartialBidConfigurationAPI(client, view_by_read_class)
-        self.power_asset = PowerAssetAPI(client, view_by_read_class)
-        self.price_area = PriceAreaAPI(client, view_by_read_class)
-        self.price_area_day_ahead = PriceAreaDayAheadAPI(client, view_by_read_class)
-        self.shop_attribute_mapping = ShopAttributeMappingAPI(client, view_by_read_class)
-        self.shop_case = ShopCaseAPI(client, view_by_read_class)
-        self.shop_commands = ShopCommandsAPI(client, view_by_read_class)
-        self.shop_file = ShopFileAPI(client, view_by_read_class)
-        self.shop_model = ShopModelAPI(client, view_by_read_class)
-        self.shop_model_with_assets = ShopModelWithAssetsAPI(client, view_by_read_class)
-        self.shop_output_time_series_definition = ShopOutputTimeSeriesDefinitionAPI(client, view_by_read_class)
-        self.shop_preprocessor_input = ShopPreprocessorInputAPI(client, view_by_read_class)
-        self.shop_result = ShopResultAPI(client, view_by_read_class)
-        self.shop_scenario = ShopScenarioAPI(client, view_by_read_class)
-        self.shop_time_series = ShopTimeSeriesAPI(client, view_by_read_class)
-        self.shop_trigger_input = ShopTriggerInputAPI(client, view_by_read_class)
+        self.alert = AlertAPI(client)
+        self.benchmarking_calculation_input = BenchmarkingCalculationInputAPI(client)
+        self.benchmarking_calculation_output = BenchmarkingCalculationOutputAPI(client)
+        self.benchmarking_configuration_day_ahead = BenchmarkingConfigurationDayAheadAPI(client)
+        self.benchmarking_production_obligation_day_ahead = BenchmarkingProductionObligationDayAheadAPI(client)
+        self.benchmarking_result_day_ahead = BenchmarkingResultDayAheadAPI(client)
+        self.benchmarking_shop_case = BenchmarkingShopCaseAPI(client)
+        self.benchmarking_task_dispatcher_input_day_ahead = BenchmarkingTaskDispatcherInputDayAheadAPI(client)
+        self.benchmarking_task_dispatcher_output_day_ahead = BenchmarkingTaskDispatcherOutputDayAheadAPI(client)
+        self.bid_configuration_day_ahead = BidConfigurationDayAheadAPI(client)
+        self.date_specification = DateSpecificationAPI(client)
+        self.function_input = FunctionInputAPI(client)
+        self.function_output = FunctionOutputAPI(client)
+        self.market_configuration = MarketConfigurationAPI(client)
+        self.partial_bid_configuration = PartialBidConfigurationAPI(client)
+        self.power_asset = PowerAssetAPI(client)
+        self.price_area = PriceAreaAPI(client)
+        self.price_area_day_ahead = PriceAreaDayAheadAPI(client)
+        self.shop_attribute_mapping = ShopAttributeMappingAPI(client)
+        self.shop_case = ShopCaseAPI(client)
+        self.shop_commands = ShopCommandsAPI(client)
+        self.shop_file = ShopFileAPI(client)
+        self.shop_model = ShopModelAPI(client)
+        self.shop_model_with_assets = ShopModelWithAssetsAPI(client)
+        self.shop_output_time_series_definition = ShopOutputTimeSeriesDefinitionAPI(client)
+        self.shop_preprocessor_input = ShopPreprocessorInputAPI(client)
+        self.shop_result = ShopResultAPI(client)
+        self.shop_scenario = ShopScenarioAPI(client)
+        self.shop_time_series = ShopTimeSeriesAPI(client)
+        self.shop_trigger_input = ShopTriggerInputAPI(client)
 
     def graphql_query(self, query: str, variables: dict[str, Any] | None = None) -> GraphQLList:
         """Execute a GraphQl query against the compute_BenchmarkingDayAhead data model.
 
-        Args:
-            query (str): The GraphQL query to issue.
-            variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
+            Args:
+                query (str): The GraphQL query to issue.
+                variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
         """
         data_model_id = dm.DataModelId("power_ops_core", "compute_BenchmarkingDayAhead", "1")
         result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
@@ -197,94 +144,47 @@ class ShopBasedDayAheadBidProcesAPIs:
     """
 
     def __init__(self, client: CogniteClient):
-        view_by_read_class = {
-            data_classes.Alert: dm.ViewId("power_ops_core", "Alert", "1"),
-            data_classes.BidConfigurationDayAhead: dm.ViewId("power_ops_core", "BidConfigurationDayAhead", "1"),
-            data_classes.BidMatrix: dm.ViewId("power_ops_core", "BidMatrix", "1"),
-            data_classes.DateSpecification: dm.ViewId("power_ops_core", "DateSpecification", "1"),
-            data_classes.FunctionInput: dm.ViewId("power_ops_core", "FunctionInput", "1"),
-            data_classes.FunctionOutput: dm.ViewId("power_ops_core", "FunctionOutput", "1"),
-            data_classes.MarketConfiguration: dm.ViewId("power_ops_core", "MarketConfiguration", "1"),
-            data_classes.MultiScenarioPartialBidMatrixCalculationInput: dm.ViewId(
-                "power_ops_core", "MultiScenarioPartialBidMatrixCalculationInput", "1"
-            ),
-            data_classes.PartialBidConfiguration: dm.ViewId("power_ops_core", "PartialBidConfiguration", "1"),
-            data_classes.PartialBidMatrixCalculationInput: dm.ViewId(
-                "power_ops_core", "PartialBidMatrixCalculationInput", "1"
-            ),
-            data_classes.PartialBidMatrixCalculationOutput: dm.ViewId(
-                "power_ops_core", "PartialBidMatrixCalculationOutput", "1"
-            ),
-            data_classes.PowerAsset: dm.ViewId("power_ops_core", "PowerAsset", "1"),
-            data_classes.PriceArea: dm.ViewId("power_ops_core", "PriceArea", "1"),
-            data_classes.PriceAreaDayAhead: dm.ViewId("power_ops_core", "PriceAreaDayAhead", "1"),
-            data_classes.PriceProduction: dm.ViewId("power_ops_core", "PriceProduction", "1"),
-            data_classes.ShopAttributeMapping: dm.ViewId("power_ops_core", "ShopAttributeMapping", "1"),
-            data_classes.ShopBasedPartialBidConfiguration: dm.ViewId(
-                "power_ops_core", "ShopBasedPartialBidConfiguration", "1"
-            ),
-            data_classes.ShopCase: dm.ViewId("power_ops_core", "ShopCase", "1"),
-            data_classes.ShopCommands: dm.ViewId("power_ops_core", "ShopCommands", "1"),
-            data_classes.ShopFile: dm.ViewId("power_ops_core", "ShopFile", "1"),
-            data_classes.ShopModel: dm.ViewId("power_ops_core", "ShopModel", "1"),
-            data_classes.ShopOutputTimeSeriesDefinition: dm.ViewId(
-                "power_ops_core", "ShopOutputTimeSeriesDefinition", "1"
-            ),
-            data_classes.ShopPreprocessorInput: dm.ViewId("power_ops_core", "ShopPreprocessorInput", "1"),
-            data_classes.ShopPreprocessorOutput: dm.ViewId("power_ops_core", "ShopPreprocessorOutput", "1"),
-            data_classes.ShopResult: dm.ViewId("power_ops_core", "ShopResult", "1"),
-            data_classes.ShopScenario: dm.ViewId("power_ops_core", "ShopScenario", "1"),
-            data_classes.ShopScenarioSet: dm.ViewId("power_ops_core", "ShopScenarioSet", "1"),
-            data_classes.ShopTimeSeries: dm.ViewId("power_ops_core", "ShopTimeSeries", "1"),
-            data_classes.ShopTriggerInput: dm.ViewId("power_ops_core", "ShopTriggerInput", "1"),
-            data_classes.ShopTriggerOutput: dm.ViewId("power_ops_core", "ShopTriggerOutput", "1"),
-            data_classes.TaskDispatcherInput: dm.ViewId("power_ops_core", "TaskDispatcherInput", "1"),
-            data_classes.TaskDispatcherOutput: dm.ViewId("power_ops_core", "TaskDispatcherOutput", "1"),
-        }
-        self._view_by_read_class = view_by_read_class
         self._client = client
 
-        self.alert = AlertAPI(client, view_by_read_class)
-        self.bid_configuration_day_ahead = BidConfigurationDayAheadAPI(client, view_by_read_class)
-        self.bid_matrix = BidMatrixAPI(client, view_by_read_class)
-        self.date_specification = DateSpecificationAPI(client, view_by_read_class)
-        self.function_input = FunctionInputAPI(client, view_by_read_class)
-        self.function_output = FunctionOutputAPI(client, view_by_read_class)
-        self.market_configuration = MarketConfigurationAPI(client, view_by_read_class)
-        self.multi_scenario_partial_bid_matrix_calculation_input = MultiScenarioPartialBidMatrixCalculationInputAPI(
-            client, view_by_read_class
-        )
-        self.partial_bid_configuration = PartialBidConfigurationAPI(client, view_by_read_class)
-        self.partial_bid_matrix_calculation_input = PartialBidMatrixCalculationInputAPI(client, view_by_read_class)
-        self.partial_bid_matrix_calculation_output = PartialBidMatrixCalculationOutputAPI(client, view_by_read_class)
-        self.power_asset = PowerAssetAPI(client, view_by_read_class)
-        self.price_area = PriceAreaAPI(client, view_by_read_class)
-        self.price_area_day_ahead = PriceAreaDayAheadAPI(client, view_by_read_class)
-        self.price_production = PriceProductionAPI(client, view_by_read_class)
-        self.shop_attribute_mapping = ShopAttributeMappingAPI(client, view_by_read_class)
-        self.shop_based_partial_bid_configuration = ShopBasedPartialBidConfigurationAPI(client, view_by_read_class)
-        self.shop_case = ShopCaseAPI(client, view_by_read_class)
-        self.shop_commands = ShopCommandsAPI(client, view_by_read_class)
-        self.shop_file = ShopFileAPI(client, view_by_read_class)
-        self.shop_model = ShopModelAPI(client, view_by_read_class)
-        self.shop_output_time_series_definition = ShopOutputTimeSeriesDefinitionAPI(client, view_by_read_class)
-        self.shop_preprocessor_input = ShopPreprocessorInputAPI(client, view_by_read_class)
-        self.shop_preprocessor_output = ShopPreprocessorOutputAPI(client, view_by_read_class)
-        self.shop_result = ShopResultAPI(client, view_by_read_class)
-        self.shop_scenario = ShopScenarioAPI(client, view_by_read_class)
-        self.shop_scenario_set = ShopScenarioSetAPI(client, view_by_read_class)
-        self.shop_time_series = ShopTimeSeriesAPI(client, view_by_read_class)
-        self.shop_trigger_input = ShopTriggerInputAPI(client, view_by_read_class)
-        self.shop_trigger_output = ShopTriggerOutputAPI(client, view_by_read_class)
-        self.task_dispatcher_input = TaskDispatcherInputAPI(client, view_by_read_class)
-        self.task_dispatcher_output = TaskDispatcherOutputAPI(client, view_by_read_class)
+        self.alert = AlertAPI(client)
+        self.bid_configuration_day_ahead = BidConfigurationDayAheadAPI(client)
+        self.bid_matrix = BidMatrixAPI(client)
+        self.date_specification = DateSpecificationAPI(client)
+        self.function_input = FunctionInputAPI(client)
+        self.function_output = FunctionOutputAPI(client)
+        self.market_configuration = MarketConfigurationAPI(client)
+        self.multi_scenario_partial_bid_matrix_calculation_input = MultiScenarioPartialBidMatrixCalculationInputAPI(client)
+        self.partial_bid_configuration = PartialBidConfigurationAPI(client)
+        self.partial_bid_matrix_calculation_input = PartialBidMatrixCalculationInputAPI(client)
+        self.partial_bid_matrix_calculation_output = PartialBidMatrixCalculationOutputAPI(client)
+        self.power_asset = PowerAssetAPI(client)
+        self.price_area = PriceAreaAPI(client)
+        self.price_area_day_ahead = PriceAreaDayAheadAPI(client)
+        self.price_production = PriceProductionAPI(client)
+        self.shop_attribute_mapping = ShopAttributeMappingAPI(client)
+        self.shop_based_partial_bid_configuration = ShopBasedPartialBidConfigurationAPI(client)
+        self.shop_case = ShopCaseAPI(client)
+        self.shop_commands = ShopCommandsAPI(client)
+        self.shop_file = ShopFileAPI(client)
+        self.shop_model = ShopModelAPI(client)
+        self.shop_output_time_series_definition = ShopOutputTimeSeriesDefinitionAPI(client)
+        self.shop_preprocessor_input = ShopPreprocessorInputAPI(client)
+        self.shop_preprocessor_output = ShopPreprocessorOutputAPI(client)
+        self.shop_result = ShopResultAPI(client)
+        self.shop_scenario = ShopScenarioAPI(client)
+        self.shop_scenario_set = ShopScenarioSetAPI(client)
+        self.shop_time_series = ShopTimeSeriesAPI(client)
+        self.shop_trigger_input = ShopTriggerInputAPI(client)
+        self.shop_trigger_output = ShopTriggerOutputAPI(client)
+        self.task_dispatcher_input = TaskDispatcherInputAPI(client)
+        self.task_dispatcher_output = TaskDispatcherOutputAPI(client)
 
     def graphql_query(self, query: str, variables: dict[str, Any] | None = None) -> GraphQLList:
         """Execute a GraphQl query against the compute_ShopBasedDayAhead data model.
 
-        Args:
-            query (str): The GraphQL query to issue.
-            variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
+            Args:
+                query (str): The GraphQL query to issue.
+                variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
         """
         data_model_id = dm.DataModelId("power_ops_core", "compute_ShopBasedDayAhead", "1")
         result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
@@ -303,78 +203,42 @@ class TotalBidMatrixCalculationAPIs:
     """
 
     def __init__(self, client: CogniteClient):
-        view_by_read_class = {
-            data_classes.Alert: dm.ViewId("power_ops_core", "Alert", "1"),
-            data_classes.BidConfigurationDayAhead: dm.ViewId("power_ops_core", "BidConfigurationDayAhead", "1"),
-            data_classes.BidDocument: dm.ViewId("power_ops_core", "BidDocument", "1"),
-            data_classes.BidDocumentDayAhead: dm.ViewId("power_ops_core", "BidDocumentDayAhead", "1"),
-            data_classes.BidMatrix: dm.ViewId("power_ops_core", "BidMatrix", "1"),
-            data_classes.BidMatrixInformation: dm.ViewId("power_ops_core", "BidMatrixInformation", "1"),
-            data_classes.DateSpecification: dm.ViewId("power_ops_core", "DateSpecification", "1"),
-            data_classes.FunctionInput: dm.ViewId("power_ops_core", "FunctionInput", "1"),
-            data_classes.FunctionOutput: dm.ViewId("power_ops_core", "FunctionOutput", "1"),
-            data_classes.MarketConfiguration: dm.ViewId("power_ops_core", "MarketConfiguration", "1"),
-            data_classes.PartialBidConfiguration: dm.ViewId("power_ops_core", "PartialBidConfiguration", "1"),
-            data_classes.PartialBidMatrixInformation: dm.ViewId("power_ops_core", "PartialBidMatrixInformation", "1"),
-            data_classes.PowerAsset: dm.ViewId("power_ops_core", "PowerAsset", "1"),
-            data_classes.PriceArea: dm.ViewId("power_ops_core", "PriceArea", "1"),
-            data_classes.PriceAreaDayAhead: dm.ViewId("power_ops_core", "PriceAreaDayAhead", "1"),
-            data_classes.PriceProduction: dm.ViewId("power_ops_core", "PriceProduction", "1"),
-            data_classes.ShopAttributeMapping: dm.ViewId("power_ops_core", "ShopAttributeMapping", "1"),
-            data_classes.ShopCase: dm.ViewId("power_ops_core", "ShopCase", "1"),
-            data_classes.ShopCommands: dm.ViewId("power_ops_core", "ShopCommands", "1"),
-            data_classes.ShopFile: dm.ViewId("power_ops_core", "ShopFile", "1"),
-            data_classes.ShopModel: dm.ViewId("power_ops_core", "ShopModel", "1"),
-            data_classes.ShopOutputTimeSeriesDefinition: dm.ViewId(
-                "power_ops_core", "ShopOutputTimeSeriesDefinition", "1"
-            ),
-            data_classes.ShopResult: dm.ViewId("power_ops_core", "ShopResult", "1"),
-            data_classes.ShopScenario: dm.ViewId("power_ops_core", "ShopScenario", "1"),
-            data_classes.ShopTimeSeries: dm.ViewId("power_ops_core", "ShopTimeSeries", "1"),
-            data_classes.TotalBidMatrixCalculationInput: dm.ViewId(
-                "power_ops_core", "TotalBidMatrixCalculationInput", "1"
-            ),
-            data_classes.TotalBidMatrixCalculationOutput: dm.ViewId(
-                "power_ops_core", "TotalBidMatrixCalculationOutput", "1"
-            ),
-        }
-        self._view_by_read_class = view_by_read_class
         self._client = client
 
-        self.alert = AlertAPI(client, view_by_read_class)
-        self.bid_configuration_day_ahead = BidConfigurationDayAheadAPI(client, view_by_read_class)
-        self.bid_document = BidDocumentAPI(client, view_by_read_class)
-        self.bid_document_day_ahead = BidDocumentDayAheadAPI(client, view_by_read_class)
-        self.bid_matrix = BidMatrixAPI(client, view_by_read_class)
-        self.bid_matrix_information = BidMatrixInformationAPI(client, view_by_read_class)
-        self.date_specification = DateSpecificationAPI(client, view_by_read_class)
-        self.function_input = FunctionInputAPI(client, view_by_read_class)
-        self.function_output = FunctionOutputAPI(client, view_by_read_class)
-        self.market_configuration = MarketConfigurationAPI(client, view_by_read_class)
-        self.partial_bid_configuration = PartialBidConfigurationAPI(client, view_by_read_class)
-        self.partial_bid_matrix_information = PartialBidMatrixInformationAPI(client, view_by_read_class)
-        self.power_asset = PowerAssetAPI(client, view_by_read_class)
-        self.price_area = PriceAreaAPI(client, view_by_read_class)
-        self.price_area_day_ahead = PriceAreaDayAheadAPI(client, view_by_read_class)
-        self.price_production = PriceProductionAPI(client, view_by_read_class)
-        self.shop_attribute_mapping = ShopAttributeMappingAPI(client, view_by_read_class)
-        self.shop_case = ShopCaseAPI(client, view_by_read_class)
-        self.shop_commands = ShopCommandsAPI(client, view_by_read_class)
-        self.shop_file = ShopFileAPI(client, view_by_read_class)
-        self.shop_model = ShopModelAPI(client, view_by_read_class)
-        self.shop_output_time_series_definition = ShopOutputTimeSeriesDefinitionAPI(client, view_by_read_class)
-        self.shop_result = ShopResultAPI(client, view_by_read_class)
-        self.shop_scenario = ShopScenarioAPI(client, view_by_read_class)
-        self.shop_time_series = ShopTimeSeriesAPI(client, view_by_read_class)
-        self.total_bid_matrix_calculation_input = TotalBidMatrixCalculationInputAPI(client, view_by_read_class)
-        self.total_bid_matrix_calculation_output = TotalBidMatrixCalculationOutputAPI(client, view_by_read_class)
+        self.alert = AlertAPI(client)
+        self.bid_configuration_day_ahead = BidConfigurationDayAheadAPI(client)
+        self.bid_document = BidDocumentAPI(client)
+        self.bid_document_day_ahead = BidDocumentDayAheadAPI(client)
+        self.bid_matrix = BidMatrixAPI(client)
+        self.bid_matrix_information = BidMatrixInformationAPI(client)
+        self.date_specification = DateSpecificationAPI(client)
+        self.function_input = FunctionInputAPI(client)
+        self.function_output = FunctionOutputAPI(client)
+        self.market_configuration = MarketConfigurationAPI(client)
+        self.partial_bid_configuration = PartialBidConfigurationAPI(client)
+        self.partial_bid_matrix_information = PartialBidMatrixInformationAPI(client)
+        self.power_asset = PowerAssetAPI(client)
+        self.price_area = PriceAreaAPI(client)
+        self.price_area_day_ahead = PriceAreaDayAheadAPI(client)
+        self.price_production = PriceProductionAPI(client)
+        self.shop_attribute_mapping = ShopAttributeMappingAPI(client)
+        self.shop_case = ShopCaseAPI(client)
+        self.shop_commands = ShopCommandsAPI(client)
+        self.shop_file = ShopFileAPI(client)
+        self.shop_model = ShopModelAPI(client)
+        self.shop_output_time_series_definition = ShopOutputTimeSeriesDefinitionAPI(client)
+        self.shop_result = ShopResultAPI(client)
+        self.shop_scenario = ShopScenarioAPI(client)
+        self.shop_time_series = ShopTimeSeriesAPI(client)
+        self.total_bid_matrix_calculation_input = TotalBidMatrixCalculationInputAPI(client)
+        self.total_bid_matrix_calculation_output = TotalBidMatrixCalculationOutputAPI(client)
 
     def graphql_query(self, query: str, variables: dict[str, Any] | None = None) -> GraphQLList:
         """Execute a GraphQl query against the compute_TotalBidMatrixCalculation data model.
 
-        Args:
-            query (str): The GraphQL query to issue.
-            variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
+            Args:
+                query (str): The GraphQL query to issue.
+                variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
         """
         data_model_id = dm.DataModelId("power_ops_core", "compute_TotalBidMatrixCalculation", "1")
         result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
@@ -393,74 +257,37 @@ class WaterValueBasedDayAheadBidProcesAPIs:
     """
 
     def __init__(self, client: CogniteClient):
-        view_by_read_class = {
-            data_classes.Alert: dm.ViewId("power_ops_core", "Alert", "1"),
-            data_classes.BidConfigurationDayAhead: dm.ViewId("power_ops_core", "BidConfigurationDayAhead", "1"),
-            data_classes.BidMatrix: dm.ViewId("power_ops_core", "BidMatrix", "1"),
-            data_classes.DateSpecification: dm.ViewId("power_ops_core", "DateSpecification", "1"),
-            data_classes.FunctionInput: dm.ViewId("power_ops_core", "FunctionInput", "1"),
-            data_classes.FunctionOutput: dm.ViewId("power_ops_core", "FunctionOutput", "1"),
-            data_classes.Generator: dm.ViewId("power_ops_core", "Generator", "1"),
-            data_classes.GeneratorEfficiencyCurve: dm.ViewId("power_ops_core", "GeneratorEfficiencyCurve", "1"),
-            data_classes.MarketConfiguration: dm.ViewId("power_ops_core", "MarketConfiguration", "1"),
-            data_classes.PartialBidConfiguration: dm.ViewId("power_ops_core", "PartialBidConfiguration", "1"),
-            data_classes.PartialBidMatrixCalculationInput: dm.ViewId(
-                "power_ops_core", "PartialBidMatrixCalculationInput", "1"
-            ),
-            data_classes.PartialBidMatrixCalculationOutput: dm.ViewId(
-                "power_ops_core", "PartialBidMatrixCalculationOutput", "1"
-            ),
-            data_classes.Plant: dm.ViewId("power_ops_core", "Plant", "1"),
-            data_classes.PlantWaterValueBased: dm.ViewId("power_ops_core", "PlantWaterValueBased", "1"),
-            data_classes.PowerAsset: dm.ViewId("power_ops_core", "PowerAsset", "1"),
-            data_classes.PriceArea: dm.ViewId("power_ops_core", "PriceArea", "1"),
-            data_classes.PriceAreaDayAhead: dm.ViewId("power_ops_core", "PriceAreaDayAhead", "1"),
-            data_classes.TaskDispatcherInput: dm.ViewId("power_ops_core", "TaskDispatcherInput", "1"),
-            data_classes.TaskDispatcherOutput: dm.ViewId("power_ops_core", "TaskDispatcherOutput", "1"),
-            data_classes.TurbineEfficiencyCurve: dm.ViewId("power_ops_core", "TurbineEfficiencyCurve", "1"),
-            data_classes.WaterValueBasedPartialBidConfiguration: dm.ViewId(
-                "power_ops_core", "WaterValueBasedPartialBidConfiguration", "1"
-            ),
-            data_classes.WaterValueBasedPartialBidMatrixCalculationInput: dm.ViewId(
-                "power_ops_core", "WaterValueBasedPartialBidMatrixCalculationInput", "1"
-            ),
-        }
-        self._view_by_read_class = view_by_read_class
         self._client = client
 
-        self.alert = AlertAPI(client, view_by_read_class)
-        self.bid_configuration_day_ahead = BidConfigurationDayAheadAPI(client, view_by_read_class)
-        self.bid_matrix = BidMatrixAPI(client, view_by_read_class)
-        self.date_specification = DateSpecificationAPI(client, view_by_read_class)
-        self.function_input = FunctionInputAPI(client, view_by_read_class)
-        self.function_output = FunctionOutputAPI(client, view_by_read_class)
-        self.generator = GeneratorAPI(client, view_by_read_class)
-        self.generator_efficiency_curve = GeneratorEfficiencyCurveAPI(client, view_by_read_class)
-        self.market_configuration = MarketConfigurationAPI(client, view_by_read_class)
-        self.partial_bid_configuration = PartialBidConfigurationAPI(client, view_by_read_class)
-        self.partial_bid_matrix_calculation_input = PartialBidMatrixCalculationInputAPI(client, view_by_read_class)
-        self.partial_bid_matrix_calculation_output = PartialBidMatrixCalculationOutputAPI(client, view_by_read_class)
-        self.plant = PlantAPI(client, view_by_read_class)
-        self.plant_water_value_based = PlantWaterValueBasedAPI(client, view_by_read_class)
-        self.power_asset = PowerAssetAPI(client, view_by_read_class)
-        self.price_area = PriceAreaAPI(client, view_by_read_class)
-        self.price_area_day_ahead = PriceAreaDayAheadAPI(client, view_by_read_class)
-        self.task_dispatcher_input = TaskDispatcherInputAPI(client, view_by_read_class)
-        self.task_dispatcher_output = TaskDispatcherOutputAPI(client, view_by_read_class)
-        self.turbine_efficiency_curve = TurbineEfficiencyCurveAPI(client, view_by_read_class)
-        self.water_value_based_partial_bid_configuration = WaterValueBasedPartialBidConfigurationAPI(
-            client, view_by_read_class
-        )
-        self.water_value_based_partial_bid_matrix_calculation_input = (
-            WaterValueBasedPartialBidMatrixCalculationInputAPI(client, view_by_read_class)
-        )
+        self.alert = AlertAPI(client)
+        self.bid_configuration_day_ahead = BidConfigurationDayAheadAPI(client)
+        self.bid_matrix = BidMatrixAPI(client)
+        self.date_specification = DateSpecificationAPI(client)
+        self.function_input = FunctionInputAPI(client)
+        self.function_output = FunctionOutputAPI(client)
+        self.generator = GeneratorAPI(client)
+        self.generator_efficiency_curve = GeneratorEfficiencyCurveAPI(client)
+        self.market_configuration = MarketConfigurationAPI(client)
+        self.partial_bid_configuration = PartialBidConfigurationAPI(client)
+        self.partial_bid_matrix_calculation_input = PartialBidMatrixCalculationInputAPI(client)
+        self.partial_bid_matrix_calculation_output = PartialBidMatrixCalculationOutputAPI(client)
+        self.plant = PlantAPI(client)
+        self.plant_water_value_based = PlantWaterValueBasedAPI(client)
+        self.power_asset = PowerAssetAPI(client)
+        self.price_area = PriceAreaAPI(client)
+        self.price_area_day_ahead = PriceAreaDayAheadAPI(client)
+        self.task_dispatcher_input = TaskDispatcherInputAPI(client)
+        self.task_dispatcher_output = TaskDispatcherOutputAPI(client)
+        self.turbine_efficiency_curve = TurbineEfficiencyCurveAPI(client)
+        self.water_value_based_partial_bid_configuration = WaterValueBasedPartialBidConfigurationAPI(client)
+        self.water_value_based_partial_bid_matrix_calculation_input = WaterValueBasedPartialBidMatrixCalculationInputAPI(client)
 
     def graphql_query(self, query: str, variables: dict[str, Any] | None = None) -> GraphQLList:
         """Execute a GraphQl query against the compute_WaterValueBasedDayAheadBid data model.
 
-        Args:
-            query (str): The GraphQL query to issue.
-            variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
+            Args:
+                query (str): The GraphQL query to issue.
+                variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
         """
         data_model_id = dm.DataModelId("power_ops_core", "compute_WaterValueBasedDayAheadBid", "1")
         result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
@@ -479,70 +306,37 @@ class DayAheadConfigurationAPIs:
     """
 
     def __init__(self, client: CogniteClient):
-        view_by_read_class = {
-            data_classes.BidConfigurationDayAhead: dm.ViewId("power_ops_core", "BidConfigurationDayAhead", "1"),
-            data_classes.DateSpecification: dm.ViewId("power_ops_core", "DateSpecification", "1"),
-            data_classes.Generator: dm.ViewId("power_ops_core", "Generator", "1"),
-            data_classes.GeneratorEfficiencyCurve: dm.ViewId("power_ops_core", "GeneratorEfficiencyCurve", "1"),
-            data_classes.MarketConfiguration: dm.ViewId("power_ops_core", "MarketConfiguration", "1"),
-            data_classes.PartialBidConfiguration: dm.ViewId("power_ops_core", "PartialBidConfiguration", "1"),
-            data_classes.Plant: dm.ViewId("power_ops_core", "Plant", "1"),
-            data_classes.PlantInformation: dm.ViewId("power_ops_core", "PlantInformation", "1"),
-            data_classes.PlantWaterValueBased: dm.ViewId("power_ops_core", "PlantWaterValueBased", "1"),
-            data_classes.PowerAsset: dm.ViewId("power_ops_core", "PowerAsset", "1"),
-            data_classes.PriceArea: dm.ViewId("power_ops_core", "PriceArea", "1"),
-            data_classes.PriceAreaDayAhead: dm.ViewId("power_ops_core", "PriceAreaDayAhead", "1"),
-            data_classes.ShopAttributeMapping: dm.ViewId("power_ops_core", "ShopAttributeMapping", "1"),
-            data_classes.ShopBasedPartialBidConfiguration: dm.ViewId(
-                "power_ops_core", "ShopBasedPartialBidConfiguration", "1"
-            ),
-            data_classes.ShopCommands: dm.ViewId("power_ops_core", "ShopCommands", "1"),
-            data_classes.ShopFile: dm.ViewId("power_ops_core", "ShopFile", "1"),
-            data_classes.ShopModel: dm.ViewId("power_ops_core", "ShopModel", "1"),
-            data_classes.ShopOutputTimeSeriesDefinition: dm.ViewId(
-                "power_ops_core", "ShopOutputTimeSeriesDefinition", "1"
-            ),
-            data_classes.ShopScenario: dm.ViewId("power_ops_core", "ShopScenario", "1"),
-            data_classes.ShopScenarioSet: dm.ViewId("power_ops_core", "ShopScenarioSet", "1"),
-            data_classes.TurbineEfficiencyCurve: dm.ViewId("power_ops_core", "TurbineEfficiencyCurve", "1"),
-            data_classes.WaterValueBasedPartialBidConfiguration: dm.ViewId(
-                "power_ops_core", "WaterValueBasedPartialBidConfiguration", "1"
-            ),
-        }
-        self._view_by_read_class = view_by_read_class
         self._client = client
 
-        self.bid_configuration_day_ahead = BidConfigurationDayAheadAPI(client, view_by_read_class)
-        self.date_specification = DateSpecificationAPI(client, view_by_read_class)
-        self.generator = GeneratorAPI(client, view_by_read_class)
-        self.generator_efficiency_curve = GeneratorEfficiencyCurveAPI(client, view_by_read_class)
-        self.market_configuration = MarketConfigurationAPI(client, view_by_read_class)
-        self.partial_bid_configuration = PartialBidConfigurationAPI(client, view_by_read_class)
-        self.plant = PlantAPI(client, view_by_read_class)
-        self.plant_information = PlantInformationAPI(client, view_by_read_class)
-        self.plant_water_value_based = PlantWaterValueBasedAPI(client, view_by_read_class)
-        self.power_asset = PowerAssetAPI(client, view_by_read_class)
-        self.price_area = PriceAreaAPI(client, view_by_read_class)
-        self.price_area_day_ahead = PriceAreaDayAheadAPI(client, view_by_read_class)
-        self.shop_attribute_mapping = ShopAttributeMappingAPI(client, view_by_read_class)
-        self.shop_based_partial_bid_configuration = ShopBasedPartialBidConfigurationAPI(client, view_by_read_class)
-        self.shop_commands = ShopCommandsAPI(client, view_by_read_class)
-        self.shop_file = ShopFileAPI(client, view_by_read_class)
-        self.shop_model = ShopModelAPI(client, view_by_read_class)
-        self.shop_output_time_series_definition = ShopOutputTimeSeriesDefinitionAPI(client, view_by_read_class)
-        self.shop_scenario = ShopScenarioAPI(client, view_by_read_class)
-        self.shop_scenario_set = ShopScenarioSetAPI(client, view_by_read_class)
-        self.turbine_efficiency_curve = TurbineEfficiencyCurveAPI(client, view_by_read_class)
-        self.water_value_based_partial_bid_configuration = WaterValueBasedPartialBidConfigurationAPI(
-            client, view_by_read_class
-        )
+        self.bid_configuration_day_ahead = BidConfigurationDayAheadAPI(client)
+        self.date_specification = DateSpecificationAPI(client)
+        self.generator = GeneratorAPI(client)
+        self.generator_efficiency_curve = GeneratorEfficiencyCurveAPI(client)
+        self.market_configuration = MarketConfigurationAPI(client)
+        self.partial_bid_configuration = PartialBidConfigurationAPI(client)
+        self.plant = PlantAPI(client)
+        self.plant_information = PlantInformationAPI(client)
+        self.plant_water_value_based = PlantWaterValueBasedAPI(client)
+        self.power_asset = PowerAssetAPI(client)
+        self.price_area = PriceAreaAPI(client)
+        self.price_area_day_ahead = PriceAreaDayAheadAPI(client)
+        self.shop_attribute_mapping = ShopAttributeMappingAPI(client)
+        self.shop_based_partial_bid_configuration = ShopBasedPartialBidConfigurationAPI(client)
+        self.shop_commands = ShopCommandsAPI(client)
+        self.shop_file = ShopFileAPI(client)
+        self.shop_model = ShopModelAPI(client)
+        self.shop_output_time_series_definition = ShopOutputTimeSeriesDefinitionAPI(client)
+        self.shop_scenario = ShopScenarioAPI(client)
+        self.shop_scenario_set = ShopScenarioSetAPI(client)
+        self.turbine_efficiency_curve = TurbineEfficiencyCurveAPI(client)
+        self.water_value_based_partial_bid_configuration = WaterValueBasedPartialBidConfigurationAPI(client)
 
     def graphql_query(self, query: str, variables: dict[str, Any] | None = None) -> GraphQLList:
         """Execute a GraphQl query against the config_DayAheadConfiguration data model.
 
-        Args:
-            query (str): The GraphQL query to issue.
-            variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
+            Args:
+                query (str): The GraphQL query to issue.
+                variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
         """
         data_model_id = dm.DataModelId("power_ops_core", "config_DayAheadConfiguration", "1")
         result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
@@ -561,32 +355,22 @@ class AFRRBidAPIs:
     """
 
     def __init__(self, client: CogniteClient):
-        view_by_read_class = {
-            data_classes.Alert: dm.ViewId("power_ops_core", "Alert", "1"),
-            data_classes.BidDocument: dm.ViewId("power_ops_core", "BidDocument", "1"),
-            data_classes.BidDocumentAFRR: dm.ViewId("power_ops_core", "BidDocumentAFRR", "1"),
-            data_classes.BidRow: dm.ViewId("power_ops_core", "BidRow", "1"),
-            data_classes.PowerAsset: dm.ViewId("power_ops_core", "PowerAsset", "1"),
-            data_classes.PriceArea: dm.ViewId("power_ops_core", "PriceArea", "1"),
-            data_classes.PriceAreaAFRR: dm.ViewId("power_ops_core", "PriceAreaAFRR", "1"),
-        }
-        self._view_by_read_class = view_by_read_class
         self._client = client
 
-        self.alert = AlertAPI(client, view_by_read_class)
-        self.bid_document = BidDocumentAPI(client, view_by_read_class)
-        self.bid_document_afrr = BidDocumentAFRRAPI(client, view_by_read_class)
-        self.bid_row = BidRowAPI(client, view_by_read_class)
-        self.power_asset = PowerAssetAPI(client, view_by_read_class)
-        self.price_area = PriceAreaAPI(client, view_by_read_class)
-        self.price_area_afrr = PriceAreaAFRRAPI(client, view_by_read_class)
+        self.alert = AlertAPI(client)
+        self.bid_document = BidDocumentAPI(client)
+        self.bid_document_afrr = BidDocumentAFRRAPI(client)
+        self.bid_row = BidRowAPI(client)
+        self.power_asset = PowerAssetAPI(client)
+        self.price_area = PriceAreaAPI(client)
+        self.price_area_afrr = PriceAreaAFRRAPI(client)
 
     def graphql_query(self, query: str, variables: dict[str, Any] | None = None) -> GraphQLList:
         """Execute a GraphQl query against the frontend_AFRRBid data model.
 
-        Args:
-            query (str): The GraphQL query to issue.
-            variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
+            Args:
+                query (str): The GraphQL query to issue.
+                variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
         """
         data_model_id = dm.DataModelId("power_ops_core", "frontend_AFRRBid", "1")
         result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
@@ -605,50 +389,31 @@ class PowerAssetAPIs:
     """
 
     def __init__(self, client: CogniteClient):
-        view_by_read_class = {
-            data_classes.BidConfigurationDayAhead: dm.ViewId("power_ops_core", "BidConfigurationDayAhead", "1"),
-            data_classes.DateSpecification: dm.ViewId("power_ops_core", "DateSpecification", "1"),
-            data_classes.Generator: dm.ViewId("power_ops_core", "Generator", "1"),
-            data_classes.GeneratorEfficiencyCurve: dm.ViewId("power_ops_core", "GeneratorEfficiencyCurve", "1"),
-            data_classes.MarketConfiguration: dm.ViewId("power_ops_core", "MarketConfiguration", "1"),
-            data_classes.PartialBidConfiguration: dm.ViewId("power_ops_core", "PartialBidConfiguration", "1"),
-            data_classes.Plant: dm.ViewId("power_ops_core", "Plant", "1"),
-            data_classes.PlantInformation: dm.ViewId("power_ops_core", "PlantInformation", "1"),
-            data_classes.PlantWaterValueBased: dm.ViewId("power_ops_core", "PlantWaterValueBased", "1"),
-            data_classes.PowerAsset: dm.ViewId("power_ops_core", "PowerAsset", "1"),
-            data_classes.PriceArea: dm.ViewId("power_ops_core", "PriceArea", "1"),
-            data_classes.PriceAreaAFRR: dm.ViewId("power_ops_core", "PriceAreaAFRR", "1"),
-            data_classes.PriceAreaDayAhead: dm.ViewId("power_ops_core", "PriceAreaDayAhead", "1"),
-            data_classes.PriceAreaInformation: dm.ViewId("power_ops_core", "PriceAreaInformation", "1"),
-            data_classes.TurbineEfficiencyCurve: dm.ViewId("power_ops_core", "TurbineEfficiencyCurve", "1"),
-            data_classes.Watercourse: dm.ViewId("power_ops_core", "Watercourse", "1"),
-        }
-        self._view_by_read_class = view_by_read_class
         self._client = client
 
-        self.bid_configuration_day_ahead = BidConfigurationDayAheadAPI(client, view_by_read_class)
-        self.date_specification = DateSpecificationAPI(client, view_by_read_class)
-        self.generator = GeneratorAPI(client, view_by_read_class)
-        self.generator_efficiency_curve = GeneratorEfficiencyCurveAPI(client, view_by_read_class)
-        self.market_configuration = MarketConfigurationAPI(client, view_by_read_class)
-        self.partial_bid_configuration = PartialBidConfigurationAPI(client, view_by_read_class)
-        self.plant = PlantAPI(client, view_by_read_class)
-        self.plant_information = PlantInformationAPI(client, view_by_read_class)
-        self.plant_water_value_based = PlantWaterValueBasedAPI(client, view_by_read_class)
-        self.power_asset = PowerAssetAPI(client, view_by_read_class)
-        self.price_area = PriceAreaAPI(client, view_by_read_class)
-        self.price_area_afrr = PriceAreaAFRRAPI(client, view_by_read_class)
-        self.price_area_day_ahead = PriceAreaDayAheadAPI(client, view_by_read_class)
-        self.price_area_information = PriceAreaInformationAPI(client, view_by_read_class)
-        self.turbine_efficiency_curve = TurbineEfficiencyCurveAPI(client, view_by_read_class)
-        self.watercourse = WatercourseAPI(client, view_by_read_class)
+        self.bid_configuration_day_ahead = BidConfigurationDayAheadAPI(client)
+        self.date_specification = DateSpecificationAPI(client)
+        self.generator = GeneratorAPI(client)
+        self.generator_efficiency_curve = GeneratorEfficiencyCurveAPI(client)
+        self.market_configuration = MarketConfigurationAPI(client)
+        self.partial_bid_configuration = PartialBidConfigurationAPI(client)
+        self.plant = PlantAPI(client)
+        self.plant_information = PlantInformationAPI(client)
+        self.plant_water_value_based = PlantWaterValueBasedAPI(client)
+        self.power_asset = PowerAssetAPI(client)
+        self.price_area = PriceAreaAPI(client)
+        self.price_area_afrr = PriceAreaAFRRAPI(client)
+        self.price_area_day_ahead = PriceAreaDayAheadAPI(client)
+        self.price_area_information = PriceAreaInformationAPI(client)
+        self.turbine_efficiency_curve = TurbineEfficiencyCurveAPI(client)
+        self.watercourse = WatercourseAPI(client)
 
     def graphql_query(self, query: str, variables: dict[str, Any] | None = None) -> GraphQLList:
         """Execute a GraphQl query against the frontend_Asset data model.
 
-        Args:
-            query (str): The GraphQL query to issue.
-            variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
+            Args:
+                query (str): The GraphQL query to issue.
+                variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
         """
         data_model_id = dm.DataModelId("power_ops_core", "frontend_Asset", "1")
         result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
@@ -667,74 +432,40 @@ class DayAheadBidAPIs:
     """
 
     def __init__(self, client: CogniteClient):
-        view_by_read_class = {
-            data_classes.Alert: dm.ViewId("power_ops_core", "Alert", "1"),
-            data_classes.BidConfigurationDayAhead: dm.ViewId("power_ops_core", "BidConfigurationDayAhead", "1"),
-            data_classes.BidDocument: dm.ViewId("power_ops_core", "BidDocument", "1"),
-            data_classes.BidDocumentDayAhead: dm.ViewId("power_ops_core", "BidDocumentDayAhead", "1"),
-            data_classes.BidMatrix: dm.ViewId("power_ops_core", "BidMatrix", "1"),
-            data_classes.BidMatrixInformation: dm.ViewId("power_ops_core", "BidMatrixInformation", "1"),
-            data_classes.DateSpecification: dm.ViewId("power_ops_core", "DateSpecification", "1"),
-            data_classes.MarketConfiguration: dm.ViewId("power_ops_core", "MarketConfiguration", "1"),
-            data_classes.PartialBidConfiguration: dm.ViewId("power_ops_core", "PartialBidConfiguration", "1"),
-            data_classes.PartialBidMatrixInformation: dm.ViewId("power_ops_core", "PartialBidMatrixInformation", "1"),
-            data_classes.PartialBidMatrixInformationWithScenarios: dm.ViewId(
-                "power_ops_core", "PartialBidMatrixInformationWithScenarios", "1"
-            ),
-            data_classes.PowerAsset: dm.ViewId("power_ops_core", "PowerAsset", "1"),
-            data_classes.PriceArea: dm.ViewId("power_ops_core", "PriceArea", "1"),
-            data_classes.PriceAreaDayAhead: dm.ViewId("power_ops_core", "PriceAreaDayAhead", "1"),
-            data_classes.PriceProduction: dm.ViewId("power_ops_core", "PriceProduction", "1"),
-            data_classes.ShopAttributeMapping: dm.ViewId("power_ops_core", "ShopAttributeMapping", "1"),
-            data_classes.ShopCase: dm.ViewId("power_ops_core", "ShopCase", "1"),
-            data_classes.ShopCommands: dm.ViewId("power_ops_core", "ShopCommands", "1"),
-            data_classes.ShopFile: dm.ViewId("power_ops_core", "ShopFile", "1"),
-            data_classes.ShopModel: dm.ViewId("power_ops_core", "ShopModel", "1"),
-            data_classes.ShopOutputTimeSeriesDefinition: dm.ViewId(
-                "power_ops_core", "ShopOutputTimeSeriesDefinition", "1"
-            ),
-            data_classes.ShopPenaltyReport: dm.ViewId("power_ops_core", "ShopPenaltyReport", "1"),
-            data_classes.ShopResult: dm.ViewId("power_ops_core", "ShopResult", "1"),
-            data_classes.ShopScenario: dm.ViewId("power_ops_core", "ShopScenario", "1"),
-            data_classes.ShopTimeSeries: dm.ViewId("power_ops_core", "ShopTimeSeries", "1"),
-        }
-        self._view_by_read_class = view_by_read_class
         self._client = client
 
-        self.alert = AlertAPI(client, view_by_read_class)
-        self.bid_configuration_day_ahead = BidConfigurationDayAheadAPI(client, view_by_read_class)
-        self.bid_document = BidDocumentAPI(client, view_by_read_class)
-        self.bid_document_day_ahead = BidDocumentDayAheadAPI(client, view_by_read_class)
-        self.bid_matrix = BidMatrixAPI(client, view_by_read_class)
-        self.bid_matrix_information = BidMatrixInformationAPI(client, view_by_read_class)
-        self.date_specification = DateSpecificationAPI(client, view_by_read_class)
-        self.market_configuration = MarketConfigurationAPI(client, view_by_read_class)
-        self.partial_bid_configuration = PartialBidConfigurationAPI(client, view_by_read_class)
-        self.partial_bid_matrix_information = PartialBidMatrixInformationAPI(client, view_by_read_class)
-        self.partial_bid_matrix_information_with_scenarios = PartialBidMatrixInformationWithScenariosAPI(
-            client, view_by_read_class
-        )
-        self.power_asset = PowerAssetAPI(client, view_by_read_class)
-        self.price_area = PriceAreaAPI(client, view_by_read_class)
-        self.price_area_day_ahead = PriceAreaDayAheadAPI(client, view_by_read_class)
-        self.price_production = PriceProductionAPI(client, view_by_read_class)
-        self.shop_attribute_mapping = ShopAttributeMappingAPI(client, view_by_read_class)
-        self.shop_case = ShopCaseAPI(client, view_by_read_class)
-        self.shop_commands = ShopCommandsAPI(client, view_by_read_class)
-        self.shop_file = ShopFileAPI(client, view_by_read_class)
-        self.shop_model = ShopModelAPI(client, view_by_read_class)
-        self.shop_output_time_series_definition = ShopOutputTimeSeriesDefinitionAPI(client, view_by_read_class)
-        self.shop_penalty_report = ShopPenaltyReportAPI(client, view_by_read_class)
-        self.shop_result = ShopResultAPI(client, view_by_read_class)
-        self.shop_scenario = ShopScenarioAPI(client, view_by_read_class)
-        self.shop_time_series = ShopTimeSeriesAPI(client, view_by_read_class)
+        self.alert = AlertAPI(client)
+        self.bid_configuration_day_ahead = BidConfigurationDayAheadAPI(client)
+        self.bid_document = BidDocumentAPI(client)
+        self.bid_document_day_ahead = BidDocumentDayAheadAPI(client)
+        self.bid_matrix = BidMatrixAPI(client)
+        self.bid_matrix_information = BidMatrixInformationAPI(client)
+        self.date_specification = DateSpecificationAPI(client)
+        self.market_configuration = MarketConfigurationAPI(client)
+        self.partial_bid_configuration = PartialBidConfigurationAPI(client)
+        self.partial_bid_matrix_information = PartialBidMatrixInformationAPI(client)
+        self.partial_bid_matrix_information_with_scenarios = PartialBidMatrixInformationWithScenariosAPI(client)
+        self.power_asset = PowerAssetAPI(client)
+        self.price_area = PriceAreaAPI(client)
+        self.price_area_day_ahead = PriceAreaDayAheadAPI(client)
+        self.price_production = PriceProductionAPI(client)
+        self.shop_attribute_mapping = ShopAttributeMappingAPI(client)
+        self.shop_case = ShopCaseAPI(client)
+        self.shop_commands = ShopCommandsAPI(client)
+        self.shop_file = ShopFileAPI(client)
+        self.shop_model = ShopModelAPI(client)
+        self.shop_output_time_series_definition = ShopOutputTimeSeriesDefinitionAPI(client)
+        self.shop_penalty_report = ShopPenaltyReportAPI(client)
+        self.shop_result = ShopResultAPI(client)
+        self.shop_scenario = ShopScenarioAPI(client)
+        self.shop_time_series = ShopTimeSeriesAPI(client)
 
     def graphql_query(self, query: str, variables: dict[str, Any] | None = None) -> GraphQLList:
         """Execute a GraphQl query against the frontend_DayAheadBid data model.
 
-        Args:
-            query (str): The GraphQL query to issue.
-            variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
+            Args:
+                query (str): The GraphQL query to issue.
+                variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
         """
         data_model_id = dm.DataModelId("power_ops_core", "frontend_DayAheadBid", "1")
         result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
@@ -746,9 +477,9 @@ class PowerOpsModelsV1Client:
     PowerOpsModelsV1Client
 
     Generated with:
-        pygen = 0.99.26
-        cognite-sdk = 7.53.0
-        pydantic = 2.8.0
+        pygen = 0.99.28
+        cognite-sdk = 7.54.12
+        pydantic = 2.8.2
 
     """
 
@@ -760,7 +491,7 @@ class PowerOpsModelsV1Client:
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
         # The client name is used for aggregated logging of Pygen Usage
-        client.config.client_name = "CognitePygen:0.99.26"
+        client.config.client_name = "CognitePygen:0.99.28"
 
         self.benchmarking_day_ahead = BenchmarkingDayAheadAPIs(client)
         self.shop_based_day_ahead_bid_process = ShopBasedDayAheadBidProcesAPIs(client)
@@ -772,20 +503,7 @@ class PowerOpsModelsV1Client:
         self.day_ahead_bid = DayAheadBidAPIs(client)
 
         self._client = client
-        self._view_by_read_class = {
-            k: v
-            for api in [
-                self.benchmarking_day_ahead,
-                self.shop_based_day_ahead_bid_process,
-                self.total_bid_matrix_calculation,
-                self.water_value_based_day_ahead_bid_process,
-                self.day_ahead_configuration,
-                self.afrr_bid,
-                self.power_asset,
-                self.day_ahead_bid,
-            ]
-            for k, v in api._view_by_read_class.items()
-        }
+
 
     def upsert(
         self,
@@ -817,7 +535,7 @@ class PowerOpsModelsV1Client:
             auto_create_end_nodes=True,
             replace=replace,
         )
-        time_series = []
+        time_series = TimeSeriesList([])
         if instances.time_series:
             time_series = self._client.time_series.upsert(instances.time_series, mode="patch")
 
@@ -830,7 +548,7 @@ class PowerOpsModelsV1Client:
         allow_version_increase: bool,
     ) -> data_classes.ResourcesWrite:
         if isinstance(items, data_classes.DomainModelWrite):
-            instances = items.to_instances_write(self._view_by_read_class, write_none, allow_version_increase)
+            instances = items.to_instances_write(write_none, allow_version_increase)
         else:
             instances = data_classes.ResourcesWrite()
             cache: set[tuple[str, str]] = set()
@@ -838,7 +556,6 @@ class PowerOpsModelsV1Client:
                 instances.extend(
                     item._to_instances_write(
                         cache,
-                        self._view_by_read_class,
                         write_none,
                         allow_version_increase,
                     )
@@ -877,7 +594,7 @@ class PowerOpsModelsV1Client:
         external_id: (
             str | SequenceNotStr[str] | data_classes.DomainModelWrite | Sequence[data_classes.DomainModelWrite]
         ),
-        space: str = DEFAULT_INSTANCE_SPACE,
+        space: str = DEFAULT_INSTANCE_SPACE
     ) -> dm.InstancesDeleteResult:
         """Delete one or more items.
 
@@ -901,12 +618,14 @@ class PowerOpsModelsV1Client:
         """
         if isinstance(external_id, str):
             return self._client.data_modeling.instances.delete(nodes=(space, external_id))
-        elif all(isinstance(item, str) for item in external_id):
+        elif isinstance(external_id, Sequence) and all(isinstance(item, str) for item in external_id):
             return self._client.data_modeling.instances.delete(
-                nodes=[(space, id) for id in external_id],
+                nodes=[(space, id_) for id_ in external_id if isinstance(id_, str)],
             )
-        elif isinstance(external_id, data_classes.DomainModelWrite) or all(
-            isinstance(item, data_classes.DomainModelWrite) for item in external_id
+        elif isinstance(external_id, data_classes.DomainModelWrite) or (
+            isinstance(external_id, Sequence)
+            and not isinstance(external_id, str)
+            and all(isinstance(item, data_classes.DomainModelWrite) for item in external_id)
         ):
             resources = self._create_instances(external_id, False, False)
             return self._client.data_modeling.instances.delete(

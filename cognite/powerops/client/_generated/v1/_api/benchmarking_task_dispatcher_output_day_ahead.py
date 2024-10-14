@@ -6,7 +6,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -24,58 +24,40 @@ from cognite.powerops.client._generated.v1.data_classes._benchmarking_task_dispa
     _BENCHMARKINGTASKDISPATCHEROUTPUTDAYAHEAD_PROPERTIES_BY_FIELD,
     _create_benchmarking_task_dispatcher_output_day_ahead_filter,
 )
-from ._core import (
-    DEFAULT_LIMIT_READ,
-    DEFAULT_QUERY_LIMIT,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-    QueryStep,
-    QueryBuilder,
-)
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
 from .benchmarking_task_dispatcher_output_day_ahead_alerts import BenchmarkingTaskDispatcherOutputDayAheadAlertsAPI
-from .benchmarking_task_dispatcher_output_day_ahead_benchmarking_sub_tasks import (
-    BenchmarkingTaskDispatcherOutputDayAheadBenchmarkingSubTasksAPI,
-)
+from .benchmarking_task_dispatcher_output_day_ahead_benchmarking_sub_tasks import BenchmarkingTaskDispatcherOutputDayAheadBenchmarkingSubTasksAPI
 from .benchmarking_task_dispatcher_output_day_ahead_query import BenchmarkingTaskDispatcherOutputDayAheadQueryAPI
 
 
-class BenchmarkingTaskDispatcherOutputDayAheadAPI(
-    NodeAPI[
-        BenchmarkingTaskDispatcherOutputDayAhead,
-        BenchmarkingTaskDispatcherOutputDayAheadWrite,
-        BenchmarkingTaskDispatcherOutputDayAheadList,
-    ]
-):
-    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[BenchmarkingTaskDispatcherOutputDayAhead]
-        super().__init__(
-            client=client,
-            sources=view_id,
-            class_type=BenchmarkingTaskDispatcherOutputDayAhead,
-            class_list=BenchmarkingTaskDispatcherOutputDayAheadList,
-            class_write_list=BenchmarkingTaskDispatcherOutputDayAheadWriteList,
-            view_by_read_class=view_by_read_class,
-        )
-        self._view_id = view_id
+class BenchmarkingTaskDispatcherOutputDayAheadAPI(NodeAPI[BenchmarkingTaskDispatcherOutputDayAhead, BenchmarkingTaskDispatcherOutputDayAheadWrite, BenchmarkingTaskDispatcherOutputDayAheadList, BenchmarkingTaskDispatcherOutputDayAheadWriteList]):
+    _view_id = dm.ViewId("power_ops_core", "BenchmarkingTaskDispatcherOutputDayAhead", "1")
+    _properties_by_field = _BENCHMARKINGTASKDISPATCHEROUTPUTDAYAHEAD_PROPERTIES_BY_FIELD
+    _class_type = BenchmarkingTaskDispatcherOutputDayAhead
+    _class_list = BenchmarkingTaskDispatcherOutputDayAheadList
+    _class_write_list = BenchmarkingTaskDispatcherOutputDayAheadWriteList
+
+    def __init__(self, client: CogniteClient):
+        super().__init__(client=client)
+
         self.alerts_edge = BenchmarkingTaskDispatcherOutputDayAheadAlertsAPI(client)
         self.benchmarking_sub_tasks_edge = BenchmarkingTaskDispatcherOutputDayAheadBenchmarkingSubTasksAPI(client)
 
     def __call__(
-        self,
-        workflow_execution_id: str | list[str] | None = None,
-        workflow_execution_id_prefix: str | None = None,
-        min_workflow_step: int | None = None,
-        max_workflow_step: int | None = None,
-        function_name: str | list[str] | None = None,
-        function_name_prefix: str | None = None,
-        function_call_id: str | list[str] | None = None,
-        function_call_id_prefix: str | None = None,
-        function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
+            self,
+            workflow_execution_id: str | list[str] | None = None,
+            workflow_execution_id_prefix: str | None = None,
+            min_workflow_step: int | None = None,
+            max_workflow_step: int | None = None,
+            function_name: str | list[str] | None = None,
+            function_name_prefix: str | None = None,
+            function_call_id: str | list[str] | None = None,
+            function_call_id_prefix: str | None = None,
+            function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
     ) -> BenchmarkingTaskDispatcherOutputDayAheadQueryAPI[BenchmarkingTaskDispatcherOutputDayAheadList]:
         """Query starting at benchmarking task dispatcher output day aheads.
 
@@ -115,15 +97,12 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(BenchmarkingTaskDispatcherOutputDayAheadList)
-        return BenchmarkingTaskDispatcherOutputDayAheadQueryAPI(
-            self._client, builder, self._view_by_read_class, filter_, limit
-        )
+        return BenchmarkingTaskDispatcherOutputDayAheadQueryAPI(self._client, builder, filter_, limit)
+
 
     def apply(
         self,
-        benchmarking_task_dispatcher_output_day_ahead: (
-            BenchmarkingTaskDispatcherOutputDayAheadWrite | Sequence[BenchmarkingTaskDispatcherOutputDayAheadWrite]
-        ),
+        benchmarking_task_dispatcher_output_day_ahead: BenchmarkingTaskDispatcherOutputDayAheadWrite | Sequence[BenchmarkingTaskDispatcherOutputDayAheadWrite],
         replace: bool = False,
         write_none: bool = False,
     ) -> ResourcesWriteResult:
@@ -165,9 +144,7 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(
         )
         return self._apply(benchmarking_task_dispatcher_output_day_ahead, replace, write_none)
 
-    def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
         """Delete one or more benchmarking task dispatcher output day ahead.
 
         Args:
@@ -197,18 +174,14 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(
-        self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE
-    ) -> BenchmarkingTaskDispatcherOutputDayAhead | None: ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingTaskDispatcherOutputDayAhead | None:
+        ...
 
     @overload
-    def retrieve(
-        self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> BenchmarkingTaskDispatcherOutputDayAheadList: ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingTaskDispatcherOutputDayAheadList:
+        ...
 
-    def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> BenchmarkingTaskDispatcherOutputDayAhead | BenchmarkingTaskDispatcherOutputDayAheadList | None:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingTaskDispatcherOutputDayAhead | BenchmarkingTaskDispatcherOutputDayAheadList | None:
         """Retrieve one or more benchmarking task dispatcher output day aheads by id(s).
 
         Args:
@@ -246,17 +219,14 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(
                     "outwards",
                     dm.ViewId("power_ops_core", "FunctionInput", "1"),
                 ),
-            ],
+                                               ]
         )
+
 
     def search(
         self,
         query: str,
-        properties: (
-            BenchmarkingTaskDispatcherOutputDayAheadTextFields
-            | Sequence[BenchmarkingTaskDispatcherOutputDayAheadTextFields]
-            | None
-        ) = None,
+        properties: BenchmarkingTaskDispatcherOutputDayAheadTextFields | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -268,8 +238,11 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(
         function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        sort_by: BenchmarkingTaskDispatcherOutputDayAheadFields | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> BenchmarkingTaskDispatcherOutputDayAheadList:
         """Search benchmarking task dispatcher output day aheads
 
@@ -289,6 +262,11 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(
             space: The space to filter on.
             limit: Maximum number of benchmarking task dispatcher output day aheads to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
 
         Returns:
             Search results benchmarking task dispatcher output day aheads matching the query.
@@ -318,35 +296,23 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(
             filter,
         )
         return self._search(
-            self._view_id,
-            query,
-            _BENCHMARKINGTASKDISPATCHEROUTPUTDAYAHEAD_PROPERTIES_BY_FIELD,
-            properties,
-            filter_,
-            limit,
+            query=query,
+            properties=properties,
+            filter_=filter_,
+            limit=limit,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
         )
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: (
-            BenchmarkingTaskDispatcherOutputDayAheadFields
-            | Sequence[BenchmarkingTaskDispatcherOutputDayAheadFields]
-            | None
-        ) = None,
+        aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
+        property: BenchmarkingTaskDispatcherOutputDayAheadFields | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadFields] | None = None,
         query: str | None = None,
-        search_properties: (
-            BenchmarkingTaskDispatcherOutputDayAheadTextFields
-            | Sequence[BenchmarkingTaskDispatcherOutputDayAheadTextFields]
-            | None
-        ) = None,
+        search_property: BenchmarkingTaskDispatcherOutputDayAheadTextFields | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -358,33 +324,19 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(
         function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+    ) -> dm.aggregations.AggregatedNumberedValue:
+        ...
 
     @overload
     def aggregate(
         self,
-        aggregations: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: (
-            BenchmarkingTaskDispatcherOutputDayAheadFields
-            | Sequence[BenchmarkingTaskDispatcherOutputDayAheadFields]
-            | None
-        ) = None,
-        group_by: (
-            BenchmarkingTaskDispatcherOutputDayAheadFields | Sequence[BenchmarkingTaskDispatcherOutputDayAheadFields]
-        ) = None,
+        aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: None = None,
+        property: BenchmarkingTaskDispatcherOutputDayAheadFields | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadFields] | None = None,
         query: str | None = None,
-        search_properties: (
-            BenchmarkingTaskDispatcherOutputDayAheadTextFields
-            | Sequence[BenchmarkingTaskDispatcherOutputDayAheadTextFields]
-            | None
-        ) = None,
+        search_property: BenchmarkingTaskDispatcherOutputDayAheadTextFields | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -396,34 +348,46 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(
         function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList: ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: BenchmarkingTaskDispatcherOutputDayAheadFields | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadFields],
+        property: BenchmarkingTaskDispatcherOutputDayAheadFields | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadFields] | None = None,
+        query: str | None = None,
+        search_property: BenchmarkingTaskDispatcherOutputDayAheadTextFields | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadTextFields] | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
+        function_name: str | list[str] | None = None,
+        function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
+        function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | Sequence[Aggregations]
-            | Sequence[dm.aggregations.MetricAggregation]
-        ),
-        property: (
-            BenchmarkingTaskDispatcherOutputDayAheadFields
-            | Sequence[BenchmarkingTaskDispatcherOutputDayAheadFields]
-            | None
-        ) = None,
-        group_by: (
-            BenchmarkingTaskDispatcherOutputDayAheadFields
-            | Sequence[BenchmarkingTaskDispatcherOutputDayAheadFields]
-            | None
-        ) = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: BenchmarkingTaskDispatcherOutputDayAheadFields | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadFields] | None = None,
+        property: BenchmarkingTaskDispatcherOutputDayAheadFields | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadFields] | None = None,
         query: str | None = None,
-        search_property: (
-            BenchmarkingTaskDispatcherOutputDayAheadTextFields
-            | Sequence[BenchmarkingTaskDispatcherOutputDayAheadTextFields]
-            | None
-        ) = None,
+        search_property: BenchmarkingTaskDispatcherOutputDayAheadTextFields | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -435,15 +399,19 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(
         function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+    ) -> (
+        dm.aggregations.AggregatedNumberedValue
+        | list[dm.aggregations.AggregatedNumberedValue]
+        | InstanceAggregationResultList
+    ):
         """Aggregate data across benchmarking task dispatcher output day aheads
 
         Args:
             aggregate: The aggregation to perform.
-            property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
+            property: The property to perform aggregation on.
             query: The query to search for in the text field.
             search_property: The text field to search in.
             workflow_execution_id: The workflow execution id to filter on.
@@ -489,15 +457,13 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(
             filter,
         )
         return self._aggregate(
-            self._view_id,
-            aggregate,
-            _BENCHMARKINGTASKDISPATCHEROUTPUTDAYAHEAD_PROPERTIES_BY_FIELD,
-            property,
-            group_by,
-            query,
-            search_property,
-            limit,
-            filter_,
+            aggregate=aggregate,
+            group_by=group_by,  # type: ignore[arg-type]
+            properties=property,  # type: ignore[arg-type]
+            query=query,
+            search_properties=search_property,  # type: ignore[arg-type]
+            limit=limit,
+            filter=filter_,
         )
 
     def histogram(
@@ -505,11 +471,7 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(
         property: BenchmarkingTaskDispatcherOutputDayAheadFields,
         interval: float,
         query: str | None = None,
-        search_property: (
-            BenchmarkingTaskDispatcherOutputDayAheadTextFields
-            | Sequence[BenchmarkingTaskDispatcherOutputDayAheadTextFields]
-            | None
-        ) = None,
+        search_property: BenchmarkingTaskDispatcherOutputDayAheadTextFields | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -521,7 +483,7 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(
         function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for benchmarking task dispatcher output day aheads
@@ -565,15 +527,14 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(
             filter,
         )
         return self._histogram(
-            self._view_id,
             property,
             interval,
-            _BENCHMARKINGTASKDISPATCHEROUTPUTDAYAHEAD_PROPERTIES_BY_FIELD,
             query,
-            search_property,
+            search_property,  # type: ignore[arg-type]
             limit,
             filter_,
         )
+
 
     def list(
         self,
@@ -588,14 +549,11 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(
         function_input: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_LIMIT_READ,
+        limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-        sort_by: (
-            BenchmarkingTaskDispatcherOutputDayAheadFields
-            | Sequence[BenchmarkingTaskDispatcherOutputDayAheadFields]
-            | None
-        ) = None,
+        sort_by: BenchmarkingTaskDispatcherOutputDayAheadFields | Sequence[BenchmarkingTaskDispatcherOutputDayAheadFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
         retrieve_edges: bool = True,
     ) -> BenchmarkingTaskDispatcherOutputDayAheadList:
         """List/filter benchmarking task dispatcher output day aheads
@@ -616,6 +574,9 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
             retrieve_edges: Whether to retrieve `alerts` or `benchmarking_sub_tasks` external ids for the benchmarking task dispatcher output day aheads. Defaults to True.
 
         Returns:
@@ -649,9 +610,9 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(
         return self._list(
             limit=limit,
             filter=filter_,
-            properties_by_field=_BENCHMARKINGTASKDISPATCHEROUTPUTDAYAHEAD_PROPERTIES_BY_FIELD,
-            sort_by=sort_by,
+            sort_by=sort_by,  # type: ignore[arg-type]
             direction=direction,
+            sort=sort,
             retrieve_edges=retrieve_edges,
             edge_api_name_type_direction_view_id_penta=[
                 (
@@ -668,5 +629,5 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(
                     "outwards",
                     dm.ViewId("power_ops_core", "FunctionInput", "1"),
                 ),
-            ],
+                                               ]
         )
