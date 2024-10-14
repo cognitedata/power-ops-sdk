@@ -15,7 +15,7 @@ Changes are grouped as follows
 
 ## [0.99.0] - 2024-10-11
 ### Changed
-* Data model `product_CogShop` now has the views `ShopResult`, `ShopTimeSeries`, and `Alert`, removed
+* Removed `PowerAsset` from `product_CogShop`-data model and added `ShopResult`, `ShopTimeSeries`, and `Alert`
 
 
 ## [0.98.4] - 2024-09-09
