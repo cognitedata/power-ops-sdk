@@ -71,7 +71,7 @@ class SHOPRunAPI:
             plants_per_case.extend(shop_run.plants)
             shop_events.append(
                 SHOPRun(
-                    external_id=new_external_id(now=now),
+                    external_id=new_external_id(prefix="shop_run", now=now),
                     watercourse=case.case_name,
                     start=now,
                     end=None,

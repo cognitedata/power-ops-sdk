@@ -1,6 +1,6 @@
+import requests
 from urllib.parse import urlparse
 
-import requests
 from cognite.client import CogniteClient
 
 
@@ -19,7 +19,9 @@ class CogShopAPI:
 
     def trigger_shop_case(self, shop_case_external_id: str):
         def auth(r: requests.PreparedRequest) -> requests.PreparedRequest:
-            auth_header_name, auth_header_value = self._cdf._config.credentials.authorization_header()
+            auth_header_name, auth_header_value = (
+                self._cdf._config.credentials.authorization_header()
+            )
             r.headers[auth_header_name] = auth_header_value
             return r
 
@@ -43,4 +45,9 @@ class CogShopAPI:
         'SHOP-${{VERSION}}-pyshop-python{py_version}.linux.zip'
         """
         # todo? Add an endpoint to list the available versions of SHOP via powerops API?
-        return [file.name for file in self._cdf.files.list(metadata={"shop:type": "shop-release"}, limit=-1)]
+        return [
+            file.name
+            for file in self._cdf.files.list(
+                metadata={"shop:type": "shop-release"}, limit=-1
+            )
+        ]
