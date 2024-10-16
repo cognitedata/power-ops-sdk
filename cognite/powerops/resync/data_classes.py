@@ -13,7 +13,7 @@ from cognite.client import CogniteClient
 from cognite.client.data_classes import FileMetadataWrite
 from cognite.client.exceptions import CogniteAPIError
 
-from cognite.powerops.resync.v1.utils import ext_id_factory
+from cognite.powerops.resync.utils import ext_id_factory
 from cognite.powerops.utils.serialization import load_yaml
 
 logger = logging.getLogger(__name__)

@@ -4,8 +4,8 @@ import logging
 from pathlib import Path
 
 from cognite.powerops.client import PowerOpsClient
-from cognite.powerops.resync.v1.config_to_fdm import ResyncImporter
-from cognite.powerops.resync.v1.utils import check_all_linked_sources_exist, get_data_model_write_classes
+from cognite.powerops.resync.config_to_fdm import ResyncImporter
+from cognite.powerops.resync.utils import check_all_linked_sources_exist, get_data_model_write_classes
 
 logger = logging.getLogger(__name__)
 

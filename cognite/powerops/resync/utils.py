@@ -72,6 +72,8 @@ def get_data_model_write_classes(data_model_client: Any) -> dict[str, type]:
         A dictionary with the type prefix as the key and the domain model write class as the value.
     """
 
+    print(data_model_client)
+
     data_model_read_classes = data_model_client._view_by_read_class
     all_data_model_classes = v1_data_classes.__dict__
 

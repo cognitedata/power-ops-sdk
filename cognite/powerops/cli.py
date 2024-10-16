@@ -37,13 +37,13 @@ def common(ctx: typer.Context, version: bool = typer.Option(None, "--version", c
 @app.command("plan_v1", help="Plan the changes from the configuration files to the data model in CDF")
 def plan_v1(path: Annotated[Path, typer.Argument(help="Path to configuration files")]):
     logging.info(f"Running plan on configuration files located in {path}")
-    powerops.resync.plan_v1(path)
+    powerops.resync.plan(path)
 
 
 @app.command("apply_v1", help="Apply the changes from the configuration files to the data model in CDF")
 def apply_v1(path: Annotated[Path, typer.Argument(help="Path to configuration files")]):
     logging.info(f"Running apply on configuration files located in {path}")
-    powerops.resync.apply_v1(path)
+    powerops.resync.apply(path)
 
 
 def main():

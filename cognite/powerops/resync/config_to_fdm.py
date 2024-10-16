@@ -13,12 +13,12 @@ from cognite.client import CogniteClient
 from pydantic import ValidationError
 
 import cognite.powerops.client._generated.v1.data_classes as v1_data_classes
-from cognite.powerops.resync.v1.data_classes import (
+from cognite.powerops.resync.data_classes import (
     DataModelConfiguration,
     FileUploadConfiguration,
     PropertyConfiguration,
 )
-from cognite.powerops.resync.v1.utils import (
+from cognite.powerops.resync.utils import (
     check_input_keys,
     ext_id_factory,
     parse_external_ids,
@@ -482,14 +482,14 @@ class ResyncImporter:
                     else:
                         raise ValueError("Source data is not a dictionary")
                 elif match:
-                    if isinstance(source_data, (Sequence, Mapping)):
+                    if isinstance(source_data, (Sequence | Mapping)):
                         if match.group(1).isdigit():
                             source_data = source_data[int(match.group(1))]
                         else:
                             source_data = source_data[instance_data[match.group(1)]]
                     else:
                         raise ValueError("Source data is not indexable")
-                elif isinstance(source_data, (Sequence, Mapping)):
+                elif isinstance(source_data, (Sequence | Mapping)):
                     source_data = source_data[key]
                 else:
                     raise ValueError("Source data is not indexable")
