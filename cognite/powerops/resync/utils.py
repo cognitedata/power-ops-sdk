@@ -11,6 +11,7 @@ from typing import Any, Optional
 from pydantic.alias_generators import to_snake
 
 import cognite.powerops.client._generated.v1.data_classes as v1_data_classes
+from cognite.powerops.client._generated.v1.data_classes._core import DomainModelWrite
 
 logger = logging.getLogger(__name__)
 
@@ -71,18 +72,17 @@ def get_data_model_write_classes(data_model_client: Any) -> dict[str, type]:
     Returns:
         A dictionary with the type prefix as the key and the domain model write class as the value.
     """
-
-    print(data_model_client)
-
-    data_model_read_classes = data_model_client._view_by_read_class
     all_data_model_classes = v1_data_classes.__dict__
 
     expected_types_mapping = {}
-    for read_class in data_model_read_classes.keys():
-        write_class_name = read_class.__name__ + "Write"
-
-        read_name = to_snake(read_class.__name__)
-        expected_types_mapping[read_name] = all_data_model_classes[write_class_name]
+    for dm_class in all_data_model_classes.keys():
+        if (
+            dm_class.endswith("Write")
+            and dm_class != "DomainModelWrite"
+            and issubclass(all_data_model_classes[dm_class], DomainModelWrite)
+        ):
+            read_name = to_snake(dm_class.removesuffix("Write"))
+            expected_types_mapping[read_name] = all_data_model_classes[dm_class]
 
     return expected_types_mapping
 
