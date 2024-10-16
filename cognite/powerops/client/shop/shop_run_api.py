@@ -14,12 +14,25 @@ from cognite.client.data_classes.events import EventSort
 from cognite.client.exceptions import CogniteAPIError
 
 from cognite.powerops.cdf_labels import RelationshipLabel
-from cognite.powerops.client.shop.data_classes.dayahead_trigger import Case, PrerunFileMetadata, SHOPPreRunFile
-from cognite.powerops.client.shop.data_classes.shop_case import SHOPCase, SHOPFileReference, SHOPFileType
-from cognite.powerops.client.shop.data_classes.shop_run import SHOPRun, SHOPRunEvent, SHOPRunList
+from cognite.powerops.client.shop.data_classes.dayahead_trigger import (
+    Case,
+    PrerunFileMetadata,
+    SHOPPreRunFile,
+)
+from cognite.powerops.client.shop.data_classes.shop_case import (
+    SHOPCase,
+    SHOPFileReference,
+    SHOPFileType,
+)
+from cognite.powerops.client.shop.data_classes.shop_run import (
+    SHOPRun,
+    SHOPRunEvent,
+    SHOPRunList,
+)
 from cognite.powerops.client.shop.data_classes.shop_run_filter import SHOPRunFilter
 from cognite.powerops.utils.cdf.calls import create_event
 from cognite.powerops.utils.cdf.resource_creation import simple_relationship
+from cognite.powerops.utils.deprecation import deprecated_class
 from cognite.powerops.utils.identifiers import new_external_id
 
 DEFAULT_READ_LIMIT = 25
@@ -27,15 +40,17 @@ DEFAULT_READ_LIMIT = 25
 _APICallableForSHOPRunT = Callable[[Union[SHOPRun, Sequence[SHOPRun]]], Union[SHOPRun, Sequence[SHOPRun]]]
 
 
+#! Will be replaced by `cogshop_api.py`
+@deprecated_class
 class SHOPRunAPI:
     def __init__(
-        self, client: CogniteClient, dataset_id: int, cogshop_version: str = "", shop_as_a_service: bool = False
+        self,
+        client: CogniteClient,
+        dataset_id: int,
     ):
         self._cdf = client
         self._dataset_id = dataset_id
-        self.cogshop_version = cogshop_version
         self._CONCURRENT_CALLS = 5
-        self.shop_as_a_service = shop_as_a_service
 
     def _get_shop_prerun_files(self, file_external_ids: list[str]) -> list[SHOPPreRunFile]:
         prerun_files = self._cdf.files.retrieve_multiple(external_ids=file_external_ids)
@@ -56,14 +71,19 @@ class SHOPRunAPI:
             plants_per_case.extend(shop_run.plants)
             shop_events.append(
                 SHOPRun(
-                    external_id=new_external_id(now=now),
+                    external_id=new_external_id(prefix="shop_run", now=now),
                     watercourse=case.case_name,
                     start=now,
                     end=None,
                     data_set_id=self._dataset_id,
                     _case_file_external_id=shop_run.pre_run_external_id,
                     _shop_files=(
-                        [SHOPFileReference(external_id=case.commands_file, file_type=SHOPFileType.ASCII.value)]
+                        [
+                            SHOPFileReference(
+                                external_id=case.commands_file,
+                                file_type=SHOPFileType.ASCII.value,
+                            )
+                        ]
                         if case.commands_file
                         else []
                     ),
@@ -87,7 +107,10 @@ class SHOPRunAPI:
         return list(set(plants_per_case)), shop_events
 
     def trigger_single_casefile(
-        self, case: SHOPCase, source: str | None = None, shop_run_external_id: str | None = None
+        self,
+        case: SHOPCase,
+        source: str | None = None,
+        shop_run_external_id: str | None = None,
     ) -> SHOPRun:
         """
         Trigger SHOP for a given case file.
@@ -118,6 +141,8 @@ class SHOPRunAPI:
             source = user.user_identifier if user else "manual"
         display_name = user.display_name if user else "Unknown"
         now = datetime.datetime.now(datetime.timezone.utc)
+
+        # todo: are parts of this worth keeping?
 
         case_file_meta = self._cdf.files.upload_bytes(
             # On Windows machines, some bytes can get lost in the encoding process
@@ -150,13 +175,21 @@ class SHOPRunAPI:
         create_event(self._cdf, event)
 
         relationships = [
-            simple_relationship(source=event, target=case_file_meta, label_external_id=RelationshipLabel.CASE_FILE)
+            simple_relationship(
+                source=event,
+                target=case_file_meta,
+                label_external_id=RelationshipLabel.CASE_FILE,
+            )
         ]
 
         for shop_file_reference in case.shop_files:
             cdf_file = shop_file_reference.as_cdf_file_metadata()
             relationships.append(
-                simple_relationship(source=event, target=cdf_file, label_external_id=RelationshipLabel.EXTRA_FILE)
+                simple_relationship(
+                    source=event,
+                    target=cdf_file,
+                    label_external_id=RelationshipLabel.EXTRA_FILE,
+                )
             )
         self._cdf.relationships.create(relationships)
 
@@ -168,47 +201,27 @@ class SHOPRunAPI:
         self._trigger_shop_container(shop_run)
         return shop_run
 
-    def _shop_url(self) -> str:
+    def _shop_url_cshaas(self) -> str:
         project = self._cdf.config.project
 
         cluster = urlparse(self._cdf.config.base_url).netloc.split(".", 1)[0]
 
-        environment = project.split("-")[-1]
-        if environment in {"dev", "staging"}:
-            stage = ".staging"
-        elif environment == "prod":
-            stage = ""
-        else:
-            raise ValueError(f"Can't detect prod/staging from project name: {project!r}")
-
-        return f"https://power-ops-api{stage}.{cluster}.cognite.ai/{project}/run-shop"
-
-    def _shop_url_shaas(self) -> str:
-        project = self._cdf.config.project
-
-        cluster = urlparse(self._cdf.config.base_url).netloc.split(".", 1)[0]
-
-        if project == "power-ops-staging":
-            environment = ".staging"
-        elif project in {"lyse-dev", "lyse-prod", "heco-dev", "heco-prod"}:
-            environment = ""
-        else:
-            raise ValueError(f"SHOP As A Service has not been configured for project name: {project!r}")
+        environment = ".staging" if project == "power-ops-staging" else ""
 
         return f"https://power-ops-api{environment}.{cluster}.cognite.ai/{project}/run-shop-as-service"
 
+    # todo: changes to calling logic here -- for switch to fdm
     def _trigger_shop_container(self, shop_run: SHOPRun):
         def auth(r: requests.PreparedRequest) -> requests.PreparedRequest:
             auth_header_name, auth_header_value = self._cdf._config.credentials.authorization_header()
             r.headers[auth_header_name] = auth_header_value
             return r
 
-        if self.shop_as_a_service:
-            shop_url = self._shop_url_shaas()
-            shop_body = {"mode": "asset", "runs": [{"event_external_id": shop_run.external_id}]}
-        else:
-            shop_url = self._shop_url()
-            shop_body = {"shopEventExternalId": shop_run.external_id, "cogShopVersion": self.cogshop_version}
+        shop_url = self._shop_url_cshaas()
+        shop_body = {
+            "mode": "asset",
+            "runs": [{"event_external_id": shop_run.external_id}],
+        }
 
         response = requests.post(
             url=shop_url,
@@ -381,7 +394,9 @@ class SHOPRunAPI:
         return api_method(shop_run)
 
     def _wrap_event_api(self, api_method: Callable) -> _APICallableForSHOPRunT:
-        def wrapped(shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]:
+        def wrapped(
+            shop_run: SHOPRun | Sequence[SHOPRun],
+        ) -> SHOPRun | Sequence[SHOPRun]:
             is_single = isinstance(shop_run, SHOPRun)
             shop_runs = [shop_run] if is_single else shop_run
             new_events = api_method([shop_run.as_cdf_event() for shop_run in shop_runs])

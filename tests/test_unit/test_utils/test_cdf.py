@@ -38,7 +38,7 @@ def settings_files(tmp_path: Path):
             "cdf_cluster": "55",
             "login_flow": "client_credentials",
         },
-        "powerops": {"write_dataset": "333", "read_dataset": "444", "monitor_dataset": "123", "cogshop_version": "555"},
+        "powerops": {"write_dataset": "333", "read_dataset": "444", "monitor_dataset": "123"},
     }
     settings_file.write_text(
         tomli_w.dumps(

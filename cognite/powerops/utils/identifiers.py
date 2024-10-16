@@ -11,7 +11,7 @@ def unique_short_str(nbytes: int) -> str:
     return secrets.token_hex(nbytes=nbytes)
 
 
-def new_external_id(prefix: str = "POWEROPS_SHOP_RUN", now: Optional[datetime.datetime] = None) -> str:
+def new_external_id(prefix: str = "", now: Optional[datetime.datetime] = None) -> str:
     if now is None:
         now = datetime.datetime.now(datetime.timezone.utc)
     now_isoformat = now.isoformat().replace("+00:00", "Z")

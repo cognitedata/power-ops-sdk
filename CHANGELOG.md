@@ -13,6 +13,18 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+
+## [0.100.0] - 2024-10-014
+### Added
+* Support for triggering Shop using a ShopCase instance
+* Tutorial for usage of the generated SDK in relation to Shop
+
+### Removed
+* `shop_as_a_service` boolean to PowerOps Client instantiation
+* `cogshop_version` image tag to PowerOps Client instantiation
+
+### Deprecated
+* Marked asset based shop trigger, as well as other modules, for deprecation.
 ## [0.99.0] - 2024-10-11
 ### Changed
 * Removed `PowerAsset` from `product_CogShop`-data model and added `ShopResult`, `ShopTimeSeries`, and `Alert`

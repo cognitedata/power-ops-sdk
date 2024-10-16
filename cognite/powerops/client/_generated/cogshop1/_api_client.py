@@ -5,6 +5,7 @@ from pathlib import Path
 from cognite.client import ClientConfig, CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.credentials import OAuthClientCredentials
+from cognite.powerops.utils.deprecation import deprecated_class
 
 from ._api.case import CaseAPI
 from ._api.commands_config import CommandsConfigAPI
@@ -16,6 +17,7 @@ from ._api.scenario import ScenarioAPI
 from ._api.transformation import TransformationAPI
 
 
+@deprecated_class
 class CogShop1Client:
     """
     CogShop1Client
