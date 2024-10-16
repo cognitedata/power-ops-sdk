@@ -3,11 +3,11 @@ from __future__ import annotations
 import json
 import logging
 import traceback
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, Callable, ClassVar, Optional
+from typing import Any, ClassVar, Optional
 
 from cognite.client import CogniteClient
 from cognite.client._constants import MAX_VALID_INTERNAL_ID
@@ -137,7 +137,7 @@ class PipelineRun:
         # Ensure we get a dict[str, str]
         for key in list(data):
             value = data[key]
-            data[key] = self._as_json(value) if isinstance(value, (dict, list)) else str(value)
+            data[key] = self._as_json(value) if isinstance(value, (dict | list)) else str(value)
 
         truncating = len(self._as_json(data)) - MSG_CHAR_LIMIT > 0
         truncate_keys = self.config.truncate_keys + list(

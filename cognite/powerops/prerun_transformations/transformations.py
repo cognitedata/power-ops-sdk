@@ -781,7 +781,9 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
 
         # Get shape and time_delay values as Dict[delay,water_percentage]
         if "shape_discharge" in gate_or_plant:
-            shape = dict(zip(gate_or_plant["shape_discharge"]["x"], gate_or_plant["shape_discharge"]["y"]))
+            shape = dict(
+                zip(gate_or_plant["shape_discharge"]["x"], gate_or_plant["shape_discharge"]["y"], strict=False)
+            )
         elif "time_delay" in gate_or_plant:
             shape = {gate_or_plant["time_delay"]: 1}
         else:
