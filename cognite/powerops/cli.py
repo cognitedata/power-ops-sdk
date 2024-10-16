@@ -14,9 +14,6 @@ for third_party in ["cognite-sdk", "requests", "urllib3", "msal", "requests_oaut
     third_party_logger.setLevel(logging.WARNING)
     third_party_logger.propagate = False
 
-MODELS_BY_NAME_SORTED = sorted(powerops.resync.MODELS_BY_NAME)
-MODELS_BY_NAME_STR = ", ".join(MODELS_BY_NAME_SORTED)
-
 FORMAT = "%(message)s"
 logging.basicConfig(
     level=logging.INFO, format=FORMAT, datefmt="[%X]", handlers=[RichHandler(console=Console(stderr=True))]
