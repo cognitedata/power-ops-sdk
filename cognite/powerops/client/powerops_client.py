@@ -4,6 +4,7 @@ from pathlib import Path
 
 from cognite.client import ClientConfig, CogniteClient
 
+from cognite.powerops.client.shop.cogshop_api import CogShopAPI
 from cognite.powerops.utils.cdf import Settings, get_client_config
 from cognite.powerops.utils.serialization import read_toml_file
 from cognite.pygen.utils.external_id_factories import ExternalIdFactory
@@ -27,25 +28,25 @@ class PowerOpsClient:
         self,
         read_dataset: str,
         write_dataset: str,
-        cogshop_version: str,
         config: ClientConfig,
         monitor_dataset: str | None = None,
-        shop_as_a_service: bool = False,
     ):
         self.cdf = CogniteClient(config)
-        self.cogshop_version = cogshop_version
         self.datasets = DataSetsAPI(self.cdf, read_dataset, write_dataset, monitor_dataset)
         self.cog_shop1 = CogShop1Client(self.cdf)
         self.assets = PowerAssetAPI(self.cdf)
         self.afrr_bid = AFRRBidAPI(self.cdf)
         self.day_ahead_bid = DayAheadBidAPI(self.cdf)
-        self.shop = SHOPRunAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version, shop_as_a_service)
-        self.workflow = DayaheadTriggerAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version)
+        self.shop = SHOPRunAPI(self.cdf, self.datasets.write_dataset_id)
+        self.workflow = DayaheadTriggerAPI(self.cdf, self.datasets.write_dataset_id)
+
+        self.cogshop = CogShopAPI(self.cdf)
         self.v1 = PowerOpsModelsV1Client(self.cdf)
 
         DomainModelWrite.external_id_factory = ExternalIdFactory.create_external_id_factory(
             prefix_ext_id_factory=ExternalIdFactory(
-                ExternalIdFactory.domain_name_factory(), shorten_length=_MAX_DOMAIN_LENGTH
+                ExternalIdFactory.domain_name_factory(),
+                shorten_length=_MAX_DOMAIN_LENGTH,
             ),
             override_external_id=False,
         )
@@ -53,13 +54,15 @@ class PowerOpsClient:
     def _apis(self) -> dict[str, str]:
         return {
             "cdf": "The regular Cognite Client",
-            "cog_shop1": "The CogSHOP client, this is used by cogshop",
-            "assets": "The PowerOps Assets model. For example, plants, generators etc",
-            "afrr_bid": "The AFRR bid model, the model used to represent AFRR bids",
-            "production": "(will be deprecated) The production model",
-            "day_ahead_bid": "The day ahead bid model, the model used to represent day-ahead bids",
-            "shop": "The shop model, this is used to trigger individual SHOP runs",
-            "workflow": "The workflow model, this is used to trigger set of SHOP runs",
+            "cog_shop1": " (Deprecated, use cogshop instead) The CogSHOP client, this is used by cogshop",
+            "assets": "(Deprecated) The PowerOps Assets model. For example, plants, generators etc",
+            "afrr_bid": "(Deprecated) The AFRR bid model, the model used to represent AFRR bids",
+            "day_ahead_bid": "(Deprecated) The day ahead bid model, the model used to represent day-ahead bids",
+            "shop": "(Deprecated, use cogshop instead) The shop model, this is used to trigger individual SHOP runs",
+            "workflow": "(Deprecated) The workflow model, this is used to trigger set of SHOP runs",
+            "cogshop": "The CogShop client, this is used to trigger SHOP runs",
+            "v1": "The PowerOps Data Models client, this is used to interact with the PowerOps Models API"
+            " Will be moved to top level in the future",
         }
 
     def _repr_html_(self) -> str:
@@ -79,9 +82,7 @@ class PowerOpsClient:
         *,
         read_dataset: str | None = None,
         write_dataset: str | None = None,
-        cogshop_version: str | None = None,
         monitor_dataset: str | None = None,
-        shop_as_a_service: bool | None = None,
     ) -> PowerOpsClient:
         """
         Create a PowerOpsClient from a CogniteClient object.
@@ -93,7 +94,6 @@ class PowerOpsClient:
             read_dataset: externalId of read data set. Optional, by default loaded from the settings object.
             write_dataset: externalId of write data set. Optional, by default loaded from the settings object.
             monitor_dataset: externalId of monitor data set. Optional, by default loaded from the settings object.
-            cogshop_version: tag for the "cog-shop" Docker image. Optional, by default loaded from the settings object.
 
         Returns:
             A PowerOpsClient object.
@@ -102,9 +102,7 @@ class PowerOpsClient:
             config=client.config,
             read_dataset=read_dataset,
             write_dataset=write_dataset,
-            cogshop_version=cogshop_version,
             monitor_dataset=monitor_dataset,
-            shop_as_a_service=shop_as_a_service,
         )
 
     @classmethod
@@ -115,9 +113,7 @@ class PowerOpsClient:
         config: ClientConfig | None = None,
         read_dataset: str | None = None,
         write_dataset: str | None = None,
-        cogshop_version: str | None = None,
         monitor_dataset: str | None = None,
-        shop_as_a_service: bool | None = None,
     ) -> PowerOpsClient:
         """
         Create a PowerOpsClient from a Settings object.
@@ -132,7 +128,6 @@ class PowerOpsClient:
             read_dataset: externalId of read data set. Optional, by default loaded from the settings object.
             write_dataset: externalId of write data set. Optional, by default loaded from the settings object.
             monitor_dataset: externalId of monitor data set. Optional, by default loaded from the settings object.
-            cogshop_version: tag for the "cog-shop" Docker image. Optional, by default loaded from the settings object.
 
         Returns:
             A PowerOpsClient object.
@@ -143,13 +138,9 @@ class PowerOpsClient:
 
         return PowerOpsClient(
             config=client_config,
-            read_dataset=read_dataset if read_dataset is not None else settings.powerops.read_dataset,
-            write_dataset=write_dataset if write_dataset is not None else settings.powerops.write_dataset,
-            monitor_dataset=monitor_dataset if monitor_dataset is not None else settings.powerops.monitor_dataset,
-            cogshop_version=cogshop_version if cogshop_version is not None else settings.powerops.cogshop_version,
-            shop_as_a_service=(
-                shop_as_a_service if shop_as_a_service is not None else settings.powerops.shop_as_a_service
-            ),
+            read_dataset=(read_dataset if read_dataset is not None else settings.powerops.read_dataset),
+            write_dataset=(write_dataset if write_dataset is not None else settings.powerops.write_dataset),
+            monitor_dataset=(monitor_dataset if monitor_dataset is not None else settings.powerops.monitor_dataset),
         )
 
     @classmethod

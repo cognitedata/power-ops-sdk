@@ -51,7 +51,6 @@ Example of settings files:
   read_dataset = "uc:000:powerops"
   write_dataset = "uc:000:powerops"
   monitor_dataset = "uc:po:monitoring"
-  cogshop_version = ""
 ```
 
 `.secrets.toml`
@@ -91,7 +90,6 @@ from cognite.powerops.client import PowerOpsClient
 
 client = PowerOpsClient.from_settings()
 
-client.shop.runs.trigger()
 ```
 
 For more examples, see the examples section of the documentation.
