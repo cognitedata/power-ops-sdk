@@ -43,7 +43,7 @@ def get_dict_dot_keys(data_dict: dict, dot_keys: str) -> Union[int, str, datetim
         ts_str = str(keys.pop(i + 1))
         ts_str_tuple = ts_str.replace("datetime(", "").replace(")", "")
         dt_ts = datetime.datetime(*[int(x) for x in ts_str_tuple.split(",")])  # type: ignore[arg-type]
-        keys[i] = dt_ts
+        keys[i] = dt_ts  # type: ignore[call-overload]
     return reduce(operator.getitem, keys, data_dict)
 
 
@@ -56,7 +56,7 @@ def is_time_series_dict(data: Any) -> bool:
     return (
         isinstance(data, dict)
         and all(isinstance(k, datetime.datetime) for k in data.keys())
-        and all(isinstance(v, (float, int)) for v in data.values())
+        and all(isinstance(v, (float | int)) for v in data.values())
     )
 
 

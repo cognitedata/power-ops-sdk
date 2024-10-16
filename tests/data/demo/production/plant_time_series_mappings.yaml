@@ -1,8 +1,0 @@
-- plant_name: Lund
-  water_value: 136120
-  inlet_reservoir_level: 907230
-  outlet_reservoir_level: 907223
-  p_min:
-  p_max:
-  feeding_fee: 9626
-  head_direct:

@@ -1,6 +1,0 @@
-- auction: week
-  rkom_bid_config_external_ids:
-    - POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
-- auction: weekend
-  rkom_bid_config_external_ids:
-    - POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
