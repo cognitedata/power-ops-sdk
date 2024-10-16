@@ -13,8 +13,13 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.101.0] - 2024-10-016
+### Removed
+* Resync for asset & v0
+* Support for python 3.9
 
-## [0.100.0] - 2024-10-014
+
+## [0.100.0] - 2024-10-14
 ### Added
 * Support for triggering Shop using a ShopCase instance
 * Tutorial for usage of the generated SDK in relation to Shop
