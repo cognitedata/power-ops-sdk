@@ -15,7 +15,7 @@ from cognite.powerops.client._generated.v1.data_classes import (
     BenchmarkingCalculationInput,
     BenchmarkingCalculationInputWrite,
 )
-from cognite.powerops.resync.v1.utils import (
+from cognite.powerops.resync.utils import (
     check_input_keys,
     ext_id_factory,
     get_data_model_write_classes,

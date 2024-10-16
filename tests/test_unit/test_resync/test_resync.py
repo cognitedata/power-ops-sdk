@@ -9,7 +9,7 @@ import pytest
 from cognite.powerops.client._generated.v1.data_classes import (
     ShopCommandsWrite,
 )
-from cognite.powerops.resync.v1.config_to_fdm import ResyncImporter
+from cognite.powerops.resync.config_to_fdm import ResyncImporter
 
 
 @dataclass
