@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import datetime
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from concurrent.futures import ThreadPoolExecutor
-from typing import Callable, Literal, Optional, Union, overload
+from typing import Literal, Optional, Union, overload
 from urllib.parse import urlparse
 
 import arrow

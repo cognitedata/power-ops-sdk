@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 env:
-  PYTHON_VERSION: "3.9"
+  PYTHON_VERSION: "3.10"
 
 jobs:
   lint:
@@ -36,10 +36,8 @@ jobs:
       fail-fast: false
       matrix:
         python-version:
-          - "3.9"
-          # Assume these are covered by 3.12
-          # - "3.10"
-          # - "3.11"
+          - "3.10"
+          - "3.11"
           - "3.12"
     steps:
       - uses: actions/checkout@v4

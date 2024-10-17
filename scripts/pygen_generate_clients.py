@@ -124,7 +124,6 @@ def main():
             client_name="PowerOpsModelsV1Client",
             output_dir=REPO_ROOT,
             logger=print,
-            pydantic_version="v2",
             overwrite=True,
             format_code=True,
         )
