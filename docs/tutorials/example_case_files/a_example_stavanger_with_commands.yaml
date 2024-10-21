@@ -45,21 +45,21 @@ model:
             - 3
             - 10
           y: # Efficiency as a percentage
-            - 0.9
-            - 0.95
+            - 90
+            - 95
     Sola_G2:
       penstock: 1
-      p_max: 10000 # max production i MW -- Here just set to be very high
+      p_max: 10000 # max production in MW -- Here just set to be very high
       turb_eff_curves:
         - ref: 950 # Drop height
           x: # Flow (m^3/s)
             - 3
             - 10
           y: # Efficiency as a percentage
-            - 0.91
-            - 0.96
+            - 91
+            - 96
             # As long as it does not cost anything to send through water, it will send through as much water as possible.
-            # The max amount of water that will be sent through is determined by the efficiency curves.
+            # The max amount of water that will be sent through is determined by the efficiency curves and p_max and other constraints.
   market:
     Marked: # The price for selling and buying might not be the same but often they are in practice.
       buy_price: # EUR/MWh
