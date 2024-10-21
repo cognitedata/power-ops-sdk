@@ -3,7 +3,7 @@ time:
   endtime: 2024-06-02 22:00:00 # Typically set to a later time than 24 hrs such that the optimization accounts for next day too.
   timeunit: minute
   timeresolution:
-    2024-05-31 22:00:00: 60 # Time resolution in minutes
+    2024-05-31 22:00:00: 60 # Time resolution in number of time units (minutes)
 
 model:
   reservoir:
