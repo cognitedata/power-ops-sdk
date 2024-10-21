@@ -30,7 +30,7 @@ model:
   plant:
     Sola:
       main_loss: # Friction loss as water flows through tunnel
-        - 0 # Liste av ett element
+        - 0 # For some reason, this has to be defined as a list
       penstock_loss: # Water might be spit into different penstocks per turbines.
         - 0
       outlet_line: 30 # Meters above sea level where water leaves turbine. Needed for water pressure calculations.
