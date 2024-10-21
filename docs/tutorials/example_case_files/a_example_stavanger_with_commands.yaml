@@ -38,7 +38,7 @@ model:
   generator:
     Sola_G1:
       penstock: 1
-      p_max: 10000 # max production i MW -- Here just set to be very high
+      p_max: 10000 # max production in MW -- Here just set to be very high (in this case it will be limited by max flow of the turbine efficiency curve)
       turb_eff_curves: # A function of discharge through the turbine
         - ref: 950 # Drop height
           x: # Flow (m^3/s)
