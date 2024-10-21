@@ -2590,7 +2590,6 @@ model:
         2023-01-19 23:00:00: 0
       max_q_constr:
         2023-01-19 23:00:00: 1000
-
     Rull1:
       num_gen: 2
       prod_area:

@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.101.1] - 2024-10-21
+### Changed
+* Rename example cases to Fornebu and Stavanger cases
+
+
 ## [0.101.0] - 2024-10-16
 ### Removed
 * Resync for asset & v0
