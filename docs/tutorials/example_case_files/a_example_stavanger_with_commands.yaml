@@ -20,7 +20,7 @@ model:
       lrl: 900 # Lowest regulated Level
       hrl: 1000 # Highest regulated Level
       start_head: 950 # Initial head/water level
-      energy_value_input: 24 # Local energy value of the reservoir, values between sale/buy price are sensible
+      energy_value_input: 24 # Local energy value (water value in EUR/MWh) of the reservoir, values between sale/buy price are sensible
 
       inflow: # Water flowing to the reservoir as a time series with units m^3/s
         2024-05-31 22:00:00: 22
