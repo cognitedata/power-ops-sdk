@@ -1,6 +1,6 @@
 time:
   starttime: 2024-05-31 22:00:00 # UTC time stamped, for Oslo this means midnight June 1st.
-  endtime: 2024-06-02 22:00:00 # Typically set to a later time than 24 hrs such that the optimization accounts for next day too.
+  endtime: 2024-06-02 22:00:00 # Even if we mostly care about the first 24 hours, it can be wise to optimise for a longer period.
   timeunit: minute
   timeresolution:
     2024-05-31 22:00:00: 60 # Time resolution in number of time units (minutes)
