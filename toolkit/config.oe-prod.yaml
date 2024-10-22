@@ -2,12 +2,11 @@ environment:
   project: oe-prod
   type: prod
   selected:
-    - power_model_v1
+    - modules/power_model
 
 variables:
-  custom_modules:
-    power_model_v1:
-      power_ops_type_space: "power_ops_types"
-      power_ops_instance_space: "power_ops_instances"
-      power_ops_models: "power_ops_core"
-      version: "1"
+  modules:
+    power_ops_type_space: "power_ops_types"
+    power_ops_instance_space: "power_ops_instances"
+    power_ops_models: "power_ops_core"
+    version: "1"

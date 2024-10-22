@@ -12,8 +12,8 @@ You can control which module is deployed by setting the `selected_module_and_pac
 
 ```yaml
 ...
-   selected_modules_and_packages:
-   - power_model_v1
+   selected:
+      - modules/power_model
 ...
 ```
 
@@ -145,7 +145,7 @@ If a change requires a version change, the following version system should be us
 3. Build the configurations and remove existing files in the build directory:
 
    ```bash
-   cdf-tk build toolkit/ --env=$ENV
+   cdf-tk build -o toolkit/ --env=$ENV
    ```
 
 4. Dry-run the deployment to see what changes would be made:
