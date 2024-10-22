@@ -1,0 +1,43 @@
+# Data sets needed for PowerOps solutions
+- externalId: "powerops:trigger"
+  name: "powerops:trigger_events"
+  description: "This data set contains trigger events for PowerOps solutions."
+  metadata:
+    origin: "cognite-toolkit"
+    application: "PowerOps"
+  writeProtected: false
+- externalId: "powerops:config"
+  name: "powerops:configuration"
+  description: "This data set contains configuration data for PowerOps solutions."
+  metadata:
+    origin: "cognite-toolkit"
+    application: "PowerOps"
+  writeProtected: false
+- externalId: "powerops:process"
+  name: "powerops:process"
+  description: "This data set contains process data for PowerOps solutions."
+  metadata:
+    origin: "cognite-toolkit"
+    application: "PowerOps"
+  writeProtected: false
+- externalId: "powerops:timeseries"
+  name: "powerops:timeseries"
+  description: "This data set contains timeseries data for PowerOps solutions."
+  metadata:
+    origin: "cognite-toolkit"
+    application: "PowerOps"
+  writeProtected: false
+- externalId: "powerops:misc"
+  name: "powerops:miscellaneous"
+  description: "This data set contains miscellaneous data for PowerOps solutions."
+  metadata:
+    origin: "cognite-toolkit"
+    application: "PowerOps"
+  writeProtected: false
+- externalId: "powerops:monitor"
+  name: "powerops:monitoring"
+  description: "This data set contains monitoring data for PowerOps solutions."
+  metadata:
+    origin: "cognite-toolkit"
+    application: "PowerOps"
+  writeProtected: false

@@ -1,0 +1,9 @@
+- externalId: "SHOP_model_WATERCOURSE_NAME"
+  name: "SHOP_model_WATERCOURSE_NAME.yaml"
+  source: "Customer"
+  dataSetExternalId: "powerops:config"
+  directory: "/toolkit/modules/power_ops/files/"
+  mimeType: "application/yaml"
+  metadata:
+    origin: "cognite-toolkit"
+    application: "CogShop-as-a-Service"

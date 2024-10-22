@@ -1,0 +1,38 @@
+# MarketConfiguration view definition
+# properties:
+#   name: String!
+#   maxPrice: Float!
+#   minPrice: Float!
+#   timezone: String
+#   priceUnit: String!
+#   priceSteps: Int64!
+#   tickSize: Float!
+#   timeUnit: String!
+#   tradeLot: Float!
+
+# Type node
+- space: "{{power_ops_type_space}}"
+  externalId: MarketConfiguration
+
+# Instance nodes
+- space: "{{power_ops_instance_space}}"
+  externalId: market_configuration:nord_pool_day_ahead
+  type:
+    space: "{{power_ops_type_space}}"
+    externalId: MarketConfiguration
+  sources:
+    - source:
+        space: "{{power_ops_models_space}}"
+        externalId: MarketConfiguration
+        version: "{{power_ops_version}}"
+        type: view
+      properties:
+        name: "Nord Pool Day-Ahead"
+        maxPrice: 4000.0
+        minPrice: -500.0
+        timezone: "Europe/Oslo"
+        priceUnit: "EUR/MWh"
+        priceSteps: 200
+        tickSize: 0.1
+        timeUnit: 1h
+        tradeLot: 0.1

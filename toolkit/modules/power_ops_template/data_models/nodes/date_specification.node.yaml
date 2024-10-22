@@ -1,0 +1,67 @@
+# DateSpecification view definition
+# properties:
+#   name: String!
+#   processingTimezone: String
+#   resultingTimezone: String
+#   floorFrame: String
+#   shiftDefinition: JSONObject
+
+# Type node
+- space: "{{power_ops_type_space}}"
+  externalId: DateSpecification
+
+# Instance nodes
+- space: "{{power_ops_instance_space}}"
+  externalId: date_specification:tomorrow
+  type:
+    space: "{{power_ops_type_space}}"
+    externalId: DateSpecification
+  sources:
+    - source:
+        space: "{{power_ops_models_space}}"
+        externalId: DateSpecification
+        version: "{{power_ops_version}}"
+        type: view
+      properties:
+        name: Tomorrow
+        processingTimezone: Europe/Oslo
+        resultingTimezone: UTC
+        floorFrame: hour
+        shiftDefinition:
+          days: 1
+- space: "{{power_ops_instance_space}}"
+  externalId: date_specification:start_of_tomorrow
+  type:
+    space: "{{power_ops_type_space}}"
+    externalId: DateSpecification
+  sources:
+    - source:
+        space: "{{power_ops_models_space}}"
+        externalId: DateSpecification
+        version: "{{power_ops_version}}"
+        type: view
+      properties:
+        name: Start of tomorrow
+        processingTimezone: Europe/Oslo
+        resultingTimezone: UTC
+        floorFrame: day
+        shiftDefinition:
+          days: 1
+- space: "{{power_ops_instance_space}}"
+  externalId: date_specification:end_of_next_week
+  type:
+    space: "{{power_ops_type_space}}"
+    externalId: DateSpecification
+  sources:
+    - source:
+        space: "{{power_ops_models_space}}"
+        externalId: DateSpecification
+        version: "{{power_ops_version}}"
+        type: view
+      properties:
+        name: End of next week
+        processingTimezone: Europe/Oslo
+        resultingTimezone: UTC
+        floorFrame: week
+        shiftDefinition:
+          weeks: 2
