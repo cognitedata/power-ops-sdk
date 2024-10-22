@@ -1,4 +1,4 @@
-space: "{{power_ops_models}}"
+space: "{{power_ops_models_space}}"
 externalId: Alert
 name: Alert
 description: Alerts
@@ -6,7 +6,7 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{power_ops_models}}"
+          space: "{{power_ops_models_space}}"
           externalId: Alert
     - equals:
         property:
@@ -25,7 +25,7 @@ version: "{{version}}"
 properties:
   time:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: Alert
       type: container
     containerPropertyIdentifier: time
@@ -33,7 +33,7 @@ properties:
     description: Timestamp that the alert occurred (within the workflow)
   workflowExecutionId:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: Alert
       type: container
     containerPropertyIdentifier: workflowExecutionId
@@ -41,7 +41,7 @@ properties:
     description: Process ID in the workflow that the alert is related to
   title:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: Alert
       type: container
     containerPropertyIdentifier: title
@@ -49,7 +49,7 @@ properties:
     description: Summary description of the alert
   description:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: Alert
       type: container
     containerPropertyIdentifier: description
@@ -57,7 +57,7 @@ properties:
     description: Detailed description of the alert
   severity:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: Alert
       type: container
     containerPropertyIdentifier: severity
@@ -65,7 +65,7 @@ properties:
     description: CRITICAL (calculation could not completed) WARNING  (calculation completed, with major issue) INFO     (calculation completed, with minor issues)
   alertType:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: Alert
       type: container
     containerPropertyIdentifier: alertType
@@ -73,7 +73,7 @@ properties:
     description: Classification of the alert (not in current alerting implementation)
   statusCode:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: Alert
       type: container
     containerPropertyIdentifier: statusCode
@@ -81,7 +81,7 @@ properties:
     description: Unique status code for the alert. May be used by the frontend to avoid use of hardcoded description (i.e. like a translation)
   eventIds:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: Alert
       type: container
     containerPropertyIdentifier: eventIds
@@ -89,7 +89,7 @@ properties:
     description: An array of associated alert CDF Events (e.g. SHOP Run events)
   calculationRun:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: Alert
       type: container
     containerPropertyIdentifier: calculationRun

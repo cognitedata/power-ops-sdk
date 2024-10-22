@@ -1,4 +1,4 @@
-space: "{{power_ops_models}}"
+space: "{{power_ops_models_space}}"
 externalId: BidConfigurationDayAhead
 name: BidConfigurationDayAhead
 description: TODO
@@ -6,7 +6,7 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{power_ops_models}}"
+          space: "{{power_ops_models_space}}"
           externalId: BidConfiguration
     - equals:
         property:
@@ -25,7 +25,7 @@ version: "{{version}}"
 properties:
   name:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: BidConfiguration
       type: container
     containerPropertyIdentifier: name
@@ -33,40 +33,40 @@ properties:
     description: The name of the bid configuration
   marketConfiguration:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: BidConfiguration
       type: container
     containerPropertyIdentifier: marketConfiguration
     name: marketConfiguration
     description: The market configuration related to the bid configuration
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: MarketConfiguration
       version: "{{version}}"
       type: view
   priceArea:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: BidConfiguration
       type: container
     containerPropertyIdentifier: priceArea
     name: priceArea
     description: The price area related to the bid calculation task
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: PriceAreaDayAhead
       version: "{{version}}"
       type: view
   bidDateSpecification:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: BidConfiguration
       type: container
     containerPropertyIdentifier: bidDateSpecification
     name: bidDateSpecification
     description: TODO description
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: DateSpecification
       version: "{{version}}"
       type: view
@@ -75,7 +75,7 @@ properties:
       space: "{{power_ops_type_space}}"
       externalId: BidConfiguration.partials
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: PartialBidConfiguration
       version: "{{version}}"
       type: view

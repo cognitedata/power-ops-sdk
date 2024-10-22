@@ -10,5 +10,5 @@ variables:
   modules:
     power_ops_type_space: "power_ops_types"
     power_ops_instance_space: "power_ops_instances"
-    power_ops_models: "power_ops_core"
+    power_ops_models_space: "power_ops_core"
     version: "1"

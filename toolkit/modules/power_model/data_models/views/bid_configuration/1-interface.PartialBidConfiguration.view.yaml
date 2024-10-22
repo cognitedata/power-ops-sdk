@@ -1,4 +1,4 @@
-space: "{{power_ops_models}}"
+space: "{{power_ops_models_space}}"
 externalId: PartialBidConfiguration
 name: PartialBidConfiguration
 description: A partial bid configuration
@@ -6,7 +6,7 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{power_ops_models}}"
+          space: "{{power_ops_models_space}}"
           externalId: PartialBidConfiguration
     - equals:
         property:
@@ -17,7 +17,7 @@ version: "{{version}}"
 properties:
   name:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: PartialBidConfiguration
       type: container
     containerPropertyIdentifier: name
@@ -25,7 +25,7 @@ properties:
     description: Name for the PartialBidConfiguration
   method:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: PartialBidConfiguration
       type: container
     containerPropertyIdentifier: method
@@ -33,20 +33,20 @@ properties:
     description: Name of the method used for the bid calculation
   powerAsset:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: PartialBidConfiguration
       type: container
     containerPropertyIdentifier: powerAsset
     name: powerAsset
     description: TODO description
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: PowerAsset
       version: "{{version}}"
       type: view
   addSteps:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: PartialBidConfiguration
       type: container
     containerPropertyIdentifier: addSteps

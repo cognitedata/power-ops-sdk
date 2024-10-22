@@ -1,11 +1,11 @@
-space: "{{power_ops_models}}"
+space: "{{power_ops_models_space}}"
 externalId: PartialBidMatrixInformationWithScenarios
 name: PartialBidMatrixInformationWithScenarios
 filter:
   and:
     - hasData:
         - type: container
-          space: "{{power_ops_models}}"
+          space: "{{power_ops_models_space}}"
           externalId: BidMatrix
     - equals:
         property:
@@ -13,7 +13,7 @@ filter:
           - space
         value: "{{power_ops_instance_space}}"
 implements:
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: PartialBidMatrixInformation
     version: "{{version}}"
     type: view
@@ -24,7 +24,7 @@ properties:
       space: "{{power_ops_type_space}}"
       externalId: calculationIssue
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: PriceProduction
       version: "{{version}}"
       type: view

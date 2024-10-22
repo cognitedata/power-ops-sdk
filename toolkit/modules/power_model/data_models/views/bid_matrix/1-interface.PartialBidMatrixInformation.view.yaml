@@ -1,11 +1,11 @@
-space: "{{power_ops_models}}"
+space: "{{power_ops_models_space}}"
 externalId: PartialBidMatrixInformation
 name: PartialBidMatrixInformation
 filter:
   and:
     - hasData:
         - type: container
-          space: "{{power_ops_models}}"
+          space: "{{power_ops_models_space}}"
           externalId: BidMatrix
     - equals:
         property:
@@ -13,7 +13,7 @@ filter:
           - space
         value: "{{power_ops_instance_space}}"
 implements:
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: BidMatrixInformation
     version: "{{version}}"
     type: view
@@ -21,11 +21,11 @@ version: "{{version}}"
 properties:
   powerAsset:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: BidMatrix
       type: container
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: PowerAsset
       version: "{{version}}"
       type: view
@@ -33,18 +33,18 @@ properties:
     name: powerAsset
   resourceCost:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: BidMatrix
       type: container
     containerPropertyIdentifier: resourceCost
     name: resourceCost
   partialBidConfiguration:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: BidMatrix
       type: container
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: PartialBidConfiguration
       version: "{{version}}"
       type: view

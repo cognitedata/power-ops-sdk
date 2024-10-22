@@ -1,4 +1,4 @@
-space: "{{power_ops_models}}"
+space: "{{power_ops_models_space}}"
 externalId: BenchmarkingConfigurationDayAhead
 name: BenchmarkingConfigurationDayAhead
 description: Representing the same as the good old benchmarking config asset
@@ -6,7 +6,7 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{power_ops_models}}"
+          space: "{{power_ops_models_space}}"
           externalId: BenchmarkingConfiguration
     - equals:
         property:
@@ -25,7 +25,7 @@ version: "{{version}}"
 properties:
   name:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: BenchmarkingConfiguration
       type: container
     containerPropertyIdentifier: name
@@ -36,7 +36,7 @@ properties:
       space: "{{power_ops_type_space}}"
       externalId: benchmarkingBidConfigurations
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: BidConfigurationDayAhead
       version: "{{version}}"
       type: view
@@ -49,7 +49,7 @@ properties:
       space: "{{power_ops_type_space}}"
       externalId: assetsPerShopModel
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: ShopModelWithAssets
       version: "{{version}}"
       type: view
@@ -59,40 +59,40 @@ properties:
     connectionType: multi_edge_connection
   priceArea: # TODO: Should we take this from the bidConfigurations?
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: BenchmarkingConfiguration
       type: container
     containerPropertyIdentifier: priceArea
     name: priceArea
     description: The price area related to the bid calculation task
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: PriceAreaDayAhead
       version: "{{version}}"
       type: view
   shopStartSpecification:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: BenchmarkingConfiguration
       type: container
     containerPropertyIdentifier: shopStartSpecification
     name: shopStartSpecification
     description: Relative time spec. for start-time for benchmarking SHOP runs
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: DateSpecification
       version: "{{version}}"
       type: view
   shopEndSpecification:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: BenchmarkingConfiguration
       type: container
     containerPropertyIdentifier: shopEndSpecification
     name: shopEndSpecification
     description: Relative time spec. for end-time for benchmarking SHOP runs
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: DateSpecification
       version: "{{version}}"
       type: view

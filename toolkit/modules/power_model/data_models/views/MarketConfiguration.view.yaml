@@ -1,4 +1,4 @@
-space: "{{power_ops_models}}"
+space: "{{power_ops_models_space}}"
 externalId: MarketConfiguration
 name: MarketConfiguration
 description: Market configuration
@@ -6,7 +6,7 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{power_ops_models}}"
+          space: "{{power_ops_models_space}}"
           externalId: MarketConfiguration
     - equals:
         property:
@@ -25,7 +25,7 @@ version: "{{version}}"
 properties:
   name:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: MarketConfiguration
       type: container
     containerPropertyIdentifier: name
@@ -33,7 +33,7 @@ properties:
     description: The name of the market
   maxPrice:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: MarketConfiguration
       type: container
     containerPropertyIdentifier: maxPrice
@@ -41,7 +41,7 @@ properties:
     description: The highest price allowed
   minPrice:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: MarketConfiguration
       type: container
     containerPropertyIdentifier: minPrice
@@ -49,14 +49,14 @@ properties:
     description: The lowest price allowed
   timezone:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: MarketConfiguration
       type: container
     containerPropertyIdentifier: timezone
     name: timezone
   priceUnit:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: MarketConfiguration
       type: container
     containerPropertyIdentifier: priceUnit
@@ -64,7 +64,7 @@ properties:
     description: Unit of measurement for the price ('EUR/MWh')
   priceSteps:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: MarketConfiguration
       type: container
     containerPropertyIdentifier: priceSteps
@@ -72,7 +72,7 @@ properties:
     description: The maximum number of price steps
   tickSize:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: MarketConfiguration
       type: container
     containerPropertyIdentifier: tickSize
@@ -80,7 +80,7 @@ properties:
     description: "'Granularity' of the price; tick size = 0.1 means that prices must be 'rounded to nearest 0.1' (i. e. 66.43 is not allowed, but 66.4 is)"
   timeUnit:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: MarketConfiguration
       type: container
     containerPropertyIdentifier: timeUnit
@@ -88,7 +88,7 @@ properties:
     description: The time unit ('1h')
   tradeLot:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: MarketConfiguration
       type: container
     containerPropertyIdentifier: tradeLot

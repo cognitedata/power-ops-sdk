@@ -1,4 +1,4 @@
-space: "{{power_ops_models}}"
+space: "{{power_ops_models_space}}"
 externalId: TotalBidMatrixCalculationOutput
 name: TotalBidMatrixCalculationOutput
 description: The output of the total bid matrix calculation
@@ -6,7 +6,7 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{power_ops_models}}"
+          space: "{{power_ops_models_space}}"
           externalId: FunctionData
     - equals:
         property:
@@ -21,7 +21,7 @@ filter:
           externalId: TotalBidMatrixCalculationOutput
           space: "{{power_ops_type_space}}"
 implements:
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: FunctionOutput
     version: "{{version}}"
     type: view
@@ -29,25 +29,25 @@ version: "{{version}}"
 properties:
   functionInput: # Overrides the view type from the FunctionOutput view
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: linkedStep
     name: functionInput
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: TotalBidMatrixCalculationInput
       version: "{{version}}"
       type: view
   bidDocument:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct1
     name: bidDocument
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: BidDocumentDayAhead
       version: "{{version}}"
       type: view

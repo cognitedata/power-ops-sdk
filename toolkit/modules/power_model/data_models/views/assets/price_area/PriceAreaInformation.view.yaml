@@ -1,4 +1,4 @@
-space: "{{power_ops_models}}"
+space: "{{power_ops_models_space}}"
 externalId: PriceAreaInformation
 name: PriceAreaInformation
 description: TODO interface for configuration population
@@ -12,11 +12,11 @@ description: TODO interface for configuration population
 #           externalId: PriceAreaInformation
 #           space: "{{power_ops_type_space}}"
 implements:
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: PriceAreaAFRR
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: PriceAreaDayAhead
     version: "{{version}}"
     type: view

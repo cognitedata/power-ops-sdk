@@ -1,4 +1,4 @@
-space: "{{power_ops_models}}"
+space: "{{power_ops_models_space}}"
 externalId: BenchmarkingCalculationOutput
 name: BenchmarkingCalculationOutput
 description: The benchmarking Calculation output data.
@@ -17,7 +17,7 @@ filter:
           externalId: BenchmarkingCalculationOutput
           space: "{{power_ops_type_space}}"
 implements:
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: FunctionOutput
     version: "{{version}}"
     type: view
@@ -25,13 +25,13 @@ version: "{{version}}"
 properties:
   functionInput: # Overrides the view type from the FunctionOutput view
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: linkedStep
     name: functionInput
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: BenchmarkingCalculationInput
       version: "{{version}}"
       type: view
@@ -40,7 +40,7 @@ properties:
       space: "{{power_ops_type_space}}"
       externalId: BenchmarkingResultsDayAhead
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: BenchmarkingResultDayAhead
       version: "{{version}}"
       type: view

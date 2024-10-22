@@ -1,4 +1,4 @@
-space: "{{power_ops_models}}"
+space: "{{power_ops_models_space}}"
 externalId: ShopScenario
 name: ShopScenario
 description: The Scenario to run shop with
@@ -6,7 +6,7 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{power_ops_models}}"
+          space: "{{power_ops_models_space}}"
           externalId: ShopScenario
     - equals:
         property:
@@ -18,7 +18,7 @@ version: "{{version}}"
 properties:
   name:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: ShopScenario
       type: container
     containerPropertyIdentifier: name
@@ -26,33 +26,33 @@ properties:
     description: The name of the scenario to run
   model:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: ShopScenario
       type: container
     containerPropertyIdentifier: model
     name: model
     description: The model template to use when running the scenario
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: ShopModel
       version: "{{version}}"
       type: view
   commands:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: ShopScenario
       type: container
     containerPropertyIdentifier: commands
     name: commands
     description: The commands to run
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: ShopCommands
       version: "{{version}}"
       type: view
   source:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: ShopScenario
       type: container
     containerPropertyIdentifier: source
@@ -63,7 +63,7 @@ properties:
       space: "{{power_ops_type_space}}"
       externalId: ShopOutputTimeSeriesDefinition
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: ShopOutputTimeSeriesDefinition
       version: "{{version}}"
       type: view
@@ -76,7 +76,7 @@ properties:
       space: "{{power_ops_type_space}}"
       externalId: ShopAttributeMapping
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: ShopAttributeMapping
       version: "{{version}}"
       type: view

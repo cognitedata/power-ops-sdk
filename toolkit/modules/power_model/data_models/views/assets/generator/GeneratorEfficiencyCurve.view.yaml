@@ -1,4 +1,4 @@
-space: "{{power_ops_models}}"
+space: "{{power_ops_models_space}}"
 externalId: GeneratorEfficiencyCurve
 name: GeneratorEfficiencyCurve
 description: Describes the efficiency curve for a generator
@@ -6,7 +6,7 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{power_ops_models}}"
+          space: "{{power_ops_models_space}}"
           externalId: EfficiencyCurve
     - equals:
         property:
@@ -25,7 +25,7 @@ version: "{{version}}"
 properties:
   power:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: EfficiencyCurve
       type: container
     containerPropertyIdentifier: x
@@ -33,7 +33,7 @@ properties:
     description: The generator power values
   efficiency:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: EfficiencyCurve
       type: container
     containerPropertyIdentifier: efficiency

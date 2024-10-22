@@ -1,4 +1,4 @@
-space: "{{power_ops_models}}"
+space: "{{power_ops_models_space}}"
 externalId: BenchmarkingCalculationInput
 name: BenchmarkingCalculationInput
 description: The benchmarking Calculation input data.
@@ -6,7 +6,7 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{power_ops_models}}"
+          space: "{{power_ops_models_space}}"
           externalId: FunctionData
     - equals:
         property:
@@ -21,7 +21,7 @@ filter:
           externalId: BenchmarkingCalculationInput
           space: "{{power_ops_type_space}}"
 implements:
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: FunctionInput
     version: "{{version}}"
     type: view
@@ -32,7 +32,7 @@ properties:
       space: "{{power_ops_type_space}}"
       externalId: ShopResults
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: ShopResult
       version: "{{version}}"
       type: view

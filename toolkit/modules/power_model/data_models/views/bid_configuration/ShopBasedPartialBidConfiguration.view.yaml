@@ -1,4 +1,4 @@
-space: "{{power_ops_models}}"
+space: "{{power_ops_models_space}}"
 externalId: ShopBasedPartialBidConfiguration
 name: ShopBasedPartialBidConfiguration
 description: TODO
@@ -6,7 +6,7 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{power_ops_models}}"
+          space: "{{power_ops_models_space}}"
           externalId: PartialBidConfiguration
     - equals:
         property:
@@ -21,7 +21,7 @@ filter:
           externalId: ShopBasedPartialBidConfiguration
           space: "{{power_ops_type_space}}"
 implements:
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: PartialBidConfiguration
     version: "{{version}}"
     type: view
@@ -29,13 +29,13 @@ version: "{{version}}"
 properties:
   scenarioSet:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: ShopPartialBidConfiguration
       type: container
     containerPropertyIdentifier: scenarioSet
     name: scenarioSet
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: ShopScenarioSet
       version: "{{version}}"
       type: view

@@ -1,94 +1,94 @@
 externalId: compute_WaterValueBasedDayAheadBid
-space: "{{power_ops_models}}"
+space: "{{power_ops_models_space}}"
 version: "1"
 name: WaterValueBasedDayAheadBidProcess
 description: "The process of going from BidConfig to a PartialBidMatrix"
 views:
   - externalId: TaskDispatcherInput
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: TaskDispatcherOutput
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: PartialBidMatrixCalculationInput
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: WaterValueBasedPartialBidMatrixCalculationInput
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: PartialBidMatrixCalculationOutput
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: Plant
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: PlantWaterValueBased
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: Alert
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: BidConfigurationDayAhead
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: PriceArea
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: PriceAreaDayAhead
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: MarketConfiguration
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: Generator
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: GeneratorEfficiencyCurve
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: TurbineEfficiencyCurve
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: FunctionInput
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: FunctionOutput
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: BidMatrix
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: PowerAsset
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: PartialBidConfiguration
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: WaterValueBasedPartialBidConfiguration
     version: "{{version}}"
     type: view
   - externalId: DateSpecification
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"

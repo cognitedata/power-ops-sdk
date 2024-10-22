@@ -1,4 +1,4 @@
-space: "{{power_ops_models}}"
+space: "{{power_ops_models_space}}"
 externalId: ShopPreprocessorOutput
 name: ShopPreprocessorOutput
 description: Input to the task dispatcher in the shop bid process
@@ -6,7 +6,7 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{power_ops_models}}"
+          space: "{{power_ops_models_space}}"
           externalId: FunctionData
     - equals:
         property:
@@ -21,7 +21,7 @@ filter:
           externalId: ShopPreprocessorOutput
           space: "{{power_ops_type_space}}"
 implements:
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: FunctionOutput
     version: "{{version}}"
     type: view
@@ -29,26 +29,26 @@ version: "{{version}}"
 properties:
   functionInput: # Overrides the view type from the FunctionOutput view
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: linkedStep
     name: functionInput
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: ShopPreprocessorInput
       version: "{{version}}"
       type: view
   case:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct1
     name: case
     description: The Case to trigger shop with
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: ShopCase
       version: "{{version}}"
       type: view

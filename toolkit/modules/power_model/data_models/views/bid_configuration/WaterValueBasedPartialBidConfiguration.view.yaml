@@ -1,4 +1,4 @@
-space: "{{power_ops_models}}"
+space: "{{power_ops_models_space}}"
 externalId: WaterValueBasedPartialBidConfiguration
 name: WaterValueBasedPartialBidConfiguration
 description: A description of the WaterValueBasedPartialBidConfiguration
@@ -6,7 +6,7 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{power_ops_models}}"
+          space: "{{power_ops_models_space}}"
           externalId: PartialBidConfiguration
     - equals:
         property:
@@ -21,7 +21,7 @@ filter:
           externalId: WaterValueBasedPartialBidConfiguration
           space: "{{power_ops_type_space}}"
 implements:
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: PartialBidConfiguration
     version: "{{version}}"
     type: view
@@ -29,14 +29,14 @@ version: "{{version}}"
 properties:
   powerAsset:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: PartialBidConfiguration
       type: container
     containerPropertyIdentifier: powerAsset
     name: powerAsset
     description: TODO description (has to be a Plant)
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: PlantWaterValueBased
       version: "{{version}}"
       type: view

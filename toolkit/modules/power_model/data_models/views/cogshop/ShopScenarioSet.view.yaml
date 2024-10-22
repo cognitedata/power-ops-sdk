@@ -1,4 +1,4 @@
-space: "{{power_ops_models}}"
+space: "{{power_ops_models_space}}"
 externalId: ShopScenarioSet
 name: ShopScenarioSet
 description: The Scenario Set to run shop with
@@ -6,7 +6,7 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{power_ops_models}}"
+          space: "{{power_ops_models_space}}"
           externalId: ShopScenarioSet
     - equals:
         property:
@@ -18,7 +18,7 @@ version: "{{version}}"
 properties:
   name:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: ShopScenarioSet
       type: container
     containerPropertyIdentifier: name
@@ -26,27 +26,27 @@ properties:
     description: The name of the scenario set to run
   startSpecification:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: ShopScenarioSet
       type: container
     containerPropertyIdentifier: startSpecification
     name: startSpecification
     description: TODO description
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: DateSpecification
       version: "{{version}}"
       type: view
   endSpecification:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: ShopScenarioSet
       type: container
     containerPropertyIdentifier: endSpecification
     name: endSpecification
     description: TODO description
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: DateSpecification
       version: "{{version}}"
       type: view
@@ -55,7 +55,7 @@ properties:
       space: "{{power_ops_type_space}}"
       externalId: ShopScenarioSet.scenarios
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: ShopScenario
       version: "{{version}}"
       type: view

@@ -1,114 +1,114 @@
 externalId: compute_TotalBidMatrixCalculation
-space: "{{power_ops_models}}"
+space: "{{power_ops_models_space}}"
 version: "1"
 name: TotalBidMatrixCalculation
 description: "The process of going from PartialBidMatrix to TotalBidMatrix"
 views:
   - externalId: BidMatrix
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: BidMatrixInformation
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: PartialBidMatrixInformation
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: TotalBidMatrixCalculationInput
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: TotalBidMatrixCalculationOutput
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: BidDocumentDayAhead
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: PriceArea
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: PriceAreaDayAhead
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: Alert
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: ShopResult
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: MarketConfiguration
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: ShopScenario
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: ShopModel
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: ShopAttributeMapping
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: PriceProduction
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: ShopCase
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: ShopTimeSeries
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: ShopCommands
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: FunctionInput
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: FunctionOutput
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: BidDocument
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: PowerAsset
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: PartialBidConfiguration
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: BidConfigurationDayAhead
     version: "{{version}}"
     type: view
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: ShopFile
     version: "{{version}}"
     type: view
   - externalId: DateSpecification
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"
   - externalId: ShopOutputTimeSeriesDefinition
-    space: "{{power_ops_models}}"
+    space: "{{power_ops_models_space}}"
     type: view
     version: "{{version}}"

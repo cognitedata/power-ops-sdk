@@ -1,4 +1,4 @@
-space: "{{power_ops_models}}"
+space: "{{power_ops_models_space}}"
 externalId: PriceAreaDayAhead
 name: PriceAreaDayAhead
 description: Information about the Price Area that is only relevant for Day Ahead
@@ -6,7 +6,7 @@ description: Information about the Price Area that is only relevant for Day Ahea
 #   and:
 #     - hasData:
 #         - type: container
-#           space: "{{power_ops_models}}"
+#           space: "{{power_ops_models_space}}"
 #           externalId: PriceArea
 #           # - equals:
 #           #     property:
@@ -21,7 +21,7 @@ description: Information about the Price Area that is only relevant for Day Ahea
 #           #       externalId: PriceAreaDayAhead
 #           #       space: "{{power_ops_type_space}}"
 implements:
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: PriceArea
     version: "{{version}}"
     type: view
@@ -29,20 +29,20 @@ version: "{{version}}"
 properties:
   defaultBidConfiguration:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: PriceArea
       type: container
     containerPropertyIdentifier: defaultBidConfiguration
     name: defaultBidConfiguration
     description: TODO
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: BidConfigurationDayAhead
       version: "{{version}}"
       type: view
   mainPriceScenario:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: PriceArea
       type: container
     containerPropertyIdentifier: mainPriceScenario
@@ -50,7 +50,7 @@ properties:
     description: TODO
   priceScenarios:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: PriceArea
       type: container
     containerPropertyIdentifier: priceScenarios

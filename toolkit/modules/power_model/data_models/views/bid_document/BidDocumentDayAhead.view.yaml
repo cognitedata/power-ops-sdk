@@ -1,11 +1,11 @@
-space: "{{power_ops_models}}"
+space: "{{power_ops_models_space}}"
 externalId: BidDocumentDayAhead
 name: BidDocumentDayAhead
 filter:
   and:
     - hasData:
         - type: container
-          space: "{{power_ops_models}}"
+          space: "{{power_ops_models_space}}"
           externalId: BidDocument
     - equals:
         property:
@@ -20,7 +20,7 @@ filter:
           externalId: DayAheadBidDocument
           space: "{{power_ops_type_space}}"
 implements:
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: BidDocument
     version: "{{version}}"
     type: view
@@ -28,25 +28,25 @@ version: "{{version}}"
 properties:
   bidConfiguration:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: BidDocument
       type: container
     containerPropertyIdentifier: bidConfiguration
     name: bidConfiguration
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: BidConfigurationDayAhead
       version: "{{version}}"
       type: view
   total:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: BidDocument
       type: container
     containerPropertyIdentifier: total
     name: total
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: BidMatrixInformation
       version: "{{version}}"
       type: view
@@ -55,7 +55,7 @@ properties:
       space: "{{power_ops_type_space}}"
       externalId: partialBid
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: PartialBidMatrixInformation
       version: "{{version}}"
       type: view

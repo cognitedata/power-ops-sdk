@@ -1,4 +1,4 @@
-space: "{{power_ops_models}}"
+space: "{{power_ops_models_space}}"
 externalId: ShopPreprocessorInput
 name: ShopPreprocessorInput
 description: Input to the task dispatcher in the shop bid process
@@ -6,7 +6,7 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{power_ops_models}}"
+          space: "{{power_ops_models_space}}"
           externalId: FunctionData
     - equals:
         property:
@@ -21,7 +21,7 @@ filter:
           externalId: ShopPreprocessorInput
           space: "{{power_ops_type_space}}"
 implements:
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: FunctionInput
     version: "{{version}}"
     type: view
@@ -29,20 +29,20 @@ version: "{{version}}"
 properties:
   scenario:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct1
     name: scenario
     description: The scenario to run shop with
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: ShopScenario
       version: "{{version}}"
       type: view
   startTime:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: timestamp1
@@ -50,7 +50,7 @@ properties:
     description: Start date of bid period TODO
   endTime:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: timestamp2

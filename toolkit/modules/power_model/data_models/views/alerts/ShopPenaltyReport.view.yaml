@@ -1,4 +1,4 @@
-space: "{{power_ops_models}}"
+space: "{{power_ops_models_space}}"
 externalId: ShopPenaltyReport
 name: ShopPenaltyReport
 description: ShopPenaltyReport TODO
@@ -6,7 +6,7 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{power_ops_models}}"
+          space: "{{power_ops_models_space}}"
           externalId: Alert
     - equals:
         property:
@@ -21,7 +21,7 @@ filter:
           externalId: ShopPenaltyReport
           space: "{{power_ops_type_space}}"
 implements:
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: Alert
     version: "{{version}}"
     type: view
@@ -29,7 +29,7 @@ version: "{{version}}"
 properties:
   penalties:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: Alert
       type: container
     containerPropertyIdentifier: jsonAdditionalData

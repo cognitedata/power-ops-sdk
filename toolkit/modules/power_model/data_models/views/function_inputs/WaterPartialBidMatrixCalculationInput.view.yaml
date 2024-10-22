@@ -1,4 +1,4 @@
-space: "{{power_ops_models}}"
+space: "{{power_ops_models_space}}"
 externalId: WaterValueBasedPartialBidMatrixCalculationInput
 name: WaterValueBasedPartialBidMatrixCalculation
 description: The data for a bid calculation for water value based method
@@ -6,7 +6,7 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{power_ops_models}}"
+          space: "{{power_ops_models_space}}"
           externalId: FunctionData
     - equals:
         property:
@@ -21,7 +21,7 @@ filter:
           externalId: WaterValueBasedPartialBidMatrixCalculationInput
           space: "{{power_ops_type_space}}"
 implements:
-  - space: "{{power_ops_models}}"
+  - space: "{{power_ops_models_space}}"
     externalId: PartialBidMatrixCalculationInput
     version: "{{version}}"
     type: view
@@ -29,14 +29,14 @@ version: "{{version}}"
 properties:
   partialBidConfiguration: # Overrides the view type from the PartialBidMatrixCalculationInput view
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct2
     name: partialBidConfiguration
     description: The partial bid configuration related to the bid calculation task
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: WaterValueBasedPartialBidConfiguration
       version: "{{version}}"
       type: view

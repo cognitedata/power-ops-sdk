@@ -1,4 +1,4 @@
-space: "{{power_ops_models}}"
+space: "{{power_ops_models_space}}"
 externalId: ShopModel
 name: ShopModel
 description: The template for SHOP models
@@ -6,7 +6,7 @@ filter:
   and:
     - hasData:
         - type: container
-          space: "{{power_ops_models}}"
+          space: "{{power_ops_models_space}}"
           externalId: ShopModel
     - equals:
         property:
@@ -25,7 +25,7 @@ version: "{{version}}"
 properties:
   name:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: ShopModel
       type: container
     containerPropertyIdentifier: name
@@ -33,7 +33,7 @@ properties:
     description: TODO
   modelVersion:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: ShopModel
       type: container
     containerPropertyIdentifier: modelVersion
@@ -41,7 +41,7 @@ properties:
     description: The version of the model
   shopVersion:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: ShopModel
       type: container
     containerPropertyIdentifier: shopVersion
@@ -49,7 +49,7 @@ properties:
     description: The version of SHOP to run
   penaltyLimit:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: ShopModel
       type: container
     containerPropertyIdentifier: penaltyLimit
@@ -57,7 +57,7 @@ properties:
     description: TODO
   model:
     container:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: ShopModel
       type: container
     containerPropertyIdentifier: model
@@ -68,7 +68,7 @@ properties:
       space: "{{power_ops_type_space}}"
       externalId: ShopModel.cogShopFilesConfig
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: ShopFile
       version: "{{version}}"
       type: view
@@ -81,7 +81,7 @@ properties:
       space: "{{power_ops_type_space}}"
       externalId: ShopModel.baseAttributeMappings
     source:
-      space: "{{power_ops_models}}"
+      space: "{{power_ops_models_space}}"
       externalId: ShopAttributeMapping
       version: "{{version}}"
       type: view
