@@ -12,3 +12,9 @@ variables:
     power_ops_instance_space: "power_ops_instances"
     power_ops_models_space: "power_ops_core"
     version: "1"
+    wf_day_ahead_market: "DAY_AHEAD"
+    wf_day_ahead_bid_process_xid: "DayAheadBidProcess"
+    wf_day_ahead_bid_process_version: "latest"
+    wf_day_ahead_bid_process_cron: "30 9 * * *" # translates to 9:30 UTC / 11:30 CEST
+    wf_trigger_client_id: "FOO"
+    wf_trigger_client_secret: ${IDP_WF_TRIGGER_SECRET} #TODO: check if this prints secret to files/logs
