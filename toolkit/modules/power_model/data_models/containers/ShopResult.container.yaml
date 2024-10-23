@@ -1,0 +1,52 @@
+space: "{{power_ops_models_space}}"
+externalId: ShopResult
+name: ShopResult
+usedFor: node
+properties:
+  case:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: case
+    description: The scenario that was used to create the shop result
+  objectiveValue:
+    type:
+      list: false
+      type: json
+    nullable: true
+    autoIncrement: false
+    name: objectiveValue
+  preRun:
+    type:
+      list: false
+      type: file
+    nullable: true
+    autoIncrement: false
+    name: preRun
+    description: The prerun file from the shop run
+  postRun:
+    type:
+      list: false
+      type: file
+    nullable: true
+    autoIncrement: false
+    name: postRun
+    description: The post run file from the shop run
+  messages:
+    type:
+      list: false
+      type: file
+    nullable: true
+    autoIncrement: false
+    name: messages
+    description: TODO
+  cplexLogs:
+    type:
+      list: false
+      type: file
+    nullable: true
+    autoIncrement: false
+    name: cplexLogs
+    description: The cplex logs from the shop run

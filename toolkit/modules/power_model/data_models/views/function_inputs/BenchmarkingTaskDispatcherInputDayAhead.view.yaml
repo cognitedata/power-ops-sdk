@@ -1,0 +1,49 @@
+space: "{{power_ops_models_space}}"
+externalId: BenchmarkingTaskDispatcherInputDayAhead
+name: BenchmarkingTaskDispatcherInputDayAhead
+description: The task dispatcher input data for benchmarking
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models_space}}"
+          externalId: FunctionData
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: BenchmarkingTaskDispatcherInputDayAhead
+          space: "{{power_ops_type_space}}"
+implements:
+  - space: "{{power_ops_models_space}}"
+    externalId: FunctionInput
+    version: "{{version}}"
+    type: view
+version: "{{version}}"
+properties:
+  benchmarkingConfig:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
+    name: benchmarkingConfig
+    source:
+      space: "{{power_ops_models_space}}"
+      externalId: BenchmarkingConfigurationDayAhead
+      version: "{{version}}"
+      type: view
+  deliveryDate:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: timestamp1
+    name: deliveryDate
+    description: The timestamp for the delivery date

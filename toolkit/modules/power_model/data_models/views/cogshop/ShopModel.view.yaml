@@ -1,0 +1,91 @@
+space: "{{power_ops_models_space}}"
+externalId: ShopModel
+name: ShopModel
+description: The template for SHOP models
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models_space}}"
+          externalId: ShopModel
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: ShopModel
+          space: "{{power_ops_type_space}}"
+implements: []
+version: "{{version}}"
+properties:
+  name:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: ShopModel
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: TODO
+  modelVersion:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: ShopModel
+      type: container
+    containerPropertyIdentifier: modelVersion
+    name: modelVersion
+    description: The version of the model
+  shopVersion:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: ShopModel
+      type: container
+    containerPropertyIdentifier: shopVersion
+    name: shopVersion
+    description: The version of SHOP to run
+  penaltyLimit:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: ShopModel
+      type: container
+    containerPropertyIdentifier: penaltyLimit
+    name: penaltyLimit
+    description: TODO
+  model:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: ShopModel
+      type: container
+    containerPropertyIdentifier: model
+    name: model
+    description: The shop model file to use as template before applying base mapping
+  cogShopFilesConfig:
+    type:
+      space: "{{power_ops_type_space}}"
+      externalId: ShopModel.cogShopFilesConfig
+    source:
+      space: "{{power_ops_models_space}}"
+      externalId: ShopFile
+      version: "{{version}}"
+      type: view
+    direction: outwards
+    name: cogShopFilesConfig
+    description: Configuration for in what order to load the various files into pyshop
+    connectionType: multi_edge_connection
+  baseAttributeMappings:
+    type:
+      space: "{{power_ops_type_space}}"
+      externalId: ShopModel.baseAttributeMappings
+    source:
+      space: "{{power_ops_models_space}}"
+      externalId: ShopAttributeMapping
+      version: "{{version}}"
+      type: view
+    direction: outwards
+    name: baseAttributeMappings
+    description: The base mappings for the model
+    connectionType: multi_edge_connection

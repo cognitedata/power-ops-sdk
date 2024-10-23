@@ -1,0 +1,90 @@
+externalId: config_ResyncConfiguration
+space: "{{power_ops_models_space}}"
+version: "1"
+name: ResyncConfiguration
+description: "Settings for the day ahead bid process"
+views:
+  - externalId: BidConfigurationDayAhead
+    space: "{{power_ops_models_space}}"
+    type: view
+    version: "{{version}}"
+  - externalId: MarketConfiguration
+    space: "{{power_ops_models_space}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PriceArea
+    space: "{{power_ops_models_space}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PriceAreaDayAhead
+    space: "{{power_ops_models_space}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PartialBidConfiguration
+    space: "{{power_ops_models_space}}"
+    type: view
+    version: "{{version}}"
+  - externalId: ShopBasedPartialBidConfiguration
+    space: "{{power_ops_models_space}}"
+    type: view
+    version: "{{version}}"
+  - externalId: WaterValueBasedPartialBidConfiguration
+    space: "{{power_ops_models_space}}"
+    type: view
+    version: "{{version}}"
+  - externalId: ShopScenario
+    space: "{{power_ops_models_space}}"
+    type: view
+    version: "{{version}}"
+  - externalId: ShopScenarioSet
+    space: "{{power_ops_models_space}}"
+    type: view
+    version: "{{version}}"
+  - externalId: ShopAttributeMapping
+    space: "{{power_ops_models_space}}"
+    type: view
+    version: "{{version}}"
+  - externalId: ShopModel
+    space: "{{power_ops_models_space}}"
+    type: view
+    version: "{{version}}"
+  - externalId: Generator
+    space: "{{power_ops_models_space}}"
+    type: view
+    version: "{{version}}"
+  - externalId: TurbineEfficiencyCurve
+    space: "{{power_ops_models_space}}"
+    type: view
+    version: "{{version}}"
+  - externalId: GeneratorEfficiencyCurve
+    space: "{{power_ops_models_space}}"
+    type: view
+    version: "{{version}}"
+  - externalId: ShopCommands
+    space: "{{power_ops_models_space}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PowerAsset
+    space: "{{power_ops_models_space}}"
+    type: view
+    version: "{{version}}"
+  - externalId: Plant
+    space: "{{power_ops_models_space}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PlantWaterValueBased
+    space: "{{power_ops_models_space}}"
+    type: view
+    version: "{{version}}"
+  - externalId: DateSpecification
+    space: "{{power_ops_models_space}}"
+    type: view
+    version: "{{version}}"
+  - externalId: ShopOutputTimeSeriesDefinition
+    space: "{{power_ops_models_space}}"
+    type: view
+    version: "{{version}}"
+  - externalId: ShopFile
+    space: "{{power_ops_models_space}}"
+    type: view
+    version: "{{version}}"

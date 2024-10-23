@@ -1,0 +1,3 @@
+space: "{{power_ops_models_space}}"
+name: PowerOpsModels
+description: The space used for all PowerOps models.

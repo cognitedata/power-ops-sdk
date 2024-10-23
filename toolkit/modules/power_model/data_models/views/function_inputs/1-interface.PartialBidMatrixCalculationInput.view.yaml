@@ -1,0 +1,63 @@
+space: "{{power_ops_models_space}}"
+externalId: PartialBidMatrixCalculationInput
+name: PartialBidMatrixCalculation
+description: The data for a bid calculation for water value based method
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models_space}}"
+          externalId: FunctionData
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+        # - in:
+        #     property:
+        #       - node
+        #       - type
+        #     value:
+        #       - WaterValueBasedPartialBidMatrixCalculationInput
+        #       - MultiScenarioPartialBidMatrixCalculationInput
+implements:
+  - space: "{{power_ops_models_space}}"
+    externalId: FunctionInput
+    version: "{{version}}"
+    type: view
+version: "{{version}}"
+properties:
+  bidDate:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: date1
+    name: bidDate
+    description: The bid date
+  bidConfiguration:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
+    name: bidConfiguration
+    description: TODO description
+    source:
+      space: "{{power_ops_models_space}}"
+      externalId: BidConfigurationDayAhead
+      version: "{{version}}"
+      type: view
+  partialBidConfiguration:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct2
+    name: partialBidConfiguration
+    description: The partial bid configuration related to the bid calculation task
+    source:
+      space: "{{power_ops_models_space}}"
+      externalId: PartialBidConfiguration
+      version: "{{version}}"
+      type: view

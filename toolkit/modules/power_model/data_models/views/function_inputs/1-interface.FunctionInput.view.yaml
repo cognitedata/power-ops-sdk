@@ -1,0 +1,50 @@
+space: "{{power_ops_models_space}}"
+externalId: FunctionInput
+name: FunctionInput
+description: Base class for all function inputs
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models_space}}"
+          externalId: FunctionData
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+implements: []
+version: "{{version}}"
+properties:
+  workflowExecutionId:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: workflowExecutionId
+    name: workflowExecutionId
+    description: The process associated with the function execution
+  workflowStep:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: workflowStep
+    name: workflowStep
+    description: This is the step in the process.
+  functionName:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: functionName
+    name: functionName
+    description: The name of the function
+  functionCallId:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: functionCallId
+    name: functionCallId
+    description: The function call id

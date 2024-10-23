@@ -1,0 +1,104 @@
+# PriceAreaInformation definition
+# properties:
+#   name: String!
+#   displayName: String
+#   ordering: Int
+#   assetType: String
+#   capacityPriceUp: TimeSeries
+#   capacityPriceDown: TimeSeries
+#   activationPriceUp: TimeSeries
+#   activationPriceDown: TimeSeries
+#   relativeActivation: TimeSeries
+#   totalCapacityAllocationUp: TimeSeries
+#   totalCapacityAllocationDown: TimeSeries
+#   ownCapacityAllocationUp: TimeSeries
+#   ownCapacityAllocationDown: TimeSeries
+#   defaultBidConfiguration: BidConfigurationDayAhead
+#   mainPriceScenario: TimeSeries
+#   priceScenarios: [TimeSeries]
+
+# Type node
+- space: "{{power_ops_type_space}}"
+  externalId: PriceAreaInformation
+
+# Instance nodes
+- space: "{{power_ops_instance_space}}"
+  externalId: price_area:no1
+  type:
+    space: "{{power_ops_type_space}}"
+    externalId: PriceAreaInformation
+  sources:
+    - source:
+        space: "{{power_ops_models_space}}"
+        externalId: PriceAreaInformation
+        version: "{{power_ops_version}}"
+        type: view
+      properties:
+        name: NO1
+        displayName: "Østlandet (NO1)"
+        ordering: 1
+        assetType: price_area
+- space: "{{power_ops_instance_space}}"
+  externalId: price_area:no2
+  type:
+    space: "{{power_ops_type_space}}"
+    externalId: PriceAreaInformation
+  sources:
+    - source:
+        space: "{{power_ops_models_space}}"
+        externalId: PriceAreaInformation
+        version: "{{power_ops_version}}"
+        type: view
+      properties:
+        name: NO2
+        displayName: "Sørlandet (NO2)"
+        ordering: 2
+        assetType: price_area
+- space: "{{power_ops_instance_space}}"
+  externalId: price_area:no3
+  type:
+    space: "{{power_ops_type_space}}"
+    externalId: PriceAreaInformation
+  sources:
+    - source:
+        space: "{{power_ops_models_space}}"
+        externalId: PriceAreaInformation
+        version: "{{power_ops_version}}"
+        type: view
+      properties:
+        name: NO3
+        displayName: "Midt-Norge (NO3)"
+        ordering: 3
+        assetType: price_area
+- space: "{{power_ops_instance_space}}"
+  externalId: price_area:no4
+  type:
+    space: "{{power_ops_type_space}}"
+    externalId: PriceAreaInformation
+  sources:
+    - source:
+        space: "{{power_ops_models_space}}"
+        externalId: PriceAreaInformation
+        version: "{{power_ops_version}}"
+        type: view
+      properties:
+        name: NO4
+        displayName: "Nord-Norge (NO4)"
+        ordering: 4
+        assetType: price_area
+- space: "{{power_ops_instance_space}}"
+  externalId: price_area:no5
+  type:
+    space: "{{power_ops_type_space}}"
+    externalId: PriceAreaInformation
+  sources:
+    - source:
+        space: "{{power_ops_models_space}}"
+        externalId: PriceAreaInformation
+        version: "{{power_ops_version}}"
+        type: view
+      properties:
+        name: NO5
+        displayName: "Vestlandet (NO5)"
+        ordering: 5
+        assetType: price_area

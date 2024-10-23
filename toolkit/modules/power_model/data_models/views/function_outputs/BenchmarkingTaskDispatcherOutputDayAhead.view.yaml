@@ -1,0 +1,50 @@
+space: "{{power_ops_models_space}}"
+externalId: BenchmarkingTaskDispatcherOutputDayAhead
+name: BenchmarkingTaskDispatcherOutputDayAhead
+description: The task dispatcher output data for benchmarking
+filter:
+  and:
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: BenchmarkingTaskDispatcherOutputDayAhead
+          space: "{{power_ops_type_space}}"
+implements:
+  - space: "{{power_ops_models_space}}"
+    externalId: FunctionOutput
+    version: "{{version}}"
+    type: view
+version: "{{version}}"
+properties:
+  functionInput: # Overrides the view type from the FunctionOutput view
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: linkedStep
+    name: functionInput
+    source:
+      space: "{{power_ops_models_space}}"
+      externalId: BenchmarkingTaskDispatcherInputDayAhead
+      version: "{{version}}"
+      type: view
+  benchmarkingSubTasks:
+    type:
+      space: "{{power_ops_type_space}}"
+      externalId: benchmarkingSubTasks
+    source:
+      space: "{{power_ops_models_space}}"
+      externalId: FunctionInput
+      version: "{{version}}"
+      type: view
+    direction: outwards
+    name: benchmarkingSubTasks
+    description: An array of input for benchmarking subtasks used for benchmarking value calculations.
+    connectionType: multi_edge_connection

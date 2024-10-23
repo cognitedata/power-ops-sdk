@@ -1,0 +1,63 @@
+space: "{{power_ops_models_space}}"
+externalId: ShopTriggerInput
+name: ShopTriggerInput
+description: Base class for all function inputs
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models_space}}"
+          externalId: FunctionData
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: ShopTriggerInput
+          space: "{{power_ops_type_space}}"
+implements:
+  - space: "{{power_ops_models_space}}"
+    externalId: FunctionInput
+    version: "{{version}}"
+    type: view
+version: "{{version}}"
+properties:
+  cogShopTag:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: text1
+    name: cogShopTag
+    description: Optionally specify cogshop tag to trigger
+  case:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
+    name: case
+    description: The SHOP case (with all details like model, scenario, and time series)
+    source:
+      space: "{{power_ops_models_space}}"
+      externalId: ShopCase
+      version: "{{version}}"
+      type: view
+  preprocessorInput:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct2
+    name: preprocessorInput
+    description: The preprocessor input to the shop run
+    source:
+      space: "{{power_ops_models_space}}"
+      externalId: ShopPreprocessorInput
+      version: "{{version}}"
+      type: view

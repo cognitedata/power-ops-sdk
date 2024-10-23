@@ -1,0 +1,65 @@
+space: "{{power_ops_models_space}}"
+externalId: PartialBidMatrixCalculationOutput
+name: PartialBidMatrixCalculationOutput
+description: The output of a bid calculation method
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models_space}}"
+          externalId: FunctionData
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: PartialBidMatrixCalculationOutput
+          space: "{{power_ops_type_space}}"
+implements:
+  - space: "{{power_ops_models_space}}"
+    externalId: FunctionOutput
+    version: "{{version}}"
+    type: view
+version: "{{version}}"
+properties:
+  functionInput: # Overrides the view type from the FunctionOutput view
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: linkedStep
+    name: functionInput
+    source:
+      space: "{{power_ops_models_space}}"
+      externalId: PartialBidMatrixCalculationInput
+      version: "{{version}}"
+      type: view
+  partialMatrix:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
+    name: partialMatrix
+    source:
+      space: "{{power_ops_models_space}}"
+      externalId: BidMatrix
+      version: "{{version}}"
+      type: view
+  bidConfiguration:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct2
+    name: bidConfiguration
+    source:
+      space: "{{power_ops_models_space}}"
+      externalId: BidConfigurationDayAhead
+      version: "{{version}}"
+      type: view

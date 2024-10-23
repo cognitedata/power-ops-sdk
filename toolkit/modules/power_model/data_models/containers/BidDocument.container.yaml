@@ -1,0 +1,70 @@
+space: "{{power_ops_models_space}}"
+externalId: BidDocument
+name: BidDocument
+usedFor: node
+properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: name
+  deliveryDate:
+    type:
+      list: false
+      type: date
+    nullable: false
+    autoIncrement: false
+    name: deliveryDate
+  startCalculation:
+    type:
+      list: false
+      type: timestamp
+    nullable: true
+    autoIncrement: false
+    name: startCalculation
+  endCalculation:
+    type:
+      list: false
+      type: timestamp
+    nullable: true
+    autoIncrement: false
+    name: endCalculation
+  isComplete:
+    type:
+      list: false
+      type: boolean
+    nullable: true
+    autoIncrement: false
+    name: isCompleted
+  priceArea:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: priceArea
+    description: The price area of the bid document.
+  workflowExecutionId:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: workflowExecutionId
+    description: The workflowExecutionId associated with the Bid calculation workflow.
+  bidConfiguration:
+    type:
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: bidConfiguration
+  total:
+    type:
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: total

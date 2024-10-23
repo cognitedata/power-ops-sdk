@@ -1,0 +1,176 @@
+space: "{{power_ops_models_space}}"
+externalId: FunctionData
+name: FunctionData
+usedFor: node
+properties:
+  functionName:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: functionName
+    description: The name of the function
+  functionCallId:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: functionCallId
+    description: The function call id
+  workflowExecutionId:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: workflowExecutionId
+    description: The process id
+  workflowStep:
+    type:
+      list: false
+      type: int32
+    nullable: false
+    autoIncrement: false
+    name: workflowStep
+    description: The process step
+  linkedStep:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: linkedStep
+    description: Typically the input to the function
+  direct1:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: direct1
+  direct2:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: direct2
+  direct3:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: direct3
+  date1:
+    type:
+      list: false
+      type: date
+    nullable: true
+    autoIncrement: false
+    name: date1
+  date2:
+    type:
+      list: false
+      type: date
+    nullable: true
+    autoIncrement: false
+    name: date2
+  timestamp1:
+    type:
+      list: false
+      type: timestamp
+    nullable: true
+    autoIncrement: false
+    name: timestamp1
+  timestamp2:
+    type:
+      list: false
+      type: timestamp
+    nullable: true
+    autoIncrement: false
+    name: timestamp2
+  text1:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: text1
+  text2:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: text2
+  value1:
+    type:
+      list: false
+      type: float64
+    nullable: true
+    autoIncrement: false
+    name: value1
+  value2:
+    type:
+      list: false
+      type: float64
+    nullable: true
+    autoIncrement: false
+    name: value2
+  number:
+    type:
+      list: false
+      type: int32
+    nullable: true
+    autoIncrement: false
+    name: number
+  number1:
+    type:
+      list: false
+      type: int32
+    nullable: true
+    autoIncrement: false
+    name: number1
+  number2:
+    type:
+      list: false
+      type: int32
+    nullable: true
+    autoIncrement: false
+    name: number2
+  timeSeries1:
+    type:
+      type: timeseries
+      list: true
+    nullable: true
+    autoIncrement: false
+    name: timeSeries1
+  timeSeries2:
+    type:
+      type: timeseries
+      list: true
+    nullable: true
+    autoIncrement: false
+    name: timeSeries2
+  sequence:
+    type:
+      list: false
+      type: sequence
+    nullable: true
+    autoIncrement: false
+    name: sequence
+  flag:
+    type:
+      list: false
+      type: boolean
+    nullable: true
+    autoIncrement: false
+    name: flag

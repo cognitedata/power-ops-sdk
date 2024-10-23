@@ -1,0 +1,25 @@
+- externalId: "SHOP_license"
+  name: "SHOP_license.dat"
+  source: "SINTEF"
+  dataSetExternalId: "powerops:config"
+  directory: "/toolkit/modules/power_ops/files/"
+  mimeType: "text/plain"
+  metadata:
+    origin: "cognite-toolkit"
+    application: "CogShop-as-a-Service"
+    shop:type: "license" # Required field for CogShop-as-a-Service do not change
+    source: "https://shop.sintef.energy/licence-generator/"
+- externalId: "SHOP_16.0.3"
+  name: "SHOP-16.0.3-pyshop-python3.11-linux.zip"
+  source: "SINTEF"
+  dataSetExternalId: "powerops:config"
+  directory: "/toolkit/modules/power_ops/files/"
+  mimeType: "application/zip"
+  metadata:
+    origin: "cognite-toolkit"
+    application: "CogShop-as-a-Service"
+    shop:type: "shop-release" # Required field for CogShop-as-a-Service do not change
+    source: "https://shop.sintef.energy/download/shop16-0-3/"
+    original:name: "SHOP-16.0.3-linux-pyshop-python-all"
+    included:files:0: "shop_cplex_interface.so"
+    included:files:1: "shop_pybind.cpython-311-x86_64-linux-gnu.so"

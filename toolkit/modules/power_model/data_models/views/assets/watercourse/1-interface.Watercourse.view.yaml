@@ -1,0 +1,20 @@
+space: "{{power_ops_models_space}}"
+externalId: Watercourse
+name: Watercourse
+description: TODO interface for typing
+filter:
+  and:
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: Watercourse
+          space: "{{power_ops_type_space}}"
+implements:
+  - space: "{{power_ops_models_space}}"
+    externalId: PowerAsset
+    version: "{{version}}"
+    type: view
+version: "{{version}}"
+properties: {}

@@ -1,0 +1,55 @@
+space: "{{power_ops_models_space}}"
+externalId: MultiScenarioPartialBidMatrixCalculationInput
+name: MultiScenarioPartialBidMatrixCalculationInput
+description: Input to the task dispatcher in the shop bid process
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models_space}}"
+          externalId: FunctionData
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: MultiScenarioPartialBidMatrixCalculationInput
+          space: "{{power_ops_type_space}}"
+implements:
+  - space: "{{power_ops_models_space}}"
+    externalId: PartialBidMatrixCalculationInput
+    version: "{{version}}"
+    type: view
+version: "{{version}}"
+properties:
+  partialBidConfiguration: # Overrides the view type from the PartialBidMatrixCalculationInput view
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct2
+    name: partialBidConfiguration
+    description: The partial bid configuration related to the bid calculation task
+    source:
+      space: "{{power_ops_models_space}}"
+      externalId: ShopBasedPartialBidConfiguration
+      version: "{{version}}"
+      type: view
+  priceProduction:
+    type:
+      space: "{{power_ops_type_space}}"
+      externalId: PriceProduction
+    source:
+      space: "{{power_ops_models_space}}"
+      externalId: PriceProduction
+      version: "{{version}}"
+      type: view
+    direction: outwards
+    name: priceProduction
+    description: An array of shop results with price/prod time series pairs for all plants included in the respective shop scenario
+    connectionType: multi_edge_connection
