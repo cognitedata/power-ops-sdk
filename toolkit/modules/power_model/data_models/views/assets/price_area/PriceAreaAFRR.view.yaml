@@ -23,9 +23,9 @@ description: Information about the Price Area that is only relevant for AFRR
 implements:
   - space: "{{power_ops_models_space}}"
     externalId: PriceArea
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
     type: view
-version: "{{power_ops_version}}"
+version: "{{power_ops_data_model_version}}"
 properties:
   capacityPriceUp:
     container:

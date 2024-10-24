@@ -15,9 +15,9 @@ filter:
 implements:
   - space: "{{power_ops_models_space}}"
     externalId: PartialBidMatrixInformation
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
     type: view
-version: "{{power_ops_version}}"
+version: "{{power_ops_data_model_version}}"
 properties:
   multiScenarioInput:
     type:
@@ -26,7 +26,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: PriceProduction
-      version: "{{power_ops_version}}"
+      version: "{{power_ops_data_model_version}}"
       type: view
     direction: outwards
     name: multiScenarioInput

@@ -14,11 +14,11 @@ description: TODO interface for configuration population
 implements:
   - space: "{{power_ops_models_space}}"
     externalId: PriceAreaAFRR
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
     type: view
   - space: "{{power_ops_models_space}}"
     externalId: PriceAreaDayAhead
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
     type: view
-version: "{{power_ops_version}}"
+version: "{{power_ops_data_model_version}}"
 properties: {}

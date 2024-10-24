@@ -23,9 +23,9 @@ filter:
 implements:
   - space: "{{power_ops_models_space}}"
     externalId: BidDocument
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
     type: view
-version: "{{power_ops_version}}"
+version: "{{power_ops_data_model_version}}"
 properties:
   priceArea:
     container:
@@ -37,7 +37,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: PriceAreaAFRR
-      version: "{{power_ops_version}}"
+      version: "{{power_ops_data_model_version}}"
       type: view
   bids:
     type:
@@ -46,7 +46,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: BidRow
-      version: "{{power_ops_version}}"
+      version: "{{power_ops_data_model_version}}"
       type: view
     direction: outwards
     name: bids

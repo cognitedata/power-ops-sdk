@@ -20,7 +20,7 @@
     - source:
         space: "{{power_ops_models_space}}"
         externalId: DateSpecification
-        version: "{{power_ops_version}}"
+        version: "{{power_ops_data_model_version}}"
         type: view
       properties:
         name: Tomorrow
@@ -38,7 +38,7 @@
     - source:
         space: "{{power_ops_models_space}}"
         externalId: DateSpecification
-        version: "{{power_ops_version}}"
+        version: "{{power_ops_data_model_version}}"
         type: view
       properties:
         name: Start of tomorrow
@@ -56,7 +56,7 @@
     - source:
         space: "{{power_ops_models_space}}"
         externalId: DateSpecification
-        version: "{{power_ops_version}}"
+        version: "{{power_ops_data_model_version}}"
         type: view
       properties:
         name: End of next week

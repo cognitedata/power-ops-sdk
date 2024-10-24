@@ -17,7 +17,7 @@ filter:
         #     property:
         #       - input
 implements: []
-version: "{{power_ops_version}}"
+version: "{{power_ops_data_model_version}}"
 properties:
   workflowExecutionId:
     container:
@@ -61,7 +61,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: FunctionInput
-      version: "{{power_ops_version}}"
+      version: "{{power_ops_data_model_version}}"
       type: view
   alerts:
     type:
@@ -70,7 +70,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: Alert
-      version: "{{power_ops_version}}"
+      version: "{{power_ops_data_model_version}}"
       type: view
     direction: outwards
     name: alerts

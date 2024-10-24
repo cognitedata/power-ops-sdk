@@ -21,7 +21,7 @@ filter:
           externalId: BenchmarkingResultDayAhead
           space: "{{power_ops_type_space}}"
 implements: []
-version: "{{power_ops_version}}"
+version: "{{power_ops_data_model_version}}"
 properties:
   name:
     container:
@@ -72,7 +72,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: ShopResult
-      version: "{{power_ops_version}}"
+      version: "{{power_ops_data_model_version}}"
       type: view
   isSelected:
     container:
@@ -97,7 +97,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: Alert
-      version: "{{power_ops_version}}"
+      version: "{{power_ops_data_model_version}}"
       type: view
     direction: outwards
     name: alerts

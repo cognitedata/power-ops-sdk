@@ -23,9 +23,9 @@ filter:
 implements:
   - space: "{{power_ops_models_space}}"
     externalId: FunctionOutput
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
     type: view
-version: "{{power_ops_version}}"
+version: "{{power_ops_data_model_version}}"
 properties:
   functionInput: # Overrides the view type from the FunctionOutput view
     container:
@@ -37,7 +37,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: ShopPreprocessorInput
-      version: "{{power_ops_version}}"
+      version: "{{power_ops_data_model_version}}"
       type: view
   case:
     container:
@@ -50,5 +50,5 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: ShopCase
-      version: "{{power_ops_version}}"
+      version: "{{power_ops_data_model_version}}"
       type: view

@@ -7,180 +7,180 @@ views:
   - externalId: BidConfigurationDayAhead
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: MarketConfiguration
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: PriceArea
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: PriceAreaDayAhead
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: PartialBidConfiguration
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: ShopBasedPartialBidConfiguration
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: WaterValueBasedPartialBidConfiguration
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: ShopOutputTimeSeriesDefinition
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: ShopScenario
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: ShopScenarioSet
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: ShopAttributeMapping
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: ShopModel
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: Generator
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: TurbineEfficiencyCurve
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: GeneratorEfficiencyCurve
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: ShopCommands
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: Plant
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: PlantWaterValueBased
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: TaskDispatcherInput
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: TaskDispatcherOutput
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: ShopPreprocessorInput
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: ShopPreprocessorOutput
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: ShopTriggerInput
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: ShopTriggerOutput
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: PartialBidMatrixCalculationInput
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: MultiScenarioPartialBidMatrixCalculationInput
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: PartialBidMatrixCalculationOutput
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: BidMatrix
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: ShopResult
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: Alert
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: PriceProduction
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: ShopTimeSeries
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - space: "{{power_ops_models_space}}"
     externalId: FunctionInput
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
     type: view
   - space: "{{power_ops_models_space}}"
     externalId: FunctionOutput
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
     type: view
   - externalId: WaterValueBasedPartialBidMatrixCalculationInput
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: TotalBidMatrixCalculationInput
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: TotalBidMatrixCalculationOutput
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: BidDocumentDayAhead
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: ShopCase
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
   - space: "{{power_ops_models_space}}"
     externalId: BidDocument
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
     type: view
   - space: "{{power_ops_models_space}}"
     externalId: PowerAsset
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
     type: view
   - space: "{{power_ops_models_space}}"
     externalId: ShopFile
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
     type: view
   - space: "{{power_ops_models_space}}"
     externalId: BidMatrixInformation
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
     type: view
   - space: "{{power_ops_models_space}}"
     externalId: PartialBidMatrixInformation
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
     type: view
   - externalId: DateSpecification
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{power_ops_version}}"
+    version: "{{power_ops_data_model_version}}"
