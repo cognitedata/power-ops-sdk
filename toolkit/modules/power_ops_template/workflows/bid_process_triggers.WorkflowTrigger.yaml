@@ -1,4 +1,4 @@
-- externalId: trigger_bid_process_bid_configuration_day_ahead_water_value_no2_full
+- externalId: trigger_bid_process:bid_configuration_day_ahead_water_value_no2_full
   triggerRule:
     triggerType: schedule
     cronExpression: "{{wf_day_ahead_bid_process_cron}}"
@@ -15,7 +15,7 @@
   authentication:
     clientId: "{{wf_trigger_client_id}}"
     clientSecret: "{{wf_trigger_client_secret}}"
-- externalId: trigger_bid_process_bid_configuration_day_ahead_multi_scenario_20_no2
+- externalId: trigger_bid_process:bid_configuration_day_ahead_multi_scenario_20_no2
   triggerRule:
     triggerType: schedule
     cronExpression: "{{wf_day_ahead_bid_process_cron}}"
@@ -32,7 +32,7 @@
   authentication:
     clientId: "{{wf_trigger_client_id}}"
     clientSecret: "{{wf_trigger_client_secret}}"
-- externalId: trigger_bid_process_bid_configuration_day_ahead_multi_scenario_3_no2
+- externalId: trigger_bid_process:bid_configuration_day_ahead_multi_scenario_3_no2
   triggerRule:
     triggerType: schedule
     cronExpression: "{{wf_day_ahead_bid_process_cron}}"
@@ -49,7 +49,7 @@
   authentication:
     clientId: "{{wf_trigger_client_id}}"
     clientSecret: "{{wf_trigger_client_secret}}"
-- externalId: trigger_bid_process_bid_configuration_day_ahead_multi_scenario_2_no2
+- externalId: trigger_bid_process:bid_configuration_day_ahead_multi_scenario_2_no2
   triggerRule:
     triggerType: schedule
     cronExpression: "{{wf_day_ahead_bid_process_cron}}"
@@ -66,7 +66,7 @@
   authentication:
     clientId: "{{wf_trigger_client_id}}"
     clientSecret: "{{wf_trigger_client_secret}}"
-- externalId: trigger_bid_process_bid_configuration_day_ahead_no2_combination
+- externalId: trigger_bid_process:bid_configuration_day_ahead_no2_combination
   triggerRule:
     triggerType: schedule
     cronExpression: "{{wf_day_ahead_bid_process_cron}}"
@@ -83,7 +83,7 @@
   authentication:
     clientId: "{{wf_trigger_client_id}}"
     clientSecret: "{{wf_trigger_client_secret}}"
-- externalId: trigger_bid_process_bid_configuration_day_ahead_price_independent_no2
+- externalId: trigger_bid_process:bid_configuration_day_ahead_price_independent_no2
   triggerRule:
     triggerType: schedule
     cronExpression: "{{wf_day_ahead_bid_process_cron}}"
