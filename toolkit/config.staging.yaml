@@ -4,8 +4,8 @@ environment:
   # doesn't match the environment variables (valid options are dev, staging, prod)
   type: staging
   selected:
-    - modules/power_model
-    # - modules/power_ops_template
+    # - modules/power_model
+    - modules/power_ops_template
 
 variables:
   modules:
@@ -13,7 +13,7 @@ variables:
     power_ops_type_space: "power_ops_types"
     power_ops_instance_space: "power_ops_instances"
     power_ops_models_space: "power_ops_core"
-    power_ops_version: "1"
+    power_ops_data_model_version: "1"
     # variables required for ONLY power_ops_template
     wf_day_ahead_market: "DAY_AHEAD"
     wf_day_ahead_bid_process_xid: "DayAheadBidProcess"
