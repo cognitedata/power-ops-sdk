@@ -21,7 +21,7 @@ filter:
           externalId: MarketConfiguration
           space: "{{power_ops_type_space}}"
 implements: []
-version: "{{version}}"
+version: "{{power_ops_version}}"
 properties:
   name:
     container:

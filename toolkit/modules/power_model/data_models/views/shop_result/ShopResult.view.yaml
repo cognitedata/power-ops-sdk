@@ -14,7 +14,7 @@ filter:
           - space
         value: "{{power_ops_instance_space}}"
 implements: []
-version: "{{version}}"
+version: "{{power_ops_version}}"
 properties:
   case:
     container:
@@ -27,7 +27,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: ShopCase
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
   objectiveValue:
     container:
@@ -76,7 +76,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: ShopTimeSeries
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
     direction: outwards
     name: outputTimeSeries
@@ -89,7 +89,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: Alert
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
     direction: outwards
     name: alerts

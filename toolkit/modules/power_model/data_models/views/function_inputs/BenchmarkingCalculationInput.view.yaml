@@ -23,9 +23,9 @@ filter:
 implements:
   - space: "{{power_ops_models_space}}"
     externalId: FunctionInput
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
     type: view
-version: "{{version}}"
+version: "{{power_ops_version}}"
 properties:
   shopResults:
     type:
@@ -34,7 +34,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: ShopResult
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
     direction: outwards
     name: shopResults

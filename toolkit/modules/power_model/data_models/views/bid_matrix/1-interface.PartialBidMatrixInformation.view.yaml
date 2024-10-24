@@ -15,9 +15,9 @@ filter:
 implements:
   - space: "{{power_ops_models_space}}"
     externalId: BidMatrixInformation
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
     type: view
-version: "{{version}}"
+version: "{{power_ops_version}}"
 properties:
   powerAsset:
     container:
@@ -27,7 +27,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: PowerAsset
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
     containerPropertyIdentifier: powerAsset
     name: powerAsset
@@ -46,7 +46,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: PartialBidConfiguration
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
     containerPropertyIdentifier: partialBidConfiguration
     name: partialBidConfiguration

@@ -21,7 +21,7 @@ filter:
           space: "{{power_ops_type_space}}"
           externalId: BenchmarkingConfigurationDayAhead
 implements: []
-version: "{{version}}"
+version: "{{power_ops_version}}"
 properties:
   name:
     container:
@@ -38,7 +38,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: BidConfigurationDayAhead
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
     direction: outwards
     name: bidConfigurations
@@ -51,7 +51,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: ShopModelWithAssets
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
     direction: outwards
     name: assetsPerShopModel
@@ -68,7 +68,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: PriceAreaDayAhead
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
   shopStartSpecification:
     container:
@@ -81,7 +81,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: DateSpecification
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
   shopEndSpecification:
     container:
@@ -94,5 +94,5 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: DateSpecification
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view

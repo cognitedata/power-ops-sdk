@@ -23,9 +23,9 @@ filter:
 implements:
   - space: "{{power_ops_models_space}}"
     externalId: FunctionOutput
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
     type: view
-version: "{{version}}"
+version: "{{power_ops_version}}"
 properties:
   functionInput: # Overrides the view type from the FunctionOutput view
     container:
@@ -37,7 +37,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: PartialBidMatrixCalculationInput
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
   partialMatrix:
     container:
@@ -49,7 +49,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: BidMatrix
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
   bidConfiguration:
     container:
@@ -61,5 +61,5 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: BidConfigurationDayAhead
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view

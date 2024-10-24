@@ -21,7 +21,7 @@ filter:
           space: "{{power_ops_type_space}}"
           externalId: BidConfigurationDayAhead
 implements: []
-version: "{{version}}"
+version: "{{power_ops_version}}"
 properties:
   name:
     container:
@@ -42,7 +42,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: MarketConfiguration
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
   priceArea:
     container:
@@ -55,7 +55,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: PriceAreaDayAhead
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
   bidDateSpecification:
     container:
@@ -68,7 +68,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: DateSpecification
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
   partials:
     type:
@@ -77,7 +77,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: PartialBidConfiguration
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
     direction: outwards
     name: partials

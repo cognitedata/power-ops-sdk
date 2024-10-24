@@ -15,9 +15,9 @@ filter:
 implements:
   - space: "{{power_ops_models_space}}"
     externalId: BidMatrix
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
     type: view
-version: "{{version}}"
+version: "{{power_ops_version}}"
 properties:
   underlyingBidMatrices:
     type:
@@ -26,7 +26,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: BidMatrix
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
     direction: outwards
     name: underlyingBidMatrices
@@ -39,7 +39,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: Alert
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
     direction: outwards
     name: alerts

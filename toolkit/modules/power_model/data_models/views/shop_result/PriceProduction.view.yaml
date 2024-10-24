@@ -21,7 +21,7 @@ filter:
           externalId: PriceProduction
           space: "{{power_ops_type_space}}"
 implements: []
-version: "{{version}}"
+version: "{{power_ops_version}}"
 properties:
   name:
     container:
@@ -52,7 +52,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: ShopResult
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
     containerPropertyIdentifier: shopResult
     name: shopResult

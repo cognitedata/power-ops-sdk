@@ -23,9 +23,9 @@ filter:
 implements:
   - space: "{{power_ops_models_space}}"
     externalId: FunctionInput
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
     type: view
-version: "{{version}}"
+version: "{{power_ops_version}}"
 properties:
   benchmarkingConfig:
     container:
@@ -37,7 +37,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: BenchmarkingConfigurationDayAhead
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
   deliveryDate:
     container:

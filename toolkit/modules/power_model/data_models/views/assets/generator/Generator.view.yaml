@@ -23,9 +23,9 @@ filter:
 implements:
   - space: "{{power_ops_models_space}}"
     externalId: PowerAsset
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
     type: view
-version: "{{version}}"
+version: "{{power_ops_version}}"
 properties:
   productionMin:
     container:
@@ -72,7 +72,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: GeneratorEfficiencyCurve
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
   turbineEfficiencyCurves:
     type:
@@ -81,7 +81,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: TurbineEfficiencyCurve
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
     direction: outwards
     name: turbineEfficiencyCurves

@@ -21,7 +21,7 @@ filter:
           space: "{{power_ops_type_space}}"
           externalId: BenchmarkingProductionObligationDayAhead
 implements: []
-version: "{{version}}"
+version: "{{power_ops_version}}"
 properties:
   timeSeries:
     container:

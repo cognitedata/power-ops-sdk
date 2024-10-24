@@ -7,40 +7,40 @@ views:
   - externalId: ShopCase
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: ShopScenario
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: ShopCommands
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: ShopAttributeMapping
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: ShopModel
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: ShopResult
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: ShopTimeSeries
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: Alert
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: ShopFile
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: ShopOutputTimeSeriesDefinition
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"

@@ -7,28 +7,28 @@ views:
   - externalId: BidDocumentAFRR
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: BidDocument
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: BidRow
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: PriceAreaAFRR
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: PriceArea
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: Alert
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: PowerAsset
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"

@@ -3,7 +3,7 @@ externalId: ShopCase
 name: ShopCase
 description: A case that links a Scenario and shop dates to run shop with
 implements: []
-version: "{{version}}"
+version: "{{power_ops_version}}"
 properties:
   scenario:
     container:
@@ -16,7 +16,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: ShopScenario
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
   startTime:
     container:
@@ -42,7 +42,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: ShopFile
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
     direction: outwards
     description: The list of shop files that are used in a shop run. This encompasses all shop files such as case, module series, cut files etc.

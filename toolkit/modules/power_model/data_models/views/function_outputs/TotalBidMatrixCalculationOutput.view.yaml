@@ -23,9 +23,9 @@ filter:
 implements:
   - space: "{{power_ops_models_space}}"
     externalId: FunctionOutput
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
     type: view
-version: "{{version}}"
+version: "{{power_ops_version}}"
 properties:
   functionInput: # Overrides the view type from the FunctionOutput view
     container:
@@ -37,7 +37,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: TotalBidMatrixCalculationInput
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
   bidDocument:
     container:
@@ -49,5 +49,5 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: BidDocumentDayAhead
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view

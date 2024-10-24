@@ -21,7 +21,7 @@ filter:
           externalId: ShopModel
           space: "{{power_ops_type_space}}"
 implements: []
-version: "{{version}}"
+version: "{{power_ops_version}}"
 properties:
   name:
     container:
@@ -70,7 +70,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: ShopFile
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
     direction: outwards
     name: cogShopFilesConfig
@@ -83,7 +83,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: ShopAttributeMapping
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
     direction: outwards
     name: baseAttributeMappings

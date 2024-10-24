@@ -13,7 +13,7 @@ filter:
           - node
           - space
         value: "{{power_ops_instance_space}}"
-version: "{{version}}"
+version: "{{power_ops_version}}"
 properties:
   name:
     container:
@@ -42,7 +42,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: PowerAsset
-      version: "{{version}}"
+      version: "{{power_ops_version}}"
       type: view
   addSteps:
     container:

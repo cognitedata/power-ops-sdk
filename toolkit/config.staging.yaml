@@ -5,16 +5,19 @@ environment:
   type: staging
   selected:
     - modules/power_model
+    # - modules/power_ops_template
 
 variables:
   modules:
+    # variables required for BOTH power_model and power_ops_template
     power_ops_type_space: "power_ops_types"
     power_ops_instance_space: "power_ops_instances"
     power_ops_models_space: "power_ops_core"
-    version: "1"
+    power_ops_version: "1"
+    # variables required for ONLY power_ops_template
     wf_day_ahead_market: "DAY_AHEAD"
     wf_day_ahead_bid_process_xid: "DayAheadBidProcess"
     wf_day_ahead_bid_process_version: "latest"
     wf_day_ahead_bid_process_cron: "30 9 * * *" # translates to 9:30 UTC / 11:30 CEST
-    wf_trigger_client_id: "FOO"
-    wf_trigger_client_secret: ${IDP_WF_TRIGGER_SECRET} #TODO: check if this prints secret to files/logs
+    wf_trigger_client_id: "d985b4fe-275e-4df3-9e49-b6b18a77778a"
+    wf_trigger_client_secret: ${WF_TRIGGER_SECRET}

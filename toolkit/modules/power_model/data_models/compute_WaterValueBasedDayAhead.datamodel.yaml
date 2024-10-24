@@ -7,88 +7,88 @@ views:
   - externalId: TaskDispatcherInput
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: TaskDispatcherOutput
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: PartialBidMatrixCalculationInput
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: WaterValueBasedPartialBidMatrixCalculationInput
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: PartialBidMatrixCalculationOutput
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: Plant
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: PlantWaterValueBased
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: Alert
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: BidConfigurationDayAhead
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: PriceArea
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: PriceAreaDayAhead
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: MarketConfiguration
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: Generator
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: GeneratorEfficiencyCurve
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - externalId: TurbineEfficiencyCurve
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
   - space: "{{power_ops_models_space}}"
     externalId: FunctionInput
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
     type: view
   - space: "{{power_ops_models_space}}"
     externalId: FunctionOutput
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
     type: view
   - space: "{{power_ops_models_space}}"
     externalId: BidMatrix
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
     type: view
   - space: "{{power_ops_models_space}}"
     externalId: PowerAsset
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
     type: view
   - space: "{{power_ops_models_space}}"
     externalId: PartialBidConfiguration
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
     type: view
   - space: "{{power_ops_models_space}}"
     externalId: WaterValueBasedPartialBidConfiguration
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
     type: view
   - externalId: DateSpecification
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_version}}"
