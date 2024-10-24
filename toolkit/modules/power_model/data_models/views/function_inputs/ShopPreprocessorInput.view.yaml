@@ -23,9 +23,9 @@ filter:
 implements:
   - space: "{{power_ops_models_space}}"
     externalId: FunctionInput
-    version: "{{version}}"
+    version: "{{power_ops_data_model_version}}"
     type: view
-version: "{{version}}"
+version: "{{power_ops_data_model_version}}"
 properties:
   scenario:
     container:
@@ -38,7 +38,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: ShopScenario
-      version: "{{version}}"
+      version: "{{power_ops_data_model_version}}"
       type: view
   startTime:
     container:

@@ -23,9 +23,9 @@ filter:
 implements:
   - space: "{{power_ops_models_space}}"
     externalId: PartialBidMatrixCalculationInput
-    version: "{{version}}"
+    version: "{{power_ops_data_model_version}}"
     type: view
-version: "{{version}}"
+version: "{{power_ops_data_model_version}}"
 properties:
   partialBidConfiguration: # Overrides the view type from the PartialBidMatrixCalculationInput view
     container:
@@ -38,7 +38,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: ShopBasedPartialBidConfiguration
-      version: "{{version}}"
+      version: "{{power_ops_data_model_version}}"
       type: view
   priceProduction:
     type:
@@ -47,7 +47,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: PriceProduction
-      version: "{{version}}"
+      version: "{{power_ops_data_model_version}}"
       type: view
     direction: outwards
     name: priceProduction

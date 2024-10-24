@@ -31,7 +31,7 @@
     - source:
         space: "{{power_ops_models_space}}"
         externalId: PriceAreaInformation
-        version: "{{power_ops_version}}"
+        version: "{{power_ops_data_model_version}}"
         type: view
       properties:
         name: NO1
@@ -47,7 +47,7 @@
     - source:
         space: "{{power_ops_models_space}}"
         externalId: PriceAreaInformation
-        version: "{{power_ops_version}}"
+        version: "{{power_ops_data_model_version}}"
         type: view
       properties:
         name: NO2
@@ -63,7 +63,7 @@
     - source:
         space: "{{power_ops_models_space}}"
         externalId: PriceAreaInformation
-        version: "{{power_ops_version}}"
+        version: "{{power_ops_data_model_version}}"
         type: view
       properties:
         name: NO3
@@ -79,7 +79,7 @@
     - source:
         space: "{{power_ops_models_space}}"
         externalId: PriceAreaInformation
-        version: "{{power_ops_version}}"
+        version: "{{power_ops_data_model_version}}"
         type: view
       properties:
         name: NO4
@@ -95,7 +95,7 @@
     - source:
         space: "{{power_ops_models_space}}"
         externalId: PriceAreaInformation
-        version: "{{power_ops_version}}"
+        version: "{{power_ops_data_model_version}}"
         type: view
       properties:
         name: NO5

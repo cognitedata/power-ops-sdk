@@ -14,7 +14,7 @@ filter:
           - space
         value: "{{power_ops_instance_space}}"
 implements: []
-version: "{{version}}"
+version: "{{power_ops_data_model_version}}"
 properties:
   name:
     container:
@@ -71,7 +71,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: Alert
-      version: "{{version}}"
+      version: "{{power_ops_data_model_version}}"
       type: view
     direction: outwards
     name: alerts

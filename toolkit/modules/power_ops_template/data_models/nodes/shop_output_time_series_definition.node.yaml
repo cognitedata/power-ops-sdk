@@ -21,7 +21,7 @@
     - source:
         space: "{{power_ops_models_space}}"
         externalId: ShopOutputTimeSeriesDefinition
-        version: "{{power_ops_version}}"
+        version: "{{power_ops_data_model_version}}"
         type: view
       properties:
         name: market price
@@ -39,7 +39,7 @@
     - source:
         space: "{{power_ops_models_space}}"
         externalId: ShopOutputTimeSeriesDefinition
-        version: "{{power_ops_version}}"
+        version: "{{power_ops_data_model_version}}"
         type: view
       properties:
         name: market sale
@@ -57,7 +57,7 @@
     - source:
         space: "{{power_ops_models_space}}"
         externalId: ShopOutputTimeSeriesDefinition
-        version: "{{power_ops_version}}"
+        version: "{{power_ops_data_model_version}}"
         type: view
       properties:
         name: plant production
@@ -75,7 +75,7 @@
     - source:
         space: "{{power_ops_models_space}}"
         externalId: ShopOutputTimeSeriesDefinition
-        version: "{{power_ops_version}}"
+        version: "{{power_ops_data_model_version}}"
         type: view
       properties:
         name: plant consumption
@@ -93,7 +93,7 @@
     - source:
         space: "{{power_ops_models_space}}"
         externalId: ShopOutputTimeSeriesDefinition
-        version: "{{power_ops_version}}"
+        version: "{{power_ops_data_model_version}}"
         type: view
       properties:
         name: reservoir water value
@@ -111,7 +111,7 @@
     - source:
         space: "{{power_ops_models_space}}"
         externalId: ShopOutputTimeSeriesDefinition
-        version: "{{power_ops_version}}"
+        version: "{{power_ops_data_model_version}}"
         type: view
       properties:
         name: reservoir energy conversion factor
