@@ -19,9 +19,9 @@ filter:
 implements:
   - space: "{{power_ops_models_space}}"
     externalId: FunctionOutput
-    version: "{{version}}"
+    version: "{{power_ops_data_model_version}}"
     type: view
-version: "{{version}}"
+version: "{{power_ops_data_model_version}}"
 properties:
   functionInput: # Overrides the view type from the FunctionOutput view
     container:
@@ -33,7 +33,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: BenchmarkingCalculationInput
-      version: "{{version}}"
+      version: "{{power_ops_data_model_version}}"
       type: view
   benchmarkingResults:
     type:
@@ -42,7 +42,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: BenchmarkingResultDayAhead
-      version: "{{version}}"
+      version: "{{power_ops_data_model_version}}"
       type: view
     direction: outwards
     name: benchmarkingResults

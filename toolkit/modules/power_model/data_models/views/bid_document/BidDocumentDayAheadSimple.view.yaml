@@ -20,7 +20,7 @@ filter:
           externalId: DayAheadBidDocument
           space: "{{power_ops_type_space}}"
 implements: []
-version: "{{version}}"
+version: "{{power_ops_data_model_version}}"
 properties:
   priceArea:
     container:
@@ -32,7 +32,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: PriceArea
-      version: "{{version}}"
+      version: "{{power_ops_data_model_version}}"
       type: view
   total:
     container:
@@ -44,7 +44,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: BidMatrix
-      version: "{{version}}"
+      version: "{{power_ops_data_model_version}}"
       type: view
   partials:
     type:
@@ -53,7 +53,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: BidMatrix
-      version: "{{version}}"
+      version: "{{power_ops_data_model_version}}"
       type: view
     direction: outwards
     name: partials
