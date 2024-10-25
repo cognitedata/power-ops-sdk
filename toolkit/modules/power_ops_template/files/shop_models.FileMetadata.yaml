@@ -1,5 +1,5 @@
-- externalId: "SHOP_model_fornebu"
-  name: "SHOP_model_fornebu.yaml"
+- externalId: "SHOP_model_WATERCOURSE_NAME"
+  name: "SHOP_model_WATERCOURSE_NAME.yaml"
   source: "Customer"
   dataSetExternalId: "powerops:config"
   directory: "/toolkit/modules/power_ops/files/"
