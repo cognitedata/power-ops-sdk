@@ -1,0 +1,102 @@
+- externalId: trigger_bid_process:bid_configuration_day_ahead_water_value_no2_full
+  triggerRule:
+    triggerType: schedule
+    cronExpression: "{{wf_day_ahead_bid_process_cron}}"
+  input:
+    bidConfiguration:
+      externalId: "bid_configuration_day_ahead_water_value_no2_full"
+    metadata:
+      config: "bid_configuration_day_ahead_water_value_no2_full"
+      market: "{{wf_day_ahead_market}}"
+      method: "Water Value NO2 Full"
+      priceArea: "NO2"
+  workflowExternalId: "{{wf_day_ahead_bid_process_xid}}"
+  workflowVersion: "{{wf_day_ahead_bid_process_version}}"
+  authentication:
+    clientId: "{{wf_trigger_client_id}}"
+    clientSecret: "{{wf_trigger_client_secret}}"
+- externalId: trigger_bid_process:bid_configuration_day_ahead_multi_scenario_20_no2
+  triggerRule:
+    triggerType: schedule
+    cronExpression: "{{wf_day_ahead_bid_process_cron}}"
+  input:
+    bidConfiguration:
+      externalId: "bid_configuration_day_ahead_multi_scenario_20_no2"
+    metadata:
+      config: "bid_configuration_day_ahead_multi_scenario_20_no2"
+      market: "{{wf_day_ahead_market}}"
+      method: "Multi scenario 20 NO2"
+      priceArea: "NO2"
+  workflowExternalId: "{{wf_day_ahead_bid_process_xid}}"
+  workflowVersion: "{{wf_day_ahead_bid_process_version}}"
+  authentication:
+    clientId: "{{wf_trigger_client_id}}"
+    clientSecret: "{{wf_trigger_client_secret}}"
+- externalId: trigger_bid_process:bid_configuration_day_ahead_multi_scenario_3_no2
+  triggerRule:
+    triggerType: schedule
+    cronExpression: "{{wf_day_ahead_bid_process_cron}}"
+  input:
+    bidConfiguration:
+      externalId: "bid_configuration_day_ahead_multi_scenario_3_no2"
+    metadata:
+      config: "bid_configuration_day_ahead_multi_scenario_3_no2"
+      market: "{{wf_day_ahead_market}}"
+      method: "Multi Scenario 3 NO2"
+      priceArea: "NO2"
+  workflowExternalId: "{{wf_day_ahead_bid_process_xid}}"
+  workflowVersion: "{{wf_day_ahead_bid_process_version}}"
+  authentication:
+    clientId: "{{wf_trigger_client_id}}"
+    clientSecret: "{{wf_trigger_client_secret}}"
+- externalId: trigger_bid_process:bid_configuration_day_ahead_multi_scenario_2_no2
+  triggerRule:
+    triggerType: schedule
+    cronExpression: "{{wf_day_ahead_bid_process_cron}}"
+  input:
+    bidConfiguration:
+      externalId: "bid_configuration_day_ahead_multi_scenario_2_no2"
+    metadata:
+      config: "bid_configuration_day_ahead_multi_scenario_2_no2"
+      market: "{{wf_day_ahead_market}}"
+      method: "Multi Scenario 2 NO2"
+      priceArea: "NO2"
+  workflowExternalId: "{{wf_day_ahead_bid_process_xid}}"
+  workflowVersion: "{{wf_day_ahead_bid_process_version}}"
+  authentication:
+    clientId: "{{wf_trigger_client_id}}"
+    clientSecret: "{{wf_trigger_client_secret}}"
+- externalId: trigger_bid_process:bid_configuration_day_ahead_no2_combination
+  triggerRule:
+    triggerType: schedule
+    cronExpression: "{{wf_day_ahead_bid_process_cron}}"
+  input:
+    bidConfiguration:
+      externalId: "bid_configuration_day_ahead_no2_combination"
+    metadata:
+      config: "bid_configuration_day_ahead_no2_combination"
+      market: "{{wf_day_ahead_market}}"
+      method: "NO2 Combination"
+      priceArea: "NO2"
+  workflowExternalId: "{{wf_day_ahead_bid_process_xid}}"
+  workflowVersion: "{{wf_day_ahead_bid_process_version}}"
+  authentication:
+    clientId: "{{wf_trigger_client_id}}"
+    clientSecret: "{{wf_trigger_client_secret}}"
+- externalId: trigger_bid_process:bid_configuration_day_ahead_price_independent_no2
+  triggerRule:
+    triggerType: schedule
+    cronExpression: "{{wf_day_ahead_bid_process_cron}}"
+  input:
+    bidConfiguration:
+      externalId: "bid_configuration_day_ahead_price_independent_no2"
+    metadata:
+      config: "bid_configuration_day_ahead_price_independent_no2"
+      market: "{{wf_day_ahead_market}}"
+      method: "Price Independent NO2"
+      priceArea: "NO2"
+  workflowExternalId: "{{wf_day_ahead_bid_process_xid}}"
+  workflowVersion: "{{wf_day_ahead_bid_process_version}}"
+  authentication:
+    clientId: "{{wf_trigger_client_id}}"
+    clientSecret: "{{wf_trigger_client_secret}}"

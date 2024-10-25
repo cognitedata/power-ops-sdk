@@ -24,7 +24,7 @@
     - source:
         space: "{{power_ops_models_space}}"
         externalId: MarketConfiguration
-        version: "{{power_ops_version}}"
+        version: "{{power_ops_data_model_version}}"
         type: view
       properties:
         name: "Nord Pool Day-Ahead"

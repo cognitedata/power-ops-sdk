@@ -7,64 +7,64 @@ views:
   - externalId: PriceArea
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: PriceAreaAFRR
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: PriceAreaDayAhead
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: PriceAreaInformation
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: BidConfigurationDayAhead
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: MarketConfiguration
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: PartialBidConfiguration
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: PowerAsset
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: Plant
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: PlantWaterValueBased
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: PlantInformation
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: Watercourse
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: Generator
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: TurbineEfficiencyCurve
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: GeneratorEfficiencyCurve
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_data_model_version}}"
   - externalId: DateSpecification
     space: "{{power_ops_models_space}}"
     type: view
-    version: "{{version}}"
+    version: "{{power_ops_data_model_version}}"

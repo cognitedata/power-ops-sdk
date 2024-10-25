@@ -22,9 +22,9 @@ filter:
 implements:
   - space: "{{power_ops_models_space}}"
     externalId: BidDocument
-    version: "{{version}}"
+    version: "{{power_ops_data_model_version}}"
     type: view
-version: "{{version}}"
+version: "{{power_ops_data_model_version}}"
 properties:
   bidConfiguration:
     container:
@@ -36,7 +36,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: BidConfigurationDayAhead
-      version: "{{version}}"
+      version: "{{power_ops_data_model_version}}"
       type: view
   total:
     container:
@@ -48,7 +48,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: BidMatrixInformation
-      version: "{{version}}"
+      version: "{{power_ops_data_model_version}}"
       type: view
   partials:
     type:
@@ -57,7 +57,7 @@ properties:
     source:
       space: "{{power_ops_models_space}}"
       externalId: PartialBidMatrixInformation
-      version: "{{version}}"
+      version: "{{power_ops_data_model_version}}"
       type: view
     direction: outwards
     name: partials
