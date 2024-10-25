@@ -1,18 +1,15 @@
 from __future__ import annotations
 
+import logging
 import os
 from pathlib import Path
 from string import Template
 
 import yaml
-import logging
+from cognite.client import CogniteClient, global_config
 from dotenv import load_dotenv
 
-from cognite.client import CogniteClient, global_config
-
 from cognite.powerops.client.shop.cogshop_api import CogShopAPI
-from cognite.powerops.utils.cdf import Settings, get_client_config
-from cognite.powerops.utils.serialization import read_toml_file
 from cognite.pygen.utils.external_id_factories import ExternalIdFactory
 
 from ._generated.afrr_bid import AFRRBidAPI
@@ -30,15 +27,16 @@ _MAX_DOMAIN_LENGTH = 233
 
 logger = logging.getLogger(__name__)
 
+
 class PowerOpsClient:
     def __init__(
         self,
-        # read_dataset: str,
-        # write_dataset: str,
         client: CogniteClient,
-        # monitor_dataset: str | None = None,
+        read_dataset: str,
+        write_dataset: str,
+        monitor_dataset: str | None = None,
     ):
-        self.cdf = CogniteClient(config)
+        self.cdf = client
         self.datasets = DataSetsAPI(self.cdf, read_dataset, write_dataset, monitor_dataset)
         self.cog_shop1 = CogShop1Client(self.cdf)
         self.assets = PowerAssetAPI(self.cdf)
@@ -57,30 +55,6 @@ class PowerOpsClient:
             ),
             override_external_id=False,
         )
-
-    def _apis(self) -> dict[str, str]:
-        return {
-            "cdf": "The regular Cognite Client",
-            "cog_shop1": " (Deprecated, use cogshop instead) The CogSHOP client, this is used by cogshop",
-            "assets": "(Deprecated) The PowerOps Assets model. For example, plants, generators etc",
-            "afrr_bid": "(Deprecated) The AFRR bid model, the model used to represent AFRR bids",
-            "day_ahead_bid": "(Deprecated) The day ahead bid model, the model used to represent day-ahead bids",
-            "shop": "(Deprecated, use cogshop instead) The shop model, this is used to trigger individual SHOP runs",
-            "workflow": "(Deprecated) The workflow model, this is used to trigger set of SHOP runs",
-            "cogshop": "The CogShop client, this is used to trigger SHOP runs",
-            "v1": "The PowerOps Data Models client, this is used to interact with the PowerOps Models API"
-            " Will be moved to top level in the future",
-        }
-
-    def _repr_html_(self) -> str:
-        return (
-            "<strong>PowerOpsClient:</strong><ul>"
-            + "".join([f"<li><strong><em>.{k}</em></strong>: {v}</li>" for k, v in self._apis().items()])
-            + "</ul>"
-        )
-
-    def __str__(self):
-        return f"PowerOpsClient with {', '.join(map(lambda a: '.' + a, self._apis().keys()))} APIs"
 
     @classmethod
     def from_config(
@@ -118,11 +92,11 @@ class PowerOpsClient:
         cognite_config = yaml.safe_load(file_env_parsed)
 
         # If you want to set a global configuration it must be done before creating the client
-        global_config.apply_settings(cognite_config["global"])
+        if "global" in cognite_config:
+            global_config.apply_settings(cognite_config["global"])
+
         client = CogniteClient.load(cognite_config["client"])
 
-        power_ops_config = cognite_config["powerops"]
+        power_ops_config = cognite_config.get("power_ops", {})
 
-        return cls(
-            client=client,
-        )
+        return cls(client=client, **power_ops_config)
