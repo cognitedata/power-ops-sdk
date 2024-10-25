@@ -3,7 +3,7 @@
     triggerType: schedule
     cronExpression: "{{wf_day_ahead_bid_process_cron}}"
   input:
-    bigConfiguration:
+    bidConfiguration:
       externalId: "bid_configuration_day_ahead_water_value_no2_full"
     metadata:
       config: "bid_configuration_day_ahead_water_value_no2_full"
@@ -20,7 +20,7 @@
     triggerType: schedule
     cronExpression: "{{wf_day_ahead_bid_process_cron}}"
   input:
-    bigConfiguration:
+    bidConfiguration:
       externalId: "bid_configuration_day_ahead_multi_scenario_20_no2"
     metadata:
       config: "bid_configuration_day_ahead_multi_scenario_20_no2"
@@ -37,7 +37,7 @@
     triggerType: schedule
     cronExpression: "{{wf_day_ahead_bid_process_cron}}"
   input:
-    bigConfiguration:
+    bidConfiguration:
       externalId: "bid_configuration_day_ahead_multi_scenario_3_no2"
     metadata:
       config: "bid_configuration_day_ahead_multi_scenario_3_no2"
@@ -54,7 +54,7 @@
     triggerType: schedule
     cronExpression: "{{wf_day_ahead_bid_process_cron}}"
   input:
-    bigConfiguration:
+    bidConfiguration:
       externalId: "bid_configuration_day_ahead_multi_scenario_2_no2"
     metadata:
       config: "bid_configuration_day_ahead_multi_scenario_2_no2"
@@ -71,7 +71,7 @@
     triggerType: schedule
     cronExpression: "{{wf_day_ahead_bid_process_cron}}"
   input:
-    bigConfiguration:
+    bidConfiguration:
       externalId: "bid_configuration_day_ahead_no2_combination"
     metadata:
       config: "bid_configuration_day_ahead_no2_combination"
@@ -88,7 +88,7 @@
     triggerType: schedule
     cronExpression: "{{wf_day_ahead_bid_process_cron}}"
   input:
-    bigConfiguration:
+    bidConfiguration:
       externalId: "bid_configuration_day_ahead_price_independent_no2"
     metadata:
       config: "bid_configuration_day_ahead_price_independent_no2"
