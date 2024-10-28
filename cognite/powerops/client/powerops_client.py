@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 import os
+import sys
 from pathlib import Path
 from string import Template
 
@@ -74,16 +75,18 @@ class PowerOpsClient:
         if isinstance(config_path, str):
             config_path = Path(config_path)
 
-        # Read in yaml file and fetch all environment variables referenced in the file
+        # Read in yaml file
         env_sub_template = Template(config_path.read_text())
-        all_identifiers = env_sub_template.get_identifiers()
 
         load_dotenv()
         env_dict = dict(os.environ)
 
-        missing_env_vars = set(all_identifiers) - set(env_dict.keys())
-        if missing_env_vars:
-            raise ValueError(f"Missing environment variables: {missing_env_vars}")
+        if sys.version >= "3.11":
+            #  Fetch all environment variables referenced in the file to check if they are set
+            all_identifiers = env_sub_template.get_identifiers()
+            missing_env_vars = set(all_identifiers) - set(env_dict.keys())
+            if missing_env_vars:
+                raise ValueError(f"Missing environment variables: {missing_env_vars}")
 
         # Substitute environment variables in the file string
         file_env_parsed = env_sub_template.substitute(env_dict)
