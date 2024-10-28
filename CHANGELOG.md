@@ -13,6 +13,20 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.102.0] - 2024-10-28
+### Removed
+* Custom parsing of env variables to follow `SETTINGS__COGNITE__<PROPERTY>` pattern
+* PowerOpsClient.from_client() removed, use PowerOpsClient() directly instead
+* PowerOpsClient.from_settings() & .from_toml() removed, use PowerOpsClient.from_config() instead
+* Removed cognite.powerops.utils.cdf._cdf_auth as no longer needed in updated auth configuration
+* Removed cognite.powerops.utils.cdf._settings as no longer needed in updated auth configuration
+* Removed all helper functions in cognite.powerops.utils.serialization except load_yaml
+
+### Changed
+* Input arguments to Resync plan/apply needs path to client config file
+* Input to `PowerOpsClient` takes an initialized *CogniteClient* instead of a *ClientConfig*
+* Configuration file format changed to YAML and utilizes CogniteClient.load() to allow for more flexible client configuration
+
 ## [0.101.1] - 2024-10-21
 ### Changed
 * Rename example cases to Fornebu and Stavanger cases
