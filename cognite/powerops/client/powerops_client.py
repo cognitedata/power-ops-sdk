@@ -81,7 +81,7 @@ class PowerOpsClient:
         load_dotenv()
         env_dict = dict(os.environ)
 
-        if sys.version >= "3.11":
+        if sys.version >= "3.11":  # Template.get_identifiers() is only available in Python 3.11 and later
             #  Fetch all environment variables referenced in the file to check if they are set
             all_identifiers = env_sub_template.get_identifiers()
             missing_env_vars = set(all_identifiers) - set(env_dict.keys())
