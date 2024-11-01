@@ -4,17 +4,23 @@ from urllib.parse import urlparse
 import requests
 from cognite.client import CogniteClient
 
+from cognite.powerops.client._generated.v1._api_client import PowerOpsModelsV1Client
 from cognite.powerops.client._generated.v1.data_classes import (
     ShopCaseWrite,
     ShopFileWrite,
     ShopModelWrite,
+    ShopResultList,
     ShopScenarioWrite,
+)
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    ResourcesWriteResult,
 )
 
 
 class CogShopAPI:
-    def __init__(self, client: CogniteClient):
-        self._cdf = client
+    def __init__(self, cdf: CogniteClient, po: PowerOpsModelsV1Client):
+        self._cdf = cdf
+        self._po = po
 
     def _shop_url_cshaas(self) -> str:
         project = self._cdf.config.project
@@ -108,11 +114,33 @@ class CogShopAPI:
         )
         return case_write
 
+    def write_shop_case(self, shop_case: ShopCaseWrite) -> ResourcesWriteResult:
+        """
+        Write a SHOP case to CDF.
+        Args:
+            shop_case: SHOP case to write to CDF
+        Returns:
+            ResourcesWriteResult: Result of the write operation
+        """
+        return self._po.upsert(shop_case)
+
+    def list_shop_results_for_case(self, case_external_id: str, limit: int = 3) -> ShopResultList:
+        """
+        View the result of a SHOP case.
+        Args:
+            case_external_id: External ID of the SHOP case
+            limit: Number of results to return, -1 for all results
+        """
+        result_list: ShopResultList = self._po.shop_based_day_ahead_bid_process.shop_result.list(
+            case_external_id=case_external_id, limit=limit
+        )
+        return result_list
+
     def list_shop_versions(self) -> list[str]:
         """List the available version of SHOP remotely  in CDF.
         Does not include versions in local version of CShaaS.
         SHOP releases should have the following format:
-        'SHOP-${{VERSION}}-pyshop-python{py_version}.linux.zip'
+        'SHOP-{VERSION}-pyshop-python{py_version}.linux.zip'
         """
         # todo? Add an endpoint to list the available versions of SHOP via powerops API?
         return [file.name for file in self._cdf.files.list(metadata={"shop:type": "shop-release"}, limit=-1)]
