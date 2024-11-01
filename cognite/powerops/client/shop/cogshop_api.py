@@ -52,7 +52,7 @@ class CogShopAPI:
 
     def prepare_shop_case(
         self,
-        files: list[tuple[str, str, bool, str]],
+        shop_file_list: list[tuple[str, str, bool, str]],
         shop_version: str,
         start_time: datetime.datetime,
         end_time: datetime.datetime,
@@ -86,12 +86,18 @@ class CogShopAPI:
         Returns:
             ShopCaseWrite: A SHOP case that can be written to CDF
         """
-        model_write = ShopModelWrite(name=model_name, external_id=model_external_id, shop_version=shop_version)
+        # Setting external id to None results in an error.
+        # Skip it as an argument to automatically generate external value for it.
+        model_write = ShopModelWrite(
+            name=model_name,
+            shop_version=shop_version,
+            **({"external_id": model_external_id} if model_external_id else {}),
+        )
 
         scenario_write = ShopScenarioWrite(
             name=scenario_name,
-            external_id=scenario_external_id,
             model=model_write,
+            **({"external_id": scenario_external_id} if scenario_external_id else {}),
         )
 
         shop_files_write = [
@@ -99,18 +105,18 @@ class CogShopAPI:
                 name=file_name,
                 fileReference=file_reference,
                 isAscii=is_ascii,
-                labels=labels,
+                label=label,
                 order=i + 1,  # Order is 1-indexed
             )
-            for i, (file_reference, file_name, is_ascii, labels) in enumerate(files)
+            for i, (file_reference, file_name, is_ascii, label) in enumerate(shop_file_list)
         ]
 
         case_write = ShopCaseWrite(
-            external_id=case_external_id,
             start_time=start_time,
             end_time=end_time,
             scenario=scenario_write,
             shop_files=shop_files_write,
+            **({"external_id": case_external_id} if case_external_id else {}),
         )
         return case_write
 
