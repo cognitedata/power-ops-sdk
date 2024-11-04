@@ -132,12 +132,9 @@ class CogShopAPI:
         Write a SHOP case to CDF.
         Args:
             shop_case: SHOP case to write to CDF
-            replace: Whether to replace or merge all matching and existing values with the supplied values.
         Returns:
             ResourcesWriteResult: Result of the write operation
         """
-        # first delete the shop case if it exists
-        self._po.delete(shop_case.external_id)
         return self._po.upsert(shop_case)
 
     def retrieve_shop_case(self, case_external_id: str) -> ShopCase:
@@ -155,6 +152,10 @@ class CogShopAPI:
             case=case_external_id, limit=limit
         )
         return result_list
+
+    def retrieve_shop_result(self, result_external_id: str) -> ShopResult:
+        """Retrieve a shop result from CDF"""
+        return self._po.shop_based_day_ahead_bid_process.shop_result.retrieve(external_id=result_external_id)
 
     def list_shop_versions(self) -> list[str]:
         """List the available version of SHOP remotely  in CDF.
@@ -263,8 +264,8 @@ def _shop_result_query(case_external_id: str, limit: int) -> str:
     query_template = """
     query RetrieveShopResultByCaseExternalId {{
         listShopResult(
-        filter: {{case: {{externalId: {{eq: "example_stavanger_case_external_id"}} }} }}
-        first: 10
+        filter: {{case: {{externalId: {{eq: "{case_external_id}"}} }} }}
+        first: {limit}
     ) {{
         items {{
         __typename
