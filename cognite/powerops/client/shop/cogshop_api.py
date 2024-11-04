@@ -6,6 +6,8 @@ from cognite.client import CogniteClient
 
 from cognite.powerops.client._generated.v1._api_client import PowerOpsModelsV1Client
 from cognite.powerops.client._generated.v1.data_classes import (
+    ResourcesWriteResult,
+    ShopCase,
     ShopCaseWrite,
     ShopFileWrite,
     ShopModelWrite,
@@ -13,8 +15,9 @@ from cognite.powerops.client._generated.v1.data_classes import (
     ShopScenarioWrite,
 )
 from cognite.powerops.client._generated.v1.data_classes._core import (
-    ResourcesWriteResult,
+    DEFAULT_INSTANCE_SPACE,
 )
+from cognite.powerops.client._generated.v1.data_classes._shop_result import ShopResult
 
 
 class CogShopAPI:
@@ -65,14 +68,18 @@ class CogShopAPI:
         """
         Prepare a SHOP case that can be written to cdf.
         External ids must be unique. If they are not provided, they will be generated.
+
+        In this case, `ShopScenario` as and its `ShopModel` are mostly superfluous.
+        However, they are still added as nearly empty objects in order to set the SHOP version.
+
         Args:
-            files: List of 4-tuples and every item is expected.
-                    It is assumed that the order of the list if the order the files should be loaded into SHOP.
+            shop_file_list: List of 4-tuples and every item is expected.
+                    Assumes the order of the list if the order the files should be loaded into SHOP.
                 Format:
-                `file_reference`: external if of file in CDF.
-                `file_name`: Name of the file.
-                `is_ascii`: Whether the file is in ASCII format.
-                `labels`: Labels to be added to the fil, use "" if no labels
+                    `file_reference`: external if of file in CDF.
+                    `file_name`: Name of the file.
+                    `is_ascii`: Whether the file is in ASCII format.
+                    `labels`: Labels to be added to the fil, use "" if no labels
 
             start_time: Start of time range SHOP is optimized over
             end_time: End of time range SHOP is optimized over
@@ -125,10 +132,17 @@ class CogShopAPI:
         Write a SHOP case to CDF.
         Args:
             shop_case: SHOP case to write to CDF
+            replace: Whether to replace or merge all matching and existing values with the supplied values.
         Returns:
             ResourcesWriteResult: Result of the write operation
         """
+        # first delete the shop case if it exists
+        self._po.delete(shop_case.external_id)
         return self._po.upsert(shop_case)
+
+    def retrieve_shop_case(self, case_external_id: str) -> ShopCase:
+        """Retrieve a shop case from CDF"""
+        return self._po.shop_based_day_ahead_bid_process.shop_case.retrieve(external_id=case_external_id)
 
     def list_shop_results_for_case(self, case_external_id: str, limit: int = 3) -> ShopResultList:
         """
@@ -138,7 +152,7 @@ class CogShopAPI:
             limit: Number of results to return, -1 for all results
         """
         result_list: ShopResultList = self._po.shop_based_day_ahead_bid_process.shop_result.list(
-            case_external_id=case_external_id, limit=limit
+            case=case_external_id, limit=limit
         )
         return result_list
 
@@ -150,3 +164,163 @@ class CogShopAPI:
         """
         # todo? Add an endpoint to list the available versions of SHOP via powerops API?
         return [file.name for file in self._cdf.files.list(metadata={"shop:type": "shop-release"}, limit=-1)]
+
+    def retrieve_shop_case_graphql(self, case_external_id: str) -> ShopCase:
+        graphql_response = self._po.shop_based_day_ahead_bid_process.graphql_query(_shop_case_query(case_external_id))
+        if graphql_response:
+            shop_case: ShopCase = graphql_response[0].as_read()
+        else:
+            raise ValueError(f"Failed to fetch ShopCase instance with external_id: {case_external_id}.")
+        return shop_case
+
+    def list_shop_result_graphql(self, case_external_id: str, limit: int) -> list[ShopResult]:
+        graphql_response = self._po.shop_based_day_ahead_bid_process.graphql_query(
+            _shop_result_query(case_external_id, limit=limit)
+        )
+
+        if graphql_response is not None:
+            shop_results: list[ShopResult] = [item.as_read() for item in graphql_response]
+        else:
+            raise ValueError(f"Failed to fetch ShopResult referencing ShopCase with external_id: {case_external_id}.")
+        return shop_results
+
+
+# Helper function for rendering graphql queries
+
+
+def _shop_case_query(external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> str:
+    """Render a GraphQL query to fetch a ShopCase instance by external_id."""
+    query_template = """
+    query RetrieveShopCaseByExternalId {{
+      getShopCaseById(instance: {{ space: "{space}", externalId: "{external_id}" }}) {{
+        items {{
+          __typename
+          createdTime
+          endTime
+          externalId
+          lastUpdatedTime
+          space
+          startTime
+          scenario {{
+            createdTime
+            externalId
+            lastUpdatedTime
+            name
+            source
+            space
+            outputDefinition {{
+              items {{
+                attributeName
+                createdTime
+                externalId
+                isStep
+                lastUpdatedTime
+                name
+                objectName
+                objectType
+                space
+                unit
+              }}
+            }}
+            model {{
+              createdTime
+              externalId
+              lastUpdatedTime
+              modelVersion
+              name
+              shopVersion
+              space
+            }}
+          }}
+          shopFiles (sort: {{order: ASC}}) {{
+            items {{
+              createdTime
+              externalId
+              fileReferencePrefix
+              isAscii
+              label
+              lastUpdatedTime
+              name
+              order
+              space
+              fileReference {{
+                externalId
+              }}
+            }}
+          }}
+        }}
+      }}
+    }}
+    """
+    return query_template.format(space=space, external_id=external_id)
+
+
+def _shop_result_query(case_external_id: str, limit: int) -> str:
+    """Render a GraphQL query to fetch a ShopResult instance by case external id."""
+    query_template = """
+    query RetrieveShopResultByCaseExternalId {{
+        listShopResult(
+        filter: {{case: {{externalId: {{eq: "example_stavanger_case_external_id"}} }} }}
+        first: 10
+    ) {{
+        items {{
+        __typename
+        space
+        createdTime
+        externalId
+        lastUpdatedTime
+        preRun {{
+            externalId
+            id
+            uploadedTime
+            name
+            metadata
+            labels
+        }}
+        postRun {{
+            externalId
+            id
+            labels
+            uploadedTime
+            name
+            metadata
+        }}
+        messages {{
+            externalId
+            id
+            labels
+            uploadedTime
+            name
+            metadata
+        }}
+        cplexLogs {{
+            externalId
+            id
+            labels
+            uploadedTime
+            name
+            metadata
+        }}
+        case {{
+            externalId
+            lastUpdatedTime
+            createdTime
+        }}
+        alerts {{
+            items {{
+            externalId
+            lastUpdatedTime
+            description
+            createdTime
+            alertType
+            title
+            time
+            statusCode
+            }}
+        }}
+
+        }}
+    }}
+    }}
+    """
+    return query_template.format(case_external_id=case_external_id, limit=limit)
