@@ -13,6 +13,12 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.102.2] - 2024-11-05
+### Removed
+* Plotting functionality for `SHOPResultFile` class, and `matplotlib` as a dependency
+### Changed
+* Made `pygen` a `dev` dependency
+
 ## [0.102.1] - 2024-11-05
 ### Changed
 * Specifying `rich` as a separate dependency instead of as an extra for `typer`
