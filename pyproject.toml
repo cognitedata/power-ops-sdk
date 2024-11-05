@@ -68,7 +68,8 @@ warn_required_dynamic_aliases = false
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
-typer = {version="^0.12.0", extras=["rich"]}
+rich = ">=10.11.0"
+typer = "^0.12.0"
 PyYAML = "^6.0"
 cognite-sdk = {version = ">=7.43", extras = ["pandas"]}
 pydantic = "^2.0"
