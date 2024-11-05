@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.102.1] - 2024-11-05
+### Changed
+* Specifying `rich` as a separate dependency instead of as an extra for `typer`
+
 ## [0.102.0] - 2024-10-28
 ### Removed
 * Custom parsing of env variables to follow `SETTINGS__COGNITE__<PROPERTY>` pattern
