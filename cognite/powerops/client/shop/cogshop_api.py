@@ -127,6 +127,60 @@ class CogShopAPI:
         )
         return case_write
 
+    def prepare_shop_case_with_existing_scenario(
+        self,
+        shop_file_list: list[tuple[str, str, bool, str]],
+        start_time: datetime.datetime,
+        end_time: datetime.datetime,
+        scenario_external_id: str,
+        case_external_id: str | None = None,
+    ) -> ShopCaseWrite:
+        """
+        Prepare a SHOP case that can be written to cdf, specifying an existing scenario.
+        Case external ids must be unique if provided. A case external_id will be created if not provided.
+
+        In this case, `scenario_external_id` point to an existing as and its `ShopScenario` that we wish to reuse.
+
+        Args:
+            shop_file_list: List of 4-tuples and every item is expected.
+                    Assumes the order of the list if the order the files should be loaded into SHOP.
+                Format:
+                    `file_reference`: external if of file in CDF.
+                    `file_name`: Name of the file.
+                    `is_ascii`: Whether the file is in ASCII format.
+                    `labels`: Labels to be added to the fil, use "" if no labels
+
+            start_time: Start of time range SHOP is optimized over
+            end_time: End of time range SHOP is optimized overs
+            scenario_external_id: External ID of the scenario. Required, must already exist in CDF.
+            case_external_id: External ID of the SHOP case. Optional, must be unique
+        Returns:
+            ShopCaseWrite: A SHOP case that can be written to CDF
+        """
+        scenario = self._po.shop_based_day_ahead_bid_process.shop_scenario.retrieve(external_id=scenario_external_id)
+        if not scenario:
+            raise ValueError(f"There are no scenarios with external_id: {scenario_external_id}.")
+
+        shop_files_write = [
+            ShopFileWrite(
+                name=file_name,
+                fileReference=file_reference,
+                isAscii=is_ascii,
+                label=label,
+                order=i + 1,  # Order is 1-indexed
+            )
+            for i, (file_reference, file_name, is_ascii, label) in enumerate(shop_file_list)
+        ]
+
+        case_write = ShopCaseWrite(
+            start_time=start_time,
+            end_time=end_time,
+            scenario=scenario_external_id,  # todo: check if this is correct
+            shop_files=shop_files_write,
+            **({"external_id": case_external_id} if case_external_id else {}),
+        )
+        return case_write
+
     def write_shop_case(self, shop_case: ShopCaseWrite) -> ResourcesWriteResult:
         """
         Write a SHOP case to CDF.
