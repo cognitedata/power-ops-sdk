@@ -53,6 +53,44 @@ class CogShopAPI:
         )
         response.raise_for_status()
 
+    def prepare_shop_scenario(
+        self,
+        shop_version: str,
+        model_name: str,
+        scenario_name: str,
+        model_external_id: str | None = None,
+        scenario_external_id: str | None = None,
+    ) -> ShopScenarioWrite:
+        """
+        Prepare a SHOP case that can be written to cdf.
+        External ids must be unique. If they are not provided, they will be generated.
+
+        In this case, `ShopScenario` as and its `ShopModel` are mostly superfluous.
+        However, they are still added as nearly empty objects in order to set the SHOP version.
+
+        Args:
+            scenario_name: Name of the scenario. Required, does not have to be unique
+            model_name: Name of the model. Required, does not have to be unique
+            scenario_external_id: External ID of the scenario. Optional, must be unique
+            model_external_id: External ID of the model. Optional, must be unique
+        Returns:
+            ShopCaseWrite: A SHOP case that can be written to CDF
+        """
+        # Setting external id to None results in an error.
+        # Skip it as an argument to automatically generate external value for it.
+        model_write = ShopModelWrite(
+            name=model_name,
+            shop_version=shop_version,
+            **({"external_id": model_external_id} if model_external_id else {}),
+        )
+
+        scenario_write = ShopScenarioWrite(
+            name=scenario_name,
+            model=model_write,
+            **({"external_id": scenario_external_id} if scenario_external_id else {}),
+        )
+        return scenario_write
+
     def prepare_shop_case(
         self,
         shop_file_list: list[tuple[str, str, bool, str]],
@@ -93,18 +131,13 @@ class CogShopAPI:
         Returns:
             ShopCaseWrite: A SHOP case that can be written to CDF
         """
-        # Setting external id to None results in an error.
-        # Skip it as an argument to automatically generate external value for it.
-        model_write = ShopModelWrite(
-            name=model_name,
-            shop_version=shop_version,
-            **({"external_id": model_external_id} if model_external_id else {}),
-        )
 
-        scenario_write = ShopScenarioWrite(
-            name=scenario_name,
-            model=model_write,
-            **({"external_id": scenario_external_id} if scenario_external_id else {}),
+        scenario_write = self.prepare_shop_scenario(
+            shop_version=shop_version,
+            model_name=model_name,
+            scenario_name=scenario_name,
+            model_external_id=model_external_id,
+            scenario_external_id=scenario_external_id,
         )
 
         shop_files_write = [
