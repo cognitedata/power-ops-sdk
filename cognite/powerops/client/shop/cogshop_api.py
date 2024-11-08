@@ -1,4 +1,5 @@
 import datetime
+from collections.abc import Sequence
 from urllib.parse import urlparse
 
 import requests
@@ -16,6 +17,7 @@ from cognite.powerops.client._generated.v1.data_classes import (
 )
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
+    DomainModelWrite,
 )
 from cognite.powerops.client._generated.v1.data_classes._shop_result import ShopResult
 
@@ -214,15 +216,14 @@ class CogShopAPI:
         )
         return case_write
 
-    def write_shop_case(self, shop_case: ShopCaseWrite) -> ResourcesWriteResult:
+    def write_resources(self, resources: DomainModelWrite | Sequence[DomainModelWrite]) -> ResourcesWriteResult:
         """
-        Write a SHOP case to CDF.
         Args:
-            shop_case: SHOP case to write to CDF
+            resources: The resource(s) to write to CDF
         Returns:
             ResourcesWriteResult: Result of the write operation
         """
-        return self._po.upsert(shop_case)
+        return self._po.upsert(resources)
 
     def retrieve_shop_case(self, case_external_id: str) -> ShopCase:
         """Retrieve a shop case from CDF"""
