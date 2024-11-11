@@ -17,6 +17,9 @@ Changes are grouped as follows
 ### Changed
 * Simplify usage of cogshop api module and update examples
 
+### Removed
+* Removed outdated usage guides.
+
 ## [0.102.2] - 2024-11-05
 ### Removed
 * Plotting functionality for `SHOPResultFile` class, and `matplotlib` as a dependency
