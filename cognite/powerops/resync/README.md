@@ -145,6 +145,8 @@ For example, the two *partials* external_ids would become `water_value_based_par
 
 ## Usage
 
+Instructions assume Cognite client is configured through `power_ops_config.yaml`
+
 See available commands:
 
 ```bash
@@ -154,13 +156,13 @@ $ powerops --help
 Example of showing plan changes provided the configuration file path `resync_v1/resync_configuration.yaml`:
 
 ```bash
-$ powerops plan_v1 resync_v1/resync_configuration.yaml
+$ powerops plan_v1 power_ops_config.yaml resync_v1/resync_configuration.yaml
 ```
 
 Example of showing apply changes provided the configuration file path `resync_v1/resync_configuration.yaml`:
 
 ```bash
-$ powerops apply_v1 resync_v1/resync_configuration.yaml
+$ powerops apply_v1 power_ops_config.yaml resync_v1/resync_configuration.yaml
 ```
 
 [!NOTE]
