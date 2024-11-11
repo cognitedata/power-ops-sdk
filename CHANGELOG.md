@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.102.3] - 2024-11-4
+### Changed
+* Simplify usage of cogshop api module and update examples
+
+
 ## [0.101.1] - 2024-10-21
 ### Changed
 * Rename example cases to Fornebu and Stavanger cases
