@@ -68,14 +68,14 @@ warn_required_dynamic_aliases = false
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
-typer = {version="^0.12.0", extras=["rich"]}
+rich = ">=10.11.0"
+typer = "^0.12.0"
 PyYAML = "^6.0"
 cognite-sdk = {version = ">=7.43", extras = ["pandas"]}
 pydantic = "^2.0"
 pydantic-settings = "^2.0"
 loguru = "^0.7.0"
 deepdiff = "^6.3.0"
-matplotlib = "^3.7.1"
 dacite = "^1.8.1"
 python-dotenv = "^1.0.0"
 arrow = "^1.2.0"
@@ -84,7 +84,6 @@ tomli = {version = "^2.0.1", python = "<3.11"}
 StrEnum = {version = "^0.4.15", python = "<3.11"}
 tomli-w = "^1.0.0"
 tabulate = "^0.9"
-cognite-pygen = "^0.99.24"
 toml = ">=0.10"
 mkdocs =  {version="*", optional=true}
 mkdocs-jupyter = {version="*", optional=true}
@@ -107,6 +106,7 @@ powerops = "cognite.powerops.cli:main"
 
 [tool.poetry.group.dev.dependencies]
 cognite-toolkit = "^0.3.0"
+cognite-pygen = "^0.99.24"
 pre-commit = "^3.2.2"
 profilehooks = "^1.12.0"
 pytest-mock = "^3.10.0"

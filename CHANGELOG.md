@@ -13,10 +13,33 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.102.3] - 2024-11-4
+## [0.102.3] - 2024-11-11
 ### Changed
 * Simplify usage of cogshop api module and update examples
 
+## [0.102.2] - 2024-11-05
+### Removed
+* Plotting functionality for `SHOPResultFile` class, and `matplotlib` as a dependency
+### Changed
+* Made `pygen` a `dev` dependency
+
+## [0.102.1] - 2024-11-05
+### Changed
+* Specifying `rich` as a separate dependency instead of as an extra for `typer`
+
+## [0.102.0] - 2024-10-28
+### Removed
+* Custom parsing of env variables to follow `SETTINGS__COGNITE__<PROPERTY>` pattern
+* PowerOpsClient.from_client() removed, use PowerOpsClient() directly instead
+* PowerOpsClient.from_settings() & .from_toml() removed, use PowerOpsClient.from_config() instead
+* Removed cognite.powerops.utils.cdf._cdf_auth as no longer needed in updated auth configuration
+* Removed cognite.powerops.utils.cdf._settings as no longer needed in updated auth configuration
+* Removed all helper functions in cognite.powerops.utils.serialization except load_yaml
+
+### Changed
+* Input arguments to Resync plan/apply needs path to client config file
+* Input to `PowerOpsClient` takes an initialized *CogniteClient* instead of a *ClientConfig*
+* Configuration file format changed to YAML and utilizes CogniteClient.load() to allow for more flexible client configuration
 
 ## [0.101.1] - 2024-10-21
 ### Changed

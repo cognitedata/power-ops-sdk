@@ -13,6 +13,7 @@ on:
 
 env:
   PYTHON_VERSION: "3.11"
+  CLIENT_CONFIG_FILE: "power_ops_config.yaml"
   CONFIGURATION_FILE: "tests/data/demo/v1/resync_configuration.yaml"
 
 jobs:
@@ -39,12 +40,11 @@ jobs:
 
       - name: Run resync apply
         env:
-          SETTINGS__COGNITE__CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-          SETTINGS__COGNITE__CLIENT_ID: ${{ vars.CLIENT_ID }}
-          SETTINGS__COGNITE__PROJECT: ${{ vars.PROJECT }}
-          SETTINGS__COGNITE__CDF_CLUSTER: ${{ vars.CLUSTER }}
-          SETTINGS__COGNITE__TENANT_ID: ${{ vars.TENANT_ID }}
-          SETTINGS__COGNITE__LOGIN_FLOW: "client_credentials"
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          CLIENT_ID: ${{ vars.CLIENT_ID }}
+          PROJECT: ${{ vars.PROJECT }}
+          CLUSTER: ${{ vars.CLUSTER }}
+          TENANT_ID: ${{ vars.TENANT_ID }}
         run: |
-          echo Running resync apply in CDF environment $SETTINGS__COGNITE__PROJECT
-          powerops apply_v1 $CONFIGURATION_FILE
+          echo Running resync apply in CDF environment $PROJECT
+          powerops apply_v1 $CLIENT_CONFIG_FILE $CONFIGURATION_FILE
