@@ -10,7 +10,7 @@ from cognite.powerops.resync.utils import check_all_linked_sources_exist, get_da
 logger = logging.getLogger(__name__)
 
 
-def plan(client_configuration: Path, configuration: Path) -> None:
+def plan(configuration: Path) -> None:
     """Generates data model objects from a resync configuration and prints the plan.
 
     Initializes a ResyncImporter given the input configuration path. The importer is then used to generate data model
@@ -19,7 +19,7 @@ def plan(client_configuration: Path, configuration: Path) -> None:
     Args:
         configuration: Path to the resync configuration file.
     """
-    client = PowerOpsClient.from_config(client_configuration)
+    client = PowerOpsClient.from_settings()
 
     data_model_classes = get_data_model_write_classes(client.v1)
 
@@ -31,7 +31,7 @@ def plan(client_configuration: Path, configuration: Path) -> None:
     logger.info(f"External IDs: {external_ids}")
 
 
-def apply(client_configuration: Path, configuration: Path, client: PowerOpsClient | None = None) -> None:
+def apply(configuration: Path, client: PowerOpsClient | None = None) -> None:
     """Generates data model objects from a resync configuration and upserts them to CDF.
 
     Initializes a ResyncImporter given the input configuration path. The importer is then used to generate data model
@@ -45,7 +45,7 @@ def apply(client_configuration: Path, configuration: Path, client: PowerOpsClien
         client: PowerOpsClient to use for upserting the data model objects. If not provided, a client is created from
             the settings.
     """
-    client = client or PowerOpsClient.from_config(client_configuration)
+    client = client or PowerOpsClient.from_settings()
 
     data_model_classes = get_data_model_write_classes(client.v1)
 

@@ -9,7 +9,9 @@ from typing import Generic, TypeVar, Union
 
 import yaml
 from cognite.client.data_classes import FileMetadata
+from matplotlib import pyplot as plt
 
+from cognite.powerops.client.shop.data_classes.plotting import ax_plot_time_series, create_time_series_plot
 from cognite.powerops.utils.helpers import get_dict_dot_keys, is_time_series_dict
 
 logger = logging.getLogger(__name__)
@@ -21,12 +23,7 @@ FileContentTypeT = TypeVar("FileContentTypeT", bound=Union[str, dict])
 class SHOPResultFile(abc.ABC, Generic[FileContentTypeT]):
     """Base class for handling a results file from SHOP."""
 
-    def __init__(
-        self,
-        content: FileContentTypeT,
-        file_metadata: FileMetadata = None,
-        encoding="utf-8",
-    ) -> None:
+    def __init__(self, content: FileContentTypeT, file_metadata: FileMetadata = None, encoding="utf-8") -> None:
         self._file_metadata = file_metadata
         self._encoding = encoding
         super().__init__()
@@ -166,3 +163,21 @@ class SHOPYamlFile(SHOPResultFile[dict]):
                     if isinstance(attribute, dict) and all(isinstance(x, datetime) for x in attribute.keys()):
                         keys.append(f"model.{key1}.{key2}.{key3}")
         return keys
+
+    def plot(self, keys=Union[str, Sequence[str]]):
+        """
+        Visualize time series data in the results file.
+
+        Args:
+            keys: Dot separated string of nested keys to the time series data to plot.
+
+        """
+
+        if time_series := self._prepare_plot_time_series(keys):
+            ax = create_time_series_plot()
+            for key, ts_data in time_series.items():
+                label = " ".join(key.split(".")[1:]).capitalize()
+                ax_plot_time_series(ax, ts_data, label)
+
+            ax.legend()
+            plt.show()

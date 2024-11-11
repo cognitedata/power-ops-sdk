@@ -25,11 +25,12 @@ jobs:
 
       - name: Test
         env:
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-          CLIENT_ID: ${{ vars.CLIENT_ID }}
-          PROJECT: ${{ vars.PROJECT }}
-          CLUSTER: ${{ vars.CLUSTER }}
-          TENANT_ID: ${{ vars.TENANT_ID }}
+          SETTINGS__COGNITE__CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          SETTINGS__COGNITE__CLIENT_ID: ${{ vars.CLIENT_ID }}
+          SETTINGS__COGNITE__PROJECT: ${{ vars.PROJECT }}
+          SETTINGS__COGNITE__CDF_CLUSTER: ${{ vars.CLUSTER }}
+          SETTINGS__COGNITE__TENANT_ID: ${{ vars.TENANT_ID }}
+          SETTINGS__COGNITE__LOGIN_FLOW: "client_credentials"
         run: pytest --cov --cov-report term --cov-report xml:coverage.xml
 
       - uses: codecov/codecov-action@v4
