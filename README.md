@@ -74,7 +74,6 @@ cognite_client = CogniteClient.load(cognite_config)
 # Instantiate PowerOpsClient with existing CogniteClient
 client = PowerOpsClient(client=cognite_client, read_dataset="xid_dataset", write_dataset="xid_dataset")
 
-client.shop.runs.trigger()
 ```
 
 For more examples on using the PowerOpsClient, see the examples section of the documentation.
