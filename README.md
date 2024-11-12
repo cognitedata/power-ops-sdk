@@ -59,7 +59,6 @@ from cognite.powerops.client import PowerOpsClient
 load_dotenv()
 client = PowerOpsClient.from_config("power_ops_config.yaml")
 
-client.shop.runs.trigger()
 ```
 
 Using an existing CogniteClient:
