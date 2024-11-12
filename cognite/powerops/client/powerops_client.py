@@ -8,7 +8,6 @@ from string import Template
 
 import yaml
 from cognite.client import CogniteClient, global_config
-from dotenv import load_dotenv
 
 from cognite.powerops.client.shop.cogshop_api import CogShopAPI
 from cognite.pygen.utils.external_id_factories import ExternalIdFactory
@@ -78,7 +77,6 @@ class PowerOpsClient:
         # Read in yaml file
         env_sub_template = Template(config_path.read_text())
 
-        load_dotenv()
         env_dict = dict(os.environ)
 
         if sys.version >= "3.11":  # Template.get_identifiers() is only available in Python 3.11 and later

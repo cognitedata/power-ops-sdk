@@ -11,6 +11,7 @@
 [![mypy](https://img.shields.io/badge/mypy-checked-000000.svg?style=for-the-badge&color=blue)](http://mypy-lang.org)
 
 ## What is it?
+
 The PowerOps SDK is a domain-specific SDK for interacting with Cognite Data Fusion (CDF) for the power operations' domain.
 
 ## Main Features
@@ -26,71 +27,53 @@ pip install cognite-power-ops
 
 ## Configuration
 
-Configuration of the `PowerOpsClient` and `resync` is done through settings files.
+Configuration of the `PowerOpsClient` and `resync` is done through a yaml file and environment variables.
 
+### YAML configuration
 
-### Settings Files
-The settings file are in `.toml` format. By default, the SDK will look for two settings files:
-  1. `settings.toml` in the current directory.
-  2. `.secrets.toml` in the current directory.
+The configuration is in `.yaml` format and the path to the configuration file must be explicitly provided. Refer to the [example config file](power_ops_config.yaml) for the most up to date example of required fields.
 
-The motivation for splitting them is to avoid checking in secrets into Git.
+Secrets should not be written directly in this configuration file as the file is intended to be committed to git. Instead use the following syntax to refer to an environment variable as a value.
 
-Example of settings files:
-
-`settings.toml`:
-```toml
-[cognite]
-  login_flow = "interactive"
-  project = "<cdf-project>"
-  tenant_id = "<tenant-id>"
-  cdf_cluster = "<cdf-cluster>"
-  client_id = "<client-id>"
-
-[powerops]
-  read_dataset = "uc:000:powerops"
-  write_dataset = "uc:000:powerops"
-  monitor_dataset = "uc:po:monitoring"
+```yaml
+project: "${PROJECT}"
+base_url: "https://${CLUSTER}.cognitedata.com"
 ```
 
-`.secrets.toml`
-```toml
-[cognite]
-  client_secret = "<client-secret>"
-```
-
-**Note:** You can configure which settings files to use by setting the environment variable `SETTINGS__FILES` to a semicolon-separated list of file names.
-
-```python
-import os
-
-os.environ["SETTINGS_FILES"] = ".my_settings.toml;.secrets.my_secrets.toml"
-```
+If you are using a `.env` file etc. then you must handle loading the proper environment variables prior to instantiating `PowerOpsClient` or running `resync`.
 
 ## Usage
 
 ### Run Resync
 
-See available commands:
-
-```bash
-$ powerops --help
-```
-
-Example of showing planned changes:
-
-```bash
-$ powerops plan tests/data/demo Dayahead
-```
+Refer to the [resync documentation](RESYNC.md).
 
 ### PowerOpsClient
 
+Using YAML configuration:
+
 ```python
+from dotenv import load_dotenv
 from cognite.powerops.client import PowerOpsClient
 
-client = PowerOpsClient.from_settings()
+load_dotenv()
+client = PowerOpsClient.from_config("power_ops_config.yaml")
 
 client.shop.runs.trigger()
 ```
 
-For more examples, see the examples section of the documentation.
+Using an existing CogniteClient:
+
+```python
+from cognite.powerops.client import PowerOpsClient
+
+# Refer to the Cognite SDK documentation for the different ways to instantiate a CogniteClient
+cognite_config = {} # dict with configuration
+cognite_client = CogniteClient.load(cognite_config)
+
+# Instantiate PowerOpsClient with existing CogniteClient
+client = PowerOpsClient(client=cognite_client, read_dataset="xid_dataset", write_dataset="xid_dataset")
+
+```
+
+For more examples on using the PowerOpsClient, see the examples section of the documentation.

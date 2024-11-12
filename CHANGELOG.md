@@ -1,10 +1,12 @@
 # Changelog
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-Changes are grouped as follows
+Changes are grouped as follows:
+
 - `Added` for new features.
 - `Changed` for changes in existing functionality.
 - `Deprecated` for soon-to-be removed features.
@@ -12,6 +14,12 @@ Changes are grouped as follows
 - `Removed` for now removed features.
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
+
+## [0.102.3] - 2024-11-12
+### Removed
+* Support for automatically using `load_dotenv`, end user is responsible for loading in required environment variables
+### Fixed
+* Make `pygen` a default dependency again
 
 ## [0.102.2] - 2024-11-05
 ### Removed
