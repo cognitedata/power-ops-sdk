@@ -1,3 +1,6 @@
+# `client`` is a required section, and it contains the configuration for the Cognite SDK client.
+# for more information on what should be included in the client section, see the Cognite SDK documentation.
+# https://cognite-sdk-python.readthedocs-hosted.com/en/latest/cognite_client.html#cognite.client.CogniteClient.load
 client:
   project: "${PROJECT}"
   client_name: "power-ops-sdk"
@@ -9,10 +12,14 @@ client:
       client_secret: "${CLIENT_SECRET}"
       scopes: ["https://${CLUSTER}.cognitedata.com/.default"]
 
+# `global` is an optional section, and it contains the global configuration for the Cognite SDK client.
+# for more information on what should be included in the global section, see the Cognite SDK documentation.
+# https://cognite-sdk-python.readthedocs-hosted.com/en/latest/cognite_client.html#cognite.client.config.GlobalConfig.apply_settings
 global:
   max_retries: 10
   max_retry_backoff: 10
 
+# `power_ops` is a required section, and it contains the configuration for the PowerOps SDK.
 power_ops:
   read_dataset: "uc:000:powerops"
   write_dataset: "uc:000:powerops"
