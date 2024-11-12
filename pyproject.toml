@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cognite-power-ops"
-version = "0.102.2"
+version = "0.102.3"
 description = "SDK for power markets operations on Cognite Data Fusion"
 readme = "README.md"
 authors = ["Cognite <support@cognite.com>"]
@@ -9,6 +9,59 @@ documentation = "https://cognite-power-ops-sdk.readthedocs-hosted.com/en/latest/
 homepage = "https://cognite-power-ops-sdk.readthedocs-hosted.com/en/latest/"
 repository = "https://github.com/cognitedata/power-ops-sdk"
 packages = [{include = "cognite", from = "."}]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.13"
+rich = ">=10.11.0"
+typer = "^0.12.0"
+PyYAML = "^6.0"
+cognite-sdk = {version = ">=7.43", extras = ["pandas"]}
+cognite-pygen = "^0.99.24"
+pydantic = "^2.0"
+pydantic-settings = "^2.0"
+loguru = "^0.7.0"
+deepdiff = "^6.3.0"
+dacite = "^1.8.1"
+arrow = "^1.2.0"
+typing_extensions = ">= 4"
+tomli = {version = "^2.0.1", python = "<3.11"}
+StrEnum = {version = "^0.4.15", python = "<3.11"}
+tomli-w = "^1.0.0"
+tabulate = "^0.9"
+toml = ">=0.10"
+mkdocs =  {version="*", optional=true}
+mkdocs-jupyter = {version="*", optional=true}
+mkdocs-material = {version="*", optional=true}
+mkdocs-material-extensions = {version="*", optional=true}
+mkdocs-git-revision-date-localized-plugin = {version="*", optional=true}
+mkdocs-git-authors-plugin = {version="*", optional=true}
+mkdocs-gitbook = {version="*", optional=true}
+mkdocs-glightbox = {version="*", optional=true}
+pymdown-extensions = {version="*", optional=true}
+mkdocstrings = {version="*", optional=true, extras=["python"]}
+cachelib = "^0.13.0"
+
+[tool.poetry.extras]
+docs = ["mkdocs", "mkdocs-jupyter", "mkdocs-material", "mkdocs-material-extensions", "mkdocs-git-revision-date-localized-plugin",
+    "mkdocs-git-authors-plugin", "mkdocs-gitbook", "mkdocs-glightbox", "pymdown-extensions", "mkdocstrings"]
+
+[tool.poetry.scripts]
+powerops = "cognite.powerops.cli:main"
+
+[tool.poetry.group.dev.dependencies]
+cognite-toolkit = "^0.3.0"
+pre-commit = "^3.2.2"
+profilehooks = "^1.12.0"
+pytest-mock = "^3.10.0"
+pytest-regressions = "^2.4.2"
+ipykernel="6.24.0"
+jupyter = "^1.0.0"
+mypy = "^1.4"
+pandas-stubs = "^2"
+types-PyYAML = "^6"
+pytest = "^8.1.1"
+pytest-cov = "^5.0.0"
+twine = "^5.0.0"
 
 [tool.ruff]
 line-length = 120
@@ -64,61 +117,6 @@ plugins = ["pydantic.mypy"]
 init_forbid_extra = true
 init_typed = true
 warn_required_dynamic_aliases = false
-
-
-[tool.poetry.dependencies]
-python = ">=3.10,<3.13"
-rich = ">=10.11.0"
-typer = "^0.12.0"
-PyYAML = "^6.0"
-cognite-sdk = {version = ">=7.43", extras = ["pandas"]}
-pydantic = "^2.0"
-pydantic-settings = "^2.0"
-loguru = "^0.7.0"
-deepdiff = "^6.3.0"
-dacite = "^1.8.1"
-python-dotenv = "^1.0.0"
-arrow = "^1.2.0"
-typing_extensions = ">= 4"
-tomli = {version = "^2.0.1", python = "<3.11"}
-StrEnum = {version = "^0.4.15", python = "<3.11"}
-tomli-w = "^1.0.0"
-tabulate = "^0.9"
-toml = ">=0.10"
-mkdocs =  {version="*", optional=true}
-mkdocs-jupyter = {version="*", optional=true}
-mkdocs-material = {version="*", optional=true}
-mkdocs-material-extensions = {version="*", optional=true}
-mkdocs-git-revision-date-localized-plugin = {version="*", optional=true}
-mkdocs-git-authors-plugin = {version="*", optional=true}
-mkdocs-gitbook = {version="*", optional=true}
-mkdocs-glightbox = {version="*", optional=true}
-pymdown-extensions = {version="*", optional=true}
-mkdocstrings = {version="*", optional=true, extras=["python"]}
-cachelib = "^0.13.0"
-
-[tool.poetry.extras]
-docs = ["mkdocs", "mkdocs-jupyter", "mkdocs-material", "mkdocs-material-extensions", "mkdocs-git-revision-date-localized-plugin",
-    "mkdocs-git-authors-plugin", "mkdocs-gitbook", "mkdocs-glightbox", "pymdown-extensions", "mkdocstrings"]
-
-[tool.poetry.scripts]
-powerops = "cognite.powerops.cli:main"
-
-[tool.poetry.group.dev.dependencies]
-cognite-toolkit = "^0.3.0"
-cognite-pygen = "^0.99.24"
-pre-commit = "^3.2.2"
-profilehooks = "^1.12.0"
-pytest-mock = "^3.10.0"
-pytest-regressions = "^2.4.2"
-ipykernel="6.24.0"
-jupyter = "^1.0.0"
-mypy = "^1.4"
-pandas-stubs = "^2"
-types-PyYAML = "^6"
-pytest = "^8.1.1"
-pytest-cov = "^5.0.0"
-twine = "^5.0.0"
 
 [build-system]
 requires = ["poetry-core"]
