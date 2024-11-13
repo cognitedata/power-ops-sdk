@@ -1,5 +1,4 @@
 import datetime
-from collections.abc import Sequence
 from urllib.parse import urlparse
 
 import requests
@@ -7,19 +6,14 @@ from cognite.client import CogniteClient
 
 from cognite.powerops.client._generated.v1._api_client import PowerOpsModelsV1Client
 from cognite.powerops.client._generated.v1.data_classes import (
-    ResourcesWriteResult,
     ShopCase,
     ShopCaseWrite,
     ShopFileWrite,
     ShopModelWrite,
-    ShopResultList,
+    ShopResult,
     ShopScenarioWrite,
 )
-from cognite.powerops.client._generated.v1.data_classes._core import (
-    DEFAULT_INSTANCE_SPACE,
-    DomainModelWrite,
-)
-from cognite.powerops.client._generated.v1.data_classes._shop_result import ShopResult
+from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 
 
 class CogShopAPI:
@@ -55,43 +49,75 @@ class CogShopAPI:
         )
         response.raise_for_status()
 
-    def prepare_shop_scenario(
-        self,
-        shop_version: str,
-        model_name: str,
-        scenario_name: str,
-        model_external_id: str | None = None,
-        scenario_external_id: str | None = None,
-    ) -> ShopScenarioWrite:
+    def _validate_shop_scenario_reference(
+        self, shop_scenario_reference: str | ShopScenarioWrite
+    ) -> str | ShopScenarioWrite:
+        """Checks if the provided shop scenario is valid.
+        Either it can be a Write object which is usable when uploaded or if could already already exists.
         """
-        Prepare a SHOP case that can be written to cdf.
-        External ids must be unique. If they are not provided, they will be generated.
+        if isinstance(shop_scenario_reference, ShopScenarioWrite):
+            # allow the write object to be used directly
+            return shop_scenario_reference
 
-        In this case, `ShopScenario` as and its `ShopModel` are mostly superfluous.
-        However, they are still added as nearly empty objects in order to set the SHOP version.
+        elif isinstance(shop_scenario_reference, str):
+            # if the scenario reference is a string, it is assumed to be an external id
+            if scenario := self._po.shop_based_day_ahead_bid_process.shop_scenario.retrieve(
+                external_id=shop_scenario_reference
+            ):
+                return scenario.external_id
+
+        raise ValueError(f"Invalid shop scenario reference: {shop_scenario_reference}.")
+
+    def prepare_shop_case_with_existing_scenario(
+        self,
+        shop_file_list: list[tuple[str, str, bool, str]],
+        start_time: datetime.datetime,
+        end_time: datetime.datetime,
+        shop_scenario_reference: str | ShopScenarioWrite,
+        case_external_id: str | None = None,
+    ) -> ShopCaseWrite:
+        """
+        Prepare a SHOP case that can be written to cdf, specifying an existing scenario.
+        Case external ids must be unique if provided. A case external_id will be created if not provided.
+
+        In this case, `scenario_external_id` point to an existing as and its `ShopScenario` that we wish to reuse.
 
         Args:
-            scenario_name: Name of the scenario. Required, does not have to be unique
-            model_name: Name of the model. Required, does not have to be unique
-            scenario_external_id: External ID of the scenario. Optional, must be unique
-            model_external_id: External ID of the model. Optional, must be unique
+            shop_file_list: List of 4-tuples and every item is expected.
+                    Assumes the order of the list if the order the files should be loaded into SHOP.
+                Format:
+                    `file_reference`: external if of file in CDF.
+                    `file_name`: Name of the file.
+                    `is_ascii`: Whether the file is in ASCII format.
+                    `labels`: Labels to be added to the fil, use "" if no labels
+
+            start_time: Start of time range SHOP is optimized over
+            end_time: End of time range SHOP is optimized overs
+            shop_scenario_reference: Either an external id of a scenario, a . Required, must already exist in CDF.
+            case_external_id: External ID of the SHOP case. Optional, must be unique
         Returns:
             ShopCaseWrite: A SHOP case that can be written to CDF
         """
-        # Setting external id to None results in an error.
-        # Skip it as an argument to automatically generate external value for it.
-        model_write = ShopModelWrite(
-            name=model_name,
-            shop_version=shop_version,
-            **({"external_id": model_external_id} if model_external_id else {}),
-        )
 
-        scenario_write = ShopScenarioWrite(
-            name=scenario_name,
-            model=model_write,
-            **({"external_id": scenario_external_id} if scenario_external_id else {}),
+        shop_files_write = [
+            ShopFileWrite(
+                name=file_name,
+                fileReference=file_reference,
+                isAscii=is_ascii,
+                label=label,
+                order=i + 1,  # Order is 1-indexed
+            )
+            for i, (file_reference, file_name, is_ascii, label) in enumerate(shop_file_list)
+        ]
+
+        case_write = ShopCaseWrite(
+            start_time=start_time,
+            end_time=end_time,
+            scenario=self._validate_shop_scenario_reference(shop_scenario_reference),
+            shop_files=shop_files_write,
+            **({"external_id": case_external_id} if case_external_id else {}),
         )
-        return scenario_write
+        return case_write
 
     def prepare_shop_case(
         self,
@@ -133,117 +159,25 @@ class CogShopAPI:
         Returns:
             ShopCaseWrite: A SHOP case that can be written to CDF
         """
-
-        scenario_write = self.prepare_shop_scenario(
+        model_write = ShopModelWrite(
+            name=model_name,
             shop_version=shop_version,
-            model_name=model_name,
-            scenario_name=scenario_name,
-            model_external_id=model_external_id,
-            scenario_external_id=scenario_external_id,
+            **({"external_id": model_external_id} if model_external_id else {}),
         )
 
-        shop_files_write = [
-            ShopFileWrite(
-                name=file_name,
-                fileReference=file_reference,
-                isAscii=is_ascii,
-                label=label,
-                order=i + 1,  # Order is 1-indexed
-            )
-            for i, (file_reference, file_name, is_ascii, label) in enumerate(shop_file_list)
-        ]
+        scenario_write = ShopScenarioWrite(
+            name=scenario_name,
+            model=model_write,
+            **({"external_id": scenario_external_id} if scenario_external_id else {}),
+        )
 
-        case_write = ShopCaseWrite(
+        return self.prepare_shop_case_with_existing_scenario(
+            shop_file_list=shop_file_list,
             start_time=start_time,
             end_time=end_time,
-            scenario=scenario_write,
-            shop_files=shop_files_write,
-            **({"external_id": case_external_id} if case_external_id else {}),
+            shop_scenario_reference=scenario_write,
+            case_external_id=case_external_id,
         )
-        return case_write
-
-    def prepare_shop_case_with_existing_scenario(
-        self,
-        shop_file_list: list[tuple[str, str, bool, str]],
-        start_time: datetime.datetime,
-        end_time: datetime.datetime,
-        scenario_external_id: str,
-        case_external_id: str | None = None,
-    ) -> ShopCaseWrite:
-        """
-        Prepare a SHOP case that can be written to cdf, specifying an existing scenario.
-        Case external ids must be unique if provided. A case external_id will be created if not provided.
-
-        In this case, `scenario_external_id` point to an existing as and its `ShopScenario` that we wish to reuse.
-
-        Args:
-            shop_file_list: List of 4-tuples and every item is expected.
-                    Assumes the order of the list if the order the files should be loaded into SHOP.
-                Format:
-                    `file_reference`: external if of file in CDF.
-                    `file_name`: Name of the file.
-                    `is_ascii`: Whether the file is in ASCII format.
-                    `labels`: Labels to be added to the fil, use "" if no labels
-
-            start_time: Start of time range SHOP is optimized over
-            end_time: End of time range SHOP is optimized overs
-            scenario_external_id: External ID of the scenario. Required, must already exist in CDF.
-            case_external_id: External ID of the SHOP case. Optional, must be unique
-        Returns:
-            ShopCaseWrite: A SHOP case that can be written to CDF
-        """
-        scenario = self._po.shop_based_day_ahead_bid_process.shop_scenario.retrieve(external_id=scenario_external_id)
-        if not scenario:
-            raise ValueError(f"There are no scenarios with external_id: {scenario_external_id}.")
-
-        shop_files_write = [
-            ShopFileWrite(
-                name=file_name,
-                fileReference=file_reference,
-                isAscii=is_ascii,
-                label=label,
-                order=i + 1,  # Order is 1-indexed
-            )
-            for i, (file_reference, file_name, is_ascii, label) in enumerate(shop_file_list)
-        ]
-
-        case_write = ShopCaseWrite(
-            start_time=start_time,
-            end_time=end_time,
-            scenario=scenario_external_id,  # todo: check if this is correct
-            shop_files=shop_files_write,
-            **({"external_id": case_external_id} if case_external_id else {}),
-        )
-        return case_write
-
-    def write_resources(self, resources: DomainModelWrite | Sequence[DomainModelWrite]) -> ResourcesWriteResult:
-        """
-        Args:
-            resources: The resource(s) to write to CDF
-        Returns:
-            ResourcesWriteResult: Result of the write operation
-        """
-        return self._po.upsert(resources)
-
-    def retrieve_shop_case(self, case_external_id: str) -> ShopCase:
-        """Retrieve a shop case from CDF"""
-        return self._po.shop_based_day_ahead_bid_process.shop_case.retrieve(external_id=case_external_id)
-
-    def list_shop_results_for_case(self, case_external_id: str, limit: int = 3) -> ShopResultList:
-        """
-        View the result of a SHOP case.
-        Args:
-            case_external_id: External ID of the SHOP case
-            limit: Number of results to return, -1 for all results
-        """
-        result_list: ShopResultList = self._po.shop_based_day_ahead_bid_process.shop_result.list(
-            case=case_external_id, limit=limit
-        )
-        return result_list
-
-    def retrieve_shop_result(self, result_external_id: str) -> ShopResult:
-        """Retrieve a shop result from CDF"""
-        return self._po.shop_based_day_ahead_bid_process.shop_result.retrieve(external_id=result_external_id)
 
     def list_shop_versions(self) -> list[str]:
         """List the available version of SHOP remotely  in CDF.
