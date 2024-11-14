@@ -11,6 +11,7 @@ from cognite.powerops.client._generated.v1.data_classes import (
     ShopFileWrite,
     ShopModelWrite,
     ShopResult,
+    ShopResultList,
     ShopScenarioWrite,
 )
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
@@ -178,6 +179,26 @@ class CogShopAPI:
             shop_scenario_reference=scenario_write,
             case_external_id=case_external_id,
         )
+
+    def retrieve_shop_case(self, case_external_id: str) -> ShopCase:
+        """Retrieve a shop case from CDF"""
+        return self._po.shop_based_day_ahead_bid_process.shop_case.retrieve(external_id=case_external_id)
+
+    def list_shop_results_for_case(self, case_external_id: str, limit: int = 3) -> ShopResultList:
+        """
+        View the result of a SHOP case.
+        Args:
+            case_external_id: External ID of the SHOP case
+            limit: Number of results to return, -1 for all results
+        """
+        result_list: ShopResultList = self._po.shop_based_day_ahead_bid_process.shop_result.list(
+            case=case_external_id, limit=limit
+        )
+        return result_list
+
+    def retrieve_shop_result(self, result_external_id: str) -> ShopResult:
+        """Retrieve a shop result from CDF"""
+        return self._po.shop_based_day_ahead_bid_process.shop_result.retrieve(external_id=result_external_id)
 
     def list_shop_versions(self) -> list[str]:
         """List the available version of SHOP remotely  in CDF.
