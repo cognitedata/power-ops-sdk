@@ -78,10 +78,8 @@ class CogShopAPI:
         case_external_id: str | None = None,
     ) -> ShopCaseWrite:
         """
-        Prepare a SHOP case that can be written to cdf, specifying an existing scenario.
-        Case external ids must be unique if provided. A case external_id will be created if not provided.
-
-        In this case, `scenario_external_id` point to an existing as and its `ShopScenario` that we wish to reuse.
+        Prepare a SHOP case that can be written to cdf, specifying just a scenario we wish to use.
+        Case external id must be unique if provided. A case external_id will be created if not provided.
 
         Args:
             shop_file_list: List of 4-tuples and every item is expected.
@@ -95,7 +93,7 @@ class CogShopAPI:
             start_time: Start of time range SHOP is optimized over. Required.
             end_time: End of time range SHOP is optimized overs. Required.
             shop_scenario_reference: An external id of an existing scenario or a `ShopScenarioWrite` instance. Required.
-            case_external_id: External ID of the SHOP case. Optional, must be unique
+            case_external_id: External ID of the SHOP case. Optional, must be unique.
         Returns:
             ShopCaseWrite: A SHOP case that can be written to CDF
         """
