@@ -54,7 +54,7 @@ class CogShopAPI:
         self, shop_scenario_reference: str | ShopScenarioWrite
     ) -> str | ShopScenarioWrite:
         """Checks if the provided shop scenario is valid.
-        Either it can be a Write object which is usable when uploaded or if could already already exists.
+        Either it can be a Write object which is usable when uploaded or an external ID of an already existing scenario.
         """
         if isinstance(shop_scenario_reference, ShopScenarioWrite):
             # allow the write object to be used directly
@@ -92,9 +92,9 @@ class CogShopAPI:
                     `is_ascii`: Whether the file is in ASCII format.
                     `labels`: Labels to be added to the fil, use "" if no labels
 
-            start_time: Start of time range SHOP is optimized over
-            end_time: End of time range SHOP is optimized overs
-            shop_scenario_reference: Either an external id of a scenario, a . Required, must already exist in CDF.
+            start_time: Start of time range SHOP is optimized over. Required.
+            end_time: End of time range SHOP is optimized overs. Required.
+            shop_scenario_reference: An external id of an existing scenario or a `ShopScenarioWrite` instance. Required.
             case_external_id: External ID of the SHOP case. Optional, must be unique
         Returns:
             ShopCaseWrite: A SHOP case that can be written to CDF
@@ -133,6 +133,8 @@ class CogShopAPI:
         case_external_id: str | None = None,
     ) -> ShopCaseWrite:
         """
+        NB! This is not the recommended way to create a SHOP case.
+
         Prepare a SHOP case that can be written to cdf.
         External ids must be unique. If they are not provided, they will be generated.
 
@@ -150,7 +152,7 @@ class CogShopAPI:
 
             start_time: Start of time range SHOP is optimized over
             end_time: End of time range SHOP is optimized over
-            shop_version: Version of SHOP to use (e.g. '16.0.2'or '15.7.0.0'), required.
+            shop_version: Version of SHOP to use (e.g. '16.0.2'or '15.7.0.0'). Required.
 
             scenario_name: Name of the scenario. Required, does not have to be unique
             model_name: Name of the model. Required, does not have to be unique
