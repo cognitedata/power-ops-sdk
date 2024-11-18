@@ -153,16 +153,17 @@ See available commands:
 $ powerops --help
 ```
 
-Example of showing plan changes provided the configuration file path `resync_v1/resync_configuration.yaml`:
+Example of showing plan changes provided the configuration file path `tests/data/demo/v1/resync_configuration.yaml`:
 
 ```bash
-$ powerops plan_v1 power_ops_config.yaml resync_v1/resync_configuration.yaml
+# $ powerops plan_v1 power_ops_config.yaml resync_v1/resync_configuration.yaml
+$ powerops plan_v1 power_ops_config.yaml tests/data/demo/v1/resync_configuration.yaml
 ```
 
-Example of showing apply changes provided the configuration file path `resync_v1/resync_configuration.yaml`:
+Example of showing apply changes provided the configuration file path `tests/data/demo/v1/resync_configuration.yaml`:
 
 ```bash
-$ powerops apply_v1 power_ops_config.yaml resync_v1/resync_configuration.yaml
+$ powerops apply_v1 power_ops_config.yaml tests/data/demo/v1/resync_configuration.yaml
 ```
 
 [!NOTE]
