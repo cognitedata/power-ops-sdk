@@ -1,0 +1,48 @@
+# ShopScenarioSet view definition
+# - name: String!
+#   start_specification: DateSpecification
+#   end_specification: DateSpecification
+#   scenarios: [ShopScenario]
+
+- name: Stavanger 1 scenario
+  start_specification: "[name]Default Start"
+  end_specification: "[name]Default End"
+  scenarios:
+    - "[name]Stavanger base"
+- name: Stavanger 2 scenarios
+  start_specification: "[name]Default Start"
+  end_specification: "[name]Default End"
+  scenarios:
+    - "[name]Stavanger base"
+    - "[name]Stavanger price plus 200 first 24h"
+- name: Stavanger 3 scenarios
+  start_specification: "[name]Default Start"
+  end_specification: "[name]Default End"
+  scenarios:
+    - "[name|type:ShopScenario]Stavanger price minus 200 first 24h"
+    - "[name]Stavanger base"
+    - "[name]Stavanger price plus 200 first 24h"
+- name: Stavanger 20 scenarios
+  start_specification: "[name]Default Start"
+  end_specification: "[name]Default End"
+  scenarios:
+    - "[name]Stavanger price minus 500 first 24h"
+    - "[name]Stavanger price multiply 0 first 24h"
+    - "[name]Stavanger price minus 50 first 24h"
+    - "[name]Stavanger price minus 40 first 24h"
+    - "[name]Stavanger price minus 30 first 24h"
+    - "[name]Stavanger price minus 20 first 24h"
+    - "[name]Stavanger price minus 15 first 24h"
+    - "[name]Stavanger price minus 10 first 24h"
+    - "[name]Stavanger price minus 5 first 24h"
+    - "[name]Stavanger base"
+    - "[name]Stavanger price plus 5 first 24h"
+    - "[name]Stavanger price plus 10 first 24h"
+    - "[name]Stavanger price plus 15 first 24h"
+    - "[name]Stavanger price plus 20 first 24h"
+    - "[name]Stavanger price plus 30 first 24h"
+    - "[name]Stavanger price plus 40 first 24h"
+    - "[name]Stavanger price plus 50 first 24h"
+    - "[name]Stavanger price plus 70 first 24h"
+    - "[name]Stavanger price plus 100 first 24h"
+    - "[name]Stavanger price plus 2000 first 24h"

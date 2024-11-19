@@ -11,6 +11,8 @@
 ##########################################################
 # All items below are copied from "script" mapping.ipynb #
 ##########################################################
+# todo: consider moving "price" mappings to shared folder
+
 - external_id: base_mapping_fornebu_creek_intake_fjerdingby_intake_overflow_cost
   object_type: creek_intake
   object_name: Fjerdingby_intake
