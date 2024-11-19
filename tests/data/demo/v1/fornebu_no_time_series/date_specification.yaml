@@ -1,0 +1,33 @@
+# DateSpecification view definition
+# - name: String!
+#   processing_timezone: String
+#   resulting_timezone: String
+#   floor_frame: String
+#   shift_definition: JSONObject
+
+- name: July 8 last year
+  processing_timezone: Europe/Oslo
+  resulting_timezone: Europe/Oslo
+  floor_frame: year
+  shift_definition:
+    years: -1
+    months: 6
+    days: 7
+
+- name: Start of July 8 last year
+  processing_timezone: Europe/Oslo
+  resulting_timezone: UTC
+  floor_frame: year
+  shift_definition:
+    years: -1
+    months: 6
+    days: 7
+
+- name: End of July 15 last year
+  processing_timezone: Europe/Oslo
+  resulting_timezone: UTC
+  floor_frame: year
+  shift_definition:
+    years: -1
+    months: 6
+    days: 15
