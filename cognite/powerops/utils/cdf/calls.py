@@ -144,7 +144,7 @@ def retrieve_latest(client: CogniteClient, external_ids: list[Optional[str]], be
     # For (Cog)Datapoints in (Cog)DatapointsList
     for datapoints in time_series:
         if len(datapoints) > 0:  # TODO: what to do about ts with no datapoints?
-            datapoints.timestamp[0] = before  # type: ignore[index]
+            datapoints.timestamp[0] = before
 
     res = {
         require(datapoints.external_id): datapoints.to_pandas().iloc[:, 0]  # iloc to convert DataFrame to Series
