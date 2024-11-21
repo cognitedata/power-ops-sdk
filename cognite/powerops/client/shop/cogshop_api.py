@@ -202,10 +202,9 @@ class CogShopAPI:
         return self._po.shop_based_day_ahead_bid_process.shop_result.retrieve(external_id=result_external_id)
 
     def list_shop_versions(self) -> list[str]:
-        """List the available version of SHOP remotely  in CDF.
-        Does not include versions in local version of CShaaS.
+        """List the available version of SHOP in CDF. Does not include versions that are "local" to CShaaS.
         SHOP releases should have the following format:
-        'SHOP-{VERSION}-pyshop-python{py_version}.linux.zip'
+        'SHOP-{VERSION}-pyshop-python{py_version}.linux.zip' and the metadata {'shop:type': 'shop-release'}.
         """
         # todo? Add an endpoint to list the available versions of SHOP via powerops API?
         return [file.name for file in self._cdf.files.list(metadata={"shop:type": "shop-release"}, limit=-1)]
