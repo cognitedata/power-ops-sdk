@@ -210,7 +210,9 @@ class CogShopAPI:
         return [file.name for file in self._cdf.files.list(metadata={"shop:type": "shop-release"}, limit=-1)]
 
     def retrieve_shop_case_graphql(self, case_external_id: str) -> ShopCase:
-        """Retrieve a shop case from CDF using GraphQL. This is a a way to retrieve a ShopCase instance."""
+        """Retrieve a shop case from CDF using GraphQL.
+        Instead of the external of IDs of ShopScenario, ShopModel and ShopFiles, the actual instances are fetched.
+        This is more stable than retrieving a ShopCase using `retrieve_shop_case` but less efficient."""
         graphql_response = self._po.shop_based_day_ahead_bid_process.graphql_query(_shop_case_query(case_external_id))
         if graphql_response:
             shop_case: ShopCase = graphql_response[0].as_read()
@@ -220,7 +222,7 @@ class CogShopAPI:
 
     def list_shop_result_graphql(self, case_external_id: str, limit: int) -> list[ShopResult]:
         """Retrieve a shop result, based on a case external id using GraphQL.
-        This is a a way to retrieve a ShopResult instances."""
+        This is less efficient, but more reliable a way to list ShopResult instances."""
         graphql_response = self._po.shop_based_day_ahead_bid_process.graphql_query(
             _shop_result_query(case_external_id, limit=limit)
         )
