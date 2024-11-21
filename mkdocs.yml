@@ -8,26 +8,10 @@ theme:
     - content.tooltips
 
 nav:
-  - Home: index.md
-  - Installation: installation.md
-  - QuickStart:
-      - Data Engineer: quickstart/data_engineer.md
-      - Data Scientist: quickstart/data_scientist.ipynb
+  - Home: ../README.md
   - Tutorials:
-      - Shop API: tutorials/shop_results.ipynb
-  - Reference:
-      - client:
-          - SHOP API: packages/client/shop_api.md
-          - SHOP API Classes: packages/client/shop_api_classes.md
-          - Dayahead API: packages/client/dayahead_trigger_api.md
-          - Dayahead API Classes: packages/client/dayahead_trigger_classes.md
-          - time series mapping: packages/resync/time_series_mapping.md
-      - utils:
-          - serialization: packages/utils/serialization.md
-          - CDF:
-              - extraction pipeline: packages/utils/cdf_extraction_pipeline.md
-      - Prerun Time Series Transformations:
-          - transformations: packages/prerun_transformations/transformations.md
+      - Quickstart CogShop-as-a-Service: tutorials/quickstart_cogshop_run.ipynb
+      - Advanced CogShop-as-a-Service: tutorials/advanced_cogshop_run.ipynb
 
 markdown_extensions:
   - pymdownx.superfences
@@ -49,7 +33,7 @@ markdown_extensions:
       custom_fences:
         - name: mermaid
           class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format ''
+          format: 'pymdownx.superfences.fence_code_format'
 
 plugins:
   - mkdocs-jupyter:
