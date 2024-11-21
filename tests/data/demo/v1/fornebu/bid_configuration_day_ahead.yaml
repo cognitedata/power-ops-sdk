@@ -102,3 +102,27 @@
     - "[external_id]shop_based_partial_bid_configuration_landet_20_step"
     - "[external_id]shop_based_partial_bid_configuration_scott_20_step"
     - "[external_id]shop_based_partial_bid_configuration_lund_20_step"
+
+- name: 15 min Test Multi Scenario 3
+  market_configuration: "[name]Nord Pool Day-Ahead 15 min"
+  price_area: "[external_id]price_area_information_no2"
+  bid_date_specification: "[name]Default BidDate"
+  partials:
+    - "[external_id]shop_based_partial_bid_configuration_landet_3"
+    - "[external_id]shop_based_partial_bid_configuration_lund_3"
+- name: 15 min Test Water Value
+  market_configuration: "[name]Nord Pool Day-Ahead 15 min"
+  price_area: "[external_id]price_area_information_no2"
+  bid_date_specification: "[name]Default BidDate"
+  partials:
+    - "[name|type:WaterValueBasedPartialBidConfiguration]Plant Lien_krv"
+    - "[name|type:WaterValueBasedPartialBidConfiguration]Plant Rull1 Step"
+- name: 15 min Test Combination
+  market_configuration: "[name]Nord Pool Day-Ahead 15 min"
+  price_area: "[external_id]price_area_information_no2"
+  bid_date_specification: "[name]Default BidDate"
+  partials:
+    - "[name|type:WaterValueBasedPartialBidConfiguration]Plant Scott Step"
+    - "[external_id]shop_based_partial_bid_configuration_lien_krv_3"
+    - "[external_id]shop_based_partial_bid_configuration_landet_2"
+    - "[external_id]shop_based_partial_bid_configuration_lund_3_step"
