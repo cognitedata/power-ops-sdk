@@ -57,9 +57,8 @@ from dotenv import load_dotenv
 from cognite.powerops.client import PowerOpsClient
 
 load_dotenv()
-client = PowerOpsClient.from_config("power_ops_config.yaml")
+power_ops_client = PowerOpsClient.from_config("power_ops_config.yaml")
 
-client.shop.runs.trigger()
 ```
 
 Using an existing CogniteClient:
@@ -72,7 +71,7 @@ cognite_config = {} # dict with configuration
 cognite_client = CogniteClient.load(cognite_config)
 
 # Instantiate PowerOpsClient with existing CogniteClient
-client = PowerOpsClient(client=cognite_client, read_dataset="xid_dataset", write_dataset="xid_dataset")
+power_ops_client = PowerOpsClient(client=cognite_client, read_dataset="xid_dataset", write_dataset="xid_dataset")
 
 ```
 

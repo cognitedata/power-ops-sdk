@@ -45,8 +45,8 @@ class PowerOpsClient:
         self.shop = SHOPRunAPI(self.cdf, self.datasets.write_dataset_id)
         self.workflow = DayaheadTriggerAPI(self.cdf, self.datasets.write_dataset_id)
 
-        self.cogshop = CogShopAPI(self.cdf)
         self.v1 = PowerOpsModelsV1Client(self.cdf)
+        self.cogshop = CogShopAPI(self.cdf, self.v1)
 
         DomainModelWrite.external_id_factory = ExternalIdFactory.create_external_id_factory(
             prefix_ext_id_factory=ExternalIdFactory(
