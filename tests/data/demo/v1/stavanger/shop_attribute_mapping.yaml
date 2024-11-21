@@ -8,7 +8,7 @@
 #   retrieve: String
 #   aggregation: String
 
-- external_id: base_mapping_fornebu_reservoir_dale_inflow
+- external_id: base_mapping_stavanger_reservoir_dale_inflow
   object_type: reservoir
   object_name: Dale
   attribute_name: inflow
