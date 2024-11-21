@@ -222,7 +222,8 @@ class CogShopAPI:
 
     def list_shop_results_graphql(self, case_external_id: str, limit: int) -> list[ShopResult]:
         """Retrieve a shop result, based on a case external id using GraphQL.
-        This is provided as a fallback option for cases when `list_shop_results` does not perform well"""
+        This is provided as a fallback option for cases when `list_shop_results_for_case` does not perform well"""
+
         graphql_response = self._po.shop_based_day_ahead_bid_process.graphql_query(
             _shop_result_query(case_external_id, limit=limit)
         )
