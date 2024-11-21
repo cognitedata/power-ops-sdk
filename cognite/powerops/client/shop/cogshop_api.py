@@ -84,16 +84,16 @@ class CogShopAPI:
 
 
         Args:
-            ```suggestion
-            shop_file_list: List of (file_reference, file_name, is_ascii, label) tuples, in the order the files should be loaded.
-                  `file_reference`: external if of file in CDF.
-                  `file_name`: Name of the file.
-                  `is_ascii`: Whether the file is in ASCII format.
-                  `label`: Label to be added to the file, use "" if no labels
-            start_time: Start of time range SHOP is optimized over. Required.
-            end_time: End of time range SHOP is optimized overs. Required.
-            shop_scenario_reference: An external id of an existing scenario or a `ShopScenarioWrite` instance. Required.
-            case_external_id: External ID of the ShopCase instance that will be created. Optional, must be unique.
+          shop_file_list: List of (file_reference, file_name, is_ascii, label) tuples,
+                          in the order the files should be loaded.
+             `file_reference`: external id of file in CDF.
+             `file_name`: Name of the file.
+             `is_ascii`: Whether the file is in ASCII format.
+             `label`: Label to be added to the file, use "" if no labels
+          start_time: Start of time range SHOP is optimized over. Required.
+          end_time: End of time range SHOP is optimized overs. Required.
+          shop_scenario_reference: An external id of an existing scenario or a `ShopScenarioWrite` instance. Required.
+          case_external_id: External ID of the ShopCase instance that will be created. Optional, must be unique.
 
         Returns:
             ShopCaseWrite: A SHOP case that can be written to CDF
@@ -141,23 +141,22 @@ class CogShopAPI:
         However, they are still added as nearly empty objects in order to set the SHOP version.
 
         Args:
-            shop_file_list: List of 4-tuples and every item is expected.
-                    Assumes the order of the list if the order the files should be loaded into SHOP.
-                Format:
-                    `file_reference`: external if of file in CDF.
-                    `file_name`: Name of the file.
-                    `is_ascii`: Whether the file is in ASCII format.
-                    `labels`: Labels to be added to the fil, use "" if no labels
+          shop_file_list: List of (file_reference, file_name, is_ascii, label) tuples,
+                          in the order the files should be loaded.
+            `file_reference`: external id of file in CDF.
+            `file_name`: Name of the file.
+            `is_ascii`: Whether the file is in ASCII format.
+            `label`: Label to be added to the file, use "" if no labels
 
-            start_time: Start of time range SHOP is optimized over
-            end_time: End of time range SHOP is optimized over
-            shop_version: Version of SHOP to use (e.g. '16.0.2'or '15.7.0.0'). Required.
+          start_time: Start of time range SHOP is optimized over
+          end_time: End of time range SHOP is optimized over
+          shop_version: Version of SHOP to use (e.g. '16.0.2'or '15.7.0.0'). Required.
 
-            scenario_name: Name of the scenario. Required, does not have to be unique
-            model_name: Name of the model. Required, does not have to be unique
-            scenario_external_id: External ID of the ShopScenario instance that will be created. Optional, must be unique
-            model_external_id: External ID of the ShopModel instance that will be created. Optional, must be unique
-            case_external_id: External ID of the ShopCase instance that will be created. Optional, must be unique
+          scenario_name: Name of the scenario. Required, does not have to be unique
+          model_name: Name of the model. Required, does not have to be unique
+          scenario_external_id: External ID of the ShopScenario instance that will be created. Optional, must be unique
+          model_external_id: External ID of the ShopModel instance that will be created. Optional, must be unique
+          case_external_id: External ID of the ShopCase instance that will be created. Optional, must be unique
 
         Returns:
             ShopCaseWrite: A SHOP case that can be written to CDF
