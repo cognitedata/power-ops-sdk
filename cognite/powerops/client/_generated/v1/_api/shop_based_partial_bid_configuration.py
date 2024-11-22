@@ -8,7 +8,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -19,13 +25,21 @@ from cognite.powerops.client._generated.v1.data_classes import (
     ShopBasedPartialBidConfigurationList,
     ShopBasedPartialBidConfigurationWriteList,
     ShopBasedPartialBidConfigurationTextFields,
+    PowerAsset,
+    ShopScenarioSet,
 )
 from cognite.powerops.client._generated.v1.data_classes._shop_based_partial_bid_configuration import (
+    ShopBasedPartialBidConfigurationQuery,
     _SHOPBASEDPARTIALBIDCONFIGURATION_PROPERTIES_BY_FIELD,
     _create_shop_based_partial_bid_configuration_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .shop_based_partial_bid_configuration_query import ShopBasedPartialBidConfigurationQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.shop_based_partial_bid_configuration_query import ShopBasedPartialBidConfigurationQueryAPI
 
 
 class ShopBasedPartialBidConfigurationAPI(NodeAPI[ShopBasedPartialBidConfiguration, ShopBasedPartialBidConfigurationWrite, ShopBasedPartialBidConfigurationList, ShopBasedPartialBidConfigurationWriteList]):
@@ -45,9 +59,9 @@ class ShopBasedPartialBidConfigurationAPI(NodeAPI[ShopBasedPartialBidConfigurati
             name_prefix: str | None = None,
             method: str | list[str] | None = None,
             method_prefix: str | None = None,
-            power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
             add_steps: bool | None = None,
-            scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            scenario_set: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
             external_id_prefix: str | None = None,
             space: str | list[str] | None = None,
             limit: int = DEFAULT_QUERY_LIMIT,
@@ -72,6 +86,12 @@ class ShopBasedPartialBidConfigurationAPI(NodeAPI[ShopBasedPartialBidConfigurati
             A query API for shop based partial bid configurations.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_shop_based_partial_bid_configuration_filter(
             self._view_id,
@@ -86,7 +106,7 @@ class ShopBasedPartialBidConfigurationAPI(NodeAPI[ShopBasedPartialBidConfigurati
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(ShopBasedPartialBidConfigurationList)
+        builder = DataClassQueryBuilder(ShopBasedPartialBidConfigurationList)
         return ShopBasedPartialBidConfigurationQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -97,6 +117,10 @@ class ShopBasedPartialBidConfigurationAPI(NodeAPI[ShopBasedPartialBidConfigurati
         write_none: bool = False,
     ) -> ResourcesWriteResult:
         """Add or update (upsert) shop based partial bid configurations.
+
+        Note: This method iterates through all nodes and timeseries linked to shop_based_partial_bid_configuration and creates them including the edges
+        between the nodes. For example, if any of `power_asset` or `scenario_set` are set, then these
+        nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
             shop_based_partial_bid_configuration: Shop based partial bid configuration or sequence of shop based partial bid configurations to upsert.
@@ -160,14 +184,14 @@ class ShopBasedPartialBidConfigurationAPI(NodeAPI[ShopBasedPartialBidConfigurati
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopBasedPartialBidConfiguration | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopBasedPartialBidConfiguration | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopBasedPartialBidConfigurationList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> ShopBasedPartialBidConfigurationList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopBasedPartialBidConfiguration | ShopBasedPartialBidConfigurationList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> ShopBasedPartialBidConfiguration | ShopBasedPartialBidConfigurationList | None:
         """Retrieve one or more shop based partial bid configurations by id(s).
 
         Args:
@@ -196,9 +220,9 @@ class ShopBasedPartialBidConfigurationAPI(NodeAPI[ShopBasedPartialBidConfigurati
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
-        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         add_steps: bool | None = None,
-        scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        scenario_set: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -276,9 +300,9 @@ class ShopBasedPartialBidConfigurationAPI(NodeAPI[ShopBasedPartialBidConfigurati
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
-        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         add_steps: bool | None = None,
-        scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        scenario_set: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -298,9 +322,9 @@ class ShopBasedPartialBidConfigurationAPI(NodeAPI[ShopBasedPartialBidConfigurati
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
-        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         add_steps: bool | None = None,
-        scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        scenario_set: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -322,9 +346,9 @@ class ShopBasedPartialBidConfigurationAPI(NodeAPI[ShopBasedPartialBidConfigurati
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
-        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         add_steps: bool | None = None,
-        scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        scenario_set: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -345,9 +369,9 @@ class ShopBasedPartialBidConfigurationAPI(NodeAPI[ShopBasedPartialBidConfigurati
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
-        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         add_steps: bool | None = None,
-        scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        scenario_set: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -423,9 +447,9 @@ class ShopBasedPartialBidConfigurationAPI(NodeAPI[ShopBasedPartialBidConfigurati
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
-        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         add_steps: bool | None = None,
-        scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        scenario_set: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -476,6 +500,15 @@ class ShopBasedPartialBidConfigurationAPI(NodeAPI[ShopBasedPartialBidConfigurati
             filter_,
         )
 
+    def query(self) -> ShopBasedPartialBidConfigurationQuery:
+        """Start a query for shop based partial bid configurations."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return ShopBasedPartialBidConfigurationQuery(self._client)
+
+    def select(self) -> ShopBasedPartialBidConfigurationQuery:
+        """Start selecting from shop based partial bid configurations."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return ShopBasedPartialBidConfigurationQuery(self._client)
 
     def list(
         self,
@@ -483,9 +516,9 @@ class ShopBasedPartialBidConfigurationAPI(NodeAPI[ShopBasedPartialBidConfigurati
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
-        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         add_steps: bool | None = None,
-        scenario_set: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        scenario_set: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -493,6 +526,7 @@ class ShopBasedPartialBidConfigurationAPI(NodeAPI[ShopBasedPartialBidConfigurati
         sort_by: ShopBasedPartialBidConfigurationFields | Sequence[ShopBasedPartialBidConfigurationFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> ShopBasedPartialBidConfigurationList:
         """List/filter shop based partial bid configurations
 
@@ -513,6 +547,8 @@ class ShopBasedPartialBidConfigurationAPI(NodeAPI[ShopBasedPartialBidConfigurati
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
                 This will override the sort_by and direction. This allowos you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
+            retrieve_connections: Whether to retrieve `power_asset` and `scenario_set` for the shop based partial bid configurations. Defaults to 'skip'.
+                'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier of the connected items, and 'full' will retrieve the full connected items.
 
         Returns:
             List of requested shop based partial bid configurations
@@ -539,10 +575,56 @@ class ShopBasedPartialBidConfigurationAPI(NodeAPI[ShopBasedPartialBidConfigurati
             space,
             filter,
         )
-        return self._list(
-            limit=limit,
-            filter=filter_,
-            sort_by=sort_by,  # type: ignore[arg-type]
-            direction=direction,
-            sort=sort,
+
+        if retrieve_connections == "skip":
+                return self._list(
+                limit=limit,
+                filter=filter_,
+                sort_by=sort_by,  # type: ignore[arg-type]
+                direction=direction,
+                sort=sort,
+            )
+
+        builder = DataClassQueryBuilder(ShopBasedPartialBidConfigurationList)
+        has_data = dm.filters.HasData(views=[self._view_id])
+        builder.append(
+            NodeQueryStep(
+                builder.create_name(None),
+                dm.query.NodeResultSetExpression(
+                    filter=dm.filters.And(filter_, has_data) if filter_ else has_data,
+                    sort=self._create_sort(sort_by, direction, sort),  # type: ignore[arg-type]
+                ),
+                ShopBasedPartialBidConfiguration,
+                max_retrieve_limit=limit,
+                raw_filter=filter_,
+            )
         )
+        from_root = builder.get_from()
+        if retrieve_connections == "full":
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name(from_root),
+                    dm.query.NodeResultSetExpression(
+                        from_=from_root,
+                        filter=dm.filters.HasData(views=[PowerAsset._view_id]),
+                        direction="outwards",
+                        through=self._view_id.as_property_ref("powerAsset"),
+                    ),
+                    PowerAsset,
+                )
+            )
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name(from_root),
+                    dm.query.NodeResultSetExpression(
+                        from_=from_root,
+                        filter=dm.filters.HasData(views=[ShopScenarioSet._view_id]),
+                        direction="outwards",
+                        through=self._view_id.as_property_ref("scenarioSet"),
+                    ),
+                    ShopScenarioSet,
+                )
+            )
+        # We know that that all nodes are connected as it is not possible to filter on connections
+        builder.execute_query(self._client, remove_not_connected=False)
+        return builder.unpack()

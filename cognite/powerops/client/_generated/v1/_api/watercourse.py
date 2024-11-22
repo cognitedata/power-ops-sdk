@@ -8,7 +8,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -21,11 +27,17 @@ from cognite.powerops.client._generated.v1.data_classes import (
     WatercourseTextFields,
 )
 from cognite.powerops.client._generated.v1.data_classes._watercourse import (
+    WatercourseQuery,
     _WATERCOURSE_PROPERTIES_BY_FIELD,
     _create_watercourse_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .watercourse_query import WatercourseQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.watercourse_query import WatercourseQueryAPI
 
 
 class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, WatercourseWriteList]):
@@ -74,6 +86,12 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
             A query API for watercourses.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_watercourse_filter(
             self._view_id,
@@ -89,7 +107,7 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(WatercourseList)
+        builder = DataClassQueryBuilder(WatercourseList)
         return WatercourseQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -163,14 +181,14 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> Watercourse | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> Watercourse | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> WatercourseList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> WatercourseList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> Watercourse | WatercourseList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> Watercourse | WatercourseList | None:
         """Retrieve one or more watercourses by id(s).
 
         Args:
@@ -491,6 +509,15 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
             filter_,
         )
 
+    def query(self) -> WatercourseQuery:
+        """Start a query for watercourses."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return WatercourseQuery(self._client)
+
+    def select(self) -> WatercourseQuery:
+        """Start selecting from watercourses."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return WatercourseQuery(self._client)
 
     def list(
         self,
@@ -557,6 +584,7 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
             space,
             filter,
         )
+
         return self._list(
             limit=limit,
             filter=filter_,

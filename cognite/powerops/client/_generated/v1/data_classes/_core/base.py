@@ -3,12 +3,11 @@ from __future__ import annotations
 import datetime
 import sys
 import warnings
-from abc import abstractmethod, ABC
+from abc import ABC, abstractmethod
 from collections import UserList
 from collections.abc import Collection, Mapping
 from dataclasses import dataclass, field
 from typing import (
-    Annotated,
     Callable,
     cast,
     ClassVar,
@@ -24,16 +23,23 @@ from typing import (
 
 import pandas as pd
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
-from cognite.client.data_classes import TimeSeriesList
+from cognite.client.data_classes import (
+    TimeSeriesWriteList,
+    FileMetadataWriteList,
+    SequenceWriteList,
+    TimeSeriesList,
+    FileMetadataList,
+    SequenceList,
+)
 from cognite.client.data_classes.data_modeling.instances import (
     Instance,
     InstanceApply,
     Properties,
     PropertyValue,
 )
-from pydantic import BaseModel, BeforeValidator, Field, model_validator
-from pydantic.functional_serializers import PlainSerializer
+from pydantic import BaseModel, Field, model_validator
+
+from cognite.powerops.client._generated.v1.data_classes._core.constants import DEFAULT_INSTANCE_SPACE
 
 if sys.version_info >= (3, 11):
     from typing import Self
@@ -41,30 +47,20 @@ else:
     from typing_extensions import Self
 
 
-TimeSeries = Annotated[
-    CogniteTimeSeries,
-    PlainSerializer(
-        lambda v: v.dump(camel_case=True) if isinstance(v, CogniteTimeSeries) else v,
-        return_type=dict,
-        when_used="unless-none",
-    ),
-    BeforeValidator(lambda v: CogniteTimeSeries.load(v) if isinstance(v, dict) else v),
-]
-
-
-DEFAULT_INSTANCE_SPACE = "power_ops_instances"
-
-
 @dataclass
 class ResourcesWrite:
     nodes: dm.NodeApplyList = field(default_factory=lambda: dm.NodeApplyList([]))
     edges: dm.EdgeApplyList = field(default_factory=lambda: dm.EdgeApplyList([]))
-    time_series: TimeSeriesList = field(default_factory=lambda: TimeSeriesList([]))
+    time_series: TimeSeriesWriteList = field(default_factory=lambda: TimeSeriesWriteList([]))
+    files: FileMetadataWriteList = field(default_factory=lambda: FileMetadataWriteList([]))
+    sequences: SequenceWriteList = field(default_factory=lambda: SequenceWriteList([]))
 
     def extend(self, other: ResourcesWrite) -> None:
         self.nodes.extend(other.nodes)
         self.edges.extend(other.edges)
         self.time_series.extend(other.time_series)
+        self.files.extend(other.files)
+        self.sequences.extend(other.sequences)
 
 
 @dataclass
@@ -72,6 +68,8 @@ class ResourcesWriteResult:
     nodes: dm.NodeApplyResultList = field(default_factory=lambda: dm.NodeApplyResultList([]))
     edges: dm.EdgeApplyResultList = field(default_factory=lambda: dm.EdgeApplyResultList([]))
     time_series: TimeSeriesList = field(default_factory=lambda: TimeSeriesList([]))
+    files: FileMetadataList = field(default_factory=lambda: FileMetadataList([]))
+    sequences: SequenceList = field(default_factory=lambda: SequenceList([]))
 
 
 # Arbitrary types are allowed to be able to use the TimeSeries class
@@ -146,9 +144,12 @@ class GraphQLList(UserList):
     def dump(self) -> list[dict[str, Any]]:
         return [node.model_dump() for node in self.data]
 
-    def to_pandas(self) -> pd.DataFrame:
+    def to_pandas(self, dropna_columns: bool = False) -> pd.DataFrame:
         """
         Convert the list of nodes to a pandas.DataFrame.
+
+        Args:
+            dropna_columns: Whether to drop columns that are all NaN.
 
         Returns:
             A pandas.DataFrame with the nodes as rows.
@@ -163,13 +164,20 @@ class GraphQLList(UserList):
         columns = (
             id_columns + [col for col in df if col not in fixed_columns] + [col for col in end_columns if col in df]
         )
-        return df[columns]
+        df = df[columns]
+        if df.empty:
+            return df
+        if dropna_columns:
+            df.dropna(how="all", axis=1, inplace=True)
+        return df
 
     def _repr_html_(self) -> str:
-        return self.to_pandas()._repr_html_()  # type: ignore[operator]
+        return self.to_pandas(dropna_columns=True)._repr_html_()  # type: ignore[operator]
 
 
 class DomainModelCore(Core, ABC):
+    _view_id: ClassVar[dm.ViewId]
+
     space: str
     external_id: str = Field(min_length=1, max_length=255, alias="externalId")
 
@@ -178,6 +186,16 @@ class DomainModelCore(Core, ABC):
 
     def as_direct_reference(self) -> dm.DirectRelationReference:
         return dm.DirectRelationReference(space=self.space, external_id=self.external_id)
+
+    @classmethod
+    def _update_connections(
+        cls,
+        instances: dict[dm.NodeId | dm.EdgeId | str, Self],
+        nodes_by_id: dict[dm.NodeId | str, DomainModel],
+        edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
+    ) -> None:
+        # This is used when unpacking a query result and should be overridden in the subclasses
+        return None
 
 
 T_DomainModelCore = TypeVar("T_DomainModelCore", bound=DomainModelCore)
@@ -289,7 +307,10 @@ class DataRecordWriteList(_DataRecordListCore[DataRecordWrite]):
 class DomainModelWrite(DomainModelCore, extra="ignore", populate_by_name=True):
     external_id_factory: ClassVar[Optional[Callable[[type[DomainModelWrite], dict], str]]] = None
     data_record: DataRecordWrite = Field(default_factory=DataRecordWrite)
-    node_type: Optional[dm.DirectRelationReference] = None
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
+
+    def as_id(self) -> dm.NodeId:
+        return dm.NodeId(space=self.space, external_id=self.external_id)
 
     def to_instances_write(
         self,
@@ -317,7 +338,12 @@ class DomainModelWrite(DomainModelCore, extra="ignore", populate_by_name=True):
 
     @model_validator(mode="before")
     def create_external_id_if_factory(cls, data: Any) -> Any:
-        if isinstance(data, dict) and cls.external_id_factory is not None:
+        if (
+            isinstance(data, dict)
+            and cls.external_id_factory is not None
+            and data.get("external_id") is None
+            and data.get("externalId") is None
+        ):
             data["external_id"] = cls.external_id_factory(cls, data)
         return data
 
@@ -378,9 +404,12 @@ class CoreList(UserList, Generic[T_Core]):
     def as_external_ids(self) -> list[str]:
         return [node.external_id for node in self.data]
 
-    def to_pandas(self) -> pd.DataFrame:
+    def to_pandas(self, dropna_columns: bool = False) -> pd.DataFrame:
         """
         Convert the list of nodes to a pandas.DataFrame.
+
+        Args:
+            dropna_columns: Whether to drop columns that are all NaN.
 
         Returns:
             A pandas.DataFrame with the nodes as rows.
@@ -395,10 +424,15 @@ class CoreList(UserList, Generic[T_Core]):
         columns = (
             id_columns + [col for col in df if col not in fixed_columns] + [col for col in end_columns if col in df]
         )
-        return df[columns]
+        df = df[columns]
+        if df.empty:
+            return df
+        if dropna_columns:
+            df.dropna(how="all", axis=1, inplace=True)
+        return df
 
     def _repr_html_(self) -> str:
-        return self.to_pandas()._repr_html_()  # type: ignore[operator]
+        return self.to_pandas(dropna_columns=True)._repr_html_()  # type: ignore[operator]
 
 
 class DomainModelList(CoreList[T_DomainModel]):
@@ -633,7 +667,7 @@ def unpack_properties(properties: Properties) -> Mapping[str, PropertyValue | dm
                 else:
                     unpacked[prop_name] = dm.NodeId(space=prop_value["space"], external_id=prop_value["externalId"])
             elif isinstance(prop_value, list):
-                values = []
+                values: list[Any] = []
                 for value in prop_value:
                     if isinstance(value, dict) and "externalId" in value and "space" in value:
                         if value["space"] == DEFAULT_INSTANCE_SPACE:
@@ -646,3 +680,6 @@ def unpack_properties(properties: Properties) -> Mapping[str, PropertyValue | dm
             else:
                 unpacked[prop_name] = prop_value
     return unpacked
+
+
+T_DomainList = TypeVar("T_DomainList", bound=Union[DomainModelList, DomainRelationList], covariant=True)

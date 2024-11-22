@@ -2,14 +2,16 @@ from __future__ import annotations
 
 import datetime
 import warnings
+from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
 
-from cognite.client import data_modeling as dm
+from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator
 
-from ._core import (
+from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
     DataRecord,
     DataRecordGraphQL,
     DataRecordWrite,
@@ -17,14 +19,27 @@ from ._core import (
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
+    DomainRelation,
     DomainRelationWrite,
     GraphQLCore,
     ResourcesWrite,
+    T_DomainModelList,
+    as_direct_relation_reference,
+    as_instance_dict_id,
+    as_node_id,
+    as_pygen_node_id,
+    are_nodes_equal,
+    is_tuple_id,
+    select_best_node,
+    QueryCore,
+    NodeQueryCore,
+    StringFilter,
+    TimestampFilter,
 )
 
 if TYPE_CHECKING:
-    from ._shop_file import ShopFile, ShopFileGraphQL, ShopFileWrite
-    from ._shop_scenario import ShopScenario, ShopScenarioGraphQL, ShopScenarioWrite
+    from cognite.powerops.client._generated.v1.data_classes._shop_file import ShopFile, ShopFileList, ShopFileGraphQL, ShopFileWrite, ShopFileWriteList
+    from cognite.powerops.client._generated.v1.data_classes._shop_scenario import ShopScenario, ShopScenarioList, ShopScenarioGraphQL, ShopScenarioWrite, ShopScenarioWriteList
 
 
 __all__ = [
@@ -39,9 +54,12 @@ __all__ = [
     "ShopCaseGraphQL",
 ]
 
-ShopCaseFields = Literal["start_time", "end_time"]
+
+ShopCaseTextFields = Literal["external_id", ]
+ShopCaseFields = Literal["external_id", "start_time", "end_time"]
 
 _SHOPCASE_PROPERTIES_BY_FIELD = {
+    "external_id": "externalId",
     "start_time": "startTime",
     "end_time": "endTime",
 }
@@ -92,14 +110,16 @@ class ShopCaseGraphQL(GraphQLCore):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return ShopCase(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
                 last_updated_time=self.data_record.last_updated_time,
                 created_time=self.data_record.created_time,
             ),
-            scenario=self.scenario.as_read() if isinstance(self.scenario, GraphQLCore) else self.scenario,
+            scenario=self.scenario.as_read()
+if isinstance(self.scenario, GraphQLCore)
+else self.scenario,
             start_time=self.start_time,
             end_time=self.end_time,
             shop_files=[shop_file.as_read() for shop_file in self.shop_files or []],
@@ -111,10 +131,12 @@ class ShopCaseGraphQL(GraphQLCore):
     def as_write(self) -> ShopCaseWrite:
         """Convert this GraphQL format of shop case to the writing format."""
         return ShopCaseWrite(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
-            scenario=self.scenario.as_write() if isinstance(self.scenario, GraphQLCore) else self.scenario,
+            scenario=self.scenario.as_write()
+if isinstance(self.scenario, GraphQLCore)
+else self.scenario,
             start_time=self.start_time,
             end_time=self.end_time,
             shop_files=[shop_file.as_write() for shop_file in self.shop_files or []],
@@ -150,7 +172,9 @@ class ShopCase(DomainModel):
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
-            scenario=self.scenario.as_write() if isinstance(self.scenario, DomainModel) else self.scenario,
+            scenario=self.scenario.as_write()
+if isinstance(self.scenario, DomainModel)
+else self.scenario,
             start_time=self.start_time,
             end_time=self.end_time,
             shop_files=[shop_file.as_write() if isinstance(shop_file, DomainModel) else shop_file for shop_file in self.shop_files or []],
@@ -164,6 +188,54 @@ class ShopCase(DomainModel):
             stacklevel=2,
         )
         return self.as_write()
+
+    @classmethod
+    def _update_connections(
+        cls,
+        instances: dict[dm.NodeId | str, ShopCase],  # type: ignore[override]
+        nodes_by_id: dict[dm.NodeId | str, DomainModel],
+        edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
+    ) -> None:
+        from ._shop_file import ShopFile
+        from ._shop_scenario import ShopScenario
+
+        for instance in instances.values():
+            if isinstance(instance.scenario, (dm.NodeId, str)) and (scenario := nodes_by_id.get(instance.scenario)) and isinstance(
+                    scenario, ShopScenario
+            ):
+                instance.scenario = scenario
+            if edges := edges_by_source_node.get(instance.as_id()):
+                shop_files: list[ShopFile | str | dm.NodeId] = []
+                for edge in edges:
+                    value: DomainModel | DomainRelation | str | dm.NodeId
+                    if isinstance(edge, DomainRelation):
+                        value = edge
+                    else:
+                        other_end: dm.DirectRelationReference = (
+                            edge.end_node
+                            if edge.start_node.space == instance.space
+                            and edge.start_node.external_id == instance.external_id
+                            else edge.start_node
+                        )
+                        destination: dm.NodeId | str = (
+                            as_node_id(other_end)
+                            if other_end.space != DEFAULT_INSTANCE_SPACE
+                            else other_end.external_id
+                        )
+                        if destination in nodes_by_id:
+                            value = nodes_by_id[destination]
+                        else:
+                            value = destination
+                    edge_type = edge.edge_type if isinstance(edge, DomainRelation) else edge.type
+
+                    if edge_type == dm.DirectRelationReference("power_ops_types", "ShopCase.shopFiles") and isinstance(
+                        value, (ShopFile, str, dm.NodeId)
+                    ):
+                        shop_files.append(value)
+
+                instance.shop_files = shop_files or None
+
+
 
 
 class ShopCaseWrite(DomainModelWrite):
@@ -183,12 +255,21 @@ class ShopCaseWrite(DomainModelWrite):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopCase", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = None
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
     scenario: Union[ShopScenarioWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
     shop_files: Optional[list[Union[ShopFileWrite, str, dm.NodeId]]] = Field(default=None, repr=False, alias="shopFiles")
 
+    @field_validator("scenario", "shop_files", mode="before")
+    def as_node_id(cls, value: Any) -> Any:
+        if isinstance(value, dm.DirectRelationReference):
+            return dm.NodeId(value.space, value.external_id)
+        elif isinstance(value, tuple) and len(value) == 2 and all(isinstance(item, str) for item in value):
+            return dm.NodeId(value[0], value[1])
+        elif isinstance(value, list):
+            return [cls.as_node_id(item) for item in value]
+        return value
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -219,7 +300,7 @@ class ShopCaseWrite(DomainModelWrite):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=None if allow_version_increase else self.data_record.existing_version,
-                type=self.node_type,
+                type=as_direct_relation_reference(self.node_type),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=self._view_id,
@@ -280,11 +361,35 @@ class ShopCaseList(DomainModelList[ShopCase]):
         )
         return self.as_write()
 
+    @property
+    def scenario(self) -> ShopScenarioList:
+        from ._shop_scenario import ShopScenario, ShopScenarioList
+
+        return ShopScenarioList([item.scenario for item in self.data if isinstance(item.scenario, ShopScenario)])
+
+    @property
+    def shop_files(self) -> ShopFileList:
+        from ._shop_file import ShopFile, ShopFileList
+
+        return ShopFileList([item for items in self.data for item in items.shop_files or [] if isinstance(item, ShopFile)])
+
 
 class ShopCaseWriteList(DomainModelWriteList[ShopCaseWrite]):
     """List of shop cases in the writing version."""
 
     _INSTANCE = ShopCaseWrite
+
+    @property
+    def scenario(self) -> ShopScenarioWriteList:
+        from ._shop_scenario import ShopScenarioWrite, ShopScenarioWriteList
+
+        return ShopScenarioWriteList([item.scenario for item in self.data if isinstance(item.scenario, ShopScenarioWrite)])
+
+    @property
+    def shop_files(self) -> ShopFileWriteList:
+        from ._shop_file import ShopFileWrite, ShopFileWriteList
+
+        return ShopFileWriteList([item for items in self.data for item in items.shop_files or [] if isinstance(item, ShopFileWrite)])
 
 class ShopCaseApplyList(ShopCaseWriteList): ...
 
@@ -292,7 +397,7 @@ class ShopCaseApplyList(ShopCaseWriteList): ...
 
 def _create_shop_case_filter(
     view_id: dm.ViewId,
-    scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
     min_start_time: datetime.datetime | None = None,
     max_start_time: datetime.datetime | None = None,
     min_end_time: datetime.datetime | None = None,
@@ -302,14 +407,10 @@ def _create_shop_case_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters: list[dm.Filter] = []
-    if scenario and isinstance(scenario, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("scenario"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": scenario}))
-    if scenario and isinstance(scenario, tuple):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("scenario"), value={"space": scenario[0], "externalId": scenario[1]}))
-    if scenario and isinstance(scenario, list) and isinstance(scenario[0], str):
-        filters.append(dm.filters.In(view_id.as_property_ref("scenario"), values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in scenario]))
-    if scenario and isinstance(scenario, list) and isinstance(scenario[0], tuple):
-        filters.append(dm.filters.In(view_id.as_property_ref("scenario"), values=[{"space": item[0], "externalId": item[1]} for item in scenario]))
+    if isinstance(scenario, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(scenario):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("scenario"), value=as_instance_dict_id(scenario)))
+    if scenario and isinstance(scenario, Sequence) and not isinstance(scenario, str) and not is_tuple_id(scenario):
+        filters.append(dm.filters.In(view_id.as_property_ref("scenario"), values=[as_instance_dict_id(item) for item in scenario]))
     if min_start_time is not None or max_start_time is not None:
         filters.append(dm.filters.Range(view_id.as_property_ref("startTime"), gte=min_start_time.isoformat(timespec="milliseconds") if min_start_time else None, lte=max_start_time.isoformat(timespec="milliseconds") if max_start_time else None))
     if min_end_time is not None or max_end_time is not None:
@@ -323,3 +424,80 @@ def _create_shop_case_filter(
     if filter:
         filters.append(filter)
     return dm.filters.And(*filters) if filters else None
+
+
+class _ShopCaseQuery(NodeQueryCore[T_DomainModelList, ShopCaseList]):
+    _view_id = ShopCase._view_id
+    _result_cls = ShopCase
+    _result_list_cls_end = ShopCaseList
+
+    def __init__(
+        self,
+        created_types: set[type],
+        creation_path: list[QueryCore],
+        client: CogniteClient,
+        result_list_cls: type[T_DomainModelList],
+        expression: dm.query.ResultSetExpression | None = None,
+        connection_name: str | None = None,
+        connection_type: Literal["reverse-list"] | None = None,
+        reverse_expression: dm.query.ResultSetExpression | None = None,
+    ):
+        from ._shop_file import _ShopFileQuery
+        from ._shop_scenario import _ShopScenarioQuery
+
+        super().__init__(
+            created_types,
+            creation_path,
+            client,
+            result_list_cls,
+            expression,
+            dm.filters.HasData(views=[self._view_id]),
+            connection_name,
+            connection_type,
+            reverse_expression,
+        )
+
+        if _ShopScenarioQuery not in created_types:
+            self.scenario = _ShopScenarioQuery(
+                created_types.copy(),
+                self._creation_path,
+                client,
+                result_list_cls,
+                dm.query.NodeResultSetExpression(
+                    through=self._view_id.as_property_ref("scenario"),
+                    direction="outwards",
+                ),
+                connection_name="scenario",
+            )
+
+        if _ShopFileQuery not in created_types:
+            self.shop_files = _ShopFileQuery(
+                created_types.copy(),
+                self._creation_path,
+                client,
+                result_list_cls,
+                dm.query.EdgeResultSetExpression(
+                    direction="outwards",
+                    chain_to="destination",
+                ),
+                connection_name="shop_files",
+            )
+
+        self.space = StringFilter(self, ["node", "space"])
+        self.external_id = StringFilter(self, ["node", "externalId"])
+        self.start_time = TimestampFilter(self, self._view_id.as_property_ref("startTime"))
+        self.end_time = TimestampFilter(self, self._view_id.as_property_ref("endTime"))
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.start_time,
+            self.end_time,
+        ])
+
+    def list_shop_case(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopCaseList:
+        return self._list(limit=limit)
+
+
+class ShopCaseQuery(_ShopCaseQuery[ShopCaseList]):
+    def __init__(self, client: CogniteClient):
+        super().__init__(set(), [], client, ShopCaseList)

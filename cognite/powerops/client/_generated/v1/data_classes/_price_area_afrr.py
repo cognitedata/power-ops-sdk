@@ -1,15 +1,20 @@
 from __future__ import annotations
 
 import warnings
+from collections.abc import Sequence
 from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
 
-from cognite.client import data_modeling as dm
-from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
+from cognite.client import data_modeling as dm, CogniteClient
+from cognite.client.data_classes import (
+    TimeSeries as CogniteTimeSeries,
+    TimeSeriesWrite as CogniteTimeSeriesWrite,
+)
 from pydantic import Field
 from pydantic import field_validator, model_validator
 
-from ._core import (
+from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
     DataRecord,
     DataRecordGraphQL,
     DataRecordWrite,
@@ -17,12 +22,30 @@ from ._core import (
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
+    DomainRelation,
     DomainRelationWrite,
     GraphQLCore,
     ResourcesWrite,
+    FileMetadata,
+    FileMetadataWrite,
+    FileMetadataGraphQL,
     TimeSeries,
+    TimeSeriesWrite,
+    TimeSeriesGraphQL,
+    T_DomainModelList,
+    as_direct_relation_reference,
+    as_instance_dict_id,
+    as_node_id,
+    as_pygen_node_id,
+    are_nodes_equal,
+    is_tuple_id,
+    select_best_node,
+    QueryCore,
+    NodeQueryCore,
+    StringFilter,
+    IntFilter,
 )
-from ._price_area import PriceArea, PriceAreaWrite
+from cognite.powerops.client._generated.v1.data_classes._price_area import PriceArea, PriceAreaWrite
 
 
 __all__ = [
@@ -38,10 +61,11 @@ __all__ = [
 ]
 
 
-PriceAreaAFRRTextFields = Literal["name", "display_name", "asset_type", "capacity_price_up", "capacity_price_down", "activation_price_up", "activation_price_down", "relative_activation", "total_capacity_allocation_up", "total_capacity_allocation_down", "own_capacity_allocation_up", "own_capacity_allocation_down"]
-PriceAreaAFRRFields = Literal["name", "display_name", "ordering", "asset_type", "capacity_price_up", "capacity_price_down", "activation_price_up", "activation_price_down", "relative_activation", "total_capacity_allocation_up", "total_capacity_allocation_down", "own_capacity_allocation_up", "own_capacity_allocation_down"]
+PriceAreaAFRRTextFields = Literal["external_id", "name", "display_name", "asset_type", "capacity_price_up", "capacity_price_down", "activation_price_up", "activation_price_down", "relative_activation", "total_capacity_allocation_up", "total_capacity_allocation_down", "own_capacity_allocation_up", "own_capacity_allocation_down"]
+PriceAreaAFRRFields = Literal["external_id", "name", "display_name", "ordering", "asset_type", "capacity_price_up", "capacity_price_down", "activation_price_up", "activation_price_down", "relative_activation", "total_capacity_allocation_up", "total_capacity_allocation_down", "own_capacity_allocation_up", "own_capacity_allocation_down"]
 
 _PRICEAREAAFRR_PROPERTIES_BY_FIELD = {
+    "external_id": "externalId",
     "name": "name",
     "display_name": "displayName",
     "ordering": "ordering",
@@ -86,15 +110,15 @@ class PriceAreaAFRRGraphQL(GraphQLCore):
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
     asset_type: Optional[str] = Field(None, alias="assetType")
-    capacity_price_up: Union[TimeSeries, dict, None] = Field(None, alias="capacityPriceUp")
-    capacity_price_down: Union[TimeSeries, dict, None] = Field(None, alias="capacityPriceDown")
-    activation_price_up: Union[TimeSeries, dict, None] = Field(None, alias="activationPriceUp")
-    activation_price_down: Union[TimeSeries, dict, None] = Field(None, alias="activationPriceDown")
-    relative_activation: Union[TimeSeries, dict, None] = Field(None, alias="relativeActivation")
-    total_capacity_allocation_up: Union[TimeSeries, dict, None] = Field(None, alias="totalCapacityAllocationUp")
-    total_capacity_allocation_down: Union[TimeSeries, dict, None] = Field(None, alias="totalCapacityAllocationDown")
-    own_capacity_allocation_up: Union[TimeSeries, dict, None] = Field(None, alias="ownCapacityAllocationUp")
-    own_capacity_allocation_down: Union[TimeSeries, dict, None] = Field(None, alias="ownCapacityAllocationDown")
+    capacity_price_up: Optional[TimeSeriesGraphQL] = Field(None, alias="capacityPriceUp")
+    capacity_price_down: Optional[TimeSeriesGraphQL] = Field(None, alias="capacityPriceDown")
+    activation_price_up: Optional[TimeSeriesGraphQL] = Field(None, alias="activationPriceUp")
+    activation_price_down: Optional[TimeSeriesGraphQL] = Field(None, alias="activationPriceDown")
+    relative_activation: Optional[TimeSeriesGraphQL] = Field(None, alias="relativeActivation")
+    total_capacity_allocation_up: Optional[TimeSeriesGraphQL] = Field(None, alias="totalCapacityAllocationUp")
+    total_capacity_allocation_down: Optional[TimeSeriesGraphQL] = Field(None, alias="totalCapacityAllocationDown")
+    own_capacity_allocation_up: Optional[TimeSeriesGraphQL] = Field(None, alias="ownCapacityAllocationUp")
+    own_capacity_allocation_down: Optional[TimeSeriesGraphQL] = Field(None, alias="ownCapacityAllocationDown")
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -114,7 +138,7 @@ class PriceAreaAFRRGraphQL(GraphQLCore):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return PriceAreaAFRR(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
@@ -125,15 +149,15 @@ class PriceAreaAFRRGraphQL(GraphQLCore):
             display_name=self.display_name,
             ordering=self.ordering,
             asset_type=self.asset_type,
-            capacity_price_up=self.capacity_price_up,
-            capacity_price_down=self.capacity_price_down,
-            activation_price_up=self.activation_price_up,
-            activation_price_down=self.activation_price_down,
-            relative_activation=self.relative_activation,
-            total_capacity_allocation_up=self.total_capacity_allocation_up,
-            total_capacity_allocation_down=self.total_capacity_allocation_down,
-            own_capacity_allocation_up=self.own_capacity_allocation_up,
-            own_capacity_allocation_down=self.own_capacity_allocation_down,
+            capacity_price_up=self.capacity_price_up.as_read() if self.capacity_price_up else None,
+            capacity_price_down=self.capacity_price_down.as_read() if self.capacity_price_down else None,
+            activation_price_up=self.activation_price_up.as_read() if self.activation_price_up else None,
+            activation_price_down=self.activation_price_down.as_read() if self.activation_price_down else None,
+            relative_activation=self.relative_activation.as_read() if self.relative_activation else None,
+            total_capacity_allocation_up=self.total_capacity_allocation_up.as_read() if self.total_capacity_allocation_up else None,
+            total_capacity_allocation_down=self.total_capacity_allocation_down.as_read() if self.total_capacity_allocation_down else None,
+            own_capacity_allocation_up=self.own_capacity_allocation_up.as_read() if self.own_capacity_allocation_up else None,
+            own_capacity_allocation_down=self.own_capacity_allocation_down.as_read() if self.own_capacity_allocation_down else None,
         )
 
 
@@ -142,22 +166,22 @@ class PriceAreaAFRRGraphQL(GraphQLCore):
     def as_write(self) -> PriceAreaAFRRWrite:
         """Convert this GraphQL format of price area afrr to the writing format."""
         return PriceAreaAFRRWrite(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,
             display_name=self.display_name,
             ordering=self.ordering,
             asset_type=self.asset_type,
-            capacity_price_up=self.capacity_price_up,
-            capacity_price_down=self.capacity_price_down,
-            activation_price_up=self.activation_price_up,
-            activation_price_down=self.activation_price_down,
-            relative_activation=self.relative_activation,
-            total_capacity_allocation_up=self.total_capacity_allocation_up,
-            total_capacity_allocation_down=self.total_capacity_allocation_down,
-            own_capacity_allocation_up=self.own_capacity_allocation_up,
-            own_capacity_allocation_down=self.own_capacity_allocation_down,
+            capacity_price_up=self.capacity_price_up.as_write() if self.capacity_price_up else None,
+            capacity_price_down=self.capacity_price_down.as_write() if self.capacity_price_down else None,
+            activation_price_up=self.activation_price_up.as_write() if self.activation_price_up else None,
+            activation_price_down=self.activation_price_down.as_write() if self.activation_price_down else None,
+            relative_activation=self.relative_activation.as_write() if self.relative_activation else None,
+            total_capacity_allocation_up=self.total_capacity_allocation_up.as_write() if self.total_capacity_allocation_up else None,
+            total_capacity_allocation_down=self.total_capacity_allocation_down.as_write() if self.total_capacity_allocation_down else None,
+            own_capacity_allocation_up=self.own_capacity_allocation_up.as_write() if self.own_capacity_allocation_up else None,
+            own_capacity_allocation_down=self.own_capacity_allocation_down.as_write() if self.own_capacity_allocation_down else None,
         )
 
 
@@ -207,15 +231,15 @@ class PriceAreaAFRR(PriceArea):
             display_name=self.display_name,
             ordering=self.ordering,
             asset_type=self.asset_type,
-            capacity_price_up=self.capacity_price_up,
-            capacity_price_down=self.capacity_price_down,
-            activation_price_up=self.activation_price_up,
-            activation_price_down=self.activation_price_down,
-            relative_activation=self.relative_activation,
-            total_capacity_allocation_up=self.total_capacity_allocation_up,
-            total_capacity_allocation_down=self.total_capacity_allocation_down,
-            own_capacity_allocation_up=self.own_capacity_allocation_up,
-            own_capacity_allocation_down=self.own_capacity_allocation_down,
+            capacity_price_up=self.capacity_price_up.as_write() if isinstance(self.capacity_price_up, CogniteTimeSeries) else self.capacity_price_up,
+            capacity_price_down=self.capacity_price_down.as_write() if isinstance(self.capacity_price_down, CogniteTimeSeries) else self.capacity_price_down,
+            activation_price_up=self.activation_price_up.as_write() if isinstance(self.activation_price_up, CogniteTimeSeries) else self.activation_price_up,
+            activation_price_down=self.activation_price_down.as_write() if isinstance(self.activation_price_down, CogniteTimeSeries) else self.activation_price_down,
+            relative_activation=self.relative_activation.as_write() if isinstance(self.relative_activation, CogniteTimeSeries) else self.relative_activation,
+            total_capacity_allocation_up=self.total_capacity_allocation_up.as_write() if isinstance(self.total_capacity_allocation_up, CogniteTimeSeries) else self.total_capacity_allocation_up,
+            total_capacity_allocation_down=self.total_capacity_allocation_down.as_write() if isinstance(self.total_capacity_allocation_down, CogniteTimeSeries) else self.total_capacity_allocation_down,
+            own_capacity_allocation_up=self.own_capacity_allocation_up.as_write() if isinstance(self.own_capacity_allocation_up, CogniteTimeSeries) else self.own_capacity_allocation_up,
+            own_capacity_allocation_down=self.own_capacity_allocation_down.as_write() if isinstance(self.own_capacity_allocation_down, CogniteTimeSeries) else self.own_capacity_allocation_down,
         )
 
     def as_apply(self) -> PriceAreaAFRRWrite:
@@ -253,16 +277,16 @@ class PriceAreaAFRRWrite(PriceAreaWrite):
     """
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceAreaAFRR", "1")
 
-    node_type: Union[dm.DirectRelationReference, None] = None
-    capacity_price_up: Union[TimeSeries, str, None] = Field(None, alias="capacityPriceUp")
-    capacity_price_down: Union[TimeSeries, str, None] = Field(None, alias="capacityPriceDown")
-    activation_price_up: Union[TimeSeries, str, None] = Field(None, alias="activationPriceUp")
-    activation_price_down: Union[TimeSeries, str, None] = Field(None, alias="activationPriceDown")
-    relative_activation: Union[TimeSeries, str, None] = Field(None, alias="relativeActivation")
-    total_capacity_allocation_up: Union[TimeSeries, str, None] = Field(None, alias="totalCapacityAllocationUp")
-    total_capacity_allocation_down: Union[TimeSeries, str, None] = Field(None, alias="totalCapacityAllocationDown")
-    own_capacity_allocation_up: Union[TimeSeries, str, None] = Field(None, alias="ownCapacityAllocationUp")
-    own_capacity_allocation_down: Union[TimeSeries, str, None] = Field(None, alias="ownCapacityAllocationDown")
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
+    capacity_price_up: Union[TimeSeriesWrite, str, None] = Field(None, alias="capacityPriceUp")
+    capacity_price_down: Union[TimeSeriesWrite, str, None] = Field(None, alias="capacityPriceDown")
+    activation_price_up: Union[TimeSeriesWrite, str, None] = Field(None, alias="activationPriceUp")
+    activation_price_down: Union[TimeSeriesWrite, str, None] = Field(None, alias="activationPriceDown")
+    relative_activation: Union[TimeSeriesWrite, str, None] = Field(None, alias="relativeActivation")
+    total_capacity_allocation_up: Union[TimeSeriesWrite, str, None] = Field(None, alias="totalCapacityAllocationUp")
+    total_capacity_allocation_down: Union[TimeSeriesWrite, str, None] = Field(None, alias="totalCapacityAllocationDown")
+    own_capacity_allocation_up: Union[TimeSeriesWrite, str, None] = Field(None, alias="ownCapacityAllocationUp")
+    own_capacity_allocation_down: Union[TimeSeriesWrite, str, None] = Field(None, alias="ownCapacityAllocationDown")
 
     def _to_instances_write(
         self,
@@ -321,7 +345,7 @@ class PriceAreaAFRRWrite(PriceAreaWrite):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=None if allow_version_increase else self.data_record.existing_version,
-                type=self.node_type,
+                type=as_direct_relation_reference(self.node_type),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=self._view_id,
@@ -333,31 +357,31 @@ class PriceAreaAFRRWrite(PriceAreaWrite):
 
 
 
-        if isinstance(self.capacity_price_up, CogniteTimeSeries):
+        if isinstance(self.capacity_price_up, CogniteTimeSeriesWrite):
             resources.time_series.append(self.capacity_price_up)
 
-        if isinstance(self.capacity_price_down, CogniteTimeSeries):
+        if isinstance(self.capacity_price_down, CogniteTimeSeriesWrite):
             resources.time_series.append(self.capacity_price_down)
 
-        if isinstance(self.activation_price_up, CogniteTimeSeries):
+        if isinstance(self.activation_price_up, CogniteTimeSeriesWrite):
             resources.time_series.append(self.activation_price_up)
 
-        if isinstance(self.activation_price_down, CogniteTimeSeries):
+        if isinstance(self.activation_price_down, CogniteTimeSeriesWrite):
             resources.time_series.append(self.activation_price_down)
 
-        if isinstance(self.relative_activation, CogniteTimeSeries):
+        if isinstance(self.relative_activation, CogniteTimeSeriesWrite):
             resources.time_series.append(self.relative_activation)
 
-        if isinstance(self.total_capacity_allocation_up, CogniteTimeSeries):
+        if isinstance(self.total_capacity_allocation_up, CogniteTimeSeriesWrite):
             resources.time_series.append(self.total_capacity_allocation_up)
 
-        if isinstance(self.total_capacity_allocation_down, CogniteTimeSeries):
+        if isinstance(self.total_capacity_allocation_down, CogniteTimeSeriesWrite):
             resources.time_series.append(self.total_capacity_allocation_down)
 
-        if isinstance(self.own_capacity_allocation_up, CogniteTimeSeries):
+        if isinstance(self.own_capacity_allocation_up, CogniteTimeSeriesWrite):
             resources.time_series.append(self.own_capacity_allocation_up)
 
-        if isinstance(self.own_capacity_allocation_down, CogniteTimeSeries):
+        if isinstance(self.own_capacity_allocation_down, CogniteTimeSeriesWrite):
             resources.time_series.append(self.own_capacity_allocation_down)
 
         return resources
@@ -447,3 +471,56 @@ def _create_price_area_afrr_filter(
     if filter:
         filters.append(filter)
     return dm.filters.And(*filters) if filters else None
+
+
+class _PriceAreaAFRRQuery(NodeQueryCore[T_DomainModelList, PriceAreaAFRRList]):
+    _view_id = PriceAreaAFRR._view_id
+    _result_cls = PriceAreaAFRR
+    _result_list_cls_end = PriceAreaAFRRList
+
+    def __init__(
+        self,
+        created_types: set[type],
+        creation_path: list[QueryCore],
+        client: CogniteClient,
+        result_list_cls: type[T_DomainModelList],
+        expression: dm.query.ResultSetExpression | None = None,
+        connection_name: str | None = None,
+        connection_type: Literal["reverse-list"] | None = None,
+        reverse_expression: dm.query.ResultSetExpression | None = None,
+    ):
+
+        super().__init__(
+            created_types,
+            creation_path,
+            client,
+            result_list_cls,
+            expression,
+            dm.filters.HasData(views=[self._view_id]),
+            connection_name,
+            connection_type,
+            reverse_expression,
+        )
+
+        self.space = StringFilter(self, ["node", "space"])
+        self.external_id = StringFilter(self, ["node", "externalId"])
+        self.name = StringFilter(self, self._view_id.as_property_ref("name"))
+        self.display_name = StringFilter(self, self._view_id.as_property_ref("displayName"))
+        self.ordering = IntFilter(self, self._view_id.as_property_ref("ordering"))
+        self.asset_type = StringFilter(self, self._view_id.as_property_ref("assetType"))
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.name,
+            self.display_name,
+            self.ordering,
+            self.asset_type,
+        ])
+
+    def list_price_area_afrr(self, limit: int = DEFAULT_QUERY_LIMIT) -> PriceAreaAFRRList:
+        return self._list(limit=limit)
+
+
+class PriceAreaAFRRQuery(_PriceAreaAFRRQuery[PriceAreaAFRRList]):
+    def __init__(self, client: CogniteClient):
+        super().__init__(set(), [], client, PriceAreaAFRRList)

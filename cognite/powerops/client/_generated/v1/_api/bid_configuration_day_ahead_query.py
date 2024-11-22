@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import datetime
-from typing import TYPE_CHECKING
+from collections.abc import Sequence
+from typing import TYPE_CHECKING, cast
 
 from cognite.client import data_modeling as dm, CogniteClient
 
@@ -16,10 +17,18 @@ from cognite.powerops.client._generated.v1.data_classes._partial_bid_configurati
     PartialBidConfiguration,
     _create_partial_bid_configuration_filter,
 )
-from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_QUERY_LIMIT,
+    EdgeQueryStep,
+    NodeQueryStep,
+    DataClassQueryBuilder,
+    QueryAPI,
+    T_DomainModelList,
+    _create_edge_filter,
+)
 
 if TYPE_CHECKING:
-    from .partial_bid_configuration_query import PartialBidConfigurationQueryAPI
+    from cognite.powerops.client._generated.v1._api.partial_bid_configuration_query import PartialBidConfigurationQueryAPI
 
 
 
@@ -29,20 +38,19 @@ class BidConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
     def __init__(
         self,
         client: CogniteClient,
-        builder: QueryBuilder[T_DomainModelList],
+        builder: DataClassQueryBuilder[T_DomainModelList],
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
         super().__init__(client, builder)
-
+        from_ = self._builder.get_from()
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("bid_configuration_day_ahead"),
+            NodeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
-                    from_=self._builder[-1].name if self._builder else None,
+                    from_=from_,
                     filter=filter_,
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(self._view_id, ["*"])]),
                 result_cls=BidConfigurationDayAhead,
                 max_retrieve_limit=limit,
             )
@@ -54,7 +62,7 @@ class BidConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
-        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         add_steps: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -91,7 +99,8 @@ class BidConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         """
         from .partial_bid_configuration_query import PartialBidConfigurationQueryAPI
 
-        from_ = self._builder[-1].name
+        # from is a string as we added a node query step in the __init__ method
+        from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "BidConfiguration.partials"),
 
@@ -99,14 +108,13 @@ class BidConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
             space=space_edge,
         )
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("partials"),
+            EdgeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,
                     direction="outwards",
                 ),
-                select=dm.query.Select(),
                 max_retrieve_limit=limit,
             )
         )
@@ -160,55 +168,43 @@ class BidConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         return self._query()
 
     def _query_append_market_configuration(self, from_: str) -> None:
-        view_id = MarketConfiguration._view_id
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("market_configuration"),
+            NodeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
-                    filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
                     through=self._view_id.as_property_ref("marketConfiguration"),
                     direction="outwards",
+                    filter=dm.filters.HasData(views=[MarketConfiguration._view_id]),
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
-                max_retrieve_limit=-1,
                 result_cls=MarketConfiguration,
-                is_single_direct_relation=True,
             ),
         )
 
     def _query_append_price_area(self, from_: str) -> None:
-        view_id = PriceAreaDayAhead._view_id
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("price_area"),
+            NodeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
-                    filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
                     through=self._view_id.as_property_ref("priceArea"),
                     direction="outwards",
+                    filter=dm.filters.HasData(views=[PriceAreaDayAhead._view_id]),
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
-                max_retrieve_limit=-1,
                 result_cls=PriceAreaDayAhead,
-                is_single_direct_relation=True,
             ),
         )
 
     def _query_append_bid_date_specification(self, from_: str) -> None:
-        view_id = DateSpecification._view_id
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("bid_date_specification"),
+            NodeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
-                    filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
                     through=self._view_id.as_property_ref("bidDateSpecification"),
                     direction="outwards",
+                    filter=dm.filters.HasData(views=[DateSpecification._view_id]),
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
-                max_retrieve_limit=-1,
                 result_cls=DateSpecification,
-                is_single_direct_relation=True,
             ),
         )

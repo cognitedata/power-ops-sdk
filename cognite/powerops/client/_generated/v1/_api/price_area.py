@@ -8,7 +8,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -19,18 +25,30 @@ from cognite.powerops.client._generated.v1.data_classes import (
     PriceAreaList,
     PriceAreaWriteList,
     PriceAreaTextFields,
+    PriceAreaAFRR,
+    PriceAreaDayAhead,
 )
 from cognite.powerops.client._generated.v1.data_classes._price_area import (
+    PriceAreaQuery,
     _PRICEAREA_PROPERTIES_BY_FIELD,
     _create_price_area_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .price_area_query import PriceAreaQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.price_area_query import PriceAreaQueryAPI
 
 
 class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaWrite, PriceAreaList, PriceAreaWriteList]):
     _view_id = dm.ViewId("power_ops_core", "PriceArea", "1")
     _properties_by_field = _PRICEAREA_PROPERTIES_BY_FIELD
+    _direct_children_by_external_id = {
+        "PriceAreaAFRR": PriceAreaAFRR,
+        "PriceAreaDayAhead": PriceAreaDayAhead,
+    }
     _class_type = PriceArea
     _class_list = PriceAreaList
     _class_write_list = PriceAreaWriteList
@@ -74,6 +92,12 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaWrite, PriceAreaList, PriceAreaWr
             A query API for price areas.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_price_area_filter(
             self._view_id,
@@ -89,7 +113,7 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaWrite, PriceAreaList, PriceAreaWr
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(PriceAreaList)
+        builder = DataClassQueryBuilder(PriceAreaList)
         return PriceAreaQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -163,19 +187,22 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaWrite, PriceAreaList, PriceAreaWr
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> PriceArea | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["PriceAreaAFRR", "PriceAreaDayAhead"]] | None = None) -> PriceArea | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PriceAreaList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["PriceAreaAFRR", "PriceAreaDayAhead"]] | None = None) -> PriceAreaList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PriceArea | PriceAreaList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["PriceAreaAFRR", "PriceAreaDayAhead"]] | None = None) -> PriceArea | PriceAreaList | None:
         """Retrieve one or more price areas by id(s).
 
         Args:
             external_id: External id or list of external ids of the price areas.
             space: The space where all the price areas are located.
+            as_child_class: If you want to retrieve the price areas as a child class,
+                you can specify the child class here. Note that if one node has properties in
+                multiple child classes, you will get duplicate nodes in the result.
 
         Returns:
             The requested price areas.
@@ -189,7 +216,7 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaWrite, PriceAreaList, PriceAreaWr
                 >>> price_area = client.price_area.retrieve("my_price_area")
 
         """
-        return self._retrieve(external_id, space)
+        return self._retrieve(external_id, space, as_child_class=as_child_class)
 
     def search(
         self,
@@ -491,6 +518,15 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaWrite, PriceAreaList, PriceAreaWr
             filter_,
         )
 
+    def query(self) -> PriceAreaQuery:
+        """Start a query for price areas."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return PriceAreaQuery(self._client)
+
+    def select(self) -> PriceAreaQuery:
+        """Start selecting from price areas."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return PriceAreaQuery(self._client)
 
     def list(
         self,
@@ -557,6 +593,7 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaWrite, PriceAreaList, PriceAreaWr
             space,
             filter,
         )
+
         return self._list(
             limit=limit,
             filter=filter_,

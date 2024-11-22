@@ -1,14 +1,16 @@
 from __future__ import annotations
 
 import warnings
+from collections.abc import Sequence
 from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
 
-from cognite.client import data_modeling as dm
+from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator
 
-from ._core import (
+from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
     DataRecord,
     DataRecordGraphQL,
     DataRecordWrite,
@@ -16,9 +18,22 @@ from ._core import (
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
+    DomainRelation,
     DomainRelationWrite,
     GraphQLCore,
     ResourcesWrite,
+    T_DomainModelList,
+    as_direct_relation_reference,
+    as_instance_dict_id,
+    as_node_id,
+    as_pygen_node_id,
+    are_nodes_equal,
+    is_tuple_id,
+    select_best_node,
+    QueryCore,
+    NodeQueryCore,
+    StringFilter,
+    IntFilter,
 )
 
 
@@ -35,10 +50,11 @@ __all__ = [
 ]
 
 
-PowerAssetTextFields = Literal["name", "display_name", "asset_type"]
-PowerAssetFields = Literal["name", "display_name", "ordering", "asset_type"]
+PowerAssetTextFields = Literal["external_id", "name", "display_name", "asset_type"]
+PowerAssetFields = Literal["external_id", "name", "display_name", "ordering", "asset_type"]
 
 _POWERASSET_PROPERTIES_BY_FIELD = {
+    "external_id": "externalId",
     "name": "name",
     "display_name": "displayName",
     "ordering": "ordering",
@@ -84,7 +100,7 @@ class PowerAssetGraphQL(GraphQLCore):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return PowerAsset(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
@@ -103,7 +119,7 @@ class PowerAssetGraphQL(GraphQLCore):
     def as_write(self) -> PowerAssetWrite:
         """Convert this GraphQL format of power asset to the writing format."""
         return PowerAssetWrite(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,
@@ -175,7 +191,7 @@ class PowerAssetWrite(DomainModelWrite):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PowerAsset", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = None
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
     name: str
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
@@ -211,7 +227,7 @@ class PowerAssetWrite(DomainModelWrite):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=None if allow_version_increase else self.data_record.existing_version,
-                type=self.node_type,
+                type=as_direct_relation_reference(self.node_type),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=self._view_id,
@@ -310,3 +326,56 @@ def _create_power_asset_filter(
     if filter:
         filters.append(filter)
     return dm.filters.And(*filters) if filters else None
+
+
+class _PowerAssetQuery(NodeQueryCore[T_DomainModelList, PowerAssetList]):
+    _view_id = PowerAsset._view_id
+    _result_cls = PowerAsset
+    _result_list_cls_end = PowerAssetList
+
+    def __init__(
+        self,
+        created_types: set[type],
+        creation_path: list[QueryCore],
+        client: CogniteClient,
+        result_list_cls: type[T_DomainModelList],
+        expression: dm.query.ResultSetExpression | None = None,
+        connection_name: str | None = None,
+        connection_type: Literal["reverse-list"] | None = None,
+        reverse_expression: dm.query.ResultSetExpression | None = None,
+    ):
+
+        super().__init__(
+            created_types,
+            creation_path,
+            client,
+            result_list_cls,
+            expression,
+            dm.filters.HasData(views=[self._view_id]),
+            connection_name,
+            connection_type,
+            reverse_expression,
+        )
+
+        self.space = StringFilter(self, ["node", "space"])
+        self.external_id = StringFilter(self, ["node", "externalId"])
+        self.name = StringFilter(self, self._view_id.as_property_ref("name"))
+        self.display_name = StringFilter(self, self._view_id.as_property_ref("displayName"))
+        self.ordering = IntFilter(self, self._view_id.as_property_ref("ordering"))
+        self.asset_type = StringFilter(self, self._view_id.as_property_ref("assetType"))
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.name,
+            self.display_name,
+            self.ordering,
+            self.asset_type,
+        ])
+
+    def list_power_asset(self, limit: int = DEFAULT_QUERY_LIMIT) -> PowerAssetList:
+        return self._list(limit=limit)
+
+
+class PowerAssetQuery(_PowerAssetQuery[PowerAssetList]):
+    def __init__(self, client: CogniteClient):
+        super().__init__(set(), [], client, PowerAssetList)

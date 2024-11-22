@@ -9,7 +9,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -20,14 +26,22 @@ from cognite.powerops.client._generated.v1.data_classes import (
     TotalBidMatrixCalculationInputList,
     TotalBidMatrixCalculationInputWriteList,
     TotalBidMatrixCalculationInputTextFields,
+    BidConfigurationDayAhead,
+    BidMatrix,
 )
 from cognite.powerops.client._generated.v1.data_classes._total_bid_matrix_calculation_input import (
+    TotalBidMatrixCalculationInputQuery,
     _TOTALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD,
     _create_total_bid_matrix_calculation_input_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .total_bid_matrix_calculation_input_partial_bid_matrices import TotalBidMatrixCalculationInputPartialBidMatricesAPI
-from .total_bid_matrix_calculation_input_query import TotalBidMatrixCalculationInputQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.total_bid_matrix_calculation_input_partial_bid_matrices import TotalBidMatrixCalculationInputPartialBidMatricesAPI
+from cognite.powerops.client._generated.v1._api.total_bid_matrix_calculation_input_query import TotalBidMatrixCalculationInputQueryAPI
 
 
 class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, TotalBidMatrixCalculationInputWrite, TotalBidMatrixCalculationInputList, TotalBidMatrixCalculationInputWriteList]):
@@ -52,7 +66,7 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
             function_name_prefix: str | None = None,
             function_call_id: str | list[str] | None = None,
             function_call_id_prefix: str | None = None,
-            bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
             min_bid_date: datetime.date | None = None,
             max_bid_date: datetime.date | None = None,
             external_id_prefix: str | None = None,
@@ -83,6 +97,12 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
             A query API for total bid matrix calculation inputs.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_total_bid_matrix_calculation_input_filter(
             self._view_id,
@@ -101,7 +121,7 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(TotalBidMatrixCalculationInputList)
+        builder = DataClassQueryBuilder(TotalBidMatrixCalculationInputList)
         return TotalBidMatrixCalculationInputQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -114,7 +134,7 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         """Add or update (upsert) total bid matrix calculation inputs.
 
         Note: This method iterates through all nodes and timeseries linked to total_bid_matrix_calculation_input and creates them including the edges
-        between the nodes. For example, if any of `partial_bid_matrices` are set, then these
+        between the nodes. For example, if any of `bid_configuration` or `partial_bid_matrices` are set, then these
         nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
@@ -179,14 +199,14 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> TotalBidMatrixCalculationInput | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> TotalBidMatrixCalculationInput | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> TotalBidMatrixCalculationInputList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> TotalBidMatrixCalculationInputList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> TotalBidMatrixCalculationInput | TotalBidMatrixCalculationInputList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> TotalBidMatrixCalculationInput | TotalBidMatrixCalculationInputList | None:
         """Retrieve one or more total bid matrix calculation inputs by id(s).
 
         Args:
@@ -233,7 +253,7 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -325,7 +345,7 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -351,7 +371,7 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -379,7 +399,7 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -406,7 +426,7 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -496,7 +516,7 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -557,6 +577,15 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
             filter_,
         )
 
+    def query(self) -> TotalBidMatrixCalculationInputQuery:
+        """Start a query for total bid matrix calculation inputs."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return TotalBidMatrixCalculationInputQuery(self._client)
+
+    def select(self) -> TotalBidMatrixCalculationInputQuery:
+        """Start selecting from total bid matrix calculation inputs."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return TotalBidMatrixCalculationInputQuery(self._client)
 
     def list(
         self,
@@ -568,7 +597,7 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -578,7 +607,7 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         sort_by: TotalBidMatrixCalculationInputFields | Sequence[TotalBidMatrixCalculationInputFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
-        retrieve_edges: bool = True,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> TotalBidMatrixCalculationInputList:
         """List/filter total bid matrix calculation inputs
 
@@ -603,7 +632,8 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
                 This will override the sort_by and direction. This allowos you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
-            retrieve_edges: Whether to retrieve `partial_bid_matrices` external ids for the total bid matrix calculation inputs. Defaults to True.
+            retrieve_connections: Whether to retrieve `bid_configuration` and `partial_bid_matrices` for the total bid matrix calculation inputs. Defaults to 'skip'.
+                'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier of the connected items, and 'full' will retrieve the full connected items.
 
         Returns:
             List of requested total bid matrix calculation inputs
@@ -635,20 +665,64 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
             filter,
         )
 
-        return self._list(
-            limit=limit,
-            filter=filter_,
-            sort_by=sort_by,  # type: ignore[arg-type]
-            direction=direction,
-            sort=sort,
-            retrieve_edges=retrieve_edges,
-            edge_api_name_type_direction_view_id_penta=[
-                (
-                    self.partial_bid_matrices_edge,
-                    "partial_bid_matrices",
-                    dm.DirectRelationReference("power_ops_types", "BidMatrix"),
-                    "outwards",
-                    dm.ViewId("power_ops_core", "BidMatrix", "1"),
+        if retrieve_connections == "skip":
+                return self._list(
+                limit=limit,
+                filter=filter_,
+                sort_by=sort_by,  # type: ignore[arg-type]
+                direction=direction,
+                sort=sort,
+            )
+
+        builder = DataClassQueryBuilder(TotalBidMatrixCalculationInputList)
+        has_data = dm.filters.HasData(views=[self._view_id])
+        builder.append(
+            NodeQueryStep(
+                builder.create_name(None),
+                dm.query.NodeResultSetExpression(
+                    filter=dm.filters.And(filter_, has_data) if filter_ else has_data,
+                    sort=self._create_sort(sort_by, direction, sort),  # type: ignore[arg-type]
                 ),
-                                               ]
+                TotalBidMatrixCalculationInput,
+                max_retrieve_limit=limit,
+                raw_filter=filter_,
+            )
         )
+        from_root = builder.get_from()
+        edge_partial_bid_matrices = builder.create_name(from_root)
+        builder.append(
+            EdgeQueryStep(
+                edge_partial_bid_matrices,
+                dm.query.EdgeResultSetExpression(
+                    from_=from_root,
+                    direction="outwards",
+                    chain_to="destination",
+                ),
+            )
+        )
+        if retrieve_connections == "full":
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name( edge_partial_bid_matrices),
+                    dm.query.NodeResultSetExpression(
+                        from_= edge_partial_bid_matrices,
+                        filter=dm.filters.HasData(views=[BidMatrix._view_id]),
+                    ),
+                    BidMatrix,
+                )
+            )
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name(from_root),
+                    dm.query.NodeResultSetExpression(
+                        from_=from_root,
+                        filter=dm.filters.HasData(views=[BidConfigurationDayAhead._view_id]),
+                        direction="outwards",
+                        through=self._view_id.as_property_ref("bidConfiguration"),
+                    ),
+                    BidConfigurationDayAhead,
+                )
+            )
+        # We know that that all nodes are connected as it is not possible to filter on connections
+        builder.execute_query(self._client, remove_not_connected=False)
+        return builder.unpack()

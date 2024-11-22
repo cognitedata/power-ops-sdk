@@ -8,7 +8,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -19,14 +25,22 @@ from cognite.powerops.client._generated.v1.data_classes import (
     ShopScenarioSetList,
     ShopScenarioSetWriteList,
     ShopScenarioSetTextFields,
+    DateSpecification,
+    ShopScenario,
 )
 from cognite.powerops.client._generated.v1.data_classes._shop_scenario_set import (
+    ShopScenarioSetQuery,
     _SHOPSCENARIOSET_PROPERTIES_BY_FIELD,
     _create_shop_scenario_set_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .shop_scenario_set_scenarios import ShopScenarioSetScenariosAPI
-from .shop_scenario_set_query import ShopScenarioSetQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.shop_scenario_set_scenarios import ShopScenarioSetScenariosAPI
+from cognite.powerops.client._generated.v1._api.shop_scenario_set_query import ShopScenarioSetQueryAPI
 
 
 class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScenarioSetList, ShopScenarioSetWriteList]):
@@ -45,8 +59,8 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
             self,
             name: str | list[str] | None = None,
             name_prefix: str | None = None,
-            start_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-            end_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            start_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+            end_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
             external_id_prefix: str | None = None,
             space: str | list[str] | None = None,
             limit: int = DEFAULT_QUERY_LIMIT,
@@ -68,6 +82,12 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
             A query API for shop scenario sets.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_shop_scenario_set_filter(
             self._view_id,
@@ -79,7 +99,7 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(ShopScenarioSetList)
+        builder = DataClassQueryBuilder(ShopScenarioSetList)
         return ShopScenarioSetQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -92,7 +112,7 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
         """Add or update (upsert) shop scenario sets.
 
         Note: This method iterates through all nodes and timeseries linked to shop_scenario_set and creates them including the edges
-        between the nodes. For example, if any of `scenarios` are set, then these
+        between the nodes. For example, if any of `start_specification`, `end_specification` or `scenarios` are set, then these
         nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
@@ -157,14 +177,14 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopScenarioSet | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopScenarioSet | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopScenarioSetList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> ShopScenarioSetList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopScenarioSet | ShopScenarioSetList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> ShopScenarioSet | ShopScenarioSetList | None:
         """Retrieve one or more shop scenario sets by id(s).
 
         Args:
@@ -205,8 +225,8 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
         properties: ShopScenarioSetTextFields | SequenceNotStr[ShopScenarioSetTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        start_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        end_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        start_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        end_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -276,8 +296,8 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
         search_property: ShopScenarioSetTextFields | SequenceNotStr[ShopScenarioSetTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        start_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        end_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        start_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        end_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -295,8 +315,8 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
         search_property: ShopScenarioSetTextFields | SequenceNotStr[ShopScenarioSetTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        start_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        end_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        start_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        end_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -316,8 +336,8 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
         search_property: ShopScenarioSetTextFields | SequenceNotStr[ShopScenarioSetTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        start_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        end_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        start_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        end_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -336,8 +356,8 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
         search_property: ShopScenarioSetTextFields | SequenceNotStr[ShopScenarioSetTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        start_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        end_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        start_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        end_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -405,8 +425,8 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
         search_property: ShopScenarioSetTextFields | SequenceNotStr[ShopScenarioSetTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        start_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        end_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        start_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        end_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -451,13 +471,22 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
             filter_,
         )
 
+    def query(self) -> ShopScenarioSetQuery:
+        """Start a query for shop scenario sets."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return ShopScenarioSetQuery(self._client)
+
+    def select(self) -> ShopScenarioSetQuery:
+        """Start selecting from shop scenario sets."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return ShopScenarioSetQuery(self._client)
 
     def list(
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        start_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        end_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        start_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        end_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -465,7 +494,7 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
         sort_by: ShopScenarioSetFields | Sequence[ShopScenarioSetFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
-        retrieve_edges: bool = True,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> ShopScenarioSetList:
         """List/filter shop scenario sets
 
@@ -483,7 +512,8 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
                 This will override the sort_by and direction. This allowos you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
-            retrieve_edges: Whether to retrieve `scenarios` external ids for the shop scenario sets. Defaults to True.
+            retrieve_connections: Whether to retrieve `start_specification`, `end_specification` and `scenarios` for the shop scenario sets. Defaults to 'skip'.
+                'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier of the connected items, and 'full' will retrieve the full connected items.
 
         Returns:
             List of requested shop scenario sets
@@ -508,20 +538,76 @@ class ShopScenarioSetAPI(NodeAPI[ShopScenarioSet, ShopScenarioSetWrite, ShopScen
             filter,
         )
 
-        return self._list(
-            limit=limit,
-            filter=filter_,
-            sort_by=sort_by,  # type: ignore[arg-type]
-            direction=direction,
-            sort=sort,
-            retrieve_edges=retrieve_edges,
-            edge_api_name_type_direction_view_id_penta=[
-                (
-                    self.scenarios_edge,
-                    "scenarios",
-                    dm.DirectRelationReference("power_ops_types", "ShopScenarioSet.scenarios"),
-                    "outwards",
-                    dm.ViewId("power_ops_core", "ShopScenario", "1"),
+        if retrieve_connections == "skip":
+                return self._list(
+                limit=limit,
+                filter=filter_,
+                sort_by=sort_by,  # type: ignore[arg-type]
+                direction=direction,
+                sort=sort,
+            )
+
+        builder = DataClassQueryBuilder(ShopScenarioSetList)
+        has_data = dm.filters.HasData(views=[self._view_id])
+        builder.append(
+            NodeQueryStep(
+                builder.create_name(None),
+                dm.query.NodeResultSetExpression(
+                    filter=dm.filters.And(filter_, has_data) if filter_ else has_data,
+                    sort=self._create_sort(sort_by, direction, sort),  # type: ignore[arg-type]
                 ),
-                                               ]
+                ShopScenarioSet,
+                max_retrieve_limit=limit,
+                raw_filter=filter_,
+            )
         )
+        from_root = builder.get_from()
+        edge_scenarios = builder.create_name(from_root)
+        builder.append(
+            EdgeQueryStep(
+                edge_scenarios,
+                dm.query.EdgeResultSetExpression(
+                    from_=from_root,
+                    direction="outwards",
+                    chain_to="destination",
+                ),
+            )
+        )
+        if retrieve_connections == "full":
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name( edge_scenarios),
+                    dm.query.NodeResultSetExpression(
+                        from_= edge_scenarios,
+                        filter=dm.filters.HasData(views=[ShopScenario._view_id]),
+                    ),
+                    ShopScenario,
+                )
+            )
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name(from_root),
+                    dm.query.NodeResultSetExpression(
+                        from_=from_root,
+                        filter=dm.filters.HasData(views=[DateSpecification._view_id]),
+                        direction="outwards",
+                        through=self._view_id.as_property_ref("startSpecification"),
+                    ),
+                    DateSpecification,
+                )
+            )
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name(from_root),
+                    dm.query.NodeResultSetExpression(
+                        from_=from_root,
+                        filter=dm.filters.HasData(views=[DateSpecification._view_id]),
+                        direction="outwards",
+                        through=self._view_id.as_property_ref("endSpecification"),
+                    ),
+                    DateSpecification,
+                )
+            )
+        # We know that that all nodes are connected as it is not possible to filter on connections
+        builder.execute_query(self._client, remove_not_connected=False)
+        return builder.unpack()

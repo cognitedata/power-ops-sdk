@@ -8,7 +8,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -19,18 +25,40 @@ from cognite.powerops.client._generated.v1.data_classes import (
     FunctionInputList,
     FunctionInputWriteList,
     FunctionInputTextFields,
+    BenchmarkingCalculationInput,
+    BenchmarkingTaskDispatcherInputDayAhead,
+    PartialBidMatrixCalculationInput,
+    ShopPreprocessorInput,
+    ShopTriggerInput,
+    TaskDispatcherInput,
+    TotalBidMatrixCalculationInput,
 )
 from cognite.powerops.client._generated.v1.data_classes._function_input import (
+    FunctionInputQuery,
     _FUNCTIONINPUT_PROPERTIES_BY_FIELD,
     _create_function_input_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .function_input_query import FunctionInputQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.function_input_query import FunctionInputQueryAPI
 
 
 class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputList, FunctionInputWriteList]):
     _view_id = dm.ViewId("power_ops_core", "FunctionInput", "1")
     _properties_by_field = _FUNCTIONINPUT_PROPERTIES_BY_FIELD
+    _direct_children_by_external_id = {
+        "BenchmarkingCalculationInput": BenchmarkingCalculationInput,
+        "BenchmarkingTaskDispatcherInputDayAhead": BenchmarkingTaskDispatcherInputDayAhead,
+        "PartialBidMatrixCalculationInput": PartialBidMatrixCalculationInput,
+        "ShopPreprocessorInput": ShopPreprocessorInput,
+        "ShopTriggerInput": ShopTriggerInput,
+        "TaskDispatcherInput": TaskDispatcherInput,
+        "TotalBidMatrixCalculationInput": TotalBidMatrixCalculationInput,
+    }
     _class_type = FunctionInput
     _class_list = FunctionInputList
     _class_write_list = FunctionInputWriteList
@@ -74,6 +102,12 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
             A query API for function inputs.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_function_input_filter(
             self._view_id,
@@ -89,7 +123,7 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(FunctionInputList)
+        builder = DataClassQueryBuilder(FunctionInputList)
         return FunctionInputQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -163,19 +197,22 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> FunctionInput | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["BenchmarkingCalculationInput", "BenchmarkingTaskDispatcherInputDayAhead", "PartialBidMatrixCalculationInput", "ShopPreprocessorInput", "ShopTriggerInput", "TaskDispatcherInput", "TotalBidMatrixCalculationInput"]] | None = None) -> FunctionInput | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> FunctionInputList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["BenchmarkingCalculationInput", "BenchmarkingTaskDispatcherInputDayAhead", "PartialBidMatrixCalculationInput", "ShopPreprocessorInput", "ShopTriggerInput", "TaskDispatcherInput", "TotalBidMatrixCalculationInput"]] | None = None) -> FunctionInputList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> FunctionInput | FunctionInputList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["BenchmarkingCalculationInput", "BenchmarkingTaskDispatcherInputDayAhead", "PartialBidMatrixCalculationInput", "ShopPreprocessorInput", "ShopTriggerInput", "TaskDispatcherInput", "TotalBidMatrixCalculationInput"]] | None = None) -> FunctionInput | FunctionInputList | None:
         """Retrieve one or more function inputs by id(s).
 
         Args:
             external_id: External id or list of external ids of the function inputs.
             space: The space where all the function inputs are located.
+            as_child_class: If you want to retrieve the function inputs as a child class,
+                you can specify the child class here. Note that if one node has properties in
+                multiple child classes, you will get duplicate nodes in the result.
 
         Returns:
             The requested function inputs.
@@ -189,7 +226,7 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
                 >>> function_input = client.function_input.retrieve("my_function_input")
 
         """
-        return self._retrieve(external_id, space)
+        return self._retrieve(external_id, space, as_child_class=as_child_class)
 
     def search(
         self,
@@ -491,6 +528,15 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
             filter_,
         )
 
+    def query(self) -> FunctionInputQuery:
+        """Start a query for function inputs."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return FunctionInputQuery(self._client)
+
+    def select(self) -> FunctionInputQuery:
+        """Start selecting from function inputs."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return FunctionInputQuery(self._client)
 
     def list(
         self,
@@ -557,6 +603,7 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
             space,
             filter,
         )
+
         return self._list(
             limit=limit,
             filter=filter_,
