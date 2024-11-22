@@ -11,7 +11,6 @@ from rich.panel import Panel
 
 from cognite.powerops import PowerOpsClient
 from cognite.client import data_modeling as dm
-from zmq import REP
 
 REPO_ROOT = Path(__file__).parent.parent
 
