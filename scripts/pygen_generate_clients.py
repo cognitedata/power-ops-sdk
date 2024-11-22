@@ -2,9 +2,7 @@
 This script is used to generate the Power Ops client. It is not used in the normal workflow.
 """
 
-import os
 from pathlib import Path
-from dataclasses import dataclass
 from cognite.pygen import generate_sdk
 from rich import print
 from rich.panel import Panel
