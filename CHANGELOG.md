@@ -15,7 +15,7 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.103.1] - 2024-11-12
+## [0.103.1] - 2024-11-22
 ### Added
 * production_max to generator
 
