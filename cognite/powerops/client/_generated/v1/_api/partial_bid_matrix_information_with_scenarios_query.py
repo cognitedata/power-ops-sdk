@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import datetime
-from typing import TYPE_CHECKING
+from collections.abc import Sequence
+from typing import TYPE_CHECKING, cast
 
 from cognite.client import data_modeling as dm, CogniteClient
 
@@ -23,12 +24,20 @@ from cognite.powerops.client._generated.v1.data_classes._price_production import
     PriceProduction,
     _create_price_production_filter,
 )
-from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_QUERY_LIMIT,
+    EdgeQueryStep,
+    NodeQueryStep,
+    DataClassQueryBuilder,
+    QueryAPI,
+    T_DomainModelList,
+    _create_edge_filter,
+)
 
 if TYPE_CHECKING:
-    from .alert_query import AlertQueryAPI
-    from .bid_matrix_query import BidMatrixQueryAPI
-    from .price_production_query import PriceProductionQueryAPI
+    from cognite.powerops.client._generated.v1._api.alert_query import AlertQueryAPI
+    from cognite.powerops.client._generated.v1._api.bid_matrix_query import BidMatrixQueryAPI
+    from cognite.powerops.client._generated.v1._api.price_production_query import PriceProductionQueryAPI
 
 
 
@@ -38,20 +47,19 @@ class PartialBidMatrixInformationWithScenariosQueryAPI(QueryAPI[T_DomainModelLis
     def __init__(
         self,
         client: CogniteClient,
-        builder: QueryBuilder[T_DomainModelList],
+        builder: DataClassQueryBuilder[T_DomainModelList],
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
         super().__init__(client, builder)
-
+        from_ = self._builder.get_from()
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("partial_bid_matrix_information_with_scenario"),
+            NodeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
-                    from_=self._builder[-1].name if self._builder else None,
+                    from_=from_,
                     filter=filter_,
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(self._view_id, ["*"])]),
                 result_cls=PartialBidMatrixInformationWithScenarios,
                 max_retrieve_limit=limit,
             )
@@ -118,7 +126,8 @@ class PartialBidMatrixInformationWithScenariosQueryAPI(QueryAPI[T_DomainModelLis
         """
         from .alert_query import AlertQueryAPI
 
-        from_ = self._builder[-1].name
+        # from is a string as we added a node query step in the __init__ method
+        from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "calculationIssue"),
 
@@ -126,14 +135,13 @@ class PartialBidMatrixInformationWithScenariosQueryAPI(QueryAPI[T_DomainModelLis
             space=space_edge,
         )
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("alerts"),
+            EdgeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,
                     direction="outwards",
                 ),
-                select=dm.query.Select(),
                 max_retrieve_limit=limit,
             )
         )
@@ -201,7 +209,8 @@ class PartialBidMatrixInformationWithScenariosQueryAPI(QueryAPI[T_DomainModelLis
         """
         from .bid_matrix_query import BidMatrixQueryAPI
 
-        from_ = self._builder[-1].name
+        # from is a string as we added a node query step in the __init__ method
+        from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "intermediateBidMatrix"),
 
@@ -209,14 +218,13 @@ class PartialBidMatrixInformationWithScenariosQueryAPI(QueryAPI[T_DomainModelLis
             space=space_edge,
         )
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("underlying_bid_matrices"),
+            EdgeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,
                     direction="outwards",
                 ),
-                select=dm.query.Select(),
                 max_retrieve_limit=limit,
             )
         )
@@ -241,7 +249,7 @@ class PartialBidMatrixInformationWithScenariosQueryAPI(QueryAPI[T_DomainModelLis
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         external_id_prefix_edge: str | None = None,
@@ -272,7 +280,8 @@ class PartialBidMatrixInformationWithScenariosQueryAPI(QueryAPI[T_DomainModelLis
         """
         from .price_production_query import PriceProductionQueryAPI
 
-        from_ = self._builder[-1].name
+        # from is a string as we added a node query step in the __init__ method
+        from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "calculationIssue"),
 
@@ -280,14 +289,13 @@ class PartialBidMatrixInformationWithScenariosQueryAPI(QueryAPI[T_DomainModelLis
             space=space_edge,
         )
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("multi_scenario_input"),
+            EdgeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,
                     direction="outwards",
                 ),
-                select=dm.query.Select(),
                 max_retrieve_limit=limit,
             )
         )
@@ -332,37 +340,29 @@ class PartialBidMatrixInformationWithScenariosQueryAPI(QueryAPI[T_DomainModelLis
         return self._query()
 
     def _query_append_power_asset(self, from_: str) -> None:
-        view_id = PowerAsset._view_id
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("power_asset"),
+            NodeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
-                    filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
                     through=self._view_id.as_property_ref("powerAsset"),
                     direction="outwards",
+                    filter=dm.filters.HasData(views=[PowerAsset._view_id]),
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
-                max_retrieve_limit=-1,
                 result_cls=PowerAsset,
-                is_single_direct_relation=True,
             ),
         )
 
     def _query_append_partial_bid_configuration(self, from_: str) -> None:
-        view_id = PartialBidConfiguration._view_id
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("partial_bid_configuration"),
+            NodeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
-                    filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
                     through=self._view_id.as_property_ref("partialBidConfiguration"),
                     direction="outwards",
+                    filter=dm.filters.HasData(views=[PartialBidConfiguration._view_id]),
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
-                max_retrieve_limit=-1,
                 result_cls=PartialBidConfiguration,
-                is_single_direct_relation=True,
             ),
         )

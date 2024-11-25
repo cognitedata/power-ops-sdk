@@ -1,14 +1,16 @@
 from __future__ import annotations
 
 import warnings
+from collections.abc import Sequence
 from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
 
-from cognite.client import data_modeling as dm
+from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator
 
-from ._core import (
+from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
     DataRecord,
     DataRecordGraphQL,
     DataRecordWrite,
@@ -16,9 +18,22 @@ from ._core import (
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
+    DomainRelation,
     DomainRelationWrite,
     GraphQLCore,
     ResourcesWrite,
+    T_DomainModelList,
+    as_direct_relation_reference,
+    as_instance_dict_id,
+    as_node_id,
+    as_pygen_node_id,
+    are_nodes_equal,
+    is_tuple_id,
+    select_best_node,
+    QueryCore,
+    NodeQueryCore,
+    StringFilter,
+    BooleanFilter,
 )
 
 
@@ -35,10 +50,11 @@ __all__ = [
 ]
 
 
-ShopOutputTimeSeriesDefinitionTextFields = Literal["name", "object_type", "object_name", "attribute_name", "unit"]
-ShopOutputTimeSeriesDefinitionFields = Literal["name", "object_type", "object_name", "attribute_name", "unit", "is_step"]
+ShopOutputTimeSeriesDefinitionTextFields = Literal["external_id", "name", "object_type", "object_name", "attribute_name", "unit"]
+ShopOutputTimeSeriesDefinitionFields = Literal["external_id", "name", "object_type", "object_name", "attribute_name", "unit", "is_step"]
 
 _SHOPOUTPUTTIMESERIESDEFINITION_PROPERTIES_BY_FIELD = {
+    "external_id": "externalId",
     "name": "name",
     "object_type": "objectType",
     "object_name": "objectName",
@@ -90,7 +106,7 @@ class ShopOutputTimeSeriesDefinitionGraphQL(GraphQLCore):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return ShopOutputTimeSeriesDefinition(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
@@ -111,7 +127,7 @@ class ShopOutputTimeSeriesDefinitionGraphQL(GraphQLCore):
     def as_write(self) -> ShopOutputTimeSeriesDefinitionWrite:
         """Convert this GraphQL format of shop output time series definition to the writing format."""
         return ShopOutputTimeSeriesDefinitionWrite(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,
@@ -193,7 +209,7 @@ class ShopOutputTimeSeriesDefinitionWrite(DomainModelWrite):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopOutputTimeSeriesDefinition", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopOutputTimeSeriesDefinition")
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "ShopOutputTimeSeriesDefinition")
     name: str
     object_type: str = Field(alias="objectType")
     object_name: str = Field(alias="objectName")
@@ -237,7 +253,7 @@ class ShopOutputTimeSeriesDefinitionWrite(DomainModelWrite):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=None if allow_version_increase else self.data_record.existing_version,
-                type=self.node_type,
+                type=as_direct_relation_reference(self.node_type),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=self._view_id,
@@ -351,3 +367,60 @@ def _create_shop_output_time_series_definition_filter(
     if filter:
         filters.append(filter)
     return dm.filters.And(*filters) if filters else None
+
+
+class _ShopOutputTimeSeriesDefinitionQuery(NodeQueryCore[T_DomainModelList, ShopOutputTimeSeriesDefinitionList]):
+    _view_id = ShopOutputTimeSeriesDefinition._view_id
+    _result_cls = ShopOutputTimeSeriesDefinition
+    _result_list_cls_end = ShopOutputTimeSeriesDefinitionList
+
+    def __init__(
+        self,
+        created_types: set[type],
+        creation_path: list[QueryCore],
+        client: CogniteClient,
+        result_list_cls: type[T_DomainModelList],
+        expression: dm.query.ResultSetExpression | None = None,
+        connection_name: str | None = None,
+        connection_type: Literal["reverse-list"] | None = None,
+        reverse_expression: dm.query.ResultSetExpression | None = None,
+    ):
+
+        super().__init__(
+            created_types,
+            creation_path,
+            client,
+            result_list_cls,
+            expression,
+            dm.filters.HasData(views=[self._view_id]),
+            connection_name,
+            connection_type,
+            reverse_expression,
+        )
+
+        self.space = StringFilter(self, ["node", "space"])
+        self.external_id = StringFilter(self, ["node", "externalId"])
+        self.name = StringFilter(self, self._view_id.as_property_ref("name"))
+        self.object_type = StringFilter(self, self._view_id.as_property_ref("objectType"))
+        self.object_name = StringFilter(self, self._view_id.as_property_ref("objectName"))
+        self.attribute_name = StringFilter(self, self._view_id.as_property_ref("attributeName"))
+        self.unit = StringFilter(self, self._view_id.as_property_ref("unit"))
+        self.is_step = BooleanFilter(self, self._view_id.as_property_ref("isStep"))
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.name,
+            self.object_type,
+            self.object_name,
+            self.attribute_name,
+            self.unit,
+            self.is_step,
+        ])
+
+    def list_shop_output_time_series_definition(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopOutputTimeSeriesDefinitionList:
+        return self._list(limit=limit)
+
+
+class ShopOutputTimeSeriesDefinitionQuery(_ShopOutputTimeSeriesDefinitionQuery[ShopOutputTimeSeriesDefinitionList]):
+    def __init__(self, client: CogniteClient):
+        super().__init__(set(), [], client, ShopOutputTimeSeriesDefinitionList)

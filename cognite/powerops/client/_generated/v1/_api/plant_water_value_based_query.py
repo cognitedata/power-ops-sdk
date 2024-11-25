@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import datetime
-from typing import TYPE_CHECKING
+from collections.abc import Sequence
+from typing import TYPE_CHECKING, cast
 
 from cognite.client import data_modeling as dm, CogniteClient
 
@@ -13,10 +14,18 @@ from cognite.powerops.client._generated.v1.data_classes._generator import (
     Generator,
     _create_generator_filter,
 )
-from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_QUERY_LIMIT,
+    EdgeQueryStep,
+    NodeQueryStep,
+    DataClassQueryBuilder,
+    QueryAPI,
+    T_DomainModelList,
+    _create_edge_filter,
+)
 
 if TYPE_CHECKING:
-    from .generator_query import GeneratorQueryAPI
+    from cognite.powerops.client._generated.v1._api.generator_query import GeneratorQueryAPI
 
 
 
@@ -26,20 +35,19 @@ class PlantWaterValueBasedQueryAPI(QueryAPI[T_DomainModelList]):
     def __init__(
         self,
         client: CogniteClient,
-        builder: QueryBuilder[T_DomainModelList],
+        builder: DataClassQueryBuilder[T_DomainModelList],
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
         super().__init__(client, builder)
-
+        from_ = self._builder.get_from()
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("plant_water_value_based"),
+            NodeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
-                    from_=self._builder[-1].name if self._builder else None,
+                    from_=from_,
                     filter=filter_,
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(self._view_id, ["*"])]),
                 result_cls=PlantWaterValueBased,
                 max_retrieve_limit=limit,
             )
@@ -61,7 +69,9 @@ class PlantWaterValueBasedQueryAPI(QueryAPI[T_DomainModelList]):
         max_penstock_number: int | None = None,
         min_start_stop_cost: float | None = None,
         max_start_stop_cost: float | None = None,
-        generator_efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        generator_efficiency_curve: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        min_production_max: float | None = None,
+        max_production_max: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         external_id_prefix_edge: str | None = None,
@@ -87,6 +97,8 @@ class PlantWaterValueBasedQueryAPI(QueryAPI[T_DomainModelList]):
             min_start_stop_cost: The minimum value of the start stop cost to filter on.
             max_start_stop_cost: The maximum value of the start stop cost to filter on.
             generator_efficiency_curve: The generator efficiency curve to filter on.
+            min_production_max: The minimum value of the production max to filter on.
+            max_production_max: The maximum value of the production max to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             external_id_prefix_edge: The prefix of the external ID to filter on.
@@ -100,7 +112,8 @@ class PlantWaterValueBasedQueryAPI(QueryAPI[T_DomainModelList]):
         """
         from .generator_query import GeneratorQueryAPI
 
-        from_ = self._builder[-1].name
+        # from is a string as we added a node query step in the __init__ method
+        from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "isSubAssetOf"),
 
@@ -108,14 +121,13 @@ class PlantWaterValueBasedQueryAPI(QueryAPI[T_DomainModelList]):
             space=space_edge,
         )
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("generators"),
+            EdgeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,
                     direction="outwards",
                 ),
-                select=dm.query.Select(),
                 max_retrieve_limit=limit,
             )
         )
@@ -139,6 +151,8 @@ class PlantWaterValueBasedQueryAPI(QueryAPI[T_DomainModelList]):
             min_start_stop_cost,
             max_start_stop_cost,
             generator_efficiency_curve,
+            min_production_max,
+            max_production_max,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,

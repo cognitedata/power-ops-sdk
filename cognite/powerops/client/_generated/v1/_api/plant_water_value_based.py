@@ -8,7 +8,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -19,26 +25,37 @@ from cognite.powerops.client._generated.v1.data_classes import (
     PlantWaterValueBasedList,
     PlantWaterValueBasedWriteList,
     PlantWaterValueBasedTextFields,
+    Generator,
+    PlantInformation,
 )
 from cognite.powerops.client._generated.v1.data_classes._plant_water_value_based import (
+    PlantWaterValueBasedQuery,
     _PLANTWATERVALUEBASED_PROPERTIES_BY_FIELD,
     _create_plant_water_value_based_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .plant_water_value_based_generators import PlantWaterValueBasedGeneratorsAPI
-from .plant_water_value_based_production_max_time_series import PlantWaterValueBasedProductionMaxTimeSeriesAPI
-from .plant_water_value_based_production_min_time_series import PlantWaterValueBasedProductionMinTimeSeriesAPI
-from .plant_water_value_based_water_value_time_series import PlantWaterValueBasedWaterValueTimeSeriesAPI
-from .plant_water_value_based_feeding_fee_time_series import PlantWaterValueBasedFeedingFeeTimeSeriesAPI
-from .plant_water_value_based_outlet_level_time_series import PlantWaterValueBasedOutletLevelTimeSeriesAPI
-from .plant_water_value_based_inlet_level_time_series import PlantWaterValueBasedInletLevelTimeSeriesAPI
-from .plant_water_value_based_head_direct_time_series import PlantWaterValueBasedHeadDirectTimeSeriesAPI
-from .plant_water_value_based_query import PlantWaterValueBasedQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.plant_water_value_based_generators import PlantWaterValueBasedGeneratorsAPI
+from cognite.powerops.client._generated.v1._api.plant_water_value_based_production_max_time_series import PlantWaterValueBasedProductionMaxTimeSeriesAPI
+from cognite.powerops.client._generated.v1._api.plant_water_value_based_production_min_time_series import PlantWaterValueBasedProductionMinTimeSeriesAPI
+from cognite.powerops.client._generated.v1._api.plant_water_value_based_water_value_time_series import PlantWaterValueBasedWaterValueTimeSeriesAPI
+from cognite.powerops.client._generated.v1._api.plant_water_value_based_feeding_fee_time_series import PlantWaterValueBasedFeedingFeeTimeSeriesAPI
+from cognite.powerops.client._generated.v1._api.plant_water_value_based_outlet_level_time_series import PlantWaterValueBasedOutletLevelTimeSeriesAPI
+from cognite.powerops.client._generated.v1._api.plant_water_value_based_inlet_level_time_series import PlantWaterValueBasedInletLevelTimeSeriesAPI
+from cognite.powerops.client._generated.v1._api.plant_water_value_based_head_direct_time_series import PlantWaterValueBasedHeadDirectTimeSeriesAPI
+from cognite.powerops.client._generated.v1._api.plant_water_value_based_query import PlantWaterValueBasedQueryAPI
 
 
 class PlantWaterValueBasedAPI(NodeAPI[PlantWaterValueBased, PlantWaterValueBasedWrite, PlantWaterValueBasedList, PlantWaterValueBasedWriteList]):
     _view_id = dm.ViewId("power_ops_core", "PlantWaterValueBased", "1")
     _properties_by_field = _PLANTWATERVALUEBASED_PROPERTIES_BY_FIELD
+    _direct_children_by_external_id = {
+        "PlantInformation": PlantInformation,
+    }
     _class_type = PlantWaterValueBased
     _class_list = PlantWaterValueBasedList
     _class_write_list = PlantWaterValueBasedWriteList
@@ -110,6 +127,12 @@ class PlantWaterValueBasedAPI(NodeAPI[PlantWaterValueBased, PlantWaterValueBased
             A query API for plant water value baseds.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_plant_water_value_based_filter(
             self._view_id,
@@ -135,7 +158,7 @@ class PlantWaterValueBasedAPI(NodeAPI[PlantWaterValueBased, PlantWaterValueBased
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(PlantWaterValueBasedList)
+        builder = DataClassQueryBuilder(PlantWaterValueBasedList)
         return PlantWaterValueBasedQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -213,19 +236,22 @@ class PlantWaterValueBasedAPI(NodeAPI[PlantWaterValueBased, PlantWaterValueBased
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> PlantWaterValueBased | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["PlantInformation"]] | None = None) -> PlantWaterValueBased | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PlantWaterValueBasedList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["PlantInformation"]] | None = None) -> PlantWaterValueBasedList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PlantWaterValueBased | PlantWaterValueBasedList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["PlantInformation"]] | None = None) -> PlantWaterValueBased | PlantWaterValueBasedList | None:
         """Retrieve one or more plant water value baseds by id(s).
 
         Args:
             external_id: External id or list of external ids of the plant water value baseds.
             space: The space where all the plant water value baseds are located.
+            as_child_class: If you want to retrieve the plant water value baseds as a child class,
+                you can specify the child class here. Note that if one node has properties in
+                multiple child classes, you will get duplicate nodes in the result.
 
         Returns:
             The requested plant water value baseds.
@@ -251,7 +277,8 @@ class PlantWaterValueBasedAPI(NodeAPI[PlantWaterValueBased, PlantWaterValueBased
                     "outwards",
                     dm.ViewId("power_ops_core", "Generator", "1"),
                 ),
-                                               ]
+                                               ],
+            as_child_class=as_child_class
         )
 
 
@@ -675,6 +702,15 @@ class PlantWaterValueBasedAPI(NodeAPI[PlantWaterValueBased, PlantWaterValueBased
             filter_,
         )
 
+    def query(self) -> PlantWaterValueBasedQuery:
+        """Start a query for plant water value baseds."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return PlantWaterValueBasedQuery(self._client)
+
+    def select(self) -> PlantWaterValueBasedQuery:
+        """Start selecting from plant water value baseds."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return PlantWaterValueBasedQuery(self._client)
 
     def list(
         self,
@@ -703,7 +739,7 @@ class PlantWaterValueBasedAPI(NodeAPI[PlantWaterValueBased, PlantWaterValueBased
         sort_by: PlantWaterValueBasedFields | Sequence[PlantWaterValueBasedFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
-        retrieve_edges: bool = True,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> PlantWaterValueBasedList:
         """List/filter plant water value baseds
 
@@ -735,7 +771,8 @@ class PlantWaterValueBasedAPI(NodeAPI[PlantWaterValueBased, PlantWaterValueBased
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
                 This will override the sort_by and direction. This allowos you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
-            retrieve_edges: Whether to retrieve `generators` external ids for the plant water value baseds. Defaults to True.
+            retrieve_connections: Whether to retrieve `generators` for the plant water value baseds. Defaults to 'skip'.
+                'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier of the connected items, and 'full' will retrieve the full connected items.
 
         Returns:
             List of requested plant water value baseds
@@ -774,20 +811,52 @@ class PlantWaterValueBasedAPI(NodeAPI[PlantWaterValueBased, PlantWaterValueBased
             filter,
         )
 
-        return self._list(
-            limit=limit,
-            filter=filter_,
-            sort_by=sort_by,  # type: ignore[arg-type]
-            direction=direction,
-            sort=sort,
-            retrieve_edges=retrieve_edges,
-            edge_api_name_type_direction_view_id_penta=[
-                (
-                    self.generators_edge,
-                    "generators",
-                    dm.DirectRelationReference("power_ops_types", "isSubAssetOf"),
-                    "outwards",
-                    dm.ViewId("power_ops_core", "Generator", "1"),
+        if retrieve_connections == "skip":
+                return self._list(
+                limit=limit,
+                filter=filter_,
+                sort_by=sort_by,  # type: ignore[arg-type]
+                direction=direction,
+                sort=sort,
+            )
+
+        builder = DataClassQueryBuilder(PlantWaterValueBasedList)
+        has_data = dm.filters.HasData(views=[self._view_id])
+        builder.append(
+            NodeQueryStep(
+                builder.create_name(None),
+                dm.query.NodeResultSetExpression(
+                    filter=dm.filters.And(filter_, has_data) if filter_ else has_data,
+                    sort=self._create_sort(sort_by, direction, sort),  # type: ignore[arg-type]
                 ),
-                                               ]
+                PlantWaterValueBased,
+                max_retrieve_limit=limit,
+                raw_filter=filter_,
+            )
         )
+        from_root = builder.get_from()
+        edge_generators = builder.create_name(from_root)
+        builder.append(
+            EdgeQueryStep(
+                edge_generators,
+                dm.query.EdgeResultSetExpression(
+                    from_=from_root,
+                    direction="outwards",
+                    chain_to="destination",
+                ),
+            )
+        )
+        if retrieve_connections == "full":
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name( edge_generators),
+                    dm.query.NodeResultSetExpression(
+                        from_= edge_generators,
+                        filter=dm.filters.HasData(views=[Generator._view_id]),
+                    ),
+                    Generator,
+                )
+            )
+        # We know that that all nodes are connected as it is not possible to filter on connections
+        builder.execute_query(self._client, remove_not_connected=False)
+        return builder.unpack()

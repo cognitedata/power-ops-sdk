@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import datetime
+import warnings
 from collections.abc import Sequence
-from typing import Literal
+from typing import Literal, cast
 
 import pandas as pd
 from cognite.client import CogniteClient
@@ -10,9 +11,11 @@ from cognite.client import data_modeling as dm
 from cognite.client.data_classes import Datapoints, DatapointsArrayList, DatapointsList, TimeSeriesList
 from cognite.client.data_classes.datapoints import Aggregate
 from cognite.powerops.client._generated.v1.data_classes._generator import _create_generator_filter
-from ._core import DEFAULT_LIMIT_READ, INSTANCE_QUERY_LIMIT
+from cognite.powerops.client._generated.v1.data_classes._core import QueryStep, DataClassQueryBuilder, DomainModelList
+from cognite.powerops.client._generated.v1._api._core import DEFAULT_LIMIT_READ
 
-ColumnNames = Literal["name", "displayName", "ordering", "assetType", "productionMin", "penstockNumber", "startStopCost", "startStopCostTimeSeries", "availabilityTimeSeries"]
+
+ColumnNames = Literal["name", "displayName", "ordering", "assetType", "productionMin", "penstockNumber", "startStopCost", "startStopCostTimeSeries", "availabilityTimeSeries", "productionMax"]
 
 class GeneratorStartStopCostTimeSeriesQuery:
     def __init__(
@@ -374,7 +377,9 @@ class GeneratorStartStopCostTimeSeriesAPI:
         max_penstock_number: int | None = None,
         min_start_stop_cost: float | None = None,
         max_start_stop_cost: float | None = None,
-        generator_efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        generator_efficiency_curve: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        min_production_max: float | None = None,
+        max_production_max: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -398,6 +403,8 @@ class GeneratorStartStopCostTimeSeriesAPI:
             min_start_stop_cost: The minimum value of the start stop cost to filter on.
             max_start_stop_cost: The maximum value of the start stop cost to filter on.
             generator_efficiency_curve: The generator efficiency curve to filter on.
+            min_production_max: The minimum value of the production max to filter on.
+            max_production_max: The maximum value of the production max to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of generators to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -416,6 +423,12 @@ class GeneratorStartStopCostTimeSeriesAPI:
                 >>> generators = client.generator.start_stop_cost_time_series(limit=5).retrieve()
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select()...data.retrieve_dataframe() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         filter_ = _create_generator_filter(
             self._view_id,
             name,
@@ -433,6 +446,8 @@ class GeneratorStartStopCostTimeSeriesAPI:
             min_start_stop_cost,
             max_start_stop_cost,
             generator_efficiency_curve,
+            min_production_max,
+            max_production_max,
             external_id_prefix,
             space,
             filter,
@@ -461,7 +476,9 @@ class GeneratorStartStopCostTimeSeriesAPI:
         max_penstock_number: int | None = None,
         min_start_stop_cost: float | None = None,
         max_start_stop_cost: float | None = None,
-        generator_efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        generator_efficiency_curve: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        min_production_max: float | None = None,
+        max_production_max: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -485,6 +502,8 @@ class GeneratorStartStopCostTimeSeriesAPI:
             min_start_stop_cost: The minimum value of the start stop cost to filter on.
             max_start_stop_cost: The maximum value of the start stop cost to filter on.
             generator_efficiency_curve: The generator efficiency curve to filter on.
+            min_production_max: The minimum value of the production max to filter on.
+            max_production_max: The maximum value of the production max to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of generators to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -519,6 +538,8 @@ class GeneratorStartStopCostTimeSeriesAPI:
             min_start_stop_cost,
             max_start_stop_cost,
             generator_efficiency_curve,
+            min_production_max,
+            max_production_max,
             external_id_prefix,
             space,
             filter,
@@ -537,50 +558,42 @@ def _retrieve_timeseries_external_ids_with_extra_start_stop_cost_time_series(
     limit: int,
     extra_properties: ColumnNames | list[ColumnNames] = "startStopCostTimeSeries",
 ) -> dict[str, list[str]]:
-    limit_input = float("inf") if limit is None or limit == -1 else limit
-    properties = ["startStopCostTimeSeries"]
-    if extra_properties == "startStopCostTimeSeries":
-        ...
-    elif isinstance(extra_properties, str) and extra_properties != "startStopCostTimeSeries":
-        properties.append(extra_properties)
+    properties = {"startStopCostTimeSeries"}
+    if isinstance(extra_properties, str):
+        properties.add(extra_properties)
+        extra_properties_list = [extra_properties]
     elif isinstance(extra_properties, list):
-        properties.extend([prop for prop in extra_properties if prop != "startStopCostTimeSeries"])
+        properties.update(extra_properties)
+        extra_properties_list = extra_properties
     else:
         raise ValueError(f"Invalid value for extra_properties: {extra_properties}")
 
-    if isinstance(extra_properties, str):
-        extra_list = [extra_properties]
-    else:
-        extra_list = extra_properties
     has_data = dm.filters.HasData(views=[view_id])
     has_property = dm.filters.Exists(property=view_id.as_property_ref("startStopCostTimeSeries"))
     filter_ = dm.filters.And(filter_, has_data, has_property) if filter_ else dm.filters.And(has_data, has_property)
 
-    cursor = None
-    external_ids: dict[str, list[str]] = {}
-    total_retrieved = 0
-    while True:
-        query_limit = max(min(INSTANCE_QUERY_LIMIT, limit_input - total_retrieved), 0)
-        selected_nodes = dm.query.NodeResultSetExpression(filter=filter_, limit=int(query_limit))
-        query = dm.query.Query(
-            with_={
-                "nodes": selected_nodes,
-            },
-            select={
-                "nodes": dm.query.Select(
-                    [dm.query.SourceSelector(view_id, properties)],
-                )
-            },
-            cursors={"nodes": cursor},
+    builder = DataClassQueryBuilder[DomainModelList](None)
+    builder.append(
+        QueryStep(
+            name="nodes",
+            expression=dm.query.NodeResultSetExpression(filter=filter_),
+            max_retrieve_limit=limit,
+            select=dm.query.Select([dm.query.SourceSelector(view_id, list(properties))]),
         )
-        result = client.data_modeling.instances.query(query)
-        batch_external_ids = {
-            node.properties[view_id]["startStopCostTimeSeries"]: [node.properties[view_id].get(prop, "") for prop in extra_list]
-            for node in result.data["nodes"].data
-        }
-        total_retrieved += len(batch_external_ids)
-        external_ids.update(batch_external_ids)
-        cursor = result.cursors["nodes"]
-        if total_retrieved >= limit_input or cursor is None:
-            break
-    return external_ids
+    )
+    builder.execute_query(client)
+
+    output: dict[str, list[str]] = {}
+    for node in builder[0].results:
+        if node.properties is None:
+            continue
+        view_prop = node.properties[view_id]
+        key = view_prop["startStopCostTimeSeries"]
+        values = [prop_ for prop in extra_properties_list if isinstance(prop_:= view_prop.get(prop, "MISSING"), str)]
+        if isinstance(key, str):
+            output[key] = values
+        elif isinstance(key, list):
+            for k in key:
+                if isinstance(k, str):
+                    output[k] = values
+    return output

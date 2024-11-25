@@ -10,6 +10,13 @@ properties:
     nullable: false
     autoIncrement: false
     name: productionMin
+  productionMax:
+    type:
+      type: float64
+      list: false
+    nullable: true
+    autoIncrement: false
+    name: productionMax
   penstockNumber:
     type:
       type: int64

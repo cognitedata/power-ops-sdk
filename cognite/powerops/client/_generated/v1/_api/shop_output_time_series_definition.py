@@ -8,7 +8,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -21,11 +27,17 @@ from cognite.powerops.client._generated.v1.data_classes import (
     ShopOutputTimeSeriesDefinitionTextFields,
 )
 from cognite.powerops.client._generated.v1.data_classes._shop_output_time_series_definition import (
+    ShopOutputTimeSeriesDefinitionQuery,
     _SHOPOUTPUTTIMESERIESDEFINITION_PROPERTIES_BY_FIELD,
     _create_shop_output_time_series_definition_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .shop_output_time_series_definition_query import ShopOutputTimeSeriesDefinitionQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.shop_output_time_series_definition_query import ShopOutputTimeSeriesDefinitionQueryAPI
 
 
 class ShopOutputTimeSeriesDefinitionAPI(NodeAPI[ShopOutputTimeSeriesDefinition, ShopOutputTimeSeriesDefinitionWrite, ShopOutputTimeSeriesDefinitionList, ShopOutputTimeSeriesDefinitionWriteList]):
@@ -80,6 +92,12 @@ class ShopOutputTimeSeriesDefinitionAPI(NodeAPI[ShopOutputTimeSeriesDefinition, 
             A query API for shop output time series definitions.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_shop_output_time_series_definition_filter(
             self._view_id,
@@ -98,7 +116,7 @@ class ShopOutputTimeSeriesDefinitionAPI(NodeAPI[ShopOutputTimeSeriesDefinition, 
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(ShopOutputTimeSeriesDefinitionList)
+        builder = DataClassQueryBuilder(ShopOutputTimeSeriesDefinitionList)
         return ShopOutputTimeSeriesDefinitionQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -172,14 +190,14 @@ class ShopOutputTimeSeriesDefinitionAPI(NodeAPI[ShopOutputTimeSeriesDefinition, 
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopOutputTimeSeriesDefinition | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopOutputTimeSeriesDefinition | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopOutputTimeSeriesDefinitionList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> ShopOutputTimeSeriesDefinitionList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopOutputTimeSeriesDefinition | ShopOutputTimeSeriesDefinitionList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> ShopOutputTimeSeriesDefinition | ShopOutputTimeSeriesDefinitionList | None:
         """Retrieve one or more shop output time series definitions by id(s).
 
         Args:
@@ -536,6 +554,15 @@ class ShopOutputTimeSeriesDefinitionAPI(NodeAPI[ShopOutputTimeSeriesDefinition, 
             filter_,
         )
 
+    def query(self) -> ShopOutputTimeSeriesDefinitionQuery:
+        """Start a query for shop output time series definitions."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return ShopOutputTimeSeriesDefinitionQuery(self._client)
+
+    def select(self) -> ShopOutputTimeSeriesDefinitionQuery:
+        """Start selecting from shop output time series definitions."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return ShopOutputTimeSeriesDefinitionQuery(self._client)
 
     def list(
         self,
@@ -611,6 +638,7 @@ class ShopOutputTimeSeriesDefinitionAPI(NodeAPI[ShopOutputTimeSeriesDefinition, 
             space,
             filter,
         )
+
         return self._list(
             limit=limit,
             filter=filter_,

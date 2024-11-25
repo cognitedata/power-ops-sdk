@@ -8,7 +8,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -19,27 +25,37 @@ from cognite.powerops.client._generated.v1.data_classes import (
     PriceAreaAFRRList,
     PriceAreaAFRRWriteList,
     PriceAreaAFRRTextFields,
+    PriceAreaInformation,
 )
 from cognite.powerops.client._generated.v1.data_classes._price_area_afrr import (
+    PriceAreaAFRRQuery,
     _PRICEAREAAFRR_PROPERTIES_BY_FIELD,
     _create_price_area_afrr_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .price_area_afrr_capacity_price_up import PriceAreaAFRRCapacityPriceUpAPI
-from .price_area_afrr_capacity_price_down import PriceAreaAFRRCapacityPriceDownAPI
-from .price_area_afrr_activation_price_up import PriceAreaAFRRActivationPriceUpAPI
-from .price_area_afrr_activation_price_down import PriceAreaAFRRActivationPriceDownAPI
-from .price_area_afrr_relative_activation import PriceAreaAFRRRelativeActivationAPI
-from .price_area_afrr_total_capacity_allocation_up import PriceAreaAFRRTotalCapacityAllocationUpAPI
-from .price_area_afrr_total_capacity_allocation_down import PriceAreaAFRRTotalCapacityAllocationDownAPI
-from .price_area_afrr_own_capacity_allocation_up import PriceAreaAFRROwnCapacityAllocationUpAPI
-from .price_area_afrr_own_capacity_allocation_down import PriceAreaAFRROwnCapacityAllocationDownAPI
-from .price_area_afrr_query import PriceAreaAFRRQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.price_area_afrr_capacity_price_up import PriceAreaAFRRCapacityPriceUpAPI
+from cognite.powerops.client._generated.v1._api.price_area_afrr_capacity_price_down import PriceAreaAFRRCapacityPriceDownAPI
+from cognite.powerops.client._generated.v1._api.price_area_afrr_activation_price_up import PriceAreaAFRRActivationPriceUpAPI
+from cognite.powerops.client._generated.v1._api.price_area_afrr_activation_price_down import PriceAreaAFRRActivationPriceDownAPI
+from cognite.powerops.client._generated.v1._api.price_area_afrr_relative_activation import PriceAreaAFRRRelativeActivationAPI
+from cognite.powerops.client._generated.v1._api.price_area_afrr_total_capacity_allocation_up import PriceAreaAFRRTotalCapacityAllocationUpAPI
+from cognite.powerops.client._generated.v1._api.price_area_afrr_total_capacity_allocation_down import PriceAreaAFRRTotalCapacityAllocationDownAPI
+from cognite.powerops.client._generated.v1._api.price_area_afrr_own_capacity_allocation_up import PriceAreaAFRROwnCapacityAllocationUpAPI
+from cognite.powerops.client._generated.v1._api.price_area_afrr_own_capacity_allocation_down import PriceAreaAFRROwnCapacityAllocationDownAPI
+from cognite.powerops.client._generated.v1._api.price_area_afrr_query import PriceAreaAFRRQueryAPI
 
 
 class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRList, PriceAreaAFRRWriteList]):
     _view_id = dm.ViewId("power_ops_core", "PriceAreaAFRR", "1")
     _properties_by_field = _PRICEAREAAFRR_PROPERTIES_BY_FIELD
+    _direct_children_by_external_id = {
+        "PriceAreaInformation": PriceAreaInformation,
+    }
     _class_type = PriceAreaAFRR
     _class_list = PriceAreaAFRRList
     _class_write_list = PriceAreaAFRRWriteList
@@ -92,6 +108,12 @@ class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRL
             A query API for price area afrrs.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_price_area_afrr_filter(
             self._view_id,
@@ -107,7 +129,7 @@ class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRL
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(PriceAreaAFRRList)
+        builder = DataClassQueryBuilder(PriceAreaAFRRList)
         return PriceAreaAFRRQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -181,19 +203,22 @@ class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRL
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> PriceAreaAFRR | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["PriceAreaInformation"]] | None = None) -> PriceAreaAFRR | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PriceAreaAFRRList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["PriceAreaInformation"]] | None = None) -> PriceAreaAFRRList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PriceAreaAFRR | PriceAreaAFRRList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["PriceAreaInformation"]] | None = None) -> PriceAreaAFRR | PriceAreaAFRRList | None:
         """Retrieve one or more price area afrrs by id(s).
 
         Args:
             external_id: External id or list of external ids of the price area afrrs.
             space: The space where all the price area afrrs are located.
+            as_child_class: If you want to retrieve the price area afrrs as a child class,
+                you can specify the child class here. Note that if one node has properties in
+                multiple child classes, you will get duplicate nodes in the result.
 
         Returns:
             The requested price area afrrs.
@@ -207,7 +232,7 @@ class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRL
                 >>> price_area_afrr = client.price_area_afrr.retrieve("my_price_area_afrr")
 
         """
-        return self._retrieve(external_id, space)
+        return self._retrieve(external_id, space, as_child_class=as_child_class)
 
     def search(
         self,
@@ -509,6 +534,15 @@ class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRL
             filter_,
         )
 
+    def query(self) -> PriceAreaAFRRQuery:
+        """Start a query for price area afrrs."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return PriceAreaAFRRQuery(self._client)
+
+    def select(self) -> PriceAreaAFRRQuery:
+        """Start selecting from price area afrrs."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return PriceAreaAFRRQuery(self._client)
 
     def list(
         self,
@@ -575,6 +609,7 @@ class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRL
             space,
             filter,
         )
+
         return self._list(
             limit=limit,
             filter=filter_,

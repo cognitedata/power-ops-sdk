@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import datetime
+import warnings
 from collections.abc import Sequence
-from typing import Literal
+from typing import Literal, cast
 
 import pandas as pd
 from cognite.client import CogniteClient
@@ -10,7 +11,9 @@ from cognite.client import data_modeling as dm
 from cognite.client.data_classes import Datapoints, DatapointsArrayList, DatapointsList, TimeSeriesList
 from cognite.client.data_classes.datapoints import Aggregate
 from cognite.powerops.client._generated.v1.data_classes._price_area_afrr import _create_price_area_afrr_filter
-from ._core import DEFAULT_LIMIT_READ, INSTANCE_QUERY_LIMIT
+from cognite.powerops.client._generated.v1.data_classes._core import QueryStep, DataClassQueryBuilder, DomainModelList
+from cognite.powerops.client._generated.v1._api._core import DEFAULT_LIMIT_READ
+
 
 ColumnNames = Literal["name", "displayName", "ordering", "assetType", "capacityPriceUp", "capacityPriceDown", "activationPriceUp", "activationPriceDown", "relativeActivation", "totalCapacityAllocationUp", "totalCapacityAllocationDown", "ownCapacityAllocationUp", "ownCapacityAllocationDown"]
 
@@ -402,6 +405,12 @@ class PriceAreaAFRRTotalCapacityAllocationDownAPI:
                 >>> price_area_afrrs = client.price_area_afrr.total_capacity_allocation_down(limit=5).retrieve()
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select()...data.retrieve_dataframe() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         filter_ = _create_price_area_afrr_filter(
             self._view_id,
             name,
@@ -495,50 +504,42 @@ def _retrieve_timeseries_external_ids_with_extra_total_capacity_allocation_down(
     limit: int,
     extra_properties: ColumnNames | list[ColumnNames] = "totalCapacityAllocationDown",
 ) -> dict[str, list[str]]:
-    limit_input = float("inf") if limit is None or limit == -1 else limit
-    properties = ["totalCapacityAllocationDown"]
-    if extra_properties == "totalCapacityAllocationDown":
-        ...
-    elif isinstance(extra_properties, str) and extra_properties != "totalCapacityAllocationDown":
-        properties.append(extra_properties)
+    properties = {"totalCapacityAllocationDown"}
+    if isinstance(extra_properties, str):
+        properties.add(extra_properties)
+        extra_properties_list = [extra_properties]
     elif isinstance(extra_properties, list):
-        properties.extend([prop for prop in extra_properties if prop != "totalCapacityAllocationDown"])
+        properties.update(extra_properties)
+        extra_properties_list = extra_properties
     else:
         raise ValueError(f"Invalid value for extra_properties: {extra_properties}")
 
-    if isinstance(extra_properties, str):
-        extra_list = [extra_properties]
-    else:
-        extra_list = extra_properties
     has_data = dm.filters.HasData(views=[view_id])
     has_property = dm.filters.Exists(property=view_id.as_property_ref("totalCapacityAllocationDown"))
     filter_ = dm.filters.And(filter_, has_data, has_property) if filter_ else dm.filters.And(has_data, has_property)
 
-    cursor = None
-    external_ids: dict[str, list[str]] = {}
-    total_retrieved = 0
-    while True:
-        query_limit = max(min(INSTANCE_QUERY_LIMIT, limit_input - total_retrieved), 0)
-        selected_nodes = dm.query.NodeResultSetExpression(filter=filter_, limit=int(query_limit))
-        query = dm.query.Query(
-            with_={
-                "nodes": selected_nodes,
-            },
-            select={
-                "nodes": dm.query.Select(
-                    [dm.query.SourceSelector(view_id, properties)],
-                )
-            },
-            cursors={"nodes": cursor},
+    builder = DataClassQueryBuilder[DomainModelList](None)
+    builder.append(
+        QueryStep(
+            name="nodes",
+            expression=dm.query.NodeResultSetExpression(filter=filter_),
+            max_retrieve_limit=limit,
+            select=dm.query.Select([dm.query.SourceSelector(view_id, list(properties))]),
         )
-        result = client.data_modeling.instances.query(query)
-        batch_external_ids = {
-            node.properties[view_id]["totalCapacityAllocationDown"]: [node.properties[view_id].get(prop, "") for prop in extra_list]
-            for node in result.data["nodes"].data
-        }
-        total_retrieved += len(batch_external_ids)
-        external_ids.update(batch_external_ids)
-        cursor = result.cursors["nodes"]
-        if total_retrieved >= limit_input or cursor is None:
-            break
-    return external_ids
+    )
+    builder.execute_query(client)
+
+    output: dict[str, list[str]] = {}
+    for node in builder[0].results:
+        if node.properties is None:
+            continue
+        view_prop = node.properties[view_id]
+        key = view_prop["totalCapacityAllocationDown"]
+        values = [prop_ for prop in extra_properties_list if isinstance(prop_:= view_prop.get(prop, "MISSING"), str)]
+        if isinstance(key, str):
+            output[key] = values
+        elif isinstance(key, list):
+            for k in key:
+                if isinstance(k, str):
+                    output[k] = values
+    return output

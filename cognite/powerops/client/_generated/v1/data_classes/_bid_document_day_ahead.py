@@ -2,14 +2,16 @@ from __future__ import annotations
 
 import datetime
 import warnings
+from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
 
-from cognite.client import data_modeling as dm
+from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator
 
-from ._core import (
+from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
     DataRecord,
     DataRecordGraphQL,
     DataRecordWrite,
@@ -17,17 +19,32 @@ from ._core import (
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
+    DomainRelation,
     DomainRelationWrite,
     GraphQLCore,
     ResourcesWrite,
+    T_DomainModelList,
+    as_direct_relation_reference,
+    as_instance_dict_id,
+    as_node_id,
+    as_pygen_node_id,
+    are_nodes_equal,
+    is_tuple_id,
+    select_best_node,
+    QueryCore,
+    NodeQueryCore,
+    StringFilter,
+    BooleanFilter,
+    DateFilter,
+    TimestampFilter,
 )
-from ._bid_document import BidDocument, BidDocumentWrite
+from cognite.powerops.client._generated.v1.data_classes._bid_document import BidDocument, BidDocumentWrite
 
 if TYPE_CHECKING:
-    from ._alert import Alert, AlertGraphQL, AlertWrite
-    from ._bid_configuration_day_ahead import BidConfigurationDayAhead, BidConfigurationDayAheadGraphQL, BidConfigurationDayAheadWrite
-    from ._bid_matrix_information import BidMatrixInformation, BidMatrixInformationGraphQL, BidMatrixInformationWrite
-    from ._partial_bid_matrix_information import PartialBidMatrixInformation, PartialBidMatrixInformationGraphQL, PartialBidMatrixInformationWrite
+    from cognite.powerops.client._generated.v1.data_classes._alert import Alert, AlertList, AlertGraphQL, AlertWrite, AlertWriteList
+    from cognite.powerops.client._generated.v1.data_classes._bid_configuration_day_ahead import BidConfigurationDayAhead, BidConfigurationDayAheadList, BidConfigurationDayAheadGraphQL, BidConfigurationDayAheadWrite, BidConfigurationDayAheadWriteList
+    from cognite.powerops.client._generated.v1.data_classes._bid_matrix_information import BidMatrixInformation, BidMatrixInformationList, BidMatrixInformationGraphQL, BidMatrixInformationWrite, BidMatrixInformationWriteList
+    from cognite.powerops.client._generated.v1.data_classes._partial_bid_matrix_information import PartialBidMatrixInformation, PartialBidMatrixInformationList, PartialBidMatrixInformationGraphQL, PartialBidMatrixInformationWrite, PartialBidMatrixInformationWriteList
 
 
 __all__ = [
@@ -43,10 +60,11 @@ __all__ = [
 ]
 
 
-BidDocumentDayAheadTextFields = Literal["name", "workflow_execution_id"]
-BidDocumentDayAheadFields = Literal["name", "workflow_execution_id", "delivery_date", "start_calculation", "end_calculation", "is_complete"]
+BidDocumentDayAheadTextFields = Literal["external_id", "name", "workflow_execution_id"]
+BidDocumentDayAheadFields = Literal["external_id", "name", "workflow_execution_id", "delivery_date", "start_calculation", "end_calculation", "is_complete"]
 
 _BIDDOCUMENTDAYAHEAD_PROPERTIES_BY_FIELD = {
+    "external_id": "externalId",
     "name": "name",
     "workflow_execution_id": "workflowExecutionId",
     "delivery_date": "deliveryDate",
@@ -113,7 +131,7 @@ class BidDocumentDayAheadGraphQL(GraphQLCore):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return BidDocumentDayAhead(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
@@ -127,8 +145,12 @@ class BidDocumentDayAheadGraphQL(GraphQLCore):
             end_calculation=self.end_calculation,
             is_complete=self.is_complete,
             alerts=[alert.as_read() for alert in self.alerts or []],
-            bid_configuration=self.bid_configuration.as_read() if isinstance(self.bid_configuration, GraphQLCore) else self.bid_configuration,
-            total=self.total.as_read() if isinstance(self.total, GraphQLCore) else self.total,
+            bid_configuration=self.bid_configuration.as_read()
+if isinstance(self.bid_configuration, GraphQLCore)
+else self.bid_configuration,
+            total=self.total.as_read()
+if isinstance(self.total, GraphQLCore)
+else self.total,
             partials=[partial.as_read() for partial in self.partials or []],
         )
 
@@ -138,7 +160,7 @@ class BidDocumentDayAheadGraphQL(GraphQLCore):
     def as_write(self) -> BidDocumentDayAheadWrite:
         """Convert this GraphQL format of bid document day ahead to the writing format."""
         return BidDocumentDayAheadWrite(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,
@@ -148,8 +170,12 @@ class BidDocumentDayAheadGraphQL(GraphQLCore):
             end_calculation=self.end_calculation,
             is_complete=self.is_complete,
             alerts=[alert.as_write() for alert in self.alerts or []],
-            bid_configuration=self.bid_configuration.as_write() if isinstance(self.bid_configuration, GraphQLCore) else self.bid_configuration,
-            total=self.total.as_write() if isinstance(self.total, GraphQLCore) else self.total,
+            bid_configuration=self.bid_configuration.as_write()
+if isinstance(self.bid_configuration, GraphQLCore)
+else self.bid_configuration,
+            total=self.total.as_write()
+if isinstance(self.total, GraphQLCore)
+else self.total,
             partials=[partial.as_write() for partial in self.partials or []],
         )
 
@@ -194,8 +220,12 @@ class BidDocumentDayAhead(BidDocument):
             end_calculation=self.end_calculation,
             is_complete=self.is_complete,
             alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            bid_configuration=self.bid_configuration.as_write() if isinstance(self.bid_configuration, DomainModel) else self.bid_configuration,
-            total=self.total.as_write() if isinstance(self.total, DomainModel) else self.total,
+            bid_configuration=self.bid_configuration.as_write()
+if isinstance(self.bid_configuration, DomainModel)
+else self.bid_configuration,
+            total=self.total.as_write()
+if isinstance(self.total, DomainModel)
+else self.total,
             partials=[partial.as_write() if isinstance(partial, DomainModel) else partial for partial in self.partials or []],
         )
 
@@ -207,6 +237,66 @@ class BidDocumentDayAhead(BidDocument):
             stacklevel=2,
         )
         return self.as_write()
+
+    @classmethod
+    def _update_connections(
+        cls,
+        instances: dict[dm.NodeId | str, BidDocumentDayAhead],  # type: ignore[override]
+        nodes_by_id: dict[dm.NodeId | str, DomainModel],
+        edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
+    ) -> None:
+        from ._alert import Alert
+        from ._bid_configuration_day_ahead import BidConfigurationDayAhead
+        from ._bid_matrix_information import BidMatrixInformation
+        from ._partial_bid_matrix_information import PartialBidMatrixInformation
+
+        for instance in instances.values():
+            if isinstance(instance.bid_configuration, (dm.NodeId, str)) and (bid_configuration := nodes_by_id.get(instance.bid_configuration)) and isinstance(
+                    bid_configuration, BidConfigurationDayAhead
+            ):
+                instance.bid_configuration = bid_configuration
+            if isinstance(instance.total, (dm.NodeId, str)) and (total := nodes_by_id.get(instance.total)) and isinstance(
+                    total, BidMatrixInformation
+            ):
+                instance.total = total
+            if edges := edges_by_source_node.get(instance.as_id()):
+                alerts: list[Alert | str | dm.NodeId] = []
+                partials: list[PartialBidMatrixInformation | str | dm.NodeId] = []
+                for edge in edges:
+                    value: DomainModel | DomainRelation | str | dm.NodeId
+                    if isinstance(edge, DomainRelation):
+                        value = edge
+                    else:
+                        other_end: dm.DirectRelationReference = (
+                            edge.end_node
+                            if edge.start_node.space == instance.space
+                            and edge.start_node.external_id == instance.external_id
+                            else edge.start_node
+                        )
+                        destination: dm.NodeId | str = (
+                            as_node_id(other_end)
+                            if other_end.space != DEFAULT_INSTANCE_SPACE
+                            else other_end.external_id
+                        )
+                        if destination in nodes_by_id:
+                            value = nodes_by_id[destination]
+                        else:
+                            value = destination
+                    edge_type = edge.edge_type if isinstance(edge, DomainRelation) else edge.type
+
+                    if edge_type == dm.DirectRelationReference("power_ops_types", "calculationIssue") and isinstance(
+                        value, (Alert, str, dm.NodeId)
+                    ):
+                        alerts.append(value)
+                    if edge_type == dm.DirectRelationReference("power_ops_types", "partialBid") and isinstance(
+                        value, (PartialBidMatrixInformation, str, dm.NodeId)
+                    ):
+                        partials.append(value)
+
+                instance.alerts = alerts or None
+                instance.partials = partials or None
+
+
 
 
 class BidDocumentDayAheadWrite(BidDocumentWrite):
@@ -231,11 +321,20 @@ class BidDocumentDayAheadWrite(BidDocumentWrite):
     """
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidDocumentDayAhead", "1")
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "DayAheadBidDocument")
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "DayAheadBidDocument")
     bid_configuration: Union[BidConfigurationDayAheadWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="bidConfiguration")
     total: Union[BidMatrixInformationWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
     partials: Optional[list[Union[PartialBidMatrixInformationWrite, str, dm.NodeId]]] = Field(default=None, repr=False)
 
+    @field_validator("bid_configuration", "total", "partials", mode="before")
+    def as_node_id(cls, value: Any) -> Any:
+        if isinstance(value, dm.DirectRelationReference):
+            return dm.NodeId(value.space, value.external_id)
+        elif isinstance(value, tuple) and len(value) == 2 and all(isinstance(item, str) for item in value):
+            return dm.NodeId(value[0], value[1])
+        elif isinstance(value, list):
+            return [cls.as_node_id(item) for item in value]
+        return value
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -284,7 +383,7 @@ class BidDocumentDayAheadWrite(BidDocumentWrite):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=None if allow_version_increase else self.data_record.existing_version,
-                type=self.node_type,
+                type=as_direct_relation_reference(self.node_type),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=self._view_id,
@@ -361,11 +460,59 @@ class BidDocumentDayAheadList(DomainModelList[BidDocumentDayAhead]):
         )
         return self.as_write()
 
+    @property
+    def alerts(self) -> AlertList:
+        from ._alert import Alert, AlertList
+
+        return AlertList([item for items in self.data for item in items.alerts or [] if isinstance(item, Alert)])
+
+    @property
+    def bid_configuration(self) -> BidConfigurationDayAheadList:
+        from ._bid_configuration_day_ahead import BidConfigurationDayAhead, BidConfigurationDayAheadList
+
+        return BidConfigurationDayAheadList([item.bid_configuration for item in self.data if isinstance(item.bid_configuration, BidConfigurationDayAhead)])
+
+    @property
+    def total(self) -> BidMatrixInformationList:
+        from ._bid_matrix_information import BidMatrixInformation, BidMatrixInformationList
+
+        return BidMatrixInformationList([item.total for item in self.data if isinstance(item.total, BidMatrixInformation)])
+
+    @property
+    def partials(self) -> PartialBidMatrixInformationList:
+        from ._partial_bid_matrix_information import PartialBidMatrixInformation, PartialBidMatrixInformationList
+
+        return PartialBidMatrixInformationList([item for items in self.data for item in items.partials or [] if isinstance(item, PartialBidMatrixInformation)])
+
 
 class BidDocumentDayAheadWriteList(DomainModelWriteList[BidDocumentDayAheadWrite]):
     """List of bid document day aheads in the writing version."""
 
     _INSTANCE = BidDocumentDayAheadWrite
+
+    @property
+    def alerts(self) -> AlertWriteList:
+        from ._alert import AlertWrite, AlertWriteList
+
+        return AlertWriteList([item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)])
+
+    @property
+    def bid_configuration(self) -> BidConfigurationDayAheadWriteList:
+        from ._bid_configuration_day_ahead import BidConfigurationDayAheadWrite, BidConfigurationDayAheadWriteList
+
+        return BidConfigurationDayAheadWriteList([item.bid_configuration for item in self.data if isinstance(item.bid_configuration, BidConfigurationDayAheadWrite)])
+
+    @property
+    def total(self) -> BidMatrixInformationWriteList:
+        from ._bid_matrix_information import BidMatrixInformationWrite, BidMatrixInformationWriteList
+
+        return BidMatrixInformationWriteList([item.total for item in self.data if isinstance(item.total, BidMatrixInformationWrite)])
+
+    @property
+    def partials(self) -> PartialBidMatrixInformationWriteList:
+        from ._partial_bid_matrix_information import PartialBidMatrixInformationWrite, PartialBidMatrixInformationWriteList
+
+        return PartialBidMatrixInformationWriteList([item for items in self.data for item in items.partials or [] if isinstance(item, PartialBidMatrixInformationWrite)])
 
 class BidDocumentDayAheadApplyList(BidDocumentDayAheadWriteList): ...
 
@@ -384,8 +531,8 @@ def _create_bid_document_day_ahead_filter(
     min_end_calculation: datetime.datetime | None = None,
     max_end_calculation: datetime.datetime | None = None,
     is_complete: bool | None = None,
-    bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-    total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+    total: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -411,22 +558,14 @@ def _create_bid_document_day_ahead_filter(
         filters.append(dm.filters.Range(view_id.as_property_ref("endCalculation"), gte=min_end_calculation.isoformat(timespec="milliseconds") if min_end_calculation else None, lte=max_end_calculation.isoformat(timespec="milliseconds") if max_end_calculation else None))
     if isinstance(is_complete, bool):
         filters.append(dm.filters.Equals(view_id.as_property_ref("isComplete"), value=is_complete))
-    if bid_configuration and isinstance(bid_configuration, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("bidConfiguration"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": bid_configuration}))
-    if bid_configuration and isinstance(bid_configuration, tuple):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("bidConfiguration"), value={"space": bid_configuration[0], "externalId": bid_configuration[1]}))
-    if bid_configuration and isinstance(bid_configuration, list) and isinstance(bid_configuration[0], str):
-        filters.append(dm.filters.In(view_id.as_property_ref("bidConfiguration"), values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in bid_configuration]))
-    if bid_configuration and isinstance(bid_configuration, list) and isinstance(bid_configuration[0], tuple):
-        filters.append(dm.filters.In(view_id.as_property_ref("bidConfiguration"), values=[{"space": item[0], "externalId": item[1]} for item in bid_configuration]))
-    if total and isinstance(total, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("total"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": total}))
-    if total and isinstance(total, tuple):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("total"), value={"space": total[0], "externalId": total[1]}))
-    if total and isinstance(total, list) and isinstance(total[0], str):
-        filters.append(dm.filters.In(view_id.as_property_ref("total"), values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in total]))
-    if total and isinstance(total, list) and isinstance(total[0], tuple):
-        filters.append(dm.filters.In(view_id.as_property_ref("total"), values=[{"space": item[0], "externalId": item[1]} for item in total]))
+    if isinstance(bid_configuration, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(bid_configuration):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("bidConfiguration"), value=as_instance_dict_id(bid_configuration)))
+    if bid_configuration and isinstance(bid_configuration, Sequence) and not isinstance(bid_configuration, str) and not is_tuple_id(bid_configuration):
+        filters.append(dm.filters.In(view_id.as_property_ref("bidConfiguration"), values=[as_instance_dict_id(item) for item in bid_configuration]))
+    if isinstance(total, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(total):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("total"), value=as_instance_dict_id(total)))
+    if total and isinstance(total, Sequence) and not isinstance(total, str) and not is_tuple_id(total):
+        filters.append(dm.filters.In(view_id.as_property_ref("total"), values=[as_instance_dict_id(item) for item in total]))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
@@ -436,3 +575,116 @@ def _create_bid_document_day_ahead_filter(
     if filter:
         filters.append(filter)
     return dm.filters.And(*filters) if filters else None
+
+
+class _BidDocumentDayAheadQuery(NodeQueryCore[T_DomainModelList, BidDocumentDayAheadList]):
+    _view_id = BidDocumentDayAhead._view_id
+    _result_cls = BidDocumentDayAhead
+    _result_list_cls_end = BidDocumentDayAheadList
+
+    def __init__(
+        self,
+        created_types: set[type],
+        creation_path: list[QueryCore],
+        client: CogniteClient,
+        result_list_cls: type[T_DomainModelList],
+        expression: dm.query.ResultSetExpression | None = None,
+        connection_name: str | None = None,
+        connection_type: Literal["reverse-list"] | None = None,
+        reverse_expression: dm.query.ResultSetExpression | None = None,
+    ):
+        from ._alert import _AlertQuery
+        from ._bid_configuration_day_ahead import _BidConfigurationDayAheadQuery
+        from ._bid_matrix_information import _BidMatrixInformationQuery
+        from ._partial_bid_matrix_information import _PartialBidMatrixInformationQuery
+
+        super().__init__(
+            created_types,
+            creation_path,
+            client,
+            result_list_cls,
+            expression,
+            dm.filters.HasData(views=[self._view_id]),
+            connection_name,
+            connection_type,
+            reverse_expression,
+        )
+
+        if _AlertQuery not in created_types:
+            self.alerts = _AlertQuery(
+                created_types.copy(),
+                self._creation_path,
+                client,
+                result_list_cls,
+                dm.query.EdgeResultSetExpression(
+                    direction="outwards",
+                    chain_to="destination",
+                ),
+                connection_name="alerts",
+            )
+
+        if _BidConfigurationDayAheadQuery not in created_types:
+            self.bid_configuration = _BidConfigurationDayAheadQuery(
+                created_types.copy(),
+                self._creation_path,
+                client,
+                result_list_cls,
+                dm.query.NodeResultSetExpression(
+                    through=self._view_id.as_property_ref("bidConfiguration"),
+                    direction="outwards",
+                ),
+                connection_name="bid_configuration",
+            )
+
+        if _BidMatrixInformationQuery not in created_types:
+            self.total = _BidMatrixInformationQuery(
+                created_types.copy(),
+                self._creation_path,
+                client,
+                result_list_cls,
+                dm.query.NodeResultSetExpression(
+                    through=self._view_id.as_property_ref("total"),
+                    direction="outwards",
+                ),
+                connection_name="total",
+            )
+
+        if _PartialBidMatrixInformationQuery not in created_types:
+            self.partials = _PartialBidMatrixInformationQuery(
+                created_types.copy(),
+                self._creation_path,
+                client,
+                result_list_cls,
+                dm.query.EdgeResultSetExpression(
+                    direction="outwards",
+                    chain_to="destination",
+                ),
+                connection_name="partials",
+            )
+
+        self.space = StringFilter(self, ["node", "space"])
+        self.external_id = StringFilter(self, ["node", "externalId"])
+        self.name = StringFilter(self, self._view_id.as_property_ref("name"))
+        self.workflow_execution_id = StringFilter(self, self._view_id.as_property_ref("workflowExecutionId"))
+        self.delivery_date = DateFilter(self, self._view_id.as_property_ref("deliveryDate"))
+        self.start_calculation = TimestampFilter(self, self._view_id.as_property_ref("startCalculation"))
+        self.end_calculation = TimestampFilter(self, self._view_id.as_property_ref("endCalculation"))
+        self.is_complete = BooleanFilter(self, self._view_id.as_property_ref("isComplete"))
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.name,
+            self.workflow_execution_id,
+            self.delivery_date,
+            self.start_calculation,
+            self.end_calculation,
+            self.is_complete,
+        ])
+
+    def list_bid_document_day_ahead(self, limit: int = DEFAULT_QUERY_LIMIT) -> BidDocumentDayAheadList:
+        return self._list(limit=limit)
+
+
+class BidDocumentDayAheadQuery(_BidDocumentDayAheadQuery[BidDocumentDayAheadList]):
+    def __init__(self, client: CogniteClient):
+        super().__init__(set(), [], client, BidDocumentDayAheadList)

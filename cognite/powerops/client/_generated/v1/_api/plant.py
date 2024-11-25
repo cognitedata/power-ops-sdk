@@ -8,7 +8,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -19,18 +25,28 @@ from cognite.powerops.client._generated.v1.data_classes import (
     PlantList,
     PlantWriteList,
     PlantTextFields,
+    PlantWaterValueBased,
 )
 from cognite.powerops.client._generated.v1.data_classes._plant import (
+    PlantQuery,
     _PLANT_PROPERTIES_BY_FIELD,
     _create_plant_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .plant_query import PlantQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.plant_query import PlantQueryAPI
 
 
 class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList, PlantWriteList]):
     _view_id = dm.ViewId("power_ops_core", "Plant", "1")
     _properties_by_field = _PLANT_PROPERTIES_BY_FIELD
+    _direct_children_by_external_id = {
+        "PlantWaterValueBased": PlantWaterValueBased,
+    }
     _class_type = Plant
     _class_list = PlantList
     _class_write_list = PlantWriteList
@@ -74,6 +90,12 @@ class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList, PlantWriteList]):
             A query API for plants.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_plant_filter(
             self._view_id,
@@ -89,7 +111,7 @@ class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList, PlantWriteList]):
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(PlantList)
+        builder = DataClassQueryBuilder(PlantList)
         return PlantQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -163,19 +185,22 @@ class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList, PlantWriteList]):
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> Plant | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["PlantWaterValueBased"]] | None = None) -> Plant | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PlantList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["PlantWaterValueBased"]] | None = None) -> PlantList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> Plant | PlantList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["PlantWaterValueBased"]] | None = None) -> Plant | PlantList | None:
         """Retrieve one or more plants by id(s).
 
         Args:
             external_id: External id or list of external ids of the plants.
             space: The space where all the plants are located.
+            as_child_class: If you want to retrieve the plants as a child class,
+                you can specify the child class here. Note that if one node has properties in
+                multiple child classes, you will get duplicate nodes in the result.
 
         Returns:
             The requested plants.
@@ -189,7 +214,7 @@ class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList, PlantWriteList]):
                 >>> plant = client.plant.retrieve("my_plant")
 
         """
-        return self._retrieve(external_id, space)
+        return self._retrieve(external_id, space, as_child_class=as_child_class)
 
     def search(
         self,
@@ -491,6 +516,15 @@ class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList, PlantWriteList]):
             filter_,
         )
 
+    def query(self) -> PlantQuery:
+        """Start a query for plants."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return PlantQuery(self._client)
+
+    def select(self) -> PlantQuery:
+        """Start selecting from plants."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return PlantQuery(self._client)
 
     def list(
         self,
@@ -557,6 +591,7 @@ class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList, PlantWriteList]):
             space,
             filter,
         )
+
         return self._list(
             limit=limit,
             filter=filter_,

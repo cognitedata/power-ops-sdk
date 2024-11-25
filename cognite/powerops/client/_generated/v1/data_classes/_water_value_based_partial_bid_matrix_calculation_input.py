@@ -2,14 +2,16 @@ from __future__ import annotations
 
 import datetime
 import warnings
+from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
 
-from cognite.client import data_modeling as dm
+from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator
 
-from ._core import (
+from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
     DataRecord,
     DataRecordGraphQL,
     DataRecordWrite,
@@ -17,15 +19,29 @@ from ._core import (
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
+    DomainRelation,
     DomainRelationWrite,
     GraphQLCore,
     ResourcesWrite,
+    T_DomainModelList,
+    as_direct_relation_reference,
+    as_instance_dict_id,
+    as_node_id,
+    as_pygen_node_id,
+    are_nodes_equal,
+    is_tuple_id,
+    select_best_node,
+    QueryCore,
+    NodeQueryCore,
+    StringFilter,
+    DateFilter,
+    IntFilter,
 )
-from ._partial_bid_matrix_calculation_input import PartialBidMatrixCalculationInput, PartialBidMatrixCalculationInputWrite
+from cognite.powerops.client._generated.v1.data_classes._partial_bid_matrix_calculation_input import PartialBidMatrixCalculationInput, PartialBidMatrixCalculationInputWrite
 
 if TYPE_CHECKING:
-    from ._bid_configuration_day_ahead import BidConfigurationDayAhead, BidConfigurationDayAheadGraphQL, BidConfigurationDayAheadWrite
-    from ._water_value_based_partial_bid_configuration import WaterValueBasedPartialBidConfiguration, WaterValueBasedPartialBidConfigurationGraphQL, WaterValueBasedPartialBidConfigurationWrite
+    from cognite.powerops.client._generated.v1.data_classes._bid_configuration_day_ahead import BidConfigurationDayAhead, BidConfigurationDayAheadList, BidConfigurationDayAheadGraphQL, BidConfigurationDayAheadWrite, BidConfigurationDayAheadWriteList
+    from cognite.powerops.client._generated.v1.data_classes._water_value_based_partial_bid_configuration import WaterValueBasedPartialBidConfiguration, WaterValueBasedPartialBidConfigurationList, WaterValueBasedPartialBidConfigurationGraphQL, WaterValueBasedPartialBidConfigurationWrite, WaterValueBasedPartialBidConfigurationWriteList
 
 
 __all__ = [
@@ -41,10 +57,11 @@ __all__ = [
 ]
 
 
-WaterValueBasedPartialBidMatrixCalculationInputTextFields = Literal["workflow_execution_id", "function_name", "function_call_id"]
-WaterValueBasedPartialBidMatrixCalculationInputFields = Literal["workflow_execution_id", "workflow_step", "function_name", "function_call_id", "bid_date"]
+WaterValueBasedPartialBidMatrixCalculationInputTextFields = Literal["external_id", "workflow_execution_id", "function_name", "function_call_id"]
+WaterValueBasedPartialBidMatrixCalculationInputFields = Literal["external_id", "workflow_execution_id", "workflow_step", "function_name", "function_call_id", "bid_date"]
 
 _WATERVALUEBASEDPARTIALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD = {
+    "external_id": "externalId",
     "workflow_execution_id": "workflowExecutionId",
     "workflow_step": "workflowStep",
     "function_name": "functionName",
@@ -104,7 +121,7 @@ class WaterValueBasedPartialBidMatrixCalculationInputGraphQL(GraphQLCore):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return WaterValueBasedPartialBidMatrixCalculationInput(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
@@ -116,8 +133,12 @@ class WaterValueBasedPartialBidMatrixCalculationInputGraphQL(GraphQLCore):
             function_name=self.function_name,
             function_call_id=self.function_call_id,
             bid_date=self.bid_date,
-            bid_configuration=self.bid_configuration.as_read() if isinstance(self.bid_configuration, GraphQLCore) else self.bid_configuration,
-            partial_bid_configuration=self.partial_bid_configuration.as_read() if isinstance(self.partial_bid_configuration, GraphQLCore) else self.partial_bid_configuration,
+            bid_configuration=self.bid_configuration.as_read()
+if isinstance(self.bid_configuration, GraphQLCore)
+else self.bid_configuration,
+            partial_bid_configuration=self.partial_bid_configuration.as_read()
+if isinstance(self.partial_bid_configuration, GraphQLCore)
+else self.partial_bid_configuration,
         )
 
 
@@ -126,7 +147,7 @@ class WaterValueBasedPartialBidMatrixCalculationInputGraphQL(GraphQLCore):
     def as_write(self) -> WaterValueBasedPartialBidMatrixCalculationInputWrite:
         """Convert this GraphQL format of water value based partial bid matrix calculation input to the writing format."""
         return WaterValueBasedPartialBidMatrixCalculationInputWrite(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             workflow_execution_id=self.workflow_execution_id,
@@ -134,8 +155,12 @@ class WaterValueBasedPartialBidMatrixCalculationInputGraphQL(GraphQLCore):
             function_name=self.function_name,
             function_call_id=self.function_call_id,
             bid_date=self.bid_date,
-            bid_configuration=self.bid_configuration.as_write() if isinstance(self.bid_configuration, GraphQLCore) else self.bid_configuration,
-            partial_bid_configuration=self.partial_bid_configuration.as_write() if isinstance(self.partial_bid_configuration, GraphQLCore) else self.partial_bid_configuration,
+            bid_configuration=self.bid_configuration.as_write()
+if isinstance(self.bid_configuration, GraphQLCore)
+else self.bid_configuration,
+            partial_bid_configuration=self.partial_bid_configuration.as_write()
+if isinstance(self.partial_bid_configuration, GraphQLCore)
+else self.partial_bid_configuration,
         )
 
 
@@ -171,8 +196,12 @@ class WaterValueBasedPartialBidMatrixCalculationInput(PartialBidMatrixCalculatio
             function_name=self.function_name,
             function_call_id=self.function_call_id,
             bid_date=self.bid_date,
-            bid_configuration=self.bid_configuration.as_write() if isinstance(self.bid_configuration, DomainModel) else self.bid_configuration,
-            partial_bid_configuration=self.partial_bid_configuration.as_write() if isinstance(self.partial_bid_configuration, DomainModel) else self.partial_bid_configuration,
+            bid_configuration=self.bid_configuration.as_write()
+if isinstance(self.bid_configuration, DomainModel)
+else self.bid_configuration,
+            partial_bid_configuration=self.partial_bid_configuration.as_write()
+if isinstance(self.partial_bid_configuration, DomainModel)
+else self.partial_bid_configuration,
         )
 
     def as_apply(self) -> WaterValueBasedPartialBidMatrixCalculationInputWrite:
@@ -183,6 +212,27 @@ class WaterValueBasedPartialBidMatrixCalculationInput(PartialBidMatrixCalculatio
             stacklevel=2,
         )
         return self.as_write()
+
+    @classmethod
+    def _update_connections(
+        cls,
+        instances: dict[dm.NodeId | str, WaterValueBasedPartialBidMatrixCalculationInput],  # type: ignore[override]
+        nodes_by_id: dict[dm.NodeId | str, DomainModel],
+        edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
+    ) -> None:
+        from ._bid_configuration_day_ahead import BidConfigurationDayAhead
+        from ._water_value_based_partial_bid_configuration import WaterValueBasedPartialBidConfiguration
+
+        for instance in instances.values():
+            if isinstance(instance.bid_configuration, (dm.NodeId, str)) and (bid_configuration := nodes_by_id.get(instance.bid_configuration)) and isinstance(
+                    bid_configuration, BidConfigurationDayAhead
+            ):
+                instance.bid_configuration = bid_configuration
+            if isinstance(instance.partial_bid_configuration, (dm.NodeId, str)) and (partial_bid_configuration := nodes_by_id.get(instance.partial_bid_configuration)) and isinstance(
+                    partial_bid_configuration, WaterValueBasedPartialBidConfiguration
+            ):
+                instance.partial_bid_configuration = partial_bid_configuration
+
 
 
 class WaterValueBasedPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalculationInputWrite):
@@ -204,7 +254,7 @@ class WaterValueBasedPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalcu
     """
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "WaterValueBasedPartialBidMatrixCalculationInput", "1")
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "WaterValueBasedPartialBidMatrixCalculationInput")
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "WaterValueBasedPartialBidMatrixCalculationInput")
 
     def _to_instances_write(
         self,
@@ -251,7 +301,7 @@ class WaterValueBasedPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalcu
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=None if allow_version_increase else self.data_record.existing_version,
-                type=self.node_type,
+                type=as_direct_relation_reference(self.node_type),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=self._view_id,
@@ -304,11 +354,35 @@ class WaterValueBasedPartialBidMatrixCalculationInputList(DomainModelList[WaterV
         )
         return self.as_write()
 
+    @property
+    def bid_configuration(self) -> BidConfigurationDayAheadList:
+        from ._bid_configuration_day_ahead import BidConfigurationDayAhead, BidConfigurationDayAheadList
+
+        return BidConfigurationDayAheadList([item.bid_configuration for item in self.data if isinstance(item.bid_configuration, BidConfigurationDayAhead)])
+
+    @property
+    def partial_bid_configuration(self) -> WaterValueBasedPartialBidConfigurationList:
+        from ._water_value_based_partial_bid_configuration import WaterValueBasedPartialBidConfiguration, WaterValueBasedPartialBidConfigurationList
+
+        return WaterValueBasedPartialBidConfigurationList([item.partial_bid_configuration for item in self.data if isinstance(item.partial_bid_configuration, WaterValueBasedPartialBidConfiguration)])
+
 
 class WaterValueBasedPartialBidMatrixCalculationInputWriteList(DomainModelWriteList[WaterValueBasedPartialBidMatrixCalculationInputWrite]):
     """List of water value based partial bid matrix calculation inputs in the writing version."""
 
     _INSTANCE = WaterValueBasedPartialBidMatrixCalculationInputWrite
+
+    @property
+    def bid_configuration(self) -> BidConfigurationDayAheadWriteList:
+        from ._bid_configuration_day_ahead import BidConfigurationDayAheadWrite, BidConfigurationDayAheadWriteList
+
+        return BidConfigurationDayAheadWriteList([item.bid_configuration for item in self.data if isinstance(item.bid_configuration, BidConfigurationDayAheadWrite)])
+
+    @property
+    def partial_bid_configuration(self) -> WaterValueBasedPartialBidConfigurationWriteList:
+        from ._water_value_based_partial_bid_configuration import WaterValueBasedPartialBidConfigurationWrite, WaterValueBasedPartialBidConfigurationWriteList
+
+        return WaterValueBasedPartialBidConfigurationWriteList([item.partial_bid_configuration for item in self.data if isinstance(item.partial_bid_configuration, WaterValueBasedPartialBidConfigurationWrite)])
 
 class WaterValueBasedPartialBidMatrixCalculationInputApplyList(WaterValueBasedPartialBidMatrixCalculationInputWriteList): ...
 
@@ -326,8 +400,8 @@ def _create_water_value_based_partial_bid_matrix_calculation_input_filter(
     function_call_id_prefix: str | None = None,
     min_bid_date: datetime.date | None = None,
     max_bid_date: datetime.date | None = None,
-    bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-    partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+    partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -355,22 +429,14 @@ def _create_water_value_based_partial_bid_matrix_calculation_input_filter(
         filters.append(dm.filters.Prefix(view_id.as_property_ref("functionCallId"), value=function_call_id_prefix))
     if min_bid_date is not None or max_bid_date is not None:
         filters.append(dm.filters.Range(view_id.as_property_ref("bidDate"), gte=min_bid_date.isoformat() if min_bid_date else None, lte=max_bid_date.isoformat() if max_bid_date else None))
-    if bid_configuration and isinstance(bid_configuration, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("bidConfiguration"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": bid_configuration}))
-    if bid_configuration and isinstance(bid_configuration, tuple):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("bidConfiguration"), value={"space": bid_configuration[0], "externalId": bid_configuration[1]}))
-    if bid_configuration and isinstance(bid_configuration, list) and isinstance(bid_configuration[0], str):
-        filters.append(dm.filters.In(view_id.as_property_ref("bidConfiguration"), values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in bid_configuration]))
-    if bid_configuration and isinstance(bid_configuration, list) and isinstance(bid_configuration[0], tuple):
-        filters.append(dm.filters.In(view_id.as_property_ref("bidConfiguration"), values=[{"space": item[0], "externalId": item[1]} for item in bid_configuration]))
-    if partial_bid_configuration and isinstance(partial_bid_configuration, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("partialBidConfiguration"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": partial_bid_configuration}))
-    if partial_bid_configuration and isinstance(partial_bid_configuration, tuple):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("partialBidConfiguration"), value={"space": partial_bid_configuration[0], "externalId": partial_bid_configuration[1]}))
-    if partial_bid_configuration and isinstance(partial_bid_configuration, list) and isinstance(partial_bid_configuration[0], str):
-        filters.append(dm.filters.In(view_id.as_property_ref("partialBidConfiguration"), values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in partial_bid_configuration]))
-    if partial_bid_configuration and isinstance(partial_bid_configuration, list) and isinstance(partial_bid_configuration[0], tuple):
-        filters.append(dm.filters.In(view_id.as_property_ref("partialBidConfiguration"), values=[{"space": item[0], "externalId": item[1]} for item in partial_bid_configuration]))
+    if isinstance(bid_configuration, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(bid_configuration):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("bidConfiguration"), value=as_instance_dict_id(bid_configuration)))
+    if bid_configuration and isinstance(bid_configuration, Sequence) and not isinstance(bid_configuration, str) and not is_tuple_id(bid_configuration):
+        filters.append(dm.filters.In(view_id.as_property_ref("bidConfiguration"), values=[as_instance_dict_id(item) for item in bid_configuration]))
+    if isinstance(partial_bid_configuration, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(partial_bid_configuration):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("partialBidConfiguration"), value=as_instance_dict_id(partial_bid_configuration)))
+    if partial_bid_configuration and isinstance(partial_bid_configuration, Sequence) and not isinstance(partial_bid_configuration, str) and not is_tuple_id(partial_bid_configuration):
+        filters.append(dm.filters.In(view_id.as_property_ref("partialBidConfiguration"), values=[as_instance_dict_id(item) for item in partial_bid_configuration]))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
@@ -380,3 +446,86 @@ def _create_water_value_based_partial_bid_matrix_calculation_input_filter(
     if filter:
         filters.append(filter)
     return dm.filters.And(*filters) if filters else None
+
+
+class _WaterValueBasedPartialBidMatrixCalculationInputQuery(NodeQueryCore[T_DomainModelList, WaterValueBasedPartialBidMatrixCalculationInputList]):
+    _view_id = WaterValueBasedPartialBidMatrixCalculationInput._view_id
+    _result_cls = WaterValueBasedPartialBidMatrixCalculationInput
+    _result_list_cls_end = WaterValueBasedPartialBidMatrixCalculationInputList
+
+    def __init__(
+        self,
+        created_types: set[type],
+        creation_path: list[QueryCore],
+        client: CogniteClient,
+        result_list_cls: type[T_DomainModelList],
+        expression: dm.query.ResultSetExpression | None = None,
+        connection_name: str | None = None,
+        connection_type: Literal["reverse-list"] | None = None,
+        reverse_expression: dm.query.ResultSetExpression | None = None,
+    ):
+        from ._bid_configuration_day_ahead import _BidConfigurationDayAheadQuery
+        from ._water_value_based_partial_bid_configuration import _WaterValueBasedPartialBidConfigurationQuery
+
+        super().__init__(
+            created_types,
+            creation_path,
+            client,
+            result_list_cls,
+            expression,
+            dm.filters.HasData(views=[self._view_id]),
+            connection_name,
+            connection_type,
+            reverse_expression,
+        )
+
+        if _BidConfigurationDayAheadQuery not in created_types:
+            self.bid_configuration = _BidConfigurationDayAheadQuery(
+                created_types.copy(),
+                self._creation_path,
+                client,
+                result_list_cls,
+                dm.query.NodeResultSetExpression(
+                    through=self._view_id.as_property_ref("bidConfiguration"),
+                    direction="outwards",
+                ),
+                connection_name="bid_configuration",
+            )
+
+        if _WaterValueBasedPartialBidConfigurationQuery not in created_types:
+            self.partial_bid_configuration = _WaterValueBasedPartialBidConfigurationQuery(
+                created_types.copy(),
+                self._creation_path,
+                client,
+                result_list_cls,
+                dm.query.NodeResultSetExpression(
+                    through=self._view_id.as_property_ref("partialBidConfiguration"),
+                    direction="outwards",
+                ),
+                connection_name="partial_bid_configuration",
+            )
+
+        self.space = StringFilter(self, ["node", "space"])
+        self.external_id = StringFilter(self, ["node", "externalId"])
+        self.workflow_execution_id = StringFilter(self, self._view_id.as_property_ref("workflowExecutionId"))
+        self.workflow_step = IntFilter(self, self._view_id.as_property_ref("workflowStep"))
+        self.function_name = StringFilter(self, self._view_id.as_property_ref("functionName"))
+        self.function_call_id = StringFilter(self, self._view_id.as_property_ref("functionCallId"))
+        self.bid_date = DateFilter(self, self._view_id.as_property_ref("bidDate"))
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.workflow_execution_id,
+            self.workflow_step,
+            self.function_name,
+            self.function_call_id,
+            self.bid_date,
+        ])
+
+    def list_water_value_based_partial_bid_matrix_calculation_input(self, limit: int = DEFAULT_QUERY_LIMIT) -> WaterValueBasedPartialBidMatrixCalculationInputList:
+        return self._list(limit=limit)
+
+
+class WaterValueBasedPartialBidMatrixCalculationInputQuery(_WaterValueBasedPartialBidMatrixCalculationInputQuery[WaterValueBasedPartialBidMatrixCalculationInputList]):
+    def __init__(self, client: CogniteClient):
+        super().__init__(set(), [], client, WaterValueBasedPartialBidMatrixCalculationInputList)

@@ -8,7 +8,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -19,15 +25,22 @@ from cognite.powerops.client._generated.v1.data_classes import (
     PriceProductionList,
     PriceProductionWriteList,
     PriceProductionTextFields,
+    ShopResult,
 )
 from cognite.powerops.client._generated.v1.data_classes._price_production import (
+    PriceProductionQuery,
     _PRICEPRODUCTION_PROPERTIES_BY_FIELD,
     _create_price_production_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .price_production_price import PriceProductionPriceAPI
-from .price_production_production import PriceProductionProductionAPI
-from .price_production_query import PriceProductionQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.price_production_price import PriceProductionPriceAPI
+from cognite.powerops.client._generated.v1._api.price_production_production import PriceProductionProductionAPI
+from cognite.powerops.client._generated.v1._api.price_production_query import PriceProductionQueryAPI
 
 
 class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PriceProductionList, PriceProductionWriteList]):
@@ -47,7 +60,7 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
             self,
             name: str | list[str] | None = None,
             name_prefix: str | None = None,
-            shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
             external_id_prefix: str | None = None,
             space: str | list[str] | None = None,
             limit: int = DEFAULT_QUERY_LIMIT,
@@ -68,6 +81,12 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
             A query API for price productions.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_price_production_filter(
             self._view_id,
@@ -78,7 +97,7 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(PriceProductionList)
+        builder = DataClassQueryBuilder(PriceProductionList)
         return PriceProductionQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -89,6 +108,10 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         write_none: bool = False,
     ) -> ResourcesWriteResult:
         """Add or update (upsert) price productions.
+
+        Note: This method iterates through all nodes and timeseries linked to price_production and creates them including the edges
+        between the nodes. For example, if any of `shop_result` are set, then these
+        nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
             price_production: Price production or sequence of price productions to upsert.
@@ -152,14 +175,14 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> PriceProduction | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> PriceProduction | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PriceProductionList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> PriceProductionList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PriceProduction | PriceProductionList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> PriceProduction | PriceProductionList | None:
         """Retrieve one or more price productions by id(s).
 
         Args:
@@ -186,7 +209,7 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         properties: PriceProductionTextFields | SequenceNotStr[PriceProductionTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -254,7 +277,7 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         search_property: PriceProductionTextFields | SequenceNotStr[PriceProductionTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -272,7 +295,7 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         search_property: PriceProductionTextFields | SequenceNotStr[PriceProductionTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -292,7 +315,7 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         search_property: PriceProductionTextFields | SequenceNotStr[PriceProductionTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -311,7 +334,7 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         search_property: PriceProductionTextFields | SequenceNotStr[PriceProductionTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -377,7 +400,7 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         search_property: PriceProductionTextFields | SequenceNotStr[PriceProductionTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -420,12 +443,21 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
             filter_,
         )
 
+    def query(self) -> PriceProductionQuery:
+        """Start a query for price productions."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return PriceProductionQuery(self._client)
+
+    def select(self) -> PriceProductionQuery:
+        """Start selecting from price productions."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return PriceProductionQuery(self._client)
 
     def list(
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -433,6 +465,7 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         sort_by: PriceProductionFields | Sequence[PriceProductionFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> PriceProductionList:
         """List/filter price productions
 
@@ -449,6 +482,8 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
                 This will override the sort_by and direction. This allowos you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
+            retrieve_connections: Whether to retrieve `shop_result` for the price productions. Defaults to 'skip'.
+                'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier of the connected items, and 'full' will retrieve the full connected items.
 
         Returns:
             List of requested price productions
@@ -471,10 +506,44 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
             space,
             filter,
         )
-        return self._list(
-            limit=limit,
-            filter=filter_,
-            sort_by=sort_by,  # type: ignore[arg-type]
-            direction=direction,
-            sort=sort,
+
+        if retrieve_connections == "skip":
+                return self._list(
+                limit=limit,
+                filter=filter_,
+                sort_by=sort_by,  # type: ignore[arg-type]
+                direction=direction,
+                sort=sort,
+            )
+
+        builder = DataClassQueryBuilder(PriceProductionList)
+        has_data = dm.filters.HasData(views=[self._view_id])
+        builder.append(
+            NodeQueryStep(
+                builder.create_name(None),
+                dm.query.NodeResultSetExpression(
+                    filter=dm.filters.And(filter_, has_data) if filter_ else has_data,
+                    sort=self._create_sort(sort_by, direction, sort),  # type: ignore[arg-type]
+                ),
+                PriceProduction,
+                max_retrieve_limit=limit,
+                raw_filter=filter_,
+            )
         )
+        from_root = builder.get_from()
+        if retrieve_connections == "full":
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name(from_root),
+                    dm.query.NodeResultSetExpression(
+                        from_=from_root,
+                        filter=dm.filters.HasData(views=[ShopResult._view_id]),
+                        direction="outwards",
+                        through=self._view_id.as_property_ref("shopResult"),
+                    ),
+                    ShopResult,
+                )
+            )
+        # We know that that all nodes are connected as it is not possible to filter on connections
+        builder.execute_query(self._client, remove_not_connected=False)
+        return builder.unpack()

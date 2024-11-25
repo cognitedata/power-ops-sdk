@@ -8,7 +8,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -19,15 +25,25 @@ from cognite.powerops.client._generated.v1.data_classes import (
     ShopScenarioList,
     ShopScenarioWriteList,
     ShopScenarioTextFields,
+    ShopAttributeMapping,
+    ShopCommands,
+    ShopModel,
+    ShopOutputTimeSeriesDefinition,
 )
 from cognite.powerops.client._generated.v1.data_classes._shop_scenario import (
+    ShopScenarioQuery,
     _SHOPSCENARIO_PROPERTIES_BY_FIELD,
     _create_shop_scenario_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .shop_scenario_output_definition import ShopScenarioOutputDefinitionAPI
-from .shop_scenario_attribute_mappings_override import ShopScenarioAttributeMappingsOverrideAPI
-from .shop_scenario_query import ShopScenarioQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.shop_scenario_output_definition import ShopScenarioOutputDefinitionAPI
+from cognite.powerops.client._generated.v1._api.shop_scenario_attribute_mappings_override import ShopScenarioAttributeMappingsOverrideAPI
+from cognite.powerops.client._generated.v1._api.shop_scenario_query import ShopScenarioQueryAPI
 
 
 class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList, ShopScenarioWriteList]):
@@ -47,8 +63,8 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
             self,
             name: str | list[str] | None = None,
             name_prefix: str | None = None,
-            model: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-            commands: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            model: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+            commands: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
             source: str | list[str] | None = None,
             source_prefix: str | None = None,
             external_id_prefix: str | None = None,
@@ -74,6 +90,12 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
             A query API for shop scenarios.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_shop_scenario_filter(
             self._view_id,
@@ -87,7 +109,7 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(ShopScenarioList)
+        builder = DataClassQueryBuilder(ShopScenarioList)
         return ShopScenarioQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -100,7 +122,7 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
         """Add or update (upsert) shop scenarios.
 
         Note: This method iterates through all nodes and timeseries linked to shop_scenario and creates them including the edges
-        between the nodes. For example, if any of `output_definition` or `attribute_mappings_override` are set, then these
+        between the nodes. For example, if any of `model`, `commands`, `output_definition` or `attribute_mappings_override` are set, then these
         nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
@@ -165,14 +187,14 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopScenario | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopScenario | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopScenarioList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> ShopScenarioList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopScenario | ShopScenarioList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> ShopScenario | ShopScenarioList | None:
         """Retrieve one or more shop scenarios by id(s).
 
         Args:
@@ -220,8 +242,8 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
         properties: ShopScenarioTextFields | SequenceNotStr[ShopScenarioTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        model: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        commands: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        model: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        commands: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         source: str | list[str] | None = None,
         source_prefix: str | None = None,
         external_id_prefix: str | None = None,
@@ -297,8 +319,8 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
         search_property: ShopScenarioTextFields | SequenceNotStr[ShopScenarioTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        model: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        commands: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        model: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        commands: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         source: str | list[str] | None = None,
         source_prefix: str | None = None,
         external_id_prefix: str | None = None,
@@ -318,8 +340,8 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
         search_property: ShopScenarioTextFields | SequenceNotStr[ShopScenarioTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        model: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        commands: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        model: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        commands: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         source: str | list[str] | None = None,
         source_prefix: str | None = None,
         external_id_prefix: str | None = None,
@@ -341,8 +363,8 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
         search_property: ShopScenarioTextFields | SequenceNotStr[ShopScenarioTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        model: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        commands: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        model: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        commands: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         source: str | list[str] | None = None,
         source_prefix: str | None = None,
         external_id_prefix: str | None = None,
@@ -363,8 +385,8 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
         search_property: ShopScenarioTextFields | SequenceNotStr[ShopScenarioTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        model: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        commands: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        model: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        commands: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         source: str | list[str] | None = None,
         source_prefix: str | None = None,
         external_id_prefix: str | None = None,
@@ -438,8 +460,8 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
         search_property: ShopScenarioTextFields | SequenceNotStr[ShopScenarioTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        model: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        commands: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        model: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        commands: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         source: str | list[str] | None = None,
         source_prefix: str | None = None,
         external_id_prefix: str | None = None,
@@ -490,13 +512,22 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
             filter_,
         )
 
+    def query(self) -> ShopScenarioQuery:
+        """Start a query for shop scenarios."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return ShopScenarioQuery(self._client)
+
+    def select(self) -> ShopScenarioQuery:
+        """Start selecting from shop scenarios."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return ShopScenarioQuery(self._client)
 
     def list(
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        model: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        commands: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        model: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        commands: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         source: str | list[str] | None = None,
         source_prefix: str | None = None,
         external_id_prefix: str | None = None,
@@ -506,7 +537,7 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
         sort_by: ShopScenarioFields | Sequence[ShopScenarioFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
-        retrieve_edges: bool = True,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> ShopScenarioList:
         """List/filter shop scenarios
 
@@ -526,7 +557,8 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
                 This will override the sort_by and direction. This allowos you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
-            retrieve_edges: Whether to retrieve `output_definition` or `attribute_mappings_override` external ids for the shop scenarios. Defaults to True.
+            retrieve_connections: Whether to retrieve `model`, `commands`, `output_definition` and `attribute_mappings_override` for the shop scenarios. Defaults to 'skip'.
+                'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier of the connected items, and 'full' will retrieve the full connected items.
 
         Returns:
             List of requested shop scenarios
@@ -553,27 +585,97 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
             filter,
         )
 
-        return self._list(
-            limit=limit,
-            filter=filter_,
-            sort_by=sort_by,  # type: ignore[arg-type]
-            direction=direction,
-            sort=sort,
-            retrieve_edges=retrieve_edges,
-            edge_api_name_type_direction_view_id_penta=[
-                (
-                    self.output_definition_edge,
-                    "output_definition",
-                    dm.DirectRelationReference("power_ops_types", "ShopOutputTimeSeriesDefinition"),
-                    "outwards",
-                    dm.ViewId("power_ops_core", "ShopOutputTimeSeriesDefinition", "1"),
+        if retrieve_connections == "skip":
+                return self._list(
+                limit=limit,
+                filter=filter_,
+                sort_by=sort_by,  # type: ignore[arg-type]
+                direction=direction,
+                sort=sort,
+            )
+
+        builder = DataClassQueryBuilder(ShopScenarioList)
+        has_data = dm.filters.HasData(views=[self._view_id])
+        builder.append(
+            NodeQueryStep(
+                builder.create_name(None),
+                dm.query.NodeResultSetExpression(
+                    filter=dm.filters.And(filter_, has_data) if filter_ else has_data,
+                    sort=self._create_sort(sort_by, direction, sort),  # type: ignore[arg-type]
                 ),
-                (
-                    self.attribute_mappings_override_edge,
-                    "attribute_mappings_override",
-                    dm.DirectRelationReference("power_ops_types", "ShopAttributeMapping"),
-                    "outwards",
-                    dm.ViewId("power_ops_core", "ShopAttributeMapping", "1"),
-                ),
-                                               ]
+                ShopScenario,
+                max_retrieve_limit=limit,
+                raw_filter=filter_,
+            )
         )
+        from_root = builder.get_from()
+        edge_output_definition = builder.create_name(from_root)
+        builder.append(
+            EdgeQueryStep(
+                edge_output_definition,
+                dm.query.EdgeResultSetExpression(
+                    from_=from_root,
+                    direction="outwards",
+                    chain_to="destination",
+                ),
+            )
+        )
+        edge_attribute_mappings_override = builder.create_name(from_root)
+        builder.append(
+            EdgeQueryStep(
+                edge_attribute_mappings_override,
+                dm.query.EdgeResultSetExpression(
+                    from_=from_root,
+                    direction="outwards",
+                    chain_to="destination",
+                ),
+            )
+        )
+        if retrieve_connections == "full":
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name( edge_output_definition),
+                    dm.query.NodeResultSetExpression(
+                        from_= edge_output_definition,
+                        filter=dm.filters.HasData(views=[ShopOutputTimeSeriesDefinition._view_id]),
+                    ),
+                    ShopOutputTimeSeriesDefinition,
+                )
+            )
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name( edge_attribute_mappings_override),
+                    dm.query.NodeResultSetExpression(
+                        from_= edge_attribute_mappings_override,
+                        filter=dm.filters.HasData(views=[ShopAttributeMapping._view_id]),
+                    ),
+                    ShopAttributeMapping,
+                )
+            )
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name(from_root),
+                    dm.query.NodeResultSetExpression(
+                        from_=from_root,
+                        filter=dm.filters.HasData(views=[ShopModel._view_id]),
+                        direction="outwards",
+                        through=self._view_id.as_property_ref("model"),
+                    ),
+                    ShopModel,
+                )
+            )
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name(from_root),
+                    dm.query.NodeResultSetExpression(
+                        from_=from_root,
+                        filter=dm.filters.HasData(views=[ShopCommands._view_id]),
+                        direction="outwards",
+                        through=self._view_id.as_property_ref("commands"),
+                    ),
+                    ShopCommands,
+                )
+            )
+        # We know that that all nodes are connected as it is not possible to filter on connections
+        builder.execute_query(self._client, remove_not_connected=False)
+        return builder.unpack()
