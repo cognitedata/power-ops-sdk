@@ -8,7 +8,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -21,11 +27,17 @@ from cognite.powerops.client._generated.v1.data_classes import (
     MarketConfigurationTextFields,
 )
 from cognite.powerops.client._generated.v1.data_classes._market_configuration import (
+    MarketConfigurationQuery,
     _MARKETCONFIGURATION_PROPERTIES_BY_FIELD,
     _create_market_configuration_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .market_configuration_query import MarketConfigurationQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.market_configuration_query import MarketConfigurationQueryAPI
 
 
 class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWrite, MarketConfigurationList, MarketConfigurationWriteList]):
@@ -94,6 +106,12 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             A query API for market configurations.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_market_configuration_filter(
             self._view_id,
@@ -119,7 +137,7 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(MarketConfigurationList)
+        builder = DataClassQueryBuilder(MarketConfigurationList)
         return MarketConfigurationQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -193,14 +211,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> MarketConfiguration | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> MarketConfiguration | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> MarketConfigurationList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> MarketConfigurationList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> MarketConfiguration | MarketConfigurationList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> MarketConfiguration | MarketConfigurationList | None:
         """Retrieve one or more market configurations by id(s).
 
         Args:
@@ -641,6 +659,15 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             filter_,
         )
 
+    def query(self) -> MarketConfigurationQuery:
+        """Start a query for market configurations."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return MarketConfigurationQuery(self._client)
+
+    def select(self) -> MarketConfigurationQuery:
+        """Start selecting from market configurations."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return MarketConfigurationQuery(self._client)
 
     def list(
         self,
@@ -737,6 +764,7 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             space,
             filter,
         )
+
         return self._list(
             limit=limit,
             filter=filter_,

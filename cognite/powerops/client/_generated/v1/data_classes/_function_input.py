@@ -1,14 +1,16 @@
 from __future__ import annotations
 
 import warnings
+from collections.abc import Sequence
 from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
 
-from cognite.client import data_modeling as dm
+from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator
 
-from ._core import (
+from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
     DataRecord,
     DataRecordGraphQL,
     DataRecordWrite,
@@ -16,9 +18,22 @@ from ._core import (
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
+    DomainRelation,
     DomainRelationWrite,
     GraphQLCore,
     ResourcesWrite,
+    T_DomainModelList,
+    as_direct_relation_reference,
+    as_instance_dict_id,
+    as_node_id,
+    as_pygen_node_id,
+    are_nodes_equal,
+    is_tuple_id,
+    select_best_node,
+    QueryCore,
+    NodeQueryCore,
+    StringFilter,
+    IntFilter,
 )
 
 
@@ -35,10 +50,11 @@ __all__ = [
 ]
 
 
-FunctionInputTextFields = Literal["workflow_execution_id", "function_name", "function_call_id"]
-FunctionInputFields = Literal["workflow_execution_id", "workflow_step", "function_name", "function_call_id"]
+FunctionInputTextFields = Literal["external_id", "workflow_execution_id", "function_name", "function_call_id"]
+FunctionInputFields = Literal["external_id", "workflow_execution_id", "workflow_step", "function_name", "function_call_id"]
 
 _FUNCTIONINPUT_PROPERTIES_BY_FIELD = {
+    "external_id": "externalId",
     "workflow_execution_id": "workflowExecutionId",
     "workflow_step": "workflowStep",
     "function_name": "functionName",
@@ -84,7 +100,7 @@ class FunctionInputGraphQL(GraphQLCore):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return FunctionInput(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
@@ -103,7 +119,7 @@ class FunctionInputGraphQL(GraphQLCore):
     def as_write(self) -> FunctionInputWrite:
         """Convert this GraphQL format of function input to the writing format."""
         return FunctionInputWrite(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             workflow_execution_id=self.workflow_execution_id,
@@ -175,7 +191,7 @@ class FunctionInputWrite(DomainModelWrite):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "FunctionInput", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = None
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
     workflow_execution_id: str = Field(alias="workflowExecutionId")
     workflow_step: int = Field(alias="workflowStep")
     function_name: str = Field(alias="functionName")
@@ -211,7 +227,7 @@ class FunctionInputWrite(DomainModelWrite):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=None if allow_version_increase else self.data_record.existing_version,
-                type=self.node_type,
+                type=as_direct_relation_reference(self.node_type),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=self._view_id,
@@ -310,3 +326,56 @@ def _create_function_input_filter(
     if filter:
         filters.append(filter)
     return dm.filters.And(*filters) if filters else None
+
+
+class _FunctionInputQuery(NodeQueryCore[T_DomainModelList, FunctionInputList]):
+    _view_id = FunctionInput._view_id
+    _result_cls = FunctionInput
+    _result_list_cls_end = FunctionInputList
+
+    def __init__(
+        self,
+        created_types: set[type],
+        creation_path: list[QueryCore],
+        client: CogniteClient,
+        result_list_cls: type[T_DomainModelList],
+        expression: dm.query.ResultSetExpression | None = None,
+        connection_name: str | None = None,
+        connection_type: Literal["reverse-list"] | None = None,
+        reverse_expression: dm.query.ResultSetExpression | None = None,
+    ):
+
+        super().__init__(
+            created_types,
+            creation_path,
+            client,
+            result_list_cls,
+            expression,
+            dm.filters.HasData(views=[self._view_id]),
+            connection_name,
+            connection_type,
+            reverse_expression,
+        )
+
+        self.space = StringFilter(self, ["node", "space"])
+        self.external_id = StringFilter(self, ["node", "externalId"])
+        self.workflow_execution_id = StringFilter(self, self._view_id.as_property_ref("workflowExecutionId"))
+        self.workflow_step = IntFilter(self, self._view_id.as_property_ref("workflowStep"))
+        self.function_name = StringFilter(self, self._view_id.as_property_ref("functionName"))
+        self.function_call_id = StringFilter(self, self._view_id.as_property_ref("functionCallId"))
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.workflow_execution_id,
+            self.workflow_step,
+            self.function_name,
+            self.function_call_id,
+        ])
+
+    def list_function_input(self, limit: int = DEFAULT_QUERY_LIMIT) -> FunctionInputList:
+        return self._list(limit=limit)
+
+
+class FunctionInputQuery(_FunctionInputQuery[FunctionInputList]):
+    def __init__(self, client: CogniteClient):
+        super().__init__(set(), [], client, FunctionInputList)

@@ -9,7 +9,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -22,11 +28,17 @@ from cognite.powerops.client._generated.v1.data_classes import (
     ShopPenaltyReportTextFields,
 )
 from cognite.powerops.client._generated.v1.data_classes._shop_penalty_report import (
+    ShopPenaltyReportQuery,
     _SHOPPENALTYREPORT_PROPERTIES_BY_FIELD,
     _create_shop_penalty_report_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .shop_penalty_report_query import ShopPenaltyReportQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.shop_penalty_report_query import ShopPenaltyReportQueryAPI
 
 
 class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, ShopPenaltyReportList, ShopPenaltyReportWriteList]):
@@ -91,6 +103,12 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
             A query API for shop penalty reports.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_shop_penalty_report_filter(
             self._view_id,
@@ -114,7 +132,7 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(ShopPenaltyReportList)
+        builder = DataClassQueryBuilder(ShopPenaltyReportList)
         return ShopPenaltyReportQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -188,14 +206,14 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopPenaltyReport | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopPenaltyReport | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopPenaltyReportList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> ShopPenaltyReportList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopPenaltyReport | ShopPenaltyReportList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> ShopPenaltyReport | ShopPenaltyReportList | None:
         """Retrieve one or more shop penalty reports by id(s).
 
         Args:
@@ -612,6 +630,15 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
             filter_,
         )
 
+    def query(self) -> ShopPenaltyReportQuery:
+        """Start a query for shop penalty reports."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return ShopPenaltyReportQuery(self._client)
+
+    def select(self) -> ShopPenaltyReportQuery:
+        """Start selecting from shop penalty reports."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return ShopPenaltyReportQuery(self._client)
 
     def list(
         self,
@@ -702,6 +729,7 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
             space,
             filter,
         )
+
         return self._list(
             limit=limit,
             filter=filter_,

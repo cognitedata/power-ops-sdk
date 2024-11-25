@@ -1,14 +1,16 @@
 from __future__ import annotations
 
 import warnings
+from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
 
-from cognite.client import data_modeling as dm
+from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator
 
-from ._core import (
+from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
     DataRecord,
     DataRecordGraphQL,
     DataRecordWrite,
@@ -16,13 +18,26 @@ from ._core import (
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
+    DomainRelation,
     DomainRelationWrite,
     GraphQLCore,
     ResourcesWrite,
+    T_DomainModelList,
+    as_direct_relation_reference,
+    as_instance_dict_id,
+    as_node_id,
+    as_pygen_node_id,
+    are_nodes_equal,
+    is_tuple_id,
+    select_best_node,
+    QueryCore,
+    NodeQueryCore,
+    StringFilter,
+    BooleanFilter,
 )
 
 if TYPE_CHECKING:
-    from ._power_asset import PowerAsset, PowerAssetGraphQL, PowerAssetWrite
+    from cognite.powerops.client._generated.v1.data_classes._power_asset import PowerAsset, PowerAssetList, PowerAssetGraphQL, PowerAssetWrite, PowerAssetWriteList
 
 
 __all__ = [
@@ -38,10 +53,11 @@ __all__ = [
 ]
 
 
-PartialBidConfigurationTextFields = Literal["name", "method"]
-PartialBidConfigurationFields = Literal["name", "method", "add_steps"]
+PartialBidConfigurationTextFields = Literal["external_id", "name", "method"]
+PartialBidConfigurationFields = Literal["external_id", "name", "method", "add_steps"]
 
 _PARTIALBIDCONFIGURATION_PROPERTIES_BY_FIELD = {
+    "external_id": "externalId",
     "name": "name",
     "method": "method",
     "add_steps": "addSteps",
@@ -93,7 +109,7 @@ class PartialBidConfigurationGraphQL(GraphQLCore):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return PartialBidConfiguration(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
@@ -102,7 +118,9 @@ class PartialBidConfigurationGraphQL(GraphQLCore):
             ),
             name=self.name,
             method=self.method,
-            power_asset=self.power_asset.as_read() if isinstance(self.power_asset, GraphQLCore) else self.power_asset,
+            power_asset=self.power_asset.as_read()
+if isinstance(self.power_asset, GraphQLCore)
+else self.power_asset,
             add_steps=self.add_steps,
         )
 
@@ -112,12 +130,14 @@ class PartialBidConfigurationGraphQL(GraphQLCore):
     def as_write(self) -> PartialBidConfigurationWrite:
         """Convert this GraphQL format of partial bid configuration to the writing format."""
         return PartialBidConfigurationWrite(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,
             method=self.method,
-            power_asset=self.power_asset.as_write() if isinstance(self.power_asset, GraphQLCore) else self.power_asset,
+            power_asset=self.power_asset.as_write()
+if isinstance(self.power_asset, GraphQLCore)
+else self.power_asset,
             add_steps=self.add_steps,
         )
 
@@ -153,7 +173,9 @@ class PartialBidConfiguration(DomainModel):
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             name=self.name,
             method=self.method,
-            power_asset=self.power_asset.as_write() if isinstance(self.power_asset, DomainModel) else self.power_asset,
+            power_asset=self.power_asset.as_write()
+if isinstance(self.power_asset, DomainModel)
+else self.power_asset,
             add_steps=self.add_steps,
         )
 
@@ -165,6 +187,22 @@ class PartialBidConfiguration(DomainModel):
             stacklevel=2,
         )
         return self.as_write()
+
+    @classmethod
+    def _update_connections(
+        cls,
+        instances: dict[dm.NodeId | str, PartialBidConfiguration],  # type: ignore[override]
+        nodes_by_id: dict[dm.NodeId | str, DomainModel],
+        edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
+    ) -> None:
+        from ._power_asset import PowerAsset
+
+        for instance in instances.values():
+            if isinstance(instance.power_asset, (dm.NodeId, str)) and (power_asset := nodes_by_id.get(instance.power_asset)) and isinstance(
+                    power_asset, PowerAsset
+            ):
+                instance.power_asset = power_asset
+
 
 
 class PartialBidConfigurationWrite(DomainModelWrite):
@@ -184,12 +222,21 @@ class PartialBidConfigurationWrite(DomainModelWrite):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PartialBidConfiguration", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = None
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
     name: str
     method: Optional[str] = None
     power_asset: Union[PowerAssetWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="powerAsset")
     add_steps: bool = Field(alias="addSteps")
 
+    @field_validator("power_asset", mode="before")
+    def as_node_id(cls, value: Any) -> Any:
+        if isinstance(value, dm.DirectRelationReference):
+            return dm.NodeId(value.space, value.external_id)
+        elif isinstance(value, tuple) and len(value) == 2 and all(isinstance(item, str) for item in value):
+            return dm.NodeId(value[0], value[1])
+        elif isinstance(value, list):
+            return [cls.as_node_id(item) for item in value]
+        return value
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -223,7 +270,7 @@ class PartialBidConfigurationWrite(DomainModelWrite):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=None if allow_version_increase else self.data_record.existing_version,
-                type=self.node_type,
+                type=as_direct_relation_reference(self.node_type),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=self._view_id,
@@ -272,11 +319,23 @@ class PartialBidConfigurationList(DomainModelList[PartialBidConfiguration]):
         )
         return self.as_write()
 
+    @property
+    def power_asset(self) -> PowerAssetList:
+        from ._power_asset import PowerAsset, PowerAssetList
+
+        return PowerAssetList([item.power_asset for item in self.data if isinstance(item.power_asset, PowerAsset)])
+
 
 class PartialBidConfigurationWriteList(DomainModelWriteList[PartialBidConfigurationWrite]):
     """List of partial bid configurations in the writing version."""
 
     _INSTANCE = PartialBidConfigurationWrite
+
+    @property
+    def power_asset(self) -> PowerAssetWriteList:
+        from ._power_asset import PowerAssetWrite, PowerAssetWriteList
+
+        return PowerAssetWriteList([item.power_asset for item in self.data if isinstance(item.power_asset, PowerAssetWrite)])
 
 class PartialBidConfigurationApplyList(PartialBidConfigurationWriteList): ...
 
@@ -288,7 +347,7 @@ def _create_partial_bid_configuration_filter(
     name_prefix: str | None = None,
     method: str | list[str] | None = None,
     method_prefix: str | None = None,
-    power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
     add_steps: bool | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
@@ -307,14 +366,10 @@ def _create_partial_bid_configuration_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("method"), values=method))
     if method_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("method"), value=method_prefix))
-    if power_asset and isinstance(power_asset, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("powerAsset"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": power_asset}))
-    if power_asset and isinstance(power_asset, tuple):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("powerAsset"), value={"space": power_asset[0], "externalId": power_asset[1]}))
-    if power_asset and isinstance(power_asset, list) and isinstance(power_asset[0], str):
-        filters.append(dm.filters.In(view_id.as_property_ref("powerAsset"), values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in power_asset]))
-    if power_asset and isinstance(power_asset, list) and isinstance(power_asset[0], tuple):
-        filters.append(dm.filters.In(view_id.as_property_ref("powerAsset"), values=[{"space": item[0], "externalId": item[1]} for item in power_asset]))
+    if isinstance(power_asset, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(power_asset):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("powerAsset"), value=as_instance_dict_id(power_asset)))
+    if power_asset and isinstance(power_asset, Sequence) and not isinstance(power_asset, str) and not is_tuple_id(power_asset):
+        filters.append(dm.filters.In(view_id.as_property_ref("powerAsset"), values=[as_instance_dict_id(item) for item in power_asset]))
     if isinstance(add_steps, bool):
         filters.append(dm.filters.Equals(view_id.as_property_ref("addSteps"), value=add_steps))
     if external_id_prefix is not None:
@@ -326,3 +381,68 @@ def _create_partial_bid_configuration_filter(
     if filter:
         filters.append(filter)
     return dm.filters.And(*filters) if filters else None
+
+
+class _PartialBidConfigurationQuery(NodeQueryCore[T_DomainModelList, PartialBidConfigurationList]):
+    _view_id = PartialBidConfiguration._view_id
+    _result_cls = PartialBidConfiguration
+    _result_list_cls_end = PartialBidConfigurationList
+
+    def __init__(
+        self,
+        created_types: set[type],
+        creation_path: list[QueryCore],
+        client: CogniteClient,
+        result_list_cls: type[T_DomainModelList],
+        expression: dm.query.ResultSetExpression | None = None,
+        connection_name: str | None = None,
+        connection_type: Literal["reverse-list"] | None = None,
+        reverse_expression: dm.query.ResultSetExpression | None = None,
+    ):
+        from ._power_asset import _PowerAssetQuery
+
+        super().__init__(
+            created_types,
+            creation_path,
+            client,
+            result_list_cls,
+            expression,
+            dm.filters.HasData(views=[self._view_id]),
+            connection_name,
+            connection_type,
+            reverse_expression,
+        )
+
+        if _PowerAssetQuery not in created_types:
+            self.power_asset = _PowerAssetQuery(
+                created_types.copy(),
+                self._creation_path,
+                client,
+                result_list_cls,
+                dm.query.NodeResultSetExpression(
+                    through=self._view_id.as_property_ref("powerAsset"),
+                    direction="outwards",
+                ),
+                connection_name="power_asset",
+            )
+
+        self.space = StringFilter(self, ["node", "space"])
+        self.external_id = StringFilter(self, ["node", "externalId"])
+        self.name = StringFilter(self, self._view_id.as_property_ref("name"))
+        self.method = StringFilter(self, self._view_id.as_property_ref("method"))
+        self.add_steps = BooleanFilter(self, self._view_id.as_property_ref("addSteps"))
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.name,
+            self.method,
+            self.add_steps,
+        ])
+
+    def list_partial_bid_configuration(self, limit: int = DEFAULT_QUERY_LIMIT) -> PartialBidConfigurationList:
+        return self._list(limit=limit)
+
+
+class PartialBidConfigurationQuery(_PartialBidConfigurationQuery[PartialBidConfigurationList]):
+    def __init__(self, client: CogniteClient):
+        super().__init__(set(), [], client, PartialBidConfigurationList)

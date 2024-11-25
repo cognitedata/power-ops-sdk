@@ -9,7 +9,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -20,13 +26,20 @@ from cognite.powerops.client._generated.v1.data_classes import (
     BenchmarkingTaskDispatcherInputDayAheadList,
     BenchmarkingTaskDispatcherInputDayAheadWriteList,
     BenchmarkingTaskDispatcherInputDayAheadTextFields,
+    BenchmarkingConfigurationDayAhead,
 )
 from cognite.powerops.client._generated.v1.data_classes._benchmarking_task_dispatcher_input_day_ahead import (
+    BenchmarkingTaskDispatcherInputDayAheadQuery,
     _BENCHMARKINGTASKDISPATCHERINPUTDAYAHEAD_PROPERTIES_BY_FIELD,
     _create_benchmarking_task_dispatcher_input_day_ahead_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .benchmarking_task_dispatcher_input_day_ahead_query import BenchmarkingTaskDispatcherInputDayAheadQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.benchmarking_task_dispatcher_input_day_ahead_query import BenchmarkingTaskDispatcherInputDayAheadQueryAPI
 
 
 class BenchmarkingTaskDispatcherInputDayAheadAPI(NodeAPI[BenchmarkingTaskDispatcherInputDayAhead, BenchmarkingTaskDispatcherInputDayAheadWrite, BenchmarkingTaskDispatcherInputDayAheadList, BenchmarkingTaskDispatcherInputDayAheadWriteList]):
@@ -50,7 +63,7 @@ class BenchmarkingTaskDispatcherInputDayAheadAPI(NodeAPI[BenchmarkingTaskDispatc
             function_name_prefix: str | None = None,
             function_call_id: str | list[str] | None = None,
             function_call_id_prefix: str | None = None,
-            benchmarking_config: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            benchmarking_config: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
             min_delivery_date: datetime.datetime | None = None,
             max_delivery_date: datetime.datetime | None = None,
             external_id_prefix: str | None = None,
@@ -81,6 +94,12 @@ class BenchmarkingTaskDispatcherInputDayAheadAPI(NodeAPI[BenchmarkingTaskDispatc
             A query API for benchmarking task dispatcher input day aheads.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_benchmarking_task_dispatcher_input_day_ahead_filter(
             self._view_id,
@@ -99,7 +118,7 @@ class BenchmarkingTaskDispatcherInputDayAheadAPI(NodeAPI[BenchmarkingTaskDispatc
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(BenchmarkingTaskDispatcherInputDayAheadList)
+        builder = DataClassQueryBuilder(BenchmarkingTaskDispatcherInputDayAheadList)
         return BenchmarkingTaskDispatcherInputDayAheadQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -110,6 +129,10 @@ class BenchmarkingTaskDispatcherInputDayAheadAPI(NodeAPI[BenchmarkingTaskDispatc
         write_none: bool = False,
     ) -> ResourcesWriteResult:
         """Add or update (upsert) benchmarking task dispatcher input day aheads.
+
+        Note: This method iterates through all nodes and timeseries linked to benchmarking_task_dispatcher_input_day_ahead and creates them including the edges
+        between the nodes. For example, if any of `benchmarking_config` are set, then these
+        nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
             benchmarking_task_dispatcher_input_day_ahead: Benchmarking task dispatcher input day ahead or sequence of benchmarking task dispatcher input day aheads to upsert.
@@ -173,14 +196,14 @@ class BenchmarkingTaskDispatcherInputDayAheadAPI(NodeAPI[BenchmarkingTaskDispatc
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingTaskDispatcherInputDayAhead | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingTaskDispatcherInputDayAhead | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingTaskDispatcherInputDayAheadList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingTaskDispatcherInputDayAheadList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingTaskDispatcherInputDayAhead | BenchmarkingTaskDispatcherInputDayAheadList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingTaskDispatcherInputDayAhead | BenchmarkingTaskDispatcherInputDayAheadList | None:
         """Retrieve one or more benchmarking task dispatcher input day aheads by id(s).
 
         Args:
@@ -213,7 +236,7 @@ class BenchmarkingTaskDispatcherInputDayAheadAPI(NodeAPI[BenchmarkingTaskDispatc
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        benchmarking_config: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        benchmarking_config: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_delivery_date: datetime.datetime | None = None,
         max_delivery_date: datetime.datetime | None = None,
         external_id_prefix: str | None = None,
@@ -305,7 +328,7 @@ class BenchmarkingTaskDispatcherInputDayAheadAPI(NodeAPI[BenchmarkingTaskDispatc
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        benchmarking_config: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        benchmarking_config: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_delivery_date: datetime.datetime | None = None,
         max_delivery_date: datetime.datetime | None = None,
         external_id_prefix: str | None = None,
@@ -331,7 +354,7 @@ class BenchmarkingTaskDispatcherInputDayAheadAPI(NodeAPI[BenchmarkingTaskDispatc
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        benchmarking_config: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        benchmarking_config: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_delivery_date: datetime.datetime | None = None,
         max_delivery_date: datetime.datetime | None = None,
         external_id_prefix: str | None = None,
@@ -359,7 +382,7 @@ class BenchmarkingTaskDispatcherInputDayAheadAPI(NodeAPI[BenchmarkingTaskDispatc
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        benchmarking_config: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        benchmarking_config: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_delivery_date: datetime.datetime | None = None,
         max_delivery_date: datetime.datetime | None = None,
         external_id_prefix: str | None = None,
@@ -386,7 +409,7 @@ class BenchmarkingTaskDispatcherInputDayAheadAPI(NodeAPI[BenchmarkingTaskDispatc
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        benchmarking_config: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        benchmarking_config: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_delivery_date: datetime.datetime | None = None,
         max_delivery_date: datetime.datetime | None = None,
         external_id_prefix: str | None = None,
@@ -476,7 +499,7 @@ class BenchmarkingTaskDispatcherInputDayAheadAPI(NodeAPI[BenchmarkingTaskDispatc
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        benchmarking_config: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        benchmarking_config: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_delivery_date: datetime.datetime | None = None,
         max_delivery_date: datetime.datetime | None = None,
         external_id_prefix: str | None = None,
@@ -537,6 +560,15 @@ class BenchmarkingTaskDispatcherInputDayAheadAPI(NodeAPI[BenchmarkingTaskDispatc
             filter_,
         )
 
+    def query(self) -> BenchmarkingTaskDispatcherInputDayAheadQuery:
+        """Start a query for benchmarking task dispatcher input day aheads."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return BenchmarkingTaskDispatcherInputDayAheadQuery(self._client)
+
+    def select(self) -> BenchmarkingTaskDispatcherInputDayAheadQuery:
+        """Start selecting from benchmarking task dispatcher input day aheads."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return BenchmarkingTaskDispatcherInputDayAheadQuery(self._client)
 
     def list(
         self,
@@ -548,7 +580,7 @@ class BenchmarkingTaskDispatcherInputDayAheadAPI(NodeAPI[BenchmarkingTaskDispatc
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        benchmarking_config: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        benchmarking_config: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_delivery_date: datetime.datetime | None = None,
         max_delivery_date: datetime.datetime | None = None,
         external_id_prefix: str | None = None,
@@ -558,6 +590,7 @@ class BenchmarkingTaskDispatcherInputDayAheadAPI(NodeAPI[BenchmarkingTaskDispatc
         sort_by: BenchmarkingTaskDispatcherInputDayAheadFields | Sequence[BenchmarkingTaskDispatcherInputDayAheadFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> BenchmarkingTaskDispatcherInputDayAheadList:
         """List/filter benchmarking task dispatcher input day aheads
 
@@ -582,6 +615,8 @@ class BenchmarkingTaskDispatcherInputDayAheadAPI(NodeAPI[BenchmarkingTaskDispatc
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
                 This will override the sort_by and direction. This allowos you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
+            retrieve_connections: Whether to retrieve `benchmarking_config` for the benchmarking task dispatcher input day aheads. Defaults to 'skip'.
+                'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier of the connected items, and 'full' will retrieve the full connected items.
 
         Returns:
             List of requested benchmarking task dispatcher input day aheads
@@ -612,10 +647,44 @@ class BenchmarkingTaskDispatcherInputDayAheadAPI(NodeAPI[BenchmarkingTaskDispatc
             space,
             filter,
         )
-        return self._list(
-            limit=limit,
-            filter=filter_,
-            sort_by=sort_by,  # type: ignore[arg-type]
-            direction=direction,
-            sort=sort,
+
+        if retrieve_connections == "skip":
+                return self._list(
+                limit=limit,
+                filter=filter_,
+                sort_by=sort_by,  # type: ignore[arg-type]
+                direction=direction,
+                sort=sort,
+            )
+
+        builder = DataClassQueryBuilder(BenchmarkingTaskDispatcherInputDayAheadList)
+        has_data = dm.filters.HasData(views=[self._view_id])
+        builder.append(
+            NodeQueryStep(
+                builder.create_name(None),
+                dm.query.NodeResultSetExpression(
+                    filter=dm.filters.And(filter_, has_data) if filter_ else has_data,
+                    sort=self._create_sort(sort_by, direction, sort),  # type: ignore[arg-type]
+                ),
+                BenchmarkingTaskDispatcherInputDayAhead,
+                max_retrieve_limit=limit,
+                raw_filter=filter_,
+            )
         )
+        from_root = builder.get_from()
+        if retrieve_connections == "full":
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name(from_root),
+                    dm.query.NodeResultSetExpression(
+                        from_=from_root,
+                        filter=dm.filters.HasData(views=[BenchmarkingConfigurationDayAhead._view_id]),
+                        direction="outwards",
+                        through=self._view_id.as_property_ref("benchmarkingConfig"),
+                    ),
+                    BenchmarkingConfigurationDayAhead,
+                )
+            )
+        # We know that that all nodes are connected as it is not possible to filter on connections
+        builder.execute_query(self._client, remove_not_connected=False)
+        return builder.unpack()

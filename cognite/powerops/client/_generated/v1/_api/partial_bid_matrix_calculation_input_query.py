@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import datetime
-from typing import TYPE_CHECKING
+from collections.abc import Sequence
+from typing import TYPE_CHECKING, cast
 
 from cognite.client import data_modeling as dm, CogniteClient
 
@@ -11,7 +12,15 @@ from cognite.powerops.client._generated.v1.data_classes import (
     BidConfigurationDayAhead,
     PartialBidConfiguration,
 )
-from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_QUERY_LIMIT,
+    EdgeQueryStep,
+    NodeQueryStep,
+    DataClassQueryBuilder,
+    QueryAPI,
+    T_DomainModelList,
+    _create_edge_filter,
+)
 
 
 
@@ -21,20 +30,19 @@ class PartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
     def __init__(
         self,
         client: CogniteClient,
-        builder: QueryBuilder[T_DomainModelList],
+        builder: DataClassQueryBuilder[T_DomainModelList],
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
         super().__init__(client, builder)
-
+        from_ = self._builder.get_from()
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("partial_bid_matrix_calculation_input"),
+            NodeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
-                    from_=self._builder[-1].name if self._builder else None,
+                    from_=from_,
                     filter=filter_,
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(self._view_id, ["*"])]),
                 result_cls=PartialBidMatrixCalculationInput,
                 max_retrieve_limit=limit,
             )
@@ -63,37 +71,29 @@ class PartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
         return self._query()
 
     def _query_append_bid_configuration(self, from_: str) -> None:
-        view_id = BidConfigurationDayAhead._view_id
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("bid_configuration"),
+            NodeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
-                    filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
                     through=self._view_id.as_property_ref("bidConfiguration"),
                     direction="outwards",
+                    filter=dm.filters.HasData(views=[BidConfigurationDayAhead._view_id]),
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
-                max_retrieve_limit=-1,
                 result_cls=BidConfigurationDayAhead,
-                is_single_direct_relation=True,
             ),
         )
 
     def _query_append_partial_bid_configuration(self, from_: str) -> None:
-        view_id = PartialBidConfiguration._view_id
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("partial_bid_configuration"),
+            NodeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
-                    filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
                     through=self._view_id.as_property_ref("partialBidConfiguration"),
                     direction="outwards",
+                    filter=dm.filters.HasData(views=[PartialBidConfiguration._view_id]),
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
-                max_retrieve_limit=-1,
                 result_cls=PartialBidConfiguration,
-                is_single_direct_relation=True,
             ),
         )
