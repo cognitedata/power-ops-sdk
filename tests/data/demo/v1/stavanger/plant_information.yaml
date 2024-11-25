@@ -26,6 +26,5 @@
   # production_min_time_series: "???" # from model file??
   water_value_time_series: "[external_id]136120"
   feeding_fee_time_series: "[external_id]9626"
-  outlet_level_time_series: "[external_id]907223"
-  inlet_level_time_series: "[external_id]907230"
+  inlet_level_time_series: "[external_id]test_data_stavanger:dale_reservoir_level_masl"
   # head_direct_time_series: "???"
