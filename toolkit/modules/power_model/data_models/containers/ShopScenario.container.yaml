@@ -28,6 +28,14 @@ properties:
     autoIncrement: false
     name: commands
     description: The commands to run shop with
+  timeResolution:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: timeResolution
+    description: The time resolutions to use within SHOP.
   source:
     type:
       list: false
