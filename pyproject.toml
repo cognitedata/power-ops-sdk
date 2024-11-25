@@ -29,7 +29,6 @@ StrEnum = {version = "^0.4.15", python = "<3.11"}
 tomli-w = "^1.0.0"
 tabulate = "^0.9"
 toml = ">=0.10"
-mkdocs =  {version="*", optional=true}
 mkdocs-jupyter = {version="*", optional=true}
 mkdocs-material = {version="*", optional=true}
 mkdocs-material-extensions = {version="*", optional=true}
@@ -41,9 +40,6 @@ pymdown-extensions = {version="*", optional=true}
 mkdocstrings = {version="*", optional=true, extras=["python"]}
 cachelib = "^0.13.0"
 
-[tool.poetry.extras]
-docs = ["mkdocs", "mkdocs-jupyter", "mkdocs-material", "mkdocs-material-extensions", "mkdocs-git-revision-date-localized-plugin",
-    "mkdocs-git-authors-plugin", "mkdocs-gitbook", "mkdocs-glightbox", "pymdown-extensions", "mkdocstrings"]
 
 [tool.poetry.scripts]
 powerops = "cognite.powerops.cli:main"
