@@ -1,0 +1,21 @@
+space: "{{power_ops_models_space}}"
+externalId: ShopTimeResolution
+name: ShopTimeResolution
+usedFor: node
+properties:
+  minutesAfterStart:
+    type:
+      list: true
+      type: int64
+    nullable: false
+    autoIncrement: false
+    name: minutesAfterStart
+    description: Minutes after SHOP Simulation start.
+  timeResolutionMinutes:
+    type:
+      list: true
+      type: int64
+    nullable: false
+    autoIncrement: false
+    name: timeResolutionMinutes
+    description: The SHOP time resolution (in minutes) to use for SHOP.
