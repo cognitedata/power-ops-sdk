@@ -9,7 +9,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -20,18 +26,28 @@ from cognite.powerops.client._generated.v1.data_classes import (
     AlertList,
     AlertWriteList,
     AlertTextFields,
+    ShopPenaltyReport,
 )
 from cognite.powerops.client._generated.v1.data_classes._alert import (
+    AlertQuery,
     _ALERT_PROPERTIES_BY_FIELD,
     _create_alert_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .alert_query import AlertQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.alert_query import AlertQueryAPI
 
 
 class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList, AlertWriteList]):
     _view_id = dm.ViewId("power_ops_core", "Alert", "1")
     _properties_by_field = _ALERT_PROPERTIES_BY_FIELD
+    _direct_children_by_external_id = {
+        "ShopPenaltyReport": ShopPenaltyReport,
+    }
     _class_type = Alert
     _class_list = AlertList
     _class_write_list = AlertWriteList
@@ -91,6 +107,12 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList, AlertWriteList]):
             A query API for alerts.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_alert_filter(
             self._view_id,
@@ -114,7 +136,7 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList, AlertWriteList]):
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(AlertList)
+        builder = DataClassQueryBuilder(AlertList)
         return AlertQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -188,19 +210,22 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList, AlertWriteList]):
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> Alert | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["ShopPenaltyReport"]] | None = None) -> Alert | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> AlertList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["ShopPenaltyReport"]] | None = None) -> AlertList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> Alert | AlertList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["ShopPenaltyReport"]] | None = None) -> Alert | AlertList | None:
         """Retrieve one or more alerts by id(s).
 
         Args:
             external_id: External id or list of external ids of the alerts.
             space: The space where all the alerts are located.
+            as_child_class: If you want to retrieve the alerts as a child class,
+                you can specify the child class here. Note that if one node has properties in
+                multiple child classes, you will get duplicate nodes in the result.
 
         Returns:
             The requested alerts.
@@ -214,7 +239,7 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList, AlertWriteList]):
                 >>> alert = client.alert.retrieve("my_alert")
 
         """
-        return self._retrieve(external_id, space)
+        return self._retrieve(external_id, space, as_child_class=as_child_class)
 
     def search(
         self,
@@ -612,6 +637,15 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList, AlertWriteList]):
             filter_,
         )
 
+    def query(self) -> AlertQuery:
+        """Start a query for alerts."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return AlertQuery(self._client)
+
+    def select(self) -> AlertQuery:
+        """Start selecting from alerts."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return AlertQuery(self._client)
 
     def list(
         self,
@@ -702,6 +736,7 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList, AlertWriteList]):
             space,
             filter,
         )
+
         return self._list(
             limit=limit,
             filter=filter_,

@@ -8,7 +8,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -19,18 +25,34 @@ from cognite.powerops.client._generated.v1.data_classes import (
     PowerAssetList,
     PowerAssetWriteList,
     PowerAssetTextFields,
+    Generator,
+    Plant,
+    PriceArea,
+    Watercourse,
 )
 from cognite.powerops.client._generated.v1.data_classes._power_asset import (
+    PowerAssetQuery,
     _POWERASSET_PROPERTIES_BY_FIELD,
     _create_power_asset_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .power_asset_query import PowerAssetQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.power_asset_query import PowerAssetQueryAPI
 
 
 class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList, PowerAssetWriteList]):
     _view_id = dm.ViewId("power_ops_core", "PowerAsset", "1")
     _properties_by_field = _POWERASSET_PROPERTIES_BY_FIELD
+    _direct_children_by_external_id = {
+        "Generator": Generator,
+        "Plant": Plant,
+        "PriceArea": PriceArea,
+        "Watercourse": Watercourse,
+    }
     _class_type = PowerAsset
     _class_list = PowerAssetList
     _class_write_list = PowerAssetWriteList
@@ -74,6 +96,12 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList, PowerAs
             A query API for power assets.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_power_asset_filter(
             self._view_id,
@@ -89,7 +117,7 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList, PowerAs
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(PowerAssetList)
+        builder = DataClassQueryBuilder(PowerAssetList)
         return PowerAssetQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -163,19 +191,22 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList, PowerAs
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> PowerAsset | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["Generator", "Plant", "PriceArea", "Watercourse"]] | None = None) -> PowerAsset | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PowerAssetList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["Generator", "Plant", "PriceArea", "Watercourse"]] | None = None) -> PowerAssetList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PowerAsset | PowerAssetList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["Generator", "Plant", "PriceArea", "Watercourse"]] | None = None) -> PowerAsset | PowerAssetList | None:
         """Retrieve one or more power assets by id(s).
 
         Args:
             external_id: External id or list of external ids of the power assets.
             space: The space where all the power assets are located.
+            as_child_class: If you want to retrieve the power assets as a child class,
+                you can specify the child class here. Note that if one node has properties in
+                multiple child classes, you will get duplicate nodes in the result.
 
         Returns:
             The requested power assets.
@@ -189,7 +220,7 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList, PowerAs
                 >>> power_asset = client.power_asset.retrieve("my_power_asset")
 
         """
-        return self._retrieve(external_id, space)
+        return self._retrieve(external_id, space, as_child_class=as_child_class)
 
     def search(
         self,
@@ -491,6 +522,15 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList, PowerAs
             filter_,
         )
 
+    def query(self) -> PowerAssetQuery:
+        """Start a query for power assets."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return PowerAssetQuery(self._client)
+
+    def select(self) -> PowerAssetQuery:
+        """Start selecting from power assets."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return PowerAssetQuery(self._client)
 
     def list(
         self,
@@ -557,6 +597,7 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList, PowerAs
             space,
             filter,
         )
+
         return self._list(
             limit=limit,
             filter=filter_,

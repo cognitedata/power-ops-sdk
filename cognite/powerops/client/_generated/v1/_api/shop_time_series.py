@@ -8,7 +8,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -21,12 +27,18 @@ from cognite.powerops.client._generated.v1.data_classes import (
     ShopTimeSeriesTextFields,
 )
 from cognite.powerops.client._generated.v1.data_classes._shop_time_series import (
+    ShopTimeSeriesQuery,
     _SHOPTIMESERIES_PROPERTIES_BY_FIELD,
     _create_shop_time_series_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .shop_time_series_time_series import ShopTimeSeriesTimeSeriesAPI
-from .shop_time_series_query import ShopTimeSeriesQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.shop_time_series_time_series import ShopTimeSeriesTimeSeriesAPI
+from cognite.powerops.client._generated.v1._api.shop_time_series_query import ShopTimeSeriesQueryAPI
 
 
 class ShopTimeSeriesAPI(NodeAPI[ShopTimeSeries, ShopTimeSeriesWrite, ShopTimeSeriesList, ShopTimeSeriesWriteList]):
@@ -72,6 +84,12 @@ class ShopTimeSeriesAPI(NodeAPI[ShopTimeSeries, ShopTimeSeriesWrite, ShopTimeSer
             A query API for shop time series.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_shop_time_series_filter(
             self._view_id,
@@ -85,7 +103,7 @@ class ShopTimeSeriesAPI(NodeAPI[ShopTimeSeries, ShopTimeSeriesWrite, ShopTimeSer
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(ShopTimeSeriesList)
+        builder = DataClassQueryBuilder(ShopTimeSeriesList)
         return ShopTimeSeriesQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -159,14 +177,14 @@ class ShopTimeSeriesAPI(NodeAPI[ShopTimeSeries, ShopTimeSeriesWrite, ShopTimeSer
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopTimeSeries | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopTimeSeries | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopTimeSeriesList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> ShopTimeSeriesList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopTimeSeries | ShopTimeSeriesList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> ShopTimeSeries | ShopTimeSeriesList | None:
         """Retrieve one or more shop time series by id(s).
 
         Args:
@@ -463,6 +481,15 @@ class ShopTimeSeriesAPI(NodeAPI[ShopTimeSeries, ShopTimeSeriesWrite, ShopTimeSer
             filter_,
         )
 
+    def query(self) -> ShopTimeSeriesQuery:
+        """Start a query for shop time series."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return ShopTimeSeriesQuery(self._client)
+
+    def select(self) -> ShopTimeSeriesQuery:
+        """Start selecting from shop time series."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return ShopTimeSeriesQuery(self._client)
 
     def list(
         self,
@@ -523,6 +550,7 @@ class ShopTimeSeriesAPI(NodeAPI[ShopTimeSeries, ShopTimeSeriesWrite, ShopTimeSer
             space,
             filter,
         )
+
         return self._list(
             limit=limit,
             filter=filter_,

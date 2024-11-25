@@ -34,6 +34,13 @@ properties:
       type: container
     containerPropertyIdentifier: productionMin
     name: productionMin
+  productionMax:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: Generator
+      type: container
+    containerPropertyIdentifier: productionMax
+    name: productionMax
   penstockNumber:
     container:
       space: "{{power_ops_models_space}}"

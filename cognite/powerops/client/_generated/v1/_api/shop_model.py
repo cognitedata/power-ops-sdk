@@ -8,7 +8,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -19,15 +25,23 @@ from cognite.powerops.client._generated.v1.data_classes import (
     ShopModelList,
     ShopModelWriteList,
     ShopModelTextFields,
+    ShopAttributeMapping,
+    ShopFile,
 )
 from cognite.powerops.client._generated.v1.data_classes._shop_model import (
+    ShopModelQuery,
     _SHOPMODEL_PROPERTIES_BY_FIELD,
     _create_shop_model_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .shop_model_cog_shop_files_config import ShopModelCogShopFilesConfigAPI
-from .shop_model_base_attribute_mappings import ShopModelBaseAttributeMappingsAPI
-from .shop_model_query import ShopModelQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.shop_model_cog_shop_files_config import ShopModelCogShopFilesConfigAPI
+from cognite.powerops.client._generated.v1._api.shop_model_base_attribute_mappings import ShopModelBaseAttributeMappingsAPI
+from cognite.powerops.client._generated.v1._api.shop_model_query import ShopModelQueryAPI
 
 
 class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList, ShopModelWriteList]):
@@ -78,6 +92,12 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList, ShopModelWr
             A query API for shop models.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_shop_model_filter(
             self._view_id,
@@ -93,7 +113,7 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList, ShopModelWr
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(ShopModelList)
+        builder = DataClassQueryBuilder(ShopModelList)
         return ShopModelQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -171,14 +191,14 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList, ShopModelWr
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopModel | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopModel | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopModelList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> ShopModelList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopModel | ShopModelList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> ShopModel | ShopModelList | None:
         """Retrieve one or more shop models by id(s).
 
         Args:
@@ -520,6 +540,15 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList, ShopModelWr
             filter_,
         )
 
+    def query(self) -> ShopModelQuery:
+        """Start a query for shop models."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return ShopModelQuery(self._client)
+
+    def select(self) -> ShopModelQuery:
+        """Start selecting from shop models."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return ShopModelQuery(self._client)
 
     def list(
         self,
@@ -538,7 +567,7 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList, ShopModelWr
         sort_by: ShopModelFields | Sequence[ShopModelFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
-        retrieve_edges: bool = True,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> ShopModelList:
         """List/filter shop models
 
@@ -560,7 +589,8 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList, ShopModelWr
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
                 This will override the sort_by and direction. This allowos you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
-            retrieve_edges: Whether to retrieve `cog_shop_files_config` or `base_attribute_mappings` external ids for the shop models. Defaults to True.
+            retrieve_connections: Whether to retrieve `cog_shop_files_config` and `base_attribute_mappings` for the shop models. Defaults to 'skip'.
+                'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier of the connected items, and 'full' will retrieve the full connected items.
 
         Returns:
             List of requested shop models
@@ -589,27 +619,73 @@ class ShopModelAPI(NodeAPI[ShopModel, ShopModelWrite, ShopModelList, ShopModelWr
             filter,
         )
 
-        return self._list(
-            limit=limit,
-            filter=filter_,
-            sort_by=sort_by,  # type: ignore[arg-type]
-            direction=direction,
-            sort=sort,
-            retrieve_edges=retrieve_edges,
-            edge_api_name_type_direction_view_id_penta=[
-                (
-                    self.cog_shop_files_config_edge,
-                    "cog_shop_files_config",
-                    dm.DirectRelationReference("power_ops_types", "ShopModel.cogShopFilesConfig"),
-                    "outwards",
-                    dm.ViewId("power_ops_core", "ShopFile", "1"),
+        if retrieve_connections == "skip":
+                return self._list(
+                limit=limit,
+                filter=filter_,
+                sort_by=sort_by,  # type: ignore[arg-type]
+                direction=direction,
+                sort=sort,
+            )
+
+        builder = DataClassQueryBuilder(ShopModelList)
+        has_data = dm.filters.HasData(views=[self._view_id])
+        builder.append(
+            NodeQueryStep(
+                builder.create_name(None),
+                dm.query.NodeResultSetExpression(
+                    filter=dm.filters.And(filter_, has_data) if filter_ else has_data,
+                    sort=self._create_sort(sort_by, direction, sort),  # type: ignore[arg-type]
                 ),
-                (
-                    self.base_attribute_mappings_edge,
-                    "base_attribute_mappings",
-                    dm.DirectRelationReference("power_ops_types", "ShopModel.baseAttributeMappings"),
-                    "outwards",
-                    dm.ViewId("power_ops_core", "ShopAttributeMapping", "1"),
-                ),
-                                               ]
+                ShopModel,
+                max_retrieve_limit=limit,
+                raw_filter=filter_,
+            )
         )
+        from_root = builder.get_from()
+        edge_cog_shop_files_config = builder.create_name(from_root)
+        builder.append(
+            EdgeQueryStep(
+                edge_cog_shop_files_config,
+                dm.query.EdgeResultSetExpression(
+                    from_=from_root,
+                    direction="outwards",
+                    chain_to="destination",
+                ),
+            )
+        )
+        edge_base_attribute_mappings = builder.create_name(from_root)
+        builder.append(
+            EdgeQueryStep(
+                edge_base_attribute_mappings,
+                dm.query.EdgeResultSetExpression(
+                    from_=from_root,
+                    direction="outwards",
+                    chain_to="destination",
+                ),
+            )
+        )
+        if retrieve_connections == "full":
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name( edge_cog_shop_files_config),
+                    dm.query.NodeResultSetExpression(
+                        from_= edge_cog_shop_files_config,
+                        filter=dm.filters.HasData(views=[ShopFile._view_id]),
+                    ),
+                    ShopFile,
+                )
+            )
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name( edge_base_attribute_mappings),
+                    dm.query.NodeResultSetExpression(
+                        from_= edge_base_attribute_mappings,
+                        filter=dm.filters.HasData(views=[ShopAttributeMapping._view_id]),
+                    ),
+                    ShopAttributeMapping,
+                )
+            )
+        # We know that that all nodes are connected as it is not possible to filter on connections
+        builder.execute_query(self._client, remove_not_connected=False)
+        return builder.unpack()

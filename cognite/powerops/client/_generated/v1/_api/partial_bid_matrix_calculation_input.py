@@ -9,7 +9,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -20,18 +26,32 @@ from cognite.powerops.client._generated.v1.data_classes import (
     PartialBidMatrixCalculationInputList,
     PartialBidMatrixCalculationInputWriteList,
     PartialBidMatrixCalculationInputTextFields,
+    BidConfigurationDayAhead,
+    PartialBidConfiguration,
+    MultiScenarioPartialBidMatrixCalculationInput,
+    WaterValueBasedPartialBidMatrixCalculationInput,
 )
 from cognite.powerops.client._generated.v1.data_classes._partial_bid_matrix_calculation_input import (
+    PartialBidMatrixCalculationInputQuery,
     _PARTIALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD,
     _create_partial_bid_matrix_calculation_input_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .partial_bid_matrix_calculation_input_query import PartialBidMatrixCalculationInputQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.partial_bid_matrix_calculation_input_query import PartialBidMatrixCalculationInputQueryAPI
 
 
 class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInput, PartialBidMatrixCalculationInputWrite, PartialBidMatrixCalculationInputList, PartialBidMatrixCalculationInputWriteList]):
     _view_id = dm.ViewId("power_ops_core", "PartialBidMatrixCalculationInput", "1")
     _properties_by_field = _PARTIALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD
+    _direct_children_by_external_id = {
+        "MultiScenarioPartialBidMatrixCalculationInput": MultiScenarioPartialBidMatrixCalculationInput,
+        "WaterValueBasedPartialBidMatrixCalculationInput": WaterValueBasedPartialBidMatrixCalculationInput,
+    }
     _class_type = PartialBidMatrixCalculationInput
     _class_list = PartialBidMatrixCalculationInputList
     _class_write_list = PartialBidMatrixCalculationInputWriteList
@@ -52,8 +72,8 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
             function_call_id_prefix: str | None = None,
             min_bid_date: datetime.date | None = None,
             max_bid_date: datetime.date | None = None,
-            bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-            partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+            partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
             external_id_prefix: str | None = None,
             space: str | list[str] | None = None,
             limit: int = DEFAULT_QUERY_LIMIT,
@@ -83,6 +103,12 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
             A query API for partial bid matrix calculation inputs.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_partial_bid_matrix_calculation_input_filter(
             self._view_id,
@@ -102,7 +128,7 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(PartialBidMatrixCalculationInputList)
+        builder = DataClassQueryBuilder(PartialBidMatrixCalculationInputList)
         return PartialBidMatrixCalculationInputQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -113,6 +139,10 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
         write_none: bool = False,
     ) -> ResourcesWriteResult:
         """Add or update (upsert) partial bid matrix calculation inputs.
+
+        Note: This method iterates through all nodes and timeseries linked to partial_bid_matrix_calculation_input and creates them including the edges
+        between the nodes. For example, if any of `bid_configuration` or `partial_bid_configuration` are set, then these
+        nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
             partial_bid_matrix_calculation_input: Partial bid matrix calculation input or sequence of partial bid matrix calculation inputs to upsert.
@@ -176,19 +206,22 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> PartialBidMatrixCalculationInput | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["MultiScenarioPartialBidMatrixCalculationInput", "WaterValueBasedPartialBidMatrixCalculationInput"]] | None = None) -> PartialBidMatrixCalculationInput | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PartialBidMatrixCalculationInputList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["MultiScenarioPartialBidMatrixCalculationInput", "WaterValueBasedPartialBidMatrixCalculationInput"]] | None = None) -> PartialBidMatrixCalculationInputList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PartialBidMatrixCalculationInput | PartialBidMatrixCalculationInputList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["MultiScenarioPartialBidMatrixCalculationInput", "WaterValueBasedPartialBidMatrixCalculationInput"]] | None = None) -> PartialBidMatrixCalculationInput | PartialBidMatrixCalculationInputList | None:
         """Retrieve one or more partial bid matrix calculation inputs by id(s).
 
         Args:
             external_id: External id or list of external ids of the partial bid matrix calculation inputs.
             space: The space where all the partial bid matrix calculation inputs are located.
+            as_child_class: If you want to retrieve the partial bid matrix calculation inputs as a child class,
+                you can specify the child class here. Note that if one node has properties in
+                multiple child classes, you will get duplicate nodes in the result.
 
         Returns:
             The requested partial bid matrix calculation inputs.
@@ -202,7 +235,7 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
                 >>> partial_bid_matrix_calculation_input = client.partial_bid_matrix_calculation_input.retrieve("my_partial_bid_matrix_calculation_input")
 
         """
-        return self._retrieve(external_id, space)
+        return self._retrieve(external_id, space, as_child_class=as_child_class)
 
     def search(
         self,
@@ -218,8 +251,8 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
         function_call_id_prefix: str | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -313,8 +346,8 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
         function_call_id_prefix: str | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -340,8 +373,8 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
         function_call_id_prefix: str | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -369,8 +402,8 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
         function_call_id_prefix: str | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -397,8 +430,8 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
         function_call_id_prefix: str | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -490,8 +523,8 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
         function_call_id_prefix: str | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -552,6 +585,15 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
             filter_,
         )
 
+    def query(self) -> PartialBidMatrixCalculationInputQuery:
+        """Start a query for partial bid matrix calculation inputs."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return PartialBidMatrixCalculationInputQuery(self._client)
+
+    def select(self) -> PartialBidMatrixCalculationInputQuery:
+        """Start selecting from partial bid matrix calculation inputs."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return PartialBidMatrixCalculationInputQuery(self._client)
 
     def list(
         self,
@@ -565,8 +607,8 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
         function_call_id_prefix: str | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -574,6 +616,7 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
         sort_by: PartialBidMatrixCalculationInputFields | Sequence[PartialBidMatrixCalculationInputFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> PartialBidMatrixCalculationInputList:
         """List/filter partial bid matrix calculation inputs
 
@@ -599,6 +642,8 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
                 This will override the sort_by and direction. This allowos you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
+            retrieve_connections: Whether to retrieve `bid_configuration` and `partial_bid_configuration` for the partial bid matrix calculation inputs. Defaults to 'skip'.
+                'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier of the connected items, and 'full' will retrieve the full connected items.
 
         Returns:
             List of requested partial bid matrix calculation inputs
@@ -630,10 +675,56 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
             space,
             filter,
         )
-        return self._list(
-            limit=limit,
-            filter=filter_,
-            sort_by=sort_by,  # type: ignore[arg-type]
-            direction=direction,
-            sort=sort,
+
+        if retrieve_connections == "skip":
+                return self._list(
+                limit=limit,
+                filter=filter_,
+                sort_by=sort_by,  # type: ignore[arg-type]
+                direction=direction,
+                sort=sort,
+            )
+
+        builder = DataClassQueryBuilder(PartialBidMatrixCalculationInputList)
+        has_data = dm.filters.HasData(views=[self._view_id])
+        builder.append(
+            NodeQueryStep(
+                builder.create_name(None),
+                dm.query.NodeResultSetExpression(
+                    filter=dm.filters.And(filter_, has_data) if filter_ else has_data,
+                    sort=self._create_sort(sort_by, direction, sort),  # type: ignore[arg-type]
+                ),
+                PartialBidMatrixCalculationInput,
+                max_retrieve_limit=limit,
+                raw_filter=filter_,
+            )
         )
+        from_root = builder.get_from()
+        if retrieve_connections == "full":
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name(from_root),
+                    dm.query.NodeResultSetExpression(
+                        from_=from_root,
+                        filter=dm.filters.HasData(views=[BidConfigurationDayAhead._view_id]),
+                        direction="outwards",
+                        through=self._view_id.as_property_ref("bidConfiguration"),
+                    ),
+                    BidConfigurationDayAhead,
+                )
+            )
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name(from_root),
+                    dm.query.NodeResultSetExpression(
+                        from_=from_root,
+                        filter=dm.filters.HasData(views=[PartialBidConfiguration._view_id]),
+                        direction="outwards",
+                        through=self._view_id.as_property_ref("partialBidConfiguration"),
+                    ),
+                    PartialBidConfiguration,
+                )
+            )
+        # We know that that all nodes are connected as it is not possible to filter on connections
+        builder.execute_query(self._client, remove_not_connected=False)
+        return builder.unpack()

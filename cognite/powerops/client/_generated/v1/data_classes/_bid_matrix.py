@@ -1,14 +1,20 @@
 from __future__ import annotations
 
 import warnings
+from collections.abc import Sequence
 from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
 
-from cognite.client import data_modeling as dm
+from cognite.client import data_modeling as dm, CogniteClient
+from cognite.client.data_classes import (
+    Sequence as CogniteSequence,
+    SequenceWrite as CogniteSequenceWrite,
+)
 from pydantic import Field
 from pydantic import field_validator, model_validator
 
-from ._core import (
+from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
     DataRecord,
     DataRecordGraphQL,
     DataRecordWrite,
@@ -16,9 +22,28 @@ from ._core import (
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
+    DomainRelation,
     DomainRelationWrite,
     GraphQLCore,
     ResourcesWrite,
+    FileMetadata,
+    FileMetadataWrite,
+    FileMetadataGraphQL,
+    SequenceRead,
+    SequenceWrite,
+    SequenceGraphQL,
+    T_DomainModelList,
+    as_direct_relation_reference,
+    as_instance_dict_id,
+    as_node_id,
+    as_pygen_node_id,
+    are_nodes_equal,
+    is_tuple_id,
+    select_best_node,
+    QueryCore,
+    NodeQueryCore,
+    StringFilter,
+
 )
 
 
@@ -35,10 +60,11 @@ __all__ = [
 ]
 
 
-BidMatrixTextFields = Literal["state", "bid_matrix"]
-BidMatrixFields = Literal["state", "bid_matrix"]
+BidMatrixTextFields = Literal["external_id", "state", "bid_matrix"]
+BidMatrixFields = Literal["external_id", "state", "bid_matrix"]
 
 _BIDMATRIX_PROPERTIES_BY_FIELD = {
+    "external_id": "externalId",
     "state": "state",
     "bid_matrix": "bidMatrix",
 }
@@ -58,7 +84,7 @@ class BidMatrixGraphQL(GraphQLCore):
     """
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidMatrix", "1")
     state: Optional[str] = None
-    bid_matrix: Union[dict, None] = Field(None, alias="bidMatrix")
+    bid_matrix: Optional[SequenceGraphQL] = Field(None, alias="bidMatrix")
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -78,7 +104,7 @@ class BidMatrixGraphQL(GraphQLCore):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return BidMatrix(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
@@ -86,7 +112,7 @@ class BidMatrixGraphQL(GraphQLCore):
                 created_time=self.data_record.created_time,
             ),
             state=self.state,
-            bid_matrix=self.bid_matrix["externalId"] if self.bid_matrix and "externalId" in self.bid_matrix else None,
+            bid_matrix=self.bid_matrix.as_read() if self.bid_matrix else None,
         )
 
 
@@ -95,11 +121,11 @@ class BidMatrixGraphQL(GraphQLCore):
     def as_write(self) -> BidMatrixWrite:
         """Convert this GraphQL format of bid matrix to the writing format."""
         return BidMatrixWrite(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             state=self.state,
-            bid_matrix=self.bid_matrix["externalId"] if self.bid_matrix and "externalId" in self.bid_matrix else None,
+            bid_matrix=self.bid_matrix.as_write() if self.bid_matrix else None,
         )
 
 
@@ -120,7 +146,7 @@ class BidMatrix(DomainModel):
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
     state: str
-    bid_matrix: Union[str, None] = Field(None, alias="bidMatrix")
+    bid_matrix: Union[SequenceRead, str, None] = Field(None, alias="bidMatrix")
 
     def as_write(self) -> BidMatrixWrite:
         """Convert this read version of bid matrix to the writing version."""
@@ -129,7 +155,7 @@ class BidMatrix(DomainModel):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             state=self.state,
-            bid_matrix=self.bid_matrix,
+            bid_matrix=self.bid_matrix.as_write() if isinstance(self.bid_matrix, CogniteSequence) else self.bid_matrix,
         )
 
     def as_apply(self) -> BidMatrixWrite:
@@ -157,9 +183,9 @@ class BidMatrixWrite(DomainModelWrite):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidMatrix", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = None
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
     state: str
-    bid_matrix: Union[str, None] = Field(None, alias="bidMatrix")
+    bid_matrix: Union[SequenceWrite, str, None] = Field(None, alias="bidMatrix")
 
     def _to_instances_write(
         self,
@@ -177,7 +203,7 @@ class BidMatrixWrite(DomainModelWrite):
             properties["state"] = self.state
 
         if self.bid_matrix is not None or write_none:
-            properties["bidMatrix"] = self.bid_matrix
+            properties["bidMatrix"] = self.bid_matrix if isinstance(self.bid_matrix, str) or self.bid_matrix is None else self.bid_matrix.external_id
 
 
         if properties:
@@ -185,7 +211,7 @@ class BidMatrixWrite(DomainModelWrite):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=None if allow_version_increase else self.data_record.existing_version,
-                type=self.node_type,
+                type=as_direct_relation_reference(self.node_type),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=self._view_id,
@@ -196,6 +222,9 @@ class BidMatrixWrite(DomainModelWrite):
             cache.add(self.as_tuple_id())
 
 
+
+        if isinstance(self.bid_matrix, CogniteSequenceWrite):
+            resources.sequences.append(self.bid_matrix)
 
         return resources
 
@@ -264,3 +293,50 @@ def _create_bid_matrix_filter(
     if filter:
         filters.append(filter)
     return dm.filters.And(*filters) if filters else None
+
+
+class _BidMatrixQuery(NodeQueryCore[T_DomainModelList, BidMatrixList]):
+    _view_id = BidMatrix._view_id
+    _result_cls = BidMatrix
+    _result_list_cls_end = BidMatrixList
+
+    def __init__(
+        self,
+        created_types: set[type],
+        creation_path: list[QueryCore],
+        client: CogniteClient,
+        result_list_cls: type[T_DomainModelList],
+        expression: dm.query.ResultSetExpression | None = None,
+        connection_name: str | None = None,
+        connection_type: Literal["reverse-list"] | None = None,
+        reverse_expression: dm.query.ResultSetExpression | None = None,
+    ):
+
+        super().__init__(
+            created_types,
+            creation_path,
+            client,
+            result_list_cls,
+            expression,
+            dm.filters.HasData(views=[self._view_id]),
+            connection_name,
+            connection_type,
+            reverse_expression,
+        )
+
+        self.space = StringFilter(self, ["node", "space"])
+        self.external_id = StringFilter(self, ["node", "externalId"])
+        self.state = StringFilter(self, self._view_id.as_property_ref("state"))
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.state,
+        ])
+
+    def list_bid_matrix(self, limit: int = DEFAULT_QUERY_LIMIT) -> BidMatrixList:
+        return self._list(limit=limit)
+
+
+class BidMatrixQuery(_BidMatrixQuery[BidMatrixList]):
+    def __init__(self, client: CogniteClient):
+        super().__init__(set(), [], client, BidMatrixList)

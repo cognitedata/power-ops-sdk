@@ -1,14 +1,16 @@
 from __future__ import annotations
 
 import warnings
+from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
 
-from cognite.client import data_modeling as dm
+from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator
 
-from ._core import (
+from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
     DataRecord,
     DataRecordGraphQL,
     DataRecordWrite,
@@ -16,16 +18,29 @@ from ._core import (
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
+    DomainRelation,
     DomainRelationWrite,
     GraphQLCore,
     ResourcesWrite,
+    T_DomainModelList,
+    as_direct_relation_reference,
+    as_instance_dict_id,
+    as_node_id,
+    as_pygen_node_id,
+    are_nodes_equal,
+    is_tuple_id,
+    select_best_node,
+    QueryCore,
+    NodeQueryCore,
+    StringFilter,
+
 )
 
 if TYPE_CHECKING:
-    from ._bid_configuration_day_ahead import BidConfigurationDayAhead, BidConfigurationDayAheadGraphQL, BidConfigurationDayAheadWrite
-    from ._date_specification import DateSpecification, DateSpecificationGraphQL, DateSpecificationWrite
-    from ._price_area_day_ahead import PriceAreaDayAhead, PriceAreaDayAheadGraphQL, PriceAreaDayAheadWrite
-    from ._shop_model_with_assets import ShopModelWithAssets, ShopModelWithAssetsGraphQL, ShopModelWithAssetsWrite
+    from cognite.powerops.client._generated.v1.data_classes._bid_configuration_day_ahead import BidConfigurationDayAhead, BidConfigurationDayAheadList, BidConfigurationDayAheadGraphQL, BidConfigurationDayAheadWrite, BidConfigurationDayAheadWriteList
+    from cognite.powerops.client._generated.v1.data_classes._date_specification import DateSpecification, DateSpecificationList, DateSpecificationGraphQL, DateSpecificationWrite, DateSpecificationWriteList
+    from cognite.powerops.client._generated.v1.data_classes._price_area_day_ahead import PriceAreaDayAhead, PriceAreaDayAheadList, PriceAreaDayAheadGraphQL, PriceAreaDayAheadWrite, PriceAreaDayAheadWriteList
+    from cognite.powerops.client._generated.v1.data_classes._shop_model_with_assets import ShopModelWithAssets, ShopModelWithAssetsList, ShopModelWithAssetsGraphQL, ShopModelWithAssetsWrite, ShopModelWithAssetsWriteList
 
 
 __all__ = [
@@ -41,10 +56,11 @@ __all__ = [
 ]
 
 
-BenchmarkingConfigurationDayAheadTextFields = Literal["name"]
-BenchmarkingConfigurationDayAheadFields = Literal["name"]
+BenchmarkingConfigurationDayAheadTextFields = Literal["external_id", "name"]
+BenchmarkingConfigurationDayAheadFields = Literal["external_id", "name"]
 
 _BENCHMARKINGCONFIGURATIONDAYAHEAD_PROPERTIES_BY_FIELD = {
+    "external_id": "externalId",
     "name": "name",
 }
 
@@ -98,7 +114,7 @@ class BenchmarkingConfigurationDayAheadGraphQL(GraphQLCore):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return BenchmarkingConfigurationDayAhead(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
@@ -106,9 +122,15 @@ class BenchmarkingConfigurationDayAheadGraphQL(GraphQLCore):
                 created_time=self.data_record.created_time,
             ),
             name=self.name,
-            price_area=self.price_area.as_read() if isinstance(self.price_area, GraphQLCore) else self.price_area,
-            shop_start_specification=self.shop_start_specification.as_read() if isinstance(self.shop_start_specification, GraphQLCore) else self.shop_start_specification,
-            shop_end_specification=self.shop_end_specification.as_read() if isinstance(self.shop_end_specification, GraphQLCore) else self.shop_end_specification,
+            price_area=self.price_area.as_read()
+if isinstance(self.price_area, GraphQLCore)
+else self.price_area,
+            shop_start_specification=self.shop_start_specification.as_read()
+if isinstance(self.shop_start_specification, GraphQLCore)
+else self.shop_start_specification,
+            shop_end_specification=self.shop_end_specification.as_read()
+if isinstance(self.shop_end_specification, GraphQLCore)
+else self.shop_end_specification,
             bid_configurations=[bid_configuration.as_read() for bid_configuration in self.bid_configurations or []],
             assets_per_shop_model=[assets_per_shop_model.as_read() for assets_per_shop_model in self.assets_per_shop_model or []],
         )
@@ -119,13 +141,19 @@ class BenchmarkingConfigurationDayAheadGraphQL(GraphQLCore):
     def as_write(self) -> BenchmarkingConfigurationDayAheadWrite:
         """Convert this GraphQL format of benchmarking configuration day ahead to the writing format."""
         return BenchmarkingConfigurationDayAheadWrite(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,
-            price_area=self.price_area.as_write() if isinstance(self.price_area, GraphQLCore) else self.price_area,
-            shop_start_specification=self.shop_start_specification.as_write() if isinstance(self.shop_start_specification, GraphQLCore) else self.shop_start_specification,
-            shop_end_specification=self.shop_end_specification.as_write() if isinstance(self.shop_end_specification, GraphQLCore) else self.shop_end_specification,
+            price_area=self.price_area.as_write()
+if isinstance(self.price_area, GraphQLCore)
+else self.price_area,
+            shop_start_specification=self.shop_start_specification.as_write()
+if isinstance(self.shop_start_specification, GraphQLCore)
+else self.shop_start_specification,
+            shop_end_specification=self.shop_end_specification.as_write()
+if isinstance(self.shop_end_specification, GraphQLCore)
+else self.shop_end_specification,
             bid_configurations=[bid_configuration.as_write() for bid_configuration in self.bid_configurations or []],
             assets_per_shop_model=[assets_per_shop_model.as_write() for assets_per_shop_model in self.assets_per_shop_model or []],
         )
@@ -165,9 +193,15 @@ class BenchmarkingConfigurationDayAhead(DomainModel):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             name=self.name,
-            price_area=self.price_area.as_write() if isinstance(self.price_area, DomainModel) else self.price_area,
-            shop_start_specification=self.shop_start_specification.as_write() if isinstance(self.shop_start_specification, DomainModel) else self.shop_start_specification,
-            shop_end_specification=self.shop_end_specification.as_write() if isinstance(self.shop_end_specification, DomainModel) else self.shop_end_specification,
+            price_area=self.price_area.as_write()
+if isinstance(self.price_area, DomainModel)
+else self.price_area,
+            shop_start_specification=self.shop_start_specification.as_write()
+if isinstance(self.shop_start_specification, DomainModel)
+else self.shop_start_specification,
+            shop_end_specification=self.shop_end_specification.as_write()
+if isinstance(self.shop_end_specification, DomainModel)
+else self.shop_end_specification,
             bid_configurations=[bid_configuration.as_write() if isinstance(bid_configuration, DomainModel) else bid_configuration for bid_configuration in self.bid_configurations or []],
             assets_per_shop_model=[assets_per_shop_model.as_write() if isinstance(assets_per_shop_model, DomainModel) else assets_per_shop_model for assets_per_shop_model in self.assets_per_shop_model or []],
         )
@@ -180,6 +214,70 @@ class BenchmarkingConfigurationDayAhead(DomainModel):
             stacklevel=2,
         )
         return self.as_write()
+
+    @classmethod
+    def _update_connections(
+        cls,
+        instances: dict[dm.NodeId | str, BenchmarkingConfigurationDayAhead],  # type: ignore[override]
+        nodes_by_id: dict[dm.NodeId | str, DomainModel],
+        edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
+    ) -> None:
+        from ._bid_configuration_day_ahead import BidConfigurationDayAhead
+        from ._date_specification import DateSpecification
+        from ._price_area_day_ahead import PriceAreaDayAhead
+        from ._shop_model_with_assets import ShopModelWithAssets
+
+        for instance in instances.values():
+            if isinstance(instance.price_area, (dm.NodeId, str)) and (price_area := nodes_by_id.get(instance.price_area)) and isinstance(
+                    price_area, PriceAreaDayAhead
+            ):
+                instance.price_area = price_area
+            if isinstance(instance.shop_start_specification, (dm.NodeId, str)) and (shop_start_specification := nodes_by_id.get(instance.shop_start_specification)) and isinstance(
+                    shop_start_specification, DateSpecification
+            ):
+                instance.shop_start_specification = shop_start_specification
+            if isinstance(instance.shop_end_specification, (dm.NodeId, str)) and (shop_end_specification := nodes_by_id.get(instance.shop_end_specification)) and isinstance(
+                    shop_end_specification, DateSpecification
+            ):
+                instance.shop_end_specification = shop_end_specification
+            if edges := edges_by_source_node.get(instance.as_id()):
+                bid_configurations: list[BidConfigurationDayAhead | str | dm.NodeId] = []
+                assets_per_shop_model: list[ShopModelWithAssets | str | dm.NodeId] = []
+                for edge in edges:
+                    value: DomainModel | DomainRelation | str | dm.NodeId
+                    if isinstance(edge, DomainRelation):
+                        value = edge
+                    else:
+                        other_end: dm.DirectRelationReference = (
+                            edge.end_node
+                            if edge.start_node.space == instance.space
+                            and edge.start_node.external_id == instance.external_id
+                            else edge.start_node
+                        )
+                        destination: dm.NodeId | str = (
+                            as_node_id(other_end)
+                            if other_end.space != DEFAULT_INSTANCE_SPACE
+                            else other_end.external_id
+                        )
+                        if destination in nodes_by_id:
+                            value = nodes_by_id[destination]
+                        else:
+                            value = destination
+                    edge_type = edge.edge_type if isinstance(edge, DomainRelation) else edge.type
+
+                    if edge_type == dm.DirectRelationReference("power_ops_types", "benchmarkingBidConfigurations") and isinstance(
+                        value, (BidConfigurationDayAhead, str, dm.NodeId)
+                    ):
+                        bid_configurations.append(value)
+                    if edge_type == dm.DirectRelationReference("power_ops_types", "assetsPerShopModel") and isinstance(
+                        value, (ShopModelWithAssets, str, dm.NodeId)
+                    ):
+                        assets_per_shop_model.append(value)
+
+                instance.bid_configurations = bid_configurations or None
+                instance.assets_per_shop_model = assets_per_shop_model or None
+
+
 
 
 class BenchmarkingConfigurationDayAheadWrite(DomainModelWrite):
@@ -201,7 +299,7 @@ class BenchmarkingConfigurationDayAheadWrite(DomainModelWrite):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingConfigurationDayAhead", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingConfigurationDayAhead")
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingConfigurationDayAhead")
     name: str
     price_area: Union[PriceAreaDayAheadWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="priceArea")
     shop_start_specification: Union[DateSpecificationWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="shopStartSpecification")
@@ -209,6 +307,15 @@ class BenchmarkingConfigurationDayAheadWrite(DomainModelWrite):
     bid_configurations: Optional[list[Union[BidConfigurationDayAheadWrite, str, dm.NodeId]]] = Field(default=None, repr=False, alias="bidConfigurations")
     assets_per_shop_model: Optional[list[Union[ShopModelWithAssetsWrite, str, dm.NodeId]]] = Field(default=None, repr=False, alias="assetsPerShopModel")
 
+    @field_validator("price_area", "shop_start_specification", "shop_end_specification", "bid_configurations", "assets_per_shop_model", mode="before")
+    def as_node_id(cls, value: Any) -> Any:
+        if isinstance(value, dm.DirectRelationReference):
+            return dm.NodeId(value.space, value.external_id)
+        elif isinstance(value, tuple) and len(value) == 2 and all(isinstance(item, str) for item in value):
+            return dm.NodeId(value[0], value[1])
+        elif isinstance(value, list):
+            return [cls.as_node_id(item) for item in value]
+        return value
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -248,7 +355,7 @@ class BenchmarkingConfigurationDayAheadWrite(DomainModelWrite):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=None if allow_version_increase else self.data_record.existing_version,
-                type=self.node_type,
+                type=as_direct_relation_reference(self.node_type),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=self._view_id,
@@ -329,11 +436,71 @@ class BenchmarkingConfigurationDayAheadList(DomainModelList[BenchmarkingConfigur
         )
         return self.as_write()
 
+    @property
+    def price_area(self) -> PriceAreaDayAheadList:
+        from ._price_area_day_ahead import PriceAreaDayAhead, PriceAreaDayAheadList
+
+        return PriceAreaDayAheadList([item.price_area for item in self.data if isinstance(item.price_area, PriceAreaDayAhead)])
+
+    @property
+    def shop_start_specification(self) -> DateSpecificationList:
+        from ._date_specification import DateSpecification, DateSpecificationList
+
+        return DateSpecificationList([item.shop_start_specification for item in self.data if isinstance(item.shop_start_specification, DateSpecification)])
+
+    @property
+    def shop_end_specification(self) -> DateSpecificationList:
+        from ._date_specification import DateSpecification, DateSpecificationList
+
+        return DateSpecificationList([item.shop_end_specification for item in self.data if isinstance(item.shop_end_specification, DateSpecification)])
+
+    @property
+    def bid_configurations(self) -> BidConfigurationDayAheadList:
+        from ._bid_configuration_day_ahead import BidConfigurationDayAhead, BidConfigurationDayAheadList
+
+        return BidConfigurationDayAheadList([item for items in self.data for item in items.bid_configurations or [] if isinstance(item, BidConfigurationDayAhead)])
+
+    @property
+    def assets_per_shop_model(self) -> ShopModelWithAssetsList:
+        from ._shop_model_with_assets import ShopModelWithAssets, ShopModelWithAssetsList
+
+        return ShopModelWithAssetsList([item for items in self.data for item in items.assets_per_shop_model or [] if isinstance(item, ShopModelWithAssets)])
+
 
 class BenchmarkingConfigurationDayAheadWriteList(DomainModelWriteList[BenchmarkingConfigurationDayAheadWrite]):
     """List of benchmarking configuration day aheads in the writing version."""
 
     _INSTANCE = BenchmarkingConfigurationDayAheadWrite
+
+    @property
+    def price_area(self) -> PriceAreaDayAheadWriteList:
+        from ._price_area_day_ahead import PriceAreaDayAheadWrite, PriceAreaDayAheadWriteList
+
+        return PriceAreaDayAheadWriteList([item.price_area for item in self.data if isinstance(item.price_area, PriceAreaDayAheadWrite)])
+
+    @property
+    def shop_start_specification(self) -> DateSpecificationWriteList:
+        from ._date_specification import DateSpecificationWrite, DateSpecificationWriteList
+
+        return DateSpecificationWriteList([item.shop_start_specification for item in self.data if isinstance(item.shop_start_specification, DateSpecificationWrite)])
+
+    @property
+    def shop_end_specification(self) -> DateSpecificationWriteList:
+        from ._date_specification import DateSpecificationWrite, DateSpecificationWriteList
+
+        return DateSpecificationWriteList([item.shop_end_specification for item in self.data if isinstance(item.shop_end_specification, DateSpecificationWrite)])
+
+    @property
+    def bid_configurations(self) -> BidConfigurationDayAheadWriteList:
+        from ._bid_configuration_day_ahead import BidConfigurationDayAheadWrite, BidConfigurationDayAheadWriteList
+
+        return BidConfigurationDayAheadWriteList([item for items in self.data for item in items.bid_configurations or [] if isinstance(item, BidConfigurationDayAheadWrite)])
+
+    @property
+    def assets_per_shop_model(self) -> ShopModelWithAssetsWriteList:
+        from ._shop_model_with_assets import ShopModelWithAssetsWrite, ShopModelWithAssetsWriteList
+
+        return ShopModelWithAssetsWriteList([item for items in self.data for item in items.assets_per_shop_model or [] if isinstance(item, ShopModelWithAssetsWrite)])
 
 class BenchmarkingConfigurationDayAheadApplyList(BenchmarkingConfigurationDayAheadWriteList): ...
 
@@ -343,9 +510,9 @@ def _create_benchmarking_configuration_day_ahead_filter(
     view_id: dm.ViewId,
     name: str | list[str] | None = None,
     name_prefix: str | None = None,
-    price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-    shop_start_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-    shop_end_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    price_area: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+    shop_start_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+    shop_end_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -357,30 +524,18 @@ def _create_benchmarking_configuration_day_ahead_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
     if name_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
-    if price_area and isinstance(price_area, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("priceArea"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": price_area}))
-    if price_area and isinstance(price_area, tuple):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("priceArea"), value={"space": price_area[0], "externalId": price_area[1]}))
-    if price_area and isinstance(price_area, list) and isinstance(price_area[0], str):
-        filters.append(dm.filters.In(view_id.as_property_ref("priceArea"), values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in price_area]))
-    if price_area and isinstance(price_area, list) and isinstance(price_area[0], tuple):
-        filters.append(dm.filters.In(view_id.as_property_ref("priceArea"), values=[{"space": item[0], "externalId": item[1]} for item in price_area]))
-    if shop_start_specification and isinstance(shop_start_specification, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("shopStartSpecification"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": shop_start_specification}))
-    if shop_start_specification and isinstance(shop_start_specification, tuple):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("shopStartSpecification"), value={"space": shop_start_specification[0], "externalId": shop_start_specification[1]}))
-    if shop_start_specification and isinstance(shop_start_specification, list) and isinstance(shop_start_specification[0], str):
-        filters.append(dm.filters.In(view_id.as_property_ref("shopStartSpecification"), values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in shop_start_specification]))
-    if shop_start_specification and isinstance(shop_start_specification, list) and isinstance(shop_start_specification[0], tuple):
-        filters.append(dm.filters.In(view_id.as_property_ref("shopStartSpecification"), values=[{"space": item[0], "externalId": item[1]} for item in shop_start_specification]))
-    if shop_end_specification and isinstance(shop_end_specification, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("shopEndSpecification"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": shop_end_specification}))
-    if shop_end_specification and isinstance(shop_end_specification, tuple):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("shopEndSpecification"), value={"space": shop_end_specification[0], "externalId": shop_end_specification[1]}))
-    if shop_end_specification and isinstance(shop_end_specification, list) and isinstance(shop_end_specification[0], str):
-        filters.append(dm.filters.In(view_id.as_property_ref("shopEndSpecification"), values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in shop_end_specification]))
-    if shop_end_specification and isinstance(shop_end_specification, list) and isinstance(shop_end_specification[0], tuple):
-        filters.append(dm.filters.In(view_id.as_property_ref("shopEndSpecification"), values=[{"space": item[0], "externalId": item[1]} for item in shop_end_specification]))
+    if isinstance(price_area, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(price_area):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("priceArea"), value=as_instance_dict_id(price_area)))
+    if price_area and isinstance(price_area, Sequence) and not isinstance(price_area, str) and not is_tuple_id(price_area):
+        filters.append(dm.filters.In(view_id.as_property_ref("priceArea"), values=[as_instance_dict_id(item) for item in price_area]))
+    if isinstance(shop_start_specification, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(shop_start_specification):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("shopStartSpecification"), value=as_instance_dict_id(shop_start_specification)))
+    if shop_start_specification and isinstance(shop_start_specification, Sequence) and not isinstance(shop_start_specification, str) and not is_tuple_id(shop_start_specification):
+        filters.append(dm.filters.In(view_id.as_property_ref("shopStartSpecification"), values=[as_instance_dict_id(item) for item in shop_start_specification]))
+    if isinstance(shop_end_specification, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(shop_end_specification):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("shopEndSpecification"), value=as_instance_dict_id(shop_end_specification)))
+    if shop_end_specification and isinstance(shop_end_specification, Sequence) and not isinstance(shop_end_specification, str) and not is_tuple_id(shop_end_specification):
+        filters.append(dm.filters.In(view_id.as_property_ref("shopEndSpecification"), values=[as_instance_dict_id(item) for item in shop_end_specification]))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
@@ -390,3 +545,119 @@ def _create_benchmarking_configuration_day_ahead_filter(
     if filter:
         filters.append(filter)
     return dm.filters.And(*filters) if filters else None
+
+
+class _BenchmarkingConfigurationDayAheadQuery(NodeQueryCore[T_DomainModelList, BenchmarkingConfigurationDayAheadList]):
+    _view_id = BenchmarkingConfigurationDayAhead._view_id
+    _result_cls = BenchmarkingConfigurationDayAhead
+    _result_list_cls_end = BenchmarkingConfigurationDayAheadList
+
+    def __init__(
+        self,
+        created_types: set[type],
+        creation_path: list[QueryCore],
+        client: CogniteClient,
+        result_list_cls: type[T_DomainModelList],
+        expression: dm.query.ResultSetExpression | None = None,
+        connection_name: str | None = None,
+        connection_type: Literal["reverse-list"] | None = None,
+        reverse_expression: dm.query.ResultSetExpression | None = None,
+    ):
+        from ._bid_configuration_day_ahead import _BidConfigurationDayAheadQuery
+        from ._date_specification import _DateSpecificationQuery
+        from ._price_area_day_ahead import _PriceAreaDayAheadQuery
+        from ._shop_model_with_assets import _ShopModelWithAssetsQuery
+
+        super().__init__(
+            created_types,
+            creation_path,
+            client,
+            result_list_cls,
+            expression,
+            dm.filters.HasData(views=[self._view_id]),
+            connection_name,
+            connection_type,
+            reverse_expression,
+        )
+
+        if _PriceAreaDayAheadQuery not in created_types:
+            self.price_area = _PriceAreaDayAheadQuery(
+                created_types.copy(),
+                self._creation_path,
+                client,
+                result_list_cls,
+                dm.query.NodeResultSetExpression(
+                    through=self._view_id.as_property_ref("priceArea"),
+                    direction="outwards",
+                ),
+                connection_name="price_area",
+            )
+
+        if _DateSpecificationQuery not in created_types:
+            self.shop_start_specification = _DateSpecificationQuery(
+                created_types.copy(),
+                self._creation_path,
+                client,
+                result_list_cls,
+                dm.query.NodeResultSetExpression(
+                    through=self._view_id.as_property_ref("shopStartSpecification"),
+                    direction="outwards",
+                ),
+                connection_name="shop_start_specification",
+            )
+
+        if _DateSpecificationQuery not in created_types:
+            self.shop_end_specification = _DateSpecificationQuery(
+                created_types.copy(),
+                self._creation_path,
+                client,
+                result_list_cls,
+                dm.query.NodeResultSetExpression(
+                    through=self._view_id.as_property_ref("shopEndSpecification"),
+                    direction="outwards",
+                ),
+                connection_name="shop_end_specification",
+            )
+
+        if _BidConfigurationDayAheadQuery not in created_types:
+            self.bid_configurations = _BidConfigurationDayAheadQuery(
+                created_types.copy(),
+                self._creation_path,
+                client,
+                result_list_cls,
+                dm.query.EdgeResultSetExpression(
+                    direction="outwards",
+                    chain_to="destination",
+                ),
+                connection_name="bid_configurations",
+            )
+
+        if _ShopModelWithAssetsQuery not in created_types:
+            self.assets_per_shop_model = _ShopModelWithAssetsQuery(
+                created_types.copy(),
+                self._creation_path,
+                client,
+                result_list_cls,
+                dm.query.EdgeResultSetExpression(
+                    direction="outwards",
+                    chain_to="destination",
+                ),
+                connection_name="assets_per_shop_model",
+            )
+
+        self.space = StringFilter(self, ["node", "space"])
+        self.external_id = StringFilter(self, ["node", "externalId"])
+        self.name = StringFilter(self, self._view_id.as_property_ref("name"))
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.name,
+        ])
+
+    def list_benchmarking_configuration_day_ahead(self, limit: int = DEFAULT_QUERY_LIMIT) -> BenchmarkingConfigurationDayAheadList:
+        return self._list(limit=limit)
+
+
+class BenchmarkingConfigurationDayAheadQuery(_BenchmarkingConfigurationDayAheadQuery[BenchmarkingConfigurationDayAheadList]):
+    def __init__(self, client: CogniteClient):
+        super().__init__(set(), [], client, BenchmarkingConfigurationDayAheadList)

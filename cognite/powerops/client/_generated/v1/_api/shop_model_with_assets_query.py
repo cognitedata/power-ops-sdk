@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import datetime
-from typing import TYPE_CHECKING
+from collections.abc import Sequence
+from typing import TYPE_CHECKING, cast
 
 from cognite.client import data_modeling as dm, CogniteClient
 
@@ -19,11 +20,19 @@ from cognite.powerops.client._generated.v1.data_classes._benchmarking_production
     BenchmarkingProductionObligationDayAhead,
     _create_benchmarking_production_obligation_day_ahead_filter,
 )
-from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_QUERY_LIMIT,
+    EdgeQueryStep,
+    NodeQueryStep,
+    DataClassQueryBuilder,
+    QueryAPI,
+    T_DomainModelList,
+    _create_edge_filter,
+)
 
 if TYPE_CHECKING:
-    from .power_asset_query import PowerAssetQueryAPI
-    from .benchmarking_production_obligation_day_ahead_query import BenchmarkingProductionObligationDayAheadQueryAPI
+    from cognite.powerops.client._generated.v1._api.power_asset_query import PowerAssetQueryAPI
+    from cognite.powerops.client._generated.v1._api.benchmarking_production_obligation_day_ahead_query import BenchmarkingProductionObligationDayAheadQueryAPI
 
 
 
@@ -33,20 +42,19 @@ class ShopModelWithAssetsQueryAPI(QueryAPI[T_DomainModelList]):
     def __init__(
         self,
         client: CogniteClient,
-        builder: QueryBuilder[T_DomainModelList],
+        builder: DataClassQueryBuilder[T_DomainModelList],
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
         super().__init__(client, builder)
-
+        from_ = self._builder.get_from()
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("shop_model_with_asset"),
+            NodeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
-                    from_=self._builder[-1].name if self._builder else None,
+                    from_=from_,
                     filter=filter_,
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(self._view_id, ["*"])]),
                 result_cls=ShopModelWithAssets,
                 max_retrieve_limit=limit,
             )
@@ -97,7 +105,8 @@ class ShopModelWithAssetsQueryAPI(QueryAPI[T_DomainModelList]):
         """
         from .power_asset_query import PowerAssetQueryAPI
 
-        from_ = self._builder[-1].name
+        # from is a string as we added a node query step in the __init__ method
+        from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_core", "ShopModelWithAssets"),
 
@@ -105,14 +114,13 @@ class ShopModelWithAssetsQueryAPI(QueryAPI[T_DomainModelList]):
             space=space_edge,
         )
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("power_assets"),
+            EdgeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,
                     direction="outwards",
                 ),
-                select=dm.query.Select(),
                 max_retrieve_limit=limit,
             )
         )
@@ -172,7 +180,8 @@ class ShopModelWithAssetsQueryAPI(QueryAPI[T_DomainModelList]):
         """
         from .benchmarking_production_obligation_day_ahead_query import BenchmarkingProductionObligationDayAheadQueryAPI
 
-        from_ = self._builder[-1].name
+        # from is a string as we added a node query step in the __init__ method
+        from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_core", "ShopModelWithAssets"),
 
@@ -180,14 +189,13 @@ class ShopModelWithAssetsQueryAPI(QueryAPI[T_DomainModelList]):
             space=space_edge,
         )
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("production_obligations"),
+            EdgeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,
                     direction="outwards",
                 ),
-                select=dm.query.Select(),
                 max_retrieve_limit=limit,
             )
         )
@@ -231,37 +239,29 @@ class ShopModelWithAssetsQueryAPI(QueryAPI[T_DomainModelList]):
         return self._query()
 
     def _query_append_shop_model(self, from_: str) -> None:
-        view_id = ShopModel._view_id
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("shop_model"),
+            NodeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
-                    filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
                     through=self._view_id.as_property_ref("shopModel"),
                     direction="outwards",
+                    filter=dm.filters.HasData(views=[ShopModel._view_id]),
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
-                max_retrieve_limit=-1,
                 result_cls=ShopModel,
-                is_single_direct_relation=True,
             ),
         )
 
     def _query_append_shop_commands(self, from_: str) -> None:
-        view_id = ShopCommands._view_id
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("shop_commands"),
+            NodeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
-                    filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
                     through=self._view_id.as_property_ref("shopCommands"),
                     direction="outwards",
+                    filter=dm.filters.HasData(views=[ShopCommands._view_id]),
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
-                max_retrieve_limit=-1,
                 result_cls=ShopCommands,
-                is_single_direct_relation=True,
             ),
         )

@@ -1,15 +1,20 @@
 from __future__ import annotations
 
 import warnings
+from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
 
-from cognite.client import data_modeling as dm
-from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
+from cognite.client import data_modeling as dm, CogniteClient
+from cognite.client.data_classes import (
+    TimeSeries as CogniteTimeSeries,
+    TimeSeriesWrite as CogniteTimeSeriesWrite,
+)
 from pydantic import Field
 from pydantic import field_validator, model_validator
 
-from ._core import (
+from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
     DataRecord,
     DataRecordGraphQL,
     DataRecordWrite,
@@ -17,15 +22,34 @@ from ._core import (
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
+    DomainRelation,
     DomainRelationWrite,
     GraphQLCore,
     ResourcesWrite,
+    FileMetadata,
+    FileMetadataWrite,
+    FileMetadataGraphQL,
     TimeSeries,
+    TimeSeriesWrite,
+    TimeSeriesGraphQL,
+    T_DomainModelList,
+    as_direct_relation_reference,
+    as_instance_dict_id,
+    as_node_id,
+    as_pygen_node_id,
+    are_nodes_equal,
+    is_tuple_id,
+    select_best_node,
+    QueryCore,
+    NodeQueryCore,
+    StringFilter,
+    FloatFilter,
+    IntFilter,
 )
-from ._plant import Plant, PlantWrite
+from cognite.powerops.client._generated.v1.data_classes._plant import Plant, PlantWrite
 
 if TYPE_CHECKING:
-    from ._generator import Generator, GeneratorGraphQL, GeneratorWrite
+    from cognite.powerops.client._generated.v1.data_classes._generator import Generator, GeneratorList, GeneratorGraphQL, GeneratorWrite, GeneratorWriteList
 
 
 __all__ = [
@@ -41,10 +65,11 @@ __all__ = [
 ]
 
 
-PlantWaterValueBasedTextFields = Literal["name", "display_name", "asset_type", "production_max_time_series", "production_min_time_series", "water_value_time_series", "feeding_fee_time_series", "outlet_level_time_series", "inlet_level_time_series", "head_direct_time_series"]
-PlantWaterValueBasedFields = Literal["name", "display_name", "ordering", "asset_type", "head_loss_factor", "outlet_level", "production_max", "production_min", "penstock_head_loss_factors", "connection_losses", "production_max_time_series", "production_min_time_series", "water_value_time_series", "feeding_fee_time_series", "outlet_level_time_series", "inlet_level_time_series", "head_direct_time_series"]
+PlantWaterValueBasedTextFields = Literal["external_id", "name", "display_name", "asset_type", "production_max_time_series", "production_min_time_series", "water_value_time_series", "feeding_fee_time_series", "outlet_level_time_series", "inlet_level_time_series", "head_direct_time_series"]
+PlantWaterValueBasedFields = Literal["external_id", "name", "display_name", "ordering", "asset_type", "head_loss_factor", "outlet_level", "production_max", "production_min", "penstock_head_loss_factors", "connection_losses", "production_max_time_series", "production_min_time_series", "water_value_time_series", "feeding_fee_time_series", "outlet_level_time_series", "inlet_level_time_series", "head_direct_time_series"]
 
 _PLANTWATERVALUEBASED_PROPERTIES_BY_FIELD = {
+    "external_id": "externalId",
     "name": "name",
     "display_name": "displayName",
     "ordering": "ordering",
@@ -104,13 +129,13 @@ class PlantWaterValueBasedGraphQL(GraphQLCore):
     production_min: Optional[float] = Field(None, alias="productionMin")
     penstock_head_loss_factors: Optional[list[float]] = Field(None, alias="penstockHeadLossFactors")
     connection_losses: Optional[float] = Field(None, alias="connectionLosses")
-    production_max_time_series: Union[TimeSeries, dict, None] = Field(None, alias="productionMaxTimeSeries")
-    production_min_time_series: Union[TimeSeries, dict, None] = Field(None, alias="productionMinTimeSeries")
-    water_value_time_series: Union[TimeSeries, dict, None] = Field(None, alias="waterValueTimeSeries")
-    feeding_fee_time_series: Union[TimeSeries, dict, None] = Field(None, alias="feedingFeeTimeSeries")
-    outlet_level_time_series: Union[TimeSeries, dict, None] = Field(None, alias="outletLevelTimeSeries")
-    inlet_level_time_series: Union[TimeSeries, dict, None] = Field(None, alias="inletLevelTimeSeries")
-    head_direct_time_series: Union[TimeSeries, dict, None] = Field(None, alias="headDirectTimeSeries")
+    production_max_time_series: Optional[TimeSeriesGraphQL] = Field(None, alias="productionMaxTimeSeries")
+    production_min_time_series: Optional[TimeSeriesGraphQL] = Field(None, alias="productionMinTimeSeries")
+    water_value_time_series: Optional[TimeSeriesGraphQL] = Field(None, alias="waterValueTimeSeries")
+    feeding_fee_time_series: Optional[TimeSeriesGraphQL] = Field(None, alias="feedingFeeTimeSeries")
+    outlet_level_time_series: Optional[TimeSeriesGraphQL] = Field(None, alias="outletLevelTimeSeries")
+    inlet_level_time_series: Optional[TimeSeriesGraphQL] = Field(None, alias="inletLevelTimeSeries")
+    head_direct_time_series: Optional[TimeSeriesGraphQL] = Field(None, alias="headDirectTimeSeries")
     generators: Optional[list[GeneratorGraphQL]] = Field(default=None, repr=False)
 
     @model_validator(mode="before")
@@ -138,7 +163,7 @@ class PlantWaterValueBasedGraphQL(GraphQLCore):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return PlantWaterValueBased(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
@@ -155,13 +180,13 @@ class PlantWaterValueBasedGraphQL(GraphQLCore):
             production_min=self.production_min,
             penstock_head_loss_factors=self.penstock_head_loss_factors,
             connection_losses=self.connection_losses,
-            production_max_time_series=self.production_max_time_series,
-            production_min_time_series=self.production_min_time_series,
-            water_value_time_series=self.water_value_time_series,
-            feeding_fee_time_series=self.feeding_fee_time_series,
-            outlet_level_time_series=self.outlet_level_time_series,
-            inlet_level_time_series=self.inlet_level_time_series,
-            head_direct_time_series=self.head_direct_time_series,
+            production_max_time_series=self.production_max_time_series.as_read() if self.production_max_time_series else None,
+            production_min_time_series=self.production_min_time_series.as_read() if self.production_min_time_series else None,
+            water_value_time_series=self.water_value_time_series.as_read() if self.water_value_time_series else None,
+            feeding_fee_time_series=self.feeding_fee_time_series.as_read() if self.feeding_fee_time_series else None,
+            outlet_level_time_series=self.outlet_level_time_series.as_read() if self.outlet_level_time_series else None,
+            inlet_level_time_series=self.inlet_level_time_series.as_read() if self.inlet_level_time_series else None,
+            head_direct_time_series=self.head_direct_time_series.as_read() if self.head_direct_time_series else None,
             generators=[generator.as_read() for generator in self.generators or []],
         )
 
@@ -171,7 +196,7 @@ class PlantWaterValueBasedGraphQL(GraphQLCore):
     def as_write(self) -> PlantWaterValueBasedWrite:
         """Convert this GraphQL format of plant water value based to the writing format."""
         return PlantWaterValueBasedWrite(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,
@@ -184,13 +209,13 @@ class PlantWaterValueBasedGraphQL(GraphQLCore):
             production_min=self.production_min,
             penstock_head_loss_factors=self.penstock_head_loss_factors,
             connection_losses=self.connection_losses,
-            production_max_time_series=self.production_max_time_series,
-            production_min_time_series=self.production_min_time_series,
-            water_value_time_series=self.water_value_time_series,
-            feeding_fee_time_series=self.feeding_fee_time_series,
-            outlet_level_time_series=self.outlet_level_time_series,
-            inlet_level_time_series=self.inlet_level_time_series,
-            head_direct_time_series=self.head_direct_time_series,
+            production_max_time_series=self.production_max_time_series.as_write() if self.production_max_time_series else None,
+            production_min_time_series=self.production_min_time_series.as_write() if self.production_min_time_series else None,
+            water_value_time_series=self.water_value_time_series.as_write() if self.water_value_time_series else None,
+            feeding_fee_time_series=self.feeding_fee_time_series.as_write() if self.feeding_fee_time_series else None,
+            outlet_level_time_series=self.outlet_level_time_series.as_write() if self.outlet_level_time_series else None,
+            inlet_level_time_series=self.inlet_level_time_series.as_write() if self.inlet_level_time_series else None,
+            head_direct_time_series=self.head_direct_time_series.as_write() if self.head_direct_time_series else None,
             generators=[generator.as_write() for generator in self.generators or []],
         )
 
@@ -257,13 +282,13 @@ class PlantWaterValueBased(Plant):
             production_min=self.production_min,
             penstock_head_loss_factors=self.penstock_head_loss_factors,
             connection_losses=self.connection_losses,
-            production_max_time_series=self.production_max_time_series,
-            production_min_time_series=self.production_min_time_series,
-            water_value_time_series=self.water_value_time_series,
-            feeding_fee_time_series=self.feeding_fee_time_series,
-            outlet_level_time_series=self.outlet_level_time_series,
-            inlet_level_time_series=self.inlet_level_time_series,
-            head_direct_time_series=self.head_direct_time_series,
+            production_max_time_series=self.production_max_time_series.as_write() if isinstance(self.production_max_time_series, CogniteTimeSeries) else self.production_max_time_series,
+            production_min_time_series=self.production_min_time_series.as_write() if isinstance(self.production_min_time_series, CogniteTimeSeries) else self.production_min_time_series,
+            water_value_time_series=self.water_value_time_series.as_write() if isinstance(self.water_value_time_series, CogniteTimeSeries) else self.water_value_time_series,
+            feeding_fee_time_series=self.feeding_fee_time_series.as_write() if isinstance(self.feeding_fee_time_series, CogniteTimeSeries) else self.feeding_fee_time_series,
+            outlet_level_time_series=self.outlet_level_time_series.as_write() if isinstance(self.outlet_level_time_series, CogniteTimeSeries) else self.outlet_level_time_series,
+            inlet_level_time_series=self.inlet_level_time_series.as_write() if isinstance(self.inlet_level_time_series, CogniteTimeSeries) else self.inlet_level_time_series,
+            head_direct_time_series=self.head_direct_time_series.as_write() if isinstance(self.head_direct_time_series, CogniteTimeSeries) else self.head_direct_time_series,
             generators=[generator.as_write() if isinstance(generator, DomainModel) else generator for generator in self.generators or []],
         )
 
@@ -275,6 +300,49 @@ class PlantWaterValueBased(Plant):
             stacklevel=2,
         )
         return self.as_write()
+
+    @classmethod
+    def _update_connections(
+        cls,
+        instances: dict[dm.NodeId | str, PlantWaterValueBased],  # type: ignore[override]
+        nodes_by_id: dict[dm.NodeId | str, DomainModel],
+        edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
+    ) -> None:
+        from ._generator import Generator
+
+        for instance in instances.values():
+            if edges := edges_by_source_node.get(instance.as_id()):
+                generators: list[Generator | str | dm.NodeId] = []
+                for edge in edges:
+                    value: DomainModel | DomainRelation | str | dm.NodeId
+                    if isinstance(edge, DomainRelation):
+                        value = edge
+                    else:
+                        other_end: dm.DirectRelationReference = (
+                            edge.end_node
+                            if edge.start_node.space == instance.space
+                            and edge.start_node.external_id == instance.external_id
+                            else edge.start_node
+                        )
+                        destination: dm.NodeId | str = (
+                            as_node_id(other_end)
+                            if other_end.space != DEFAULT_INSTANCE_SPACE
+                            else other_end.external_id
+                        )
+                        if destination in nodes_by_id:
+                            value = nodes_by_id[destination]
+                        else:
+                            value = destination
+                    edge_type = edge.edge_type if isinstance(edge, DomainRelation) else edge.type
+
+                    if edge_type == dm.DirectRelationReference("power_ops_types", "isSubAssetOf") and isinstance(
+                        value, (Generator, str, dm.NodeId)
+                    ):
+                        generators.append(value)
+
+                instance.generators = generators or None
+
+
 
 
 class PlantWaterValueBasedWrite(PlantWrite):
@@ -307,22 +375,31 @@ class PlantWaterValueBasedWrite(PlantWrite):
     """
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PlantWaterValueBased", "1")
 
-    node_type: Union[dm.DirectRelationReference, None] = None
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
     head_loss_factor: Optional[float] = Field(None, alias="headLossFactor")
     outlet_level: Optional[float] = Field(None, alias="outletLevel")
     production_max: Optional[float] = Field(None, alias="productionMax")
     production_min: Optional[float] = Field(None, alias="productionMin")
     penstock_head_loss_factors: Optional[list[float]] = Field(None, alias="penstockHeadLossFactors")
     connection_losses: Optional[float] = Field(None, alias="connectionLosses")
-    production_max_time_series: Union[TimeSeries, str, None] = Field(None, alias="productionMaxTimeSeries")
-    production_min_time_series: Union[TimeSeries, str, None] = Field(None, alias="productionMinTimeSeries")
-    water_value_time_series: Union[TimeSeries, str, None] = Field(None, alias="waterValueTimeSeries")
-    feeding_fee_time_series: Union[TimeSeries, str, None] = Field(None, alias="feedingFeeTimeSeries")
-    outlet_level_time_series: Union[TimeSeries, str, None] = Field(None, alias="outletLevelTimeSeries")
-    inlet_level_time_series: Union[TimeSeries, str, None] = Field(None, alias="inletLevelTimeSeries")
-    head_direct_time_series: Union[TimeSeries, str, None] = Field(None, alias="headDirectTimeSeries")
+    production_max_time_series: Union[TimeSeriesWrite, str, None] = Field(None, alias="productionMaxTimeSeries")
+    production_min_time_series: Union[TimeSeriesWrite, str, None] = Field(None, alias="productionMinTimeSeries")
+    water_value_time_series: Union[TimeSeriesWrite, str, None] = Field(None, alias="waterValueTimeSeries")
+    feeding_fee_time_series: Union[TimeSeriesWrite, str, None] = Field(None, alias="feedingFeeTimeSeries")
+    outlet_level_time_series: Union[TimeSeriesWrite, str, None] = Field(None, alias="outletLevelTimeSeries")
+    inlet_level_time_series: Union[TimeSeriesWrite, str, None] = Field(None, alias="inletLevelTimeSeries")
+    head_direct_time_series: Union[TimeSeriesWrite, str, None] = Field(None, alias="headDirectTimeSeries")
     generators: Optional[list[Union[GeneratorWrite, str, dm.NodeId]]] = Field(default=None, repr=False)
 
+    @field_validator("generators", mode="before")
+    def as_node_id(cls, value: Any) -> Any:
+        if isinstance(value, dm.DirectRelationReference):
+            return dm.NodeId(value.space, value.external_id)
+        elif isinstance(value, tuple) and len(value) == 2 and all(isinstance(item, str) for item in value):
+            return dm.NodeId(value[0], value[1])
+        elif isinstance(value, list):
+            return [cls.as_node_id(item) for item in value]
+        return value
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -392,7 +469,7 @@ class PlantWaterValueBasedWrite(PlantWrite):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=None if allow_version_increase else self.data_record.existing_version,
-                type=self.node_type,
+                type=as_direct_relation_reference(self.node_type),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=self._view_id,
@@ -416,25 +493,25 @@ class PlantWaterValueBasedWrite(PlantWrite):
             )
             resources.extend(other_resources)
 
-        if isinstance(self.production_max_time_series, CogniteTimeSeries):
+        if isinstance(self.production_max_time_series, CogniteTimeSeriesWrite):
             resources.time_series.append(self.production_max_time_series)
 
-        if isinstance(self.production_min_time_series, CogniteTimeSeries):
+        if isinstance(self.production_min_time_series, CogniteTimeSeriesWrite):
             resources.time_series.append(self.production_min_time_series)
 
-        if isinstance(self.water_value_time_series, CogniteTimeSeries):
+        if isinstance(self.water_value_time_series, CogniteTimeSeriesWrite):
             resources.time_series.append(self.water_value_time_series)
 
-        if isinstance(self.feeding_fee_time_series, CogniteTimeSeries):
+        if isinstance(self.feeding_fee_time_series, CogniteTimeSeriesWrite):
             resources.time_series.append(self.feeding_fee_time_series)
 
-        if isinstance(self.outlet_level_time_series, CogniteTimeSeries):
+        if isinstance(self.outlet_level_time_series, CogniteTimeSeriesWrite):
             resources.time_series.append(self.outlet_level_time_series)
 
-        if isinstance(self.inlet_level_time_series, CogniteTimeSeries):
+        if isinstance(self.inlet_level_time_series, CogniteTimeSeriesWrite):
             resources.time_series.append(self.inlet_level_time_series)
 
-        if isinstance(self.head_direct_time_series, CogniteTimeSeries):
+        if isinstance(self.head_direct_time_series, CogniteTimeSeriesWrite):
             resources.time_series.append(self.head_direct_time_series)
 
         return resources
@@ -470,11 +547,23 @@ class PlantWaterValueBasedList(DomainModelList[PlantWaterValueBased]):
         )
         return self.as_write()
 
+    @property
+    def generators(self) -> GeneratorList:
+        from ._generator import Generator, GeneratorList
+
+        return GeneratorList([item for items in self.data for item in items.generators or [] if isinstance(item, Generator)])
+
 
 class PlantWaterValueBasedWriteList(DomainModelWriteList[PlantWaterValueBasedWrite]):
     """List of plant water value baseds in the writing version."""
 
     _INSTANCE = PlantWaterValueBasedWrite
+
+    @property
+    def generators(self) -> GeneratorWriteList:
+        from ._generator import GeneratorWrite, GeneratorWriteList
+
+        return GeneratorWriteList([item for items in self.data for item in items.generators or [] if isinstance(item, GeneratorWrite)])
 
 class PlantWaterValueBasedApplyList(PlantWaterValueBasedWriteList): ...
 
@@ -544,3 +633,80 @@ def _create_plant_water_value_based_filter(
     if filter:
         filters.append(filter)
     return dm.filters.And(*filters) if filters else None
+
+
+class _PlantWaterValueBasedQuery(NodeQueryCore[T_DomainModelList, PlantWaterValueBasedList]):
+    _view_id = PlantWaterValueBased._view_id
+    _result_cls = PlantWaterValueBased
+    _result_list_cls_end = PlantWaterValueBasedList
+
+    def __init__(
+        self,
+        created_types: set[type],
+        creation_path: list[QueryCore],
+        client: CogniteClient,
+        result_list_cls: type[T_DomainModelList],
+        expression: dm.query.ResultSetExpression | None = None,
+        connection_name: str | None = None,
+        connection_type: Literal["reverse-list"] | None = None,
+        reverse_expression: dm.query.ResultSetExpression | None = None,
+    ):
+        from ._generator import _GeneratorQuery
+
+        super().__init__(
+            created_types,
+            creation_path,
+            client,
+            result_list_cls,
+            expression,
+            dm.filters.HasData(views=[self._view_id]),
+            connection_name,
+            connection_type,
+            reverse_expression,
+        )
+
+        if _GeneratorQuery not in created_types:
+            self.generators = _GeneratorQuery(
+                created_types.copy(),
+                self._creation_path,
+                client,
+                result_list_cls,
+                dm.query.EdgeResultSetExpression(
+                    direction="outwards",
+                    chain_to="destination",
+                ),
+                connection_name="generators",
+            )
+
+        self.space = StringFilter(self, ["node", "space"])
+        self.external_id = StringFilter(self, ["node", "externalId"])
+        self.name = StringFilter(self, self._view_id.as_property_ref("name"))
+        self.display_name = StringFilter(self, self._view_id.as_property_ref("displayName"))
+        self.ordering = IntFilter(self, self._view_id.as_property_ref("ordering"))
+        self.asset_type = StringFilter(self, self._view_id.as_property_ref("assetType"))
+        self.head_loss_factor = FloatFilter(self, self._view_id.as_property_ref("headLossFactor"))
+        self.outlet_level = FloatFilter(self, self._view_id.as_property_ref("outletLevel"))
+        self.production_max = FloatFilter(self, self._view_id.as_property_ref("productionMax"))
+        self.production_min = FloatFilter(self, self._view_id.as_property_ref("productionMin"))
+        self.connection_losses = FloatFilter(self, self._view_id.as_property_ref("connectionLosses"))
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.name,
+            self.display_name,
+            self.ordering,
+            self.asset_type,
+            self.head_loss_factor,
+            self.outlet_level,
+            self.production_max,
+            self.production_min,
+            self.connection_losses,
+        ])
+
+    def list_plant_water_value_based(self, limit: int = DEFAULT_QUERY_LIMIT) -> PlantWaterValueBasedList:
+        return self._list(limit=limit)
+
+
+class PlantWaterValueBasedQuery(_PlantWaterValueBasedQuery[PlantWaterValueBasedList]):
+    def __init__(self, client: CogniteClient):
+        super().__init__(set(), [], client, PlantWaterValueBasedList)

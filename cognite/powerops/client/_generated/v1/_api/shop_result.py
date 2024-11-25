@@ -8,7 +8,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -18,15 +24,25 @@ from cognite.powerops.client._generated.v1.data_classes import (
     ShopResultFields,
     ShopResultList,
     ShopResultWriteList,
+    ShopResultTextFields,
+    Alert,
+    ShopCase,
+    ShopTimeSeries,
 )
 from cognite.powerops.client._generated.v1.data_classes._shop_result import (
+    ShopResultQuery,
     _SHOPRESULT_PROPERTIES_BY_FIELD,
     _create_shop_result_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .shop_result_alerts import ShopResultAlertsAPI
-from .shop_result_output_time_series import ShopResultOutputTimeSeriesAPI
-from .shop_result_query import ShopResultQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.shop_result_alerts import ShopResultAlertsAPI
+from cognite.powerops.client._generated.v1._api.shop_result_output_time_series import ShopResultOutputTimeSeriesAPI
+from cognite.powerops.client._generated.v1._api.shop_result_query import ShopResultQueryAPI
 
 
 class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopResultWriteList]):
@@ -44,7 +60,7 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
 
     def __call__(
             self,
-            case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            case: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
             external_id_prefix: str | None = None,
             space: str | list[str] | None = None,
             limit: int = DEFAULT_QUERY_LIMIT,
@@ -63,6 +79,12 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
             A query API for shop results.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_shop_result_filter(
             self._view_id,
@@ -71,7 +93,7 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(ShopResultList)
+        builder = DataClassQueryBuilder(ShopResultList)
         return ShopResultQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -84,7 +106,7 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
         """Add or update (upsert) shop results.
 
         Note: This method iterates through all nodes and timeseries linked to shop_result and creates them including the edges
-        between the nodes. For example, if any of `alerts` or `output_time_series` are set, then these
+        between the nodes. For example, if any of `case`, `alerts` or `output_time_series` are set, then these
         nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
@@ -149,14 +171,14 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopResult | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopResult | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopResultList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> ShopResultList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopResult | ShopResultList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> ShopResult | ShopResultList | None:
         """Retrieve one or more shop results by id(s).
 
         Args:
@@ -198,6 +220,63 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
         )
 
 
+    def search(
+        self,
+        query: str,
+        properties: ShopResultTextFields | SequenceNotStr[ShopResultTextFields] | None = None,
+        case: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+        sort_by: ShopResultFields | SequenceNotStr[ShopResultFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
+    ) -> ShopResultList:
+        """Search shop results
+
+        Args:
+            query: The search query,
+            properties: The property to search, if nothing is passed all text fields will be searched.
+            case: The case to filter on.
+            external_id_prefix: The prefix of the external ID to filter on.
+            space: The space to filter on.
+            limit: Maximum number of shop results to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
+
+        Returns:
+            Search results shop results matching the query.
+
+        Examples:
+
+           Search for 'my_shop_result' in all text properties:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> shop_results = client.shop_result.search('my_shop_result')
+
+        """
+        filter_ = _create_shop_result_filter(
+            self._view_id,
+            case,
+            external_id_prefix,
+            space,
+            filter,
+        )
+        return self._search(
+            query=query,
+            properties=properties,
+            filter_=filter_,
+            limit=limit,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
+        )
 
     @overload
     def aggregate(
@@ -205,7 +284,7 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
         aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
         property: ShopResultFields | SequenceNotStr[ShopResultFields] | None = None,
-        case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        case: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -219,7 +298,7 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
         aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: None = None,
         property: ShopResultFields | SequenceNotStr[ShopResultFields] | None = None,
-        case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        case: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -235,7 +314,7 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
         | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: ShopResultFields | SequenceNotStr[ShopResultFields],
         property: ShopResultFields | SequenceNotStr[ShopResultFields] | None = None,
-        case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        case: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -250,7 +329,7 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
         | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: ShopResultFields | SequenceNotStr[ShopResultFields] | None = None,
         property: ShopResultFields | SequenceNotStr[ShopResultFields] | None = None,
-        case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        case: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -306,7 +385,7 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
         self,
         property: ShopResultFields,
         interval: float,
-        case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        case: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -343,10 +422,19 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
             filter_,
         )
 
+    def query(self) -> ShopResultQuery:
+        """Start a query for shop results."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return ShopResultQuery(self._client)
+
+    def select(self) -> ShopResultQuery:
+        """Start selecting from shop results."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return ShopResultQuery(self._client)
 
     def list(
         self,
-        case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        case: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -354,7 +442,7 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
         sort_by: ShopResultFields | Sequence[ShopResultFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
-        retrieve_edges: bool = True,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> ShopResultList:
         """List/filter shop results
 
@@ -369,7 +457,8 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
                 This will override the sort_by and direction. This allowos you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
-            retrieve_edges: Whether to retrieve `alerts` or `output_time_series` external ids for the shop results. Defaults to True.
+            retrieve_connections: Whether to retrieve `case`, `alerts` and `output_time_series` for the shop results. Defaults to 'skip'.
+                'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier of the connected items, and 'full' will retrieve the full connected items.
 
         Returns:
             List of requested shop results
@@ -391,27 +480,85 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
             filter,
         )
 
-        return self._list(
-            limit=limit,
-            filter=filter_,
-            sort_by=sort_by,  # type: ignore[arg-type]
-            direction=direction,
-            sort=sort,
-            retrieve_edges=retrieve_edges,
-            edge_api_name_type_direction_view_id_penta=[
-                (
-                    self.alerts_edge,
-                    "alerts",
-                    dm.DirectRelationReference("power_ops_types", "calculationIssue"),
-                    "outwards",
-                    dm.ViewId("power_ops_core", "Alert", "1"),
+        if retrieve_connections == "skip":
+                return self._list(
+                limit=limit,
+                filter=filter_,
+                sort_by=sort_by,  # type: ignore[arg-type]
+                direction=direction,
+                sort=sort,
+            )
+
+        builder = DataClassQueryBuilder(ShopResultList)
+        has_data = dm.filters.HasData(views=[self._view_id])
+        builder.append(
+            NodeQueryStep(
+                builder.create_name(None),
+                dm.query.NodeResultSetExpression(
+                    filter=dm.filters.And(filter_, has_data) if filter_ else has_data,
+                    sort=self._create_sort(sort_by, direction, sort),  # type: ignore[arg-type]
                 ),
-                (
-                    self.output_time_series_edge,
-                    "output_time_series",
-                    dm.DirectRelationReference("power_ops_types", "ShopResult.outputTimeSeries"),
-                    "outwards",
-                    dm.ViewId("power_ops_core", "ShopTimeSeries", "1"),
-                ),
-                                               ]
+                ShopResult,
+                max_retrieve_limit=limit,
+                raw_filter=filter_,
+            )
         )
+        from_root = builder.get_from()
+        edge_alerts = builder.create_name(from_root)
+        builder.append(
+            EdgeQueryStep(
+                edge_alerts,
+                dm.query.EdgeResultSetExpression(
+                    from_=from_root,
+                    direction="outwards",
+                    chain_to="destination",
+                ),
+            )
+        )
+        edge_output_time_series = builder.create_name(from_root)
+        builder.append(
+            EdgeQueryStep(
+                edge_output_time_series,
+                dm.query.EdgeResultSetExpression(
+                    from_=from_root,
+                    direction="outwards",
+                    chain_to="destination",
+                ),
+            )
+        )
+        if retrieve_connections == "full":
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name( edge_alerts),
+                    dm.query.NodeResultSetExpression(
+                        from_= edge_alerts,
+                        filter=dm.filters.HasData(views=[Alert._view_id]),
+                    ),
+                    Alert,
+                )
+            )
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name( edge_output_time_series),
+                    dm.query.NodeResultSetExpression(
+                        from_= edge_output_time_series,
+                        filter=dm.filters.HasData(views=[ShopTimeSeries._view_id]),
+                    ),
+                    ShopTimeSeries,
+                )
+            )
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name(from_root),
+                    dm.query.NodeResultSetExpression(
+                        from_=from_root,
+                        filter=dm.filters.HasData(views=[ShopCase._view_id]),
+                        direction="outwards",
+                        through=self._view_id.as_property_ref("case"),
+                    ),
+                    ShopCase,
+                )
+            )
+        # We know that that all nodes are connected as it is not possible to filter on connections
+        builder.execute_query(self._client, remove_not_connected=False)
+        return builder.unpack()

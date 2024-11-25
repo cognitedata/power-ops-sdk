@@ -8,7 +8,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -19,14 +25,21 @@ from cognite.powerops.client._generated.v1.data_classes import (
     BenchmarkingCalculationInputList,
     BenchmarkingCalculationInputWriteList,
     BenchmarkingCalculationInputTextFields,
+    ShopResult,
 )
 from cognite.powerops.client._generated.v1.data_classes._benchmarking_calculation_input import (
+    BenchmarkingCalculationInputQuery,
     _BENCHMARKINGCALCULATIONINPUT_PROPERTIES_BY_FIELD,
     _create_benchmarking_calculation_input_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .benchmarking_calculation_input_shop_results import BenchmarkingCalculationInputShopResultsAPI
-from .benchmarking_calculation_input_query import BenchmarkingCalculationInputQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.benchmarking_calculation_input_shop_results import BenchmarkingCalculationInputShopResultsAPI
+from cognite.powerops.client._generated.v1._api.benchmarking_calculation_input_query import BenchmarkingCalculationInputQueryAPI
 
 
 class BenchmarkingCalculationInputAPI(NodeAPI[BenchmarkingCalculationInput, BenchmarkingCalculationInputWrite, BenchmarkingCalculationInputList, BenchmarkingCalculationInputWriteList]):
@@ -76,6 +89,12 @@ class BenchmarkingCalculationInputAPI(NodeAPI[BenchmarkingCalculationInput, Benc
             A query API for benchmarking calculation inputs.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_benchmarking_calculation_input_filter(
             self._view_id,
@@ -91,7 +110,7 @@ class BenchmarkingCalculationInputAPI(NodeAPI[BenchmarkingCalculationInput, Benc
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(BenchmarkingCalculationInputList)
+        builder = DataClassQueryBuilder(BenchmarkingCalculationInputList)
         return BenchmarkingCalculationInputQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -169,14 +188,14 @@ class BenchmarkingCalculationInputAPI(NodeAPI[BenchmarkingCalculationInput, Benc
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingCalculationInput | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingCalculationInput | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingCalculationInputList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingCalculationInputList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingCalculationInput | BenchmarkingCalculationInputList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingCalculationInput | BenchmarkingCalculationInputList | None:
         """Retrieve one or more benchmarking calculation inputs by id(s).
 
         Args:
@@ -511,6 +530,15 @@ class BenchmarkingCalculationInputAPI(NodeAPI[BenchmarkingCalculationInput, Benc
             filter_,
         )
 
+    def query(self) -> BenchmarkingCalculationInputQuery:
+        """Start a query for benchmarking calculation inputs."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return BenchmarkingCalculationInputQuery(self._client)
+
+    def select(self) -> BenchmarkingCalculationInputQuery:
+        """Start selecting from benchmarking calculation inputs."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return BenchmarkingCalculationInputQuery(self._client)
 
     def list(
         self,
@@ -529,7 +557,7 @@ class BenchmarkingCalculationInputAPI(NodeAPI[BenchmarkingCalculationInput, Benc
         sort_by: BenchmarkingCalculationInputFields | Sequence[BenchmarkingCalculationInputFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
-        retrieve_edges: bool = True,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> BenchmarkingCalculationInputList:
         """List/filter benchmarking calculation inputs
 
@@ -551,7 +579,8 @@ class BenchmarkingCalculationInputAPI(NodeAPI[BenchmarkingCalculationInput, Benc
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
                 This will override the sort_by and direction. This allowos you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
-            retrieve_edges: Whether to retrieve `shop_results` external ids for the benchmarking calculation inputs. Defaults to True.
+            retrieve_connections: Whether to retrieve `shop_results` for the benchmarking calculation inputs. Defaults to 'skip'.
+                'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier of the connected items, and 'full' will retrieve the full connected items.
 
         Returns:
             List of requested benchmarking calculation inputs
@@ -580,20 +609,52 @@ class BenchmarkingCalculationInputAPI(NodeAPI[BenchmarkingCalculationInput, Benc
             filter,
         )
 
-        return self._list(
-            limit=limit,
-            filter=filter_,
-            sort_by=sort_by,  # type: ignore[arg-type]
-            direction=direction,
-            sort=sort,
-            retrieve_edges=retrieve_edges,
-            edge_api_name_type_direction_view_id_penta=[
-                (
-                    self.shop_results_edge,
-                    "shop_results",
-                    dm.DirectRelationReference("power_ops_types", "ShopResults"),
-                    "outwards",
-                    dm.ViewId("power_ops_core", "ShopResult", "1"),
+        if retrieve_connections == "skip":
+                return self._list(
+                limit=limit,
+                filter=filter_,
+                sort_by=sort_by,  # type: ignore[arg-type]
+                direction=direction,
+                sort=sort,
+            )
+
+        builder = DataClassQueryBuilder(BenchmarkingCalculationInputList)
+        has_data = dm.filters.HasData(views=[self._view_id])
+        builder.append(
+            NodeQueryStep(
+                builder.create_name(None),
+                dm.query.NodeResultSetExpression(
+                    filter=dm.filters.And(filter_, has_data) if filter_ else has_data,
+                    sort=self._create_sort(sort_by, direction, sort),  # type: ignore[arg-type]
                 ),
-                                               ]
+                BenchmarkingCalculationInput,
+                max_retrieve_limit=limit,
+                raw_filter=filter_,
+            )
         )
+        from_root = builder.get_from()
+        edge_shop_results = builder.create_name(from_root)
+        builder.append(
+            EdgeQueryStep(
+                edge_shop_results,
+                dm.query.EdgeResultSetExpression(
+                    from_=from_root,
+                    direction="outwards",
+                    chain_to="destination",
+                ),
+            )
+        )
+        if retrieve_connections == "full":
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name( edge_shop_results),
+                    dm.query.NodeResultSetExpression(
+                        from_= edge_shop_results,
+                        filter=dm.filters.HasData(views=[ShopResult._view_id]),
+                    ),
+                    ShopResult,
+                )
+            )
+        # We know that that all nodes are connected as it is not possible to filter on connections
+        builder.execute_query(self._client, remove_not_connected=False)
+        return builder.unpack()
