@@ -16,9 +16,11 @@ repos:
         args:
           - --exit-non-zero-on-fix
           - --config=pyproject.toml
+        exclude: "tutorials/"
       - id: ruff-format
         args:
           - --config=pyproject.toml
+        exclude: "tutorials/"
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
