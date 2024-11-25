@@ -19,7 +19,6 @@ nav:
       - client:
           - SHOP API: packages/client/shop_api.md
           - SHOP API Classes: packages/client/shop_api_classes.md
-          - Dayahead API: packages/client/dayahead_trigger_api.md
           - Dayahead API Classes: packages/client/dayahead_trigger_classes.md
           - time series mapping: packages/resync/time_series_mapping.md
       - utils:
