@@ -15,6 +15,10 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.104.0] - 2024-11-25
+### Removed
+* Removed v0 pygen generated classes
+
 ## [0.103.0] - 2024-11-12
 ### Changed
 * Simplify usage of cogshop api module and update examples
