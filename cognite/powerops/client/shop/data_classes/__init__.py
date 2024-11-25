@@ -14,11 +14,11 @@ from cognite.powerops.client.shop.data_classes.shop_run_event import SHOPRunEven
 __all__ = [
     "ObjectiveFunction",
     "SHOPCase",
-    "SHOPRunResult",
     "SHOPLogFile",
     "SHOPResultFile",
     "SHOPRun",
     "SHOPRunEvent",
+    "SHOPRunResult",
     "SHOPYamlFile",
 ]
 
