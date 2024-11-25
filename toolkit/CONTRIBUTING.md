@@ -70,12 +70,9 @@ If a change requires a version change, the following version system should be us
 
 1. Make the relevant changes to the `.yaml` files in the `data_models` folder.
 2. Post on slack `#powerops-core-team` that you are about to make changes to ensure it doesn't conflict with others work.
-<!-- 3. Deploy changes manually to **power-ops-staging** using toolkit following below steps. -->
-4. Verify in the UI that the changes are as expected.
-5. Iterate until desired changes are completed.
 6. Create a PR and request feedback on your suggested changes.
 7. Once PR is approved inform the team that the changes will be deployed to `power-ops-staging`.
-<!-- 8. Deploy changes manually to **power-ops-staging** ensuring you've used the correct version if needed. -->
+8. Deploy changes manually to **power-ops-staging** ensuring you've used the correct version if needed.
 9. Regenerate the SDK for the data model changes by calling `python scripts/pygen_generate_clients.py`.
 10. Bump the SDK version in `pyproject.toml` and `cognite/powerops/_version.py`.
 11. Update the `CHANGELOG.md` with the changes made.
