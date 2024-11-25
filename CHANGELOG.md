@@ -15,6 +15,11 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.104.0] - 2024-11-25
+### Removed
+* Removed v0 pygen generated classes
+* Removed DayAhead Trigger API
+
 ## [0.103.1] - 2024-11-22
 ### Added
 * production_max to generator
