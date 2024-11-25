@@ -29,15 +29,7 @@ StrEnum = {version = "^0.4.15", python = "<3.11"}
 tomli-w = "^1.0.0"
 tabulate = "^0.9"
 toml = ">=0.10"
-mkdocs-jupyter = {version="*", optional=true}
-mkdocs-material = {version="*", optional=true}
-mkdocs-material-extensions = {version="*", optional=true}
-mkdocs-git-revision-date-localized-plugin = {version="*", optional=true}
-mkdocs-git-authors-plugin = {version="*", optional=true}
-mkdocs-gitbook = {version="*", optional=true}
-mkdocs-glightbox = {version="*", optional=true}
 pymdown-extensions = {version="*", optional=true}
-mkdocstrings = {version="*", optional=true, extras=["python"]}
 cachelib = "^0.13.0"
 
 
