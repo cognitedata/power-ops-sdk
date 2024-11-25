@@ -8,7 +8,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -19,24 +25,31 @@ from cognite.powerops.client._generated.v1.data_classes import (
     PriceAreaInformationList,
     PriceAreaInformationWriteList,
     PriceAreaInformationTextFields,
+    BidConfigurationDayAhead,
 )
 from cognite.powerops.client._generated.v1.data_classes._price_area_information import (
+    PriceAreaInformationQuery,
     _PRICEAREAINFORMATION_PROPERTIES_BY_FIELD,
     _create_price_area_information_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .price_area_information_capacity_price_up import PriceAreaInformationCapacityPriceUpAPI
-from .price_area_information_capacity_price_down import PriceAreaInformationCapacityPriceDownAPI
-from .price_area_information_activation_price_up import PriceAreaInformationActivationPriceUpAPI
-from .price_area_information_activation_price_down import PriceAreaInformationActivationPriceDownAPI
-from .price_area_information_relative_activation import PriceAreaInformationRelativeActivationAPI
-from .price_area_information_total_capacity_allocation_up import PriceAreaInformationTotalCapacityAllocationUpAPI
-from .price_area_information_total_capacity_allocation_down import PriceAreaInformationTotalCapacityAllocationDownAPI
-from .price_area_information_own_capacity_allocation_up import PriceAreaInformationOwnCapacityAllocationUpAPI
-from .price_area_information_own_capacity_allocation_down import PriceAreaInformationOwnCapacityAllocationDownAPI
-from .price_area_information_main_price_scenario import PriceAreaInformationMainPriceScenarioAPI
-from .price_area_information_price_scenarios import PriceAreaInformationPriceScenariosAPI
-from .price_area_information_query import PriceAreaInformationQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.price_area_information_capacity_price_up import PriceAreaInformationCapacityPriceUpAPI
+from cognite.powerops.client._generated.v1._api.price_area_information_capacity_price_down import PriceAreaInformationCapacityPriceDownAPI
+from cognite.powerops.client._generated.v1._api.price_area_information_activation_price_up import PriceAreaInformationActivationPriceUpAPI
+from cognite.powerops.client._generated.v1._api.price_area_information_activation_price_down import PriceAreaInformationActivationPriceDownAPI
+from cognite.powerops.client._generated.v1._api.price_area_information_relative_activation import PriceAreaInformationRelativeActivationAPI
+from cognite.powerops.client._generated.v1._api.price_area_information_total_capacity_allocation_up import PriceAreaInformationTotalCapacityAllocationUpAPI
+from cognite.powerops.client._generated.v1._api.price_area_information_total_capacity_allocation_down import PriceAreaInformationTotalCapacityAllocationDownAPI
+from cognite.powerops.client._generated.v1._api.price_area_information_own_capacity_allocation_up import PriceAreaInformationOwnCapacityAllocationUpAPI
+from cognite.powerops.client._generated.v1._api.price_area_information_own_capacity_allocation_down import PriceAreaInformationOwnCapacityAllocationDownAPI
+from cognite.powerops.client._generated.v1._api.price_area_information_main_price_scenario import PriceAreaInformationMainPriceScenarioAPI
+from cognite.powerops.client._generated.v1._api.price_area_information_price_scenarios import PriceAreaInformationPriceScenariosAPI
+from cognite.powerops.client._generated.v1._api.price_area_information_query import PriceAreaInformationQueryAPI
 
 
 class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformationWrite, PriceAreaInformationList, PriceAreaInformationWriteList]):
@@ -71,7 +84,7 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
             max_ordering: int | None = None,
             asset_type: str | list[str] | None = None,
             asset_type_prefix: str | None = None,
-            default_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
             external_id_prefix: str | None = None,
             space: str | list[str] | None = None,
             limit: int = DEFAULT_QUERY_LIMIT,
@@ -98,6 +111,12 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
             A query API for price area information.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_price_area_information_filter(
             self._view_id,
@@ -114,7 +133,7 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(PriceAreaInformationList)
+        builder = DataClassQueryBuilder(PriceAreaInformationList)
         return PriceAreaInformationQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -125,6 +144,10 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
         write_none: bool = False,
     ) -> ResourcesWriteResult:
         """Add or update (upsert) price area information.
+
+        Note: This method iterates through all nodes and timeseries linked to price_area_information and creates them including the edges
+        between the nodes. For example, if any of `default_bid_configuration` are set, then these
+        nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
             price_area_information: Price area information or sequence of price area information to upsert.
@@ -188,14 +211,14 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> PriceAreaInformation | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> PriceAreaInformation | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PriceAreaInformationList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> PriceAreaInformationList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PriceAreaInformation | PriceAreaInformationList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> PriceAreaInformation | PriceAreaInformationList | None:
         """Retrieve one or more price area information by id(s).
 
         Args:
@@ -228,7 +251,7 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        default_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -314,7 +337,7 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        default_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -338,7 +361,7 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        default_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -364,7 +387,7 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        default_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -389,7 +412,7 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        default_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -473,7 +496,7 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        default_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -528,6 +551,15 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
             filter_,
         )
 
+    def query(self) -> PriceAreaInformationQuery:
+        """Start a query for price area information."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return PriceAreaInformationQuery(self._client)
+
+    def select(self) -> PriceAreaInformationQuery:
+        """Start selecting from price area information."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return PriceAreaInformationQuery(self._client)
 
     def list(
         self,
@@ -539,7 +571,7 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        default_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -547,6 +579,7 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
         sort_by: PriceAreaInformationFields | Sequence[PriceAreaInformationFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> PriceAreaInformationList:
         """List/filter price area information
 
@@ -569,6 +602,8 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
                 This will override the sort_by and direction. This allowos you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
+            retrieve_connections: Whether to retrieve `default_bid_configuration` for the price area information. Defaults to 'skip'.
+                'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier of the connected items, and 'full' will retrieve the full connected items.
 
         Returns:
             List of requested price area information
@@ -597,10 +632,44 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
             space,
             filter,
         )
-        return self._list(
-            limit=limit,
-            filter=filter_,
-            sort_by=sort_by,  # type: ignore[arg-type]
-            direction=direction,
-            sort=sort,
+
+        if retrieve_connections == "skip":
+                return self._list(
+                limit=limit,
+                filter=filter_,
+                sort_by=sort_by,  # type: ignore[arg-type]
+                direction=direction,
+                sort=sort,
+            )
+
+        builder = DataClassQueryBuilder(PriceAreaInformationList)
+        has_data = dm.filters.HasData(views=[self._view_id])
+        builder.append(
+            NodeQueryStep(
+                builder.create_name(None),
+                dm.query.NodeResultSetExpression(
+                    filter=dm.filters.And(filter_, has_data) if filter_ else has_data,
+                    sort=self._create_sort(sort_by, direction, sort),  # type: ignore[arg-type]
+                ),
+                PriceAreaInformation,
+                max_retrieve_limit=limit,
+                raw_filter=filter_,
+            )
         )
+        from_root = builder.get_from()
+        if retrieve_connections == "full":
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name(from_root),
+                    dm.query.NodeResultSetExpression(
+                        from_=from_root,
+                        filter=dm.filters.HasData(views=[BidConfigurationDayAhead._view_id]),
+                        direction="outwards",
+                        through=self._view_id.as_property_ref("defaultBidConfiguration"),
+                    ),
+                    BidConfigurationDayAhead,
+                )
+            )
+        # We know that that all nodes are connected as it is not possible to filter on connections
+        builder.execute_query(self._client, remove_not_connected=False)
+        return builder.unpack()

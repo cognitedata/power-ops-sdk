@@ -8,7 +8,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -19,18 +25,28 @@ from cognite.powerops.client._generated.v1.data_classes import (
     BidMatrixList,
     BidMatrixWriteList,
     BidMatrixTextFields,
+    BidMatrixInformation,
 )
 from cognite.powerops.client._generated.v1.data_classes._bid_matrix import (
+    BidMatrixQuery,
     _BIDMATRIX_PROPERTIES_BY_FIELD,
     _create_bid_matrix_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .bid_matrix_query import BidMatrixQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.bid_matrix_query import BidMatrixQueryAPI
 
 
 class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList, BidMatrixWriteList]):
     _view_id = dm.ViewId("power_ops_core", "BidMatrix", "1")
     _properties_by_field = _BIDMATRIX_PROPERTIES_BY_FIELD
+    _direct_children_by_external_id = {
+        "BidMatrixInformation": BidMatrixInformation,
+    }
     _class_type = BidMatrix
     _class_list = BidMatrixList
     _class_write_list = BidMatrixWriteList
@@ -62,6 +78,12 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList, BidMatrixWr
             A query API for bid matrixes.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_bid_matrix_filter(
             self._view_id,
@@ -71,7 +93,7 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList, BidMatrixWr
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(BidMatrixList)
+        builder = DataClassQueryBuilder(BidMatrixList)
         return BidMatrixQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -145,19 +167,22 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList, BidMatrixWr
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> BidMatrix | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["BidMatrixInformation"]] | None = None) -> BidMatrix | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BidMatrixList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["BidMatrixInformation"]] | None = None) -> BidMatrixList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BidMatrix | BidMatrixList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["BidMatrixInformation"]] | None = None) -> BidMatrix | BidMatrixList | None:
         """Retrieve one or more bid matrixes by id(s).
 
         Args:
             external_id: External id or list of external ids of the bid matrixes.
             space: The space where all the bid matrixes are located.
+            as_child_class: If you want to retrieve the bid matrixes as a child class,
+                you can specify the child class here. Note that if one node has properties in
+                multiple child classes, you will get duplicate nodes in the result.
 
         Returns:
             The requested bid matrixes.
@@ -171,7 +196,7 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList, BidMatrixWr
                 >>> bid_matrix = client.bid_matrix.retrieve("my_bid_matrix")
 
         """
-        return self._retrieve(external_id, space)
+        return self._retrieve(external_id, space, as_child_class=as_child_class)
 
     def search(
         self,
@@ -401,6 +426,15 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList, BidMatrixWr
             filter_,
         )
 
+    def query(self) -> BidMatrixQuery:
+        """Start a query for bid matrixes."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return BidMatrixQuery(self._client)
+
+    def select(self) -> BidMatrixQuery:
+        """Start selecting from bid matrixes."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return BidMatrixQuery(self._client)
 
     def list(
         self,
@@ -449,6 +483,7 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList, BidMatrixWr
             space,
             filter,
         )
+
         return self._list(
             limit=limit,
             filter=filter_,

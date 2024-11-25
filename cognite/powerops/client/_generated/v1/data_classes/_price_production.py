@@ -1,15 +1,20 @@
 from __future__ import annotations
 
 import warnings
+from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
 
-from cognite.client import data_modeling as dm
-from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
+from cognite.client import data_modeling as dm, CogniteClient
+from cognite.client.data_classes import (
+    TimeSeries as CogniteTimeSeries,
+    TimeSeriesWrite as CogniteTimeSeriesWrite,
+)
 from pydantic import Field
 from pydantic import field_validator, model_validator
 
-from ._core import (
+from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
     DataRecord,
     DataRecordGraphQL,
     DataRecordWrite,
@@ -17,14 +22,32 @@ from ._core import (
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
+    DomainRelation,
     DomainRelationWrite,
     GraphQLCore,
     ResourcesWrite,
+    FileMetadata,
+    FileMetadataWrite,
+    FileMetadataGraphQL,
     TimeSeries,
+    TimeSeriesWrite,
+    TimeSeriesGraphQL,
+    T_DomainModelList,
+    as_direct_relation_reference,
+    as_instance_dict_id,
+    as_node_id,
+    as_pygen_node_id,
+    are_nodes_equal,
+    is_tuple_id,
+    select_best_node,
+    QueryCore,
+    NodeQueryCore,
+    StringFilter,
+
 )
 
 if TYPE_CHECKING:
-    from ._shop_result import ShopResult, ShopResultGraphQL, ShopResultWrite
+    from cognite.powerops.client._generated.v1.data_classes._shop_result import ShopResult, ShopResultList, ShopResultGraphQL, ShopResultWrite, ShopResultWriteList
 
 
 __all__ = [
@@ -40,10 +63,11 @@ __all__ = [
 ]
 
 
-PriceProductionTextFields = Literal["name", "price", "production"]
-PriceProductionFields = Literal["name", "price", "production"]
+PriceProductionTextFields = Literal["external_id", "name", "price", "production"]
+PriceProductionFields = Literal["external_id", "name", "price", "production"]
 
 _PRICEPRODUCTION_PROPERTIES_BY_FIELD = {
+    "external_id": "externalId",
     "name": "name",
     "price": "price",
     "production": "production",
@@ -66,8 +90,8 @@ class PriceProductionGraphQL(GraphQLCore):
     """
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceProduction", "1")
     name: Optional[str] = None
-    price: Union[TimeSeries, dict, None] = None
-    production: Union[TimeSeries, dict, None] = None
+    price: Optional[TimeSeriesGraphQL] = None
+    production: Optional[TimeSeriesGraphQL] = None
     shop_result: Optional[ShopResultGraphQL] = Field(default=None, repr=False, alias="shopResult")
 
     @model_validator(mode="before")
@@ -95,7 +119,7 @@ class PriceProductionGraphQL(GraphQLCore):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return PriceProduction(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
@@ -103,9 +127,11 @@ class PriceProductionGraphQL(GraphQLCore):
                 created_time=self.data_record.created_time,
             ),
             name=self.name,
-            price=self.price,
-            production=self.production,
-            shop_result=self.shop_result.as_read() if isinstance(self.shop_result, GraphQLCore) else self.shop_result,
+            price=self.price.as_read() if self.price else None,
+            production=self.production.as_read() if self.production else None,
+            shop_result=self.shop_result.as_read()
+if isinstance(self.shop_result, GraphQLCore)
+else self.shop_result,
         )
 
 
@@ -114,13 +140,15 @@ class PriceProductionGraphQL(GraphQLCore):
     def as_write(self) -> PriceProductionWrite:
         """Convert this GraphQL format of price production to the writing format."""
         return PriceProductionWrite(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,
-            price=self.price,
-            production=self.production,
-            shop_result=self.shop_result.as_write() if isinstance(self.shop_result, GraphQLCore) else self.shop_result,
+            price=self.price.as_write() if self.price else None,
+            production=self.production.as_write() if self.production else None,
+            shop_result=self.shop_result.as_write()
+if isinstance(self.shop_result, GraphQLCore)
+else self.shop_result,
         )
 
 
@@ -154,9 +182,11 @@ class PriceProduction(DomainModel):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             name=self.name,
-            price=self.price,
-            production=self.production,
-            shop_result=self.shop_result.as_write() if isinstance(self.shop_result, DomainModel) else self.shop_result,
+            price=self.price.as_write() if isinstance(self.price, CogniteTimeSeries) else self.price,
+            production=self.production.as_write() if isinstance(self.production, CogniteTimeSeries) else self.production,
+            shop_result=self.shop_result.as_write()
+if isinstance(self.shop_result, DomainModel)
+else self.shop_result,
         )
 
     def as_apply(self) -> PriceProductionWrite:
@@ -167,6 +197,22 @@ class PriceProduction(DomainModel):
             stacklevel=2,
         )
         return self.as_write()
+
+    @classmethod
+    def _update_connections(
+        cls,
+        instances: dict[dm.NodeId | str, PriceProduction],  # type: ignore[override]
+        nodes_by_id: dict[dm.NodeId | str, DomainModel],
+        edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
+    ) -> None:
+        from ._shop_result import ShopResult
+
+        for instance in instances.values():
+            if isinstance(instance.shop_result, (dm.NodeId, str)) and (shop_result := nodes_by_id.get(instance.shop_result)) and isinstance(
+                    shop_result, ShopResult
+            ):
+                instance.shop_result = shop_result
+
 
 
 class PriceProductionWrite(DomainModelWrite):
@@ -186,12 +232,21 @@ class PriceProductionWrite(DomainModelWrite):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceProduction", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "PriceProduction")
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "PriceProduction")
     name: str
-    price: Union[TimeSeries, str, None] = None
-    production: Union[TimeSeries, str, None] = None
+    price: Union[TimeSeriesWrite, str, None] = None
+    production: Union[TimeSeriesWrite, str, None] = None
     shop_result: Union[ShopResultWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="shopResult")
 
+    @field_validator("shop_result", mode="before")
+    def as_node_id(cls, value: Any) -> Any:
+        if isinstance(value, dm.DirectRelationReference):
+            return dm.NodeId(value.space, value.external_id)
+        elif isinstance(value, tuple) and len(value) == 2 and all(isinstance(item, str) for item in value):
+            return dm.NodeId(value[0], value[1])
+        elif isinstance(value, list):
+            return [cls.as_node_id(item) for item in value]
+        return value
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -225,7 +280,7 @@ class PriceProductionWrite(DomainModelWrite):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=None if allow_version_increase else self.data_record.existing_version,
-                type=self.node_type,
+                type=as_direct_relation_reference(self.node_type),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=self._view_id,
@@ -241,10 +296,10 @@ class PriceProductionWrite(DomainModelWrite):
             other_resources = self.shop_result._to_instances_write(cache)
             resources.extend(other_resources)
 
-        if isinstance(self.price, CogniteTimeSeries):
+        if isinstance(self.price, CogniteTimeSeriesWrite):
             resources.time_series.append(self.price)
 
-        if isinstance(self.production, CogniteTimeSeries):
+        if isinstance(self.production, CogniteTimeSeriesWrite):
             resources.time_series.append(self.production)
 
         return resources
@@ -280,11 +335,23 @@ class PriceProductionList(DomainModelList[PriceProduction]):
         )
         return self.as_write()
 
+    @property
+    def shop_result(self) -> ShopResultList:
+        from ._shop_result import ShopResult, ShopResultList
+
+        return ShopResultList([item.shop_result for item in self.data if isinstance(item.shop_result, ShopResult)])
+
 
 class PriceProductionWriteList(DomainModelWriteList[PriceProductionWrite]):
     """List of price productions in the writing version."""
 
     _INSTANCE = PriceProductionWrite
+
+    @property
+    def shop_result(self) -> ShopResultWriteList:
+        from ._shop_result import ShopResultWrite, ShopResultWriteList
+
+        return ShopResultWriteList([item.shop_result for item in self.data if isinstance(item.shop_result, ShopResultWrite)])
 
 class PriceProductionApplyList(PriceProductionWriteList): ...
 
@@ -294,7 +361,7 @@ def _create_price_production_filter(
     view_id: dm.ViewId,
     name: str | list[str] | None = None,
     name_prefix: str | None = None,
-    shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -306,14 +373,10 @@ def _create_price_production_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
     if name_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
-    if shop_result and isinstance(shop_result, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("shopResult"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": shop_result}))
-    if shop_result and isinstance(shop_result, tuple):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("shopResult"), value={"space": shop_result[0], "externalId": shop_result[1]}))
-    if shop_result and isinstance(shop_result, list) and isinstance(shop_result[0], str):
-        filters.append(dm.filters.In(view_id.as_property_ref("shopResult"), values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in shop_result]))
-    if shop_result and isinstance(shop_result, list) and isinstance(shop_result[0], tuple):
-        filters.append(dm.filters.In(view_id.as_property_ref("shopResult"), values=[{"space": item[0], "externalId": item[1]} for item in shop_result]))
+    if isinstance(shop_result, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(shop_result):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("shopResult"), value=as_instance_dict_id(shop_result)))
+    if shop_result and isinstance(shop_result, Sequence) and not isinstance(shop_result, str) and not is_tuple_id(shop_result):
+        filters.append(dm.filters.In(view_id.as_property_ref("shopResult"), values=[as_instance_dict_id(item) for item in shop_result]))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
@@ -323,3 +386,64 @@ def _create_price_production_filter(
     if filter:
         filters.append(filter)
     return dm.filters.And(*filters) if filters else None
+
+
+class _PriceProductionQuery(NodeQueryCore[T_DomainModelList, PriceProductionList]):
+    _view_id = PriceProduction._view_id
+    _result_cls = PriceProduction
+    _result_list_cls_end = PriceProductionList
+
+    def __init__(
+        self,
+        created_types: set[type],
+        creation_path: list[QueryCore],
+        client: CogniteClient,
+        result_list_cls: type[T_DomainModelList],
+        expression: dm.query.ResultSetExpression | None = None,
+        connection_name: str | None = None,
+        connection_type: Literal["reverse-list"] | None = None,
+        reverse_expression: dm.query.ResultSetExpression | None = None,
+    ):
+        from ._shop_result import _ShopResultQuery
+
+        super().__init__(
+            created_types,
+            creation_path,
+            client,
+            result_list_cls,
+            expression,
+            dm.filters.HasData(views=[self._view_id]),
+            connection_name,
+            connection_type,
+            reverse_expression,
+        )
+
+        if _ShopResultQuery not in created_types:
+            self.shop_result = _ShopResultQuery(
+                created_types.copy(),
+                self._creation_path,
+                client,
+                result_list_cls,
+                dm.query.NodeResultSetExpression(
+                    through=self._view_id.as_property_ref("shopResult"),
+                    direction="outwards",
+                ),
+                connection_name="shop_result",
+            )
+
+        self.space = StringFilter(self, ["node", "space"])
+        self.external_id = StringFilter(self, ["node", "externalId"])
+        self.name = StringFilter(self, self._view_id.as_property_ref("name"))
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.name,
+        ])
+
+    def list_price_production(self, limit: int = DEFAULT_QUERY_LIMIT) -> PriceProductionList:
+        return self._list(limit=limit)
+
+
+class PriceProductionQuery(_PriceProductionQuery[PriceProductionList]):
+    def __init__(self, client: CogniteClient):
+        super().__init__(set(), [], client, PriceProductionList)

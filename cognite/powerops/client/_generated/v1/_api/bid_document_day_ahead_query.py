@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import datetime
-from typing import TYPE_CHECKING
+from collections.abc import Sequence
+from typing import TYPE_CHECKING, cast
 
 from cognite.client import data_modeling as dm, CogniteClient
 
@@ -19,11 +20,19 @@ from cognite.powerops.client._generated.v1.data_classes._partial_bid_matrix_info
     PartialBidMatrixInformation,
     _create_partial_bid_matrix_information_filter,
 )
-from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_QUERY_LIMIT,
+    EdgeQueryStep,
+    NodeQueryStep,
+    DataClassQueryBuilder,
+    QueryAPI,
+    T_DomainModelList,
+    _create_edge_filter,
+)
 
 if TYPE_CHECKING:
-    from .alert_query import AlertQueryAPI
-    from .partial_bid_matrix_information_query import PartialBidMatrixInformationQueryAPI
+    from cognite.powerops.client._generated.v1._api.alert_query import AlertQueryAPI
+    from cognite.powerops.client._generated.v1._api.partial_bid_matrix_information_query import PartialBidMatrixInformationQueryAPI
 
 
 
@@ -33,20 +42,19 @@ class BidDocumentDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
     def __init__(
         self,
         client: CogniteClient,
-        builder: QueryBuilder[T_DomainModelList],
+        builder: DataClassQueryBuilder[T_DomainModelList],
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
         super().__init__(client, builder)
-
+        from_ = self._builder.get_from()
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("bid_document_day_ahead"),
+            NodeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
-                    from_=self._builder[-1].name if self._builder else None,
+                    from_=from_,
                     filter=filter_,
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(self._view_id, ["*"])]),
                 result_cls=BidDocumentDayAhead,
                 max_retrieve_limit=limit,
             )
@@ -113,7 +121,8 @@ class BidDocumentDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         """
         from .alert_query import AlertQueryAPI
 
-        from_ = self._builder[-1].name
+        # from is a string as we added a node query step in the __init__ method
+        from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "calculationIssue"),
 
@@ -121,14 +130,13 @@ class BidDocumentDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
             space=space_edge,
         )
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("alerts"),
+            EdgeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,
                     direction="outwards",
                 ),
-                select=dm.query.Select(),
                 max_retrieve_limit=limit,
             )
         )
@@ -167,10 +175,10 @@ class BidDocumentDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         self,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
-        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_resource_cost: float | None = None,
         max_resource_cost: float | None = None,
-        partial_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         external_id_prefix_edge: str | None = None,
@@ -204,7 +212,8 @@ class BidDocumentDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         """
         from .partial_bid_matrix_information_query import PartialBidMatrixInformationQueryAPI
 
-        from_ = self._builder[-1].name
+        # from is a string as we added a node query step in the __init__ method
+        from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "partialBid"),
 
@@ -212,14 +221,13 @@ class BidDocumentDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
             space=space_edge,
         )
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("partials"),
+            EdgeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,
                     direction="outwards",
                 ),
-                select=dm.query.Select(),
                 max_retrieve_limit=limit,
             )
         )
@@ -267,37 +275,29 @@ class BidDocumentDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         return self._query()
 
     def _query_append_bid_configuration(self, from_: str) -> None:
-        view_id = BidConfigurationDayAhead._view_id
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("bid_configuration"),
+            NodeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
-                    filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
                     through=self._view_id.as_property_ref("bidConfiguration"),
                     direction="outwards",
+                    filter=dm.filters.HasData(views=[BidConfigurationDayAhead._view_id]),
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
-                max_retrieve_limit=-1,
                 result_cls=BidConfigurationDayAhead,
-                is_single_direct_relation=True,
             ),
         )
 
     def _query_append_total(self, from_: str) -> None:
-        view_id = BidMatrixInformation._view_id
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("total"),
+            NodeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
-                    filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
                     through=self._view_id.as_property_ref("total"),
                     direction="outwards",
+                    filter=dm.filters.HasData(views=[BidMatrixInformation._view_id]),
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
-                max_retrieve_limit=-1,
                 result_cls=BidMatrixInformation,
-                is_single_direct_relation=True,
             ),
         )

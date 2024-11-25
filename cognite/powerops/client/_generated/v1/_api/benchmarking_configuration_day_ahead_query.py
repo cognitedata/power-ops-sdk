@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import datetime
-from typing import TYPE_CHECKING
+from collections.abc import Sequence
+from typing import TYPE_CHECKING, cast
 
 from cognite.client import data_modeling as dm, CogniteClient
 
@@ -20,11 +21,19 @@ from cognite.powerops.client._generated.v1.data_classes._shop_model_with_assets 
     ShopModelWithAssets,
     _create_shop_model_with_asset_filter,
 )
-from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_QUERY_LIMIT,
+    EdgeQueryStep,
+    NodeQueryStep,
+    DataClassQueryBuilder,
+    QueryAPI,
+    T_DomainModelList,
+    _create_edge_filter,
+)
 
 if TYPE_CHECKING:
-    from .bid_configuration_day_ahead_query import BidConfigurationDayAheadQueryAPI
-    from .shop_model_with_assets_query import ShopModelWithAssetsQueryAPI
+    from cognite.powerops.client._generated.v1._api.bid_configuration_day_ahead_query import BidConfigurationDayAheadQueryAPI
+    from cognite.powerops.client._generated.v1._api.shop_model_with_assets_query import ShopModelWithAssetsQueryAPI
 
 
 
@@ -34,20 +43,19 @@ class BenchmarkingConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
     def __init__(
         self,
         client: CogniteClient,
-        builder: QueryBuilder[T_DomainModelList],
+        builder: DataClassQueryBuilder[T_DomainModelList],
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
         super().__init__(client, builder)
-
+        from_ = self._builder.get_from()
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("benchmarking_configuration_day_ahead"),
+            NodeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
-                    from_=self._builder[-1].name if self._builder else None,
+                    from_=from_,
                     filter=filter_,
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(self._view_id, ["*"])]),
                 result_cls=BenchmarkingConfigurationDayAhead,
                 max_retrieve_limit=limit,
             )
@@ -57,9 +65,9 @@ class BenchmarkingConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        bid_date_specification: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        market_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        price_area: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_date_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         external_id_prefix_edge: str | None = None,
@@ -94,7 +102,8 @@ class BenchmarkingConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         """
         from .bid_configuration_day_ahead_query import BidConfigurationDayAheadQueryAPI
 
-        from_ = self._builder[-1].name
+        # from is a string as we added a node query step in the __init__ method
+        from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "benchmarkingBidConfigurations"),
 
@@ -102,14 +111,13 @@ class BenchmarkingConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
             space=space_edge,
         )
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("bid_configurations"),
+            EdgeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,
                     direction="outwards",
                 ),
-                select=dm.query.Select(),
                 max_retrieve_limit=limit,
             )
         )
@@ -137,8 +145,8 @@ class BenchmarkingConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
 
     def assets_per_shop_model(
         self,
-        shop_model: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        shop_commands: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        shop_model: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_commands: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         external_id_prefix_edge: str | None = None,
@@ -170,7 +178,8 @@ class BenchmarkingConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         """
         from .shop_model_with_assets_query import ShopModelWithAssetsQueryAPI
 
-        from_ = self._builder[-1].name
+        # from is a string as we added a node query step in the __init__ method
+        from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "assetsPerShopModel"),
 
@@ -178,14 +187,13 @@ class BenchmarkingConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
             space=space_edge,
         )
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("assets_per_shop_model"),
+            EdgeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,
                     direction="outwards",
                 ),
-                select=dm.query.Select(),
                 max_retrieve_limit=limit,
             )
         )
@@ -235,55 +243,43 @@ class BenchmarkingConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         return self._query()
 
     def _query_append_price_area(self, from_: str) -> None:
-        view_id = PriceAreaDayAhead._view_id
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("price_area"),
+            NodeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
-                    filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
                     through=self._view_id.as_property_ref("priceArea"),
                     direction="outwards",
+                    filter=dm.filters.HasData(views=[PriceAreaDayAhead._view_id]),
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
-                max_retrieve_limit=-1,
                 result_cls=PriceAreaDayAhead,
-                is_single_direct_relation=True,
             ),
         )
 
     def _query_append_shop_start_specification(self, from_: str) -> None:
-        view_id = DateSpecification._view_id
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("shop_start_specification"),
+            NodeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
-                    filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
                     through=self._view_id.as_property_ref("shopStartSpecification"),
                     direction="outwards",
+                    filter=dm.filters.HasData(views=[DateSpecification._view_id]),
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
-                max_retrieve_limit=-1,
                 result_cls=DateSpecification,
-                is_single_direct_relation=True,
             ),
         )
 
     def _query_append_shop_end_specification(self, from_: str) -> None:
-        view_id = DateSpecification._view_id
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("shop_end_specification"),
+            NodeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
-                    filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
                     through=self._view_id.as_property_ref("shopEndSpecification"),
                     direction="outwards",
+                    filter=dm.filters.HasData(views=[DateSpecification._view_id]),
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
-                max_retrieve_limit=-1,
                 result_cls=DateSpecification,
-                is_single_direct_relation=True,
             ),
         )

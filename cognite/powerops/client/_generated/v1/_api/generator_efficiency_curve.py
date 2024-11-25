@@ -8,7 +8,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -18,13 +24,20 @@ from cognite.powerops.client._generated.v1.data_classes import (
     GeneratorEfficiencyCurveFields,
     GeneratorEfficiencyCurveList,
     GeneratorEfficiencyCurveWriteList,
+    GeneratorEfficiencyCurveTextFields,
 )
 from cognite.powerops.client._generated.v1.data_classes._generator_efficiency_curve import (
+    GeneratorEfficiencyCurveQuery,
     _GENERATOREFFICIENCYCURVE_PROPERTIES_BY_FIELD,
     _create_generator_efficiency_curve_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .generator_efficiency_curve_query import GeneratorEfficiencyCurveQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.generator_efficiency_curve_query import GeneratorEfficiencyCurveQueryAPI
 
 
 class GeneratorEfficiencyCurveAPI(NodeAPI[GeneratorEfficiencyCurve, GeneratorEfficiencyCurveWrite, GeneratorEfficiencyCurveList, GeneratorEfficiencyCurveWriteList]):
@@ -57,6 +70,12 @@ class GeneratorEfficiencyCurveAPI(NodeAPI[GeneratorEfficiencyCurve, GeneratorEff
             A query API for generator efficiency curves.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_generator_efficiency_curve_filter(
             self._view_id,
@@ -64,7 +83,7 @@ class GeneratorEfficiencyCurveAPI(NodeAPI[GeneratorEfficiencyCurve, GeneratorEff
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(GeneratorEfficiencyCurveList)
+        builder = DataClassQueryBuilder(GeneratorEfficiencyCurveList)
         return GeneratorEfficiencyCurveQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -138,14 +157,14 @@ class GeneratorEfficiencyCurveAPI(NodeAPI[GeneratorEfficiencyCurve, GeneratorEff
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> GeneratorEfficiencyCurve | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> GeneratorEfficiencyCurve | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> GeneratorEfficiencyCurveList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> GeneratorEfficiencyCurveList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> GeneratorEfficiencyCurve | GeneratorEfficiencyCurveList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> GeneratorEfficiencyCurve | GeneratorEfficiencyCurveList | None:
         """Retrieve one or more generator efficiency curves by id(s).
 
         Args:
@@ -166,6 +185,60 @@ class GeneratorEfficiencyCurveAPI(NodeAPI[GeneratorEfficiencyCurve, GeneratorEff
         """
         return self._retrieve(external_id, space)
 
+    def search(
+        self,
+        query: str,
+        properties: GeneratorEfficiencyCurveTextFields | SequenceNotStr[GeneratorEfficiencyCurveTextFields] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+        sort_by: GeneratorEfficiencyCurveFields | SequenceNotStr[GeneratorEfficiencyCurveFields] | None = None,
+        direction: Literal["ascending", "descending"] = "ascending",
+        sort: InstanceSort | list[InstanceSort] | None = None,
+    ) -> GeneratorEfficiencyCurveList:
+        """Search generator efficiency curves
+
+        Args:
+            query: The search query,
+            properties: The property to search, if nothing is passed all text fields will be searched.
+            external_id_prefix: The prefix of the external ID to filter on.
+            space: The space to filter on.
+            limit: Maximum number of generator efficiency curves to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            sort_by: The property to sort by.
+            direction: The direction to sort by, either 'ascending' or 'descending'.
+            sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                specify the direction for each field as well as how to handle null values.
+
+        Returns:
+            Search results generator efficiency curves matching the query.
+
+        Examples:
+
+           Search for 'my_generator_efficiency_curve' in all text properties:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> generator_efficiency_curves = client.generator_efficiency_curve.search('my_generator_efficiency_curve')
+
+        """
+        filter_ = _create_generator_efficiency_curve_filter(
+            self._view_id,
+            external_id_prefix,
+            space,
+            filter,
+        )
+        return self._search(
+            query=query,
+            properties=properties,
+            filter_=filter_,
+            limit=limit,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
+        )
 
     @overload
     def aggregate(
@@ -302,6 +375,15 @@ class GeneratorEfficiencyCurveAPI(NodeAPI[GeneratorEfficiencyCurve, GeneratorEff
             filter_,
         )
 
+    def query(self) -> GeneratorEfficiencyCurveQuery:
+        """Start a query for generator efficiency curves."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return GeneratorEfficiencyCurveQuery(self._client)
+
+    def select(self) -> GeneratorEfficiencyCurveQuery:
+        """Start selecting from generator efficiency curves."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return GeneratorEfficiencyCurveQuery(self._client)
 
     def list(
         self,
@@ -344,6 +426,7 @@ class GeneratorEfficiencyCurveAPI(NodeAPI[GeneratorEfficiencyCurve, GeneratorEff
             space,
             filter,
         )
+
         return self._list(
             limit=limit,
             filter=filter_,

@@ -2,14 +2,16 @@ from __future__ import annotations
 
 import datetime
 import warnings
+from collections.abc import Sequence
 from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
 
-from cognite.client import data_modeling as dm
+from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator
 
-from ._core import (
+from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
     DataRecord,
     DataRecordGraphQL,
     DataRecordWrite,
@@ -17,9 +19,23 @@ from ._core import (
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
+    DomainRelation,
     DomainRelationWrite,
     GraphQLCore,
     ResourcesWrite,
+    T_DomainModelList,
+    as_direct_relation_reference,
+    as_instance_dict_id,
+    as_node_id,
+    as_pygen_node_id,
+    are_nodes_equal,
+    is_tuple_id,
+    select_best_node,
+    QueryCore,
+    NodeQueryCore,
+    StringFilter,
+    IntFilter,
+    TimestampFilter,
 )
 
 
@@ -36,10 +52,11 @@ __all__ = [
 ]
 
 
-AlertTextFields = Literal["workflow_execution_id", "title", "description", "severity", "alert_type", "calculation_run"]
-AlertFields = Literal["time", "workflow_execution_id", "title", "description", "severity", "alert_type", "status_code", "event_ids", "calculation_run"]
+AlertTextFields = Literal["external_id", "workflow_execution_id", "title", "description", "severity", "alert_type", "calculation_run"]
+AlertFields = Literal["external_id", "time", "workflow_execution_id", "title", "description", "severity", "alert_type", "status_code", "event_ids", "calculation_run"]
 
 _ALERT_PROPERTIES_BY_FIELD = {
+    "external_id": "externalId",
     "time": "time",
     "workflow_execution_id": "workflowExecutionId",
     "title": "title",
@@ -100,7 +117,7 @@ class AlertGraphQL(GraphQLCore):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return Alert(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
@@ -124,7 +141,7 @@ class AlertGraphQL(GraphQLCore):
     def as_write(self) -> AlertWrite:
         """Convert this GraphQL format of alert to the writing format."""
         return AlertWrite(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             time=self.time,
@@ -221,7 +238,7 @@ class AlertWrite(DomainModelWrite):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "Alert", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = None
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
     time: datetime.datetime
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     title: str
@@ -277,7 +294,7 @@ class AlertWrite(DomainModelWrite):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=None if allow_version_increase else self.data_record.existing_version,
-                type=self.node_type,
+                type=as_direct_relation_reference(self.node_type),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=self._view_id,
@@ -404,3 +421,64 @@ def _create_alert_filter(
     if filter:
         filters.append(filter)
     return dm.filters.And(*filters) if filters else None
+
+
+class _AlertQuery(NodeQueryCore[T_DomainModelList, AlertList]):
+    _view_id = Alert._view_id
+    _result_cls = Alert
+    _result_list_cls_end = AlertList
+
+    def __init__(
+        self,
+        created_types: set[type],
+        creation_path: list[QueryCore],
+        client: CogniteClient,
+        result_list_cls: type[T_DomainModelList],
+        expression: dm.query.ResultSetExpression | None = None,
+        connection_name: str | None = None,
+        connection_type: Literal["reverse-list"] | None = None,
+        reverse_expression: dm.query.ResultSetExpression | None = None,
+    ):
+
+        super().__init__(
+            created_types,
+            creation_path,
+            client,
+            result_list_cls,
+            expression,
+            dm.filters.HasData(views=[self._view_id]),
+            connection_name,
+            connection_type,
+            reverse_expression,
+        )
+
+        self.space = StringFilter(self, ["node", "space"])
+        self.external_id = StringFilter(self, ["node", "externalId"])
+        self.time = TimestampFilter(self, self._view_id.as_property_ref("time"))
+        self.workflow_execution_id = StringFilter(self, self._view_id.as_property_ref("workflowExecutionId"))
+        self.title = StringFilter(self, self._view_id.as_property_ref("title"))
+        self.description = StringFilter(self, self._view_id.as_property_ref("description"))
+        self.severity = StringFilter(self, self._view_id.as_property_ref("severity"))
+        self.alert_type = StringFilter(self, self._view_id.as_property_ref("alertType"))
+        self.status_code = IntFilter(self, self._view_id.as_property_ref("statusCode"))
+        self.calculation_run = StringFilter(self, self._view_id.as_property_ref("calculationRun"))
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.time,
+            self.workflow_execution_id,
+            self.title,
+            self.description,
+            self.severity,
+            self.alert_type,
+            self.status_code,
+            self.calculation_run,
+        ])
+
+    def list_alert(self, limit: int = DEFAULT_QUERY_LIMIT) -> AlertList:
+        return self._list(limit=limit)
+
+
+class AlertQuery(_AlertQuery[AlertList]):
+    def __init__(self, client: CogniteClient):
+        super().__init__(set(), [], client, AlertList)

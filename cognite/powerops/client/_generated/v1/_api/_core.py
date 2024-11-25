@@ -1,14 +1,9 @@
 from __future__ import annotations
 
-import math
-import re
-import warnings
 from abc import ABC
+from collections import defaultdict
+from collections.abc import Sequence
 from itertools import groupby
-
-from collections import Counter, defaultdict, UserList
-from collections.abc import Sequence, Collection
-from dataclasses import dataclass, field
 from typing import (
     Generic,
     Literal,
@@ -18,21 +13,19 @@ from typing import (
     SupportsIndex,
     TypeVar,
     overload,
-    cast,
     ClassVar,
-    no_type_check,
 )
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import TimeSeriesList
-from cognite.client.data_classes.data_modeling.instances import Instance, InstanceSort, InstanceAggregationResultList
+from cognite.client.data_classes.data_modeling.instances import InstanceSort, InstanceAggregationResultList
 
+from cognite.powerops.client._generated.v1 import data_classes
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DomainModel,
-    DomainModelCore,
     DomainModelWrite,
-    DomainRelationWrite,
+    DEFAULT_INSTANCE_SPACE,
     PageInfo,
     GraphQLCore,
     GraphQLList,
@@ -44,18 +37,16 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     T_DomainRelation,
     T_DomainRelationWrite,
     T_DomainRelationList,
-    DomainModelCore,
-    DomainRelation,
+    DataClassQueryBuilder,
+    NodeQueryStep,
+    EdgeQueryStep,
 )
-from cognite.powerops.client._generated.v1 import data_classes
-
 
 DEFAULT_LIMIT_READ = 25
 DEFAULT_QUERY_LIMIT = 3
-INSTANCE_QUERY_LIMIT = 1_000
-# This is the actual limit of the API, we typically set it to a lower value to avoid hitting the limit.
-ACTUAL_INSTANCE_QUERY_LIMIT = 10_000
 IN_FILTER_LIMIT = 5_000
+INSTANCE_QUERY_LIMIT = 1_000
+NODE_PROPERTIES = {"externalId", "space"}
 
 Aggregations = Literal["avg", "count", "max", "min", "sum"]
 
@@ -68,6 +59,16 @@ _METRIC_AGGREGATIONS_BY_NAME = {
 }
 
 _T_co = TypeVar("_T_co", covariant=True)
+
+
+def _as_node_id(value: str | dm.NodeId | tuple[str, str], space: str) -> dm.NodeId:
+    if isinstance(value, str):
+        return dm.NodeId(space=space, external_id=value)
+    if isinstance(value, dm.NodeId):
+        return value
+    if isinstance(value, tuple):
+        return dm.NodeId(space=value[0], external_id=value[1])
+    raise TypeError(f"Expected str, NodeId or tuple, got {type(value)}")
 
 
 # Source from https://github.com/python/typing/issues/256#issuecomment-1442633430
@@ -95,6 +96,7 @@ class SequenceNotStr(Protocol[_T_co]):
 class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList], ABC):
     _view_id: ClassVar[dm.ViewId]
     _properties_by_field: ClassVar[dict[str, str]]
+    _direct_children_by_external_id: ClassVar[dict[str, type[DomainModel]]]
     _class_type: type[T_DomainModel]
     _class_list: type[T_DomainModelList]
 
@@ -111,22 +113,38 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList], ABC):
 
     def _retrieve(
         self,
-        external_id: str | SequenceNotStr[str],
+        external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]],
         space: str,
         retrieve_edges: bool = False,
         edge_api_name_type_direction_view_id_penta: (
             list[tuple[EdgeAPI, str, dm.DirectRelationReference, Literal["outwards", "inwards"], dm.ViewId]] | None
         ) = None,
+        as_child_class: SequenceNotStr[str] | None = None,
     ) -> T_DomainModel | T_DomainModelList | None:
-        if isinstance(external_id, str):
-            node_ids = [(space, external_id)]
+        if isinstance(external_id, str | dm.NodeId) or (
+            isinstance(external_id, tuple) and len(external_id) == 2 and all(isinstance(i, str) for i in external_id)
+        ):
+            node_ids = [_as_node_id(external_id, space)]
             is_multiple = False
         else:
             is_multiple = True
-            node_ids = [(space, ext_id) for ext_id in external_id]
+            node_ids = [_as_node_id(ext_id, space) for ext_id in external_id]
 
-        instances = self._client.data_modeling.instances.retrieve(nodes=node_ids, sources=self._view_id)
-        nodes = self._class_list([self._class_type.from_instance(node) for node in instances.nodes])
+        items: list[DomainModel] = []
+        if as_child_class:
+            if not hasattr(self, "_direct_children_by_external_id"):
+                raise ValueError(f"{type(self).__name__} does not have any direct children")
+            for child_class_external_id in as_child_class:
+                child_cls = self._direct_children_by_external_id.get(child_class_external_id)
+                if child_cls is None:
+                    raise ValueError(f"Could not find child class with external_id {child_class_external_id}")
+                instances = self._client.data_modeling.instances.retrieve(nodes=node_ids, sources=child_cls._view_id)
+                items.extend([child_cls.from_instance(node) for node in instances.nodes])
+        else:
+            instances = self._client.data_modeling.instances.retrieve(nodes=node_ids, sources=self._view_id)
+            items.extend([self._class_type.from_instance(node) for node in instances.nodes])
+
+        nodes = self._class_list(items)
 
         if retrieve_edges and nodes:
             self._retrieve_and_set_edge_types(nodes, edge_api_name_type_direction_view_id_penta)
@@ -150,7 +168,7 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList], ABC):
     ) -> T_DomainModelList:
         properties_input = self._to_input_properties(properties)
 
-        sort_input = self._get_sort(sort_by, direction, sort)
+        sort_input = self._create_sort(sort_by, direction, sort)
         nodes = self._client.data_modeling.instances.search(
             view=self._view_id,
             query=query,
@@ -274,7 +292,7 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList], ABC):
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> T_DomainModelList:
-        sort_input = self._get_sort(sort_by, direction, sort)
+        sort_input = self._create_sort(sort_by, direction, sort)
         nodes = self._client.data_modeling.instances.list(
             instance_type="node",
             sources=self._view_id,
@@ -288,36 +306,35 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList], ABC):
 
         return node_list
 
-    def _get_sort(
+    def _create_sort(
         self,
         sort_by: str | list[str] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
-    ) -> InstanceSort | list[InstanceSort] | None:
-        sort_input: InstanceSort | list[InstanceSort] | None = None
+    ) -> list[InstanceSort] | None:
+        sort_input: list[InstanceSort] | None = None
         if sort is None and isinstance(sort_by, str):
-            sort_input = InstanceSort(
-                self._view_id.as_property_ref(self._properties_by_field.get(sort_by, sort_by)), direction
-            )
+            sort_input = [self._create_sort_entry(sort_by, direction)]
         elif sort is None and isinstance(sort_by, list):
-            sort_input = [
-                InstanceSort(
-                    self._view_id.as_property_ref(self._properties_by_field.get(sort_by_, sort_by_)), direction
-                )
-                for sort_by_ in sort_by
-            ]
+            sort_input = [self._create_sort_entry(sort_by_, direction) for sort_by_ in sort_by]
         elif sort is not None:
             sort_input = sort if isinstance(sort, list) else [sort]
             for sort_ in sort_input:
                 if isinstance(sort_.property, Sequence) and len(sort_.property) == 1:
-                    sort_.property = self._view_id.as_property_ref(
-                        self._properties_by_field.get(sort_.property[0], sort_.property[0])
-                    )
+                    sort_.property = self._create_property_reference(sort_.property[0])
                 elif isinstance(sort_.property, str):
-                    sort_.property = self._view_id.as_property_ref(
-                        self._properties_by_field.get(sort_.property, sort_.property)
-                    )
+                    sort_.property = self._create_property_reference(sort_.property)
         return sort_input
+
+    def _create_sort_entry(self, sort_by: str, direction: Literal["ascending", "descending"]) -> InstanceSort:
+        return InstanceSort(self._create_property_reference(sort_by), direction)
+
+    def _create_property_reference(self, property_: str) -> list[str] | tuple[str, ...]:
+        prop_name = self._properties_by_field.get(property_, property_)
+        if prop_name in NODE_PROPERTIES:
+            return ["node", prop_name]
+        else:
+            return self._view_id.as_property_ref(prop_name)
 
     def _retrieve_and_set_edge_types(
         self,
@@ -453,227 +470,26 @@ class EdgePropertyAPI(EdgeAPI, Generic[T_DomainRelation, T_DomainRelationWrite, 
         return self._class_list([self._class_type.from_instance(edge) for edge in edges])  # type: ignore[misc]
 
 
-@dataclass
-class QueryStep:
-    # Setup Variables
-    name: str
-    expression: dm.query.ResultSetExpression
-    max_retrieve_limit: int
-    select: dm.query.Select
-    result_cls: type[DomainModelCore] | None = None
-    is_single_direct_relation: bool = False
-
-    # Query Variables
-    cursor: str | None = None
-    total_retrieved: int = 0
-    results: list[Instance] = field(default_factory=list)
-    last_batch_count: int = 0
-
-    def update_expression_limit(self) -> None:
-        if self.is_unlimited:
-            self.expression.limit = ACTUAL_INSTANCE_QUERY_LIMIT
-        else:
-            self.expression.limit = max(min(INSTANCE_QUERY_LIMIT, self.max_retrieve_limit - self.total_retrieved), 0)
-
-    @property
-    def is_unlimited(self) -> bool:
-        return self.max_retrieve_limit in {None, -1, math.inf}
-
-    @property
-    def is_finished(self) -> bool:
-        return (
-            (not self.is_unlimited and self.total_retrieved >= self.max_retrieve_limit)
-            or self.cursor is None
-            or self.last_batch_count == 0
-            # Single direct relations are dependent on the parent node,
-            # so we assume that the parent node is the limiting factor.
-            or self.is_single_direct_relation
-        )
-
-
-class QueryBuilder(UserList, Generic[T_DomainModelList]):
-    # The unique string is in case the data model has a field that ends with _\d+. This will make sure we don't
-    # clean the name of the field.
-    _unique_str = "a418"
-    _name_pattern = re.compile(r"_a418\d+$")
-
-    def __init__(self, result_cls: type[T_DomainModelList], nodes: Collection[QueryStep] | None = None):
-        super().__init__(nodes or [])
-        self._result_cls = result_cls
-
-    # The dunder implementations are to get proper type hints
-    def __iter__(self) -> Iterator[QueryStep]:
-        return super().__iter__()
-
-    @overload
-    def __getitem__(self, item: SupportsIndex) -> QueryStep: ...
-
-    @overload
-    def __getitem__(self, item: slice) -> QueryBuilder[T_DomainModelList]: ...
-
-    def __getitem__(self, item: SupportsIndex | slice) -> QueryStep | QueryBuilder[T_DomainModelList]:
-        value = self.data[item]
-        if isinstance(item, slice):
-            return type(self)(value)  # type: ignore[arg-type]
-        return cast(QueryStep, value)
-
-    def next_name(self, name: str) -> str:
-        counter = Counter(self._clean_name(step.name) for step in self)
-        if name in counter:
-            return f"{name}_{self._unique_str}{counter[name]}"
-        return name
-
-    def _clean_name(self, name: str) -> str:
-        return self._name_pattern.sub("", name)
-
-    def reset(self):
-        for expression in self:
-            expression.total_retrieved = 0
-            expression.cursor = None
-            expression.results = []
-
-    def update_expression_limits(self) -> None:
-        for expression in self:
-            expression.update_expression_limit()
-
-    def build(self) -> dm.query.Query:
-        with_ = {expression.name: expression.expression for expression in self}
-        select = {expression.name: expression.select for expression in self if expression.select}
-        cursors = self.cursors
-
-        return dm.query.Query(with_=with_, select=select, cursors=cursors)
-
-    @property
-    def cursors(self) -> dict[str, str | None]:
-        return {expression.name: expression.cursor for expression in self}
-
-    def update(self, batch: dm.query.QueryResult):
-        for expression in self:
-            if expression.name not in batch:
-                continue
-            expression.last_batch_count = len(batch[expression.name])
-            expression.total_retrieved += expression.last_batch_count
-            expression.cursor = batch.cursors.get(expression.name)
-            expression.results.extend(batch[expression.name].data)
-
-    @property
-    def is_finished(self):
-        return all(expression.is_finished for expression in self)
-
-    @no_type_check
-    def unpack(self) -> T_DomainModelList:
-        nodes_by_type: dict[str | None, dict[tuple[str, str], DomainModel]] = defaultdict(dict)
-        edges_by_type_by_source_node: dict[tuple[str, str, str], dict[tuple[str, str], list[dm.Edge]]] = defaultdict(
-            lambda: defaultdict(list)
-        )
-        relation_by_type_by_start_node: dict[tuple[str, str], dict[tuple[str, str], list[DomainRelation]]] = (
-            defaultdict(lambda: defaultdict(list))
-        )
-        node_attribute_to_node_type: dict[str, str] = {}
-
-        for step in self:
-            name = step.name
-            from_ = step.expression.from_
-
-            if isinstance(step.expression, dm.query.NodeResultSetExpression) and from_:
-                node_attribute_to_node_type[from_] = name
-
-            if step.result_cls is None:  # This is a data model edge.
-                for edge in step.results:
-                    edge = cast(dm.Edge, edge)
-                    edge_source = edge.start_node if step.expression.direction == "outwards" else edge.end_node
-                    edges_by_type_by_source_node[(from_, name, step.expression.direction)][
-                        (edge_source.space, edge_source.external_id)
-                    ].append(edge)
-            elif issubclass(step.result_cls, DomainModel):
-                for node in step.results:
-                    domain = step.result_cls.from_instance(node)
-                    if (id_ := domain.as_tuple_id()) not in nodes_by_type[name]:
-                        nodes_by_type[name][id_] = domain
-            elif issubclass(step.result_cls, DomainRelation):
-                for edge in step.results:
-                    domain = step.result_cls.from_instance(edge)
-                    relation_by_type_by_start_node[(from_, name)][domain.start_node.as_tuple()].append(domain)
-
-            # Link direct relations
-            is_direct_relation = (
-                isinstance(step.expression, dm.query.NodeResultSetExpression) and from_ and from_ in nodes_by_type
-            )
-            if is_direct_relation:
-                end_nodes = nodes_by_type[name]
-                attribute_name = node_attribute_to_node_type[from_]
-                for parent_node in nodes_by_type[from_].values():
-                    attribute_value = getattr(parent_node, attribute_name)
-                    if isinstance(attribute_value, str):
-                        end_id = (parent_node.space, attribute_value)
-                    elif isinstance(attribute_value, dm.NodeId):
-                        end_id = attribute_value.space, attribute_value.external_id
-                    else:
-                        continue
-                    if end_id in end_nodes:
-                        setattr(parent_node, attribute_name, end_nodes[end_id])
-                    else:
-                        warnings.warn(f"Unpacking of query result: Could not find node with id {end_id}", stacklevel=2)
-
-        for (node_name, node_attribute), relations_by_start_node in relation_by_type_by_start_node.items():
-            for node in nodes_by_type[node_name].values():
-                setattr(node, node_attribute, relations_by_start_node.get(node.as_tuple_id(), []))
-            for relations in relations_by_start_node.values():
-                for relation in relations:
-                    edge_name = relation.edge_type.external_id.split(".")[-1]
-                    if (nodes := nodes_by_type.get(edge_name)) and (
-                        node := nodes.get((relation.end_node.space, relation.end_node.external_id))
-                    ):
-                        # Relations always have an end node.
-                        relation.end_node = node
-
-        for (node_name, node_attribute, direction), edges_by_source_node in edges_by_type_by_source_node.items():
-            for node in nodes_by_type[node_name].values():
-                edges = edges_by_source_node.get(node.as_tuple_id(), [])
-                nodes = nodes_by_type.get(node_attribute_to_node_type.get(node_attribute), {})
-                if direction == "outwards":
-                    setattr(
-                        node, node_attribute, [node for edge in edges if (node := nodes.get(edge.end_node.as_tuple()))]
-                    )
-                else:  # inwards
-                    setattr(
-                        node,
-                        node_attribute,
-                        [node for edge in edges if (node := nodes.get(edge.start_node.as_tuple()))],
-                    )
-
-        return self._result_cls(nodes_by_type[self[0].name].values())
-
-
 class QueryAPI(Generic[T_DomainModelList]):
     def __init__(
         self,
         client: CogniteClient,
-        builder: QueryBuilder[T_DomainModelList],
+        builder: DataClassQueryBuilder[T_DomainModelList],
     ):
         self._client = client
         self._builder = builder
 
     def _query(self) -> T_DomainModelList:
-        self._builder.reset()
-        query = self._builder.build()
-
-        while True:
-            self._builder.update_expression_limits()
-            query.cursors = self._builder.cursors
-            batch = self._client.data_modeling.instances.query(query)
-            self._builder.update(batch)
-            if self._builder.is_finished:
-                break
+        self._builder.execute_query(self._client, remove_not_connected=True)
         return self._builder.unpack()
 
 
 def _create_edge_filter(
     edge_type: dm.DirectRelationReference,
     start_node: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-    start_node_space: str = "IntegrationTestsImmutable",
+    start_node_space: str = DEFAULT_INSTANCE_SPACE,
     end_node: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-    space_end_node: str = "IntegrationTestsImmutable",
+    space_end_node: str = DEFAULT_INSTANCE_SPACE,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -688,7 +504,7 @@ def _create_edge_filter(
         filters.append(
             dm.filters.Equals(["edge", "startNode"], value={"space": start_node_space, "externalId": start_node})
         )
-    elif start_node and isinstance(start_node, dm.NodeId):
+    if start_node and isinstance(start_node, dm.NodeId):
         filters.append(
             dm.filters.Equals(
                 ["edge", "startNode"], value=start_node.dump(camel_case=True, include_instance_type=False)
@@ -710,7 +526,7 @@ def _create_edge_filter(
         )
     if end_node and isinstance(end_node, str):
         filters.append(dm.filters.Equals(["edge", "endNode"], value={"space": space_end_node, "externalId": end_node}))
-    elif end_node and isinstance(end_node, dm.NodeId):
+    if end_node and isinstance(end_node, dm.NodeId):
         filters.append(
             dm.filters.Equals(["edge", "endNode"], value=end_node.dump(camel_case=True, include_instance_type=False))
         )

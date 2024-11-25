@@ -20,12 +20,17 @@ Changes are grouped as follows:
 * Removed v0 pygen generated classes
 * Removed DayAhead Trigger API
 
-## [0.103.0] - 2024-11-12
+## [0.103.1] - 2024-11-22
+### Added
+* production_max to generator
+
+## [0.103.0] - 2024-11-21
 ### Changed
 * Simplify usage of cogshop api module and update examples
 
 ### Removed
 * Removed outdated usage guides.
+
 ## [0.102.3] - 2024-11-12
 ### Removed
 * Support for automatically using `load_dotenv`, end user is responsible for loading in required environment variables
