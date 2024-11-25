@@ -480,8 +480,8 @@ class PowerOpsModelsV1Client:
 
     Generated with:
         pygen = 0.99.50
-        cognite-sdk = 7.67.1
-        pydantic = 2.9.2
+        cognite-sdk = 7.67.4
+        pydantic = 2.10.0
 
     """
 
