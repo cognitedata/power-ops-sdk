@@ -33,9 +33,6 @@ test.py
 do_release.py
 *.env*
 
-# mk docs build
-site/
-
 # Coverage
 .coverage
 htmlcov
