@@ -29,7 +29,6 @@ StrEnum = {version = "^0.4.15", python = "<3.11"}
 tomli-w = "^1.0.0"
 tabulate = "^0.9"
 toml = ">=0.10"
-pymdown-extensions = {version="*", optional=true}
 cachelib = "^0.13.0"
 
 
