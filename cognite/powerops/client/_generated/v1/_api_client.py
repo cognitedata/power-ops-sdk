@@ -60,6 +60,7 @@ from cognite.powerops.client._generated.v1._api import (
     ShopResultAPI,
     ShopScenarioAPI,
     ShopScenarioSetAPI,
+    ShopTimeResolutionAPI,
     ShopTimeSeriesAPI,
     ShopTriggerInputAPI,
     ShopTriggerOutputAPI,
@@ -119,6 +120,7 @@ class BenchmarkingDayAheadAPIs:
         self.shop_preprocessor_input = ShopPreprocessorInputAPI(client)
         self.shop_result = ShopResultAPI(client)
         self.shop_scenario = ShopScenarioAPI(client)
+        self.shop_time_resolution = ShopTimeResolutionAPI(client)
         self.shop_time_series = ShopTimeSeriesAPI(client)
         self.shop_trigger_input = ShopTriggerInputAPI(client)
 
@@ -175,6 +177,7 @@ class ShopBasedDayAheadBidProcesAPIs:
         self.shop_result = ShopResultAPI(client)
         self.shop_scenario = ShopScenarioAPI(client)
         self.shop_scenario_set = ShopScenarioSetAPI(client)
+        self.shop_time_resolution = ShopTimeResolutionAPI(client)
         self.shop_time_series = ShopTimeSeriesAPI(client)
         self.shop_trigger_input = ShopTriggerInputAPI(client)
         self.shop_trigger_output = ShopTriggerOutputAPI(client)
@@ -231,6 +234,7 @@ class TotalBidMatrixCalculationAPIs:
         self.shop_output_time_series_definition = ShopOutputTimeSeriesDefinitionAPI(client)
         self.shop_result = ShopResultAPI(client)
         self.shop_scenario = ShopScenarioAPI(client)
+        self.shop_time_resolution = ShopTimeResolutionAPI(client)
         self.shop_time_series = ShopTimeSeriesAPI(client)
         self.total_bid_matrix_calculation_input = TotalBidMatrixCalculationInputAPI(client)
         self.total_bid_matrix_calculation_output = TotalBidMatrixCalculationOutputAPI(client)
@@ -330,6 +334,7 @@ class DayAheadConfigurationAPIs:
         self.shop_output_time_series_definition = ShopOutputTimeSeriesDefinitionAPI(client)
         self.shop_scenario = ShopScenarioAPI(client)
         self.shop_scenario_set = ShopScenarioSetAPI(client)
+        self.shop_time_resolution = ShopTimeResolutionAPI(client)
         self.turbine_efficiency_curve = TurbineEfficiencyCurveAPI(client)
         self.water_value_based_partial_bid_configuration = WaterValueBasedPartialBidConfigurationAPI(client)
 
@@ -460,6 +465,7 @@ class DayAheadBidAPIs:
         self.shop_penalty_report = ShopPenaltyReportAPI(client)
         self.shop_result = ShopResultAPI(client)
         self.shop_scenario = ShopScenarioAPI(client)
+        self.shop_time_resolution = ShopTimeResolutionAPI(client)
         self.shop_time_series = ShopTimeSeriesAPI(client)
 
     def graphql_query(self, query: str, variables: dict[str, Any] | None = None) -> GraphQLList:
