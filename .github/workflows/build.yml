@@ -67,23 +67,3 @@ jobs:
 
       - name: Build package
         run: poetry build
-
-  build-docs:
-    runs-on: ubuntu-latest
-    environment: CI
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      - name: Install Dependencies
-        run: |
-          python -m pip install --upgrade --upgrade-strategy eager --no-cache-dir .[docs]
-
-      - name: Build documentation
-        run: |
-          mkdocs build

@@ -1,0 +1,32 @@
+# ShopBasedPartialBidConfiguration view definition
+# - name: String!
+#   method: String
+#   power_asset: PowerAsset
+#   add_steps: Boolean!
+#   scenario_set: ShopScenarioSet
+
+- name: Sola 1
+  method: price independent
+  power_asset: "[external_id]plant_information_sola"
+  add_steps: False
+  scenario_set: "[name]Stavanger 1 scenario"
+- name: Sola 2
+  method: multi scenario 2
+  power_asset: "[external_id]plant_information_sola"
+  add_steps: False
+  scenario_set: "[name]Stavanger 2 scenarios"
+- name: Sola 3 step
+  method: multi scenario 3
+  power_asset: "[external_id]plant_information_sola"
+  add_steps: True
+  scenario_set: "[name]Stavanger 3 scenarios"
+- name: Sola 3
+  method: multi scenario 3
+  power_asset: "[external_id]plant_information_sola"
+  add_steps: False
+  scenario_set: "[name]Stavanger 3 scenarios"
+- name: Sola 20
+  method: multi scenario 20
+  power_asset: "[external_id]plant_information_sola"
+  add_steps: False
+  scenario_set: "[name]Stavanger 20 scenarios"
