@@ -50,6 +50,19 @@ properties:
       externalId: ShopCommands
       version: "{{power_ops_data_model_version}}"
       type: view
+  timeResolution:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: ShopScenario
+      type: container
+    containerPropertyIdentifier: timeResolution
+    name: timeResolution
+    description: The time resolutions to use within SHOP.
+    source:
+      space: "{{power_ops_models_space}}"
+      externalId: ShopTimeResolution
+      version: "{{power_ops_data_model_version}}"
+      type: view
   source:
     container:
       space: "{{power_ops_models_space}}"
