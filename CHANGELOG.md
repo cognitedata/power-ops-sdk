@@ -18,6 +18,7 @@ Changes are grouped as follows:
 ## [0.104.0] - 2024-11-25
 ### Removed
 * Removed v0 pygen generated classes
+* Removed DayAhead Trigger API
 
 ## [0.103.0] - 2024-11-12
 ### Changed
