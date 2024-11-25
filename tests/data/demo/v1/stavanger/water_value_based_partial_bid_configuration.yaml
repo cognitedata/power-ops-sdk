@@ -1,0 +1,14 @@
+# WaterValueBasedPartialBidConfiguration view definition
+# - name: String!
+#   method: String
+#   power_asset: PlantWaterValueBased
+#   add_steps: Boolean!
+
+- name: Plant Sola
+  method: Water Value Based Bid Generation (WVBBG)
+  power_asset: "[name|type:PlantInformation]Sola"
+  add_steps: false
+- name: Plant Sola Step
+  method: Water Value Based Bid Generation (WVBBG)
+  power_asset: "[name|type:PlantInformation]Sola"
+  add_steps: true

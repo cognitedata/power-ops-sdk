@@ -1,0 +1,27 @@
+# ShopAttributeMapping view definition
+# - name: String!
+#   objectType: String!
+#   object_name: String!
+#   attribute_name: String!
+#   time_series: TimeSeries
+#   transformations: [JSONObject]
+#   retrieve: String
+#   aggregation: String
+
+- external_id: base_mapping_stavanger_reservoir_dale_inflow
+  object_type: reservoir
+  object_name: Dale
+  attribute_name: inflow
+  time_series: null
+  transformations:
+    - StaticValues:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0 # Relative to the start of the simulation time
+              offset_value: 22.0
+            - offset_minute: 840.0
+              offset_value: 12.0
+            - offset_minute: 1200
+              offset_value: 0.0
+  retrieve: RANGE
+  aggregation: MEAN
