@@ -5,74 +5,76 @@ from pathlib import Path
 from typing import Any, Sequence
 
 from cognite.client import ClientConfig, CogniteClient, data_modeling as dm
-from cognite.client.data_classes import TimeSeriesList
+from cognite.client.data_classes import TimeSeriesList, FileMetadataList, SequenceList
 from cognite.client.credentials import OAuthClientCredentials
 
-from ._api.alert import AlertAPI
-from ._api.benchmarking_calculation_input import BenchmarkingCalculationInputAPI
-from ._api.benchmarking_calculation_output import BenchmarkingCalculationOutputAPI
-from ._api.benchmarking_configuration_day_ahead import BenchmarkingConfigurationDayAheadAPI
-from ._api.benchmarking_production_obligation_day_ahead import BenchmarkingProductionObligationDayAheadAPI
-from ._api.benchmarking_result_day_ahead import BenchmarkingResultDayAheadAPI
-from ._api.benchmarking_shop_case import BenchmarkingShopCaseAPI
-from ._api.benchmarking_task_dispatcher_input_day_ahead import BenchmarkingTaskDispatcherInputDayAheadAPI
-from ._api.benchmarking_task_dispatcher_output_day_ahead import BenchmarkingTaskDispatcherOutputDayAheadAPI
-from ._api.bid_configuration_day_ahead import BidConfigurationDayAheadAPI
-from ._api.bid_document import BidDocumentAPI
-from ._api.bid_document_afrr import BidDocumentAFRRAPI
-from ._api.bid_document_day_ahead import BidDocumentDayAheadAPI
-from ._api.bid_matrix import BidMatrixAPI
-from ._api.bid_matrix_information import BidMatrixInformationAPI
-from ._api.bid_row import BidRowAPI
-from ._api.date_specification import DateSpecificationAPI
-from ._api.function_input import FunctionInputAPI
-from ._api.function_output import FunctionOutputAPI
-from ._api.generator import GeneratorAPI
-from ._api.generator_efficiency_curve import GeneratorEfficiencyCurveAPI
-from ._api.market_configuration import MarketConfigurationAPI
-from ._api.multi_scenario_partial_bid_matrix_calculation_input import MultiScenarioPartialBidMatrixCalculationInputAPI
-from ._api.partial_bid_configuration import PartialBidConfigurationAPI
-from ._api.partial_bid_matrix_calculation_input import PartialBidMatrixCalculationInputAPI
-from ._api.partial_bid_matrix_calculation_output import PartialBidMatrixCalculationOutputAPI
-from ._api.partial_bid_matrix_information import PartialBidMatrixInformationAPI
-from ._api.partial_bid_matrix_information_with_scenarios import PartialBidMatrixInformationWithScenariosAPI
-from ._api.plant import PlantAPI
-from ._api.plant_information import PlantInformationAPI
-from ._api.plant_water_value_based import PlantWaterValueBasedAPI
-from ._api.power_asset import PowerAssetAPI
-from ._api.price_area import PriceAreaAPI
-from ._api.price_area_afrr import PriceAreaAFRRAPI
-from ._api.price_area_day_ahead import PriceAreaDayAheadAPI
-from ._api.price_area_information import PriceAreaInformationAPI
-from ._api.price_production import PriceProductionAPI
-from ._api.shop_attribute_mapping import ShopAttributeMappingAPI
-from ._api.shop_based_partial_bid_configuration import ShopBasedPartialBidConfigurationAPI
-from ._api.shop_case import ShopCaseAPI
-from ._api.shop_commands import ShopCommandsAPI
-from ._api.shop_file import ShopFileAPI
-from ._api.shop_model import ShopModelAPI
-from ._api.shop_model_with_assets import ShopModelWithAssetsAPI
-from ._api.shop_output_time_series_definition import ShopOutputTimeSeriesDefinitionAPI
-from ._api.shop_penalty_report import ShopPenaltyReportAPI
-from ._api.shop_preprocessor_input import ShopPreprocessorInputAPI
-from ._api.shop_preprocessor_output import ShopPreprocessorOutputAPI
-from ._api.shop_result import ShopResultAPI
-from ._api.shop_scenario import ShopScenarioAPI
-from ._api.shop_scenario_set import ShopScenarioSetAPI
-from ._api.shop_time_series import ShopTimeSeriesAPI
-from ._api.shop_trigger_input import ShopTriggerInputAPI
-from ._api.shop_trigger_output import ShopTriggerOutputAPI
-from ._api.task_dispatcher_input import TaskDispatcherInputAPI
-from ._api.task_dispatcher_output import TaskDispatcherOutputAPI
-from ._api.total_bid_matrix_calculation_input import TotalBidMatrixCalculationInputAPI
-from ._api.total_bid_matrix_calculation_output import TotalBidMatrixCalculationOutputAPI
-from ._api.turbine_efficiency_curve import TurbineEfficiencyCurveAPI
-from ._api.water_value_based_partial_bid_configuration import WaterValueBasedPartialBidConfigurationAPI
-from ._api.water_value_based_partial_bid_matrix_calculation_input import WaterValueBasedPartialBidMatrixCalculationInputAPI
-from ._api.watercourse import WatercourseAPI
-from ._api._core import SequenceNotStr, GraphQLQueryResponse
-from .data_classes._core import DEFAULT_INSTANCE_SPACE, GraphQLList
-from . import data_classes
+from cognite.powerops.client._generated.v1._api import (
+    AlertAPI,
+    BenchmarkingCalculationInputAPI,
+    BenchmarkingCalculationOutputAPI,
+    BenchmarkingConfigurationDayAheadAPI,
+    BenchmarkingProductionObligationDayAheadAPI,
+    BenchmarkingResultDayAheadAPI,
+    BenchmarkingShopCaseAPI,
+    BenchmarkingTaskDispatcherInputDayAheadAPI,
+    BenchmarkingTaskDispatcherOutputDayAheadAPI,
+    BidConfigurationDayAheadAPI,
+    BidDocumentAPI,
+    BidDocumentAFRRAPI,
+    BidDocumentDayAheadAPI,
+    BidMatrixAPI,
+    BidMatrixInformationAPI,
+    BidRowAPI,
+    DateSpecificationAPI,
+    FunctionInputAPI,
+    FunctionOutputAPI,
+    GeneratorAPI,
+    GeneratorEfficiencyCurveAPI,
+    MarketConfigurationAPI,
+    MultiScenarioPartialBidMatrixCalculationInputAPI,
+    PartialBidConfigurationAPI,
+    PartialBidMatrixCalculationInputAPI,
+    PartialBidMatrixCalculationOutputAPI,
+    PartialBidMatrixInformationAPI,
+    PartialBidMatrixInformationWithScenariosAPI,
+    PlantAPI,
+    PlantInformationAPI,
+    PlantWaterValueBasedAPI,
+    PowerAssetAPI,
+    PriceAreaAPI,
+    PriceAreaAFRRAPI,
+    PriceAreaDayAheadAPI,
+    PriceAreaInformationAPI,
+    PriceProductionAPI,
+    ShopAttributeMappingAPI,
+    ShopBasedPartialBidConfigurationAPI,
+    ShopCaseAPI,
+    ShopCommandsAPI,
+    ShopFileAPI,
+    ShopModelAPI,
+    ShopModelWithAssetsAPI,
+    ShopOutputTimeSeriesDefinitionAPI,
+    ShopPenaltyReportAPI,
+    ShopPreprocessorInputAPI,
+    ShopPreprocessorOutputAPI,
+    ShopResultAPI,
+    ShopScenarioAPI,
+    ShopScenarioSetAPI,
+    ShopTimeSeriesAPI,
+    ShopTriggerInputAPI,
+    ShopTriggerOutputAPI,
+    TaskDispatcherInputAPI,
+    TaskDispatcherOutputAPI,
+    TotalBidMatrixCalculationInputAPI,
+    TotalBidMatrixCalculationOutputAPI,
+    TurbineEfficiencyCurveAPI,
+    WaterValueBasedPartialBidConfigurationAPI,
+    WaterValueBasedPartialBidMatrixCalculationInputAPI,
+    WatercourseAPI,
+)
+from cognite.powerops.client._generated.v1._api._core import SequenceNotStr, GraphQLQueryResponse
+from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE, GraphQLList
+from cognite.powerops.client._generated.v1 import data_classes
 
 
 class BenchmarkingDayAheadAPIs:
@@ -477,9 +479,9 @@ class PowerOpsModelsV1Client:
     PowerOpsModelsV1Client
 
     Generated with:
-        pygen = 0.99.28
-        cognite-sdk = 7.54.12
-        pydantic = 2.8.2
+        pygen = 0.99.50
+        cognite-sdk = 7.67.1
+        pydantic = 2.9.2
 
     """
 
@@ -491,7 +493,7 @@ class PowerOpsModelsV1Client:
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
         # The client name is used for aggregated logging of Pygen Usage
-        client.config.client_name = "CognitePygen:0.99.28"
+        client.config.client_name = "CognitePygen:0.99.50"
 
         self.benchmarking_day_ahead = BenchmarkingDayAheadAPIs(client)
         self.shop_based_day_ahead_bid_process = ShopBasedDayAheadBidProcesAPIs(client)
@@ -513,6 +515,8 @@ class PowerOpsModelsV1Client:
         allow_version_increase: bool = False,
     ) -> data_classes.ResourcesWriteResult:
         """Add or update (upsert) items.
+
+        This method will create the nodes, edges, timeseries, files and sequences of the supplied items.
 
         Args:
             items: One or more instances of the pygen generated data classes.
@@ -538,8 +542,17 @@ class PowerOpsModelsV1Client:
         time_series = TimeSeriesList([])
         if instances.time_series:
             time_series = self._client.time_series.upsert(instances.time_series, mode="patch")
+        files = FileMetadataList([])
+        if instances.files:
+            for file in instances.files:
+                created, _ = self._client.files.create(file, overwrite=True)
+                files.append(created)
 
-        return data_classes.ResourcesWriteResult(result.nodes, result.edges, TimeSeriesList(time_series))
+        sequences = SequenceList([])
+        if instances.sequences:
+            sequences = self._client.sequences.upsert(instances.sequences, mode="patch")
+
+        return data_classes.ResourcesWriteResult(result.nodes, result.edges, time_series, files, sequences)
 
     def _create_instances(
         self,
@@ -568,7 +581,7 @@ class PowerOpsModelsV1Client:
         replace: bool = False,
         write_none: bool = False,
     ) -> data_classes.ResourcesWriteResult:
-        """Add or update (upsert) items.
+        """[DEPRECATED] Add or update (upsert) items.
 
         Args:
             items: One or more instances of the pygen generated data classes.
@@ -592,9 +605,9 @@ class PowerOpsModelsV1Client:
     def delete(
         self,
         external_id: (
-            str | SequenceNotStr[str] | data_classes.DomainModelWrite | Sequence[data_classes.DomainModelWrite]
+            str | dm.NodeId | data_classes.DomainModelWrite | SequenceNotStr[str | dm.NodeId | data_classes.DomainModelWrite]
         ),
-        space: str = DEFAULT_INSTANCE_SPACE
+        space: str = DEFAULT_INSTANCE_SPACE,
     ) -> dm.InstancesDeleteResult:
         """Delete one or more items.
 
@@ -602,7 +615,7 @@ class PowerOpsModelsV1Client:
         will be deleted as well.
 
         Args:
-            external_id: The external id or items(s) to delete.
+            external_id: The external id or items(s) to delete. Can also be a list of NodeId(s) or DomainModelWrite(s).
             space: The space where all the item(s) are located.
 
         Returns:
@@ -618,23 +631,34 @@ class PowerOpsModelsV1Client:
         """
         if isinstance(external_id, str):
             return self._client.data_modeling.instances.delete(nodes=(space, external_id))
-        elif isinstance(external_id, Sequence) and all(isinstance(item, str) for item in external_id):
-            return self._client.data_modeling.instances.delete(
-                nodes=[(space, id_) for id_ in external_id if isinstance(id_, str)],
-            )
-        elif isinstance(external_id, data_classes.DomainModelWrite) or (
-            isinstance(external_id, Sequence)
-            and not isinstance(external_id, str)
-            and all(isinstance(item, data_classes.DomainModelWrite) for item in external_id)
-        ):
+        elif isinstance(external_id, dm.NodeId):
+            return self._client.data_modeling.instances.delete(nodes=external_id)
+        elif isinstance(external_id, data_classes.DomainModelWrite):
             resources = self._create_instances(external_id, False, False)
             return self._client.data_modeling.instances.delete(
                 nodes=resources.nodes.as_ids(),
                 edges=resources.edges.as_ids(),
             )
+        elif isinstance(external_id, Sequence):
+            node_ids: list[dm.NodeId] = []
+            edge_ids: list[dm.EdgeId] = []
+            for item in external_id:
+                if isinstance(item, str):
+                    node_ids.append(dm.NodeId(space, item))
+                elif isinstance(item, dm.NodeId):
+                    node_ids.append(item)
+                elif isinstance(item, data_classes.DomainModelWrite):
+                    resources = self._create_instances(item, False, False)
+                    node_ids.extend(resources.nodes.as_ids())
+                    edge_ids.extend(resources.edges.as_ids())
+                else:
+                    raise ValueError(
+                         f"Expected str, NodeId, or DomainModelWrite, Sequence of these types. Got {type(external_id)}"
+                    )
+            return self._client.data_modeling.instances.delete(nodes=node_ids, edges=edge_ids)
         else:
             raise ValueError(
-                "Expected str, list of str, or DomainModelWrite, list of DomainModelWrite," f"got {type(external_id)}"
+                 f"Expected str, NodeId, or DomainModelWrite, Sequence of these types. Got {type(external_id)}"
             )
 
     @classmethod

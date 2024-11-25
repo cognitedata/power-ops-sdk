@@ -8,7 +8,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -21,12 +27,18 @@ from cognite.powerops.client._generated.v1.data_classes import (
     ShopAttributeMappingTextFields,
 )
 from cognite.powerops.client._generated.v1.data_classes._shop_attribute_mapping import (
+    ShopAttributeMappingQuery,
     _SHOPATTRIBUTEMAPPING_PROPERTIES_BY_FIELD,
     _create_shop_attribute_mapping_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .shop_attribute_mapping_time_series import ShopAttributeMappingTimeSeriesAPI
-from .shop_attribute_mapping_query import ShopAttributeMappingQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.shop_attribute_mapping_time_series import ShopAttributeMappingTimeSeriesAPI
+from cognite.powerops.client._generated.v1._api.shop_attribute_mapping_query import ShopAttributeMappingQueryAPI
 
 
 class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMappingWrite, ShopAttributeMappingList, ShopAttributeMappingWriteList]):
@@ -80,6 +92,12 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
             A query API for shop attribute mappings.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_shop_attribute_mapping_filter(
             self._view_id,
@@ -97,7 +115,7 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(ShopAttributeMappingList)
+        builder = DataClassQueryBuilder(ShopAttributeMappingList)
         return ShopAttributeMappingQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -171,14 +189,14 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopAttributeMapping | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopAttributeMapping | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopAttributeMappingList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> ShopAttributeMappingList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopAttributeMapping | ShopAttributeMappingList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> ShopAttributeMapping | ShopAttributeMappingList | None:
         """Retrieve one or more shop attribute mappings by id(s).
 
         Args:
@@ -523,6 +541,15 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
             filter_,
         )
 
+    def query(self) -> ShopAttributeMappingQuery:
+        """Start a query for shop attribute mappings."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return ShopAttributeMappingQuery(self._client)
+
+    def select(self) -> ShopAttributeMappingQuery:
+        """Start selecting from shop attribute mappings."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return ShopAttributeMappingQuery(self._client)
 
     def list(
         self,
@@ -595,6 +622,7 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
             space,
             filter,
         )
+
         return self._list(
             limit=limit,
             filter=filter_,

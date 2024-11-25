@@ -9,7 +9,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -20,13 +26,20 @@ from cognite.powerops.client._generated.v1.data_classes import (
     TaskDispatcherInputList,
     TaskDispatcherInputWriteList,
     TaskDispatcherInputTextFields,
+    BidConfigurationDayAhead,
 )
 from cognite.powerops.client._generated.v1.data_classes._task_dispatcher_input import (
+    TaskDispatcherInputQuery,
     _TASKDISPATCHERINPUT_PROPERTIES_BY_FIELD,
     _create_task_dispatcher_input_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .task_dispatcher_input_query import TaskDispatcherInputQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.task_dispatcher_input_query import TaskDispatcherInputQueryAPI
 
 
 class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWrite, TaskDispatcherInputList, TaskDispatcherInputWriteList]):
@@ -50,7 +63,7 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
             function_name_prefix: str | None = None,
             function_call_id: str | list[str] | None = None,
             function_call_id_prefix: str | None = None,
-            bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
             min_bid_date: datetime.date | None = None,
             max_bid_date: datetime.date | None = None,
             external_id_prefix: str | None = None,
@@ -81,6 +94,12 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
             A query API for task dispatcher inputs.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_task_dispatcher_input_filter(
             self._view_id,
@@ -99,7 +118,7 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(TaskDispatcherInputList)
+        builder = DataClassQueryBuilder(TaskDispatcherInputList)
         return TaskDispatcherInputQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -110,6 +129,10 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         write_none: bool = False,
     ) -> ResourcesWriteResult:
         """Add or update (upsert) task dispatcher inputs.
+
+        Note: This method iterates through all nodes and timeseries linked to task_dispatcher_input and creates them including the edges
+        between the nodes. For example, if any of `bid_configuration` are set, then these
+        nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
             task_dispatcher_input: Task dispatcher input or sequence of task dispatcher inputs to upsert.
@@ -173,14 +196,14 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> TaskDispatcherInput | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> TaskDispatcherInput | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> TaskDispatcherInputList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> TaskDispatcherInputList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> TaskDispatcherInput | TaskDispatcherInputList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> TaskDispatcherInput | TaskDispatcherInputList | None:
         """Retrieve one or more task dispatcher inputs by id(s).
 
         Args:
@@ -213,7 +236,7 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -305,7 +328,7 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -331,7 +354,7 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -359,7 +382,7 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -386,7 +409,7 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -476,7 +499,7 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -537,6 +560,15 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
             filter_,
         )
 
+    def query(self) -> TaskDispatcherInputQuery:
+        """Start a query for task dispatcher inputs."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return TaskDispatcherInputQuery(self._client)
+
+    def select(self) -> TaskDispatcherInputQuery:
+        """Start selecting from task dispatcher inputs."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return TaskDispatcherInputQuery(self._client)
 
     def list(
         self,
@@ -548,7 +580,7 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -558,6 +590,7 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         sort_by: TaskDispatcherInputFields | Sequence[TaskDispatcherInputFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> TaskDispatcherInputList:
         """List/filter task dispatcher inputs
 
@@ -582,6 +615,8 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
                 This will override the sort_by and direction. This allowos you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
+            retrieve_connections: Whether to retrieve `bid_configuration` for the task dispatcher inputs. Defaults to 'skip'.
+                'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier of the connected items, and 'full' will retrieve the full connected items.
 
         Returns:
             List of requested task dispatcher inputs
@@ -612,10 +647,44 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
             space,
             filter,
         )
-        return self._list(
-            limit=limit,
-            filter=filter_,
-            sort_by=sort_by,  # type: ignore[arg-type]
-            direction=direction,
-            sort=sort,
+
+        if retrieve_connections == "skip":
+                return self._list(
+                limit=limit,
+                filter=filter_,
+                sort_by=sort_by,  # type: ignore[arg-type]
+                direction=direction,
+                sort=sort,
+            )
+
+        builder = DataClassQueryBuilder(TaskDispatcherInputList)
+        has_data = dm.filters.HasData(views=[self._view_id])
+        builder.append(
+            NodeQueryStep(
+                builder.create_name(None),
+                dm.query.NodeResultSetExpression(
+                    filter=dm.filters.And(filter_, has_data) if filter_ else has_data,
+                    sort=self._create_sort(sort_by, direction, sort),  # type: ignore[arg-type]
+                ),
+                TaskDispatcherInput,
+                max_retrieve_limit=limit,
+                raw_filter=filter_,
+            )
         )
+        from_root = builder.get_from()
+        if retrieve_connections == "full":
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name(from_root),
+                    dm.query.NodeResultSetExpression(
+                        from_=from_root,
+                        filter=dm.filters.HasData(views=[BidConfigurationDayAhead._view_id]),
+                        direction="outwards",
+                        through=self._view_id.as_property_ref("bidConfiguration"),
+                    ),
+                    BidConfigurationDayAhead,
+                )
+            )
+        # We know that that all nodes are connected as it is not possible to filter on connections
+        builder.execute_query(self._client, remove_not_connected=False)
+        return builder.unpack()

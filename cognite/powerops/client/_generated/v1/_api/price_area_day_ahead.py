@@ -8,7 +8,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -19,20 +25,31 @@ from cognite.powerops.client._generated.v1.data_classes import (
     PriceAreaDayAheadList,
     PriceAreaDayAheadWriteList,
     PriceAreaDayAheadTextFields,
+    BidConfigurationDayAhead,
+    PriceAreaInformation,
 )
 from cognite.powerops.client._generated.v1.data_classes._price_area_day_ahead import (
+    PriceAreaDayAheadQuery,
     _PRICEAREADAYAHEAD_PROPERTIES_BY_FIELD,
     _create_price_area_day_ahead_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .price_area_day_ahead_main_price_scenario import PriceAreaDayAheadMainPriceScenarioAPI
-from .price_area_day_ahead_price_scenarios import PriceAreaDayAheadPriceScenariosAPI
-from .price_area_day_ahead_query import PriceAreaDayAheadQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.price_area_day_ahead_main_price_scenario import PriceAreaDayAheadMainPriceScenarioAPI
+from cognite.powerops.client._generated.v1._api.price_area_day_ahead_price_scenarios import PriceAreaDayAheadPriceScenariosAPI
+from cognite.powerops.client._generated.v1._api.price_area_day_ahead_query import PriceAreaDayAheadQueryAPI
 
 
 class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, PriceAreaDayAheadList, PriceAreaDayAheadWriteList]):
     _view_id = dm.ViewId("power_ops_core", "PriceAreaDayAhead", "1")
     _properties_by_field = _PRICEAREADAYAHEAD_PROPERTIES_BY_FIELD
+    _direct_children_by_external_id = {
+        "PriceAreaInformation": PriceAreaInformation,
+    }
     _class_type = PriceAreaDayAhead
     _class_list = PriceAreaDayAheadList
     _class_write_list = PriceAreaDayAheadWriteList
@@ -53,7 +70,7 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
             max_ordering: int | None = None,
             asset_type: str | list[str] | None = None,
             asset_type_prefix: str | None = None,
-            default_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
             external_id_prefix: str | None = None,
             space: str | list[str] | None = None,
             limit: int = DEFAULT_QUERY_LIMIT,
@@ -80,6 +97,12 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
             A query API for price area day aheads.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_price_area_day_ahead_filter(
             self._view_id,
@@ -96,7 +119,7 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(PriceAreaDayAheadList)
+        builder = DataClassQueryBuilder(PriceAreaDayAheadList)
         return PriceAreaDayAheadQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -107,6 +130,10 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
         write_none: bool = False,
     ) -> ResourcesWriteResult:
         """Add or update (upsert) price area day aheads.
+
+        Note: This method iterates through all nodes and timeseries linked to price_area_day_ahead and creates them including the edges
+        between the nodes. For example, if any of `default_bid_configuration` are set, then these
+        nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
             price_area_day_ahead: Price area day ahead or sequence of price area day aheads to upsert.
@@ -170,19 +197,22 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> PriceAreaDayAhead | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["PriceAreaInformation"]] | None = None) -> PriceAreaDayAhead | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PriceAreaDayAheadList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["PriceAreaInformation"]] | None = None) -> PriceAreaDayAheadList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PriceAreaDayAhead | PriceAreaDayAheadList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["PriceAreaInformation"]] | None = None) -> PriceAreaDayAhead | PriceAreaDayAheadList | None:
         """Retrieve one or more price area day aheads by id(s).
 
         Args:
             external_id: External id or list of external ids of the price area day aheads.
             space: The space where all the price area day aheads are located.
+            as_child_class: If you want to retrieve the price area day aheads as a child class,
+                you can specify the child class here. Note that if one node has properties in
+                multiple child classes, you will get duplicate nodes in the result.
 
         Returns:
             The requested price area day aheads.
@@ -196,7 +226,7 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
                 >>> price_area_day_ahead = client.price_area_day_ahead.retrieve("my_price_area_day_ahead")
 
         """
-        return self._retrieve(external_id, space)
+        return self._retrieve(external_id, space, as_child_class=as_child_class)
 
     def search(
         self,
@@ -210,7 +240,7 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        default_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -296,7 +326,7 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        default_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -320,7 +350,7 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        default_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -346,7 +376,7 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        default_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -371,7 +401,7 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        default_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -455,7 +485,7 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        default_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -510,6 +540,15 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
             filter_,
         )
 
+    def query(self) -> PriceAreaDayAheadQuery:
+        """Start a query for price area day aheads."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return PriceAreaDayAheadQuery(self._client)
+
+    def select(self) -> PriceAreaDayAheadQuery:
+        """Start selecting from price area day aheads."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return PriceAreaDayAheadQuery(self._client)
 
     def list(
         self,
@@ -521,7 +560,7 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        default_bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -529,6 +568,7 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
         sort_by: PriceAreaDayAheadFields | Sequence[PriceAreaDayAheadFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> PriceAreaDayAheadList:
         """List/filter price area day aheads
 
@@ -551,6 +591,8 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
                 This will override the sort_by and direction. This allowos you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
+            retrieve_connections: Whether to retrieve `default_bid_configuration` for the price area day aheads. Defaults to 'skip'.
+                'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier of the connected items, and 'full' will retrieve the full connected items.
 
         Returns:
             List of requested price area day aheads
@@ -579,10 +621,44 @@ class PriceAreaDayAheadAPI(NodeAPI[PriceAreaDayAhead, PriceAreaDayAheadWrite, Pr
             space,
             filter,
         )
-        return self._list(
-            limit=limit,
-            filter=filter_,
-            sort_by=sort_by,  # type: ignore[arg-type]
-            direction=direction,
-            sort=sort,
+
+        if retrieve_connections == "skip":
+                return self._list(
+                limit=limit,
+                filter=filter_,
+                sort_by=sort_by,  # type: ignore[arg-type]
+                direction=direction,
+                sort=sort,
+            )
+
+        builder = DataClassQueryBuilder(PriceAreaDayAheadList)
+        has_data = dm.filters.HasData(views=[self._view_id])
+        builder.append(
+            NodeQueryStep(
+                builder.create_name(None),
+                dm.query.NodeResultSetExpression(
+                    filter=dm.filters.And(filter_, has_data) if filter_ else has_data,
+                    sort=self._create_sort(sort_by, direction, sort),  # type: ignore[arg-type]
+                ),
+                PriceAreaDayAhead,
+                max_retrieve_limit=limit,
+                raw_filter=filter_,
+            )
         )
+        from_root = builder.get_from()
+        if retrieve_connections == "full":
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name(from_root),
+                    dm.query.NodeResultSetExpression(
+                        from_=from_root,
+                        filter=dm.filters.HasData(views=[BidConfigurationDayAhead._view_id]),
+                        direction="outwards",
+                        through=self._view_id.as_property_ref("defaultBidConfiguration"),
+                    ),
+                    BidConfigurationDayAhead,
+                )
+            )
+        # We know that that all nodes are connected as it is not possible to filter on connections
+        builder.execute_query(self._client, remove_not_connected=False)
+        return builder.unpack()

@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import datetime
-from typing import TYPE_CHECKING
+from collections.abc import Sequence
+from typing import TYPE_CHECKING, cast
 
 from cognite.client import data_modeling as dm, CogniteClient
 
@@ -18,11 +19,19 @@ from cognite.powerops.client._generated.v1.data_classes._bid_row import (
     BidRow,
     _create_bid_row_filter,
 )
-from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_QUERY_LIMIT,
+    EdgeQueryStep,
+    NodeQueryStep,
+    DataClassQueryBuilder,
+    QueryAPI,
+    T_DomainModelList,
+    _create_edge_filter,
+)
 
 if TYPE_CHECKING:
-    from .alert_query import AlertQueryAPI
-    from .bid_row_query import BidRowQueryAPI
+    from cognite.powerops.client._generated.v1._api.alert_query import AlertQueryAPI
+    from cognite.powerops.client._generated.v1._api.bid_row_query import BidRowQueryAPI
 
 
 
@@ -32,20 +41,19 @@ class BidDocumentAFRRQueryAPI(QueryAPI[T_DomainModelList]):
     def __init__(
         self,
         client: CogniteClient,
-        builder: QueryBuilder[T_DomainModelList],
+        builder: DataClassQueryBuilder[T_DomainModelList],
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
         super().__init__(client, builder)
-
+        from_ = self._builder.get_from()
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("bid_document_afrr"),
+            NodeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
-                    from_=self._builder[-1].name if self._builder else None,
+                    from_=from_,
                     filter=filter_,
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(self._view_id, ["*"])]),
                 result_cls=BidDocumentAFRR,
                 max_retrieve_limit=limit,
             )
@@ -110,7 +118,8 @@ class BidDocumentAFRRQueryAPI(QueryAPI[T_DomainModelList]):
         """
         from .alert_query import AlertQueryAPI
 
-        from_ = self._builder[-1].name
+        # from is a string as we added a node query step in the __init__ method
+        from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "calculationIssue"),
 
@@ -118,14 +127,13 @@ class BidDocumentAFRRQueryAPI(QueryAPI[T_DomainModelList]):
             space=space_edge,
         )
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("alerts"),
+            EdgeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,
                     direction="outwards",
                 ),
-                select=dm.query.Select(),
                 max_retrieve_limit=limit,
             )
         )
@@ -168,8 +176,8 @@ class BidDocumentAFRRQueryAPI(QueryAPI[T_DomainModelList]):
         is_block: bool | None = None,
         exclusive_group_id: str | list[str] | None = None,
         exclusive_group_id_prefix: str | None = None,
-        linked_bid: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        power_asset: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        linked_bid: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         external_id_prefix_edge: str | None = None,
@@ -205,7 +213,8 @@ class BidDocumentAFRRQueryAPI(QueryAPI[T_DomainModelList]):
         """
         from .bid_row_query import BidRowQueryAPI
 
-        from_ = self._builder[-1].name
+        # from is a string as we added a node query step in the __init__ method
+        from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "partialBid"),
 
@@ -213,14 +222,13 @@ class BidDocumentAFRRQueryAPI(QueryAPI[T_DomainModelList]):
             space=space_edge,
         )
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("bids"),
+            EdgeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,
                     direction="outwards",
                 ),
-                select=dm.query.Select(),
                 max_retrieve_limit=limit,
             )
         )
@@ -266,19 +274,15 @@ class BidDocumentAFRRQueryAPI(QueryAPI[T_DomainModelList]):
         return self._query()
 
     def _query_append_price_area(self, from_: str) -> None:
-        view_id = PriceAreaAFRR._view_id
         self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("price_area"),
+            NodeQueryStep(
+                name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
-                    filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
                     through=self._view_id.as_property_ref("priceArea"),
                     direction="outwards",
+                    filter=dm.filters.HasData(views=[PriceAreaAFRR._view_id]),
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
-                max_retrieve_limit=-1,
                 result_cls=PriceAreaAFRR,
-                is_single_direct_relation=True,
             ),
         )

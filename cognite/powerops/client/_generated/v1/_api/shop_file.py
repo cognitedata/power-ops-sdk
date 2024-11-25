@@ -8,7 +8,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -21,11 +27,17 @@ from cognite.powerops.client._generated.v1.data_classes import (
     ShopFileTextFields,
 )
 from cognite.powerops.client._generated.v1.data_classes._shop_file import (
+    ShopFileQuery,
     _SHOPFILE_PROPERTIES_BY_FIELD,
     _create_shop_file_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .shop_file_query import ShopFileQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.shop_file_query import ShopFileQueryAPI
 
 
 class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteList]):
@@ -76,6 +88,12 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
             A query API for shop files.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_shop_file_filter(
             self._view_id,
@@ -92,7 +110,7 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(ShopFileList)
+        builder = DataClassQueryBuilder(ShopFileList)
         return ShopFileQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -166,14 +184,14 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> ShopFile | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopFile | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopFileList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> ShopFileList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopFile | ShopFileList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> ShopFile | ShopFileList | None:
         """Retrieve one or more shop files by id(s).
 
         Args:
@@ -506,6 +524,15 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
             filter_,
         )
 
+    def query(self) -> ShopFileQuery:
+        """Start a query for shop files."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return ShopFileQuery(self._client)
+
+    def select(self) -> ShopFileQuery:
+        """Start selecting from shop files."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return ShopFileQuery(self._client)
 
     def list(
         self,
@@ -575,6 +602,7 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
             space,
             filter,
         )
+
         return self._list(
             limit=limit,
             filter=filter_,

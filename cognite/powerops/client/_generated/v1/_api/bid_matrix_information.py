@@ -8,7 +8,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -19,21 +25,33 @@ from cognite.powerops.client._generated.v1.data_classes import (
     BidMatrixInformationList,
     BidMatrixInformationWriteList,
     BidMatrixInformationTextFields,
+    Alert,
+    BidMatrix,
+    PartialBidMatrixInformation,
 )
 from cognite.powerops.client._generated.v1.data_classes._bid_matrix_information import (
+    BidMatrixInformationQuery,
     _BIDMATRIXINFORMATION_PROPERTIES_BY_FIELD,
     _create_bid_matrix_information_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .bid_matrix_information_alerts import BidMatrixInformationAlertsAPI
-from .bid_matrix_information_underlying_bid_matrices import BidMatrixInformationUnderlyingBidMatricesAPI
-from .bid_matrix_information_linked_time_series import BidMatrixInformationLinkedTimeSeriesAPI
-from .bid_matrix_information_query import BidMatrixInformationQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.bid_matrix_information_alerts import BidMatrixInformationAlertsAPI
+from cognite.powerops.client._generated.v1._api.bid_matrix_information_underlying_bid_matrices import BidMatrixInformationUnderlyingBidMatricesAPI
+from cognite.powerops.client._generated.v1._api.bid_matrix_information_linked_time_series import BidMatrixInformationLinkedTimeSeriesAPI
+from cognite.powerops.client._generated.v1._api.bid_matrix_information_query import BidMatrixInformationQueryAPI
 
 
 class BidMatrixInformationAPI(NodeAPI[BidMatrixInformation, BidMatrixInformationWrite, BidMatrixInformationList, BidMatrixInformationWriteList]):
     _view_id = dm.ViewId("power_ops_core", "BidMatrixInformation", "1")
     _properties_by_field = _BIDMATRIXINFORMATION_PROPERTIES_BY_FIELD
+    _direct_children_by_external_id = {
+        "PartialBidMatrixInformation": PartialBidMatrixInformation,
+    }
     _class_type = BidMatrixInformation
     _class_list = BidMatrixInformationList
     _class_write_list = BidMatrixInformationWriteList
@@ -68,6 +86,12 @@ class BidMatrixInformationAPI(NodeAPI[BidMatrixInformation, BidMatrixInformation
             A query API for bid matrix information.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_bid_matrix_information_filter(
             self._view_id,
@@ -77,7 +101,7 @@ class BidMatrixInformationAPI(NodeAPI[BidMatrixInformation, BidMatrixInformation
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(BidMatrixInformationList)
+        builder = DataClassQueryBuilder(BidMatrixInformationList)
         return BidMatrixInformationQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -155,19 +179,22 @@ class BidMatrixInformationAPI(NodeAPI[BidMatrixInformation, BidMatrixInformation
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> BidMatrixInformation | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["PartialBidMatrixInformation"]] | None = None) -> BidMatrixInformation | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BidMatrixInformationList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["PartialBidMatrixInformation"]] | None = None) -> BidMatrixInformationList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BidMatrixInformation | BidMatrixInformationList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["PartialBidMatrixInformation"]] | None = None) -> BidMatrixInformation | BidMatrixInformationList | None:
         """Retrieve one or more bid matrix information by id(s).
 
         Args:
             external_id: External id or list of external ids of the bid matrix information.
             space: The space where all the bid matrix information are located.
+            as_child_class: If you want to retrieve the bid matrix information as a child class,
+                you can specify the child class here. Note that if one node has properties in
+                multiple child classes, you will get duplicate nodes in the result.
 
         Returns:
             The requested bid matrix information.
@@ -200,7 +227,8 @@ class BidMatrixInformationAPI(NodeAPI[BidMatrixInformation, BidMatrixInformation
                     "outwards",
                     dm.ViewId("power_ops_core", "BidMatrix", "1"),
                 ),
-                                               ]
+                                               ],
+            as_child_class=as_child_class
         )
 
 
@@ -432,6 +460,15 @@ class BidMatrixInformationAPI(NodeAPI[BidMatrixInformation, BidMatrixInformation
             filter_,
         )
 
+    def query(self) -> BidMatrixInformationQuery:
+        """Start a query for bid matrix information."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return BidMatrixInformationQuery(self._client)
+
+    def select(self) -> BidMatrixInformationQuery:
+        """Start selecting from bid matrix information."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return BidMatrixInformationQuery(self._client)
 
     def list(
         self,
@@ -444,7 +481,7 @@ class BidMatrixInformationAPI(NodeAPI[BidMatrixInformation, BidMatrixInformation
         sort_by: BidMatrixInformationFields | Sequence[BidMatrixInformationFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
-        retrieve_edges: bool = True,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> BidMatrixInformationList:
         """List/filter bid matrix information
 
@@ -460,7 +497,8 @@ class BidMatrixInformationAPI(NodeAPI[BidMatrixInformation, BidMatrixInformation
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
                 This will override the sort_by and direction. This allowos you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
-            retrieve_edges: Whether to retrieve `alerts` or `underlying_bid_matrices` external ids for the bid matrix information. Defaults to True.
+            retrieve_connections: Whether to retrieve `alerts` and `underlying_bid_matrices` for the bid matrix information. Defaults to 'skip'.
+                'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier of the connected items, and 'full' will retrieve the full connected items.
 
         Returns:
             List of requested bid matrix information
@@ -483,27 +521,73 @@ class BidMatrixInformationAPI(NodeAPI[BidMatrixInformation, BidMatrixInformation
             filter,
         )
 
-        return self._list(
-            limit=limit,
-            filter=filter_,
-            sort_by=sort_by,  # type: ignore[arg-type]
-            direction=direction,
-            sort=sort,
-            retrieve_edges=retrieve_edges,
-            edge_api_name_type_direction_view_id_penta=[
-                (
-                    self.alerts_edge,
-                    "alerts",
-                    dm.DirectRelationReference("power_ops_types", "calculationIssue"),
-                    "outwards",
-                    dm.ViewId("power_ops_core", "Alert", "1"),
+        if retrieve_connections == "skip":
+                return self._list(
+                limit=limit,
+                filter=filter_,
+                sort_by=sort_by,  # type: ignore[arg-type]
+                direction=direction,
+                sort=sort,
+            )
+
+        builder = DataClassQueryBuilder(BidMatrixInformationList)
+        has_data = dm.filters.HasData(views=[self._view_id])
+        builder.append(
+            NodeQueryStep(
+                builder.create_name(None),
+                dm.query.NodeResultSetExpression(
+                    filter=dm.filters.And(filter_, has_data) if filter_ else has_data,
+                    sort=self._create_sort(sort_by, direction, sort),  # type: ignore[arg-type]
                 ),
-                (
-                    self.underlying_bid_matrices_edge,
-                    "underlying_bid_matrices",
-                    dm.DirectRelationReference("power_ops_types", "intermediateBidMatrix"),
-                    "outwards",
-                    dm.ViewId("power_ops_core", "BidMatrix", "1"),
-                ),
-                                               ]
+                BidMatrixInformation,
+                max_retrieve_limit=limit,
+                raw_filter=filter_,
+            )
         )
+        from_root = builder.get_from()
+        edge_alerts = builder.create_name(from_root)
+        builder.append(
+            EdgeQueryStep(
+                edge_alerts,
+                dm.query.EdgeResultSetExpression(
+                    from_=from_root,
+                    direction="outwards",
+                    chain_to="destination",
+                ),
+            )
+        )
+        edge_underlying_bid_matrices = builder.create_name(from_root)
+        builder.append(
+            EdgeQueryStep(
+                edge_underlying_bid_matrices,
+                dm.query.EdgeResultSetExpression(
+                    from_=from_root,
+                    direction="outwards",
+                    chain_to="destination",
+                ),
+            )
+        )
+        if retrieve_connections == "full":
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name( edge_alerts),
+                    dm.query.NodeResultSetExpression(
+                        from_= edge_alerts,
+                        filter=dm.filters.HasData(views=[Alert._view_id]),
+                    ),
+                    Alert,
+                )
+            )
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name( edge_underlying_bid_matrices),
+                    dm.query.NodeResultSetExpression(
+                        from_= edge_underlying_bid_matrices,
+                        filter=dm.filters.HasData(views=[BidMatrix._view_id]),
+                    ),
+                    BidMatrix,
+                )
+            )
+        # We know that that all nodes are connected as it is not possible to filter on connections
+        builder.execute_query(self._client, remove_not_connected=False)
+        return builder.unpack()

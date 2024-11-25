@@ -1,14 +1,16 @@
 from __future__ import annotations
 
 import warnings
+from collections.abc import Sequence
 from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
 
-from cognite.client import data_modeling as dm
+from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator
 
-from ._core import (
+from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
     DataRecord,
     DataRecordGraphQL,
     DataRecordWrite,
@@ -16,9 +18,23 @@ from ._core import (
     DomainModelWrite,
     DomainModelWriteList,
     DomainModelList,
+    DomainRelation,
     DomainRelationWrite,
     GraphQLCore,
     ResourcesWrite,
+    T_DomainModelList,
+    as_direct_relation_reference,
+    as_instance_dict_id,
+    as_node_id,
+    as_pygen_node_id,
+    are_nodes_equal,
+    is_tuple_id,
+    select_best_node,
+    QueryCore,
+    NodeQueryCore,
+    StringFilter,
+    FloatFilter,
+    IntFilter,
 )
 
 
@@ -35,10 +51,11 @@ __all__ = [
 ]
 
 
-MarketConfigurationTextFields = Literal["name", "timezone", "price_unit", "time_unit"]
-MarketConfigurationFields = Literal["name", "max_price", "min_price", "timezone", "price_unit", "price_steps", "tick_size", "time_unit", "trade_lot"]
+MarketConfigurationTextFields = Literal["external_id", "name", "timezone", "price_unit", "time_unit"]
+MarketConfigurationFields = Literal["external_id", "name", "max_price", "min_price", "timezone", "price_unit", "price_steps", "tick_size", "time_unit", "trade_lot"]
 
 _MARKETCONFIGURATION_PROPERTIES_BY_FIELD = {
+    "external_id": "externalId",
     "name": "name",
     "max_price": "maxPrice",
     "min_price": "minPrice",
@@ -99,7 +116,7 @@ class MarketConfigurationGraphQL(GraphQLCore):
         if self.data_record is None:
             raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
         return MarketConfiguration(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecord(
                 version=0,
@@ -123,7 +140,7 @@ class MarketConfigurationGraphQL(GraphQLCore):
     def as_write(self) -> MarketConfigurationWrite:
         """Convert this GraphQL format of market configuration to the writing format."""
         return MarketConfigurationWrite(
-            space=self.space or DEFAULT_INSTANCE_SPACE,
+            space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
             name=self.name,
@@ -220,7 +237,7 @@ class MarketConfigurationWrite(DomainModelWrite):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "MarketConfiguration", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "MarketConfiguration")
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "MarketConfiguration")
     name: str
     max_price: float = Field(alias="maxPrice")
     min_price: float = Field(alias="minPrice")
@@ -276,7 +293,7 @@ class MarketConfigurationWrite(DomainModelWrite):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=None if allow_version_increase else self.data_record.existing_version,
-                type=self.node_type,
+                type=as_direct_relation_reference(self.node_type),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=self._view_id,
@@ -399,3 +416,66 @@ def _create_market_configuration_filter(
     if filter:
         filters.append(filter)
     return dm.filters.And(*filters) if filters else None
+
+
+class _MarketConfigurationQuery(NodeQueryCore[T_DomainModelList, MarketConfigurationList]):
+    _view_id = MarketConfiguration._view_id
+    _result_cls = MarketConfiguration
+    _result_list_cls_end = MarketConfigurationList
+
+    def __init__(
+        self,
+        created_types: set[type],
+        creation_path: list[QueryCore],
+        client: CogniteClient,
+        result_list_cls: type[T_DomainModelList],
+        expression: dm.query.ResultSetExpression | None = None,
+        connection_name: str | None = None,
+        connection_type: Literal["reverse-list"] | None = None,
+        reverse_expression: dm.query.ResultSetExpression | None = None,
+    ):
+
+        super().__init__(
+            created_types,
+            creation_path,
+            client,
+            result_list_cls,
+            expression,
+            dm.filters.HasData(views=[self._view_id]),
+            connection_name,
+            connection_type,
+            reverse_expression,
+        )
+
+        self.space = StringFilter(self, ["node", "space"])
+        self.external_id = StringFilter(self, ["node", "externalId"])
+        self.name = StringFilter(self, self._view_id.as_property_ref("name"))
+        self.max_price = FloatFilter(self, self._view_id.as_property_ref("maxPrice"))
+        self.min_price = FloatFilter(self, self._view_id.as_property_ref("minPrice"))
+        self.timezone = StringFilter(self, self._view_id.as_property_ref("timezone"))
+        self.price_unit = StringFilter(self, self._view_id.as_property_ref("priceUnit"))
+        self.price_steps = IntFilter(self, self._view_id.as_property_ref("priceSteps"))
+        self.tick_size = FloatFilter(self, self._view_id.as_property_ref("tickSize"))
+        self.time_unit = StringFilter(self, self._view_id.as_property_ref("timeUnit"))
+        self.trade_lot = FloatFilter(self, self._view_id.as_property_ref("tradeLot"))
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.name,
+            self.max_price,
+            self.min_price,
+            self.timezone,
+            self.price_unit,
+            self.price_steps,
+            self.tick_size,
+            self.time_unit,
+            self.trade_lot,
+        ])
+
+    def list_market_configuration(self, limit: int = DEFAULT_QUERY_LIMIT) -> MarketConfigurationList:
+        return self._list(limit=limit)
+
+
+class MarketConfigurationQuery(_MarketConfigurationQuery[MarketConfigurationList]):
+    def __init__(self, client: CogniteClient):
+        super().__init__(set(), [], client, MarketConfigurationList)

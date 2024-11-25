@@ -9,7 +9,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
+)
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DomainModelWrite,
@@ -20,15 +26,25 @@ from cognite.powerops.client._generated.v1.data_classes import (
     BidDocumentDayAheadList,
     BidDocumentDayAheadWriteList,
     BidDocumentDayAheadTextFields,
+    Alert,
+    BidConfigurationDayAhead,
+    BidMatrixInformation,
+    PartialBidMatrixInformation,
 )
 from cognite.powerops.client._generated.v1.data_classes._bid_document_day_ahead import (
+    BidDocumentDayAheadQuery,
     _BIDDOCUMENTDAYAHEAD_PROPERTIES_BY_FIELD,
     _create_bid_document_day_ahead_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
-from .bid_document_day_ahead_alerts import BidDocumentDayAheadAlertsAPI
-from .bid_document_day_ahead_partials import BidDocumentDayAheadPartialsAPI
-from .bid_document_day_ahead_query import BidDocumentDayAheadQueryAPI
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
+from cognite.powerops.client._generated.v1._api.bid_document_day_ahead_alerts import BidDocumentDayAheadAlertsAPI
+from cognite.powerops.client._generated.v1._api.bid_document_day_ahead_partials import BidDocumentDayAheadPartialsAPI
+from cognite.powerops.client._generated.v1._api.bid_document_day_ahead_query import BidDocumentDayAheadQueryAPI
 
 
 class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWrite, BidDocumentDayAheadList, BidDocumentDayAheadWriteList]):
@@ -57,8 +73,8 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
             min_end_calculation: datetime.datetime | None = None,
             max_end_calculation: datetime.datetime | None = None,
             is_complete: bool | None = None,
-            bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-            total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+            bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+            total: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
             external_id_prefix: str | None = None,
             space: str | list[str] | None = None,
             limit: int = DEFAULT_QUERY_LIMIT,
@@ -89,6 +105,12 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
             A query API for bid document day aheads.
 
         """
+        warnings.warn(
+            "This method is deprecated and will soon be removed. "
+            "Use the .select() method instead.",
+            UserWarning,
+            stacklevel=2,
+        )
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_bid_document_day_ahead_filter(
             self._view_id,
@@ -109,7 +131,7 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(BidDocumentDayAheadList)
+        builder = DataClassQueryBuilder(BidDocumentDayAheadList)
         return BidDocumentDayAheadQueryAPI(self._client, builder, filter_, limit)
 
 
@@ -122,7 +144,7 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         """Add or update (upsert) bid document day aheads.
 
         Note: This method iterates through all nodes and timeseries linked to bid_document_day_ahead and creates them including the edges
-        between the nodes. For example, if any of `alerts` or `partials` are set, then these
+        between the nodes. For example, if any of `alerts`, `bid_configuration`, `total` or `partials` are set, then these
         nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
@@ -187,14 +209,14 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> BidDocumentDayAhead | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> BidDocumentDayAhead | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BidDocumentDayAheadList:
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> BidDocumentDayAheadList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BidDocumentDayAhead | BidDocumentDayAheadList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> BidDocumentDayAhead | BidDocumentDayAheadList | None:
         """Retrieve one or more bid document day aheads by id(s).
 
         Args:
@@ -251,8 +273,8 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         min_end_calculation: datetime.datetime | None = None,
         max_end_calculation: datetime.datetime | None = None,
         is_complete: bool | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        total: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -349,8 +371,8 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         min_end_calculation: datetime.datetime | None = None,
         max_end_calculation: datetime.datetime | None = None,
         is_complete: bool | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        total: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -377,8 +399,8 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         min_end_calculation: datetime.datetime | None = None,
         max_end_calculation: datetime.datetime | None = None,
         is_complete: bool | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        total: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -407,8 +429,8 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         min_end_calculation: datetime.datetime | None = None,
         max_end_calculation: datetime.datetime | None = None,
         is_complete: bool | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        total: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -436,8 +458,8 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         min_end_calculation: datetime.datetime | None = None,
         max_end_calculation: datetime.datetime | None = None,
         is_complete: bool | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        total: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -532,8 +554,8 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         min_end_calculation: datetime.datetime | None = None,
         max_end_calculation: datetime.datetime | None = None,
         is_complete: bool | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        total: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -596,6 +618,15 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
             filter_,
         )
 
+    def query(self) -> BidDocumentDayAheadQuery:
+        """Start a query for bid document day aheads."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
+        return BidDocumentDayAheadQuery(self._client)
+
+    def select(self) -> BidDocumentDayAheadQuery:
+        """Start selecting from bid document day aheads."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return BidDocumentDayAheadQuery(self._client)
 
     def list(
         self,
@@ -610,8 +641,8 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         min_end_calculation: datetime.datetime | None = None,
         max_end_calculation: datetime.datetime | None = None,
         is_complete: bool | None = None,
-        bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        total: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -619,7 +650,7 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         sort_by: BidDocumentDayAheadFields | Sequence[BidDocumentDayAheadFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
-        retrieve_edges: bool = True,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> BidDocumentDayAheadList:
         """List/filter bid document day aheads
 
@@ -646,7 +677,8 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
                 This will override the sort_by and direction. This allowos you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
-            retrieve_edges: Whether to retrieve `alerts` or `partials` external ids for the bid document day aheads. Defaults to True.
+            retrieve_connections: Whether to retrieve `alerts`, `bid_configuration`, `total` and `partials` for the bid document day aheads. Defaults to 'skip'.
+                'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier of the connected items, and 'full' will retrieve the full connected items.
 
         Returns:
             List of requested bid document day aheads
@@ -680,27 +712,97 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
             filter,
         )
 
-        return self._list(
-            limit=limit,
-            filter=filter_,
-            sort_by=sort_by,  # type: ignore[arg-type]
-            direction=direction,
-            sort=sort,
-            retrieve_edges=retrieve_edges,
-            edge_api_name_type_direction_view_id_penta=[
-                (
-                    self.alerts_edge,
-                    "alerts",
-                    dm.DirectRelationReference("power_ops_types", "calculationIssue"),
-                    "outwards",
-                    dm.ViewId("power_ops_core", "Alert", "1"),
+        if retrieve_connections == "skip":
+                return self._list(
+                limit=limit,
+                filter=filter_,
+                sort_by=sort_by,  # type: ignore[arg-type]
+                direction=direction,
+                sort=sort,
+            )
+
+        builder = DataClassQueryBuilder(BidDocumentDayAheadList)
+        has_data = dm.filters.HasData(views=[self._view_id])
+        builder.append(
+            NodeQueryStep(
+                builder.create_name(None),
+                dm.query.NodeResultSetExpression(
+                    filter=dm.filters.And(filter_, has_data) if filter_ else has_data,
+                    sort=self._create_sort(sort_by, direction, sort),  # type: ignore[arg-type]
                 ),
-                (
-                    self.partials_edge,
-                    "partials",
-                    dm.DirectRelationReference("power_ops_types", "partialBid"),
-                    "outwards",
-                    dm.ViewId("power_ops_core", "PartialBidMatrixInformation", "1"),
-                ),
-                                               ]
+                BidDocumentDayAhead,
+                max_retrieve_limit=limit,
+                raw_filter=filter_,
+            )
         )
+        from_root = builder.get_from()
+        edge_alerts = builder.create_name(from_root)
+        builder.append(
+            EdgeQueryStep(
+                edge_alerts,
+                dm.query.EdgeResultSetExpression(
+                    from_=from_root,
+                    direction="outwards",
+                    chain_to="destination",
+                ),
+            )
+        )
+        edge_partials = builder.create_name(from_root)
+        builder.append(
+            EdgeQueryStep(
+                edge_partials,
+                dm.query.EdgeResultSetExpression(
+                    from_=from_root,
+                    direction="outwards",
+                    chain_to="destination",
+                ),
+            )
+        )
+        if retrieve_connections == "full":
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name( edge_alerts),
+                    dm.query.NodeResultSetExpression(
+                        from_= edge_alerts,
+                        filter=dm.filters.HasData(views=[Alert._view_id]),
+                    ),
+                    Alert,
+                )
+            )
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name( edge_partials),
+                    dm.query.NodeResultSetExpression(
+                        from_= edge_partials,
+                        filter=dm.filters.HasData(views=[PartialBidMatrixInformation._view_id]),
+                    ),
+                    PartialBidMatrixInformation,
+                )
+            )
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name(from_root),
+                    dm.query.NodeResultSetExpression(
+                        from_=from_root,
+                        filter=dm.filters.HasData(views=[BidConfigurationDayAhead._view_id]),
+                        direction="outwards",
+                        through=self._view_id.as_property_ref("bidConfiguration"),
+                    ),
+                    BidConfigurationDayAhead,
+                )
+            )
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name(from_root),
+                    dm.query.NodeResultSetExpression(
+                        from_=from_root,
+                        filter=dm.filters.HasData(views=[BidMatrixInformation._view_id]),
+                        direction="outwards",
+                        through=self._view_id.as_property_ref("total"),
+                    ),
+                    BidMatrixInformation,
+                )
+            )
+        # We know that that all nodes are connected as it is not possible to filter on connections
+        builder.execute_query(self._client, remove_not_connected=False)
+        return builder.unpack()
