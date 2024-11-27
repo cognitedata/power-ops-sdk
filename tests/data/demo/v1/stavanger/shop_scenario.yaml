@@ -1,0 +1,237 @@
+# ShopScenario view definition
+#   name: String!
+#   model: ShopModel
+#   commands: ShopCommands
+#   source: String
+#   output_definition: [ShopOutputTimeSeriesDefinition]
+#   attribute_mappings_override: [ShopAttributeMapping]
+
+- name: "Stavanger base"
+  model: "[name]Stavanger"
+  commands: "[name]default"
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - "[name]market price"
+    - "[name]plant production"
+    - "[name]plant consumption"
+- name: "Stavanger price minus 500 first 24h"
+  model: "[name]Stavanger"
+  commands: "[name|type:ShopCommands]default"
+  source: resync
+  attribute_mappings_override:
+    - "[external_id]no2_buy_price_minus_500_first_24h"
+    - "[external_id]no2_sale_price_minus_500_first_24h"
+  output_definition:
+    - "[name]market price"
+    - "[name]plant production"
+    - "[name]plant consumption"
+- name: "Stavanger price minus 200 first 24h"
+  model: "[name]Stavanger"
+  commands: "[name|type:ShopCommands]default"
+  source: resync
+  attribute_mappings_override:
+    - "[external_id]no2_buy_price_minus_200_first_24h"
+    - "[external_id]no2_sale_price_minus_200_first_24h"
+  output_definition:
+    - "[name]market price"
+    - "[name]plant production"
+    - "[name]plant consumption"
+- name: "Stavanger price minus 50 first 24h"
+  model: "[name]Stavanger"
+  commands: "[name|type:ShopCommands]default"
+  source: resync
+  attribute_mappings_override:
+    - "[external_id]no2_buy_price_minus_50_first_24h"
+    - "[external_id]no2_sale_price_minus_50_first_24h"
+  output_definition:
+    - "[name]market price"
+    - "[name]plant production"
+    - "[name]plant consumption"
+- name: "Stavanger price minus 40 first 24h"
+  model: "[name]Stavanger"
+  commands: "[name|type:ShopCommands]default"
+  source: resync
+  attribute_mappings_override:
+    - "[external_id]no2_buy_price_minus_40_first_24h"
+    - "[external_id]no2_sale_price_minus_40_first_24h"
+  output_definition:
+    - "[name]market price"
+    - "[name]plant production"
+    - "[name]plant consumption"
+- name: "Stavanger price minus 30 first 24h"
+  model: "[name]Stavanger"
+  commands: "[name|type:ShopCommands]default"
+  source: resync
+  attribute_mappings_override:
+    - "[external_id]no2_buy_price_minus_30_first_24h"
+    - "[external_id]no2_sale_price_minus_30_first_24h"
+  output_definition:
+    - "[name]market price"
+    - "[name]plant production"
+    - "[name]plant consumption"
+- name: "Stavanger price minus 20 first 24h"
+  model: "[name]Stavanger"
+  commands: "[name|type:ShopCommands]default"
+  source: resync
+  attribute_mappings_override:
+    - "[external_id]no2_buy_price_minus_20_first_24h"
+    - "[external_id]no2_sale_price_minus_20_first_24h"
+  output_definition:
+    - "[name]market price"
+    - "[name]plant production"
+    - "[name]plant consumption"
+- name: "Stavanger price minus 15 first 24h"
+  model: "[name]Stavanger"
+  commands: "[name|type:ShopCommands]default"
+  source: resync
+  attribute_mappings_override:
+    - "[external_id]no2_buy_price_minus_15_first_24h"
+    - "[external_id]no2_sale_price_minus_15_first_24h"
+  output_definition:
+    - "[name]market price"
+    - "[name]plant production"
+    - "[name]plant consumption"
+- name: "Stavanger price minus 10 first 24h"
+  model: "[name]Stavanger"
+  commands: "[name|type:ShopCommands]default"
+  source: resync
+  attribute_mappings_override:
+    - "[external_id]no2_buy_price_minus_10_first_24h"
+    - "[external_id]no2_sale_price_minus_10_first_24h"
+  output_definition:
+    - "[name]market price"
+    - "[name]plant production"
+    - "[name]plant consumption"
+- name: "Stavanger price minus 5 first 24h"
+  model: "[name]Stavanger"
+  commands: "[name|type:ShopCommands]default"
+  source: resync
+  attribute_mappings_override:
+    - "[external_id]no2_buy_price_minus_5_first_24h"
+    - "[external_id]no2_sale_price_minus_5_first_24h"
+  output_definition:
+    - "[name]market price"
+    - "[name]plant production"
+    - "[name]plant consumption"
+- name: "Stavanger price plus 5 first 24h"
+  model: "[name]Stavanger"
+  commands: "[name|type:ShopCommands]default"
+  source: resync
+  attribute_mappings_override:
+    - "[external_id]no2_buy_price_plus_5_first_24h"
+    - "[external_id]no2_sale_price_plus_5_first_24h"
+  output_definition:
+    - "[name]market price"
+    - "[name]plant production"
+    - "[name]plant consumption"
+- name: "Stavanger price plus 10 first 24h"
+  model: "[name]Stavanger"
+  commands: "[name|type:ShopCommands]default"
+  source: resync
+  attribute_mappings_override:
+    - "[external_id]no2_buy_price_plus_10_first_24h"
+    - "[external_id]no2_sale_price_plus_10_first_24h"
+  output_definition:
+    - "[name]market price"
+    - "[name]plant production"
+    - "[name]plant consumption"
+- name: "Stavanger price plus 15 first 24h"
+  model: "[name]Stavanger"
+  commands: "[name|type:ShopCommands]default"
+  source: resync
+  attribute_mappings_override:
+    - "[external_id]no2_buy_price_plus_15_first_24h"
+    - "[external_id]no2_sale_price_plus_15_first_24h"
+  output_definition:
+    - "[name]market price"
+    - "[name]plant production"
+    - "[name]plant consumption"
+- name: "Stavanger price plus 20 first 24h"
+  model: "[name]Stavanger"
+  commands: "[name|type:ShopCommands]default"
+  source: resync
+  attribute_mappings_override:
+    - "[external_id]no2_buy_price_plus_20_first_24h"
+    - "[external_id]no2_sale_price_plus_20_first_24h"
+  output_definition:
+    - "[name]market price"
+    - "[name]plant production"
+    - "[name]plant consumption"
+- name: "Stavanger price plus 30 first 24h"
+  model: "[name]Stavanger"
+  commands: "[name|type:ShopCommands]default"
+  source: resync
+  attribute_mappings_override:
+    - "[external_id]no2_buy_price_plus_30_first_24h"
+    - "[external_id]no2_sale_price_plus_30_first_24h"
+  output_definition:
+    - "[name]market price"
+    - "[name]plant production"
+    - "[name]plant consumption"
+- name: "Stavanger price plus 40 first 24h"
+  model: "[name]Stavanger"
+  commands: "[name|type:ShopCommands]default"
+  source: resync
+  attribute_mappings_override:
+    - "[external_id]no2_buy_price_plus_40_first_24h"
+    - "[external_id]no2_sale_price_plus_40_first_24h"
+  output_definition:
+    - "[name]market price"
+    - "[name]plant production"
+    - "[name]plant consumption"
+- name: "Stavanger price plus 50 first 24h"
+  model: "[name]Stavanger"
+  commands: "[name|type:ShopCommands]default"
+  source: resync
+  attribute_mappings_override:
+    - "[external_id]no2_buy_price_plus_50_first_24h"
+    - "[external_id]no2_sale_price_plus_50_first_24h"
+  output_definition:
+    - "[name]market price"
+    - "[name]plant production"
+    - "[name]plant consumption"
+- name: "Stavanger price plus 70 first 24h"
+  model: "[name]Stavanger"
+  commands: "[name|type:ShopCommands]default"
+  source: resync
+  attribute_mappings_override:
+    - "[external_id]no2_buy_price_plus_70_first_24h"
+    - "[external_id]no2_sale_price_plus_70_first_24h"
+  output_definition:
+    - "[name]market price"
+    - "[name]plant production"
+    - "[name]plant consumption"
+- name: "Stavanger price plus 100 first 24h"
+  model: "[name]Stavanger"
+  commands: "[name|type:ShopCommands]default"
+  source: resync
+  attribute_mappings_override:
+    - "[external_id]no2_buy_price_plus_100_first_24h"
+    - "[external_id]no2_sale_price_plus_100_first_24h"
+  output_definition:
+    - "[name]market price"
+    - "[name]plant production"
+    - "[name]plant consumption"
+- name: "Stavanger price plus 2000 first 24h"
+  model: "[name]Stavanger"
+  commands: "[name|type:ShopCommands]default"
+  source: resync
+  attribute_mappings_override:
+    - "[external_id]no2_buy_price_plus_2000_first_24h"
+    - "[external_id]no2_sale_price_plus_2000_first_24h"
+  output_definition:
+    - "[name]market price"
+    - "[name]plant production"
+    - "[name]plant consumption"
+- name: "Stavanger price multiply 0 first 24h"
+  model: "[name]Stavanger"
+  commands: "[name|type:ShopCommands]default"
+  source: resync
+  attribute_mappings_override:
+    - "[external_id]no2_buy_price_multiply_0_first_24h"
+    - "[external_id]no2_sale_price_multiply_0_first_24h"
+  output_definition:
+    - "[name]market price"
+    - "[name]plant production"
+    - "[name]plant consumption"

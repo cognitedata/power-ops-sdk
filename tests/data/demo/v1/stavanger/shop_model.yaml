@@ -1,0 +1,17 @@
+# ShopModel view definition
+# - name: String!
+#   version: String
+#   shopVersion: String!
+#   penaltyLimit: Float
+#   model: File!
+#   cogShopFilesConfig: [ShopFile]
+#   extraFiles: [File]
+#   baseAttributeMappings: [ShopAttributeMapping]
+
+- name: Stavanger
+  model_version: "1"
+  shop_version: "16.0.2"
+  penalty_limit: 100.0
+  model: "[external_id]SHOP_Stavanger_model"
+  base_attribute_mappings:
+    - "[external_id]base_mapping_stavanger_reservoir_dale_inflow"

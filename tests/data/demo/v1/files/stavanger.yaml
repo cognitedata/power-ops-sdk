@@ -1,0 +1,76 @@
+model:
+  reservoir:
+    Dale:
+      vol_head: # Volume as a function of head
+        ref: 0 # Not used in this case
+        x: # Volume in million m^3
+          - 0
+          - 10
+        y: # Meters above sea level
+          - 900
+          - 1000
+      max_vol: 10 # million m^3
+      lrl: 900 # Lowest regulated Level
+      hrl: 1000 # Highest regulated Level
+      start_head: 950 # Initial head/water level
+      energy_value_input: 24 # Local energy value (water value in EUR/MWh) of the reservoir, values between sale/buy price are sensible
+
+      inflow: # Water flowing to the reservoir as a time series with units m^3/s
+        2024-05-31 22:00:00: 22
+        2024-06-01 12:00:00: 12
+        2024-06-01 18:00:00: 0
+
+  plant:
+    Sola:
+      main_loss: # Friction loss as water flows through tunnel
+        - 0 # For some reason, this has to be defined as a list
+      penstock_loss: # Water might be spit into different penstocks per turbine, which may have their own loss factors
+        - 0
+      outlet_line: 30 # Meters above sea level where water leaves turbine. Needed for water pressure calculations.
+
+  generator:
+    Sola_G1:
+      penstock: 1
+      p_nom: 85.7 # Nominal production in MW
+      p_max: 10000 # max production in MW -- Here just set to be very high (in this case it will be limited by max flow of the turbine efficiency curve)
+      turb_eff_curves: # A function of discharge through the turbine
+        - ref: 950 # Drop height
+          x: # Flow (m^3/s)
+            - 3
+            - 10
+          y: # Efficiency as a percentage
+            - 90
+            - 95
+    Sola_G2:
+      penstock: 1
+      p_nom: 86.6
+      p_max: 10000 # max production in MW -- Here just set to be very high
+      turb_eff_curves:
+        - ref: 950 # Drop height
+          x: # Flow (m^3/s)
+            - 3
+            - 10
+          y: # Efficiency as a percentage
+            - 91
+            - 96
+            # As long as it does not cost anything to send through water, it will send through as much water as possible.
+            # The max amount of water that will be sent through is determined by the efficiency curves and p_max and other constraints.
+  market:
+    Marked: # The price for selling and buying might not be the same but often they are in practice.
+      buy_price: # EUR/MWh
+        2024-05-31 22:00:00: 20.1 # UTC: This will be June 1st in practice
+        2024-06-01 05:00:00: 30.1
+        2024-06-01 12:00:00: 25.1
+
+      sale_price: # EUR/MWh
+        2024-05-31 22:00:00: 20 # UTC: This will be June 1st in practice
+        2024-06-01 05:00:00: 30
+        2024-06-01 12:00:00: 25
+
+connections:
+  - from: Dale
+    to: Sola
+  - from: Sola
+    to: Sola_G1
+  - from: Sola
+    to: Sola_G2

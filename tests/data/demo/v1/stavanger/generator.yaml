@@ -1,0 +1,24 @@
+# Generator view definition
+# - name: String!
+#   display_name: String
+#   ordering: Int
+#   asset_type: String
+#   production_min: Float!
+#   penstock_number: Int64!
+#   start_cost: Float!
+#   start_stop_cost: TimeSeries
+#   availability_time_series: TimeSeries
+#   generator_efficiency_curve: GeneratorEfficiencyCurve
+#   turbine_efficiency_curves: [TurbineEfficiencyCurve]
+
+- name: Sola_G1
+  display_name: Sola G1
+  ordering: 1
+  asset_type: generator
+  penstock_number: "[SOURCE:files/stavanger.yaml]model.generator.Sola_G1.penstock"
+
+- name: Sola_G2
+  display_name: Sola G2
+  ordering: 1
+  asset_type: generator
+  penstock_number: "[SOURCE:files/stavanger.yaml]model.generator.Sola_G2.penstock"
