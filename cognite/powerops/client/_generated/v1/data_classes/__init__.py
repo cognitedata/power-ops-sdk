@@ -68,6 +68,7 @@ from ._shop_preprocessor_output import ShopPreprocessorOutput, ShopPreprocessorO
 from ._shop_result import ShopResult, ShopResultApply, ShopResultApplyList, ShopResultFields, ShopResultGraphQL, ShopResultList, ShopResultTextFields, ShopResultWrite, ShopResultWriteList
 from ._shop_scenario import ShopScenario, ShopScenarioApply, ShopScenarioApplyList, ShopScenarioFields, ShopScenarioGraphQL, ShopScenarioList, ShopScenarioTextFields, ShopScenarioWrite, ShopScenarioWriteList
 from ._shop_scenario_set import ShopScenarioSet, ShopScenarioSetApply, ShopScenarioSetApplyList, ShopScenarioSetFields, ShopScenarioSetGraphQL, ShopScenarioSetList, ShopScenarioSetTextFields, ShopScenarioSetWrite, ShopScenarioSetWriteList
+from ._shop_time_resolution import ShopTimeResolution, ShopTimeResolutionApply, ShopTimeResolutionApplyList, ShopTimeResolutionFields, ShopTimeResolutionGraphQL, ShopTimeResolutionList, ShopTimeResolutionTextFields, ShopTimeResolutionWrite, ShopTimeResolutionWriteList
 from ._shop_time_series import ShopTimeSeries, ShopTimeSeriesApply, ShopTimeSeriesApplyList, ShopTimeSeriesFields, ShopTimeSeriesGraphQL, ShopTimeSeriesList, ShopTimeSeriesTextFields, ShopTimeSeriesWrite, ShopTimeSeriesWriteList
 from ._shop_trigger_input import ShopTriggerInput, ShopTriggerInputApply, ShopTriggerInputApplyList, ShopTriggerInputFields, ShopTriggerInputGraphQL, ShopTriggerInputList, ShopTriggerInputTextFields, ShopTriggerInputWrite, ShopTriggerInputWriteList
 from ._shop_trigger_output import ShopTriggerOutput, ShopTriggerOutputApply, ShopTriggerOutputApplyList, ShopTriggerOutputFields, ShopTriggerOutputGraphQL, ShopTriggerOutputList, ShopTriggerOutputTextFields, ShopTriggerOutputWrite, ShopTriggerOutputWriteList
@@ -747,6 +748,15 @@ __all__ = [
     "ShopScenarioSetApplyList",
     "ShopScenarioSetFields",
     "ShopScenarioSetTextFields",
+    "ShopTimeResolution",
+    "ShopTimeResolutionGraphQL",
+    "ShopTimeResolutionWrite",
+    "ShopTimeResolutionApply",
+    "ShopTimeResolutionList",
+    "ShopTimeResolutionWriteList",
+    "ShopTimeResolutionApplyList",
+    "ShopTimeResolutionFields",
+    "ShopTimeResolutionTextFields",
     "ShopTimeSeries",
     "ShopTimeSeriesGraphQL",
     "ShopTimeSeriesWrite",

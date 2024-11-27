@@ -1,0 +1,42 @@
+space: "{{power_ops_models_space}}"
+externalId: ShopTimeResolution
+name: ShopTimeResolution
+description: The time resolution to used within a SHOP simulation.
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{power_ops_models_space}}"
+          externalId: ShopTimeResolution
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: ShopTimeResolution
+          space: "{{power_ops_type_space}}"
+implements: []
+version: "{{power_ops_data_model_version}}"
+properties:
+  minutesAfterStart:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: ShopTimeResolution
+      type: container
+    containerPropertyIdentifier: minutesAfterStart
+    name: minutesAfterStart
+    description: Minutes after SHOP Simulation start.
+
+  timeResolutionMinutes:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: ShopTimeResolution
+      type: container
+    containerPropertyIdentifier: timeResolutionMinutes
+    name: timeResolutionMinutes
+    description: The SHOP time resolution (in minutes) to use for SHOP.

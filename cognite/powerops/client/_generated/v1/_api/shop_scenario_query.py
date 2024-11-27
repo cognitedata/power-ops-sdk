@@ -11,6 +11,7 @@ from cognite.powerops.client._generated.v1.data_classes import (
     ShopScenario,
     ShopModel,
     ShopCommands,
+    ShopTimeResolution,
 )
 from cognite.powerops.client._generated.v1.data_classes._shop_output_time_series_definition import (
     ShopOutputTimeSeriesDefinition,
@@ -81,6 +82,7 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
         limit: int = DEFAULT_QUERY_LIMIT,
         retrieve_model: bool = False,
         retrieve_commands: bool = False,
+        retrieve_time_resolution: bool = False,
     ) -> ShopOutputTimeSeriesDefinitionQueryAPI[T_DomainModelList]:
         """Query along the output definition edges of the shop scenario.
 
@@ -105,6 +107,7 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
                 to return all items.
             retrieve_model: Whether to retrieve the model for each shop scenario or not.
             retrieve_commands: Whether to retrieve the command for each shop scenario or not.
+            retrieve_time_resolution: Whether to retrieve the time resolution for each shop scenario or not.
 
         Returns:
             ShopOutputTimeSeriesDefinitionQueryAPI: The query API for the shop output time series definition.
@@ -154,6 +157,8 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
             self._query_append_model(from_)
         if retrieve_commands:
             self._query_append_commands(from_)
+        if retrieve_time_resolution:
+            self._query_append_time_resolution(from_)
         return ShopOutputTimeSeriesDefinitionQueryAPI(self._client, self._builder, node_filer, limit)
 
     def attribute_mappings_override(
@@ -176,6 +181,7 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
         limit: int = DEFAULT_QUERY_LIMIT,
         retrieve_model: bool = False,
         retrieve_commands: bool = False,
+        retrieve_time_resolution: bool = False,
     ) -> ShopAttributeMappingQueryAPI[T_DomainModelList]:
         """Query along the attribute mappings override edges of the shop scenario.
 
@@ -199,6 +205,7 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
                 to return all items.
             retrieve_model: Whether to retrieve the model for each shop scenario or not.
             retrieve_commands: Whether to retrieve the command for each shop scenario or not.
+            retrieve_time_resolution: Whether to retrieve the time resolution for each shop scenario or not.
 
         Returns:
             ShopAttributeMappingQueryAPI: The query API for the shop attribute mapping.
@@ -247,18 +254,22 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
             self._query_append_model(from_)
         if retrieve_commands:
             self._query_append_commands(from_)
+        if retrieve_time_resolution:
+            self._query_append_time_resolution(from_)
         return ShopAttributeMappingQueryAPI(self._client, self._builder, node_filer, limit)
 
     def query(
         self,
         retrieve_model: bool = False,
         retrieve_commands: bool = False,
+        retrieve_time_resolution: bool = False,
     ) -> T_DomainModelList:
         """Execute query and return the result.
 
         Args:
             retrieve_model: Whether to retrieve the model for each shop scenario or not.
             retrieve_commands: Whether to retrieve the command for each shop scenario or not.
+            retrieve_time_resolution: Whether to retrieve the time resolution for each shop scenario or not.
 
         Returns:
             The list of the source nodes of the query.
@@ -269,6 +280,8 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
             self._query_append_model(from_)
         if retrieve_commands:
             self._query_append_commands(from_)
+        if retrieve_time_resolution:
+            self._query_append_time_resolution(from_)
         return self._query()
 
     def _query_append_model(self, from_: str) -> None:
@@ -296,5 +309,19 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
                     filter=dm.filters.HasData(views=[ShopCommands._view_id]),
                 ),
                 result_cls=ShopCommands,
+            ),
+        )
+
+    def _query_append_time_resolution(self, from_: str) -> None:
+        self._builder.append(
+            NodeQueryStep(
+                name=self._builder.create_name(from_),
+                expression=dm.query.NodeResultSetExpression(
+                    from_=from_,
+                    through=self._view_id.as_property_ref("timeResolution"),
+                    direction="outwards",
+                    filter=dm.filters.HasData(views=[ShopTimeResolution._view_id]),
+                ),
+                result_cls=ShopTimeResolution,
             ),
         )

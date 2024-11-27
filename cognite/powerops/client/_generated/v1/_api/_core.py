@@ -618,6 +618,7 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE: dict[dm.DataModelId, dict[str, type[G
         "ShopFile": data_classes.ShopFileGraphQL,
         "DateSpecification": data_classes.DateSpecificationGraphQL,
         "ShopOutputTimeSeriesDefinition": data_classes.ShopOutputTimeSeriesDefinitionGraphQL,
+        "ShopTimeResolution": data_classes.ShopTimeResolutionGraphQL,
     },
     dm.DataModelId("power_ops_core", "compute_TotalBidMatrixCalculation", "1"): {
         "BidMatrix": data_classes.BidMatrixGraphQL,
@@ -647,6 +648,7 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE: dict[dm.DataModelId, dict[str, type[G
         "ShopFile": data_classes.ShopFileGraphQL,
         "DateSpecification": data_classes.DateSpecificationGraphQL,
         "ShopOutputTimeSeriesDefinition": data_classes.ShopOutputTimeSeriesDefinitionGraphQL,
+        "ShopTimeResolution": data_classes.ShopTimeResolutionGraphQL,
     },
     dm.DataModelId("power_ops_core", "compute_WaterValueBasedDayAheadBid", "1"): {
         "TaskDispatcherInput": data_classes.TaskDispatcherInputGraphQL,
@@ -695,6 +697,7 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE: dict[dm.DataModelId, dict[str, type[G
         "DateSpecification": data_classes.DateSpecificationGraphQL,
         "ShopOutputTimeSeriesDefinition": data_classes.ShopOutputTimeSeriesDefinitionGraphQL,
         "ShopFile": data_classes.ShopFileGraphQL,
+        "ShopTimeResolution": data_classes.ShopTimeResolutionGraphQL,
     },
     dm.DataModelId("power_ops_core", "frontend_AFRRBid", "1"): {
         "BidDocumentAFRR": data_classes.BidDocumentAFRRGraphQL,
@@ -749,6 +752,7 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE: dict[dm.DataModelId, dict[str, type[G
         "ShopPenaltyReport": data_classes.ShopPenaltyReportGraphQL,
         "DateSpecification": data_classes.DateSpecificationGraphQL,
         "ShopOutputTimeSeriesDefinition": data_classes.ShopOutputTimeSeriesDefinitionGraphQL,
+        "ShopTimeResolution": data_classes.ShopTimeResolutionGraphQL,
     },
     dm.DataModelId("power_ops_core", "compute_BenchmarkingDayAhead", "1"): {
         "BenchmarkingConfigurationDayAhead": data_classes.BenchmarkingConfigurationDayAheadGraphQL,
@@ -781,5 +785,6 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE: dict[dm.DataModelId, dict[str, type[G
         "ShopTimeSeries": data_classes.ShopTimeSeriesGraphQL,
         "ShopTriggerInput": data_classes.ShopTriggerInputGraphQL,
         "ShopPreprocessorInput": data_classes.ShopPreprocessorInputGraphQL,
+        "ShopTimeResolution": data_classes.ShopTimeResolutionGraphQL,
     },
 }
