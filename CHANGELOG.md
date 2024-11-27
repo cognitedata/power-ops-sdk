@@ -15,6 +15,10 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.104.2] - 2024-11-27
+### Improved
+* Better error handling in `Transformation.load`
+
 ## [0.104.1] - 2024-11-27
 ### Added
 * `ShopTimeResolution` to `ShopScenario`
