@@ -16,7 +16,7 @@ Changes are grouped as follows:
 - `Security` in case of vulnerabilities.
 
 
-## [0.104.0] - 2024-11-25
+## [0.104.1] - 2024-11-25
 ### Added
 * `ShopTimeResolution` to `ShopScenario`
 
