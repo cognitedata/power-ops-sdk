@@ -5,6 +5,7 @@ import os
 import sys
 from pathlib import Path
 from string import Template
+from typing import Literal
 
 import yaml
 from cognite.client import CogniteClient, global_config
@@ -30,12 +31,13 @@ class PowerOpsClient:
         read_dataset: str,
         write_dataset: str,
         monitor_dataset: str | None = None,
+        cog_shop_service: Literal["prod", "staging"] | None = None,
     ):
         self.cdf = client
         self.datasets = DataSetsAPI(self.cdf, read_dataset, write_dataset, monitor_dataset)
         self.shop = SHOPRunAPI(self.cdf, self.datasets.write_dataset_id)
         self.v1 = PowerOpsModelsV1Client(self.cdf)
-        self.cogshop = CogShopAPI(self.cdf, self.v1)
+        self.cogshop = CogShopAPI(self.cdf, self.v1, cog_shop_service)
 
         DomainModelWrite.external_id_factory = ExternalIdFactory.create_external_id_factory(
             prefix_ext_id_factory=ExternalIdFactory(
