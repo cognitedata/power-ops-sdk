@@ -1,3 +1,4 @@
+from cognite.client import CogniteClient
 from cognite.client.exceptions import CogniteAPIError
 from cognite.pygen.utils import MockGenerator
 from cognite.client import data_modeling as dm
@@ -6,25 +7,17 @@ import os
 from pathlib import Path
 import time
 
+from cognite.powerops import PowerOpsClient
 
-from cognite.powerops.utils.cdf import get_cognite_client
-
-
-from cognite.powerops.utils.serialization import chdir
-
-REPO_ROOT = Path(__file__).parent.parent
-# TODO: update space to not be temp
 INSTANCE_SPACE = "power_ops_instances"
 MODEL_SPACE = "power_ops_core"
 TYPE_SPACE = "power_ops_types"
+
+SPACES = [MODEL_SPACE, INSTANCE_SPACE, TYPE_SPACE]
 # TODO: consider adding a separate space for mock data
 
 
-def main():
-    with chdir(REPO_ROOT):
-        os.environ["SETTINGS_FILES"] = "settings.toml;.secrets.toml"
-        client = get_cognite_client()
-
+def main(client: CogniteClient):
     print(f"Connected to {client.config.project}")
 
     data_model_ids = [dm.DataModelId(MODEL_SPACE, "all_PowerOps", "1")]
@@ -105,16 +98,12 @@ def main():
         # mock_data.clean(client)
 
 
-def clean_instances(dry_run: bool):
-    with chdir(REPO_ROOT):
-        os.environ["SETTINGS_FILES"] = "settings.toml;.secrets.toml"
-        client = get_cognite_client()
+def clean_instances(client: CogniteClient, dry_run: bool):
     t0 = time.perf_counter()
-    spaces = [MODEL_SPACE, INSTANCE_SPACE, TYPE_SPACE]
 
     print(f"Connected to {client.config.project}")
 
-    for space in spaces:
+    for space in SPACES:
 
         for edges in client.data_modeling.instances(instance_type="edge", space=space, limit=-1, chunk_size=100):
             if not dry_run:
@@ -151,16 +140,12 @@ def clean_instances(dry_run: bool):
         print(f"Deleted {len(files)} files. Elapsed time {time.perf_counter() - t0:.2f} seconds")
 
 
-def clean_containers_views_data_models(dry_run: bool):
-    with chdir(REPO_ROOT):
-        os.environ["SETTINGS_FILES"] = "settings.toml;.secrets.toml"
-        client = get_cognite_client()
+def clean_containers_views_data_models(client: CogniteClient, dry_run: bool):
     t0 = time.perf_counter()
-    spaces = [MODEL_SPACE, INSTANCE_SPACE, TYPE_SPACE]
 
     print(f"Connected to {client.config.project}")
 
-    for space in spaces:
+    for space in SPACES:
         views = client.data_modeling.views.list(space=space, limit=-1, all_versions=True).as_ids()
 
         if views:
@@ -187,18 +172,14 @@ def clean_containers_views_data_models(dry_run: bool):
             print(f"No containers found in {space}")
 
 
-def clean_spaces(dry_run: bool):
-    with chdir(REPO_ROOT):
-        os.environ["SETTINGS_FILES"] = "settings.toml;.secrets.toml"
-        client = get_cognite_client()
+def clean_spaces(client: CogniteClient, dry_run: bool):
     t0 = time.perf_counter()
-    spaces = [MODEL_SPACE, INSTANCE_SPACE, TYPE_SPACE]
 
     print(f"Connected to {client.config.project}")
 
-    existing_spaces = client.data_modeling.spaces.retrieve(spaces=spaces)
+    existing_spaces = client.data_modeling.spaces.retrieve(spaces=SPACES)
     existing_space_names = [s.space for s in existing_spaces]
-    for space in spaces:
+    for space in SPACES:
         if space in existing_space_names:
             print(f"Deleting space {space}")
             if not dry_run:
@@ -208,8 +189,11 @@ def clean_spaces(dry_run: bool):
 
 
 if __name__ == "__main__":
-    dry_run = True
-    clean_instances(dry_run)
-    clean_containers_views_data_models(dry_run)
-    clean_spaces(dry_run)
-    # main()
+    dry_run = False
+
+    client = PowerOpsClient.from_config("power_ops_config.yaml").cdf
+
+    clean_instances(client, dry_run)
+    clean_containers_views_data_models(client, dry_run)
+    clean_spaces(client, dry_run)
+    # main(client)
