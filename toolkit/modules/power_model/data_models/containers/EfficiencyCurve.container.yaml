@@ -6,7 +6,7 @@ properties:
   ref:
     type:
       list: false
-      type: float32
+      type: float64
     nullable: true
     autoIncrement: false
     name: ref
@@ -14,7 +14,7 @@ properties:
   x:
     type:
       list: true
-      type: float32
+      type: float64
     nullable: false
     autoIncrement: false
     name: x
@@ -22,7 +22,7 @@ properties:
   efficiency:
     type:
       list: true
-      type: float32
+      type: float64
     nullable: false
     autoIncrement: false
     name: efficiency
