@@ -145,19 +145,19 @@ If a change requires a version change, the following version system should be us
 3. Build the configurations and remove existing files in the build directory:
 
    ```bash
-   cdf-tk build -o toolkit/ --env=$ENV
+   cdf build --env=$ENV
    ```
 
 4. Dry-run the deployment to see what changes would be made:
 
    ```bash
-   cdf-tk deploy --env=$ENV --dry-run
+   cdf deploy --env=$ENV --dry-run
    ```
 
 5. Deploy the changes if the environment and changes your making won't impact other people's work:
 
    ```bash
-   cdf-tk deploy --env=$ENV
+   cdf deploy --env=$ENV
    ```
 
 ### WARNING: Full manual redeploy steps
@@ -174,11 +174,11 @@ DO NOT perform these steps unless it has been aligned with the full team and a s
 2. Dry-run the deployment to see what changes would be made with the `drop` flags:
 
    ```bash
-   cdf-tk deploy --drop-data --drop --env=$ENV --dry-run
+   cdf deploy --drop-data --drop --env=$ENV --dry-run
    ```
 
 3. Deploy the changes if the environment and changes your making won't impact other people's work:
 
    ```bash
-   cdf-tk deploy --drop-data --drop --env=$ENV
+   cdf deploy --drop-data --drop --env=$ENV
    ```

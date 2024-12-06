@@ -3,8 +3,6 @@ from cognite.client.exceptions import CogniteAPIError
 from cognite.pygen.utils import MockGenerator
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import filters
-import os
-from pathlib import Path
 import time
 
 from cognite.powerops import PowerOpsClient
@@ -189,7 +187,7 @@ def clean_spaces(client: CogniteClient, dry_run: bool):
 
 
 if __name__ == "__main__":
-    dry_run = False
+    dry_run = True
 
     client = PowerOpsClient.from_config("power_ops_config.yaml").cdf
 
