@@ -72,10 +72,11 @@ class Transformation(BaseModel, ABC):
     @classmethod
     def load(cls, transformation_: dict[str, Any]) -> Self:
         (transformation_name,) = transformation_
-        if transformation_body := transformation_.get(transformation_name):
-            return _TRANSFORMATIONS_BY_CLASS_NAME[transformation_name].__call__(**transformation_body["parameters"])
-        elif transformation_name in _TRANSFORMATIONS_BY_CLASS_NAME:
-            return _TRANSFORMATIONS_BY_CLASS_NAME[transformation_name].__call__()
+        if transformation_name in _TRANSFORMATIONS_BY_CLASS_NAME:
+            if transformation_body := transformation_.get(transformation_name):
+                return _TRANSFORMATIONS_BY_CLASS_NAME[transformation_name].__call__(**transformation_body["parameters"])
+            else:
+                return _TRANSFORMATIONS_BY_CLASS_NAME[transformation_name].__call__()
         else:
             raise NotImplementedError(f"Unknown transformation {transformation_name}")
 

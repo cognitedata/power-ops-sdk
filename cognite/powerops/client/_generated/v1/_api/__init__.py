@@ -185,6 +185,8 @@ from cognite.powerops.client._generated.v1._api.shop_scenario_query import ShopS
 from cognite.powerops.client._generated.v1._api.shop_scenario_set import ShopScenarioSetAPI
 from cognite.powerops.client._generated.v1._api.shop_scenario_set_query import ShopScenarioSetQueryAPI
 from cognite.powerops.client._generated.v1._api.shop_scenario_set_scenarios import ShopScenarioSetScenariosAPI
+from cognite.powerops.client._generated.v1._api.shop_time_resolution import ShopTimeResolutionAPI
+from cognite.powerops.client._generated.v1._api.shop_time_resolution_query import ShopTimeResolutionQueryAPI
 from cognite.powerops.client._generated.v1._api.shop_time_series import ShopTimeSeriesAPI
 from cognite.powerops.client._generated.v1._api.shop_time_series_query import ShopTimeSeriesQueryAPI
 from cognite.powerops.client._generated.v1._api.shop_time_series_time_series import ShopTimeSeriesTimeSeriesAPI
@@ -402,6 +404,8 @@ __all__ = [
     "ShopScenarioSetAPI",
     "ShopScenarioSetQueryAPI",
     "ShopScenarioSetScenariosAPI",
+    "ShopTimeResolutionAPI",
+    "ShopTimeResolutionQueryAPI",
     "ShopTimeSeriesAPI",
     "ShopTimeSeriesQueryAPI",
     "ShopTimeSeriesTimeSeriesAPI",

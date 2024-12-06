@@ -1,4 +1,5 @@
 import datetime
+from typing import Literal
 from urllib.parse import urlparse
 
 import requests
@@ -18,16 +19,27 @@ from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INS
 
 
 class CogShopAPI:
-    def __init__(self, cdf: CogniteClient, po: PowerOpsModelsV1Client):
+    def __init__(
+        self,
+        cdf: CogniteClient,
+        po: PowerOpsModelsV1Client,
+        cog_shop_service: Literal["prod", "staging"] | None = None,
+    ):
         self._cdf = cdf
         self._po = po
+        self.cog_shop_service = cog_shop_service
 
     def _shop_url_cshaas(self) -> str:
         project = self._cdf.config.project
 
         cluster = urlparse(self._cdf.config.base_url).netloc.split(".", 1)[0]
 
-        environment = ".staging" if project == "power-ops-staging" else ""
+        if self.cog_shop_service == "prod":
+            environment = ""
+        elif self.cog_shop_service == "staging":
+            environment = ".staging"
+        else:
+            environment = ".staging" if project == "power-ops-staging" else ""
 
         return f"https://power-ops-api{environment}.{cluster}.cognite.ai/{project}/run-shop-as-service"
 

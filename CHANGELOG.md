@@ -15,6 +15,23 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.104.3] - 2024-12-03
+### Added
+* Possibility to specify which CogShop service (`prod` or `staging`) to use
+
+## [0.104.2] - 2024-11-27
+### Improved
+* Better error handling in `Transformation.load`
+
+## [0.104.1] - 2024-11-27
+### Added
+* `ShopTimeResolution` to `ShopScenario`
+
+## [0.104.0] - 2024-11-25
+### Removed
+* Removed v0 pygen generated classes
+* Removed DayAhead Trigger API
+
 ## [0.103.1] - 2024-11-22
 ### Added
 * production_max to generator
