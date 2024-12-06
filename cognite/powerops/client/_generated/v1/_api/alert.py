@@ -57,27 +57,27 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList, AlertWriteList]):
 
 
     def __call__(
-            self,
-            min_time: datetime.datetime | None = None,
-            max_time: datetime.datetime | None = None,
-            workflow_execution_id: str | list[str] | None = None,
-            workflow_execution_id_prefix: str | None = None,
-            title: str | list[str] | None = None,
-            title_prefix: str | None = None,
-            description: str | list[str] | None = None,
-            description_prefix: str | None = None,
-            severity: str | list[str] | None = None,
-            severity_prefix: str | None = None,
-            alert_type: str | list[str] | None = None,
-            alert_type_prefix: str | None = None,
-            min_status_code: int | None = None,
-            max_status_code: int | None = None,
-            calculation_run: str | list[str] | None = None,
-            calculation_run_prefix: str | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        min_time: datetime.datetime | None = None,
+        max_time: datetime.datetime | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        title: str | list[str] | None = None,
+        title_prefix: str | None = None,
+        description: str | list[str] | None = None,
+        description_prefix: str | None = None,
+        severity: str | list[str] | None = None,
+        severity_prefix: str | None = None,
+        alert_type: str | list[str] | None = None,
+        alert_type_prefix: str | None = None,
+        min_status_code: int | None = None,
+        max_status_code: int | None = None,
+        calculation_run: str | list[str] | None = None,
+        calculation_run_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> AlertQueryAPI[AlertList]:
         """Query starting at alerts.
 
@@ -138,7 +138,6 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList, AlertWriteList]):
         )
         builder = DataClassQueryBuilder(AlertList)
         return AlertQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -372,8 +371,7 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList, AlertWriteList]):
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -403,8 +401,7 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList, AlertWriteList]):
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -436,8 +433,7 @@ class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList, AlertWriteList]):
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,

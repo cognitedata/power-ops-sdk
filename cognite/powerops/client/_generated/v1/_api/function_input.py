@@ -68,19 +68,19 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
 
 
     def __call__(
-            self,
-            workflow_execution_id: str | list[str] | None = None,
-            workflow_execution_id_prefix: str | None = None,
-            min_workflow_step: int | None = None,
-            max_workflow_step: int | None = None,
-            function_name: str | list[str] | None = None,
-            function_name_prefix: str | None = None,
-            function_call_id: str | list[str] | None = None,
-            function_call_id_prefix: str | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
+        function_name: str | list[str] | None = None,
+        function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> FunctionInputQueryAPI[FunctionInputList]:
         """Query starting at function inputs.
 
@@ -125,7 +125,6 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
         )
         builder = DataClassQueryBuilder(FunctionInputList)
         return FunctionInputQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -327,8 +326,7 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -350,8 +348,7 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -375,8 +372,7 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,

@@ -60,23 +60,23 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
         self.bids_edge = BidDocumentAFRRBidsAPI(client)
 
     def __call__(
-            self,
-            name: str | list[str] | None = None,
-            name_prefix: str | None = None,
-            workflow_execution_id: str | list[str] | None = None,
-            workflow_execution_id_prefix: str | None = None,
-            min_delivery_date: datetime.date | None = None,
-            max_delivery_date: datetime.date | None = None,
-            min_start_calculation: datetime.datetime | None = None,
-            max_start_calculation: datetime.datetime | None = None,
-            min_end_calculation: datetime.datetime | None = None,
-            max_end_calculation: datetime.datetime | None = None,
-            is_complete: bool | None = None,
-            price_area: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_delivery_date: datetime.date | None = None,
+        max_delivery_date: datetime.date | None = None,
+        min_start_calculation: datetime.datetime | None = None,
+        max_start_calculation: datetime.datetime | None = None,
+        min_end_calculation: datetime.datetime | None = None,
+        max_end_calculation: datetime.datetime | None = None,
+        is_complete: bool | None = None,
+        price_area: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> BidDocumentAFRRQueryAPI[BidDocumentAFRRList]:
         """Query starting at bid document afrrs.
 
@@ -129,7 +129,6 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
         )
         builder = DataClassQueryBuilder(BidDocumentAFRRList)
         return BidDocumentAFRRQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -253,7 +252,6 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
                                                ]
         )
 
-
     def search(
         self,
         query: str,
@@ -369,8 +367,7 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -396,8 +393,7 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -425,8 +421,7 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
@@ -694,7 +689,7 @@ class BidDocumentAFRRAPI(NodeAPI[BidDocumentAFRR, BidDocumentAFRRWrite, BidDocum
         )
 
         if retrieve_connections == "skip":
-                return self._list(
+            return self._list(
                 limit=limit,
                 filter=filter_,
                 sort_by=sort_by,  # type: ignore[arg-type]

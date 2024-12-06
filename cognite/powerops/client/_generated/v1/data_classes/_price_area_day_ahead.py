@@ -32,6 +32,7 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     TimeSeries,
     TimeSeriesWrite,
     TimeSeriesGraphQL,
+    TimeSeriesReferenceAPI,
     T_DomainModelList,
     as_direct_relation_reference,
     as_instance_dict_id,
@@ -46,7 +47,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     IntFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._price_area import PriceArea, PriceAreaWrite
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._bid_configuration_day_ahead import BidConfigurationDayAhead, BidConfigurationDayAheadList, BidConfigurationDayAheadGraphQL, BidConfigurationDayAheadWrite, BidConfigurationDayAheadWriteList
 
@@ -77,6 +77,7 @@ _PRICEAREADAYAHEAD_PROPERTIES_BY_FIELD = {
     "price_scenarios": "priceScenarios",
 }
 
+
 class PriceAreaDayAheadGraphQL(GraphQLCore):
     """This represents the reading version of price area day ahead, used
     when data is retrieved from CDF using GraphQL.
@@ -95,6 +96,7 @@ class PriceAreaDayAheadGraphQL(GraphQLCore):
         main_price_scenario: TODO
         price_scenarios: TODO
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceAreaDayAhead", "1")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
@@ -114,6 +116,7 @@ class PriceAreaDayAheadGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
     @field_validator("price_scenarios", mode="before")
     def clean_list(cls, value: Any) -> Any:
         if isinstance(value, list):
@@ -153,7 +156,6 @@ else self.default_bid_configuration,
             price_scenarios=[price_scenario.as_read() for price_scenario in self.price_scenarios or []] if self.price_scenarios is not None else None,
         )
 
-
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
     def as_write(self) -> PriceAreaDayAheadWrite:
@@ -191,6 +193,7 @@ class PriceAreaDayAhead(PriceArea):
         main_price_scenario: TODO
         price_scenarios: TODO
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceAreaDayAhead", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = None
@@ -198,6 +201,8 @@ class PriceAreaDayAhead(PriceArea):
     main_price_scenario: Union[TimeSeries, str, None] = Field(None, alias="mainPriceScenario")
     price_scenarios: Optional[list[Union[TimeSeries, str]]] = Field(None, alias="priceScenarios")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> PriceAreaDayAheadWrite:
         """Convert this read version of price area day ahead to the writing version."""
         return PriceAreaDayAheadWrite(
@@ -223,7 +228,6 @@ else self.default_bid_configuration,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -232,13 +236,11 @@ else self.default_bid_configuration,
         edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
     ) -> None:
         from ._bid_configuration_day_ahead import BidConfigurationDayAhead
-
         for instance in instances.values():
             if isinstance(instance.default_bid_configuration, (dm.NodeId, str)) and (default_bid_configuration := nodes_by_id.get(instance.default_bid_configuration)) and isinstance(
                     default_bid_configuration, BidConfigurationDayAhead
             ):
                 instance.default_bid_configuration = default_bid_configuration
-
 
 
 class PriceAreaDayAheadWrite(PriceAreaWrite):
@@ -258,6 +260,7 @@ class PriceAreaDayAheadWrite(PriceAreaWrite):
         main_price_scenario: TODO
         price_scenarios: TODO
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceAreaDayAhead", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
@@ -274,6 +277,7 @@ class PriceAreaDayAheadWrite(PriceAreaWrite):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -310,7 +314,6 @@ class PriceAreaDayAheadWrite(PriceAreaWrite):
         if self.price_scenarios is not None or write_none:
             properties["priceScenarios"] = [price_scenario if isinstance(price_scenario, str) else price_scenario.external_id for price_scenario in self.price_scenarios or []] if self.price_scenarios is not None else None
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -325,8 +328,6 @@ class PriceAreaDayAheadWrite(PriceAreaWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         if isinstance(self.default_bid_configuration, DomainModelWrite):
             other_resources = self.default_bid_configuration._to_instances_write(cache)
@@ -353,12 +354,10 @@ class PriceAreaDayAheadApply(PriceAreaDayAheadWrite):
         )
         return super().__new__(cls)
 
-
 class PriceAreaDayAheadList(DomainModelList[PriceAreaDayAhead]):
     """List of price area day aheads in the read version."""
 
     _INSTANCE = PriceAreaDayAhead
-
     def as_write(self) -> PriceAreaDayAheadWriteList:
         """Convert these read versions of price area day ahead to the writing versions."""
         return PriceAreaDayAheadWriteList([node.as_write() for node in self.data])
@@ -375,23 +374,18 @@ class PriceAreaDayAheadList(DomainModelList[PriceAreaDayAhead]):
     @property
     def default_bid_configuration(self) -> BidConfigurationDayAheadList:
         from ._bid_configuration_day_ahead import BidConfigurationDayAhead, BidConfigurationDayAheadList
-
         return BidConfigurationDayAheadList([item.default_bid_configuration for item in self.data if isinstance(item.default_bid_configuration, BidConfigurationDayAhead)])
-
 
 class PriceAreaDayAheadWriteList(DomainModelWriteList[PriceAreaDayAheadWrite]):
     """List of price area day aheads in the writing version."""
 
     _INSTANCE = PriceAreaDayAheadWrite
-
     @property
     def default_bid_configuration(self) -> BidConfigurationDayAheadWriteList:
         from ._bid_configuration_day_ahead import BidConfigurationDayAheadWrite, BidConfigurationDayAheadWriteList
-
         return BidConfigurationDayAheadWriteList([item.default_bid_configuration for item in self.data if isinstance(item.default_bid_configuration, BidConfigurationDayAheadWrite)])
 
 class PriceAreaDayAheadApplyList(PriceAreaDayAheadWriteList): ...
-
 
 
 def _create_price_area_day_ahead_filter(
@@ -501,6 +495,20 @@ class _PriceAreaDayAheadQuery(NodeQueryCore[T_DomainModelList, PriceAreaDayAhead
             self.display_name,
             self.ordering,
             self.asset_type,
+        ])
+        self.main_price_scenario = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.main_price_scenario if isinstance(item.main_price_scenario, str) else item.main_price_scenario.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.main_price_scenario is not None and
+               (isinstance(item.main_price_scenario, str) or item.main_price_scenario.external_id is not None)
+        ])
+        self.price_scenarios = TimeSeriesReferenceAPI(client,  lambda limit: [
+            ts if isinstance(ts, str) else ts.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.price_scenarios is not None
+            for ts in item.price_scenarios
+            if ts is not None and
+               (isinstance(ts, str) or ts.external_id is not None)
         ])
 
     def list_price_area_day_ahead(self, limit: int = DEFAULT_QUERY_LIMIT) -> PriceAreaDayAheadList:

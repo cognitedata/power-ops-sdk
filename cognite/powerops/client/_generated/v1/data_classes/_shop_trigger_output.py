@@ -36,7 +36,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     IntFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._function_output import FunctionOutput, FunctionOutputWrite
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._alert import Alert, AlertList, AlertGraphQL, AlertWrite, AlertWriteList
     from cognite.powerops.client._generated.v1.data_classes._shop_result import ShopResult, ShopResultList, ShopResultGraphQL, ShopResultWrite, ShopResultWriteList
@@ -67,6 +66,7 @@ _SHOPTRIGGEROUTPUT_PROPERTIES_BY_FIELD = {
     "function_call_id": "functionCallId",
 }
 
+
 class ShopTriggerOutputGraphQL(GraphQLCore):
     """This represents the reading version of shop trigger output, used
     when data is retrieved from CDF using GraphQL.
@@ -85,6 +85,7 @@ class ShopTriggerOutputGraphQL(GraphQLCore):
         alerts: An array of calculation level Alerts.
         shop_result: The shop result field.
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopTriggerOutput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
@@ -104,6 +105,8 @@ class ShopTriggerOutputGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("function_input", "alerts", "shop_result", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -133,12 +136,11 @@ class ShopTriggerOutputGraphQL(GraphQLCore):
             function_input=self.function_input.as_read()
 if isinstance(self.function_input, GraphQLCore)
 else self.function_input,
-            alerts=[alert.as_read() for alert in self.alerts or []],
+            alerts=[alert.as_read() for alert in self.alerts] if self.alerts is not None else None,
             shop_result=self.shop_result.as_read()
 if isinstance(self.shop_result, GraphQLCore)
 else self.shop_result,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -155,7 +157,7 @@ else self.shop_result,
             function_input=self.function_input.as_write()
 if isinstance(self.function_input, GraphQLCore)
 else self.function_input,
-            alerts=[alert.as_write() for alert in self.alerts or []],
+            alerts=[alert.as_write() for alert in self.alerts] if self.alerts is not None else None,
             shop_result=self.shop_result.as_write()
 if isinstance(self.shop_result, GraphQLCore)
 else self.shop_result,
@@ -179,11 +181,14 @@ class ShopTriggerOutput(FunctionOutput):
         alerts: An array of calculation level Alerts.
         shop_result: The shop result field.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopTriggerOutput", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopTriggerOutput")
     shop_result: Union[ShopResult, str, dm.NodeId, None] = Field(default=None, repr=False, alias="shopResult")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopTriggerOutputWrite:
         """Convert this read version of shop trigger output to the writing version."""
         return ShopTriggerOutputWrite(
@@ -197,7 +202,7 @@ class ShopTriggerOutput(FunctionOutput):
             function_input=self.function_input.as_write()
 if isinstance(self.function_input, DomainModel)
 else self.function_input,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
+            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts] if self.alerts is not None else None,
             shop_result=self.shop_result.as_write()
 if isinstance(self.shop_result, DomainModel)
 else self.shop_result,
@@ -211,7 +216,6 @@ else self.shop_result,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -222,7 +226,6 @@ else self.shop_result,
         from ._alert import Alert
         from ._shop_result import ShopResult
         from ._shop_trigger_input import ShopTriggerInput
-
         for instance in instances.values():
             if isinstance(instance.function_input, (dm.NodeId, str)) and (function_input := nodes_by_id.get(instance.function_input)) and isinstance(
                     function_input, ShopTriggerInput
@@ -265,7 +268,6 @@ else self.shop_result,
 
 
 
-
 class ShopTriggerOutputWrite(FunctionOutputWrite):
     """This represents the writing version of shop trigger output.
 
@@ -283,6 +285,7 @@ class ShopTriggerOutputWrite(FunctionOutputWrite):
         alerts: An array of calculation level Alerts.
         shop_result: The shop result field.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopTriggerOutput", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "ShopTriggerOutput")
@@ -297,6 +300,7 @@ class ShopTriggerOutputWrite(FunctionOutputWrite):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -333,7 +337,6 @@ class ShopTriggerOutputWrite(FunctionOutputWrite):
                 "externalId": self.shop_result if isinstance(self.shop_result, str) else self.shop_result.external_id,
             }
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -348,8 +351,6 @@ class ShopTriggerOutputWrite(FunctionOutputWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
@@ -385,12 +386,10 @@ class ShopTriggerOutputApply(ShopTriggerOutputWrite):
         )
         return super().__new__(cls)
 
-
 class ShopTriggerOutputList(DomainModelList[ShopTriggerOutput]):
     """List of shop trigger outputs in the read version."""
 
     _INSTANCE = ShopTriggerOutput
-
     def as_write(self) -> ShopTriggerOutputWriteList:
         """Convert these read versions of shop trigger output to the writing versions."""
         return ShopTriggerOutputWriteList([node.as_write() for node in self.data])
@@ -407,47 +406,36 @@ class ShopTriggerOutputList(DomainModelList[ShopTriggerOutput]):
     @property
     def function_input(self) -> ShopTriggerInputList:
         from ._shop_trigger_input import ShopTriggerInput, ShopTriggerInputList
-
         return ShopTriggerInputList([item.function_input for item in self.data if isinstance(item.function_input, ShopTriggerInput)])
-
     @property
     def alerts(self) -> AlertList:
         from ._alert import Alert, AlertList
-
         return AlertList([item for items in self.data for item in items.alerts or [] if isinstance(item, Alert)])
 
     @property
     def shop_result(self) -> ShopResultList:
         from ._shop_result import ShopResult, ShopResultList
-
         return ShopResultList([item.shop_result for item in self.data if isinstance(item.shop_result, ShopResult)])
-
 
 class ShopTriggerOutputWriteList(DomainModelWriteList[ShopTriggerOutputWrite]):
     """List of shop trigger outputs in the writing version."""
 
     _INSTANCE = ShopTriggerOutputWrite
-
     @property
     def function_input(self) -> ShopTriggerInputWriteList:
         from ._shop_trigger_input import ShopTriggerInputWrite, ShopTriggerInputWriteList
-
         return ShopTriggerInputWriteList([item.function_input for item in self.data if isinstance(item.function_input, ShopTriggerInputWrite)])
-
     @property
     def alerts(self) -> AlertWriteList:
         from ._alert import AlertWrite, AlertWriteList
-
         return AlertWriteList([item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)])
 
     @property
     def shop_result(self) -> ShopResultWriteList:
         from ._shop_result import ShopResultWrite, ShopResultWriteList
-
         return ShopResultWriteList([item.shop_result for item in self.data if isinstance(item.shop_result, ShopResultWrite)])
 
 class ShopTriggerOutputApplyList(ShopTriggerOutputWriteList): ...
-
 
 
 def _create_shop_trigger_output_filter(

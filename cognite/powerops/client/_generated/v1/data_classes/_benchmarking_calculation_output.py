@@ -36,7 +36,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     IntFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._function_output import FunctionOutput, FunctionOutputWrite
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._alert import Alert, AlertList, AlertGraphQL, AlertWrite, AlertWriteList
     from cognite.powerops.client._generated.v1.data_classes._benchmarking_calculation_input import BenchmarkingCalculationInput, BenchmarkingCalculationInputList, BenchmarkingCalculationInputGraphQL, BenchmarkingCalculationInputWrite, BenchmarkingCalculationInputWriteList
@@ -67,6 +66,7 @@ _BENCHMARKINGCALCULATIONOUTPUT_PROPERTIES_BY_FIELD = {
     "function_call_id": "functionCallId",
 }
 
+
 class BenchmarkingCalculationOutputGraphQL(GraphQLCore):
     """This represents the reading version of benchmarking calculation output, used
     when data is retrieved from CDF using GraphQL.
@@ -85,6 +85,7 @@ class BenchmarkingCalculationOutputGraphQL(GraphQLCore):
         alerts: An array of calculation level Alerts.
         benchmarking_results: An array of benchmarking shop run results for the day-ahead market.
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingCalculationOutput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
@@ -104,6 +105,8 @@ class BenchmarkingCalculationOutputGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("function_input", "alerts", "benchmarking_results", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -133,10 +136,9 @@ class BenchmarkingCalculationOutputGraphQL(GraphQLCore):
             function_input=self.function_input.as_read()
 if isinstance(self.function_input, GraphQLCore)
 else self.function_input,
-            alerts=[alert.as_read() for alert in self.alerts or []],
-            benchmarking_results=[benchmarking_result.as_read() for benchmarking_result in self.benchmarking_results or []],
+            alerts=[alert.as_read() for alert in self.alerts] if self.alerts is not None else None,
+            benchmarking_results=[benchmarking_result.as_read() for benchmarking_result in self.benchmarking_results] if self.benchmarking_results is not None else None,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -153,8 +155,8 @@ else self.function_input,
             function_input=self.function_input.as_write()
 if isinstance(self.function_input, GraphQLCore)
 else self.function_input,
-            alerts=[alert.as_write() for alert in self.alerts or []],
-            benchmarking_results=[benchmarking_result.as_write() for benchmarking_result in self.benchmarking_results or []],
+            alerts=[alert.as_write() for alert in self.alerts] if self.alerts is not None else None,
+            benchmarking_results=[benchmarking_result.as_write() for benchmarking_result in self.benchmarking_results] if self.benchmarking_results is not None else None,
         )
 
 
@@ -175,11 +177,14 @@ class BenchmarkingCalculationOutput(FunctionOutput):
         alerts: An array of calculation level Alerts.
         benchmarking_results: An array of benchmarking shop run results for the day-ahead market.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingCalculationOutput", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingCalculationOutput")
     benchmarking_results: Optional[list[Union[BenchmarkingResultDayAhead, str, dm.NodeId]]] = Field(default=None, repr=False, alias="benchmarkingResults")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> BenchmarkingCalculationOutputWrite:
         """Convert this read version of benchmarking calculation output to the writing version."""
         return BenchmarkingCalculationOutputWrite(
@@ -193,8 +198,8 @@ class BenchmarkingCalculationOutput(FunctionOutput):
             function_input=self.function_input.as_write()
 if isinstance(self.function_input, DomainModel)
 else self.function_input,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            benchmarking_results=[benchmarking_result.as_write() if isinstance(benchmarking_result, DomainModel) else benchmarking_result for benchmarking_result in self.benchmarking_results or []],
+            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts] if self.alerts is not None else None,
+            benchmarking_results=[benchmarking_result.as_write() if isinstance(benchmarking_result, DomainModel) else benchmarking_result for benchmarking_result in self.benchmarking_results] if self.benchmarking_results is not None else None,
         )
 
     def as_apply(self) -> BenchmarkingCalculationOutputWrite:
@@ -205,7 +210,6 @@ else self.function_input,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -216,7 +220,6 @@ else self.function_input,
         from ._alert import Alert
         from ._benchmarking_calculation_input import BenchmarkingCalculationInput
         from ._benchmarking_result_day_ahead import BenchmarkingResultDayAhead
-
         for instance in instances.values():
             if isinstance(instance.function_input, (dm.NodeId, str)) and (function_input := nodes_by_id.get(instance.function_input)) and isinstance(
                     function_input, BenchmarkingCalculationInput
@@ -261,7 +264,6 @@ else self.function_input,
 
 
 
-
 class BenchmarkingCalculationOutputWrite(FunctionOutputWrite):
     """This represents the writing version of benchmarking calculation output.
 
@@ -279,6 +281,7 @@ class BenchmarkingCalculationOutputWrite(FunctionOutputWrite):
         alerts: An array of calculation level Alerts.
         benchmarking_results: An array of benchmarking shop run results for the day-ahead market.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingCalculationOutput", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingCalculationOutput")
@@ -293,6 +296,7 @@ class BenchmarkingCalculationOutputWrite(FunctionOutputWrite):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -323,7 +327,6 @@ class BenchmarkingCalculationOutputWrite(FunctionOutputWrite):
                 "externalId": self.function_input if isinstance(self.function_input, str) else self.function_input.external_id,
             }
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -338,8 +341,6 @@ class BenchmarkingCalculationOutputWrite(FunctionOutputWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
@@ -383,12 +384,10 @@ class BenchmarkingCalculationOutputApply(BenchmarkingCalculationOutputWrite):
         )
         return super().__new__(cls)
 
-
 class BenchmarkingCalculationOutputList(DomainModelList[BenchmarkingCalculationOutput]):
     """List of benchmarking calculation outputs in the read version."""
 
     _INSTANCE = BenchmarkingCalculationOutput
-
     def as_write(self) -> BenchmarkingCalculationOutputWriteList:
         """Convert these read versions of benchmarking calculation output to the writing versions."""
         return BenchmarkingCalculationOutputWriteList([node.as_write() for node in self.data])
@@ -405,19 +404,15 @@ class BenchmarkingCalculationOutputList(DomainModelList[BenchmarkingCalculationO
     @property
     def function_input(self) -> BenchmarkingCalculationInputList:
         from ._benchmarking_calculation_input import BenchmarkingCalculationInput, BenchmarkingCalculationInputList
-
         return BenchmarkingCalculationInputList([item.function_input for item in self.data if isinstance(item.function_input, BenchmarkingCalculationInput)])
-
     @property
     def alerts(self) -> AlertList:
         from ._alert import Alert, AlertList
-
         return AlertList([item for items in self.data for item in items.alerts or [] if isinstance(item, Alert)])
 
     @property
     def benchmarking_results(self) -> BenchmarkingResultDayAheadList:
         from ._benchmarking_result_day_ahead import BenchmarkingResultDayAhead, BenchmarkingResultDayAheadList
-
         return BenchmarkingResultDayAheadList([item for items in self.data for item in items.benchmarking_results or [] if isinstance(item, BenchmarkingResultDayAhead)])
 
 
@@ -425,27 +420,22 @@ class BenchmarkingCalculationOutputWriteList(DomainModelWriteList[BenchmarkingCa
     """List of benchmarking calculation outputs in the writing version."""
 
     _INSTANCE = BenchmarkingCalculationOutputWrite
-
     @property
     def function_input(self) -> BenchmarkingCalculationInputWriteList:
         from ._benchmarking_calculation_input import BenchmarkingCalculationInputWrite, BenchmarkingCalculationInputWriteList
-
         return BenchmarkingCalculationInputWriteList([item.function_input for item in self.data if isinstance(item.function_input, BenchmarkingCalculationInputWrite)])
-
     @property
     def alerts(self) -> AlertWriteList:
         from ._alert import AlertWrite, AlertWriteList
-
         return AlertWriteList([item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)])
 
     @property
     def benchmarking_results(self) -> BenchmarkingResultDayAheadWriteList:
         from ._benchmarking_result_day_ahead import BenchmarkingResultDayAheadWrite, BenchmarkingResultDayAheadWriteList
-
         return BenchmarkingResultDayAheadWriteList([item for items in self.data for item in items.benchmarking_results or [] if isinstance(item, BenchmarkingResultDayAheadWrite)])
 
-class BenchmarkingCalculationOutputApplyList(BenchmarkingCalculationOutputWriteList): ...
 
+class BenchmarkingCalculationOutputApplyList(BenchmarkingCalculationOutputWriteList): ...
 
 
 def _create_benchmarking_calculation_output_filter(

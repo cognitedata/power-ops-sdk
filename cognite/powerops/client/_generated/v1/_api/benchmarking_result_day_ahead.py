@@ -57,24 +57,24 @@ class BenchmarkingResultDayAheadAPI(NodeAPI[BenchmarkingResultDayAhead, Benchmar
         self.alerts_edge = BenchmarkingResultDayAheadAlertsAPI(client)
 
     def __call__(
-            self,
-            name: str | list[str] | None = None,
-            name_prefix: str | None = None,
-            workflow_execution_id: str | list[str] | None = None,
-            workflow_execution_id_prefix: str | None = None,
-            bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-            min_delivery_date: datetime.date | None = None,
-            max_delivery_date: datetime.date | None = None,
-            min_bid_generated: datetime.datetime | None = None,
-            max_bid_generated: datetime.datetime | None = None,
-            shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-            is_selected: bool | None = None,
-            min_value: float | None = None,
-            max_value: float | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        min_delivery_date: datetime.date | None = None,
+        max_delivery_date: datetime.date | None = None,
+        min_bid_generated: datetime.datetime | None = None,
+        max_bid_generated: datetime.datetime | None = None,
+        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        is_selected: bool | None = None,
+        min_value: float | None = None,
+        max_value: float | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> BenchmarkingResultDayAheadQueryAPI[BenchmarkingResultDayAheadList]:
         """Query starting at benchmarking result day aheads.
 
@@ -129,7 +129,6 @@ class BenchmarkingResultDayAheadAPI(NodeAPI[BenchmarkingResultDayAhead, Benchmar
         )
         builder = DataClassQueryBuilder(BenchmarkingResultDayAheadList)
         return BenchmarkingResultDayAheadQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -245,7 +244,6 @@ class BenchmarkingResultDayAheadAPI(NodeAPI[BenchmarkingResultDayAhead, Benchmar
                 ),
                                                ]
         )
-
 
     def search(
         self,
@@ -366,8 +364,7 @@ class BenchmarkingResultDayAheadAPI(NodeAPI[BenchmarkingResultDayAhead, Benchmar
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -394,8 +391,7 @@ class BenchmarkingResultDayAheadAPI(NodeAPI[BenchmarkingResultDayAhead, Benchmar
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -424,8 +420,7 @@ class BenchmarkingResultDayAheadAPI(NodeAPI[BenchmarkingResultDayAhead, Benchmar
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
@@ -702,7 +697,7 @@ class BenchmarkingResultDayAheadAPI(NodeAPI[BenchmarkingResultDayAhead, Benchmar
         )
 
         if retrieve_connections == "skip":
-                return self._list(
+            return self._list(
                 limit=limit,
                 filter=filter_,
                 sort_by=sort_by,  # type: ignore[arg-type]

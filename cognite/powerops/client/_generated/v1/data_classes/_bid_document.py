@@ -38,7 +38,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     DateFilter,
     TimestampFilter,
 )
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._alert import Alert, AlertList, AlertGraphQL, AlertWrite, AlertWriteList
 
@@ -69,6 +68,7 @@ _BIDDOCUMENT_PROPERTIES_BY_FIELD = {
     "is_complete": "isComplete",
 }
 
+
 class BidDocumentGraphQL(GraphQLCore):
     """This represents the reading version of bid document, used
     when data is retrieved from CDF using GraphQL.
@@ -87,6 +87,7 @@ class BidDocumentGraphQL(GraphQLCore):
         is_complete: Indicates that the Bid calculation workflow has completed (although has not necessarily succeeded).
         alerts: An array of calculation level Alerts.
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidDocument", "1")
     name: Optional[str] = None
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
@@ -106,6 +107,8 @@ class BidDocumentGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("alerts", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -134,9 +137,8 @@ class BidDocumentGraphQL(GraphQLCore):
             start_calculation=self.start_calculation,
             end_calculation=self.end_calculation,
             is_complete=self.is_complete,
-            alerts=[alert.as_read() for alert in self.alerts or []],
+            alerts=[alert.as_read() for alert in self.alerts] if self.alerts is not None else None,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -152,7 +154,7 @@ class BidDocumentGraphQL(GraphQLCore):
             start_calculation=self.start_calculation,
             end_calculation=self.end_calculation,
             is_complete=self.is_complete,
-            alerts=[alert.as_write() for alert in self.alerts or []],
+            alerts=[alert.as_write() for alert in self.alerts] if self.alerts is not None else None,
         )
 
 
@@ -173,6 +175,7 @@ class BidDocument(DomainModel):
         is_complete: Indicates that the Bid calculation workflow has completed (although has not necessarily succeeded).
         alerts: An array of calculation level Alerts.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidDocument", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -185,6 +188,8 @@ class BidDocument(DomainModel):
     is_complete: Optional[bool] = Field(None, alias="isComplete")
     alerts: Optional[list[Union[Alert, str, dm.NodeId]]] = Field(default=None, repr=False)
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> BidDocumentWrite:
         """Convert this read version of bid document to the writing version."""
         return BidDocumentWrite(
@@ -197,7 +202,7 @@ class BidDocument(DomainModel):
             start_calculation=self.start_calculation,
             end_calculation=self.end_calculation,
             is_complete=self.is_complete,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
+            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts] if self.alerts is not None else None,
         )
 
     def as_apply(self) -> BidDocumentWrite:
@@ -208,7 +213,6 @@ class BidDocument(DomainModel):
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -217,7 +221,6 @@ class BidDocument(DomainModel):
         edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
     ) -> None:
         from ._alert import Alert
-
         for instance in instances.values():
             if edges := edges_by_source_node.get(instance.as_id()):
                 alerts: list[Alert | str | dm.NodeId] = []
@@ -252,7 +255,6 @@ class BidDocument(DomainModel):
 
 
 
-
 class BidDocumentWrite(DomainModelWrite):
     """This represents the writing version of bid document.
 
@@ -270,6 +272,7 @@ class BidDocumentWrite(DomainModelWrite):
         is_complete: Indicates that the Bid calculation workflow has completed (although has not necessarily succeeded).
         alerts: An array of calculation level Alerts.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidDocument", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -291,6 +294,7 @@ class BidDocumentWrite(DomainModelWrite):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -321,7 +325,6 @@ class BidDocumentWrite(DomainModelWrite):
         if self.is_complete is not None or write_none:
             properties["isComplete"] = self.is_complete
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -336,8 +339,6 @@ class BidDocumentWrite(DomainModelWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
@@ -365,12 +366,10 @@ class BidDocumentApply(BidDocumentWrite):
         )
         return super().__new__(cls)
 
-
 class BidDocumentList(DomainModelList[BidDocument]):
     """List of bid documents in the read version."""
 
     _INSTANCE = BidDocument
-
     def as_write(self) -> BidDocumentWriteList:
         """Convert these read versions of bid document to the writing versions."""
         return BidDocumentWriteList([node.as_write() for node in self.data])
@@ -387,7 +386,6 @@ class BidDocumentList(DomainModelList[BidDocument]):
     @property
     def alerts(self) -> AlertList:
         from ._alert import Alert, AlertList
-
         return AlertList([item for items in self.data for item in items.alerts or [] if isinstance(item, Alert)])
 
 
@@ -395,15 +393,13 @@ class BidDocumentWriteList(DomainModelWriteList[BidDocumentWrite]):
     """List of bid documents in the writing version."""
 
     _INSTANCE = BidDocumentWrite
-
     @property
     def alerts(self) -> AlertWriteList:
         from ._alert import AlertWrite, AlertWriteList
-
         return AlertWriteList([item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)])
 
-class BidDocumentApplyList(BidDocumentWriteList): ...
 
+class BidDocumentApplyList(BidDocumentWriteList): ...
 
 
 def _create_bid_document_filter(

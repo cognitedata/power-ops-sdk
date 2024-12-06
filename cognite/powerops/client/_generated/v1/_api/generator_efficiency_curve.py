@@ -52,11 +52,11 @@ class GeneratorEfficiencyCurveAPI(NodeAPI[GeneratorEfficiencyCurve, GeneratorEff
 
 
     def __call__(
-            self,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> GeneratorEfficiencyCurveQueryAPI[GeneratorEfficiencyCurveList]:
         """Query starting at generator efficiency curves.
 
@@ -85,7 +85,6 @@ class GeneratorEfficiencyCurveAPI(NodeAPI[GeneratorEfficiencyCurve, GeneratorEff
         )
         builder = DataClassQueryBuilder(GeneratorEfficiencyCurveList)
         return GeneratorEfficiencyCurveQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -250,8 +249,7 @@ class GeneratorEfficiencyCurveAPI(NodeAPI[GeneratorEfficiencyCurve, GeneratorEff
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -263,8 +261,7 @@ class GeneratorEfficiencyCurveAPI(NodeAPI[GeneratorEfficiencyCurve, GeneratorEff
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -278,8 +275,7 @@ class GeneratorEfficiencyCurveAPI(NodeAPI[GeneratorEfficiencyCurve, GeneratorEff
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
 
 from cognite.client import data_modeling as dm
 
@@ -9,15 +10,15 @@ from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INS
 
 class ShopResultOutputTimeSeriesAPI(EdgeAPI):
     def list(
-            self,
-            from_shop_result: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-            from_shop_result_space: str = DEFAULT_INSTANCE_SPACE,
-            to_shop_time_series: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-            to_shop_time_series_space: str = DEFAULT_INSTANCE_SPACE,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit=DEFAULT_LIMIT_READ,
-    ) ->dm.EdgeList:
+        self,
+        from_shop_result: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+        from_shop_result_space: str = DEFAULT_INSTANCE_SPACE,
+        to_shop_time_series: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+        to_shop_time_series_space: str = DEFAULT_INSTANCE_SPACE,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit=DEFAULT_LIMIT_READ,
+    ) -> dm.EdgeList:
         """List output time series edges of a shop result.
 
         Args:
@@ -44,7 +45,6 @@ class ShopResultOutputTimeSeriesAPI(EdgeAPI):
         """
         filter_ = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "ShopResult.outputTimeSeries"),
-
             from_shop_result,
             from_shop_result_space,
             to_shop_time_series,

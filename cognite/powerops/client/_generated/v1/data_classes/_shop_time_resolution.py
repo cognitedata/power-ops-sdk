@@ -44,7 +44,6 @@ __all__ = [
     "ShopTimeResolutionWriteList",
     "ShopTimeResolutionApplyList",
     "ShopTimeResolutionFields",
-
     "ShopTimeResolutionGraphQL",
 ]
 
@@ -57,6 +56,7 @@ _SHOPTIMERESOLUTION_PROPERTIES_BY_FIELD = {
     "minutes_after_start": "minutesAfterStart",
     "time_resolution_minutes": "timeResolutionMinutes",
 }
+
 
 class ShopTimeResolutionGraphQL(GraphQLCore):
     """This represents the reading version of shop time resolution, used
@@ -71,6 +71,7 @@ class ShopTimeResolutionGraphQL(GraphQLCore):
         minutes_after_start: Minutes after SHOP Simulation start.
         time_resolution_minutes: The SHOP time resolution (in minutes) to use for SHOP.
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopTimeResolution", "1")
     minutes_after_start: Optional[list[int]] = Field(None, alias="minutesAfterStart")
     time_resolution_minutes: Optional[list[int]] = Field(None, alias="timeResolutionMinutes")
@@ -85,6 +86,8 @@ class ShopTimeResolutionGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -103,7 +106,6 @@ class ShopTimeResolutionGraphQL(GraphQLCore):
             minutes_after_start=self.minutes_after_start,
             time_resolution_minutes=self.time_resolution_minutes,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -130,6 +132,7 @@ class ShopTimeResolution(DomainModel):
         minutes_after_start: Minutes after SHOP Simulation start.
         time_resolution_minutes: The SHOP time resolution (in minutes) to use for SHOP.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopTimeResolution", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -137,6 +140,8 @@ class ShopTimeResolution(DomainModel):
     minutes_after_start: list[int] = Field(alias="minutesAfterStart")
     time_resolution_minutes: list[int] = Field(alias="timeResolutionMinutes")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopTimeResolutionWrite:
         """Convert this read version of shop time resolution to the writing version."""
         return ShopTimeResolutionWrite(
@@ -156,7 +161,6 @@ class ShopTimeResolution(DomainModel):
         )
         return self.as_write()
 
-
 class ShopTimeResolutionWrite(DomainModelWrite):
     """This represents the writing version of shop time resolution.
 
@@ -169,12 +173,14 @@ class ShopTimeResolutionWrite(DomainModelWrite):
         minutes_after_start: Minutes after SHOP Simulation start.
         time_resolution_minutes: The SHOP time resolution (in minutes) to use for SHOP.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopTimeResolution", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "ShopTimeResolution")
     minutes_after_start: list[int] = Field(alias="minutesAfterStart")
     time_resolution_minutes: list[int] = Field(alias="timeResolutionMinutes")
+
 
     def _to_instances_write(
         self,
@@ -194,7 +200,6 @@ class ShopTimeResolutionWrite(DomainModelWrite):
         if self.time_resolution_minutes is not None:
             properties["timeResolutionMinutes"] = self.time_resolution_minutes
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -210,8 +215,6 @@ class ShopTimeResolutionWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-
-
         return resources
 
 
@@ -226,12 +229,10 @@ class ShopTimeResolutionApply(ShopTimeResolutionWrite):
         )
         return super().__new__(cls)
 
-
 class ShopTimeResolutionList(DomainModelList[ShopTimeResolution]):
     """List of shop time resolutions in the read version."""
 
     _INSTANCE = ShopTimeResolution
-
     def as_write(self) -> ShopTimeResolutionWriteList:
         """Convert these read versions of shop time resolution to the writing versions."""
         return ShopTimeResolutionWriteList([node.as_write() for node in self.data])
@@ -252,7 +253,6 @@ class ShopTimeResolutionWriteList(DomainModelWriteList[ShopTimeResolutionWrite])
     _INSTANCE = ShopTimeResolutionWrite
 
 class ShopTimeResolutionApplyList(ShopTimeResolutionWriteList): ...
-
 
 
 def _create_shop_time_resolution_filter(

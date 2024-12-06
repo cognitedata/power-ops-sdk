@@ -66,17 +66,17 @@ class PartialBidMatrixInformationAPI(NodeAPI[PartialBidMatrixInformation, Partia
         self.linked_time_series = PartialBidMatrixInformationLinkedTimeSeriesAPI(client, self._view_id)
 
     def __call__(
-            self,
-            state: str | list[str] | None = None,
-            state_prefix: str | None = None,
-            power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-            min_resource_cost: float | None = None,
-            max_resource_cost: float | None = None,
-            partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        state: str | list[str] | None = None,
+        state_prefix: str | None = None,
+        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        min_resource_cost: float | None = None,
+        max_resource_cost: float | None = None,
+        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> PartialBidMatrixInformationQueryAPI[PartialBidMatrixInformationList]:
         """Query starting at partial bid matrix information.
 
@@ -117,7 +117,6 @@ class PartialBidMatrixInformationAPI(NodeAPI[PartialBidMatrixInformation, Partia
         )
         builder = DataClassQueryBuilder(PartialBidMatrixInformationList)
         return PartialBidMatrixInformationQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -241,10 +240,10 @@ class PartialBidMatrixInformationAPI(NodeAPI[PartialBidMatrixInformation, Partia
                     "outwards",
                     dm.ViewId("power_ops_core", "BidMatrix", "1"),
                 ),
-                                               ],
+                                               ]
+,
             as_child_class=as_child_class
         )
-
 
     def search(
         self,
@@ -337,8 +336,7 @@ class PartialBidMatrixInformationAPI(NodeAPI[PartialBidMatrixInformation, Partia
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -358,8 +356,7 @@ class PartialBidMatrixInformationAPI(NodeAPI[PartialBidMatrixInformation, Partia
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -381,8 +378,7 @@ class PartialBidMatrixInformationAPI(NodeAPI[PartialBidMatrixInformation, Partia
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
@@ -596,7 +592,7 @@ class PartialBidMatrixInformationAPI(NodeAPI[PartialBidMatrixInformation, Partia
         )
 
         if retrieve_connections == "skip":
-                return self._list(
+            return self._list(
                 limit=limit,
                 filter=filter_,
                 sort_by=sort_by,  # type: ignore[arg-type]

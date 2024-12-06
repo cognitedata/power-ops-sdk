@@ -31,7 +31,6 @@ if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1._api.partial_bid_configuration_query import PartialBidConfigurationQueryAPI
 
 
-
 class BidConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
     _view_id = dm.ViewId("power_ops_core", "BidConfigurationDayAhead", "1")
 
@@ -55,7 +54,6 @@ class BidConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
-
     def partials(
         self,
         name: str | list[str] | None = None,
@@ -103,7 +101,6 @@ class BidConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "BidConfiguration.partials"),
-
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -180,7 +177,6 @@ class BidConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
                 result_cls=MarketConfiguration,
             ),
         )
-
     def _query_append_price_area(self, from_: str) -> None:
         self._builder.append(
             NodeQueryStep(
@@ -194,7 +190,6 @@ class BidConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
                 result_cls=PriceAreaDayAhead,
             ),
         )
-
     def _query_append_bid_date_specification(self, from_: str) -> None:
         self._builder.append(
             NodeQueryStep(

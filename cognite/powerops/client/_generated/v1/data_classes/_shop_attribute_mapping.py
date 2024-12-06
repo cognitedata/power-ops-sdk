@@ -32,6 +32,7 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     TimeSeries,
     TimeSeriesWrite,
     TimeSeriesGraphQL,
+    TimeSeriesReferenceAPI,
     T_DomainModelList,
     as_direct_relation_reference,
     as_instance_dict_id,
@@ -74,6 +75,7 @@ _SHOPATTRIBUTEMAPPING_PROPERTIES_BY_FIELD = {
     "aggregation": "aggregation",
 }
 
+
 class ShopAttributeMappingGraphQL(GraphQLCore):
     """This represents the reading version of shop attribute mapping, used
     when data is retrieved from CDF using GraphQL.
@@ -92,6 +94,7 @@ class ShopAttributeMappingGraphQL(GraphQLCore):
         retrieve: How to retrieve time series data
         aggregation: How to aggregate time series data
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopAttributeMapping", "1")
     object_type: Optional[str] = Field(None, alias="objectType")
     object_name: Optional[str] = Field(None, alias="objectName")
@@ -111,6 +114,8 @@ class ShopAttributeMappingGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -134,7 +139,6 @@ class ShopAttributeMappingGraphQL(GraphQLCore):
             retrieve=self.retrieve,
             aggregation=self.aggregation,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -171,6 +175,7 @@ class ShopAttributeMapping(DomainModel):
         retrieve: How to retrieve time series data
         aggregation: How to aggregate time series data
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopAttributeMapping", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -183,6 +188,8 @@ class ShopAttributeMapping(DomainModel):
     retrieve: Optional[str] = None
     aggregation: Optional[str] = None
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopAttributeMappingWrite:
         """Convert this read version of shop attribute mapping to the writing version."""
         return ShopAttributeMappingWrite(
@@ -207,7 +214,6 @@ class ShopAttributeMapping(DomainModel):
         )
         return self.as_write()
 
-
 class ShopAttributeMappingWrite(DomainModelWrite):
     """This represents the writing version of shop attribute mapping.
 
@@ -225,6 +231,7 @@ class ShopAttributeMappingWrite(DomainModelWrite):
         retrieve: How to retrieve time series data
         aggregation: How to aggregate time series data
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopAttributeMapping", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -236,6 +243,7 @@ class ShopAttributeMappingWrite(DomainModelWrite):
     transformations: Optional[list[dict]] = None
     retrieve: Optional[str] = None
     aggregation: Optional[str] = None
+
 
     def _to_instances_write(
         self,
@@ -270,7 +278,6 @@ class ShopAttributeMappingWrite(DomainModelWrite):
         if self.aggregation is not None or write_none:
             properties["aggregation"] = self.aggregation
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -285,8 +292,6 @@ class ShopAttributeMappingWrite(DomainModelWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         if isinstance(self.time_series, CogniteTimeSeriesWrite):
             resources.time_series.append(self.time_series)
@@ -305,12 +310,10 @@ class ShopAttributeMappingApply(ShopAttributeMappingWrite):
         )
         return super().__new__(cls)
 
-
 class ShopAttributeMappingList(DomainModelList[ShopAttributeMapping]):
     """List of shop attribute mappings in the read version."""
 
     _INSTANCE = ShopAttributeMapping
-
     def as_write(self) -> ShopAttributeMappingWriteList:
         """Convert these read versions of shop attribute mapping to the writing versions."""
         return ShopAttributeMappingWriteList([node.as_write() for node in self.data])
@@ -331,7 +334,6 @@ class ShopAttributeMappingWriteList(DomainModelWriteList[ShopAttributeMappingWri
     _INSTANCE = ShopAttributeMappingWrite
 
 class ShopAttributeMappingApplyList(ShopAttributeMappingWriteList): ...
-
 
 
 def _create_shop_attribute_mapping_filter(
@@ -436,6 +438,12 @@ class _ShopAttributeMappingQuery(NodeQueryCore[T_DomainModelList, ShopAttributeM
             self.attribute_name,
             self.retrieve,
             self.aggregation,
+        ])
+        self.time_series = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.time_series if isinstance(item.time_series, str) else item.time_series.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.time_series is not None and
+               (isinstance(item.time_series, str) or item.time_series.external_id is not None)
         ])
 
     def list_shop_attribute_mapping(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopAttributeMappingList:

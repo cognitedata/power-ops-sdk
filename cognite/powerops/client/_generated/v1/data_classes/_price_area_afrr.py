@@ -32,6 +32,7 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     TimeSeries,
     TimeSeriesWrite,
     TimeSeriesGraphQL,
+    TimeSeriesReferenceAPI,
     T_DomainModelList,
     as_direct_relation_reference,
     as_instance_dict_id,
@@ -81,6 +82,7 @@ _PRICEAREAAFRR_PROPERTIES_BY_FIELD = {
     "own_capacity_allocation_down": "ownCapacityAllocationDown",
 }
 
+
 class PriceAreaAFRRGraphQL(GraphQLCore):
     """This represents the reading version of price area afrr, used
     when data is retrieved from CDF using GraphQL.
@@ -105,6 +107,7 @@ class PriceAreaAFRRGraphQL(GraphQLCore):
         own_capacity_allocation_up: The own capacity allocation up field.
         own_capacity_allocation_down: The own capacity allocation down field.
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceAreaAFRR", "1")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
@@ -130,6 +133,8 @@ class PriceAreaAFRRGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -159,7 +164,6 @@ class PriceAreaAFRRGraphQL(GraphQLCore):
             own_capacity_allocation_up=self.own_capacity_allocation_up.as_read() if self.own_capacity_allocation_up else None,
             own_capacity_allocation_down=self.own_capacity_allocation_down.as_read() if self.own_capacity_allocation_down else None,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -208,6 +212,7 @@ class PriceAreaAFRR(PriceArea):
         own_capacity_allocation_up: The own capacity allocation up field.
         own_capacity_allocation_down: The own capacity allocation down field.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceAreaAFRR", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = None
@@ -221,6 +226,8 @@ class PriceAreaAFRR(PriceArea):
     own_capacity_allocation_up: Union[TimeSeries, str, None] = Field(None, alias="ownCapacityAllocationUp")
     own_capacity_allocation_down: Union[TimeSeries, str, None] = Field(None, alias="ownCapacityAllocationDown")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> PriceAreaAFRRWrite:
         """Convert this read version of price area afrr to the writing version."""
         return PriceAreaAFRRWrite(
@@ -251,7 +258,6 @@ class PriceAreaAFRR(PriceArea):
         )
         return self.as_write()
 
-
 class PriceAreaAFRRWrite(PriceAreaWrite):
     """This represents the writing version of price area afrr.
 
@@ -275,6 +281,7 @@ class PriceAreaAFRRWrite(PriceAreaWrite):
         own_capacity_allocation_up: The own capacity allocation up field.
         own_capacity_allocation_down: The own capacity allocation down field.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceAreaAFRR", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
@@ -287,6 +294,7 @@ class PriceAreaAFRRWrite(PriceAreaWrite):
     total_capacity_allocation_down: Union[TimeSeriesWrite, str, None] = Field(None, alias="totalCapacityAllocationDown")
     own_capacity_allocation_up: Union[TimeSeriesWrite, str, None] = Field(None, alias="ownCapacityAllocationUp")
     own_capacity_allocation_down: Union[TimeSeriesWrite, str, None] = Field(None, alias="ownCapacityAllocationDown")
+
 
     def _to_instances_write(
         self,
@@ -339,7 +347,6 @@ class PriceAreaAFRRWrite(PriceAreaWrite):
         if self.own_capacity_allocation_down is not None or write_none:
             properties["ownCapacityAllocationDown"] = self.own_capacity_allocation_down if isinstance(self.own_capacity_allocation_down, str) or self.own_capacity_allocation_down is None else self.own_capacity_allocation_down.external_id
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -354,8 +361,6 @@ class PriceAreaAFRRWrite(PriceAreaWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         if isinstance(self.capacity_price_up, CogniteTimeSeriesWrite):
             resources.time_series.append(self.capacity_price_up)
@@ -398,12 +403,10 @@ class PriceAreaAFRRApply(PriceAreaAFRRWrite):
         )
         return super().__new__(cls)
 
-
 class PriceAreaAFRRList(DomainModelList[PriceAreaAFRR]):
     """List of price area afrrs in the read version."""
 
     _INSTANCE = PriceAreaAFRR
-
     def as_write(self) -> PriceAreaAFRRWriteList:
         """Convert these read versions of price area afrr to the writing versions."""
         return PriceAreaAFRRWriteList([node.as_write() for node in self.data])
@@ -424,7 +427,6 @@ class PriceAreaAFRRWriteList(DomainModelWriteList[PriceAreaAFRRWrite]):
     _INSTANCE = PriceAreaAFRRWrite
 
 class PriceAreaAFRRApplyList(PriceAreaAFRRWriteList): ...
-
 
 
 def _create_price_area_afrr_filter(
@@ -515,6 +517,60 @@ class _PriceAreaAFRRQuery(NodeQueryCore[T_DomainModelList, PriceAreaAFRRList]):
             self.display_name,
             self.ordering,
             self.asset_type,
+        ])
+        self.capacity_price_up = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.capacity_price_up if isinstance(item.capacity_price_up, str) else item.capacity_price_up.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.capacity_price_up is not None and
+               (isinstance(item.capacity_price_up, str) or item.capacity_price_up.external_id is not None)
+        ])
+        self.capacity_price_down = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.capacity_price_down if isinstance(item.capacity_price_down, str) else item.capacity_price_down.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.capacity_price_down is not None and
+               (isinstance(item.capacity_price_down, str) or item.capacity_price_down.external_id is not None)
+        ])
+        self.activation_price_up = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.activation_price_up if isinstance(item.activation_price_up, str) else item.activation_price_up.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.activation_price_up is not None and
+               (isinstance(item.activation_price_up, str) or item.activation_price_up.external_id is not None)
+        ])
+        self.activation_price_down = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.activation_price_down if isinstance(item.activation_price_down, str) else item.activation_price_down.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.activation_price_down is not None and
+               (isinstance(item.activation_price_down, str) or item.activation_price_down.external_id is not None)
+        ])
+        self.relative_activation = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.relative_activation if isinstance(item.relative_activation, str) else item.relative_activation.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.relative_activation is not None and
+               (isinstance(item.relative_activation, str) or item.relative_activation.external_id is not None)
+        ])
+        self.total_capacity_allocation_up = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.total_capacity_allocation_up if isinstance(item.total_capacity_allocation_up, str) else item.total_capacity_allocation_up.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.total_capacity_allocation_up is not None and
+               (isinstance(item.total_capacity_allocation_up, str) or item.total_capacity_allocation_up.external_id is not None)
+        ])
+        self.total_capacity_allocation_down = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.total_capacity_allocation_down if isinstance(item.total_capacity_allocation_down, str) else item.total_capacity_allocation_down.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.total_capacity_allocation_down is not None and
+               (isinstance(item.total_capacity_allocation_down, str) or item.total_capacity_allocation_down.external_id is not None)
+        ])
+        self.own_capacity_allocation_up = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.own_capacity_allocation_up if isinstance(item.own_capacity_allocation_up, str) else item.own_capacity_allocation_up.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.own_capacity_allocation_up is not None and
+               (isinstance(item.own_capacity_allocation_up, str) or item.own_capacity_allocation_up.external_id is not None)
+        ])
+        self.own_capacity_allocation_down = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.own_capacity_allocation_down if isinstance(item.own_capacity_allocation_down, str) else item.own_capacity_allocation_down.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.own_capacity_allocation_down is not None and
+               (isinstance(item.own_capacity_allocation_down, str) or item.own_capacity_allocation_down.external_id is not None)
         ])
 
     def list_price_area_afrr(self, limit: int = DEFAULT_QUERY_LIMIT) -> PriceAreaAFRRList:

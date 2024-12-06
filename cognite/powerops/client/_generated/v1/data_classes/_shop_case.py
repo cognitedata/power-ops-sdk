@@ -36,7 +36,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     StringFilter,
     TimestampFilter,
 )
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._shop_file import ShopFile, ShopFileList, ShopFileGraphQL, ShopFileWrite, ShopFileWriteList
     from cognite.powerops.client._generated.v1.data_classes._shop_scenario import ShopScenario, ShopScenarioList, ShopScenarioGraphQL, ShopScenarioWrite, ShopScenarioWriteList
@@ -50,7 +49,6 @@ __all__ = [
     "ShopCaseWriteList",
     "ShopCaseApplyList",
     "ShopCaseFields",
-
     "ShopCaseGraphQL",
 ]
 
@@ -63,6 +61,7 @@ _SHOPCASE_PROPERTIES_BY_FIELD = {
     "start_time": "startTime",
     "end_time": "endTime",
 }
+
 
 class ShopCaseGraphQL(GraphQLCore):
     """This represents the reading version of shop case, used
@@ -79,6 +78,7 @@ class ShopCaseGraphQL(GraphQLCore):
         end_time: The end time of the case
         shop_files: The list of shop files that are used in a shop run. This encompasses all shop files such as case, module series, cut files etc.
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopCase", "1")
     scenario: Optional[ShopScenarioGraphQL] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
@@ -95,6 +95,8 @@ class ShopCaseGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("scenario", "shop_files", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -122,9 +124,8 @@ if isinstance(self.scenario, GraphQLCore)
 else self.scenario,
             start_time=self.start_time,
             end_time=self.end_time,
-            shop_files=[shop_file.as_read() for shop_file in self.shop_files or []],
+            shop_files=[shop_file.as_read() for shop_file in self.shop_files] if self.shop_files is not None else None,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -139,7 +140,7 @@ if isinstance(self.scenario, GraphQLCore)
 else self.scenario,
             start_time=self.start_time,
             end_time=self.end_time,
-            shop_files=[shop_file.as_write() for shop_file in self.shop_files or []],
+            shop_files=[shop_file.as_write() for shop_file in self.shop_files] if self.shop_files is not None else None,
         )
 
 
@@ -157,6 +158,7 @@ class ShopCase(DomainModel):
         end_time: The end time of the case
         shop_files: The list of shop files that are used in a shop run. This encompasses all shop files such as case, module series, cut files etc.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopCase", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -166,6 +168,8 @@ class ShopCase(DomainModel):
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
     shop_files: Optional[list[Union[ShopFile, str, dm.NodeId]]] = Field(default=None, repr=False, alias="shopFiles")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopCaseWrite:
         """Convert this read version of shop case to the writing version."""
         return ShopCaseWrite(
@@ -177,7 +181,7 @@ if isinstance(self.scenario, DomainModel)
 else self.scenario,
             start_time=self.start_time,
             end_time=self.end_time,
-            shop_files=[shop_file.as_write() if isinstance(shop_file, DomainModel) else shop_file for shop_file in self.shop_files or []],
+            shop_files=[shop_file.as_write() if isinstance(shop_file, DomainModel) else shop_file for shop_file in self.shop_files] if self.shop_files is not None else None,
         )
 
     def as_apply(self) -> ShopCaseWrite:
@@ -188,7 +192,6 @@ else self.scenario,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -198,7 +201,6 @@ else self.scenario,
     ) -> None:
         from ._shop_file import ShopFile
         from ._shop_scenario import ShopScenario
-
         for instance in instances.values():
             if isinstance(instance.scenario, (dm.NodeId, str)) and (scenario := nodes_by_id.get(instance.scenario)) and isinstance(
                     scenario, ShopScenario
@@ -237,7 +239,6 @@ else self.scenario,
 
 
 
-
 class ShopCaseWrite(DomainModelWrite):
     """This represents the writing version of shop case.
 
@@ -252,6 +253,7 @@ class ShopCaseWrite(DomainModelWrite):
         end_time: The end time of the case
         shop_files: The list of shop files that are used in a shop run. This encompasses all shop files such as case, module series, cut files etc.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopCase", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -270,6 +272,7 @@ class ShopCaseWrite(DomainModelWrite):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -294,7 +297,6 @@ class ShopCaseWrite(DomainModelWrite):
         if self.end_time is not None or write_none:
             properties["endTime"] = self.end_time.isoformat(timespec="milliseconds") if self.end_time else None
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -309,8 +311,6 @@ class ShopCaseWrite(DomainModelWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         edge_type = dm.DirectRelationReference("power_ops_types", "ShopCase.shopFiles")
         for shop_file in self.shop_files or []:
@@ -342,12 +342,10 @@ class ShopCaseApply(ShopCaseWrite):
         )
         return super().__new__(cls)
 
-
 class ShopCaseList(DomainModelList[ShopCase]):
     """List of shop cases in the read version."""
 
     _INSTANCE = ShopCase
-
     def as_write(self) -> ShopCaseWriteList:
         """Convert these read versions of shop case to the writing versions."""
         return ShopCaseWriteList([node.as_write() for node in self.data])
@@ -364,13 +362,10 @@ class ShopCaseList(DomainModelList[ShopCase]):
     @property
     def scenario(self) -> ShopScenarioList:
         from ._shop_scenario import ShopScenario, ShopScenarioList
-
         return ShopScenarioList([item.scenario for item in self.data if isinstance(item.scenario, ShopScenario)])
-
     @property
     def shop_files(self) -> ShopFileList:
         from ._shop_file import ShopFile, ShopFileList
-
         return ShopFileList([item for items in self.data for item in items.shop_files or [] if isinstance(item, ShopFile)])
 
 
@@ -378,21 +373,17 @@ class ShopCaseWriteList(DomainModelWriteList[ShopCaseWrite]):
     """List of shop cases in the writing version."""
 
     _INSTANCE = ShopCaseWrite
-
     @property
     def scenario(self) -> ShopScenarioWriteList:
         from ._shop_scenario import ShopScenarioWrite, ShopScenarioWriteList
-
         return ShopScenarioWriteList([item.scenario for item in self.data if isinstance(item.scenario, ShopScenarioWrite)])
-
     @property
     def shop_files(self) -> ShopFileWriteList:
         from ._shop_file import ShopFileWrite, ShopFileWriteList
-
         return ShopFileWriteList([item for items in self.data for item in items.shop_files or [] if isinstance(item, ShopFileWrite)])
 
-class ShopCaseApplyList(ShopCaseWriteList): ...
 
+class ShopCaseApplyList(ShopCaseWriteList): ...
 
 
 def _create_shop_case_filter(

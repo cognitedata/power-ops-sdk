@@ -83,7 +83,6 @@ class PartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
                 result_cls=BidConfigurationDayAhead,
             ),
         )
-
     def _query_append_partial_bid_configuration(self, from_: str) -> None:
         self._builder.append(
             NodeQueryStep(

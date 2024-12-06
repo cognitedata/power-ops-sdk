@@ -36,7 +36,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     BooleanFilter,
     FloatFilter,
 )
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._alert import Alert, AlertList, AlertGraphQL, AlertWrite, AlertWriteList
     from cognite.powerops.client._generated.v1.data_classes._power_asset import PowerAsset, PowerAssetList, PowerAssetGraphQL, PowerAssetWrite, PowerAssetWriteList
@@ -69,6 +68,7 @@ _BIDROW_PROPERTIES_BY_FIELD = {
     "exclusive_group_id": "exclusiveGroupId",
 }
 
+
 class BidRowGraphQL(GraphQLCore):
     """This represents the reading version of bid row, used
     when data is retrieved from CDF using GraphQL.
@@ -90,6 +90,7 @@ class BidRowGraphQL(GraphQLCore):
         power_asset: TODO description
         alerts: An array of associated alerts.
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidRow", "1")
     price: Optional[float] = None
     quantity_per_hour: Optional[list[float]] = Field(None, alias="quantityPerHour")
@@ -112,6 +113,8 @@ class BidRowGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("linked_bid", "power_asset", "alerts", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -147,9 +150,8 @@ else self.linked_bid,
             power_asset=self.power_asset.as_read()
 if isinstance(self.power_asset, GraphQLCore)
 else self.power_asset,
-            alerts=[alert.as_read() for alert in self.alerts or []],
+            alerts=[alert.as_read() for alert in self.alerts] if self.alerts is not None else None,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -172,7 +174,7 @@ else self.linked_bid,
             power_asset=self.power_asset.as_write()
 if isinstance(self.power_asset, GraphQLCore)
 else self.power_asset,
-            alerts=[alert.as_write() for alert in self.alerts or []],
+            alerts=[alert.as_write() for alert in self.alerts] if self.alerts is not None else None,
         )
 
 
@@ -196,6 +198,7 @@ class BidRow(DomainModel):
         power_asset: TODO description
         alerts: An array of associated alerts.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidRow", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -211,6 +214,8 @@ class BidRow(DomainModel):
     power_asset: Union[PowerAsset, str, dm.NodeId, None] = Field(default=None, repr=False, alias="powerAsset")
     alerts: Optional[list[Union[Alert, str, dm.NodeId]]] = Field(default=None, repr=False)
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> BidRowWrite:
         """Convert this read version of bid row to the writing version."""
         return BidRowWrite(
@@ -230,7 +235,7 @@ else self.linked_bid,
             power_asset=self.power_asset.as_write()
 if isinstance(self.power_asset, DomainModel)
 else self.power_asset,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
+            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts] if self.alerts is not None else None,
         )
 
     def as_apply(self) -> BidRowWrite:
@@ -241,7 +246,6 @@ else self.power_asset,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -251,7 +255,6 @@ else self.power_asset,
     ) -> None:
         from ._alert import Alert
         from ._power_asset import PowerAsset
-
         for instance in instances.values():
             if isinstance(instance.linked_bid, (dm.NodeId, str)) and (linked_bid := nodes_by_id.get(instance.linked_bid)) and isinstance(
                     linked_bid, BidRow
@@ -294,7 +297,6 @@ else self.power_asset,
 
 
 
-
 class BidRowWrite(DomainModelWrite):
     """This represents the writing version of bid row.
 
@@ -315,6 +317,7 @@ class BidRowWrite(DomainModelWrite):
         power_asset: TODO description
         alerts: An array of associated alerts.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidRow", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -339,6 +342,7 @@ class BidRowWrite(DomainModelWrite):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -384,7 +388,6 @@ class BidRowWrite(DomainModelWrite):
                 "externalId": self.power_asset if isinstance(self.power_asset, str) else self.power_asset.external_id,
             }
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -399,8 +402,6 @@ class BidRowWrite(DomainModelWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
@@ -436,12 +437,10 @@ class BidRowApply(BidRowWrite):
         )
         return super().__new__(cls)
 
-
 class BidRowList(DomainModelList[BidRow]):
     """List of bid rows in the read version."""
 
     _INSTANCE = BidRow
-
     def as_write(self) -> BidRowWriteList:
         """Convert these read versions of bid row to the writing versions."""
         return BidRowWriteList([node.as_write() for node in self.data])
@@ -458,17 +457,13 @@ class BidRowList(DomainModelList[BidRow]):
     @property
     def linked_bid(self) -> BidRowList:
         return BidRowList([item.linked_bid for item in self.data if isinstance(item.linked_bid, BidRow)])
-
     @property
     def power_asset(self) -> PowerAssetList:
         from ._power_asset import PowerAsset, PowerAssetList
-
         return PowerAssetList([item.power_asset for item in self.data if isinstance(item.power_asset, PowerAsset)])
-
     @property
     def alerts(self) -> AlertList:
         from ._alert import Alert, AlertList
-
         return AlertList([item for items in self.data for item in items.alerts or [] if isinstance(item, Alert)])
 
 
@@ -476,25 +471,20 @@ class BidRowWriteList(DomainModelWriteList[BidRowWrite]):
     """List of bid rows in the writing version."""
 
     _INSTANCE = BidRowWrite
-
     @property
     def linked_bid(self) -> BidRowWriteList:
         return BidRowWriteList([item.linked_bid for item in self.data if isinstance(item.linked_bid, BidRowWrite)])
-
     @property
     def power_asset(self) -> PowerAssetWriteList:
         from ._power_asset import PowerAssetWrite, PowerAssetWriteList
-
         return PowerAssetWriteList([item.power_asset for item in self.data if isinstance(item.power_asset, PowerAssetWrite)])
-
     @property
     def alerts(self) -> AlertWriteList:
         from ._alert import AlertWrite, AlertWriteList
-
         return AlertWriteList([item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)])
 
-class BidRowApplyList(BidRowWriteList): ...
 
+class BidRowApplyList(BidRowWriteList): ...
 
 
 def _create_bid_row_filter(

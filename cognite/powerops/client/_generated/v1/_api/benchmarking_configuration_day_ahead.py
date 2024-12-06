@@ -60,16 +60,16 @@ class BenchmarkingConfigurationDayAheadAPI(NodeAPI[BenchmarkingConfigurationDayA
         self.assets_per_shop_model_edge = BenchmarkingConfigurationDayAheadAssetsPerShopModelAPI(client)
 
     def __call__(
-            self,
-            name: str | list[str] | None = None,
-            name_prefix: str | None = None,
-            price_area: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-            shop_start_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-            shop_end_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        price_area: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_start_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_end_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> BenchmarkingConfigurationDayAheadQueryAPI[BenchmarkingConfigurationDayAheadList]:
         """Query starting at benchmarking configuration day aheads.
 
@@ -108,7 +108,6 @@ class BenchmarkingConfigurationDayAheadAPI(NodeAPI[BenchmarkingConfigurationDayA
         )
         builder = DataClassQueryBuilder(BenchmarkingConfigurationDayAheadList)
         return BenchmarkingConfigurationDayAheadQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -232,7 +231,6 @@ class BenchmarkingConfigurationDayAheadAPI(NodeAPI[BenchmarkingConfigurationDayA
                                                ]
         )
 
-
     def search(
         self,
         query: str,
@@ -320,8 +318,7 @@ class BenchmarkingConfigurationDayAheadAPI(NodeAPI[BenchmarkingConfigurationDayA
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -340,8 +337,7 @@ class BenchmarkingConfigurationDayAheadAPI(NodeAPI[BenchmarkingConfigurationDayA
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -362,8 +358,7 @@ class BenchmarkingConfigurationDayAheadAPI(NodeAPI[BenchmarkingConfigurationDayA
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
@@ -568,7 +563,7 @@ class BenchmarkingConfigurationDayAheadAPI(NodeAPI[BenchmarkingConfigurationDayA
         )
 
         if retrieve_connections == "skip":
-                return self._list(
+            return self._list(
                 limit=limit,
                 filter=filter_,
                 sort_by=sort_by,  # type: ignore[arg-type]

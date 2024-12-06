@@ -36,7 +36,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     IntFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._function_input import FunctionInput, FunctionInputWrite
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._shop_result import ShopResult, ShopResultList, ShopResultGraphQL, ShopResultWrite, ShopResultWriteList
 
@@ -65,6 +64,7 @@ _BENCHMARKINGCALCULATIONINPUT_PROPERTIES_BY_FIELD = {
     "function_call_id": "functionCallId",
 }
 
+
 class BenchmarkingCalculationInputGraphQL(GraphQLCore):
     """This represents the reading version of benchmarking calculation input, used
     when data is retrieved from CDF using GraphQL.
@@ -81,6 +81,7 @@ class BenchmarkingCalculationInputGraphQL(GraphQLCore):
         function_call_id: The function call id
         shop_results: An array of shop results.
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingCalculationInput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
@@ -98,6 +99,8 @@ class BenchmarkingCalculationInputGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("shop_results", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -124,9 +127,8 @@ class BenchmarkingCalculationInputGraphQL(GraphQLCore):
             workflow_step=self.workflow_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
-            shop_results=[shop_result.as_read() for shop_result in self.shop_results or []],
+            shop_results=[shop_result.as_read() for shop_result in self.shop_results] if self.shop_results is not None else None,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -140,7 +142,7 @@ class BenchmarkingCalculationInputGraphQL(GraphQLCore):
             workflow_step=self.workflow_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
-            shop_results=[shop_result.as_write() for shop_result in self.shop_results or []],
+            shop_results=[shop_result.as_write() for shop_result in self.shop_results] if self.shop_results is not None else None,
         )
 
 
@@ -159,11 +161,14 @@ class BenchmarkingCalculationInput(FunctionInput):
         function_call_id: The function call id
         shop_results: An array of shop results.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingCalculationInput", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingCalculationInput")
     shop_results: Optional[list[Union[ShopResult, str, dm.NodeId]]] = Field(default=None, repr=False, alias="shopResults")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> BenchmarkingCalculationInputWrite:
         """Convert this read version of benchmarking calculation input to the writing version."""
         return BenchmarkingCalculationInputWrite(
@@ -174,7 +179,7 @@ class BenchmarkingCalculationInput(FunctionInput):
             workflow_step=self.workflow_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
-            shop_results=[shop_result.as_write() if isinstance(shop_result, DomainModel) else shop_result for shop_result in self.shop_results or []],
+            shop_results=[shop_result.as_write() if isinstance(shop_result, DomainModel) else shop_result for shop_result in self.shop_results] if self.shop_results is not None else None,
         )
 
     def as_apply(self) -> BenchmarkingCalculationInputWrite:
@@ -185,7 +190,6 @@ class BenchmarkingCalculationInput(FunctionInput):
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -194,7 +198,6 @@ class BenchmarkingCalculationInput(FunctionInput):
         edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
     ) -> None:
         from ._shop_result import ShopResult
-
         for instance in instances.values():
             if edges := edges_by_source_node.get(instance.as_id()):
                 shop_results: list[ShopResult | str | dm.NodeId] = []
@@ -229,7 +232,6 @@ class BenchmarkingCalculationInput(FunctionInput):
 
 
 
-
 class BenchmarkingCalculationInputWrite(FunctionInputWrite):
     """This represents the writing version of benchmarking calculation input.
 
@@ -245,6 +247,7 @@ class BenchmarkingCalculationInputWrite(FunctionInputWrite):
         function_call_id: The function call id
         shop_results: An array of shop results.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingCalculationInput", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingCalculationInput")
@@ -259,6 +262,7 @@ class BenchmarkingCalculationInputWrite(FunctionInputWrite):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -283,7 +287,6 @@ class BenchmarkingCalculationInputWrite(FunctionInputWrite):
         if self.function_call_id is not None:
             properties["functionCallId"] = self.function_call_id
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -298,8 +301,6 @@ class BenchmarkingCalculationInputWrite(FunctionInputWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         edge_type = dm.DirectRelationReference("power_ops_types", "ShopResults")
         for shop_result in self.shop_results or []:
@@ -327,12 +328,10 @@ class BenchmarkingCalculationInputApply(BenchmarkingCalculationInputWrite):
         )
         return super().__new__(cls)
 
-
 class BenchmarkingCalculationInputList(DomainModelList[BenchmarkingCalculationInput]):
     """List of benchmarking calculation inputs in the read version."""
 
     _INSTANCE = BenchmarkingCalculationInput
-
     def as_write(self) -> BenchmarkingCalculationInputWriteList:
         """Convert these read versions of benchmarking calculation input to the writing versions."""
         return BenchmarkingCalculationInputWriteList([node.as_write() for node in self.data])
@@ -349,7 +348,6 @@ class BenchmarkingCalculationInputList(DomainModelList[BenchmarkingCalculationIn
     @property
     def shop_results(self) -> ShopResultList:
         from ._shop_result import ShopResult, ShopResultList
-
         return ShopResultList([item for items in self.data for item in items.shop_results or [] if isinstance(item, ShopResult)])
 
 
@@ -357,15 +355,13 @@ class BenchmarkingCalculationInputWriteList(DomainModelWriteList[BenchmarkingCal
     """List of benchmarking calculation inputs in the writing version."""
 
     _INSTANCE = BenchmarkingCalculationInputWrite
-
     @property
     def shop_results(self) -> ShopResultWriteList:
         from ._shop_result import ShopResultWrite, ShopResultWriteList
-
         return ShopResultWriteList([item for items in self.data for item in items.shop_results or [] if isinstance(item, ShopResultWrite)])
 
-class BenchmarkingCalculationInputApplyList(BenchmarkingCalculationInputWriteList): ...
 
+class BenchmarkingCalculationInputApplyList(BenchmarkingCalculationInputWriteList): ...
 
 
 def _create_benchmarking_calculation_input_filter(

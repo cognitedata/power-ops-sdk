@@ -32,6 +32,7 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     TimeSeries,
     TimeSeriesWrite,
     TimeSeriesGraphQL,
+    TimeSeriesReferenceAPI,
     T_DomainModelList,
     as_direct_relation_reference,
     as_instance_dict_id,
@@ -45,7 +46,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     StringFilter,
 
 )
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._shop_result import ShopResult, ShopResultList, ShopResultGraphQL, ShopResultWrite, ShopResultWriteList
 
@@ -73,6 +73,7 @@ _PRICEPRODUCTION_PROPERTIES_BY_FIELD = {
     "production": "production",
 }
 
+
 class PriceProductionGraphQL(GraphQLCore):
     """This represents the reading version of price production, used
     when data is retrieved from CDF using GraphQL.
@@ -88,6 +89,7 @@ class PriceProductionGraphQL(GraphQLCore):
         production: The production field.
         shop_result: The shop result field.
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceProduction", "1")
     name: Optional[str] = None
     price: Optional[TimeSeriesGraphQL] = None
@@ -104,6 +106,8 @@ class PriceProductionGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("shop_result", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -133,7 +137,6 @@ class PriceProductionGraphQL(GraphQLCore):
 if isinstance(self.shop_result, GraphQLCore)
 else self.shop_result,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -166,6 +169,7 @@ class PriceProduction(DomainModel):
         production: The production field.
         shop_result: The shop result field.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceProduction", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -175,6 +179,8 @@ class PriceProduction(DomainModel):
     production: Union[TimeSeries, str, None] = None
     shop_result: Union[ShopResult, str, dm.NodeId, None] = Field(default=None, repr=False, alias="shopResult")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> PriceProductionWrite:
         """Convert this read version of price production to the writing version."""
         return PriceProductionWrite(
@@ -197,7 +203,6 @@ else self.shop_result,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -206,13 +211,11 @@ else self.shop_result,
         edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
     ) -> None:
         from ._shop_result import ShopResult
-
         for instance in instances.values():
             if isinstance(instance.shop_result, (dm.NodeId, str)) and (shop_result := nodes_by_id.get(instance.shop_result)) and isinstance(
                     shop_result, ShopResult
             ):
                 instance.shop_result = shop_result
-
 
 
 class PriceProductionWrite(DomainModelWrite):
@@ -229,6 +232,7 @@ class PriceProductionWrite(DomainModelWrite):
         production: The production field.
         shop_result: The shop result field.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceProduction", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -247,6 +251,7 @@ class PriceProductionWrite(DomainModelWrite):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -274,7 +279,6 @@ class PriceProductionWrite(DomainModelWrite):
                 "externalId": self.shop_result if isinstance(self.shop_result, str) else self.shop_result.external_id,
             }
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -289,8 +293,6 @@ class PriceProductionWrite(DomainModelWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         if isinstance(self.shop_result, DomainModelWrite):
             other_resources = self.shop_result._to_instances_write(cache)
@@ -316,12 +318,10 @@ class PriceProductionApply(PriceProductionWrite):
         )
         return super().__new__(cls)
 
-
 class PriceProductionList(DomainModelList[PriceProduction]):
     """List of price productions in the read version."""
 
     _INSTANCE = PriceProduction
-
     def as_write(self) -> PriceProductionWriteList:
         """Convert these read versions of price production to the writing versions."""
         return PriceProductionWriteList([node.as_write() for node in self.data])
@@ -338,23 +338,18 @@ class PriceProductionList(DomainModelList[PriceProduction]):
     @property
     def shop_result(self) -> ShopResultList:
         from ._shop_result import ShopResult, ShopResultList
-
         return ShopResultList([item.shop_result for item in self.data if isinstance(item.shop_result, ShopResult)])
-
 
 class PriceProductionWriteList(DomainModelWriteList[PriceProductionWrite]):
     """List of price productions in the writing version."""
 
     _INSTANCE = PriceProductionWrite
-
     @property
     def shop_result(self) -> ShopResultWriteList:
         from ._shop_result import ShopResultWrite, ShopResultWriteList
-
         return ShopResultWriteList([item.shop_result for item in self.data if isinstance(item.shop_result, ShopResultWrite)])
 
 class PriceProductionApplyList(PriceProductionWriteList): ...
-
 
 
 def _create_price_production_filter(
@@ -438,6 +433,18 @@ class _PriceProductionQuery(NodeQueryCore[T_DomainModelList, PriceProductionList
             self.space,
             self.external_id,
             self.name,
+        ])
+        self.price = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.price if isinstance(item.price, str) else item.price.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.price is not None and
+               (isinstance(item.price, str) or item.price.external_id is not None)
+        ])
+        self.production = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.production if isinstance(item.production, str) else item.production.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.production is not None and
+               (isinstance(item.production, str) or item.production.external_id is not None)
         ])
 
     def list_price_production(self, limit: int = DEFAULT_QUERY_LIMIT) -> PriceProductionList:

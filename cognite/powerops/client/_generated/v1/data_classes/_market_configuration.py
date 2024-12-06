@@ -67,6 +67,7 @@ _MARKETCONFIGURATION_PROPERTIES_BY_FIELD = {
     "trade_lot": "tradeLot",
 }
 
+
 class MarketConfigurationGraphQL(GraphQLCore):
     """This represents the reading version of market configuration, used
     when data is retrieved from CDF using GraphQL.
@@ -87,6 +88,7 @@ class MarketConfigurationGraphQL(GraphQLCore):
         time_unit: The time unit ('1h')
         trade_lot: 'Granularity' of the volumes; trade lot = 0.2 means that volumes must be 'rounded to nearest 0.2' (i. e. 66.5 is not allowed, but 66.4 is)
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "MarketConfiguration", "1")
     name: Optional[str] = None
     max_price: Optional[float] = Field(None, alias="maxPrice")
@@ -108,6 +110,8 @@ class MarketConfigurationGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -133,7 +137,6 @@ class MarketConfigurationGraphQL(GraphQLCore):
             time_unit=self.time_unit,
             trade_lot=self.trade_lot,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -174,6 +177,7 @@ class MarketConfiguration(DomainModel):
         time_unit: The time unit ('1h')
         trade_lot: 'Granularity' of the volumes; trade lot = 0.2 means that volumes must be 'rounded to nearest 0.2' (i. e. 66.5 is not allowed, but 66.4 is)
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "MarketConfiguration", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -188,6 +192,8 @@ class MarketConfiguration(DomainModel):
     time_unit: str = Field(alias="timeUnit")
     trade_lot: float = Field(alias="tradeLot")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> MarketConfigurationWrite:
         """Convert this read version of market configuration to the writing version."""
         return MarketConfigurationWrite(
@@ -214,7 +220,6 @@ class MarketConfiguration(DomainModel):
         )
         return self.as_write()
 
-
 class MarketConfigurationWrite(DomainModelWrite):
     """This represents the writing version of market configuration.
 
@@ -234,6 +239,7 @@ class MarketConfigurationWrite(DomainModelWrite):
         time_unit: The time unit ('1h')
         trade_lot: 'Granularity' of the volumes; trade lot = 0.2 means that volumes must be 'rounded to nearest 0.2' (i. e. 66.5 is not allowed, but 66.4 is)
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "MarketConfiguration", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -247,6 +253,7 @@ class MarketConfigurationWrite(DomainModelWrite):
     tick_size: float = Field(alias="tickSize")
     time_unit: str = Field(alias="timeUnit")
     trade_lot: float = Field(alias="tradeLot")
+
 
     def _to_instances_write(
         self,
@@ -287,7 +294,6 @@ class MarketConfigurationWrite(DomainModelWrite):
         if self.trade_lot is not None:
             properties["tradeLot"] = self.trade_lot
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -303,8 +309,6 @@ class MarketConfigurationWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-
-
         return resources
 
 
@@ -319,12 +323,10 @@ class MarketConfigurationApply(MarketConfigurationWrite):
         )
         return super().__new__(cls)
 
-
 class MarketConfigurationList(DomainModelList[MarketConfiguration]):
     """List of market configurations in the read version."""
 
     _INSTANCE = MarketConfiguration
-
     def as_write(self) -> MarketConfigurationWriteList:
         """Convert these read versions of market configuration to the writing versions."""
         return MarketConfigurationWriteList([node.as_write() for node in self.data])
@@ -345,7 +347,6 @@ class MarketConfigurationWriteList(DomainModelWriteList[MarketConfigurationWrite
     _INSTANCE = MarketConfigurationWrite
 
 class MarketConfigurationApplyList(MarketConfigurationWriteList): ...
-
 
 
 def _create_market_configuration_filter(

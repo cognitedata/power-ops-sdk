@@ -34,6 +34,7 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     TimeSeries,
     TimeSeriesWrite,
     TimeSeriesGraphQL,
+    TimeSeriesReferenceAPI,
     SequenceRead,
     SequenceWrite,
     SequenceGraphQL,
@@ -51,7 +52,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     FloatFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._bid_matrix_information import BidMatrixInformation, BidMatrixInformationWrite
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._alert import Alert, AlertList, AlertGraphQL, AlertWrite, AlertWriteList
     from cognite.powerops.client._generated.v1.data_classes._bid_matrix import BidMatrix, BidMatrixList, BidMatrixGraphQL, BidMatrixWrite, BidMatrixWriteList
@@ -83,6 +83,7 @@ _PARTIALBIDMATRIXINFORMATION_PROPERTIES_BY_FIELD = {
     "resource_cost": "resourceCost",
 }
 
+
 class PartialBidMatrixInformationGraphQL(GraphQLCore):
     """This represents the reading version of partial bid matrix information, used
     when data is retrieved from CDF using GraphQL.
@@ -102,6 +103,7 @@ class PartialBidMatrixInformationGraphQL(GraphQLCore):
         resource_cost: The resource cost field.
         partial_bid_configuration: The partial bid configuration field.
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PartialBidMatrixInformation", "1")
     state: Optional[str] = None
     bid_matrix: Optional[SequenceGraphQL] = Field(None, alias="bidMatrix")
@@ -122,6 +124,7 @@ class PartialBidMatrixInformationGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
     @field_validator("linked_time_series", mode="before")
     def clean_list(cls, value: Any) -> Any:
         if isinstance(value, list):
@@ -153,8 +156,8 @@ class PartialBidMatrixInformationGraphQL(GraphQLCore):
             state=self.state,
             bid_matrix=self.bid_matrix.as_read() if self.bid_matrix else None,
             linked_time_series=[linked_time_series.as_read() for linked_time_series in self.linked_time_series or []] if self.linked_time_series is not None else None,
-            alerts=[alert.as_read() for alert in self.alerts or []],
-            underlying_bid_matrices=[underlying_bid_matrice.as_read() for underlying_bid_matrice in self.underlying_bid_matrices or []],
+            alerts=[alert.as_read() for alert in self.alerts] if self.alerts is not None else None,
+            underlying_bid_matrices=[underlying_bid_matrice.as_read() for underlying_bid_matrice in self.underlying_bid_matrices] if self.underlying_bid_matrices is not None else None,
             power_asset=self.power_asset.as_read()
 if isinstance(self.power_asset, GraphQLCore)
 else self.power_asset,
@@ -163,7 +166,6 @@ else self.power_asset,
 if isinstance(self.partial_bid_configuration, GraphQLCore)
 else self.partial_bid_configuration,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -176,8 +178,8 @@ else self.partial_bid_configuration,
             state=self.state,
             bid_matrix=self.bid_matrix.as_write() if self.bid_matrix else None,
             linked_time_series=[linked_time_series.as_write() for linked_time_series in self.linked_time_series or []] if self.linked_time_series is not None else None,
-            alerts=[alert.as_write() for alert in self.alerts or []],
-            underlying_bid_matrices=[underlying_bid_matrice.as_write() for underlying_bid_matrice in self.underlying_bid_matrices or []],
+            alerts=[alert.as_write() for alert in self.alerts] if self.alerts is not None else None,
+            underlying_bid_matrices=[underlying_bid_matrice.as_write() for underlying_bid_matrice in self.underlying_bid_matrices] if self.underlying_bid_matrices is not None else None,
             power_asset=self.power_asset.as_write()
 if isinstance(self.power_asset, GraphQLCore)
 else self.power_asset,
@@ -206,6 +208,7 @@ class PartialBidMatrixInformation(BidMatrixInformation):
         resource_cost: The resource cost field.
         partial_bid_configuration: The partial bid configuration field.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PartialBidMatrixInformation", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = None
@@ -213,6 +216,8 @@ class PartialBidMatrixInformation(BidMatrixInformation):
     resource_cost: Optional[float] = Field(None, alias="resourceCost")
     partial_bid_configuration: Union[PartialBidConfiguration, str, dm.NodeId, None] = Field(default=None, repr=False, alias="partialBidConfiguration")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> PartialBidMatrixInformationWrite:
         """Convert this read version of partial bid matrix information to the writing version."""
         return PartialBidMatrixInformationWrite(
@@ -222,8 +227,8 @@ class PartialBidMatrixInformation(BidMatrixInformation):
             state=self.state,
             bid_matrix=self.bid_matrix.as_write() if isinstance(self.bid_matrix, CogniteSequence) else self.bid_matrix,
             linked_time_series=[linked_time_series.as_write() if isinstance(linked_time_series, CogniteTimeSeries) else linked_time_series for linked_time_series in self.linked_time_series] if self.linked_time_series is not None else None,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            underlying_bid_matrices=[underlying_bid_matrice.as_write() if isinstance(underlying_bid_matrice, DomainModel) else underlying_bid_matrice for underlying_bid_matrice in self.underlying_bid_matrices or []],
+            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts] if self.alerts is not None else None,
+            underlying_bid_matrices=[underlying_bid_matrice.as_write() if isinstance(underlying_bid_matrice, DomainModel) else underlying_bid_matrice for underlying_bid_matrice in self.underlying_bid_matrices] if self.underlying_bid_matrices is not None else None,
             power_asset=self.power_asset.as_write()
 if isinstance(self.power_asset, DomainModel)
 else self.power_asset,
@@ -241,7 +246,6 @@ else self.partial_bid_configuration,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -253,7 +257,6 @@ else self.partial_bid_configuration,
         from ._bid_matrix import BidMatrix
         from ._partial_bid_configuration import PartialBidConfiguration
         from ._power_asset import PowerAsset
-
         for instance in instances.values():
             if isinstance(instance.power_asset, (dm.NodeId, str)) and (power_asset := nodes_by_id.get(instance.power_asset)) and isinstance(
                     power_asset, PowerAsset
@@ -302,7 +305,6 @@ else self.partial_bid_configuration,
 
 
 
-
 class PartialBidMatrixInformationWrite(BidMatrixInformationWrite):
     """This represents the writing version of partial bid matrix information.
 
@@ -321,6 +323,7 @@ class PartialBidMatrixInformationWrite(BidMatrixInformationWrite):
         resource_cost: The resource cost field.
         partial_bid_configuration: The partial bid configuration field.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PartialBidMatrixInformation", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
@@ -337,6 +340,7 @@ class PartialBidMatrixInformationWrite(BidMatrixInformationWrite):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -373,7 +377,6 @@ class PartialBidMatrixInformationWrite(BidMatrixInformationWrite):
                 "externalId": self.partial_bid_configuration if isinstance(self.partial_bid_configuration, str) else self.partial_bid_configuration.external_id,
             }
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -388,8 +391,6 @@ class PartialBidMatrixInformationWrite(BidMatrixInformationWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
@@ -444,12 +445,10 @@ class PartialBidMatrixInformationApply(PartialBidMatrixInformationWrite):
         )
         return super().__new__(cls)
 
-
 class PartialBidMatrixInformationList(DomainModelList[PartialBidMatrixInformation]):
     """List of partial bid matrix information in the read version."""
 
     _INSTANCE = PartialBidMatrixInformation
-
     def as_write(self) -> PartialBidMatrixInformationWriteList:
         """Convert these read versions of partial bid matrix information to the writing versions."""
         return PartialBidMatrixInformationWriteList([node.as_write() for node in self.data])
@@ -466,59 +465,46 @@ class PartialBidMatrixInformationList(DomainModelList[PartialBidMatrixInformatio
     @property
     def alerts(self) -> AlertList:
         from ._alert import Alert, AlertList
-
         return AlertList([item for items in self.data for item in items.alerts or [] if isinstance(item, Alert)])
 
     @property
     def underlying_bid_matrices(self) -> BidMatrixList:
         from ._bid_matrix import BidMatrix, BidMatrixList
-
         return BidMatrixList([item for items in self.data for item in items.underlying_bid_matrices or [] if isinstance(item, BidMatrix)])
 
     @property
     def power_asset(self) -> PowerAssetList:
         from ._power_asset import PowerAsset, PowerAssetList
-
         return PowerAssetList([item.power_asset for item in self.data if isinstance(item.power_asset, PowerAsset)])
-
     @property
     def partial_bid_configuration(self) -> PartialBidConfigurationList:
         from ._partial_bid_configuration import PartialBidConfiguration, PartialBidConfigurationList
-
         return PartialBidConfigurationList([item.partial_bid_configuration for item in self.data if isinstance(item.partial_bid_configuration, PartialBidConfiguration)])
-
 
 class PartialBidMatrixInformationWriteList(DomainModelWriteList[PartialBidMatrixInformationWrite]):
     """List of partial bid matrix information in the writing version."""
 
     _INSTANCE = PartialBidMatrixInformationWrite
-
     @property
     def alerts(self) -> AlertWriteList:
         from ._alert import AlertWrite, AlertWriteList
-
         return AlertWriteList([item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)])
 
     @property
     def underlying_bid_matrices(self) -> BidMatrixWriteList:
         from ._bid_matrix import BidMatrixWrite, BidMatrixWriteList
-
         return BidMatrixWriteList([item for items in self.data for item in items.underlying_bid_matrices or [] if isinstance(item, BidMatrixWrite)])
 
     @property
     def power_asset(self) -> PowerAssetWriteList:
         from ._power_asset import PowerAssetWrite, PowerAssetWriteList
-
         return PowerAssetWriteList([item.power_asset for item in self.data if isinstance(item.power_asset, PowerAssetWrite)])
-
     @property
     def partial_bid_configuration(self) -> PartialBidConfigurationWriteList:
         from ._partial_bid_configuration import PartialBidConfigurationWrite, PartialBidConfigurationWriteList
-
         return PartialBidConfigurationWriteList([item.partial_bid_configuration for item in self.data if isinstance(item.partial_bid_configuration, PartialBidConfigurationWrite)])
 
 class PartialBidMatrixInformationApplyList(PartialBidMatrixInformationWriteList): ...
-
 
 
 def _create_partial_bid_matrix_information_filter(
@@ -655,6 +641,14 @@ class _PartialBidMatrixInformationQuery(NodeQueryCore[T_DomainModelList, Partial
             self.external_id,
             self.state,
             self.resource_cost,
+        ])
+        self.linked_time_series = TimeSeriesReferenceAPI(client,  lambda limit: [
+            ts if isinstance(ts, str) else ts.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.linked_time_series is not None
+            for ts in item.linked_time_series
+            if ts is not None and
+               (isinstance(ts, str) or ts.external_id is not None)
         ])
 
     def list_partial_bid_matrix_information(self, limit: int = DEFAULT_QUERY_LIMIT) -> PartialBidMatrixInformationList:

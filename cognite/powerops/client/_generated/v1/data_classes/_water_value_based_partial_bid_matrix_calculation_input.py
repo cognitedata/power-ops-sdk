@@ -38,7 +38,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     IntFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._partial_bid_matrix_calculation_input import PartialBidMatrixCalculationInput, PartialBidMatrixCalculationInputWrite
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._bid_configuration_day_ahead import BidConfigurationDayAhead, BidConfigurationDayAheadList, BidConfigurationDayAheadGraphQL, BidConfigurationDayAheadWrite, BidConfigurationDayAheadWriteList
     from cognite.powerops.client._generated.v1.data_classes._water_value_based_partial_bid_configuration import WaterValueBasedPartialBidConfiguration, WaterValueBasedPartialBidConfigurationList, WaterValueBasedPartialBidConfigurationGraphQL, WaterValueBasedPartialBidConfigurationWrite, WaterValueBasedPartialBidConfigurationWriteList
@@ -69,6 +68,7 @@ _WATERVALUEBASEDPARTIALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD = {
     "bid_date": "bidDate",
 }
 
+
 class WaterValueBasedPartialBidMatrixCalculationInputGraphQL(GraphQLCore):
     """This represents the reading version of water value based partial bid matrix calculation input, used
     when data is retrieved from CDF using GraphQL.
@@ -87,6 +87,7 @@ class WaterValueBasedPartialBidMatrixCalculationInputGraphQL(GraphQLCore):
         bid_configuration: TODO description
         partial_bid_configuration: The partial bid configuration related to the bid calculation task
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "WaterValueBasedPartialBidMatrixCalculationInput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
@@ -106,6 +107,8 @@ class WaterValueBasedPartialBidMatrixCalculationInputGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("bid_configuration", "partial_bid_configuration", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -140,7 +143,6 @@ else self.bid_configuration,
 if isinstance(self.partial_bid_configuration, GraphQLCore)
 else self.partial_bid_configuration,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -181,10 +183,13 @@ class WaterValueBasedPartialBidMatrixCalculationInput(PartialBidMatrixCalculatio
         bid_configuration: TODO description
         partial_bid_configuration: The partial bid configuration related to the bid calculation task
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "WaterValueBasedPartialBidMatrixCalculationInput", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "WaterValueBasedPartialBidMatrixCalculationInput")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> WaterValueBasedPartialBidMatrixCalculationInputWrite:
         """Convert this read version of water value based partial bid matrix calculation input to the writing version."""
         return WaterValueBasedPartialBidMatrixCalculationInputWrite(
@@ -212,7 +217,6 @@ else self.partial_bid_configuration,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -222,7 +226,6 @@ else self.partial_bid_configuration,
     ) -> None:
         from ._bid_configuration_day_ahead import BidConfigurationDayAhead
         from ._water_value_based_partial_bid_configuration import WaterValueBasedPartialBidConfiguration
-
         for instance in instances.values():
             if isinstance(instance.bid_configuration, (dm.NodeId, str)) and (bid_configuration := nodes_by_id.get(instance.bid_configuration)) and isinstance(
                     bid_configuration, BidConfigurationDayAhead
@@ -232,7 +235,6 @@ else self.partial_bid_configuration,
                     partial_bid_configuration, WaterValueBasedPartialBidConfiguration
             ):
                 instance.partial_bid_configuration = partial_bid_configuration
-
 
 
 class WaterValueBasedPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalculationInputWrite):
@@ -252,9 +254,11 @@ class WaterValueBasedPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalcu
         bid_configuration: TODO description
         partial_bid_configuration: The partial bid configuration related to the bid calculation task
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "WaterValueBasedPartialBidMatrixCalculationInput", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "WaterValueBasedPartialBidMatrixCalculationInput")
+
 
     def _to_instances_write(
         self,
@@ -295,7 +299,6 @@ class WaterValueBasedPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalcu
                 "externalId": self.partial_bid_configuration if isinstance(self.partial_bid_configuration, str) else self.partial_bid_configuration.external_id,
             }
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -310,8 +313,6 @@ class WaterValueBasedPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalcu
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         if isinstance(self.bid_configuration, DomainModelWrite):
             other_resources = self.bid_configuration._to_instances_write(cache)
@@ -335,12 +336,10 @@ class WaterValueBasedPartialBidMatrixCalculationInputApply(WaterValueBasedPartia
         )
         return super().__new__(cls)
 
-
 class WaterValueBasedPartialBidMatrixCalculationInputList(DomainModelList[WaterValueBasedPartialBidMatrixCalculationInput]):
     """List of water value based partial bid matrix calculation inputs in the read version."""
 
     _INSTANCE = WaterValueBasedPartialBidMatrixCalculationInput
-
     def as_write(self) -> WaterValueBasedPartialBidMatrixCalculationInputWriteList:
         """Convert these read versions of water value based partial bid matrix calculation input to the writing versions."""
         return WaterValueBasedPartialBidMatrixCalculationInputWriteList([node.as_write() for node in self.data])
@@ -357,35 +356,26 @@ class WaterValueBasedPartialBidMatrixCalculationInputList(DomainModelList[WaterV
     @property
     def bid_configuration(self) -> BidConfigurationDayAheadList:
         from ._bid_configuration_day_ahead import BidConfigurationDayAhead, BidConfigurationDayAheadList
-
         return BidConfigurationDayAheadList([item.bid_configuration for item in self.data if isinstance(item.bid_configuration, BidConfigurationDayAhead)])
-
     @property
     def partial_bid_configuration(self) -> WaterValueBasedPartialBidConfigurationList:
         from ._water_value_based_partial_bid_configuration import WaterValueBasedPartialBidConfiguration, WaterValueBasedPartialBidConfigurationList
-
         return WaterValueBasedPartialBidConfigurationList([item.partial_bid_configuration for item in self.data if isinstance(item.partial_bid_configuration, WaterValueBasedPartialBidConfiguration)])
-
 
 class WaterValueBasedPartialBidMatrixCalculationInputWriteList(DomainModelWriteList[WaterValueBasedPartialBidMatrixCalculationInputWrite]):
     """List of water value based partial bid matrix calculation inputs in the writing version."""
 
     _INSTANCE = WaterValueBasedPartialBidMatrixCalculationInputWrite
-
     @property
     def bid_configuration(self) -> BidConfigurationDayAheadWriteList:
         from ._bid_configuration_day_ahead import BidConfigurationDayAheadWrite, BidConfigurationDayAheadWriteList
-
         return BidConfigurationDayAheadWriteList([item.bid_configuration for item in self.data if isinstance(item.bid_configuration, BidConfigurationDayAheadWrite)])
-
     @property
     def partial_bid_configuration(self) -> WaterValueBasedPartialBidConfigurationWriteList:
         from ._water_value_based_partial_bid_configuration import WaterValueBasedPartialBidConfigurationWrite, WaterValueBasedPartialBidConfigurationWriteList
-
         return WaterValueBasedPartialBidConfigurationWriteList([item.partial_bid_configuration for item in self.data if isinstance(item.partial_bid_configuration, WaterValueBasedPartialBidConfigurationWrite)])
 
 class WaterValueBasedPartialBidMatrixCalculationInputApplyList(WaterValueBasedPartialBidMatrixCalculationInputWriteList): ...
-
 
 
 def _create_water_value_based_partial_bid_matrix_calculation_input_filter(

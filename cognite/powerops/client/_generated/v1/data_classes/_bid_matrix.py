@@ -69,6 +69,7 @@ _BIDMATRIX_PROPERTIES_BY_FIELD = {
     "bid_matrix": "bidMatrix",
 }
 
+
 class BidMatrixGraphQL(GraphQLCore):
     """This represents the reading version of bid matrix, used
     when data is retrieved from CDF using GraphQL.
@@ -82,6 +83,7 @@ class BidMatrixGraphQL(GraphQLCore):
         state: The state field.
         bid_matrix: The bid matrix field.
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidMatrix", "1")
     state: Optional[str] = None
     bid_matrix: Optional[SequenceGraphQL] = Field(None, alias="bidMatrix")
@@ -96,6 +98,8 @@ class BidMatrixGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -114,7 +118,6 @@ class BidMatrixGraphQL(GraphQLCore):
             state=self.state,
             bid_matrix=self.bid_matrix.as_read() if self.bid_matrix else None,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -141,6 +144,7 @@ class BidMatrix(DomainModel):
         state: The state field.
         bid_matrix: The bid matrix field.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidMatrix", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -148,6 +152,8 @@ class BidMatrix(DomainModel):
     state: str
     bid_matrix: Union[SequenceRead, str, None] = Field(None, alias="bidMatrix")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> BidMatrixWrite:
         """Convert this read version of bid matrix to the writing version."""
         return BidMatrixWrite(
@@ -167,7 +173,6 @@ class BidMatrix(DomainModel):
         )
         return self.as_write()
 
-
 class BidMatrixWrite(DomainModelWrite):
     """This represents the writing version of bid matrix.
 
@@ -180,12 +185,14 @@ class BidMatrixWrite(DomainModelWrite):
         state: The state field.
         bid_matrix: The bid matrix field.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidMatrix", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
     state: str
     bid_matrix: Union[SequenceWrite, str, None] = Field(None, alias="bidMatrix")
+
 
     def _to_instances_write(
         self,
@@ -205,7 +212,6 @@ class BidMatrixWrite(DomainModelWrite):
         if self.bid_matrix is not None or write_none:
             properties["bidMatrix"] = self.bid_matrix if isinstance(self.bid_matrix, str) or self.bid_matrix is None else self.bid_matrix.external_id
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -220,8 +226,6 @@ class BidMatrixWrite(DomainModelWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         if isinstance(self.bid_matrix, CogniteSequenceWrite):
             resources.sequences.append(self.bid_matrix)
@@ -240,12 +244,10 @@ class BidMatrixApply(BidMatrixWrite):
         )
         return super().__new__(cls)
 
-
 class BidMatrixList(DomainModelList[BidMatrix]):
     """List of bid matrixes in the read version."""
 
     _INSTANCE = BidMatrix
-
     def as_write(self) -> BidMatrixWriteList:
         """Convert these read versions of bid matrix to the writing versions."""
         return BidMatrixWriteList([node.as_write() for node in self.data])
@@ -266,7 +268,6 @@ class BidMatrixWriteList(DomainModelWriteList[BidMatrixWrite]):
     _INSTANCE = BidMatrixWrite
 
 class BidMatrixApplyList(BidMatrixWriteList): ...
-
 
 
 def _create_bid_matrix_filter(

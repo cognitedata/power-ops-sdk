@@ -52,19 +52,19 @@ class DateSpecificationAPI(NodeAPI[DateSpecification, DateSpecificationWrite, Da
 
 
     def __call__(
-            self,
-            name: str | list[str] | None = None,
-            name_prefix: str | None = None,
-            processing_timezone: str | list[str] | None = None,
-            processing_timezone_prefix: str | None = None,
-            resulting_timezone: str | list[str] | None = None,
-            resulting_timezone_prefix: str | None = None,
-            floor_frame: str | list[str] | None = None,
-            floor_frame_prefix: str | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        processing_timezone: str | list[str] | None = None,
+        processing_timezone_prefix: str | None = None,
+        resulting_timezone: str | list[str] | None = None,
+        resulting_timezone_prefix: str | None = None,
+        floor_frame: str | list[str] | None = None,
+        floor_frame_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> DateSpecificationQueryAPI[DateSpecificationList]:
         """Query starting at date specifications.
 
@@ -109,7 +109,6 @@ class DateSpecificationAPI(NodeAPI[DateSpecification, DateSpecificationWrite, Da
         )
         builder = DataClassQueryBuilder(DateSpecificationList)
         return DateSpecificationQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -308,8 +307,7 @@ class DateSpecificationAPI(NodeAPI[DateSpecification, DateSpecificationWrite, Da
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -331,8 +329,7 @@ class DateSpecificationAPI(NodeAPI[DateSpecification, DateSpecificationWrite, Da
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -356,8 +353,7 @@ class DateSpecificationAPI(NodeAPI[DateSpecification, DateSpecificationWrite, Da
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,

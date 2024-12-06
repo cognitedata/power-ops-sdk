@@ -31,7 +31,6 @@ if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1._api.alert_query import AlertQueryAPI
 
 
-
 class PartialBidMatrixCalculationOutputQueryAPI(QueryAPI[T_DomainModelList]):
     _view_id = dm.ViewId("power_ops_core", "PartialBidMatrixCalculationOutput", "1")
 
@@ -55,7 +54,6 @@ class PartialBidMatrixCalculationOutputQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
-
     def alerts(
         self,
         min_time: datetime.datetime | None = None,
@@ -123,7 +121,6 @@ class PartialBidMatrixCalculationOutputQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "calculationIssue"),
-
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -210,7 +207,6 @@ class PartialBidMatrixCalculationOutputQueryAPI(QueryAPI[T_DomainModelList]):
                 result_cls=PartialBidMatrixCalculationInput,
             ),
         )
-
     def _query_append_partial_matrix(self, from_: str) -> None:
         self._builder.append(
             NodeQueryStep(
@@ -224,7 +220,6 @@ class PartialBidMatrixCalculationOutputQueryAPI(QueryAPI[T_DomainModelList]):
                 result_cls=BidMatrix,
             ),
         )
-
     def _query_append_bid_configuration(self, from_: str) -> None:
         self._builder.append(
             NodeQueryStep(

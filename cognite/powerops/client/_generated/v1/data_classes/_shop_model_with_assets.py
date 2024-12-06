@@ -34,7 +34,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     NodeQueryCore,
     StringFilter,
 )
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._benchmarking_production_obligation_day_ahead import BenchmarkingProductionObligationDayAhead, BenchmarkingProductionObligationDayAheadList, BenchmarkingProductionObligationDayAheadGraphQL, BenchmarkingProductionObligationDayAheadWrite, BenchmarkingProductionObligationDayAheadWriteList
     from cognite.powerops.client._generated.v1.data_classes._power_asset import PowerAsset, PowerAssetList, PowerAssetGraphQL, PowerAssetWrite, PowerAssetWriteList
@@ -49,8 +48,6 @@ __all__ = [
     "ShopModelWithAssetsList",
     "ShopModelWithAssetsWriteList",
     "ShopModelWithAssetsApplyList",
-
-
     "ShopModelWithAssetsGraphQL",
 ]
 
@@ -61,6 +58,7 @@ ShopModelWithAssetsFields = Literal["external_id", ]
 _SHOPMODELWITHASSETS_PROPERTIES_BY_FIELD = {
     "external_id": "externalId",
 }
+
 
 class ShopModelWithAssetsGraphQL(GraphQLCore):
     """This represents the reading version of shop model with asset, used
@@ -77,6 +75,7 @@ class ShopModelWithAssetsGraphQL(GraphQLCore):
         power_assets: A list of power assets covered by the Shop model. For a given bid document, we will select the partial bids for these assets, and calculate production obligation for these partial bids (summed up)
         production_obligations: It is possible to specify time series for production obligation - one benchmarking run will be set up for each of these time series. The intended use of this, is to specify the production obligation resulting from the submitted bid, or any other bid document not modelled within PowerOps
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopModelWithAssets", "1")
     shop_model: Optional[ShopModelGraphQL] = Field(default=None, repr=False, alias="shopModel")
     shop_commands: Optional[ShopCommandsGraphQL] = Field(default=None, repr=False, alias="shopCommands")
@@ -93,6 +92,8 @@ class ShopModelWithAssetsGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("shop_model", "shop_commands", "power_assets", "production_obligations", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -121,10 +122,9 @@ else self.shop_model,
             shop_commands=self.shop_commands.as_read()
 if isinstance(self.shop_commands, GraphQLCore)
 else self.shop_commands,
-            power_assets=[power_asset.as_read() for power_asset in self.power_assets or []],
-            production_obligations=[production_obligation.as_read() for production_obligation in self.production_obligations or []],
+            power_assets=[power_asset.as_read() for power_asset in self.power_assets] if self.power_assets is not None else None,
+            production_obligations=[production_obligation.as_read() for production_obligation in self.production_obligations] if self.production_obligations is not None else None,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -140,8 +140,8 @@ else self.shop_model,
             shop_commands=self.shop_commands.as_write()
 if isinstance(self.shop_commands, GraphQLCore)
 else self.shop_commands,
-            power_assets=[power_asset.as_write() for power_asset in self.power_assets or []],
-            production_obligations=[production_obligation.as_write() for production_obligation in self.production_obligations or []],
+            power_assets=[power_asset.as_write() for power_asset in self.power_assets] if self.power_assets is not None else None,
+            production_obligations=[production_obligation.as_write() for production_obligation in self.production_obligations] if self.production_obligations is not None else None,
         )
 
 
@@ -159,6 +159,7 @@ class ShopModelWithAssets(DomainModel):
         power_assets: A list of power assets covered by the Shop model. For a given bid document, we will select the partial bids for these assets, and calculate production obligation for these partial bids (summed up)
         production_obligations: It is possible to specify time series for production obligation - one benchmarking run will be set up for each of these time series. The intended use of this, is to specify the production obligation resulting from the submitted bid, or any other bid document not modelled within PowerOps
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopModelWithAssets", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -168,6 +169,8 @@ class ShopModelWithAssets(DomainModel):
     power_assets: Optional[list[Union[PowerAsset, str, dm.NodeId]]] = Field(default=None, repr=False, alias="powerAssets")
     production_obligations: Optional[list[Union[BenchmarkingProductionObligationDayAhead, str, dm.NodeId]]] = Field(default=None, repr=False, alias="productionObligations")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopModelWithAssetsWrite:
         """Convert this read version of shop model with asset to the writing version."""
         return ShopModelWithAssetsWrite(
@@ -180,8 +183,8 @@ else self.shop_model,
             shop_commands=self.shop_commands.as_write()
 if isinstance(self.shop_commands, DomainModel)
 else self.shop_commands,
-            power_assets=[power_asset.as_write() if isinstance(power_asset, DomainModel) else power_asset for power_asset in self.power_assets or []],
-            production_obligations=[production_obligation.as_write() if isinstance(production_obligation, DomainModel) else production_obligation for production_obligation in self.production_obligations or []],
+            power_assets=[power_asset.as_write() if isinstance(power_asset, DomainModel) else power_asset for power_asset in self.power_assets] if self.power_assets is not None else None,
+            production_obligations=[production_obligation.as_write() if isinstance(production_obligation, DomainModel) else production_obligation for production_obligation in self.production_obligations] if self.production_obligations is not None else None,
         )
 
     def as_apply(self) -> ShopModelWithAssetsWrite:
@@ -192,7 +195,6 @@ else self.shop_commands,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -204,7 +206,6 @@ else self.shop_commands,
         from ._power_asset import PowerAsset
         from ._shop_commands import ShopCommands
         from ._shop_model import ShopModel
-
         for instance in instances.values():
             if isinstance(instance.shop_model, (dm.NodeId, str)) and (shop_model := nodes_by_id.get(instance.shop_model)) and isinstance(
                     shop_model, ShopModel
@@ -253,7 +254,6 @@ else self.shop_commands,
 
 
 
-
 class ShopModelWithAssetsWrite(DomainModelWrite):
     """This represents the writing version of shop model with asset.
 
@@ -268,6 +268,7 @@ class ShopModelWithAssetsWrite(DomainModelWrite):
         power_assets: A list of power assets covered by the Shop model. For a given bid document, we will select the partial bids for these assets, and calculate production obligation for these partial bids (summed up)
         production_obligations: It is possible to specify time series for production obligation - one benchmarking run will be set up for each of these time series. The intended use of this, is to specify the production obligation resulting from the submitted bid, or any other bid document not modelled within PowerOps
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopModelWithAssets", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -286,6 +287,7 @@ class ShopModelWithAssetsWrite(DomainModelWrite):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -310,7 +312,6 @@ class ShopModelWithAssetsWrite(DomainModelWrite):
                 "externalId": self.shop_commands if isinstance(self.shop_commands, str) else self.shop_commands.external_id,
             }
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -325,8 +326,6 @@ class ShopModelWithAssetsWrite(DomainModelWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         edge_type = dm.DirectRelationReference("power_ops_core", "ShopModelWithAssets")
         for power_asset in self.power_assets or []:
@@ -374,12 +373,10 @@ class ShopModelWithAssetsApply(ShopModelWithAssetsWrite):
         )
         return super().__new__(cls)
 
-
 class ShopModelWithAssetsList(DomainModelList[ShopModelWithAssets]):
     """List of shop model with assets in the read version."""
 
     _INSTANCE = ShopModelWithAssets
-
     def as_write(self) -> ShopModelWithAssetsWriteList:
         """Convert these read versions of shop model with asset to the writing versions."""
         return ShopModelWithAssetsWriteList([node.as_write() for node in self.data])
@@ -396,25 +393,19 @@ class ShopModelWithAssetsList(DomainModelList[ShopModelWithAssets]):
     @property
     def shop_model(self) -> ShopModelList:
         from ._shop_model import ShopModel, ShopModelList
-
         return ShopModelList([item.shop_model for item in self.data if isinstance(item.shop_model, ShopModel)])
-
     @property
     def shop_commands(self) -> ShopCommandsList:
         from ._shop_commands import ShopCommands, ShopCommandsList
-
         return ShopCommandsList([item.shop_commands for item in self.data if isinstance(item.shop_commands, ShopCommands)])
-
     @property
     def power_assets(self) -> PowerAssetList:
         from ._power_asset import PowerAsset, PowerAssetList
-
         return PowerAssetList([item for items in self.data for item in items.power_assets or [] if isinstance(item, PowerAsset)])
 
     @property
     def production_obligations(self) -> BenchmarkingProductionObligationDayAheadList:
         from ._benchmarking_production_obligation_day_ahead import BenchmarkingProductionObligationDayAhead, BenchmarkingProductionObligationDayAheadList
-
         return BenchmarkingProductionObligationDayAheadList([item for items in self.data for item in items.production_obligations or [] if isinstance(item, BenchmarkingProductionObligationDayAhead)])
 
 
@@ -422,33 +413,26 @@ class ShopModelWithAssetsWriteList(DomainModelWriteList[ShopModelWithAssetsWrite
     """List of shop model with assets in the writing version."""
 
     _INSTANCE = ShopModelWithAssetsWrite
-
     @property
     def shop_model(self) -> ShopModelWriteList:
         from ._shop_model import ShopModelWrite, ShopModelWriteList
-
         return ShopModelWriteList([item.shop_model for item in self.data if isinstance(item.shop_model, ShopModelWrite)])
-
     @property
     def shop_commands(self) -> ShopCommandsWriteList:
         from ._shop_commands import ShopCommandsWrite, ShopCommandsWriteList
-
         return ShopCommandsWriteList([item.shop_commands for item in self.data if isinstance(item.shop_commands, ShopCommandsWrite)])
-
     @property
     def power_assets(self) -> PowerAssetWriteList:
         from ._power_asset import PowerAssetWrite, PowerAssetWriteList
-
         return PowerAssetWriteList([item for items in self.data for item in items.power_assets or [] if isinstance(item, PowerAssetWrite)])
 
     @property
     def production_obligations(self) -> BenchmarkingProductionObligationDayAheadWriteList:
         from ._benchmarking_production_obligation_day_ahead import BenchmarkingProductionObligationDayAheadWrite, BenchmarkingProductionObligationDayAheadWriteList
-
         return BenchmarkingProductionObligationDayAheadWriteList([item for items in self.data for item in items.production_obligations or [] if isinstance(item, BenchmarkingProductionObligationDayAheadWrite)])
 
-class ShopModelWithAssetsApplyList(ShopModelWithAssetsWriteList): ...
 
+class ShopModelWithAssetsApplyList(ShopModelWithAssetsWriteList): ...
 
 
 def _create_shop_model_with_asset_filter(

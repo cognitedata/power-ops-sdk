@@ -8,75 +8,10 @@ from cognite.client import ClientConfig, CogniteClient, data_modeling as dm
 from cognite.client.data_classes import TimeSeriesList, FileMetadataList, SequenceList
 from cognite.client.credentials import OAuthClientCredentials
 
-from cognite.powerops.client._generated.v1._api import (
-    AlertAPI,
-    BenchmarkingCalculationInputAPI,
-    BenchmarkingCalculationOutputAPI,
-    BenchmarkingConfigurationDayAheadAPI,
-    BenchmarkingProductionObligationDayAheadAPI,
-    BenchmarkingResultDayAheadAPI,
-    BenchmarkingShopCaseAPI,
-    BenchmarkingTaskDispatcherInputDayAheadAPI,
-    BenchmarkingTaskDispatcherOutputDayAheadAPI,
-    BidConfigurationDayAheadAPI,
-    BidDocumentAPI,
-    BidDocumentAFRRAPI,
-    BidDocumentDayAheadAPI,
-    BidMatrixAPI,
-    BidMatrixInformationAPI,
-    BidRowAPI,
-    DateSpecificationAPI,
-    FunctionInputAPI,
-    FunctionOutputAPI,
-    GeneratorAPI,
-    GeneratorEfficiencyCurveAPI,
-    MarketConfigurationAPI,
-    MultiScenarioPartialBidMatrixCalculationInputAPI,
-    PartialBidConfigurationAPI,
-    PartialBidMatrixCalculationInputAPI,
-    PartialBidMatrixCalculationOutputAPI,
-    PartialBidMatrixInformationAPI,
-    PartialBidMatrixInformationWithScenariosAPI,
-    PlantAPI,
-    PlantInformationAPI,
-    PlantWaterValueBasedAPI,
-    PowerAssetAPI,
-    PriceAreaAPI,
-    PriceAreaAFRRAPI,
-    PriceAreaDayAheadAPI,
-    PriceAreaInformationAPI,
-    PriceProductionAPI,
-    ShopAttributeMappingAPI,
-    ShopBasedPartialBidConfigurationAPI,
-    ShopCaseAPI,
-    ShopCommandsAPI,
-    ShopFileAPI,
-    ShopModelAPI,
-    ShopModelWithAssetsAPI,
-    ShopOutputTimeSeriesDefinitionAPI,
-    ShopPenaltyReportAPI,
-    ShopPreprocessorInputAPI,
-    ShopPreprocessorOutputAPI,
-    ShopResultAPI,
-    ShopScenarioAPI,
-    ShopScenarioSetAPI,
-    ShopTimeResolutionAPI,
-    ShopTimeSeriesAPI,
-    ShopTriggerInputAPI,
-    ShopTriggerOutputAPI,
-    TaskDispatcherInputAPI,
-    TaskDispatcherOutputAPI,
-    TotalBidMatrixCalculationInputAPI,
-    TotalBidMatrixCalculationOutputAPI,
-    TurbineEfficiencyCurveAPI,
-    WaterValueBasedPartialBidConfigurationAPI,
-    WaterValueBasedPartialBidMatrixCalculationInputAPI,
-    WatercourseAPI,
-)
+from cognite.powerops.client._generated.v1._api import (    AlertAPI,    BenchmarkingCalculationInputAPI,    BenchmarkingCalculationOutputAPI,    BenchmarkingConfigurationDayAheadAPI,    BenchmarkingProductionObligationDayAheadAPI,    BenchmarkingResultDayAheadAPI,    BenchmarkingShopCaseAPI,    BenchmarkingTaskDispatcherInputDayAheadAPI,    BenchmarkingTaskDispatcherOutputDayAheadAPI,    BidConfigurationDayAheadAPI,    BidDocumentAPI,    BidDocumentAFRRAPI,    BidDocumentDayAheadAPI,    BidMatrixAPI,    BidMatrixInformationAPI,    BidRowAPI,    DateSpecificationAPI,    FunctionInputAPI,    FunctionOutputAPI,    GeneratorAPI,    GeneratorEfficiencyCurveAPI,    MarketConfigurationAPI,    MultiScenarioPartialBidMatrixCalculationInputAPI,    PartialBidConfigurationAPI,    PartialBidMatrixCalculationInputAPI,    PartialBidMatrixCalculationOutputAPI,    PartialBidMatrixInformationAPI,    PartialBidMatrixInformationWithScenariosAPI,    PlantAPI,    PlantInformationAPI,    PlantWaterValueBasedAPI,    PowerAssetAPI,    PriceAreaAPI,    PriceAreaAFRRAPI,    PriceAreaDayAheadAPI,    PriceAreaInformationAPI,    PriceProductionAPI,    ShopAttributeMappingAPI,    ShopBasedPartialBidConfigurationAPI,    ShopCaseAPI,    ShopCommandsAPI,    ShopFileAPI,    ShopModelAPI,    ShopModelWithAssetsAPI,    ShopOutputTimeSeriesDefinitionAPI,    ShopPenaltyReportAPI,    ShopPreprocessorInputAPI,    ShopPreprocessorOutputAPI,    ShopResultAPI,    ShopScenarioAPI,    ShopScenarioSetAPI,    ShopTimeResolutionAPI,    ShopTimeSeriesAPI,    ShopTriggerInputAPI,    ShopTriggerOutputAPI,    TaskDispatcherInputAPI,    TaskDispatcherOutputAPI,    TotalBidMatrixCalculationInputAPI,    TotalBidMatrixCalculationOutputAPI,    TurbineEfficiencyCurveAPI,    WaterValueBasedPartialBidConfigurationAPI,    WaterValueBasedPartialBidMatrixCalculationInputAPI,    WatercourseAPI,)
 from cognite.powerops.client._generated.v1._api._core import SequenceNotStr, GraphQLQueryResponse
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE, GraphQLList
 from cognite.powerops.client._generated.v1 import data_classes
-
 
 class BenchmarkingDayAheadAPIs:
     """
@@ -134,7 +69,6 @@ class BenchmarkingDayAheadAPIs:
         data_model_id = dm.DataModelId("power_ops_core", "compute_BenchmarkingDayAhead", "1")
         result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
         return GraphQLQueryResponse(data_model_id).parse(result)
-
 
 class ShopBasedDayAheadBidProcesAPIs:
     """
@@ -195,7 +129,6 @@ class ShopBasedDayAheadBidProcesAPIs:
         result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
         return GraphQLQueryResponse(data_model_id).parse(result)
 
-
 class TotalBidMatrixCalculationAPIs:
     """
     TotalBidMatrixCalculationAPIs
@@ -250,7 +183,6 @@ class TotalBidMatrixCalculationAPIs:
         result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
         return GraphQLQueryResponse(data_model_id).parse(result)
 
-
 class WaterValueBasedDayAheadBidProcesAPIs:
     """
     WaterValueBasedDayAheadBidProcesAPIs
@@ -298,7 +230,6 @@ class WaterValueBasedDayAheadBidProcesAPIs:
         data_model_id = dm.DataModelId("power_ops_core", "compute_WaterValueBasedDayAheadBid", "1")
         result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
         return GraphQLQueryResponse(data_model_id).parse(result)
-
 
 class DayAheadConfigurationAPIs:
     """
@@ -349,7 +280,6 @@ class DayAheadConfigurationAPIs:
         result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
         return GraphQLQueryResponse(data_model_id).parse(result)
 
-
 class AFRRBidAPIs:
     """
     AFRRBidAPIs
@@ -382,7 +312,6 @@ class AFRRBidAPIs:
         data_model_id = dm.DataModelId("power_ops_core", "frontend_AFRRBid", "1")
         result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
         return GraphQLQueryResponse(data_model_id).parse(result)
-
 
 class PowerAssetAPIs:
     """
@@ -425,7 +354,6 @@ class PowerAssetAPIs:
         data_model_id = dm.DataModelId("power_ops_core", "frontend_Asset", "1")
         result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
         return GraphQLQueryResponse(data_model_id).parse(result)
-
 
 class DayAheadBidAPIs:
     """
@@ -479,15 +407,14 @@ class DayAheadBidAPIs:
         result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
         return GraphQLQueryResponse(data_model_id).parse(result)
 
-
 class PowerOpsModelsV1Client:
     """
     PowerOpsModelsV1Client
 
     Generated with:
-        pygen = 0.99.50
-        cognite-sdk = 7.67.4
-        pydantic = 2.10.0
+        pygen = 0.99.56
+        cognite-sdk = 7.70.2
+        pydantic = 2.10.3
 
     """
 
@@ -499,7 +426,7 @@ class PowerOpsModelsV1Client:
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
         # The client name is used for aggregated logging of Pygen Usage
-        client.config.client_name = "CognitePygen:0.99.50"
+        client.config.client_name = "CognitePygen:0.99.56"
 
         self.benchmarking_day_ahead = BenchmarkingDayAheadAPIs(client)
         self.shop_based_day_ahead_bid_process = ShopBasedDayAheadBidProcesAPIs(client)
@@ -659,12 +586,12 @@ class PowerOpsModelsV1Client:
                     edge_ids.extend(resources.edges.as_ids())
                 else:
                     raise ValueError(
-                         f"Expected str, NodeId, or DomainModelWrite, Sequence of these types. Got {type(external_id)}"
+                        f"Expected str, NodeId, or DomainModelWrite, Sequence of these types. Got {type(external_id)}"
                     )
             return self._client.data_modeling.instances.delete(nodes=node_ids, edges=edge_ids)
         else:
             raise ValueError(
-                 f"Expected str, NodeId, or DomainModelWrite, Sequence of these types. Got {type(external_id)}"
+                f"Expected str, NodeId, or DomainModelWrite, Sequence of these types. Got {type(external_id)}"
             )
 
     @classmethod

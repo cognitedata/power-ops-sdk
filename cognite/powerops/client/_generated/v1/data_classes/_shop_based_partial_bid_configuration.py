@@ -36,7 +36,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     BooleanFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._partial_bid_configuration import PartialBidConfiguration, PartialBidConfigurationWrite
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._power_asset import PowerAsset, PowerAssetList, PowerAssetGraphQL, PowerAssetWrite, PowerAssetWriteList
     from cognite.powerops.client._generated.v1.data_classes._shop_scenario_set import ShopScenarioSet, ShopScenarioSetList, ShopScenarioSetGraphQL, ShopScenarioSetWrite, ShopScenarioSetWriteList
@@ -65,6 +64,7 @@ _SHOPBASEDPARTIALBIDCONFIGURATION_PROPERTIES_BY_FIELD = {
     "add_steps": "addSteps",
 }
 
+
 class ShopBasedPartialBidConfigurationGraphQL(GraphQLCore):
     """This represents the reading version of shop based partial bid configuration, used
     when data is retrieved from CDF using GraphQL.
@@ -81,6 +81,7 @@ class ShopBasedPartialBidConfigurationGraphQL(GraphQLCore):
         add_steps: TODO definition
         scenario_set: The scenario set field.
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopBasedPartialBidConfiguration", "1")
     name: Optional[str] = None
     method: Optional[str] = None
@@ -98,6 +99,8 @@ class ShopBasedPartialBidConfigurationGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("power_asset", "scenario_set", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -130,7 +133,6 @@ else self.power_asset,
 if isinstance(self.scenario_set, GraphQLCore)
 else self.scenario_set,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -167,11 +169,14 @@ class ShopBasedPartialBidConfiguration(PartialBidConfiguration):
         add_steps: TODO definition
         scenario_set: The scenario set field.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopBasedPartialBidConfiguration", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopBasedPartialBidConfiguration")
     scenario_set: Union[ShopScenarioSet, str, dm.NodeId, None] = Field(default=None, repr=False, alias="scenarioSet")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopBasedPartialBidConfigurationWrite:
         """Convert this read version of shop based partial bid configuration to the writing version."""
         return ShopBasedPartialBidConfigurationWrite(
@@ -197,7 +202,6 @@ else self.scenario_set,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -207,7 +211,6 @@ else self.scenario_set,
     ) -> None:
         from ._power_asset import PowerAsset
         from ._shop_scenario_set import ShopScenarioSet
-
         for instance in instances.values():
             if isinstance(instance.power_asset, (dm.NodeId, str)) and (power_asset := nodes_by_id.get(instance.power_asset)) and isinstance(
                     power_asset, PowerAsset
@@ -217,7 +220,6 @@ else self.scenario_set,
                     scenario_set, ShopScenarioSet
             ):
                 instance.scenario_set = scenario_set
-
 
 
 class ShopBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
@@ -235,6 +237,7 @@ class ShopBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
         add_steps: TODO definition
         scenario_set: The scenario set field.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopBasedPartialBidConfiguration", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "ShopBasedPartialBidConfiguration")
@@ -249,6 +252,7 @@ class ShopBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -282,7 +286,6 @@ class ShopBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
                 "externalId": self.scenario_set if isinstance(self.scenario_set, str) else self.scenario_set.external_id,
             }
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -297,8 +300,6 @@ class ShopBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         if isinstance(self.power_asset, DomainModelWrite):
             other_resources = self.power_asset._to_instances_write(cache)
@@ -322,12 +323,10 @@ class ShopBasedPartialBidConfigurationApply(ShopBasedPartialBidConfigurationWrit
         )
         return super().__new__(cls)
 
-
 class ShopBasedPartialBidConfigurationList(DomainModelList[ShopBasedPartialBidConfiguration]):
     """List of shop based partial bid configurations in the read version."""
 
     _INSTANCE = ShopBasedPartialBidConfiguration
-
     def as_write(self) -> ShopBasedPartialBidConfigurationWriteList:
         """Convert these read versions of shop based partial bid configuration to the writing versions."""
         return ShopBasedPartialBidConfigurationWriteList([node.as_write() for node in self.data])
@@ -344,35 +343,26 @@ class ShopBasedPartialBidConfigurationList(DomainModelList[ShopBasedPartialBidCo
     @property
     def power_asset(self) -> PowerAssetList:
         from ._power_asset import PowerAsset, PowerAssetList
-
         return PowerAssetList([item.power_asset for item in self.data if isinstance(item.power_asset, PowerAsset)])
-
     @property
     def scenario_set(self) -> ShopScenarioSetList:
         from ._shop_scenario_set import ShopScenarioSet, ShopScenarioSetList
-
         return ShopScenarioSetList([item.scenario_set for item in self.data if isinstance(item.scenario_set, ShopScenarioSet)])
-
 
 class ShopBasedPartialBidConfigurationWriteList(DomainModelWriteList[ShopBasedPartialBidConfigurationWrite]):
     """List of shop based partial bid configurations in the writing version."""
 
     _INSTANCE = ShopBasedPartialBidConfigurationWrite
-
     @property
     def power_asset(self) -> PowerAssetWriteList:
         from ._power_asset import PowerAssetWrite, PowerAssetWriteList
-
         return PowerAssetWriteList([item.power_asset for item in self.data if isinstance(item.power_asset, PowerAssetWrite)])
-
     @property
     def scenario_set(self) -> ShopScenarioSetWriteList:
         from ._shop_scenario_set import ShopScenarioSetWrite, ShopScenarioSetWriteList
-
         return ShopScenarioSetWriteList([item.scenario_set for item in self.data if isinstance(item.scenario_set, ShopScenarioSetWrite)])
 
 class ShopBasedPartialBidConfigurationApplyList(ShopBasedPartialBidConfigurationWriteList): ...
-
 
 
 def _create_shop_based_partial_bid_configuration_filter(

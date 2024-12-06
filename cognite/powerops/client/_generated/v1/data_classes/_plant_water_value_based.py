@@ -32,6 +32,7 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     TimeSeries,
     TimeSeriesWrite,
     TimeSeriesGraphQL,
+    TimeSeriesReferenceAPI,
     T_DomainModelList,
     as_direct_relation_reference,
     as_instance_dict_id,
@@ -47,7 +48,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     IntFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._plant import Plant, PlantWrite
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._generator import Generator, GeneratorList, GeneratorGraphQL, GeneratorWrite, GeneratorWriteList
 
@@ -89,6 +89,7 @@ _PLANTWATERVALUEBASED_PROPERTIES_BY_FIELD = {
     "head_direct_time_series": "headDirectTimeSeries",
 }
 
+
 class PlantWaterValueBasedGraphQL(GraphQLCore):
     """This represents the reading version of plant water value based, used
     when data is retrieved from CDF using GraphQL.
@@ -118,6 +119,7 @@ class PlantWaterValueBasedGraphQL(GraphQLCore):
         head_direct_time_series: The head direct time series field.
         generators: The generator field.
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PlantWaterValueBased", "1")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
@@ -148,6 +150,8 @@ class PlantWaterValueBasedGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("generators", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -187,9 +191,8 @@ class PlantWaterValueBasedGraphQL(GraphQLCore):
             outlet_level_time_series=self.outlet_level_time_series.as_read() if self.outlet_level_time_series else None,
             inlet_level_time_series=self.inlet_level_time_series.as_read() if self.inlet_level_time_series else None,
             head_direct_time_series=self.head_direct_time_series.as_read() if self.head_direct_time_series else None,
-            generators=[generator.as_read() for generator in self.generators or []],
+            generators=[generator.as_read() for generator in self.generators] if self.generators is not None else None,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -216,7 +219,7 @@ class PlantWaterValueBasedGraphQL(GraphQLCore):
             outlet_level_time_series=self.outlet_level_time_series.as_write() if self.outlet_level_time_series else None,
             inlet_level_time_series=self.inlet_level_time_series.as_write() if self.inlet_level_time_series else None,
             head_direct_time_series=self.head_direct_time_series.as_write() if self.head_direct_time_series else None,
-            generators=[generator.as_write() for generator in self.generators or []],
+            generators=[generator.as_write() for generator in self.generators] if self.generators is not None else None,
         )
 
 
@@ -248,6 +251,7 @@ class PlantWaterValueBased(Plant):
         head_direct_time_series: The head direct time series field.
         generators: The generator field.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PlantWaterValueBased", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = None
@@ -266,6 +270,8 @@ class PlantWaterValueBased(Plant):
     head_direct_time_series: Union[TimeSeries, str, None] = Field(None, alias="headDirectTimeSeries")
     generators: Optional[list[Union[Generator, str, dm.NodeId]]] = Field(default=None, repr=False)
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> PlantWaterValueBasedWrite:
         """Convert this read version of plant water value based to the writing version."""
         return PlantWaterValueBasedWrite(
@@ -289,7 +295,7 @@ class PlantWaterValueBased(Plant):
             outlet_level_time_series=self.outlet_level_time_series.as_write() if isinstance(self.outlet_level_time_series, CogniteTimeSeries) else self.outlet_level_time_series,
             inlet_level_time_series=self.inlet_level_time_series.as_write() if isinstance(self.inlet_level_time_series, CogniteTimeSeries) else self.inlet_level_time_series,
             head_direct_time_series=self.head_direct_time_series.as_write() if isinstance(self.head_direct_time_series, CogniteTimeSeries) else self.head_direct_time_series,
-            generators=[generator.as_write() if isinstance(generator, DomainModel) else generator for generator in self.generators or []],
+            generators=[generator.as_write() if isinstance(generator, DomainModel) else generator for generator in self.generators] if self.generators is not None else None,
         )
 
     def as_apply(self) -> PlantWaterValueBasedWrite:
@@ -300,7 +306,6 @@ class PlantWaterValueBased(Plant):
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -309,7 +314,6 @@ class PlantWaterValueBased(Plant):
         edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
     ) -> None:
         from ._generator import Generator
-
         for instance in instances.values():
             if edges := edges_by_source_node.get(instance.as_id()):
                 generators: list[Generator | str | dm.NodeId] = []
@@ -344,7 +348,6 @@ class PlantWaterValueBased(Plant):
 
 
 
-
 class PlantWaterValueBasedWrite(PlantWrite):
     """This represents the writing version of plant water value based.
 
@@ -373,6 +376,7 @@ class PlantWaterValueBasedWrite(PlantWrite):
         head_direct_time_series: The head direct time series field.
         generators: The generator field.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PlantWaterValueBased", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
@@ -400,6 +404,7 @@ class PlantWaterValueBasedWrite(PlantWrite):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -463,7 +468,6 @@ class PlantWaterValueBasedWrite(PlantWrite):
         if self.head_direct_time_series is not None or write_none:
             properties["headDirectTimeSeries"] = self.head_direct_time_series if isinstance(self.head_direct_time_series, str) or self.head_direct_time_series is None else self.head_direct_time_series.external_id
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -478,8 +482,6 @@ class PlantWaterValueBasedWrite(PlantWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         edge_type = dm.DirectRelationReference("power_ops_types", "isSubAssetOf")
         for generator in self.generators or []:
@@ -528,12 +530,10 @@ class PlantWaterValueBasedApply(PlantWaterValueBasedWrite):
         )
         return super().__new__(cls)
 
-
 class PlantWaterValueBasedList(DomainModelList[PlantWaterValueBased]):
     """List of plant water value baseds in the read version."""
 
     _INSTANCE = PlantWaterValueBased
-
     def as_write(self) -> PlantWaterValueBasedWriteList:
         """Convert these read versions of plant water value based to the writing versions."""
         return PlantWaterValueBasedWriteList([node.as_write() for node in self.data])
@@ -550,7 +550,6 @@ class PlantWaterValueBasedList(DomainModelList[PlantWaterValueBased]):
     @property
     def generators(self) -> GeneratorList:
         from ._generator import Generator, GeneratorList
-
         return GeneratorList([item for items in self.data for item in items.generators or [] if isinstance(item, Generator)])
 
 
@@ -558,15 +557,13 @@ class PlantWaterValueBasedWriteList(DomainModelWriteList[PlantWaterValueBasedWri
     """List of plant water value baseds in the writing version."""
 
     _INSTANCE = PlantWaterValueBasedWrite
-
     @property
     def generators(self) -> GeneratorWriteList:
         from ._generator import GeneratorWrite, GeneratorWriteList
-
         return GeneratorWriteList([item for items in self.data for item in items.generators or [] if isinstance(item, GeneratorWrite)])
 
-class PlantWaterValueBasedApplyList(PlantWaterValueBasedWriteList): ...
 
+class PlantWaterValueBasedApplyList(PlantWaterValueBasedWriteList): ...
 
 
 def _create_plant_water_value_based_filter(
@@ -701,6 +698,48 @@ class _PlantWaterValueBasedQuery(NodeQueryCore[T_DomainModelList, PlantWaterValu
             self.production_max,
             self.production_min,
             self.connection_losses,
+        ])
+        self.production_max_time_series = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.production_max_time_series if isinstance(item.production_max_time_series, str) else item.production_max_time_series.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.production_max_time_series is not None and
+               (isinstance(item.production_max_time_series, str) or item.production_max_time_series.external_id is not None)
+        ])
+        self.production_min_time_series = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.production_min_time_series if isinstance(item.production_min_time_series, str) else item.production_min_time_series.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.production_min_time_series is not None and
+               (isinstance(item.production_min_time_series, str) or item.production_min_time_series.external_id is not None)
+        ])
+        self.water_value_time_series = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.water_value_time_series if isinstance(item.water_value_time_series, str) else item.water_value_time_series.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.water_value_time_series is not None and
+               (isinstance(item.water_value_time_series, str) or item.water_value_time_series.external_id is not None)
+        ])
+        self.feeding_fee_time_series = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.feeding_fee_time_series if isinstance(item.feeding_fee_time_series, str) else item.feeding_fee_time_series.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.feeding_fee_time_series is not None and
+               (isinstance(item.feeding_fee_time_series, str) or item.feeding_fee_time_series.external_id is not None)
+        ])
+        self.outlet_level_time_series = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.outlet_level_time_series if isinstance(item.outlet_level_time_series, str) else item.outlet_level_time_series.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.outlet_level_time_series is not None and
+               (isinstance(item.outlet_level_time_series, str) or item.outlet_level_time_series.external_id is not None)
+        ])
+        self.inlet_level_time_series = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.inlet_level_time_series if isinstance(item.inlet_level_time_series, str) else item.inlet_level_time_series.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.inlet_level_time_series is not None and
+               (isinstance(item.inlet_level_time_series, str) or item.inlet_level_time_series.external_id is not None)
+        ])
+        self.head_direct_time_series = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.head_direct_time_series if isinstance(item.head_direct_time_series, str) else item.head_direct_time_series.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.head_direct_time_series is not None and
+               (isinstance(item.head_direct_time_series, str) or item.head_direct_time_series.external_id is not None)
         ])
 
     def list_plant_water_value_based(self, limit: int = DEFAULT_QUERY_LIMIT) -> PlantWaterValueBasedList:

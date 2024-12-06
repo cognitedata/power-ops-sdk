@@ -32,6 +32,7 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     TimeSeries,
     TimeSeriesWrite,
     TimeSeriesGraphQL,
+    TimeSeriesReferenceAPI,
     T_DomainModelList,
     as_direct_relation_reference,
     as_instance_dict_id,
@@ -69,6 +70,7 @@ _BENCHMARKINGPRODUCTIONOBLIGATIONDAYAHEAD_PROPERTIES_BY_FIELD = {
     "name": "name",
 }
 
+
 class BenchmarkingProductionObligationDayAheadGraphQL(GraphQLCore):
     """This represents the reading version of benchmarking production obligation day ahead, used
     when data is retrieved from CDF using GraphQL.
@@ -82,6 +84,7 @@ class BenchmarkingProductionObligationDayAheadGraphQL(GraphQLCore):
         time_series: The time series of the day ahead production obligation for benchmarking
         name: The name of the day ahead production obligation for benchmarking
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingProductionObligationDayAhead", "1")
     time_series: Optional[TimeSeriesGraphQL] = Field(None, alias="timeSeries")
     name: Optional[str] = None
@@ -96,6 +99,8 @@ class BenchmarkingProductionObligationDayAheadGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -114,7 +119,6 @@ class BenchmarkingProductionObligationDayAheadGraphQL(GraphQLCore):
             time_series=self.time_series.as_read() if self.time_series else None,
             name=self.name,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -141,6 +145,7 @@ class BenchmarkingProductionObligationDayAhead(DomainModel):
         time_series: The time series of the day ahead production obligation for benchmarking
         name: The name of the day ahead production obligation for benchmarking
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingProductionObligationDayAhead", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -148,6 +153,8 @@ class BenchmarkingProductionObligationDayAhead(DomainModel):
     time_series: Union[TimeSeries, str, None] = Field(None, alias="timeSeries")
     name: Optional[str] = None
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> BenchmarkingProductionObligationDayAheadWrite:
         """Convert this read version of benchmarking production obligation day ahead to the writing version."""
         return BenchmarkingProductionObligationDayAheadWrite(
@@ -167,7 +174,6 @@ class BenchmarkingProductionObligationDayAhead(DomainModel):
         )
         return self.as_write()
 
-
 class BenchmarkingProductionObligationDayAheadWrite(DomainModelWrite):
     """This represents the writing version of benchmarking production obligation day ahead.
 
@@ -180,12 +186,14 @@ class BenchmarkingProductionObligationDayAheadWrite(DomainModelWrite):
         time_series: The time series of the day ahead production obligation for benchmarking
         name: The name of the day ahead production obligation for benchmarking
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingProductionObligationDayAhead", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingProductionObligationDayAhead")
     time_series: Union[TimeSeriesWrite, str, None] = Field(None, alias="timeSeries")
     name: Optional[str] = None
+
 
     def _to_instances_write(
         self,
@@ -205,7 +213,6 @@ class BenchmarkingProductionObligationDayAheadWrite(DomainModelWrite):
         if self.name is not None or write_none:
             properties["name"] = self.name
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -220,8 +227,6 @@ class BenchmarkingProductionObligationDayAheadWrite(DomainModelWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         if isinstance(self.time_series, CogniteTimeSeriesWrite):
             resources.time_series.append(self.time_series)
@@ -240,12 +245,10 @@ class BenchmarkingProductionObligationDayAheadApply(BenchmarkingProductionObliga
         )
         return super().__new__(cls)
 
-
 class BenchmarkingProductionObligationDayAheadList(DomainModelList[BenchmarkingProductionObligationDayAhead]):
     """List of benchmarking production obligation day aheads in the read version."""
 
     _INSTANCE = BenchmarkingProductionObligationDayAhead
-
     def as_write(self) -> BenchmarkingProductionObligationDayAheadWriteList:
         """Convert these read versions of benchmarking production obligation day ahead to the writing versions."""
         return BenchmarkingProductionObligationDayAheadWriteList([node.as_write() for node in self.data])
@@ -266,7 +269,6 @@ class BenchmarkingProductionObligationDayAheadWriteList(DomainModelWriteList[Ben
     _INSTANCE = BenchmarkingProductionObligationDayAheadWrite
 
 class BenchmarkingProductionObligationDayAheadApplyList(BenchmarkingProductionObligationDayAheadWriteList): ...
-
 
 
 def _create_benchmarking_production_obligation_day_ahead_filter(
@@ -331,6 +333,12 @@ class _BenchmarkingProductionObligationDayAheadQuery(NodeQueryCore[T_DomainModel
             self.space,
             self.external_id,
             self.name,
+        ])
+        self.time_series = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.time_series if isinstance(item.time_series, str) else item.time_series.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.time_series is not None and
+               (isinstance(item.time_series, str) or item.time_series.external_id is not None)
         ])
 
     def list_benchmarking_production_obligation_day_ahead(self, limit: int = DEFAULT_QUERY_LIMIT) -> BenchmarkingProductionObligationDayAheadList:

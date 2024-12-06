@@ -34,7 +34,6 @@ if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1._api.bid_row_query import BidRowQueryAPI
 
 
-
 class BidDocumentAFRRQueryAPI(QueryAPI[T_DomainModelList]):
     _view_id = dm.ViewId("power_ops_core", "BidDocumentAFRR", "1")
 
@@ -58,7 +57,6 @@ class BidDocumentAFRRQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
-
     def alerts(
         self,
         min_time: datetime.datetime | None = None,
@@ -122,7 +120,6 @@ class BidDocumentAFRRQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "calculationIssue"),
-
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -165,7 +162,6 @@ class BidDocumentAFRRQueryAPI(QueryAPI[T_DomainModelList]):
         if retrieve_price_area:
             self._query_append_price_area(from_)
         return AlertQueryAPI(self._client, self._builder, node_filer, limit)
-
     def bids(
         self,
         min_price: float | None = None,
@@ -217,7 +213,6 @@ class BidDocumentAFRRQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "partialBid"),
-
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )

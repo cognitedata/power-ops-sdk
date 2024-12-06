@@ -38,7 +38,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     TimestampFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._shop_case import ShopCase, ShopCaseWrite
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._shop_file import ShopFile, ShopFileList, ShopFileGraphQL, ShopFileWrite, ShopFileWriteList
     from cognite.powerops.client._generated.v1.data_classes._shop_scenario import ShopScenario, ShopScenarioList, ShopScenarioGraphQL, ShopScenarioWrite, ShopScenarioWriteList
@@ -52,7 +51,6 @@ __all__ = [
     "BenchmarkingShopCaseWriteList",
     "BenchmarkingShopCaseApplyList",
     "BenchmarkingShopCaseFields",
-
     "BenchmarkingShopCaseGraphQL",
 ]
 
@@ -67,6 +65,7 @@ _BENCHMARKINGSHOPCASE_PROPERTIES_BY_FIELD = {
     "delivery_date": "deliveryDate",
     "bid_generated": "bidGenerated",
 }
+
 
 class BenchmarkingShopCaseGraphQL(GraphQLCore):
     """This represents the reading version of benchmarking shop case, used
@@ -86,12 +85,13 @@ class BenchmarkingShopCaseGraphQL(GraphQLCore):
         delivery_date: The delivery date
         bid_generated: Timestamp of when the bid had been generated
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingShopCase", "1")
     scenario: Optional[ShopScenarioGraphQL] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
     shop_files: Optional[list[ShopFileGraphQL]] = Field(default=None, repr=False, alias="shopFiles")
-    bid_source: Optional[str] = Field(default=None, alias="bidSource")
+    bid_source: Optional[dict] = Field(default=None, alias="bidSource")
     delivery_date: Optional[datetime.date] = Field(None, alias="deliveryDate")
     bid_generated: Optional[datetime.datetime] = Field(None, alias="bidGenerated")
 
@@ -105,6 +105,8 @@ class BenchmarkingShopCaseGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("scenario", "shop_files", "bid_source", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -132,12 +134,11 @@ if isinstance(self.scenario, GraphQLCore)
 else self.scenario,
             start_time=self.start_time,
             end_time=self.end_time,
-            shop_files=[shop_file.as_read() for shop_file in self.shop_files or []],
+            shop_files=[shop_file.as_read() for shop_file in self.shop_files] if self.shop_files is not None else None,
             bid_source=self.bid_source,
             delivery_date=self.delivery_date,
             bid_generated=self.bid_generated,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -152,7 +153,7 @@ if isinstance(self.scenario, GraphQLCore)
 else self.scenario,
             start_time=self.start_time,
             end_time=self.end_time,
-            shop_files=[shop_file.as_write() for shop_file in self.shop_files or []],
+            shop_files=[shop_file.as_write() for shop_file in self.shop_files] if self.shop_files is not None else None,
             bid_source=self.bid_source,
             delivery_date=self.delivery_date,
             bid_generated=self.bid_generated,
@@ -176,6 +177,7 @@ class BenchmarkingShopCase(ShopCase):
         delivery_date: The delivery date
         bid_generated: Timestamp of when the bid had been generated
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingShopCase", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingShopCase")
@@ -183,6 +185,8 @@ class BenchmarkingShopCase(ShopCase):
     delivery_date: Optional[datetime.date] = Field(None, alias="deliveryDate")
     bid_generated: Optional[datetime.datetime] = Field(None, alias="bidGenerated")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> BenchmarkingShopCaseWrite:
         """Convert this read version of benchmarking shop case to the writing version."""
         return BenchmarkingShopCaseWrite(
@@ -194,7 +198,7 @@ if isinstance(self.scenario, DomainModel)
 else self.scenario,
             start_time=self.start_time,
             end_time=self.end_time,
-            shop_files=[shop_file.as_write() if isinstance(shop_file, DomainModel) else shop_file for shop_file in self.shop_files or []],
+            shop_files=[shop_file.as_write() if isinstance(shop_file, DomainModel) else shop_file for shop_file in self.shop_files] if self.shop_files is not None else None,
             bid_source=self.bid_source,
             delivery_date=self.delivery_date,
             bid_generated=self.bid_generated,
@@ -208,7 +212,6 @@ else self.scenario,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -218,7 +221,6 @@ else self.scenario,
     ) -> None:
         from ._shop_file import ShopFile
         from ._shop_scenario import ShopScenario
-
         for instance in instances.values():
             if isinstance(instance.scenario, (dm.NodeId, str)) and (scenario := nodes_by_id.get(instance.scenario)) and isinstance(
                     scenario, ShopScenario
@@ -257,7 +259,6 @@ else self.scenario,
 
 
 
-
 class BenchmarkingShopCaseWrite(ShopCaseWrite):
     """This represents the writing version of benchmarking shop case.
 
@@ -275,12 +276,14 @@ class BenchmarkingShopCaseWrite(ShopCaseWrite):
         delivery_date: The delivery date
         bid_generated: Timestamp of when the bid had been generated
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingShopCase", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingShopCase")
     bid_source: Union[str, dm.NodeId, None] = Field(default=None, alias="bidSource")
     delivery_date: Optional[datetime.date] = Field(None, alias="deliveryDate")
     bid_generated: Optional[datetime.datetime] = Field(None, alias="bidGenerated")
+
 
     def _to_instances_write(
         self,
@@ -318,7 +321,6 @@ class BenchmarkingShopCaseWrite(ShopCaseWrite):
         if self.bid_generated is not None or write_none:
             properties["bidGenerated"] = self.bid_generated.isoformat(timespec="milliseconds") if self.bid_generated else None
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -333,8 +335,6 @@ class BenchmarkingShopCaseWrite(ShopCaseWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         edge_type = dm.DirectRelationReference("power_ops_types", "ShopCase.shopFiles")
         for shop_file in self.shop_files or []:
@@ -366,12 +366,10 @@ class BenchmarkingShopCaseApply(BenchmarkingShopCaseWrite):
         )
         return super().__new__(cls)
 
-
 class BenchmarkingShopCaseList(DomainModelList[BenchmarkingShopCase]):
     """List of benchmarking shop cases in the read version."""
 
     _INSTANCE = BenchmarkingShopCase
-
     def as_write(self) -> BenchmarkingShopCaseWriteList:
         """Convert these read versions of benchmarking shop case to the writing versions."""
         return BenchmarkingShopCaseWriteList([node.as_write() for node in self.data])
@@ -388,13 +386,10 @@ class BenchmarkingShopCaseList(DomainModelList[BenchmarkingShopCase]):
     @property
     def scenario(self) -> ShopScenarioList:
         from ._shop_scenario import ShopScenario, ShopScenarioList
-
         return ShopScenarioList([item.scenario for item in self.data if isinstance(item.scenario, ShopScenario)])
-
     @property
     def shop_files(self) -> ShopFileList:
         from ._shop_file import ShopFile, ShopFileList
-
         return ShopFileList([item for items in self.data for item in items.shop_files or [] if isinstance(item, ShopFile)])
 
 
@@ -402,21 +397,17 @@ class BenchmarkingShopCaseWriteList(DomainModelWriteList[BenchmarkingShopCaseWri
     """List of benchmarking shop cases in the writing version."""
 
     _INSTANCE = BenchmarkingShopCaseWrite
-
     @property
     def scenario(self) -> ShopScenarioWriteList:
         from ._shop_scenario import ShopScenarioWrite, ShopScenarioWriteList
-
         return ShopScenarioWriteList([item.scenario for item in self.data if isinstance(item.scenario, ShopScenarioWrite)])
-
     @property
     def shop_files(self) -> ShopFileWriteList:
         from ._shop_file import ShopFileWrite, ShopFileWriteList
-
         return ShopFileWriteList([item for items in self.data for item in items.shop_files or [] if isinstance(item, ShopFileWrite)])
 
-class BenchmarkingShopCaseApplyList(BenchmarkingShopCaseWriteList): ...
 
+class BenchmarkingShopCaseApplyList(BenchmarkingShopCaseWriteList): ...
 
 
 def _create_benchmarking_shop_case_filter(

@@ -52,19 +52,19 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
 
 
     def __call__(
-            self,
-            name: str | list[str] | None = None,
-            name_prefix: str | None = None,
-            display_name: str | list[str] | None = None,
-            display_name_prefix: str | None = None,
-            min_ordering: int | None = None,
-            max_ordering: int | None = None,
-            asset_type: str | list[str] | None = None,
-            asset_type_prefix: str | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> WatercourseQueryAPI[WatercourseList]:
         """Query starting at watercourses.
 
@@ -109,7 +109,6 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
         )
         builder = DataClassQueryBuilder(WatercourseList)
         return WatercourseQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -308,8 +307,7 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -331,8 +329,7 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -356,8 +353,7 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,

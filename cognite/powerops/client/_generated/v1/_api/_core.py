@@ -222,8 +222,10 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList], ABC):
         if properties:
             properties = [self._properties_by_field.get(prop, prop) for prop in properties]
 
+        is_single_aggregate = False
         if isinstance(aggregate, (str, dm.aggregations.MetricAggregation)):
             aggregate = [aggregate]
+            is_single_aggregate = True
 
         if properties is None and (invalid := [agg for agg in aggregate if isinstance(agg, str) and agg != "count"]):
             raise ValueError(f"Cannot aggregate on {invalid} without specifying properties")
@@ -245,7 +247,7 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList], ABC):
 
         return self._client.data_modeling.instances.aggregate(
             view=self._view_id,
-            aggregates=aggregates,
+            aggregates=aggregates[0] if is_single_aggregate else aggregates,
             group_by=group_by,
             instance_type="node",
             query=query,
@@ -664,8 +666,6 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE: dict[dm.DataModelId, dict[str, type[G
         "PriceAreaDayAhead": data_classes.PriceAreaDayAheadGraphQL,
         "MarketConfiguration": data_classes.MarketConfigurationGraphQL,
         "Generator": data_classes.GeneratorGraphQL,
-        "GeneratorEfficiencyCurve": data_classes.GeneratorEfficiencyCurveGraphQL,
-        "TurbineEfficiencyCurve": data_classes.TurbineEfficiencyCurveGraphQL,
         "FunctionInput": data_classes.FunctionInputGraphQL,
         "FunctionOutput": data_classes.FunctionOutputGraphQL,
         "BidMatrix": data_classes.BidMatrixGraphQL,
@@ -673,6 +673,8 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE: dict[dm.DataModelId, dict[str, type[G
         "PartialBidConfiguration": data_classes.PartialBidConfigurationGraphQL,
         "WaterValueBasedPartialBidConfiguration": data_classes.WaterValueBasedPartialBidConfigurationGraphQL,
         "DateSpecification": data_classes.DateSpecificationGraphQL,
+        "GeneratorEfficiencyCurve": data_classes.GeneratorEfficiencyCurveGraphQL,
+        "TurbineEfficiencyCurve": data_classes.TurbineEfficiencyCurveGraphQL,
     },
     dm.DataModelId("power_ops_core", "config_DayAheadConfiguration", "1"): {
         "BidConfigurationDayAhead": data_classes.BidConfigurationDayAheadGraphQL,
@@ -687,8 +689,6 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE: dict[dm.DataModelId, dict[str, type[G
         "ShopAttributeMapping": data_classes.ShopAttributeMappingGraphQL,
         "ShopModel": data_classes.ShopModelGraphQL,
         "Generator": data_classes.GeneratorGraphQL,
-        "TurbineEfficiencyCurve": data_classes.TurbineEfficiencyCurveGraphQL,
-        "GeneratorEfficiencyCurve": data_classes.GeneratorEfficiencyCurveGraphQL,
         "ShopCommands": data_classes.ShopCommandsGraphQL,
         "PowerAsset": data_classes.PowerAssetGraphQL,
         "Plant": data_classes.PlantGraphQL,
@@ -698,6 +698,8 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE: dict[dm.DataModelId, dict[str, type[G
         "ShopOutputTimeSeriesDefinition": data_classes.ShopOutputTimeSeriesDefinitionGraphQL,
         "ShopFile": data_classes.ShopFileGraphQL,
         "ShopTimeResolution": data_classes.ShopTimeResolutionGraphQL,
+        "TurbineEfficiencyCurve": data_classes.TurbineEfficiencyCurveGraphQL,
+        "GeneratorEfficiencyCurve": data_classes.GeneratorEfficiencyCurveGraphQL,
     },
     dm.DataModelId("power_ops_core", "frontend_AFRRBid", "1"): {
         "BidDocumentAFRR": data_classes.BidDocumentAFRRGraphQL,
@@ -722,9 +724,9 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE: dict[dm.DataModelId, dict[str, type[G
         "PlantInformation": data_classes.PlantInformationGraphQL,
         "Watercourse": data_classes.WatercourseGraphQL,
         "Generator": data_classes.GeneratorGraphQL,
+        "DateSpecification": data_classes.DateSpecificationGraphQL,
         "TurbineEfficiencyCurve": data_classes.TurbineEfficiencyCurveGraphQL,
         "GeneratorEfficiencyCurve": data_classes.GeneratorEfficiencyCurveGraphQL,
-        "DateSpecification": data_classes.DateSpecificationGraphQL,
     },
     dm.DataModelId("power_ops_core", "frontend_DayAheadBid", "1"): {
         "BidDocumentDayAhead": data_classes.BidDocumentDayAheadGraphQL,

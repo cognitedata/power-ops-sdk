@@ -44,7 +44,6 @@ __all__ = [
     "TurbineEfficiencyCurveWriteList",
     "TurbineEfficiencyCurveApplyList",
     "TurbineEfficiencyCurveFields",
-
     "TurbineEfficiencyCurveGraphQL",
 ]
 
@@ -58,6 +57,7 @@ _TURBINEEFFICIENCYCURVE_PROPERTIES_BY_FIELD = {
     "flow": "flow",
     "efficiency": "efficiency",
 }
+
 
 class TurbineEfficiencyCurveGraphQL(GraphQLCore):
     """This represents the reading version of turbine efficiency curve, used
@@ -73,6 +73,7 @@ class TurbineEfficiencyCurveGraphQL(GraphQLCore):
         flow: The flow values
         efficiency: The turbine efficiency values
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "TurbineEfficiencyCurve", "1")
     head: Optional[float] = None
     flow: Optional[list[float]] = None
@@ -88,6 +89,8 @@ class TurbineEfficiencyCurveGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -107,7 +110,6 @@ class TurbineEfficiencyCurveGraphQL(GraphQLCore):
             flow=self.flow,
             efficiency=self.efficiency,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -136,6 +138,7 @@ class TurbineEfficiencyCurve(DomainModel):
         flow: The flow values
         efficiency: The turbine efficiency values
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "TurbineEfficiencyCurve", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -144,6 +147,8 @@ class TurbineEfficiencyCurve(DomainModel):
     flow: list[float]
     efficiency: list[float]
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> TurbineEfficiencyCurveWrite:
         """Convert this read version of turbine efficiency curve to the writing version."""
         return TurbineEfficiencyCurveWrite(
@@ -164,7 +169,6 @@ class TurbineEfficiencyCurve(DomainModel):
         )
         return self.as_write()
 
-
 class TurbineEfficiencyCurveWrite(DomainModelWrite):
     """This represents the writing version of turbine efficiency curve.
 
@@ -178,6 +182,7 @@ class TurbineEfficiencyCurveWrite(DomainModelWrite):
         flow: The flow values
         efficiency: The turbine efficiency values
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "TurbineEfficiencyCurve", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -185,6 +190,7 @@ class TurbineEfficiencyCurveWrite(DomainModelWrite):
     head: Optional[float] = None
     flow: list[float]
     efficiency: list[float]
+
 
     def _to_instances_write(
         self,
@@ -207,7 +213,6 @@ class TurbineEfficiencyCurveWrite(DomainModelWrite):
         if self.efficiency is not None:
             properties["efficiency"] = self.efficiency
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -223,8 +228,6 @@ class TurbineEfficiencyCurveWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-
-
         return resources
 
 
@@ -239,12 +242,10 @@ class TurbineEfficiencyCurveApply(TurbineEfficiencyCurveWrite):
         )
         return super().__new__(cls)
 
-
 class TurbineEfficiencyCurveList(DomainModelList[TurbineEfficiencyCurve]):
     """List of turbine efficiency curves in the read version."""
 
     _INSTANCE = TurbineEfficiencyCurve
-
     def as_write(self) -> TurbineEfficiencyCurveWriteList:
         """Convert these read versions of turbine efficiency curve to the writing versions."""
         return TurbineEfficiencyCurveWriteList([node.as_write() for node in self.data])
@@ -265,7 +266,6 @@ class TurbineEfficiencyCurveWriteList(DomainModelWriteList[TurbineEfficiencyCurv
     _INSTANCE = TurbineEfficiencyCurveWrite
 
 class TurbineEfficiencyCurveApplyList(TurbineEfficiencyCurveWriteList): ...
-
 
 
 def _create_turbine_efficiency_curve_filter(

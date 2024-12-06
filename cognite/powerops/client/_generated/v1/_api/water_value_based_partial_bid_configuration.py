@@ -53,17 +53,17 @@ class WaterValueBasedPartialBidConfigurationAPI(NodeAPI[WaterValueBasedPartialBi
 
 
     def __call__(
-            self,
-            name: str | list[str] | None = None,
-            name_prefix: str | None = None,
-            method: str | list[str] | None = None,
-            method_prefix: str | None = None,
-            power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-            add_steps: bool | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        method: str | list[str] | None = None,
+        method_prefix: str | None = None,
+        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        add_steps: bool | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> WaterValueBasedPartialBidConfigurationQueryAPI[WaterValueBasedPartialBidConfigurationList]:
         """Query starting at water value based partial bid configurations.
 
@@ -104,7 +104,6 @@ class WaterValueBasedPartialBidConfigurationAPI(NodeAPI[WaterValueBasedPartialBi
         )
         builder = DataClassQueryBuilder(WaterValueBasedPartialBidConfigurationList)
         return WaterValueBasedPartialBidConfigurationQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -299,8 +298,7 @@ class WaterValueBasedPartialBidConfigurationAPI(NodeAPI[WaterValueBasedPartialBi
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -320,8 +318,7 @@ class WaterValueBasedPartialBidConfigurationAPI(NodeAPI[WaterValueBasedPartialBi
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -343,8 +340,7 @@ class WaterValueBasedPartialBidConfigurationAPI(NodeAPI[WaterValueBasedPartialBi
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
@@ -558,7 +554,7 @@ class WaterValueBasedPartialBidConfigurationAPI(NodeAPI[WaterValueBasedPartialBi
         )
 
         if retrieve_connections == "skip":
-                return self._list(
+            return self._list(
                 limit=limit,
                 filter=filter_,
                 sort_by=sort_by,  # type: ignore[arg-type]

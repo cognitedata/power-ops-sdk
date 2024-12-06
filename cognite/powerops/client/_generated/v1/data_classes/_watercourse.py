@@ -62,6 +62,7 @@ _WATERCOURSE_PROPERTIES_BY_FIELD = {
     "asset_type": "assetType",
 }
 
+
 class WatercourseGraphQL(GraphQLCore):
     """This represents the reading version of watercourse, used
     when data is retrieved from CDF using GraphQL.
@@ -77,6 +78,7 @@ class WatercourseGraphQL(GraphQLCore):
         ordering: The ordering of the asset
         asset_type: The type of the asset
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "Watercourse", "1")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
@@ -93,6 +95,8 @@ class WatercourseGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -113,7 +117,6 @@ class WatercourseGraphQL(GraphQLCore):
             ordering=self.ordering,
             asset_type=self.asset_type,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -144,10 +147,13 @@ class Watercourse(PowerAsset):
         ordering: The ordering of the asset
         asset_type: The type of the asset
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "Watercourse", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "Watercourse")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> WatercourseWrite:
         """Convert this read version of watercourse to the writing version."""
         return WatercourseWrite(
@@ -169,7 +175,6 @@ class Watercourse(PowerAsset):
         )
         return self.as_write()
 
-
 class WatercourseWrite(PowerAssetWrite):
     """This represents the writing version of watercourse.
 
@@ -184,9 +189,11 @@ class WatercourseWrite(PowerAssetWrite):
         ordering: The ordering of the asset
         asset_type: The type of the asset
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "Watercourse", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "Watercourse")
+
 
     def _to_instances_write(
         self,
@@ -212,7 +219,6 @@ class WatercourseWrite(PowerAssetWrite):
         if self.asset_type is not None or write_none:
             properties["assetType"] = self.asset_type
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -228,8 +234,6 @@ class WatercourseWrite(PowerAssetWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-
-
         return resources
 
 
@@ -244,12 +248,10 @@ class WatercourseApply(WatercourseWrite):
         )
         return super().__new__(cls)
 
-
 class WatercourseList(DomainModelList[Watercourse]):
     """List of watercourses in the read version."""
 
     _INSTANCE = Watercourse
-
     def as_write(self) -> WatercourseWriteList:
         """Convert these read versions of watercourse to the writing versions."""
         return WatercourseWriteList([node.as_write() for node in self.data])
@@ -270,7 +272,6 @@ class WatercourseWriteList(DomainModelWriteList[WatercourseWrite]):
     _INSTANCE = WatercourseWrite
 
 class WatercourseApplyList(WatercourseWriteList): ...
-
 
 
 def _create_watercourse_filter(

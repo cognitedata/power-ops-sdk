@@ -52,29 +52,29 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
 
 
     def __call__(
-            self,
-            name: str | list[str] | None = None,
-            name_prefix: str | None = None,
-            min_max_price: float | None = None,
-            max_max_price: float | None = None,
-            min_min_price: float | None = None,
-            max_min_price: float | None = None,
-            timezone: str | list[str] | None = None,
-            timezone_prefix: str | None = None,
-            price_unit: str | list[str] | None = None,
-            price_unit_prefix: str | None = None,
-            min_price_steps: int | None = None,
-            max_price_steps: int | None = None,
-            min_tick_size: float | None = None,
-            max_tick_size: float | None = None,
-            time_unit: str | list[str] | None = None,
-            time_unit_prefix: str | None = None,
-            min_trade_lot: float | None = None,
-            max_trade_lot: float | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        min_max_price: float | None = None,
+        max_max_price: float | None = None,
+        min_min_price: float | None = None,
+        max_min_price: float | None = None,
+        timezone: str | list[str] | None = None,
+        timezone_prefix: str | None = None,
+        price_unit: str | list[str] | None = None,
+        price_unit_prefix: str | None = None,
+        min_price_steps: int | None = None,
+        max_price_steps: int | None = None,
+        min_tick_size: float | None = None,
+        max_tick_size: float | None = None,
+        time_unit: str | list[str] | None = None,
+        time_unit_prefix: str | None = None,
+        min_trade_lot: float | None = None,
+        max_trade_lot: float | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> MarketConfigurationQueryAPI[MarketConfigurationList]:
         """Query starting at market configurations.
 
@@ -139,7 +139,6 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         )
         builder = DataClassQueryBuilder(MarketConfigurationList)
         return MarketConfigurationQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -378,8 +377,7 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -411,8 +409,7 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -446,8 +443,7 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,

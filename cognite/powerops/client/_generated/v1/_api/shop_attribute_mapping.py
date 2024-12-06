@@ -54,21 +54,21 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
         self.time_series = ShopAttributeMappingTimeSeriesAPI(client, self._view_id)
 
     def __call__(
-            self,
-            object_type: str | list[str] | None = None,
-            object_type_prefix: str | None = None,
-            object_name: str | list[str] | None = None,
-            object_name_prefix: str | None = None,
-            attribute_name: str | list[str] | None = None,
-            attribute_name_prefix: str | None = None,
-            retrieve: str | list[str] | None = None,
-            retrieve_prefix: str | None = None,
-            aggregation: str | list[str] | None = None,
-            aggregation_prefix: str | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        object_type: str | list[str] | None = None,
+        object_type_prefix: str | None = None,
+        object_name: str | list[str] | None = None,
+        object_name_prefix: str | None = None,
+        attribute_name: str | list[str] | None = None,
+        attribute_name_prefix: str | None = None,
+        retrieve: str | list[str] | None = None,
+        retrieve_prefix: str | None = None,
+        aggregation: str | list[str] | None = None,
+        aggregation_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> ShopAttributeMappingQueryAPI[ShopAttributeMappingList]:
         """Query starting at shop attribute mappings.
 
@@ -117,7 +117,6 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
         )
         builder = DataClassQueryBuilder(ShopAttributeMappingList)
         return ShopAttributeMappingQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -324,8 +323,7 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -349,8 +347,7 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -376,8 +373,7 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,

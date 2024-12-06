@@ -59,12 +59,12 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
         self.output_time_series_edge = ShopResultOutputTimeSeriesAPI(client)
 
     def __call__(
-            self,
-            case: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        case: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> ShopResultQueryAPI[ShopResultList]:
         """Query starting at shop results.
 
@@ -95,7 +95,6 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
         )
         builder = DataClassQueryBuilder(ShopResultList)
         return ShopResultQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -219,7 +218,6 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
                                                ]
         )
 
-
     def search(
         self,
         query: str,
@@ -289,8 +287,7 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -303,8 +300,7 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -319,8 +315,7 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
@@ -481,7 +476,7 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
         )
 
         if retrieve_connections == "skip":
-                return self._list(
+            return self._list(
                 limit=limit,
                 filter=filter_,
                 sort_by=sort_by,  # type: ignore[arg-type]

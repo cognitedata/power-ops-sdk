@@ -38,7 +38,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     TimestampFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._function_input import FunctionInput, FunctionInputWrite
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._shop_scenario import ShopScenario, ShopScenarioList, ShopScenarioGraphQL, ShopScenarioWrite, ShopScenarioWriteList
 
@@ -69,6 +68,7 @@ _SHOPPREPROCESSORINPUT_PROPERTIES_BY_FIELD = {
     "end_time": "endTime",
 }
 
+
 class ShopPreprocessorInputGraphQL(GraphQLCore):
     """This represents the reading version of shop preprocessor input, used
     when data is retrieved from CDF using GraphQL.
@@ -87,6 +87,7 @@ class ShopPreprocessorInputGraphQL(GraphQLCore):
         start_time: Start date of bid period TODO
         end_time: End date of bid period TODO
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopPreprocessorInput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
@@ -106,6 +107,8 @@ class ShopPreprocessorInputGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("scenario", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -138,7 +141,6 @@ else self.scenario,
             start_time=self.start_time,
             end_time=self.end_time,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -177,6 +179,7 @@ class ShopPreprocessorInput(FunctionInput):
         start_time: Start date of bid period TODO
         end_time: End date of bid period TODO
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopPreprocessorInput", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopPreprocessorInput")
@@ -184,6 +187,8 @@ class ShopPreprocessorInput(FunctionInput):
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopPreprocessorInputWrite:
         """Convert this read version of shop preprocessor input to the writing version."""
         return ShopPreprocessorInputWrite(
@@ -209,7 +214,6 @@ else self.scenario,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -218,13 +222,11 @@ else self.scenario,
         edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
     ) -> None:
         from ._shop_scenario import ShopScenario
-
         for instance in instances.values():
             if isinstance(instance.scenario, (dm.NodeId, str)) and (scenario := nodes_by_id.get(instance.scenario)) and isinstance(
                     scenario, ShopScenario
             ):
                 instance.scenario = scenario
-
 
 
 class ShopPreprocessorInputWrite(FunctionInputWrite):
@@ -244,6 +246,7 @@ class ShopPreprocessorInputWrite(FunctionInputWrite):
         start_time: Start date of bid period TODO
         end_time: End date of bid period TODO
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopPreprocessorInput", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "ShopPreprocessorInput")
@@ -260,6 +263,7 @@ class ShopPreprocessorInputWrite(FunctionInputWrite):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -296,7 +300,6 @@ class ShopPreprocessorInputWrite(FunctionInputWrite):
         if self.end_time is not None or write_none:
             properties["endTime"] = self.end_time.isoformat(timespec="milliseconds") if self.end_time else None
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -311,8 +314,6 @@ class ShopPreprocessorInputWrite(FunctionInputWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         if isinstance(self.scenario, DomainModelWrite):
             other_resources = self.scenario._to_instances_write(cache)
@@ -332,12 +333,10 @@ class ShopPreprocessorInputApply(ShopPreprocessorInputWrite):
         )
         return super().__new__(cls)
 
-
 class ShopPreprocessorInputList(DomainModelList[ShopPreprocessorInput]):
     """List of shop preprocessor inputs in the read version."""
 
     _INSTANCE = ShopPreprocessorInput
-
     def as_write(self) -> ShopPreprocessorInputWriteList:
         """Convert these read versions of shop preprocessor input to the writing versions."""
         return ShopPreprocessorInputWriteList([node.as_write() for node in self.data])
@@ -354,23 +353,18 @@ class ShopPreprocessorInputList(DomainModelList[ShopPreprocessorInput]):
     @property
     def scenario(self) -> ShopScenarioList:
         from ._shop_scenario import ShopScenario, ShopScenarioList
-
         return ShopScenarioList([item.scenario for item in self.data if isinstance(item.scenario, ShopScenario)])
-
 
 class ShopPreprocessorInputWriteList(DomainModelWriteList[ShopPreprocessorInputWrite]):
     """List of shop preprocessor inputs in the writing version."""
 
     _INSTANCE = ShopPreprocessorInputWrite
-
     @property
     def scenario(self) -> ShopScenarioWriteList:
         from ._shop_scenario import ShopScenarioWrite, ShopScenarioWriteList
-
         return ShopScenarioWriteList([item.scenario for item in self.data if isinstance(item.scenario, ShopScenarioWrite)])
 
 class ShopPreprocessorInputApplyList(ShopPreprocessorInputWriteList): ...
-
 
 
 def _create_shop_preprocessor_input_filter(

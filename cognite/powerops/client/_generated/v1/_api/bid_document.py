@@ -62,22 +62,22 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentWrite, BidDocumentList, Bid
         self.alerts_edge = BidDocumentAlertsAPI(client)
 
     def __call__(
-            self,
-            name: str | list[str] | None = None,
-            name_prefix: str | None = None,
-            workflow_execution_id: str | list[str] | None = None,
-            workflow_execution_id_prefix: str | None = None,
-            min_delivery_date: datetime.date | None = None,
-            max_delivery_date: datetime.date | None = None,
-            min_start_calculation: datetime.datetime | None = None,
-            max_start_calculation: datetime.datetime | None = None,
-            min_end_calculation: datetime.datetime | None = None,
-            max_end_calculation: datetime.datetime | None = None,
-            is_complete: bool | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_delivery_date: datetime.date | None = None,
+        max_delivery_date: datetime.date | None = None,
+        min_start_calculation: datetime.datetime | None = None,
+        max_start_calculation: datetime.datetime | None = None,
+        min_end_calculation: datetime.datetime | None = None,
+        max_end_calculation: datetime.datetime | None = None,
+        is_complete: bool | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> BidDocumentQueryAPI[BidDocumentList]:
         """Query starting at bid documents.
 
@@ -128,7 +128,6 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentWrite, BidDocumentList, Bid
         )
         builder = DataClassQueryBuilder(BidDocumentList)
         return BidDocumentQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -245,10 +244,10 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentWrite, BidDocumentList, Bid
                     "outwards",
                     dm.ViewId("power_ops_core", "Alert", "1"),
                 ),
-                                               ],
+                                               ]
+,
             as_child_class=as_child_class
         )
-
 
     def search(
         self,
@@ -361,8 +360,7 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentWrite, BidDocumentList, Bid
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -387,8 +385,7 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentWrite, BidDocumentList, Bid
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -415,8 +412,7 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentWrite, BidDocumentList, Bid
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
@@ -675,7 +671,7 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentWrite, BidDocumentList, Bid
         )
 
         if retrieve_connections == "skip":
-                return self._list(
+            return self._list(
                 limit=limit,
                 filter=filter_,
                 sort_by=sort_by,  # type: ignore[arg-type]

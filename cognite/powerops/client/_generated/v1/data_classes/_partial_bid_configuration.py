@@ -35,7 +35,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     StringFilter,
     BooleanFilter,
 )
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._power_asset import PowerAsset, PowerAssetList, PowerAssetGraphQL, PowerAssetWrite, PowerAssetWriteList
 
@@ -63,6 +62,7 @@ _PARTIALBIDCONFIGURATION_PROPERTIES_BY_FIELD = {
     "add_steps": "addSteps",
 }
 
+
 class PartialBidConfigurationGraphQL(GraphQLCore):
     """This represents the reading version of partial bid configuration, used
     when data is retrieved from CDF using GraphQL.
@@ -78,6 +78,7 @@ class PartialBidConfigurationGraphQL(GraphQLCore):
         power_asset: TODO description
         add_steps: TODO definition
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PartialBidConfiguration", "1")
     name: Optional[str] = None
     method: Optional[str] = None
@@ -94,6 +95,8 @@ class PartialBidConfigurationGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("power_asset", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -123,7 +126,6 @@ if isinstance(self.power_asset, GraphQLCore)
 else self.power_asset,
             add_steps=self.add_steps,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -156,6 +158,7 @@ class PartialBidConfiguration(DomainModel):
         power_asset: TODO description
         add_steps: TODO definition
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PartialBidConfiguration", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -165,6 +168,8 @@ class PartialBidConfiguration(DomainModel):
     power_asset: Union[PowerAsset, str, dm.NodeId, None] = Field(default=None, repr=False, alias="powerAsset")
     add_steps: bool = Field(alias="addSteps")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> PartialBidConfigurationWrite:
         """Convert this read version of partial bid configuration to the writing version."""
         return PartialBidConfigurationWrite(
@@ -187,7 +192,6 @@ else self.power_asset,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -196,13 +200,11 @@ else self.power_asset,
         edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
     ) -> None:
         from ._power_asset import PowerAsset
-
         for instance in instances.values():
             if isinstance(instance.power_asset, (dm.NodeId, str)) and (power_asset := nodes_by_id.get(instance.power_asset)) and isinstance(
                     power_asset, PowerAsset
             ):
                 instance.power_asset = power_asset
-
 
 
 class PartialBidConfigurationWrite(DomainModelWrite):
@@ -219,6 +221,7 @@ class PartialBidConfigurationWrite(DomainModelWrite):
         power_asset: TODO description
         add_steps: TODO definition
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PartialBidConfiguration", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -237,6 +240,7 @@ class PartialBidConfigurationWrite(DomainModelWrite):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -264,7 +268,6 @@ class PartialBidConfigurationWrite(DomainModelWrite):
         if self.add_steps is not None:
             properties["addSteps"] = self.add_steps
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -279,8 +282,6 @@ class PartialBidConfigurationWrite(DomainModelWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         if isinstance(self.power_asset, DomainModelWrite):
             other_resources = self.power_asset._to_instances_write(cache)
@@ -300,12 +301,10 @@ class PartialBidConfigurationApply(PartialBidConfigurationWrite):
         )
         return super().__new__(cls)
 
-
 class PartialBidConfigurationList(DomainModelList[PartialBidConfiguration]):
     """List of partial bid configurations in the read version."""
 
     _INSTANCE = PartialBidConfiguration
-
     def as_write(self) -> PartialBidConfigurationWriteList:
         """Convert these read versions of partial bid configuration to the writing versions."""
         return PartialBidConfigurationWriteList([node.as_write() for node in self.data])
@@ -322,23 +321,18 @@ class PartialBidConfigurationList(DomainModelList[PartialBidConfiguration]):
     @property
     def power_asset(self) -> PowerAssetList:
         from ._power_asset import PowerAsset, PowerAssetList
-
         return PowerAssetList([item.power_asset for item in self.data if isinstance(item.power_asset, PowerAsset)])
-
 
 class PartialBidConfigurationWriteList(DomainModelWriteList[PartialBidConfigurationWrite]):
     """List of partial bid configurations in the writing version."""
 
     _INSTANCE = PartialBidConfigurationWrite
-
     @property
     def power_asset(self) -> PowerAssetWriteList:
         from ._power_asset import PowerAssetWrite, PowerAssetWriteList
-
         return PowerAssetWriteList([item.power_asset for item in self.data if isinstance(item.power_asset, PowerAssetWrite)])
 
 class PartialBidConfigurationApplyList(PartialBidConfigurationWriteList): ...
-
 
 
 def _create_partial_bid_configuration_filter(

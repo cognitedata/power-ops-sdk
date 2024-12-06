@@ -62,6 +62,7 @@ _DATESPECIFICATION_PROPERTIES_BY_FIELD = {
     "shift_definition": "shiftDefinition",
 }
 
+
 class DateSpecificationGraphQL(GraphQLCore):
     """This represents the reading version of date specification, used
     when data is retrieved from CDF using GraphQL.
@@ -78,6 +79,7 @@ class DateSpecificationGraphQL(GraphQLCore):
         floor_frame: TODO description
         shift_definition: TODO description
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "DateSpecification", "1")
     name: Optional[str] = None
     processing_timezone: Optional[str] = Field(None, alias="processingTimezone")
@@ -95,6 +97,8 @@ class DateSpecificationGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -116,7 +120,6 @@ class DateSpecificationGraphQL(GraphQLCore):
             floor_frame=self.floor_frame,
             shift_definition=self.shift_definition,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -149,6 +152,7 @@ class DateSpecification(DomainModel):
         floor_frame: TODO description
         shift_definition: TODO description
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "DateSpecification", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -159,6 +163,8 @@ class DateSpecification(DomainModel):
     floor_frame: Optional[str] = Field(None, alias="floorFrame")
     shift_definition: Optional[dict] = Field(None, alias="shiftDefinition")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> DateSpecificationWrite:
         """Convert this read version of date specification to the writing version."""
         return DateSpecificationWrite(
@@ -181,7 +187,6 @@ class DateSpecification(DomainModel):
         )
         return self.as_write()
 
-
 class DateSpecificationWrite(DomainModelWrite):
     """This represents the writing version of date specification.
 
@@ -197,6 +202,7 @@ class DateSpecificationWrite(DomainModelWrite):
         floor_frame: TODO description
         shift_definition: TODO description
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "DateSpecification", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -206,6 +212,7 @@ class DateSpecificationWrite(DomainModelWrite):
     resulting_timezone: Optional[str] = Field("UTC", alias="resultingTimezone")
     floor_frame: Optional[str] = Field("day", alias="floorFrame")
     shift_definition: Optional[dict] = Field(None, alias="shiftDefinition")
+
 
     def _to_instances_write(
         self,
@@ -234,7 +241,6 @@ class DateSpecificationWrite(DomainModelWrite):
         if self.shift_definition is not None or write_none:
             properties["shiftDefinition"] = self.shift_definition
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -250,8 +256,6 @@ class DateSpecificationWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-
-
         return resources
 
 
@@ -266,12 +270,10 @@ class DateSpecificationApply(DateSpecificationWrite):
         )
         return super().__new__(cls)
 
-
 class DateSpecificationList(DomainModelList[DateSpecification]):
     """List of date specifications in the read version."""
 
     _INSTANCE = DateSpecification
-
     def as_write(self) -> DateSpecificationWriteList:
         """Convert these read versions of date specification to the writing versions."""
         return DateSpecificationWriteList([node.as_write() for node in self.data])
@@ -292,7 +294,6 @@ class DateSpecificationWriteList(DomainModelWriteList[DateSpecificationWrite]):
     _INSTANCE = DateSpecificationWrite
 
 class DateSpecificationApplyList(DateSpecificationWriteList): ...
-
 
 
 def _create_date_specification_filter(

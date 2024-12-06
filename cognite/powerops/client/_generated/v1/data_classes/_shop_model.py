@@ -42,7 +42,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     StringFilter,
     FloatFilter,
 )
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._shop_attribute_mapping import ShopAttributeMapping, ShopAttributeMappingList, ShopAttributeMappingGraphQL, ShopAttributeMappingWrite, ShopAttributeMappingWriteList
     from cognite.powerops.client._generated.v1.data_classes._shop_file import ShopFile, ShopFileList, ShopFileGraphQL, ShopFileWrite, ShopFileWriteList
@@ -73,6 +72,7 @@ _SHOPMODEL_PROPERTIES_BY_FIELD = {
     "model": "model",
 }
 
+
 class ShopModelGraphQL(GraphQLCore, protected_namespaces=()):
     """This represents the reading version of shop model, used
     when data is retrieved from CDF using GraphQL.
@@ -91,6 +91,7 @@ class ShopModelGraphQL(GraphQLCore, protected_namespaces=()):
         cog_shop_files_config: Configuration for in what order to load the various files into pyshop
         base_attribute_mappings: The base mappings for the model
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopModel", "1")
     name: Optional[str] = None
     model_version: Optional[str] = Field(None, alias="modelVersion")
@@ -110,6 +111,8 @@ class ShopModelGraphQL(GraphQLCore, protected_namespaces=()):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("cog_shop_files_config", "base_attribute_mappings", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -137,10 +140,9 @@ class ShopModelGraphQL(GraphQLCore, protected_namespaces=()):
             shop_version=self.shop_version,
             penalty_limit=self.penalty_limit,
             model=self.model.as_read() if self.model else None,
-            cog_shop_files_config=[cog_shop_files_config.as_read() for cog_shop_files_config in self.cog_shop_files_config or []],
-            base_attribute_mappings=[base_attribute_mapping.as_read() for base_attribute_mapping in self.base_attribute_mappings or []],
+            cog_shop_files_config=[cog_shop_files_config.as_read() for cog_shop_files_config in self.cog_shop_files_config] if self.cog_shop_files_config is not None else None,
+            base_attribute_mappings=[base_attribute_mapping.as_read() for base_attribute_mapping in self.base_attribute_mappings] if self.base_attribute_mappings is not None else None,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -155,8 +157,8 @@ class ShopModelGraphQL(GraphQLCore, protected_namespaces=()):
             shop_version=self.shop_version,
             penalty_limit=self.penalty_limit,
             model=self.model.as_write() if self.model else None,
-            cog_shop_files_config=[cog_shop_files_config.as_write() for cog_shop_files_config in self.cog_shop_files_config or []],
-            base_attribute_mappings=[base_attribute_mapping.as_write() for base_attribute_mapping in self.base_attribute_mappings or []],
+            cog_shop_files_config=[cog_shop_files_config.as_write() for cog_shop_files_config in self.cog_shop_files_config] if self.cog_shop_files_config is not None else None,
+            base_attribute_mappings=[base_attribute_mapping.as_write() for base_attribute_mapping in self.base_attribute_mappings] if self.base_attribute_mappings is not None else None,
         )
 
 
@@ -177,6 +179,7 @@ class ShopModel(DomainModel, protected_namespaces=()):
         cog_shop_files_config: Configuration for in what order to load the various files into pyshop
         base_attribute_mappings: The base mappings for the model
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopModel", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -189,6 +192,8 @@ class ShopModel(DomainModel, protected_namespaces=()):
     cog_shop_files_config: Optional[list[Union[ShopFile, str, dm.NodeId]]] = Field(default=None, repr=False, alias="cogShopFilesConfig")
     base_attribute_mappings: Optional[list[Union[ShopAttributeMapping, str, dm.NodeId]]] = Field(default=None, repr=False, alias="baseAttributeMappings")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopModelWrite:
         """Convert this read version of shop model to the writing version."""
         return ShopModelWrite(
@@ -200,8 +205,8 @@ class ShopModel(DomainModel, protected_namespaces=()):
             shop_version=self.shop_version,
             penalty_limit=self.penalty_limit,
             model=self.model.as_write() if isinstance(self.model, CogniteFileMetadata) else self.model,
-            cog_shop_files_config=[cog_shop_files_config.as_write() if isinstance(cog_shop_files_config, DomainModel) else cog_shop_files_config for cog_shop_files_config in self.cog_shop_files_config or []],
-            base_attribute_mappings=[base_attribute_mapping.as_write() if isinstance(base_attribute_mapping, DomainModel) else base_attribute_mapping for base_attribute_mapping in self.base_attribute_mappings or []],
+            cog_shop_files_config=[cog_shop_files_config.as_write() if isinstance(cog_shop_files_config, DomainModel) else cog_shop_files_config for cog_shop_files_config in self.cog_shop_files_config] if self.cog_shop_files_config is not None else None,
+            base_attribute_mappings=[base_attribute_mapping.as_write() if isinstance(base_attribute_mapping, DomainModel) else base_attribute_mapping for base_attribute_mapping in self.base_attribute_mappings] if self.base_attribute_mappings is not None else None,
         )
 
     def as_apply(self) -> ShopModelWrite:
@@ -212,7 +217,6 @@ class ShopModel(DomainModel, protected_namespaces=()):
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -222,7 +226,6 @@ class ShopModel(DomainModel, protected_namespaces=()):
     ) -> None:
         from ._shop_attribute_mapping import ShopAttributeMapping
         from ._shop_file import ShopFile
-
         for instance in instances.values():
             if edges := edges_by_source_node.get(instance.as_id()):
                 cog_shop_files_config: list[ShopFile | str | dm.NodeId] = []
@@ -263,7 +266,6 @@ class ShopModel(DomainModel, protected_namespaces=()):
 
 
 
-
 class ShopModelWrite(DomainModelWrite, protected_namespaces=()):
     """This represents the writing version of shop model.
 
@@ -281,6 +283,7 @@ class ShopModelWrite(DomainModelWrite, protected_namespaces=()):
         cog_shop_files_config: Configuration for in what order to load the various files into pyshop
         base_attribute_mappings: The base mappings for the model
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopModel", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -302,6 +305,7 @@ class ShopModelWrite(DomainModelWrite, protected_namespaces=()):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -329,7 +333,6 @@ class ShopModelWrite(DomainModelWrite, protected_namespaces=()):
         if self.model is not None or write_none:
             properties["model"] = self.model if isinstance(self.model, str) or self.model is None else self.model.external_id
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -344,8 +347,6 @@ class ShopModelWrite(DomainModelWrite, protected_namespaces=()):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         edge_type = dm.DirectRelationReference("power_ops_types", "ShopModel.cogShopFilesConfig")
         for cog_shop_files_config in self.cog_shop_files_config or []:
@@ -388,12 +389,10 @@ class ShopModelApply(ShopModelWrite):
         )
         return super().__new__(cls)
 
-
 class ShopModelList(DomainModelList[ShopModel]):
     """List of shop models in the read version."""
 
     _INSTANCE = ShopModel
-
     def as_write(self) -> ShopModelWriteList:
         """Convert these read versions of shop model to the writing versions."""
         return ShopModelWriteList([node.as_write() for node in self.data])
@@ -410,13 +409,11 @@ class ShopModelList(DomainModelList[ShopModel]):
     @property
     def cog_shop_files_config(self) -> ShopFileList:
         from ._shop_file import ShopFile, ShopFileList
-
         return ShopFileList([item for items in self.data for item in items.cog_shop_files_config or [] if isinstance(item, ShopFile)])
 
     @property
     def base_attribute_mappings(self) -> ShopAttributeMappingList:
         from ._shop_attribute_mapping import ShopAttributeMapping, ShopAttributeMappingList
-
         return ShopAttributeMappingList([item for items in self.data for item in items.base_attribute_mappings or [] if isinstance(item, ShopAttributeMapping)])
 
 
@@ -424,21 +421,18 @@ class ShopModelWriteList(DomainModelWriteList[ShopModelWrite]):
     """List of shop models in the writing version."""
 
     _INSTANCE = ShopModelWrite
-
     @property
     def cog_shop_files_config(self) -> ShopFileWriteList:
         from ._shop_file import ShopFileWrite, ShopFileWriteList
-
         return ShopFileWriteList([item for items in self.data for item in items.cog_shop_files_config or [] if isinstance(item, ShopFileWrite)])
 
     @property
     def base_attribute_mappings(self) -> ShopAttributeMappingWriteList:
         from ._shop_attribute_mapping import ShopAttributeMappingWrite, ShopAttributeMappingWriteList
-
         return ShopAttributeMappingWriteList([item for items in self.data for item in items.base_attribute_mappings or [] if isinstance(item, ShopAttributeMappingWrite)])
 
-class ShopModelApplyList(ShopModelWriteList): ...
 
+class ShopModelApplyList(ShopModelWriteList): ...
 
 
 def _create_shop_model_filter(
