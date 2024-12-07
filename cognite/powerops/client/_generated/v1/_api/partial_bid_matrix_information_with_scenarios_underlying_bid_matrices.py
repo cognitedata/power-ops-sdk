@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
 
 from cognite.client import data_modeling as dm
 
@@ -9,15 +10,15 @@ from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INS
 
 class PartialBidMatrixInformationWithScenariosUnderlyingBidMatricesAPI(EdgeAPI):
     def list(
-            self,
-            from_partial_bid_matrix_information_with_scenario: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-            from_partial_bid_matrix_information_with_scenario_space: str = DEFAULT_INSTANCE_SPACE,
-            to_bid_matrix: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-            to_bid_matrix_space: str = DEFAULT_INSTANCE_SPACE,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit=DEFAULT_LIMIT_READ,
-    ) ->dm.EdgeList:
+        self,
+        from_partial_bid_matrix_information_with_scenario: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+        from_partial_bid_matrix_information_with_scenario_space: str = DEFAULT_INSTANCE_SPACE,
+        to_bid_matrix: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+        to_bid_matrix_space: str = DEFAULT_INSTANCE_SPACE,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit=DEFAULT_LIMIT_READ,
+    ) -> dm.EdgeList:
         """List underlying bid matrice edges of a partial bid matrix information with scenario.
 
         Args:
@@ -44,7 +45,6 @@ class PartialBidMatrixInformationWithScenariosUnderlyingBidMatricesAPI(EdgeAPI):
         """
         filter_ = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "intermediateBidMatrix"),
-
             from_partial_bid_matrix_information_with_scenario,
             from_partial_bid_matrix_information_with_scenario_space,
             to_bid_matrix,

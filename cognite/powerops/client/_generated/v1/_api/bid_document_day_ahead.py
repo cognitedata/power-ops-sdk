@@ -61,24 +61,24 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         self.partials_edge = BidDocumentDayAheadPartialsAPI(client)
 
     def __call__(
-            self,
-            name: str | list[str] | None = None,
-            name_prefix: str | None = None,
-            workflow_execution_id: str | list[str] | None = None,
-            workflow_execution_id_prefix: str | None = None,
-            min_delivery_date: datetime.date | None = None,
-            max_delivery_date: datetime.date | None = None,
-            min_start_calculation: datetime.datetime | None = None,
-            max_start_calculation: datetime.datetime | None = None,
-            min_end_calculation: datetime.datetime | None = None,
-            max_end_calculation: datetime.datetime | None = None,
-            is_complete: bool | None = None,
-            bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-            total: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_delivery_date: datetime.date | None = None,
+        max_delivery_date: datetime.date | None = None,
+        min_start_calculation: datetime.datetime | None = None,
+        max_start_calculation: datetime.datetime | None = None,
+        min_end_calculation: datetime.datetime | None = None,
+        max_end_calculation: datetime.datetime | None = None,
+        is_complete: bool | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        total: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> BidDocumentDayAheadQueryAPI[BidDocumentDayAheadList]:
         """Query starting at bid document day aheads.
 
@@ -133,7 +133,6 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         )
         builder = DataClassQueryBuilder(BidDocumentDayAheadList)
         return BidDocumentDayAheadQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -257,7 +256,6 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
                                                ]
         )
 
-
     def search(
         self,
         query: str,
@@ -377,8 +375,7 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -405,8 +402,7 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -435,8 +431,7 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
@@ -713,7 +708,7 @@ class BidDocumentDayAheadAPI(NodeAPI[BidDocumentDayAhead, BidDocumentDayAheadWri
         )
 
         if retrieve_connections == "skip":
-                return self._list(
+            return self._list(
                 limit=limit,
                 filter=filter_,
                 sort_by=sort_by,  # type: ignore[arg-type]

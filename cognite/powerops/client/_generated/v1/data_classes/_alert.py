@@ -68,6 +68,7 @@ _ALERT_PROPERTIES_BY_FIELD = {
     "calculation_run": "calculationRun",
 }
 
+
 class AlertGraphQL(GraphQLCore):
     """This represents the reading version of alert, used
     when data is retrieved from CDF using GraphQL.
@@ -88,6 +89,7 @@ class AlertGraphQL(GraphQLCore):
         event_ids: An array of associated alert CDF Events (e.g. SHOP Run events)
         calculation_run: The identifier of the parent Bid Calculation (required so that alerts can be created before the BidDocument)
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "Alert", "1")
     time: Optional[datetime.datetime] = None
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
@@ -109,6 +111,8 @@ class AlertGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -134,7 +138,6 @@ class AlertGraphQL(GraphQLCore):
             event_ids=self.event_ids,
             calculation_run=self.calculation_run,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -175,6 +178,7 @@ class Alert(DomainModel):
         event_ids: An array of associated alert CDF Events (e.g. SHOP Run events)
         calculation_run: The identifier of the parent Bid Calculation (required so that alerts can be created before the BidDocument)
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "Alert", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -189,6 +193,8 @@ class Alert(DomainModel):
     event_ids: Optional[list[int]] = Field(None, alias="eventIds")
     calculation_run: Optional[str] = Field(None, alias="calculationRun")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> AlertWrite:
         """Convert this read version of alert to the writing version."""
         return AlertWrite(
@@ -215,7 +221,6 @@ class Alert(DomainModel):
         )
         return self.as_write()
 
-
 class AlertWrite(DomainModelWrite):
     """This represents the writing version of alert.
 
@@ -235,6 +240,7 @@ class AlertWrite(DomainModelWrite):
         event_ids: An array of associated alert CDF Events (e.g. SHOP Run events)
         calculation_run: The identifier of the parent Bid Calculation (required so that alerts can be created before the BidDocument)
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "Alert", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -248,6 +254,7 @@ class AlertWrite(DomainModelWrite):
     status_code: Optional[int] = Field(None, alias="statusCode")
     event_ids: Optional[list[int]] = Field(None, alias="eventIds")
     calculation_run: Optional[str] = Field(None, alias="calculationRun")
+
 
     def _to_instances_write(
         self,
@@ -288,7 +295,6 @@ class AlertWrite(DomainModelWrite):
         if self.calculation_run is not None or write_none:
             properties["calculationRun"] = self.calculation_run
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -304,8 +310,6 @@ class AlertWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-
-
         return resources
 
 
@@ -320,12 +324,10 @@ class AlertApply(AlertWrite):
         )
         return super().__new__(cls)
 
-
 class AlertList(DomainModelList[Alert]):
     """List of alerts in the read version."""
 
     _INSTANCE = Alert
-
     def as_write(self) -> AlertWriteList:
         """Convert these read versions of alert to the writing versions."""
         return AlertWriteList([node.as_write() for node in self.data])
@@ -346,7 +348,6 @@ class AlertWriteList(DomainModelWriteList[AlertWrite]):
     _INSTANCE = AlertWrite
 
 class AlertApplyList(AlertWriteList): ...
-
 
 
 def _create_alert_filter(

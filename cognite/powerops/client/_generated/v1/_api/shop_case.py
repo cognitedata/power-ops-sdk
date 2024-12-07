@@ -61,16 +61,16 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList, ShopCaseWriteLi
         self.shop_files_edge = ShopCaseShopFilesAPI(client)
 
     def __call__(
-            self,
-            scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-            min_start_time: datetime.datetime | None = None,
-            max_start_time: datetime.datetime | None = None,
-            min_end_time: datetime.datetime | None = None,
-            max_end_time: datetime.datetime | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        min_start_time: datetime.datetime | None = None,
+        max_start_time: datetime.datetime | None = None,
+        min_end_time: datetime.datetime | None = None,
+        max_end_time: datetime.datetime | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> ShopCaseQueryAPI[ShopCaseList]:
         """Query starting at shop cases.
 
@@ -109,7 +109,6 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList, ShopCaseWriteLi
         )
         builder = DataClassQueryBuilder(ShopCaseList)
         return ShopCaseQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -226,10 +225,10 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList, ShopCaseWriteLi
                     "outwards",
                     dm.ViewId("power_ops_core", "ShopFile", "1"),
                 ),
-                                               ],
+                                               ]
+,
             as_child_class=as_child_class
         )
-
 
     def search(
         self,
@@ -316,8 +315,7 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList, ShopCaseWriteLi
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -334,8 +332,7 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList, ShopCaseWriteLi
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -354,8 +351,7 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList, ShopCaseWriteLi
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
@@ -552,7 +548,7 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList, ShopCaseWriteLi
         )
 
         if retrieve_connections == "skip":
-                return self._list(
+            return self._list(
                 limit=limit,
                 filter=filter_,
                 sort_by=sort_by,  # type: ignore[arg-type]

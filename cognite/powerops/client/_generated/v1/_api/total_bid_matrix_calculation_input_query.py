@@ -29,7 +29,6 @@ if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1._api.bid_matrix_query import BidMatrixQueryAPI
 
 
-
 class TotalBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
     _view_id = dm.ViewId("power_ops_core", "TotalBidMatrixCalculationInput", "1")
 
@@ -53,7 +52,6 @@ class TotalBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
-
     def partial_bid_matrices(
         self,
         state: str | list[str] | None = None,
@@ -89,7 +87,6 @@ class TotalBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "BidMatrix"),
-
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )

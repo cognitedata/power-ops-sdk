@@ -75,20 +75,20 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
         self.price_scenarios = PriceAreaInformationPriceScenariosAPI(client, self._view_id)
 
     def __call__(
-            self,
-            name: str | list[str] | None = None,
-            name_prefix: str | None = None,
-            display_name: str | list[str] | None = None,
-            display_name_prefix: str | None = None,
-            min_ordering: int | None = None,
-            max_ordering: int | None = None,
-            asset_type: str | list[str] | None = None,
-            asset_type_prefix: str | None = None,
-            default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
+        default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> PriceAreaInformationQueryAPI[PriceAreaInformationList]:
         """Query starting at price area information.
 
@@ -135,7 +135,6 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
         )
         builder = DataClassQueryBuilder(PriceAreaInformationList)
         return PriceAreaInformationQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -342,8 +341,7 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -366,8 +364,7 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -392,8 +389,7 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
@@ -634,7 +630,7 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
         )
 
         if retrieve_connections == "skip":
-                return self._list(
+            return self._list(
                 limit=limit,
                 filter=filter_,
                 sort_by=sort_by,  # type: ignore[arg-type]

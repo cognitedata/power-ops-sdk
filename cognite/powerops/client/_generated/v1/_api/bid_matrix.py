@@ -56,13 +56,13 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList, BidMatrixWr
 
 
     def __call__(
-            self,
-            state: str | list[str] | None = None,
-            state_prefix: str | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        state: str | list[str] | None = None,
+        state_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> BidMatrixQueryAPI[BidMatrixList]:
         """Query starting at bid matrixes.
 
@@ -95,7 +95,6 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList, BidMatrixWr
         )
         builder = DataClassQueryBuilder(BidMatrixList)
         return BidMatrixQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -273,8 +272,7 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList, BidMatrixWr
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -290,8 +288,7 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList, BidMatrixWr
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -309,8 +306,7 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList, BidMatrixWr
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,

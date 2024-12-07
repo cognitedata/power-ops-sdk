@@ -58,16 +58,16 @@ class BidConfigurationDayAheadAPI(NodeAPI[BidConfigurationDayAhead, BidConfigura
         self.partials_edge = BidConfigurationDayAheadPartialsAPI(client)
 
     def __call__(
-            self,
-            name: str | list[str] | None = None,
-            name_prefix: str | None = None,
-            market_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-            price_area: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-            bid_date_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        market_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        price_area: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_date_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> BidConfigurationDayAheadQueryAPI[BidConfigurationDayAheadList]:
         """Query starting at bid configuration day aheads.
 
@@ -106,7 +106,6 @@ class BidConfigurationDayAheadAPI(NodeAPI[BidConfigurationDayAhead, BidConfigura
         )
         builder = DataClassQueryBuilder(BidConfigurationDayAheadList)
         return BidConfigurationDayAheadQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -223,7 +222,6 @@ class BidConfigurationDayAheadAPI(NodeAPI[BidConfigurationDayAhead, BidConfigura
                                                ]
         )
 
-
     def search(
         self,
         query: str,
@@ -311,8 +309,7 @@ class BidConfigurationDayAheadAPI(NodeAPI[BidConfigurationDayAhead, BidConfigura
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -331,8 +328,7 @@ class BidConfigurationDayAheadAPI(NodeAPI[BidConfigurationDayAhead, BidConfigura
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -353,8 +349,7 @@ class BidConfigurationDayAheadAPI(NodeAPI[BidConfigurationDayAhead, BidConfigura
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
@@ -559,7 +554,7 @@ class BidConfigurationDayAheadAPI(NodeAPI[BidConfigurationDayAhead, BidConfigura
         )
 
         if retrieve_connections == "skip":
-                return self._list(
+            return self._list(
                 limit=limit,
                 filter=filter_,
                 sort_by=sort_by,  # type: ignore[arg-type]

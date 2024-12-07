@@ -55,19 +55,19 @@ class BenchmarkingCalculationInputAPI(NodeAPI[BenchmarkingCalculationInput, Benc
         self.shop_results_edge = BenchmarkingCalculationInputShopResultsAPI(client)
 
     def __call__(
-            self,
-            workflow_execution_id: str | list[str] | None = None,
-            workflow_execution_id_prefix: str | None = None,
-            min_workflow_step: int | None = None,
-            max_workflow_step: int | None = None,
-            function_name: str | list[str] | None = None,
-            function_name_prefix: str | None = None,
-            function_call_id: str | list[str] | None = None,
-            function_call_id_prefix: str | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
+        function_name: str | list[str] | None = None,
+        function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> BenchmarkingCalculationInputQueryAPI[BenchmarkingCalculationInputList]:
         """Query starting at benchmarking calculation inputs.
 
@@ -112,7 +112,6 @@ class BenchmarkingCalculationInputAPI(NodeAPI[BenchmarkingCalculationInput, Benc
         )
         builder = DataClassQueryBuilder(BenchmarkingCalculationInputList)
         return BenchmarkingCalculationInputQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -229,7 +228,6 @@ class BenchmarkingCalculationInputAPI(NodeAPI[BenchmarkingCalculationInput, Benc
                                                ]
         )
 
-
     def search(
         self,
         query: str,
@@ -329,8 +327,7 @@ class BenchmarkingCalculationInputAPI(NodeAPI[BenchmarkingCalculationInput, Benc
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -352,8 +349,7 @@ class BenchmarkingCalculationInputAPI(NodeAPI[BenchmarkingCalculationInput, Benc
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -377,8 +373,7 @@ class BenchmarkingCalculationInputAPI(NodeAPI[BenchmarkingCalculationInput, Benc
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
@@ -610,7 +605,7 @@ class BenchmarkingCalculationInputAPI(NodeAPI[BenchmarkingCalculationInput, Benc
         )
 
         if retrieve_connections == "skip":
-                return self._list(
+            return self._list(
                 limit=limit,
                 filter=filter_,
                 sort_by=sort_by,  # type: ignore[arg-type]

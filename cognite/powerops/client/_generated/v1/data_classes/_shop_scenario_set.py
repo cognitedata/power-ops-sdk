@@ -35,7 +35,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     StringFilter,
 
 )
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._date_specification import DateSpecification, DateSpecificationList, DateSpecificationGraphQL, DateSpecificationWrite, DateSpecificationWriteList
     from cognite.powerops.client._generated.v1.data_classes._shop_scenario import ShopScenario, ShopScenarioList, ShopScenarioGraphQL, ShopScenarioWrite, ShopScenarioWriteList
@@ -62,6 +61,7 @@ _SHOPSCENARIOSET_PROPERTIES_BY_FIELD = {
     "name": "name",
 }
 
+
 class ShopScenarioSetGraphQL(GraphQLCore):
     """This represents the reading version of shop scenario set, used
     when data is retrieved from CDF using GraphQL.
@@ -77,6 +77,7 @@ class ShopScenarioSetGraphQL(GraphQLCore):
         end_specification: TODO description
         scenarios: Configuration of the partial bids that make up the total bid configuration
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopScenarioSet", "1")
     name: Optional[str] = None
     start_specification: Optional[DateSpecificationGraphQL] = Field(default=None, repr=False, alias="startSpecification")
@@ -93,6 +94,8 @@ class ShopScenarioSetGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("start_specification", "end_specification", "scenarios", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -122,9 +125,8 @@ else self.start_specification,
             end_specification=self.end_specification.as_read()
 if isinstance(self.end_specification, GraphQLCore)
 else self.end_specification,
-            scenarios=[scenario.as_read() for scenario in self.scenarios or []],
+            scenarios=[scenario.as_read() for scenario in self.scenarios] if self.scenarios is not None else None,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -141,7 +143,7 @@ else self.start_specification,
             end_specification=self.end_specification.as_write()
 if isinstance(self.end_specification, GraphQLCore)
 else self.end_specification,
-            scenarios=[scenario.as_write() for scenario in self.scenarios or []],
+            scenarios=[scenario.as_write() for scenario in self.scenarios] if self.scenarios is not None else None,
         )
 
 
@@ -159,6 +161,7 @@ class ShopScenarioSet(DomainModel):
         end_specification: TODO description
         scenarios: Configuration of the partial bids that make up the total bid configuration
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopScenarioSet", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -168,6 +171,8 @@ class ShopScenarioSet(DomainModel):
     end_specification: Union[DateSpecification, str, dm.NodeId, None] = Field(default=None, repr=False, alias="endSpecification")
     scenarios: Optional[list[Union[ShopScenario, str, dm.NodeId]]] = Field(default=None, repr=False)
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopScenarioSetWrite:
         """Convert this read version of shop scenario set to the writing version."""
         return ShopScenarioSetWrite(
@@ -181,7 +186,7 @@ else self.start_specification,
             end_specification=self.end_specification.as_write()
 if isinstance(self.end_specification, DomainModel)
 else self.end_specification,
-            scenarios=[scenario.as_write() if isinstance(scenario, DomainModel) else scenario for scenario in self.scenarios or []],
+            scenarios=[scenario.as_write() if isinstance(scenario, DomainModel) else scenario for scenario in self.scenarios] if self.scenarios is not None else None,
         )
 
     def as_apply(self) -> ShopScenarioSetWrite:
@@ -192,7 +197,6 @@ else self.end_specification,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -202,7 +206,6 @@ else self.end_specification,
     ) -> None:
         from ._date_specification import DateSpecification
         from ._shop_scenario import ShopScenario
-
         for instance in instances.values():
             if isinstance(instance.start_specification, (dm.NodeId, str)) and (start_specification := nodes_by_id.get(instance.start_specification)) and isinstance(
                     start_specification, DateSpecification
@@ -245,7 +248,6 @@ else self.end_specification,
 
 
 
-
 class ShopScenarioSetWrite(DomainModelWrite):
     """This represents the writing version of shop scenario set.
 
@@ -260,6 +262,7 @@ class ShopScenarioSetWrite(DomainModelWrite):
         end_specification: TODO description
         scenarios: Configuration of the partial bids that make up the total bid configuration
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopScenarioSet", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -278,6 +281,7 @@ class ShopScenarioSetWrite(DomainModelWrite):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -305,7 +309,6 @@ class ShopScenarioSetWrite(DomainModelWrite):
                 "externalId": self.end_specification if isinstance(self.end_specification, str) else self.end_specification.external_id,
             }
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -320,8 +323,6 @@ class ShopScenarioSetWrite(DomainModelWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         edge_type = dm.DirectRelationReference("power_ops_types", "ShopScenarioSet.scenarios")
         for scenario in self.scenarios or []:
@@ -357,12 +358,10 @@ class ShopScenarioSetApply(ShopScenarioSetWrite):
         )
         return super().__new__(cls)
 
-
 class ShopScenarioSetList(DomainModelList[ShopScenarioSet]):
     """List of shop scenario sets in the read version."""
 
     _INSTANCE = ShopScenarioSet
-
     def as_write(self) -> ShopScenarioSetWriteList:
         """Convert these read versions of shop scenario set to the writing versions."""
         return ShopScenarioSetWriteList([node.as_write() for node in self.data])
@@ -379,19 +378,14 @@ class ShopScenarioSetList(DomainModelList[ShopScenarioSet]):
     @property
     def start_specification(self) -> DateSpecificationList:
         from ._date_specification import DateSpecification, DateSpecificationList
-
         return DateSpecificationList([item.start_specification for item in self.data if isinstance(item.start_specification, DateSpecification)])
-
     @property
     def end_specification(self) -> DateSpecificationList:
         from ._date_specification import DateSpecification, DateSpecificationList
-
         return DateSpecificationList([item.end_specification for item in self.data if isinstance(item.end_specification, DateSpecification)])
-
     @property
     def scenarios(self) -> ShopScenarioList:
         from ._shop_scenario import ShopScenario, ShopScenarioList
-
         return ShopScenarioList([item for items in self.data for item in items.scenarios or [] if isinstance(item, ShopScenario)])
 
 
@@ -399,27 +393,21 @@ class ShopScenarioSetWriteList(DomainModelWriteList[ShopScenarioSetWrite]):
     """List of shop scenario sets in the writing version."""
 
     _INSTANCE = ShopScenarioSetWrite
-
     @property
     def start_specification(self) -> DateSpecificationWriteList:
         from ._date_specification import DateSpecificationWrite, DateSpecificationWriteList
-
         return DateSpecificationWriteList([item.start_specification for item in self.data if isinstance(item.start_specification, DateSpecificationWrite)])
-
     @property
     def end_specification(self) -> DateSpecificationWriteList:
         from ._date_specification import DateSpecificationWrite, DateSpecificationWriteList
-
         return DateSpecificationWriteList([item.end_specification for item in self.data if isinstance(item.end_specification, DateSpecificationWrite)])
-
     @property
     def scenarios(self) -> ShopScenarioWriteList:
         from ._shop_scenario import ShopScenarioWrite, ShopScenarioWriteList
-
         return ShopScenarioWriteList([item for items in self.data for item in items.scenarios or [] if isinstance(item, ShopScenarioWrite)])
 
-class ShopScenarioSetApplyList(ShopScenarioSetWriteList): ...
 
+class ShopScenarioSetApplyList(ShopScenarioSetWriteList): ...
 
 
 def _create_shop_scenario_set_filter(

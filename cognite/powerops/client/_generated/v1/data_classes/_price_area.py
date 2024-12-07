@@ -62,6 +62,7 @@ _PRICEAREA_PROPERTIES_BY_FIELD = {
     "asset_type": "assetType",
 }
 
+
 class PriceAreaGraphQL(GraphQLCore):
     """This represents the reading version of price area, used
     when data is retrieved from CDF using GraphQL.
@@ -77,6 +78,7 @@ class PriceAreaGraphQL(GraphQLCore):
         ordering: The ordering of the asset
         asset_type: The type of the asset
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceArea", "1")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
@@ -93,6 +95,8 @@ class PriceAreaGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -113,7 +117,6 @@ class PriceAreaGraphQL(GraphQLCore):
             ordering=self.ordering,
             asset_type=self.asset_type,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -144,10 +147,13 @@ class PriceArea(PowerAsset):
         ordering: The ordering of the asset
         asset_type: The type of the asset
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceArea", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = None
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> PriceAreaWrite:
         """Convert this read version of price area to the writing version."""
         return PriceAreaWrite(
@@ -169,7 +175,6 @@ class PriceArea(PowerAsset):
         )
         return self.as_write()
 
-
 class PriceAreaWrite(PowerAssetWrite):
     """This represents the writing version of price area.
 
@@ -184,9 +189,11 @@ class PriceAreaWrite(PowerAssetWrite):
         ordering: The ordering of the asset
         asset_type: The type of the asset
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceArea", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
+
 
     def _to_instances_write(
         self,
@@ -212,7 +219,6 @@ class PriceAreaWrite(PowerAssetWrite):
         if self.asset_type is not None or write_none:
             properties["assetType"] = self.asset_type
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -228,8 +234,6 @@ class PriceAreaWrite(PowerAssetWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-
-
         return resources
 
 
@@ -244,12 +248,10 @@ class PriceAreaApply(PriceAreaWrite):
         )
         return super().__new__(cls)
 
-
 class PriceAreaList(DomainModelList[PriceArea]):
     """List of price areas in the read version."""
 
     _INSTANCE = PriceArea
-
     def as_write(self) -> PriceAreaWriteList:
         """Convert these read versions of price area to the writing versions."""
         return PriceAreaWriteList([node.as_write() for node in self.data])
@@ -270,7 +272,6 @@ class PriceAreaWriteList(DomainModelWriteList[PriceAreaWrite]):
     _INSTANCE = PriceAreaWrite
 
 class PriceAreaApplyList(PriceAreaWriteList): ...
-
 
 
 def _create_price_area_filter(

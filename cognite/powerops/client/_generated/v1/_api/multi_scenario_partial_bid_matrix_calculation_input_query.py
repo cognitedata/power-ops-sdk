@@ -30,7 +30,6 @@ if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1._api.price_production_query import PriceProductionQueryAPI
 
 
-
 class MultiScenarioPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
     _view_id = dm.ViewId("power_ops_core", "MultiScenarioPartialBidMatrixCalculationInput", "1")
 
@@ -54,7 +53,6 @@ class MultiScenarioPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainMod
                 max_retrieve_limit=limit,
             )
         )
-
     def price_production(
         self,
         name: str | list[str] | None = None,
@@ -94,7 +92,6 @@ class MultiScenarioPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainMod
         from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "PriceProduction"),
-
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -162,7 +159,6 @@ class MultiScenarioPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainMod
                 result_cls=BidConfigurationDayAhead,
             ),
         )
-
     def _query_append_partial_bid_configuration(self, from_: str) -> None:
         self._builder.append(
             NodeQueryStep(

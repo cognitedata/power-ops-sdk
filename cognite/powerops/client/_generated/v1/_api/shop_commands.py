@@ -52,13 +52,13 @@ class ShopCommandsAPI(NodeAPI[ShopCommands, ShopCommandsWrite, ShopCommandsList,
 
 
     def __call__(
-            self,
-            name: str | list[str] | None = None,
-            name_prefix: str | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> ShopCommandsQueryAPI[ShopCommandsList]:
         """Query starting at shop commands.
 
@@ -91,7 +91,6 @@ class ShopCommandsAPI(NodeAPI[ShopCommands, ShopCommandsWrite, ShopCommandsList,
         )
         builder = DataClassQueryBuilder(ShopCommandsList)
         return ShopCommandsQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -266,8 +265,7 @@ class ShopCommandsAPI(NodeAPI[ShopCommands, ShopCommandsWrite, ShopCommandsList,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -283,8 +281,7 @@ class ShopCommandsAPI(NodeAPI[ShopCommands, ShopCommandsWrite, ShopCommandsList,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -302,8 +299,7 @@ class ShopCommandsAPI(NodeAPI[ShopCommands, ShopCommandsWrite, ShopCommandsList,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,

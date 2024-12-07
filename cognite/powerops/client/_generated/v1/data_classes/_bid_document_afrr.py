@@ -39,7 +39,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     TimestampFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._bid_document import BidDocument, BidDocumentWrite
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._alert import Alert, AlertList, AlertGraphQL, AlertWrite, AlertWriteList
     from cognite.powerops.client._generated.v1.data_classes._bid_row import BidRow, BidRowList, BidRowGraphQL, BidRowWrite, BidRowWriteList
@@ -72,6 +71,7 @@ _BIDDOCUMENTAFRR_PROPERTIES_BY_FIELD = {
     "is_complete": "isComplete",
 }
 
+
 class BidDocumentAFRRGraphQL(GraphQLCore):
     """This represents the reading version of bid document afrr, used
     when data is retrieved from CDF using GraphQL.
@@ -92,6 +92,7 @@ class BidDocumentAFRRGraphQL(GraphQLCore):
         price_area: The price area field.
         bids: An array of BidRows containing the Bid data.
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidDocumentAFRR", "1")
     name: Optional[str] = None
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
@@ -113,6 +114,8 @@ class BidDocumentAFRRGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("alerts", "price_area", "bids", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -141,13 +144,12 @@ class BidDocumentAFRRGraphQL(GraphQLCore):
             start_calculation=self.start_calculation,
             end_calculation=self.end_calculation,
             is_complete=self.is_complete,
-            alerts=[alert.as_read() for alert in self.alerts or []],
+            alerts=[alert.as_read() for alert in self.alerts] if self.alerts is not None else None,
             price_area=self.price_area.as_read()
 if isinstance(self.price_area, GraphQLCore)
 else self.price_area,
-            bids=[bid.as_read() for bid in self.bids or []],
+            bids=[bid.as_read() for bid in self.bids] if self.bids is not None else None,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -163,11 +165,11 @@ else self.price_area,
             start_calculation=self.start_calculation,
             end_calculation=self.end_calculation,
             is_complete=self.is_complete,
-            alerts=[alert.as_write() for alert in self.alerts or []],
+            alerts=[alert.as_write() for alert in self.alerts] if self.alerts is not None else None,
             price_area=self.price_area.as_write()
 if isinstance(self.price_area, GraphQLCore)
 else self.price_area,
-            bids=[bid.as_write() for bid in self.bids or []],
+            bids=[bid.as_write() for bid in self.bids] if self.bids is not None else None,
         )
 
 
@@ -190,12 +192,15 @@ class BidDocumentAFRR(BidDocument):
         price_area: The price area field.
         bids: An array of BidRows containing the Bid data.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidDocumentAFRR", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "AFRRBidDocument")
     price_area: Union[PriceAreaAFRR, str, dm.NodeId, None] = Field(default=None, repr=False, alias="priceArea")
     bids: Optional[list[Union[BidRow, str, dm.NodeId]]] = Field(default=None, repr=False)
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> BidDocumentAFRRWrite:
         """Convert this read version of bid document afrr to the writing version."""
         return BidDocumentAFRRWrite(
@@ -208,11 +213,11 @@ class BidDocumentAFRR(BidDocument):
             start_calculation=self.start_calculation,
             end_calculation=self.end_calculation,
             is_complete=self.is_complete,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
+            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts] if self.alerts is not None else None,
             price_area=self.price_area.as_write()
 if isinstance(self.price_area, DomainModel)
 else self.price_area,
-            bids=[bid.as_write() if isinstance(bid, DomainModel) else bid for bid in self.bids or []],
+            bids=[bid.as_write() if isinstance(bid, DomainModel) else bid for bid in self.bids] if self.bids is not None else None,
         )
 
     def as_apply(self) -> BidDocumentAFRRWrite:
@@ -223,7 +228,6 @@ else self.price_area,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -234,7 +238,6 @@ else self.price_area,
         from ._alert import Alert
         from ._bid_row import BidRow
         from ._price_area_afrr import PriceAreaAFRR
-
         for instance in instances.values():
             if isinstance(instance.price_area, (dm.NodeId, str)) and (price_area := nodes_by_id.get(instance.price_area)) and isinstance(
                     price_area, PriceAreaAFRR
@@ -279,7 +282,6 @@ else self.price_area,
 
 
 
-
 class BidDocumentAFRRWrite(BidDocumentWrite):
     """This represents the writing version of bid document afrr.
 
@@ -299,6 +301,7 @@ class BidDocumentAFRRWrite(BidDocumentWrite):
         price_area: The price area field.
         bids: An array of BidRows containing the Bid data.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidDocumentAFRR", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "AFRRBidDocument")
@@ -314,6 +317,7 @@ class BidDocumentAFRRWrite(BidDocumentWrite):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -350,7 +354,6 @@ class BidDocumentAFRRWrite(BidDocumentWrite):
                 "externalId": self.price_area if isinstance(self.price_area, str) else self.price_area.external_id,
             }
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -365,8 +368,6 @@ class BidDocumentAFRRWrite(BidDocumentWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
@@ -410,12 +411,10 @@ class BidDocumentAFRRApply(BidDocumentAFRRWrite):
         )
         return super().__new__(cls)
 
-
 class BidDocumentAFRRList(DomainModelList[BidDocumentAFRR]):
     """List of bid document afrrs in the read version."""
 
     _INSTANCE = BidDocumentAFRR
-
     def as_write(self) -> BidDocumentAFRRWriteList:
         """Convert these read versions of bid document afrr to the writing versions."""
         return BidDocumentAFRRWriteList([node.as_write() for node in self.data])
@@ -432,19 +431,15 @@ class BidDocumentAFRRList(DomainModelList[BidDocumentAFRR]):
     @property
     def alerts(self) -> AlertList:
         from ._alert import Alert, AlertList
-
         return AlertList([item for items in self.data for item in items.alerts or [] if isinstance(item, Alert)])
 
     @property
     def price_area(self) -> PriceAreaAFRRList:
         from ._price_area_afrr import PriceAreaAFRR, PriceAreaAFRRList
-
         return PriceAreaAFRRList([item.price_area for item in self.data if isinstance(item.price_area, PriceAreaAFRR)])
-
     @property
     def bids(self) -> BidRowList:
         from ._bid_row import BidRow, BidRowList
-
         return BidRowList([item for items in self.data for item in items.bids or [] if isinstance(item, BidRow)])
 
 
@@ -452,27 +447,22 @@ class BidDocumentAFRRWriteList(DomainModelWriteList[BidDocumentAFRRWrite]):
     """List of bid document afrrs in the writing version."""
 
     _INSTANCE = BidDocumentAFRRWrite
-
     @property
     def alerts(self) -> AlertWriteList:
         from ._alert import AlertWrite, AlertWriteList
-
         return AlertWriteList([item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)])
 
     @property
     def price_area(self) -> PriceAreaAFRRWriteList:
         from ._price_area_afrr import PriceAreaAFRRWrite, PriceAreaAFRRWriteList
-
         return PriceAreaAFRRWriteList([item.price_area for item in self.data if isinstance(item.price_area, PriceAreaAFRRWrite)])
-
     @property
     def bids(self) -> BidRowWriteList:
         from ._bid_row import BidRowWrite, BidRowWriteList
-
         return BidRowWriteList([item for items in self.data for item in items.bids or [] if isinstance(item, BidRowWrite)])
 
-class BidDocumentAFRRApplyList(BidDocumentAFRRWriteList): ...
 
+class BidDocumentAFRRApplyList(BidDocumentAFRRWriteList): ...
 
 
 def _create_bid_document_afrr_filter(

@@ -64,13 +64,13 @@ class BidMatrixInformationAPI(NodeAPI[BidMatrixInformation, BidMatrixInformation
         self.linked_time_series = BidMatrixInformationLinkedTimeSeriesAPI(client, self._view_id)
 
     def __call__(
-            self,
-            state: str | list[str] | None = None,
-            state_prefix: str | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        state: str | list[str] | None = None,
+        state_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> BidMatrixInformationQueryAPI[BidMatrixInformationList]:
         """Query starting at bid matrix information.
 
@@ -103,7 +103,6 @@ class BidMatrixInformationAPI(NodeAPI[BidMatrixInformation, BidMatrixInformation
         )
         builder = DataClassQueryBuilder(BidMatrixInformationList)
         return BidMatrixInformationQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -227,10 +226,10 @@ class BidMatrixInformationAPI(NodeAPI[BidMatrixInformation, BidMatrixInformation
                     "outwards",
                     dm.ViewId("power_ops_core", "BidMatrix", "1"),
                 ),
-                                               ],
+                                               ]
+,
             as_child_class=as_child_class
         )
-
 
     def search(
         self,
@@ -307,8 +306,7 @@ class BidMatrixInformationAPI(NodeAPI[BidMatrixInformation, BidMatrixInformation
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -324,8 +322,7 @@ class BidMatrixInformationAPI(NodeAPI[BidMatrixInformation, BidMatrixInformation
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -343,8 +340,7 @@ class BidMatrixInformationAPI(NodeAPI[BidMatrixInformation, BidMatrixInformation
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
@@ -522,7 +518,7 @@ class BidMatrixInformationAPI(NodeAPI[BidMatrixInformation, BidMatrixInformation
         )
 
         if retrieve_connections == "skip":
-                return self._list(
+            return self._list(
                 limit=limit,
                 filter=filter_,
                 sort_by=sort_by,  # type: ignore[arg-type]

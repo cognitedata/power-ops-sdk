@@ -71,6 +71,7 @@ _SHOPFILE_PROPERTIES_BY_FIELD = {
     "is_ascii": "isAscii",
 }
 
+
 class ShopFileGraphQL(GraphQLCore):
     """This represents the reading version of shop file, used
     when data is retrieved from CDF using GraphQL.
@@ -88,6 +89,7 @@ class ShopFileGraphQL(GraphQLCore):
         order: The order in which the file should be loaded into pyshop
         is_ascii: The file extension of the file
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopFile", "1")
     name: Optional[str] = None
     label: Optional[str] = None
@@ -106,6 +108,8 @@ class ShopFileGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -128,7 +132,6 @@ class ShopFileGraphQL(GraphQLCore):
             order=self.order,
             is_ascii=self.is_ascii,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -163,6 +166,7 @@ class ShopFile(DomainModel):
         order: The order in which the file should be loaded into pyshop
         is_ascii: The file extension of the file
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopFile", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -174,6 +178,8 @@ class ShopFile(DomainModel):
     order: int
     is_ascii: bool = Field(alias="isAscii")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopFileWrite:
         """Convert this read version of shop file to the writing version."""
         return ShopFileWrite(
@@ -197,7 +203,6 @@ class ShopFile(DomainModel):
         )
         return self.as_write()
 
-
 class ShopFileWrite(DomainModelWrite):
     """This represents the writing version of shop file.
 
@@ -214,6 +219,7 @@ class ShopFileWrite(DomainModelWrite):
         order: The order in which the file should be loaded into pyshop
         is_ascii: The file extension of the file
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopFile", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -224,6 +230,7 @@ class ShopFileWrite(DomainModelWrite):
     file_reference_prefix: Optional[str] = Field(None, alias="fileReferencePrefix")
     order: int
     is_ascii: bool = Field(alias="isAscii")
+
 
     def _to_instances_write(
         self,
@@ -255,7 +262,6 @@ class ShopFileWrite(DomainModelWrite):
         if self.is_ascii is not None:
             properties["isAscii"] = self.is_ascii
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -270,8 +276,6 @@ class ShopFileWrite(DomainModelWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         if isinstance(self.file_reference, CogniteFileMetadataWrite):
             resources.files.append(self.file_reference)
@@ -290,12 +294,10 @@ class ShopFileApply(ShopFileWrite):
         )
         return super().__new__(cls)
 
-
 class ShopFileList(DomainModelList[ShopFile]):
     """List of shop files in the read version."""
 
     _INSTANCE = ShopFile
-
     def as_write(self) -> ShopFileWriteList:
         """Convert these read versions of shop file to the writing versions."""
         return ShopFileWriteList([node.as_write() for node in self.data])
@@ -316,7 +318,6 @@ class ShopFileWriteList(DomainModelWriteList[ShopFileWrite]):
     _INSTANCE = ShopFileWrite
 
 class ShopFileApplyList(ShopFileWriteList): ...
-
 
 
 def _create_shop_file_filter(

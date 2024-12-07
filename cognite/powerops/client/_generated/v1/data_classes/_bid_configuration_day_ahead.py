@@ -35,7 +35,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     StringFilter,
 
 )
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._date_specification import DateSpecification, DateSpecificationList, DateSpecificationGraphQL, DateSpecificationWrite, DateSpecificationWriteList
     from cognite.powerops.client._generated.v1.data_classes._market_configuration import MarketConfiguration, MarketConfigurationList, MarketConfigurationGraphQL, MarketConfigurationWrite, MarketConfigurationWriteList
@@ -64,6 +63,7 @@ _BIDCONFIGURATIONDAYAHEAD_PROPERTIES_BY_FIELD = {
     "name": "name",
 }
 
+
 class BidConfigurationDayAheadGraphQL(GraphQLCore):
     """This represents the reading version of bid configuration day ahead, used
     when data is retrieved from CDF using GraphQL.
@@ -80,6 +80,7 @@ class BidConfigurationDayAheadGraphQL(GraphQLCore):
         bid_date_specification: TODO description
         partials: Configuration of the partial bids that make up the total bid
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidConfigurationDayAhead", "1")
     name: Optional[str] = None
     market_configuration: Optional[MarketConfigurationGraphQL] = Field(default=None, repr=False, alias="marketConfiguration")
@@ -97,6 +98,8 @@ class BidConfigurationDayAheadGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("market_configuration", "price_area", "bid_date_specification", "partials", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -129,9 +132,8 @@ else self.price_area,
             bid_date_specification=self.bid_date_specification.as_read()
 if isinstance(self.bid_date_specification, GraphQLCore)
 else self.bid_date_specification,
-            partials=[partial.as_read() for partial in self.partials or []],
+            partials=[partial.as_read() for partial in self.partials] if self.partials is not None else None,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -151,7 +153,7 @@ else self.price_area,
             bid_date_specification=self.bid_date_specification.as_write()
 if isinstance(self.bid_date_specification, GraphQLCore)
 else self.bid_date_specification,
-            partials=[partial.as_write() for partial in self.partials or []],
+            partials=[partial.as_write() for partial in self.partials] if self.partials is not None else None,
         )
 
 
@@ -170,6 +172,7 @@ class BidConfigurationDayAhead(DomainModel):
         bid_date_specification: TODO description
         partials: Configuration of the partial bids that make up the total bid
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidConfigurationDayAhead", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -180,6 +183,8 @@ class BidConfigurationDayAhead(DomainModel):
     bid_date_specification: Union[DateSpecification, str, dm.NodeId, None] = Field(default=None, repr=False, alias="bidDateSpecification")
     partials: Optional[list[Union[PartialBidConfiguration, str, dm.NodeId]]] = Field(default=None, repr=False)
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> BidConfigurationDayAheadWrite:
         """Convert this read version of bid configuration day ahead to the writing version."""
         return BidConfigurationDayAheadWrite(
@@ -196,7 +201,7 @@ else self.price_area,
             bid_date_specification=self.bid_date_specification.as_write()
 if isinstance(self.bid_date_specification, DomainModel)
 else self.bid_date_specification,
-            partials=[partial.as_write() if isinstance(partial, DomainModel) else partial for partial in self.partials or []],
+            partials=[partial.as_write() if isinstance(partial, DomainModel) else partial for partial in self.partials] if self.partials is not None else None,
         )
 
     def as_apply(self) -> BidConfigurationDayAheadWrite:
@@ -207,7 +212,6 @@ else self.bid_date_specification,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -219,7 +223,6 @@ else self.bid_date_specification,
         from ._market_configuration import MarketConfiguration
         from ._partial_bid_configuration import PartialBidConfiguration
         from ._price_area_day_ahead import PriceAreaDayAhead
-
         for instance in instances.values():
             if isinstance(instance.market_configuration, (dm.NodeId, str)) and (market_configuration := nodes_by_id.get(instance.market_configuration)) and isinstance(
                     market_configuration, MarketConfiguration
@@ -266,7 +269,6 @@ else self.bid_date_specification,
 
 
 
-
 class BidConfigurationDayAheadWrite(DomainModelWrite):
     """This represents the writing version of bid configuration day ahead.
 
@@ -282,6 +284,7 @@ class BidConfigurationDayAheadWrite(DomainModelWrite):
         bid_date_specification: TODO description
         partials: Configuration of the partial bids that make up the total bid
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidConfigurationDayAhead", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -301,6 +304,7 @@ class BidConfigurationDayAheadWrite(DomainModelWrite):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -334,7 +338,6 @@ class BidConfigurationDayAheadWrite(DomainModelWrite):
                 "externalId": self.bid_date_specification if isinstance(self.bid_date_specification, str) else self.bid_date_specification.external_id,
             }
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -349,8 +352,6 @@ class BidConfigurationDayAheadWrite(DomainModelWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         edge_type = dm.DirectRelationReference("power_ops_types", "BidConfiguration.partials")
         for partial in self.partials or []:
@@ -390,12 +391,10 @@ class BidConfigurationDayAheadApply(BidConfigurationDayAheadWrite):
         )
         return super().__new__(cls)
 
-
 class BidConfigurationDayAheadList(DomainModelList[BidConfigurationDayAhead]):
     """List of bid configuration day aheads in the read version."""
 
     _INSTANCE = BidConfigurationDayAhead
-
     def as_write(self) -> BidConfigurationDayAheadWriteList:
         """Convert these read versions of bid configuration day ahead to the writing versions."""
         return BidConfigurationDayAheadWriteList([node.as_write() for node in self.data])
@@ -412,25 +411,18 @@ class BidConfigurationDayAheadList(DomainModelList[BidConfigurationDayAhead]):
     @property
     def market_configuration(self) -> MarketConfigurationList:
         from ._market_configuration import MarketConfiguration, MarketConfigurationList
-
         return MarketConfigurationList([item.market_configuration for item in self.data if isinstance(item.market_configuration, MarketConfiguration)])
-
     @property
     def price_area(self) -> PriceAreaDayAheadList:
         from ._price_area_day_ahead import PriceAreaDayAhead, PriceAreaDayAheadList
-
         return PriceAreaDayAheadList([item.price_area for item in self.data if isinstance(item.price_area, PriceAreaDayAhead)])
-
     @property
     def bid_date_specification(self) -> DateSpecificationList:
         from ._date_specification import DateSpecification, DateSpecificationList
-
         return DateSpecificationList([item.bid_date_specification for item in self.data if isinstance(item.bid_date_specification, DateSpecification)])
-
     @property
     def partials(self) -> PartialBidConfigurationList:
         from ._partial_bid_configuration import PartialBidConfiguration, PartialBidConfigurationList
-
         return PartialBidConfigurationList([item for items in self.data for item in items.partials or [] if isinstance(item, PartialBidConfiguration)])
 
 
@@ -438,33 +430,25 @@ class BidConfigurationDayAheadWriteList(DomainModelWriteList[BidConfigurationDay
     """List of bid configuration day aheads in the writing version."""
 
     _INSTANCE = BidConfigurationDayAheadWrite
-
     @property
     def market_configuration(self) -> MarketConfigurationWriteList:
         from ._market_configuration import MarketConfigurationWrite, MarketConfigurationWriteList
-
         return MarketConfigurationWriteList([item.market_configuration for item in self.data if isinstance(item.market_configuration, MarketConfigurationWrite)])
-
     @property
     def price_area(self) -> PriceAreaDayAheadWriteList:
         from ._price_area_day_ahead import PriceAreaDayAheadWrite, PriceAreaDayAheadWriteList
-
         return PriceAreaDayAheadWriteList([item.price_area for item in self.data if isinstance(item.price_area, PriceAreaDayAheadWrite)])
-
     @property
     def bid_date_specification(self) -> DateSpecificationWriteList:
         from ._date_specification import DateSpecificationWrite, DateSpecificationWriteList
-
         return DateSpecificationWriteList([item.bid_date_specification for item in self.data if isinstance(item.bid_date_specification, DateSpecificationWrite)])
-
     @property
     def partials(self) -> PartialBidConfigurationWriteList:
         from ._partial_bid_configuration import PartialBidConfigurationWrite, PartialBidConfigurationWriteList
-
         return PartialBidConfigurationWriteList([item for items in self.data for item in items.partials or [] if isinstance(item, PartialBidConfigurationWrite)])
 
-class BidConfigurationDayAheadApplyList(BidConfigurationDayAheadWriteList): ...
 
+class BidConfigurationDayAheadApplyList(BidConfigurationDayAheadWriteList): ...
 
 
 def _create_bid_configuration_day_ahead_filter(

@@ -60,28 +60,28 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList, GeneratorWr
         self.availability_time_series = GeneratorAvailabilityTimeSeriesAPI(client, self._view_id)
 
     def __call__(
-            self,
-            name: str | list[str] | None = None,
-            name_prefix: str | None = None,
-            display_name: str | list[str] | None = None,
-            display_name_prefix: str | None = None,
-            min_ordering: int | None = None,
-            max_ordering: int | None = None,
-            asset_type: str | list[str] | None = None,
-            asset_type_prefix: str | None = None,
-            min_production_min: float | None = None,
-            max_production_min: float | None = None,
-            min_penstock_number: int | None = None,
-            max_penstock_number: int | None = None,
-            min_start_stop_cost: float | None = None,
-            max_start_stop_cost: float | None = None,
-            generator_efficiency_curve: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-            min_production_max: float | None = None,
-            max_production_max: float | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
+        min_production_min: float | None = None,
+        max_production_min: float | None = None,
+        min_penstock_number: int | None = None,
+        max_penstock_number: int | None = None,
+        min_start_stop_cost: float | None = None,
+        max_start_stop_cost: float | None = None,
+        generator_efficiency_curve: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        min_production_max: float | None = None,
+        max_production_max: float | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> GeneratorQueryAPI[GeneratorList]:
         """Query starting at generators.
 
@@ -144,7 +144,6 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList, GeneratorWr
         )
         builder = DataClassQueryBuilder(GeneratorList)
         return GeneratorQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -260,7 +259,6 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList, GeneratorWr
                 ),
                                                ]
         )
-
 
     def search(
         self,
@@ -397,8 +395,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList, GeneratorWr
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -429,8 +426,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList, GeneratorWr
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -463,8 +459,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList, GeneratorWr
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
@@ -777,7 +772,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList, GeneratorWr
         )
 
         if retrieve_connections == "skip":
-                return self._list(
+            return self._list(
                 limit=limit,
                 filter=filter_,
                 sort_by=sort_by,  # type: ignore[arg-type]

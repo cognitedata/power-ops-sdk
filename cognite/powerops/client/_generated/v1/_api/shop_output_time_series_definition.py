@@ -52,22 +52,22 @@ class ShopOutputTimeSeriesDefinitionAPI(NodeAPI[ShopOutputTimeSeriesDefinition, 
 
 
     def __call__(
-            self,
-            name: str | list[str] | None = None,
-            name_prefix: str | None = None,
-            object_type: str | list[str] | None = None,
-            object_type_prefix: str | None = None,
-            object_name: str | list[str] | None = None,
-            object_name_prefix: str | None = None,
-            attribute_name: str | list[str] | None = None,
-            attribute_name_prefix: str | None = None,
-            unit: str | list[str] | None = None,
-            unit_prefix: str | None = None,
-            is_step: bool | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        object_type: str | list[str] | None = None,
+        object_type_prefix: str | None = None,
+        object_name: str | list[str] | None = None,
+        object_name_prefix: str | None = None,
+        attribute_name: str | list[str] | None = None,
+        attribute_name_prefix: str | None = None,
+        unit: str | list[str] | None = None,
+        unit_prefix: str | None = None,
+        is_step: bool | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> ShopOutputTimeSeriesDefinitionQueryAPI[ShopOutputTimeSeriesDefinitionList]:
         """Query starting at shop output time series definitions.
 
@@ -118,7 +118,6 @@ class ShopOutputTimeSeriesDefinitionAPI(NodeAPI[ShopOutputTimeSeriesDefinition, 
         )
         builder = DataClassQueryBuilder(ShopOutputTimeSeriesDefinitionList)
         return ShopOutputTimeSeriesDefinitionQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -329,8 +328,7 @@ class ShopOutputTimeSeriesDefinitionAPI(NodeAPI[ShopOutputTimeSeriesDefinition, 
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -355,8 +353,7 @@ class ShopOutputTimeSeriesDefinitionAPI(NodeAPI[ShopOutputTimeSeriesDefinition, 
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -383,8 +380,7 @@ class ShopOutputTimeSeriesDefinitionAPI(NodeAPI[ShopOutputTimeSeriesDefinition, 
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,

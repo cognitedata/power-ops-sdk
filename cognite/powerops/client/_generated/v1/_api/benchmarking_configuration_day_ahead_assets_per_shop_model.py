@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
 
 from cognite.client import data_modeling as dm
 
@@ -9,15 +10,15 @@ from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INS
 
 class BenchmarkingConfigurationDayAheadAssetsPerShopModelAPI(EdgeAPI):
     def list(
-            self,
-            from_benchmarking_configuration_day_ahead: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-            from_benchmarking_configuration_day_ahead_space: str = DEFAULT_INSTANCE_SPACE,
-            to_shop_model_with_asset: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-            to_shop_model_with_asset_space: str = DEFAULT_INSTANCE_SPACE,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit=DEFAULT_LIMIT_READ,
-    ) ->dm.EdgeList:
+        self,
+        from_benchmarking_configuration_day_ahead: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+        from_benchmarking_configuration_day_ahead_space: str = DEFAULT_INSTANCE_SPACE,
+        to_shop_model_with_asset: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+        to_shop_model_with_asset_space: str = DEFAULT_INSTANCE_SPACE,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit=DEFAULT_LIMIT_READ,
+    ) -> dm.EdgeList:
         """List assets per shop model edges of a benchmarking configuration day ahead.
 
         Args:
@@ -44,7 +45,6 @@ class BenchmarkingConfigurationDayAheadAssetsPerShopModelAPI(EdgeAPI):
         """
         filter_ = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "assetsPerShopModel"),
-
             from_benchmarking_configuration_day_ahead,
             from_benchmarking_configuration_day_ahead_space,
             to_shop_model_with_asset,

@@ -63,6 +63,7 @@ _SHOPOUTPUTTIMESERIESDEFINITION_PROPERTIES_BY_FIELD = {
     "is_step": "isStep",
 }
 
+
 class ShopOutputTimeSeriesDefinitionGraphQL(GraphQLCore):
     """This represents the reading version of shop output time series definition, used
     when data is retrieved from CDF using GraphQL.
@@ -80,6 +81,7 @@ class ShopOutputTimeSeriesDefinitionGraphQL(GraphQLCore):
         unit: The unit of the object
         is_step: The name of the attribute
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopOutputTimeSeriesDefinition", "1")
     name: Optional[str] = None
     object_type: Optional[str] = Field(None, alias="objectType")
@@ -98,6 +100,8 @@ class ShopOutputTimeSeriesDefinitionGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -120,7 +124,6 @@ class ShopOutputTimeSeriesDefinitionGraphQL(GraphQLCore):
             unit=self.unit,
             is_step=self.is_step,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -155,6 +158,7 @@ class ShopOutputTimeSeriesDefinition(DomainModel):
         unit: The unit of the object
         is_step: The name of the attribute
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopOutputTimeSeriesDefinition", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -166,6 +170,8 @@ class ShopOutputTimeSeriesDefinition(DomainModel):
     unit: str
     is_step: Optional[bool] = Field(None, alias="isStep")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopOutputTimeSeriesDefinitionWrite:
         """Convert this read version of shop output time series definition to the writing version."""
         return ShopOutputTimeSeriesDefinitionWrite(
@@ -189,7 +195,6 @@ class ShopOutputTimeSeriesDefinition(DomainModel):
         )
         return self.as_write()
 
-
 class ShopOutputTimeSeriesDefinitionWrite(DomainModelWrite):
     """This represents the writing version of shop output time series definition.
 
@@ -206,6 +211,7 @@ class ShopOutputTimeSeriesDefinitionWrite(DomainModelWrite):
         unit: The unit of the object
         is_step: The name of the attribute
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopOutputTimeSeriesDefinition", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -216,6 +222,7 @@ class ShopOutputTimeSeriesDefinitionWrite(DomainModelWrite):
     attribute_name: str = Field(alias="attributeName")
     unit: str
     is_step: Optional[bool] = Field(True, alias="isStep")
+
 
     def _to_instances_write(
         self,
@@ -247,7 +254,6 @@ class ShopOutputTimeSeriesDefinitionWrite(DomainModelWrite):
         if self.is_step is not None or write_none:
             properties["isStep"] = self.is_step
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -263,8 +269,6 @@ class ShopOutputTimeSeriesDefinitionWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-
-
         return resources
 
 
@@ -279,12 +283,10 @@ class ShopOutputTimeSeriesDefinitionApply(ShopOutputTimeSeriesDefinitionWrite):
         )
         return super().__new__(cls)
 
-
 class ShopOutputTimeSeriesDefinitionList(DomainModelList[ShopOutputTimeSeriesDefinition]):
     """List of shop output time series definitions in the read version."""
 
     _INSTANCE = ShopOutputTimeSeriesDefinition
-
     def as_write(self) -> ShopOutputTimeSeriesDefinitionWriteList:
         """Convert these read versions of shop output time series definition to the writing versions."""
         return ShopOutputTimeSeriesDefinitionWriteList([node.as_write() for node in self.data])
@@ -305,7 +307,6 @@ class ShopOutputTimeSeriesDefinitionWriteList(DomainModelWriteList[ShopOutputTim
     _INSTANCE = ShopOutputTimeSeriesDefinitionWrite
 
 class ShopOutputTimeSeriesDefinitionApplyList(ShopOutputTimeSeriesDefinitionWriteList): ...
-
 
 
 def _create_shop_output_time_series_definition_filter(

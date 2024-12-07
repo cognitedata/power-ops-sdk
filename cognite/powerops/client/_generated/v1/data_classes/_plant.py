@@ -62,6 +62,7 @@ _PLANT_PROPERTIES_BY_FIELD = {
     "asset_type": "assetType",
 }
 
+
 class PlantGraphQL(GraphQLCore):
     """This represents the reading version of plant, used
     when data is retrieved from CDF using GraphQL.
@@ -77,6 +78,7 @@ class PlantGraphQL(GraphQLCore):
         ordering: The ordering of the asset
         asset_type: The type of the asset
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "Plant", "1")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
@@ -93,6 +95,8 @@ class PlantGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -113,7 +117,6 @@ class PlantGraphQL(GraphQLCore):
             ordering=self.ordering,
             asset_type=self.asset_type,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -144,10 +147,13 @@ class Plant(PowerAsset):
         ordering: The ordering of the asset
         asset_type: The type of the asset
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "Plant", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = None
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> PlantWrite:
         """Convert this read version of plant to the writing version."""
         return PlantWrite(
@@ -169,7 +175,6 @@ class Plant(PowerAsset):
         )
         return self.as_write()
 
-
 class PlantWrite(PowerAssetWrite):
     """This represents the writing version of plant.
 
@@ -184,9 +189,11 @@ class PlantWrite(PowerAssetWrite):
         ordering: The ordering of the asset
         asset_type: The type of the asset
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "Plant", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
+
 
     def _to_instances_write(
         self,
@@ -212,7 +219,6 @@ class PlantWrite(PowerAssetWrite):
         if self.asset_type is not None or write_none:
             properties["assetType"] = self.asset_type
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -228,8 +234,6 @@ class PlantWrite(PowerAssetWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-
-
         return resources
 
 
@@ -244,12 +248,10 @@ class PlantApply(PlantWrite):
         )
         return super().__new__(cls)
 
-
 class PlantList(DomainModelList[Plant]):
     """List of plants in the read version."""
 
     _INSTANCE = Plant
-
     def as_write(self) -> PlantWriteList:
         """Convert these read versions of plant to the writing versions."""
         return PlantWriteList([node.as_write() for node in self.data])
@@ -270,7 +272,6 @@ class PlantWriteList(DomainModelWriteList[PlantWrite]):
     _INSTANCE = PlantWrite
 
 class PlantApplyList(PlantWriteList): ...
-
 
 
 def _create_plant_filter(

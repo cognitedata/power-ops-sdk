@@ -36,7 +36,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     IntFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._function_output import FunctionOutput, FunctionOutputWrite
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._alert import Alert, AlertList, AlertGraphQL, AlertWrite, AlertWriteList
     from cognite.powerops.client._generated.v1.data_classes._benchmarking_task_dispatcher_input_day_ahead import BenchmarkingTaskDispatcherInputDayAhead, BenchmarkingTaskDispatcherInputDayAheadList, BenchmarkingTaskDispatcherInputDayAheadGraphQL, BenchmarkingTaskDispatcherInputDayAheadWrite, BenchmarkingTaskDispatcherInputDayAheadWriteList
@@ -67,6 +66,7 @@ _BENCHMARKINGTASKDISPATCHEROUTPUTDAYAHEAD_PROPERTIES_BY_FIELD = {
     "function_call_id": "functionCallId",
 }
 
+
 class BenchmarkingTaskDispatcherOutputDayAheadGraphQL(GraphQLCore):
     """This represents the reading version of benchmarking task dispatcher output day ahead, used
     when data is retrieved from CDF using GraphQL.
@@ -85,6 +85,7 @@ class BenchmarkingTaskDispatcherOutputDayAheadGraphQL(GraphQLCore):
         alerts: An array of calculation level Alerts.
         benchmarking_sub_tasks: An array of input for benchmarking subtasks used for benchmarking value calculations.
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingTaskDispatcherOutputDayAhead", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
@@ -104,6 +105,8 @@ class BenchmarkingTaskDispatcherOutputDayAheadGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("function_input", "alerts", "benchmarking_sub_tasks", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -133,10 +136,9 @@ class BenchmarkingTaskDispatcherOutputDayAheadGraphQL(GraphQLCore):
             function_input=self.function_input.as_read()
 if isinstance(self.function_input, GraphQLCore)
 else self.function_input,
-            alerts=[alert.as_read() for alert in self.alerts or []],
-            benchmarking_sub_tasks=[benchmarking_sub_task.as_read() for benchmarking_sub_task in self.benchmarking_sub_tasks or []],
+            alerts=[alert.as_read() for alert in self.alerts] if self.alerts is not None else None,
+            benchmarking_sub_tasks=[benchmarking_sub_task.as_read() for benchmarking_sub_task in self.benchmarking_sub_tasks] if self.benchmarking_sub_tasks is not None else None,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -153,8 +155,8 @@ else self.function_input,
             function_input=self.function_input.as_write()
 if isinstance(self.function_input, GraphQLCore)
 else self.function_input,
-            alerts=[alert.as_write() for alert in self.alerts or []],
-            benchmarking_sub_tasks=[benchmarking_sub_task.as_write() for benchmarking_sub_task in self.benchmarking_sub_tasks or []],
+            alerts=[alert.as_write() for alert in self.alerts] if self.alerts is not None else None,
+            benchmarking_sub_tasks=[benchmarking_sub_task.as_write() for benchmarking_sub_task in self.benchmarking_sub_tasks] if self.benchmarking_sub_tasks is not None else None,
         )
 
 
@@ -175,11 +177,14 @@ class BenchmarkingTaskDispatcherOutputDayAhead(FunctionOutput):
         alerts: An array of calculation level Alerts.
         benchmarking_sub_tasks: An array of input for benchmarking subtasks used for benchmarking value calculations.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingTaskDispatcherOutputDayAhead", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingTaskDispatcherOutputDayAhead")
     benchmarking_sub_tasks: Optional[list[Union[FunctionInput, str, dm.NodeId]]] = Field(default=None, repr=False, alias="benchmarkingSubTasks")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> BenchmarkingTaskDispatcherOutputDayAheadWrite:
         """Convert this read version of benchmarking task dispatcher output day ahead to the writing version."""
         return BenchmarkingTaskDispatcherOutputDayAheadWrite(
@@ -193,8 +198,8 @@ class BenchmarkingTaskDispatcherOutputDayAhead(FunctionOutput):
             function_input=self.function_input.as_write()
 if isinstance(self.function_input, DomainModel)
 else self.function_input,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            benchmarking_sub_tasks=[benchmarking_sub_task.as_write() if isinstance(benchmarking_sub_task, DomainModel) else benchmarking_sub_task for benchmarking_sub_task in self.benchmarking_sub_tasks or []],
+            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts] if self.alerts is not None else None,
+            benchmarking_sub_tasks=[benchmarking_sub_task.as_write() if isinstance(benchmarking_sub_task, DomainModel) else benchmarking_sub_task for benchmarking_sub_task in self.benchmarking_sub_tasks] if self.benchmarking_sub_tasks is not None else None,
         )
 
     def as_apply(self) -> BenchmarkingTaskDispatcherOutputDayAheadWrite:
@@ -205,7 +210,6 @@ else self.function_input,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -216,7 +220,6 @@ else self.function_input,
         from ._alert import Alert
         from ._benchmarking_task_dispatcher_input_day_ahead import BenchmarkingTaskDispatcherInputDayAhead
         from ._function_input import FunctionInput
-
         for instance in instances.values():
             if isinstance(instance.function_input, (dm.NodeId, str)) and (function_input := nodes_by_id.get(instance.function_input)) and isinstance(
                     function_input, BenchmarkingTaskDispatcherInputDayAhead
@@ -261,7 +264,6 @@ else self.function_input,
 
 
 
-
 class BenchmarkingTaskDispatcherOutputDayAheadWrite(FunctionOutputWrite):
     """This represents the writing version of benchmarking task dispatcher output day ahead.
 
@@ -279,6 +281,7 @@ class BenchmarkingTaskDispatcherOutputDayAheadWrite(FunctionOutputWrite):
         alerts: An array of calculation level Alerts.
         benchmarking_sub_tasks: An array of input for benchmarking subtasks used for benchmarking value calculations.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingTaskDispatcherOutputDayAhead", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingTaskDispatcherOutputDayAhead")
@@ -293,6 +296,7 @@ class BenchmarkingTaskDispatcherOutputDayAheadWrite(FunctionOutputWrite):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -323,7 +327,6 @@ class BenchmarkingTaskDispatcherOutputDayAheadWrite(FunctionOutputWrite):
                 "externalId": self.function_input if isinstance(self.function_input, str) else self.function_input.external_id,
             }
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -338,8 +341,6 @@ class BenchmarkingTaskDispatcherOutputDayAheadWrite(FunctionOutputWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
@@ -383,12 +384,10 @@ class BenchmarkingTaskDispatcherOutputDayAheadApply(BenchmarkingTaskDispatcherOu
         )
         return super().__new__(cls)
 
-
 class BenchmarkingTaskDispatcherOutputDayAheadList(DomainModelList[BenchmarkingTaskDispatcherOutputDayAhead]):
     """List of benchmarking task dispatcher output day aheads in the read version."""
 
     _INSTANCE = BenchmarkingTaskDispatcherOutputDayAhead
-
     def as_write(self) -> BenchmarkingTaskDispatcherOutputDayAheadWriteList:
         """Convert these read versions of benchmarking task dispatcher output day ahead to the writing versions."""
         return BenchmarkingTaskDispatcherOutputDayAheadWriteList([node.as_write() for node in self.data])
@@ -405,19 +404,15 @@ class BenchmarkingTaskDispatcherOutputDayAheadList(DomainModelList[BenchmarkingT
     @property
     def function_input(self) -> BenchmarkingTaskDispatcherInputDayAheadList:
         from ._benchmarking_task_dispatcher_input_day_ahead import BenchmarkingTaskDispatcherInputDayAhead, BenchmarkingTaskDispatcherInputDayAheadList
-
         return BenchmarkingTaskDispatcherInputDayAheadList([item.function_input for item in self.data if isinstance(item.function_input, BenchmarkingTaskDispatcherInputDayAhead)])
-
     @property
     def alerts(self) -> AlertList:
         from ._alert import Alert, AlertList
-
         return AlertList([item for items in self.data for item in items.alerts or [] if isinstance(item, Alert)])
 
     @property
     def benchmarking_sub_tasks(self) -> FunctionInputList:
         from ._function_input import FunctionInput, FunctionInputList
-
         return FunctionInputList([item for items in self.data for item in items.benchmarking_sub_tasks or [] if isinstance(item, FunctionInput)])
 
 
@@ -425,27 +420,22 @@ class BenchmarkingTaskDispatcherOutputDayAheadWriteList(DomainModelWriteList[Ben
     """List of benchmarking task dispatcher output day aheads in the writing version."""
 
     _INSTANCE = BenchmarkingTaskDispatcherOutputDayAheadWrite
-
     @property
     def function_input(self) -> BenchmarkingTaskDispatcherInputDayAheadWriteList:
         from ._benchmarking_task_dispatcher_input_day_ahead import BenchmarkingTaskDispatcherInputDayAheadWrite, BenchmarkingTaskDispatcherInputDayAheadWriteList
-
         return BenchmarkingTaskDispatcherInputDayAheadWriteList([item.function_input for item in self.data if isinstance(item.function_input, BenchmarkingTaskDispatcherInputDayAheadWrite)])
-
     @property
     def alerts(self) -> AlertWriteList:
         from ._alert import AlertWrite, AlertWriteList
-
         return AlertWriteList([item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)])
 
     @property
     def benchmarking_sub_tasks(self) -> FunctionInputWriteList:
         from ._function_input import FunctionInputWrite, FunctionInputWriteList
-
         return FunctionInputWriteList([item for items in self.data for item in items.benchmarking_sub_tasks or [] if isinstance(item, FunctionInputWrite)])
 
-class BenchmarkingTaskDispatcherOutputDayAheadApplyList(BenchmarkingTaskDispatcherOutputDayAheadWriteList): ...
 
+class BenchmarkingTaskDispatcherOutputDayAheadApplyList(BenchmarkingTaskDispatcherOutputDayAheadWriteList): ...
 
 
 def _create_benchmarking_task_dispatcher_output_day_ahead_filter(

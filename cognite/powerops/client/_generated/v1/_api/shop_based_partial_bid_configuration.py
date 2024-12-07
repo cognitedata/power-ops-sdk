@@ -54,18 +54,18 @@ class ShopBasedPartialBidConfigurationAPI(NodeAPI[ShopBasedPartialBidConfigurati
 
 
     def __call__(
-            self,
-            name: str | list[str] | None = None,
-            name_prefix: str | None = None,
-            method: str | list[str] | None = None,
-            method_prefix: str | None = None,
-            power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-            add_steps: bool | None = None,
-            scenario_set: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        method: str | list[str] | None = None,
+        method_prefix: str | None = None,
+        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        add_steps: bool | None = None,
+        scenario_set: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> ShopBasedPartialBidConfigurationQueryAPI[ShopBasedPartialBidConfigurationList]:
         """Query starting at shop based partial bid configurations.
 
@@ -108,7 +108,6 @@ class ShopBasedPartialBidConfigurationAPI(NodeAPI[ShopBasedPartialBidConfigurati
         )
         builder = DataClassQueryBuilder(ShopBasedPartialBidConfigurationList)
         return ShopBasedPartialBidConfigurationQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -307,8 +306,7 @@ class ShopBasedPartialBidConfigurationAPI(NodeAPI[ShopBasedPartialBidConfigurati
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -329,8 +327,7 @@ class ShopBasedPartialBidConfigurationAPI(NodeAPI[ShopBasedPartialBidConfigurati
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -353,8 +350,7 @@ class ShopBasedPartialBidConfigurationAPI(NodeAPI[ShopBasedPartialBidConfigurati
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
@@ -577,7 +573,7 @@ class ShopBasedPartialBidConfigurationAPI(NodeAPI[ShopBasedPartialBidConfigurati
         )
 
         if retrieve_connections == "skip":
-                return self._list(
+            return self._list(
                 limit=limit,
                 filter=filter_,
                 sort_by=sort_by,  # type: ignore[arg-type]

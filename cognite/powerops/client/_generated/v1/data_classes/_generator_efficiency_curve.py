@@ -43,7 +43,6 @@ __all__ = [
     "GeneratorEfficiencyCurveWriteList",
     "GeneratorEfficiencyCurveApplyList",
     "GeneratorEfficiencyCurveFields",
-
     "GeneratorEfficiencyCurveGraphQL",
 ]
 
@@ -56,6 +55,7 @@ _GENERATOREFFICIENCYCURVE_PROPERTIES_BY_FIELD = {
     "power": "power",
     "efficiency": "efficiency",
 }
+
 
 class GeneratorEfficiencyCurveGraphQL(GraphQLCore):
     """This represents the reading version of generator efficiency curve, used
@@ -70,6 +70,7 @@ class GeneratorEfficiencyCurveGraphQL(GraphQLCore):
         power: The generator power values
         efficiency: The generator efficiency values
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "GeneratorEfficiencyCurve", "1")
     power: Optional[list[float]] = None
     efficiency: Optional[list[float]] = None
@@ -84,6 +85,8 @@ class GeneratorEfficiencyCurveGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -102,7 +105,6 @@ class GeneratorEfficiencyCurveGraphQL(GraphQLCore):
             power=self.power,
             efficiency=self.efficiency,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -129,6 +131,7 @@ class GeneratorEfficiencyCurve(DomainModel):
         power: The generator power values
         efficiency: The generator efficiency values
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "GeneratorEfficiencyCurve", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -136,6 +139,8 @@ class GeneratorEfficiencyCurve(DomainModel):
     power: list[float]
     efficiency: list[float]
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> GeneratorEfficiencyCurveWrite:
         """Convert this read version of generator efficiency curve to the writing version."""
         return GeneratorEfficiencyCurveWrite(
@@ -155,7 +160,6 @@ class GeneratorEfficiencyCurve(DomainModel):
         )
         return self.as_write()
 
-
 class GeneratorEfficiencyCurveWrite(DomainModelWrite):
     """This represents the writing version of generator efficiency curve.
 
@@ -168,12 +172,14 @@ class GeneratorEfficiencyCurveWrite(DomainModelWrite):
         power: The generator power values
         efficiency: The generator efficiency values
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "GeneratorEfficiencyCurve", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "GeneratorEfficiencyCurve")
     power: list[float]
     efficiency: list[float]
+
 
     def _to_instances_write(
         self,
@@ -193,7 +199,6 @@ class GeneratorEfficiencyCurveWrite(DomainModelWrite):
         if self.efficiency is not None:
             properties["efficiency"] = self.efficiency
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -209,8 +214,6 @@ class GeneratorEfficiencyCurveWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-
-
         return resources
 
 
@@ -225,12 +228,10 @@ class GeneratorEfficiencyCurveApply(GeneratorEfficiencyCurveWrite):
         )
         return super().__new__(cls)
 
-
 class GeneratorEfficiencyCurveList(DomainModelList[GeneratorEfficiencyCurve]):
     """List of generator efficiency curves in the read version."""
 
     _INSTANCE = GeneratorEfficiencyCurve
-
     def as_write(self) -> GeneratorEfficiencyCurveWriteList:
         """Convert these read versions of generator efficiency curve to the writing versions."""
         return GeneratorEfficiencyCurveWriteList([node.as_write() for node in self.data])
@@ -251,7 +252,6 @@ class GeneratorEfficiencyCurveWriteList(DomainModelWriteList[GeneratorEfficiency
     _INSTANCE = GeneratorEfficiencyCurveWrite
 
 class GeneratorEfficiencyCurveApplyList(GeneratorEfficiencyCurveWriteList): ...
-
 
 
 def _create_generator_efficiency_curve_filter(

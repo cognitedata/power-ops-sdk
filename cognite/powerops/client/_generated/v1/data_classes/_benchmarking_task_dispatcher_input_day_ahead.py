@@ -38,7 +38,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     TimestampFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._function_input import FunctionInput, FunctionInputWrite
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._benchmarking_configuration_day_ahead import BenchmarkingConfigurationDayAhead, BenchmarkingConfigurationDayAheadList, BenchmarkingConfigurationDayAheadGraphQL, BenchmarkingConfigurationDayAheadWrite, BenchmarkingConfigurationDayAheadWriteList
 
@@ -68,6 +67,7 @@ _BENCHMARKINGTASKDISPATCHERINPUTDAYAHEAD_PROPERTIES_BY_FIELD = {
     "delivery_date": "deliveryDate",
 }
 
+
 class BenchmarkingTaskDispatcherInputDayAheadGraphQL(GraphQLCore):
     """This represents the reading version of benchmarking task dispatcher input day ahead, used
     when data is retrieved from CDF using GraphQL.
@@ -85,6 +85,7 @@ class BenchmarkingTaskDispatcherInputDayAheadGraphQL(GraphQLCore):
         benchmarking_config: The benchmarking config field.
         delivery_date: The timestamp for the delivery date
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingTaskDispatcherInputDayAhead", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
@@ -103,6 +104,8 @@ class BenchmarkingTaskDispatcherInputDayAheadGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("benchmarking_config", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -134,7 +137,6 @@ if isinstance(self.benchmarking_config, GraphQLCore)
 else self.benchmarking_config,
             delivery_date=self.delivery_date,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -171,12 +173,15 @@ class BenchmarkingTaskDispatcherInputDayAhead(FunctionInput):
         benchmarking_config: The benchmarking config field.
         delivery_date: The timestamp for the delivery date
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingTaskDispatcherInputDayAhead", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingTaskDispatcherInputDayAhead")
     benchmarking_config: Union[BenchmarkingConfigurationDayAhead, str, dm.NodeId, None] = Field(default=None, repr=False, alias="benchmarkingConfig")
     delivery_date: Optional[datetime.datetime] = Field(None, alias="deliveryDate")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> BenchmarkingTaskDispatcherInputDayAheadWrite:
         """Convert this read version of benchmarking task dispatcher input day ahead to the writing version."""
         return BenchmarkingTaskDispatcherInputDayAheadWrite(
@@ -201,7 +206,6 @@ else self.benchmarking_config,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -210,13 +214,11 @@ else self.benchmarking_config,
         edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
     ) -> None:
         from ._benchmarking_configuration_day_ahead import BenchmarkingConfigurationDayAhead
-
         for instance in instances.values():
             if isinstance(instance.benchmarking_config, (dm.NodeId, str)) and (benchmarking_config := nodes_by_id.get(instance.benchmarking_config)) and isinstance(
                     benchmarking_config, BenchmarkingConfigurationDayAhead
             ):
                 instance.benchmarking_config = benchmarking_config
-
 
 
 class BenchmarkingTaskDispatcherInputDayAheadWrite(FunctionInputWrite):
@@ -235,6 +237,7 @@ class BenchmarkingTaskDispatcherInputDayAheadWrite(FunctionInputWrite):
         benchmarking_config: The benchmarking config field.
         delivery_date: The timestamp for the delivery date
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingTaskDispatcherInputDayAhead", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingTaskDispatcherInputDayAhead")
@@ -250,6 +253,7 @@ class BenchmarkingTaskDispatcherInputDayAheadWrite(FunctionInputWrite):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -283,7 +287,6 @@ class BenchmarkingTaskDispatcherInputDayAheadWrite(FunctionInputWrite):
         if self.delivery_date is not None or write_none:
             properties["deliveryDate"] = self.delivery_date.isoformat(timespec="milliseconds") if self.delivery_date else None
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -298,8 +301,6 @@ class BenchmarkingTaskDispatcherInputDayAheadWrite(FunctionInputWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         if isinstance(self.benchmarking_config, DomainModelWrite):
             other_resources = self.benchmarking_config._to_instances_write(cache)
@@ -319,12 +320,10 @@ class BenchmarkingTaskDispatcherInputDayAheadApply(BenchmarkingTaskDispatcherInp
         )
         return super().__new__(cls)
 
-
 class BenchmarkingTaskDispatcherInputDayAheadList(DomainModelList[BenchmarkingTaskDispatcherInputDayAhead]):
     """List of benchmarking task dispatcher input day aheads in the read version."""
 
     _INSTANCE = BenchmarkingTaskDispatcherInputDayAhead
-
     def as_write(self) -> BenchmarkingTaskDispatcherInputDayAheadWriteList:
         """Convert these read versions of benchmarking task dispatcher input day ahead to the writing versions."""
         return BenchmarkingTaskDispatcherInputDayAheadWriteList([node.as_write() for node in self.data])
@@ -341,23 +340,18 @@ class BenchmarkingTaskDispatcherInputDayAheadList(DomainModelList[BenchmarkingTa
     @property
     def benchmarking_config(self) -> BenchmarkingConfigurationDayAheadList:
         from ._benchmarking_configuration_day_ahead import BenchmarkingConfigurationDayAhead, BenchmarkingConfigurationDayAheadList
-
         return BenchmarkingConfigurationDayAheadList([item.benchmarking_config for item in self.data if isinstance(item.benchmarking_config, BenchmarkingConfigurationDayAhead)])
-
 
 class BenchmarkingTaskDispatcherInputDayAheadWriteList(DomainModelWriteList[BenchmarkingTaskDispatcherInputDayAheadWrite]):
     """List of benchmarking task dispatcher input day aheads in the writing version."""
 
     _INSTANCE = BenchmarkingTaskDispatcherInputDayAheadWrite
-
     @property
     def benchmarking_config(self) -> BenchmarkingConfigurationDayAheadWriteList:
         from ._benchmarking_configuration_day_ahead import BenchmarkingConfigurationDayAheadWrite, BenchmarkingConfigurationDayAheadWriteList
-
         return BenchmarkingConfigurationDayAheadWriteList([item.benchmarking_config for item in self.data if isinstance(item.benchmarking_config, BenchmarkingConfigurationDayAheadWrite)])
 
 class BenchmarkingTaskDispatcherInputDayAheadApplyList(BenchmarkingTaskDispatcherInputDayAheadWriteList): ...
-
 
 
 def _create_benchmarking_task_dispatcher_input_day_ahead_filter(

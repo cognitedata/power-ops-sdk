@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
 
 from cognite.client import data_modeling as dm
 
@@ -9,15 +10,15 @@ from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INS
 
 class MultiScenarioPartialBidMatrixCalculationInputPriceProductionAPI(EdgeAPI):
     def list(
-            self,
-            from_multi_scenario_partial_bid_matrix_calculation_input: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-            from_multi_scenario_partial_bid_matrix_calculation_input_space: str = DEFAULT_INSTANCE_SPACE,
-            to_price_production: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-            to_price_production_space: str = DEFAULT_INSTANCE_SPACE,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit=DEFAULT_LIMIT_READ,
-    ) ->dm.EdgeList:
+        self,
+        from_multi_scenario_partial_bid_matrix_calculation_input: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+        from_multi_scenario_partial_bid_matrix_calculation_input_space: str = DEFAULT_INSTANCE_SPACE,
+        to_price_production: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+        to_price_production_space: str = DEFAULT_INSTANCE_SPACE,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit=DEFAULT_LIMIT_READ,
+    ) -> dm.EdgeList:
         """List price production edges of a multi scenario partial bid matrix calculation input.
 
         Args:
@@ -44,7 +45,6 @@ class MultiScenarioPartialBidMatrixCalculationInputPriceProductionAPI(EdgeAPI):
         """
         filter_ = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "PriceProduction"),
-
             from_multi_scenario_partial_bid_matrix_calculation_input,
             from_multi_scenario_partial_bid_matrix_calculation_input_space,
             to_price_production,

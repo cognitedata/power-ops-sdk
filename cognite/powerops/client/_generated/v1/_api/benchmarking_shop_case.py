@@ -57,21 +57,21 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         self.shop_files_edge = BenchmarkingShopCaseShopFilesAPI(client)
 
     def __call__(
-            self,
-            scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-            min_start_time: datetime.datetime | None = None,
-            max_start_time: datetime.datetime | None = None,
-            min_end_time: datetime.datetime | None = None,
-            max_end_time: datetime.datetime | None = None,
-            bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-            min_delivery_date: datetime.date | None = None,
-            max_delivery_date: datetime.date | None = None,
-            min_bid_generated: datetime.datetime | None = None,
-            max_bid_generated: datetime.datetime | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        min_start_time: datetime.datetime | None = None,
+        max_start_time: datetime.datetime | None = None,
+        min_end_time: datetime.datetime | None = None,
+        max_end_time: datetime.datetime | None = None,
+        bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        min_delivery_date: datetime.date | None = None,
+        max_delivery_date: datetime.date | None = None,
+        min_bid_generated: datetime.datetime | None = None,
+        max_bid_generated: datetime.datetime | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> BenchmarkingShopCaseQueryAPI[BenchmarkingShopCaseList]:
         """Query starting at benchmarking shop cases.
 
@@ -120,7 +120,6 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         )
         builder = DataClassQueryBuilder(BenchmarkingShopCaseList)
         return BenchmarkingShopCaseQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -237,7 +236,6 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
                                                ]
         )
 
-
     def search(
         self,
         query: str,
@@ -343,8 +341,7 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -366,8 +363,7 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -391,8 +387,7 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
@@ -634,7 +629,7 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         )
 
         if retrieve_connections == "skip":
-                return self._list(
+            return self._list(
                 limit=limit,
                 filter=filter_,
                 sort_by=sort_by,  # type: ignore[arg-type]

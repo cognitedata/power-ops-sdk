@@ -33,7 +33,6 @@ if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1._api.bid_matrix_query import BidMatrixQueryAPI
 
 
-
 class BidMatrixInformationQueryAPI(QueryAPI[T_DomainModelList]):
     _view_id = dm.ViewId("power_ops_core", "BidMatrixInformation", "1")
 
@@ -57,7 +56,6 @@ class BidMatrixInformationQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
-
     def alerts(
         self,
         min_time: datetime.datetime | None = None,
@@ -119,7 +117,6 @@ class BidMatrixInformationQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "calculationIssue"),
-
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -160,7 +157,6 @@ class BidMatrixInformationQueryAPI(QueryAPI[T_DomainModelList]):
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         return AlertQueryAPI(self._client, self._builder, node_filer, limit)
-
     def underlying_bid_matrices(
         self,
         state: str | list[str] | None = None,
@@ -194,7 +190,6 @@ class BidMatrixInformationQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "intermediateBidMatrix"),
-
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )

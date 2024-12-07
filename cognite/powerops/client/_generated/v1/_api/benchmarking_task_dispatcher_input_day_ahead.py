@@ -54,22 +54,22 @@ class BenchmarkingTaskDispatcherInputDayAheadAPI(NodeAPI[BenchmarkingTaskDispatc
 
 
     def __call__(
-            self,
-            workflow_execution_id: str | list[str] | None = None,
-            workflow_execution_id_prefix: str | None = None,
-            min_workflow_step: int | None = None,
-            max_workflow_step: int | None = None,
-            function_name: str | list[str] | None = None,
-            function_name_prefix: str | None = None,
-            function_call_id: str | list[str] | None = None,
-            function_call_id_prefix: str | None = None,
-            benchmarking_config: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-            min_delivery_date: datetime.datetime | None = None,
-            max_delivery_date: datetime.datetime | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
+        function_name: str | list[str] | None = None,
+        function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
+        benchmarking_config: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        min_delivery_date: datetime.datetime | None = None,
+        max_delivery_date: datetime.datetime | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> BenchmarkingTaskDispatcherInputDayAheadQueryAPI[BenchmarkingTaskDispatcherInputDayAheadList]:
         """Query starting at benchmarking task dispatcher input day aheads.
 
@@ -120,7 +120,6 @@ class BenchmarkingTaskDispatcherInputDayAheadAPI(NodeAPI[BenchmarkingTaskDispatc
         )
         builder = DataClassQueryBuilder(BenchmarkingTaskDispatcherInputDayAheadList)
         return BenchmarkingTaskDispatcherInputDayAheadQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -335,8 +334,7 @@ class BenchmarkingTaskDispatcherInputDayAheadAPI(NodeAPI[BenchmarkingTaskDispatc
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -361,8 +359,7 @@ class BenchmarkingTaskDispatcherInputDayAheadAPI(NodeAPI[BenchmarkingTaskDispatc
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -389,8 +386,7 @@ class BenchmarkingTaskDispatcherInputDayAheadAPI(NodeAPI[BenchmarkingTaskDispatc
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
@@ -649,7 +645,7 @@ class BenchmarkingTaskDispatcherInputDayAheadAPI(NodeAPI[BenchmarkingTaskDispatc
         )
 
         if retrieve_connections == "skip":
-                return self._list(
+            return self._list(
                 limit=limit,
                 filter=filter_,
                 sort_by=sort_by,  # type: ignore[arg-type]

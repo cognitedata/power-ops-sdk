@@ -36,7 +36,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     IntFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._function_input import FunctionInput, FunctionInputWrite
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._shop_case import ShopCase, ShopCaseList, ShopCaseGraphQL, ShopCaseWrite, ShopCaseWriteList
     from cognite.powerops.client._generated.v1.data_classes._shop_preprocessor_input import ShopPreprocessorInput, ShopPreprocessorInputList, ShopPreprocessorInputGraphQL, ShopPreprocessorInputWrite, ShopPreprocessorInputWriteList
@@ -67,6 +66,7 @@ _SHOPTRIGGERINPUT_PROPERTIES_BY_FIELD = {
     "cog_shop_tag": "cogShopTag",
 }
 
+
 class ShopTriggerInputGraphQL(GraphQLCore):
     """This represents the reading version of shop trigger input, used
     when data is retrieved from CDF using GraphQL.
@@ -85,6 +85,7 @@ class ShopTriggerInputGraphQL(GraphQLCore):
         preprocessor_input: The preprocessor input to the shop run
         case: The SHOP case (with all details like model, scenario, and time series)
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopTriggerInput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
@@ -104,6 +105,8 @@ class ShopTriggerInputGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("preprocessor_input", "case", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -138,7 +141,6 @@ else self.preprocessor_input,
 if isinstance(self.case, GraphQLCore)
 else self.case,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -179,6 +181,7 @@ class ShopTriggerInput(FunctionInput):
         preprocessor_input: The preprocessor input to the shop run
         case: The SHOP case (with all details like model, scenario, and time series)
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopTriggerInput", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopTriggerInput")
@@ -186,6 +189,8 @@ class ShopTriggerInput(FunctionInput):
     preprocessor_input: Union[ShopPreprocessorInput, str, dm.NodeId, None] = Field(default=None, repr=False, alias="preprocessorInput")
     case: Union[ShopCase, str, dm.NodeId, None] = Field(default=None, repr=False)
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopTriggerInputWrite:
         """Convert this read version of shop trigger input to the writing version."""
         return ShopTriggerInputWrite(
@@ -213,7 +218,6 @@ else self.case,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -223,7 +227,6 @@ else self.case,
     ) -> None:
         from ._shop_case import ShopCase
         from ._shop_preprocessor_input import ShopPreprocessorInput
-
         for instance in instances.values():
             if isinstance(instance.preprocessor_input, (dm.NodeId, str)) and (preprocessor_input := nodes_by_id.get(instance.preprocessor_input)) and isinstance(
                     preprocessor_input, ShopPreprocessorInput
@@ -233,7 +236,6 @@ else self.case,
                     case, ShopCase
             ):
                 instance.case = case
-
 
 
 class ShopTriggerInputWrite(FunctionInputWrite):
@@ -253,6 +255,7 @@ class ShopTriggerInputWrite(FunctionInputWrite):
         preprocessor_input: The preprocessor input to the shop run
         case: The SHOP case (with all details like model, scenario, and time series)
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopTriggerInput", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "ShopTriggerInput")
@@ -269,6 +272,7 @@ class ShopTriggerInputWrite(FunctionInputWrite):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -308,7 +312,6 @@ class ShopTriggerInputWrite(FunctionInputWrite):
                 "externalId": self.case if isinstance(self.case, str) else self.case.external_id,
             }
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -323,8 +326,6 @@ class ShopTriggerInputWrite(FunctionInputWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         if isinstance(self.preprocessor_input, DomainModelWrite):
             other_resources = self.preprocessor_input._to_instances_write(cache)
@@ -348,12 +349,10 @@ class ShopTriggerInputApply(ShopTriggerInputWrite):
         )
         return super().__new__(cls)
 
-
 class ShopTriggerInputList(DomainModelList[ShopTriggerInput]):
     """List of shop trigger inputs in the read version."""
 
     _INSTANCE = ShopTriggerInput
-
     def as_write(self) -> ShopTriggerInputWriteList:
         """Convert these read versions of shop trigger input to the writing versions."""
         return ShopTriggerInputWriteList([node.as_write() for node in self.data])
@@ -370,35 +369,26 @@ class ShopTriggerInputList(DomainModelList[ShopTriggerInput]):
     @property
     def preprocessor_input(self) -> ShopPreprocessorInputList:
         from ._shop_preprocessor_input import ShopPreprocessorInput, ShopPreprocessorInputList
-
         return ShopPreprocessorInputList([item.preprocessor_input for item in self.data if isinstance(item.preprocessor_input, ShopPreprocessorInput)])
-
     @property
     def case(self) -> ShopCaseList:
         from ._shop_case import ShopCase, ShopCaseList
-
         return ShopCaseList([item.case for item in self.data if isinstance(item.case, ShopCase)])
-
 
 class ShopTriggerInputWriteList(DomainModelWriteList[ShopTriggerInputWrite]):
     """List of shop trigger inputs in the writing version."""
 
     _INSTANCE = ShopTriggerInputWrite
-
     @property
     def preprocessor_input(self) -> ShopPreprocessorInputWriteList:
         from ._shop_preprocessor_input import ShopPreprocessorInputWrite, ShopPreprocessorInputWriteList
-
         return ShopPreprocessorInputWriteList([item.preprocessor_input for item in self.data if isinstance(item.preprocessor_input, ShopPreprocessorInputWrite)])
-
     @property
     def case(self) -> ShopCaseWriteList:
         from ._shop_case import ShopCaseWrite, ShopCaseWriteList
-
         return ShopCaseWriteList([item.case for item in self.data if isinstance(item.case, ShopCaseWrite)])
 
 class ShopTriggerInputApplyList(ShopTriggerInputWriteList): ...
-
 
 
 def _create_shop_trigger_input_filter(

@@ -28,7 +28,6 @@ if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1._api.shop_result_query import ShopResultQueryAPI
 
 
-
 class BenchmarkingCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
     _view_id = dm.ViewId("power_ops_core", "BenchmarkingCalculationInput", "1")
 
@@ -52,7 +51,6 @@ class BenchmarkingCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
-
     def shop_results(
         self,
         case: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
@@ -84,7 +82,6 @@ class BenchmarkingCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "ShopResults"),
-
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )

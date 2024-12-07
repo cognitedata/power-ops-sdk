@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import datetime
+import difflib
 import math
 import time
 import warnings
@@ -97,7 +98,11 @@ class QueryCore(Generic[T_DomainList, T_DomainListEnd]):
             raise ValueError(f"Circular reference detected. Cannot query a circular reference: {nodes}")
         elif self._connection_type == "reverse-list":
             raise ValueError(f"Cannot query across a reverse-list connection.")
-        raise AttributeError(f"'{self.__class__.__name__}' object has no attribute '{item}'")
+        error_message = f"'{self.__class__.__name__}' object has no attribute '{item}'"
+        attributes = [name for name in vars(self).keys() if not name.startswith("_")]
+        if matches := difflib.get_close_matches(item, attributes):
+            error_message += f". Did you mean one of: {matches}?"
+        raise AttributeError(error_message)
 
     def _assemble_filter(self) -> dm.filters.Filter | None:
         filters: list[dm.filters.Filter] = [self._view_filter] if self._view_filter else []
@@ -105,6 +110,17 @@ class QueryCore(Generic[T_DomainList, T_DomainListEnd]):
             if item := filter_cls._as_filter():
                 filters.append(item)
         return dm.filters.And(*filters) if filters else None
+
+    def _create_sort(self) -> list[dm.InstanceSort] | None:
+        filters: list[tuple[dm.InstanceSort, int]] = []
+        for filter_cls in self._filter_classes:
+            item, priority = filter_cls._as_sort()
+            if item:
+                filters.append((item, priority))
+        return [item for item, _ in sorted(filters, key=lambda x: x[1])] if filters else None
+
+    def _has_limit_1(self) -> bool:
+        return any(filter_cls._has_limit_1 for filter_cls in self._filter_classes)
 
     def _repr_html_(self) -> str:
         nodes = [step._result_cls.__name__ for step in self._creation_path]
@@ -170,7 +186,6 @@ class NodeQueryCore(QueryCore[T_DomainModelList, T_DomainListEnd]):
         builder = self._create_query(limit, cast(type[DomainModelList], self._result_list_cls_end), return_step="last")
         for step in builder[:-1]:
             step.select = None
-        builder[-1].max_retrieve_limit = limit
         builder.execute_query(self._client, remove_not_connected=False)
         return builder.unpack()
 
@@ -186,18 +201,43 @@ class NodeQueryCore(QueryCore[T_DomainModelList, T_DomainListEnd]):
     ) -> DataClassQueryBuilder:
         builder = DataClassQueryBuilder(result_list_cls, return_step=return_step)
         from_: str | None = None
-        first: bool = True
+        is_first: bool = True
         is_last_reverse_list = False
         for item in self._creation_path:
             if is_last_reverse_list:
                 raise ValueError(
                     "Cannot traverse past reverse direct relation of list. "
-                    "This is a limitation of the modeling implementation in your data model."
+                    "This is a limitation with the modeling implementation of your data model."
                     "To do this query, you need to reimplement the data model and use an edge to "
                     "implement this connection instead of a reverse direct relation"
                 )
+            if return_step == "first":
+                if is_first and item._has_limit_1():
+                    if limit != DEFAULT_QUERY_LIMIT:
+                        warnings.warn(
+                            "When selecting earliest and latest, the limit is ignored.", UserWarning, stacklevel=2
+                        )
+                    max_retrieve_limit = 1
+                elif is_first:
+                    max_retrieve_limit = limit
+                else:
+                    max_retrieve_limit = -1
+            elif return_step == "last":
+                is_last = item is self._creation_path[-1]
+                if is_last and item._has_limit_1():
+                    if limit != DEFAULT_QUERY_LIMIT:
+                        warnings.warn(
+                            "When selecting earliest and latest, the limit is ignored.", UserWarning, stacklevel=2
+                        )
+                    max_retrieve_limit = 1
+                elif is_last:
+                    max_retrieve_limit = limit
+                else:
+                    max_retrieve_limit = -1
+            else:
+                raise ValueError("Bug in Pygen. Invalid return_step. Please report")
+
             name = builder.create_name(from_)
-            max_retrieve_limit = limit if first else -1
             step: QueryStep
             if isinstance(item, NodeQueryCore) and isinstance(item._expression, dm.query.NodeResultSetExpression):
                 step = NodeQueryStep(
@@ -209,6 +249,7 @@ class NodeQueryCore(QueryCore[T_DomainModelList, T_DomainListEnd]):
                 )
                 step.expression.from_ = from_
                 step.expression.filter = item._assemble_filter()
+                step.expression.sort = item._create_sort()
                 builder.append(step)
             elif isinstance(item, NodeQueryCore) and isinstance(item._expression, dm.query.EdgeResultSetExpression):
                 edge_name = name
@@ -222,6 +263,7 @@ class NodeQueryCore(QueryCore[T_DomainModelList, T_DomainListEnd]):
                     expression=dm.query.NodeResultSetExpression(
                         from_=edge_name,
                         filter=item._assemble_filter(),
+                        sort=item._create_sort(),
                     ),
                     result_cls=item._result_cls,
                 )
@@ -234,12 +276,13 @@ class NodeQueryCore(QueryCore[T_DomainModelList, T_DomainListEnd]):
                 )
                 step.expression.from_ = from_
                 step.expression.filter = item._assemble_filter()
+                step.expression.sort = item._create_sort()
                 builder.append(step)
             else:
                 raise TypeError(f"Unsupported query step type: {type(item._expression)}")
 
             is_last_reverse_list = item._connection_type == "reverse-list"
-            first = False
+            is_first = False
             from_ = name
         return builder
 
@@ -911,17 +954,52 @@ T_QueryCore = TypeVar("T_QueryCore")
 
 
 class Filtering(Generic[T_QueryCore], ABC):
-    def __init__(self, query: T_QueryCore, prop_path: list[str] | tuple[str, ...]):
+    counter: ClassVar[int] = 0
+
+    def __init__(self, query: T_QueryCore, prop_path: list[str] | tuple[str, ...]) -> None:
         self._query = query
         self._prop_path = prop_path
         self._filter: dm.Filter | None = None
+        self._sort: dm.InstanceSort | None = None
+        self._sort_priority: int | None = None
+        # Used for earliest/latest
+        self._limit: int | None = None
 
     def _raise_if_filter_set(self):
         if self._filter is not None:
             raise ValueError("Filter has already been set")
 
+    def _raise_if_sort_set(self):
+        if self._sort is not None:
+            raise ValueError("Sort has already been set")
+
+    @classmethod
+    def _get_sort_priority(cls) -> int:
+        # This is used in case of multiple sorts, to ensure that the order is correct
+        Filtering.counter += 1
+        return Filtering.counter
+
     def _as_filter(self) -> dm.Filter | None:
         return self._filter
+
+    def _as_sort(self) -> tuple[dm.InstanceSort | None, int]:
+        return self._sort, self._sort_priority or 0
+
+    @property
+    def _has_limit_1(self) -> bool:
+        return self._limit == 1
+
+    def sort_ascending(self) -> T_QueryCore:
+        self._raise_if_sort_set()
+        self._sort = dm.InstanceSort(self._prop_path, "ascending")
+        self._sort_priority = self._get_sort_priority()
+        return self._query
+
+    def sort_descending(self) -> T_QueryCore:
+        self._raise_if_sort_set()
+        self._sort = dm.InstanceSort(self._prop_path, "descending")
+        self._sort_priority = self._get_sort_priority()
+        return self._query
 
 
 class StringFilter(Filtering[T_QueryCore]):
@@ -972,6 +1050,20 @@ class TimestampFilter(Filtering[T_QueryCore]):
         )
         return self._query
 
+    def earliest(self) -> T_QueryCore:
+        self._raise_if_sort_set()
+        self._sort = dm.InstanceSort(self._prop_path, "ascending")
+        self._sort_priority = self._get_sort_priority()
+        self._limit = 1
+        return self._query
+
+    def latest(self) -> T_QueryCore:
+        self._raise_if_sort_set()
+        self._sort = dm.InstanceSort(self._prop_path, "descending")
+        self._sort_priority = self._get_sort_priority()
+        self._limit = 1
+        return self._query
+
 
 class DateFilter(Filtering[T_QueryCore]):
     def range(self, gte: datetime.date | None, lte: datetime.date | None) -> T_QueryCore:
@@ -981,4 +1073,18 @@ class DateFilter(Filtering[T_QueryCore]):
             gte=gte.isoformat() if gte else None,
             lte=lte.isoformat() if lte else None,
         )
+        return self._query
+
+    def earliest(self) -> T_QueryCore:
+        self._raise_if_sort_set()
+        self._sort = dm.InstanceSort(self._prop_path, "ascending")
+        self._sort_priority = self._get_sort_priority()
+        self._limit = 1
+        return self._query
+
+    def latest(self) -> T_QueryCore:
+        self._raise_if_sort_set()
+        self._sort = dm.InstanceSort(self._prop_path, "descending")
+        self._sort_priority = self._get_sort_priority()
+        self._limit = 1
         return self._query

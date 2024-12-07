@@ -70,6 +70,7 @@ _SHOPPENALTYREPORT_PROPERTIES_BY_FIELD = {
     "penalties": "penalties",
 }
 
+
 class ShopPenaltyReportGraphQL(GraphQLCore):
     """This represents the reading version of shop penalty report, used
     when data is retrieved from CDF using GraphQL.
@@ -91,6 +92,7 @@ class ShopPenaltyReportGraphQL(GraphQLCore):
         calculation_run: The identifier of the parent Bid Calculation (required so that alerts can be created before the BidDocument)
         penalties: TODO
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopPenaltyReport", "1")
     time: Optional[datetime.datetime] = None
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
@@ -113,6 +115,8 @@ class ShopPenaltyReportGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -139,7 +143,6 @@ class ShopPenaltyReportGraphQL(GraphQLCore):
             calculation_run=self.calculation_run,
             penalties=self.penalties,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -182,11 +185,14 @@ class ShopPenaltyReport(Alert):
         calculation_run: The identifier of the parent Bid Calculation (required so that alerts can be created before the BidDocument)
         penalties: TODO
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopPenaltyReport", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopPenaltyReport")
     penalties: Optional[list[dict]] = None
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopPenaltyReportWrite:
         """Convert this read version of shop penalty report to the writing version."""
         return ShopPenaltyReportWrite(
@@ -214,7 +220,6 @@ class ShopPenaltyReport(Alert):
         )
         return self.as_write()
 
-
 class ShopPenaltyReportWrite(AlertWrite):
     """This represents the writing version of shop penalty report.
 
@@ -235,10 +240,12 @@ class ShopPenaltyReportWrite(AlertWrite):
         calculation_run: The identifier of the parent Bid Calculation (required so that alerts can be created before the BidDocument)
         penalties: TODO
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopPenaltyReport", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "ShopPenaltyReport")
     penalties: Optional[list[dict]] = None
+
 
     def _to_instances_write(
         self,
@@ -282,7 +289,6 @@ class ShopPenaltyReportWrite(AlertWrite):
         if self.penalties is not None or write_none:
             properties["penalties"] = self.penalties
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -298,8 +304,6 @@ class ShopPenaltyReportWrite(AlertWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-
-
         return resources
 
 
@@ -314,12 +318,10 @@ class ShopPenaltyReportApply(ShopPenaltyReportWrite):
         )
         return super().__new__(cls)
 
-
 class ShopPenaltyReportList(DomainModelList[ShopPenaltyReport]):
     """List of shop penalty reports in the read version."""
 
     _INSTANCE = ShopPenaltyReport
-
     def as_write(self) -> ShopPenaltyReportWriteList:
         """Convert these read versions of shop penalty report to the writing versions."""
         return ShopPenaltyReportWriteList([node.as_write() for node in self.data])
@@ -340,7 +342,6 @@ class ShopPenaltyReportWriteList(DomainModelWriteList[ShopPenaltyReportWrite]):
     _INSTANCE = ShopPenaltyReportWrite
 
 class ShopPenaltyReportApplyList(ShopPenaltyReportWriteList): ...
-
 
 
 def _create_shop_penalty_report_filter(

@@ -39,7 +39,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     FloatFilter,
     TimestampFilter,
 )
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._alert import Alert, AlertList, AlertGraphQL, AlertWrite, AlertWriteList
     from cognite.powerops.client._generated.v1.data_classes._shop_result import ShopResult, ShopResultList, ShopResultGraphQL, ShopResultWrite, ShopResultWriteList
@@ -71,6 +70,7 @@ _BENCHMARKINGRESULTDAYAHEAD_PROPERTIES_BY_FIELD = {
     "value": "value",
 }
 
+
 class BenchmarkingResultDayAheadGraphQL(GraphQLCore):
     """This represents the reading version of benchmarking result day ahead, used
     when data is retrieved from CDF using GraphQL.
@@ -91,10 +91,11 @@ class BenchmarkingResultDayAheadGraphQL(GraphQLCore):
         value: This would normally be the objective value ('grand total') from the Shop result, or maybe the difference between the objective value in this run and for 'upper bound', but it should be possible to override it (e. g. if the difference is above some limit)
         alerts: An array of benchmarking calculation level Alerts.
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingResultDayAhead", "1")
     name: Optional[str] = None
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
-    bid_source: Optional[str] = Field(default=None, alias="bidSource")
+    bid_source: Optional[dict] = Field(default=None, alias="bidSource")
     delivery_date: Optional[datetime.date] = Field(None, alias="deliveryDate")
     bid_generated: Optional[datetime.datetime] = Field(None, alias="bidGenerated")
     shop_result: Optional[ShopResultGraphQL] = Field(default=None, repr=False, alias="shopResult")
@@ -112,6 +113,8 @@ class BenchmarkingResultDayAheadGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("bid_source", "shop_result", "alerts", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -144,9 +147,8 @@ if isinstance(self.shop_result, GraphQLCore)
 else self.shop_result,
             is_selected=self.is_selected,
             value=self.value,
-            alerts=[alert.as_read() for alert in self.alerts or []],
+            alerts=[alert.as_read() for alert in self.alerts] if self.alerts is not None else None,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -166,7 +168,7 @@ if isinstance(self.shop_result, GraphQLCore)
 else self.shop_result,
             is_selected=self.is_selected,
             value=self.value,
-            alerts=[alert.as_write() for alert in self.alerts or []],
+            alerts=[alert.as_write() for alert in self.alerts] if self.alerts is not None else None,
         )
 
 
@@ -189,6 +191,7 @@ class BenchmarkingResultDayAhead(DomainModel):
         value: This would normally be the objective value ('grand total') from the Shop result, or maybe the difference between the objective value in this run and for 'upper bound', but it should be possible to override it (e. g. if the difference is above some limit)
         alerts: An array of benchmarking calculation level Alerts.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingResultDayAhead", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -203,6 +206,8 @@ class BenchmarkingResultDayAhead(DomainModel):
     value: Optional[float] = None
     alerts: Optional[list[Union[Alert, str, dm.NodeId]]] = Field(default=None, repr=False)
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> BenchmarkingResultDayAheadWrite:
         """Convert this read version of benchmarking result day ahead to the writing version."""
         return BenchmarkingResultDayAheadWrite(
@@ -219,7 +224,7 @@ if isinstance(self.shop_result, DomainModel)
 else self.shop_result,
             is_selected=self.is_selected,
             value=self.value,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
+            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts] if self.alerts is not None else None,
         )
 
     def as_apply(self) -> BenchmarkingResultDayAheadWrite:
@@ -230,7 +235,6 @@ else self.shop_result,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -240,7 +244,6 @@ else self.shop_result,
     ) -> None:
         from ._alert import Alert
         from ._shop_result import ShopResult
-
         for instance in instances.values():
             if isinstance(instance.shop_result, (dm.NodeId, str)) and (shop_result := nodes_by_id.get(instance.shop_result)) and isinstance(
                     shop_result, ShopResult
@@ -279,7 +282,6 @@ else self.shop_result,
 
 
 
-
 class BenchmarkingResultDayAheadWrite(DomainModelWrite):
     """This represents the writing version of benchmarking result day ahead.
 
@@ -299,6 +301,7 @@ class BenchmarkingResultDayAheadWrite(DomainModelWrite):
         value: This would normally be the objective value ('grand total') from the Shop result, or maybe the difference between the objective value in this run and for 'upper bound', but it should be possible to override it (e. g. if the difference is above some limit)
         alerts: An array of benchmarking calculation level Alerts.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingResultDayAhead", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -322,6 +325,7 @@ class BenchmarkingResultDayAheadWrite(DomainModelWrite):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -364,7 +368,6 @@ class BenchmarkingResultDayAheadWrite(DomainModelWrite):
         if self.value is not None or write_none:
             properties["value"] = self.value
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -379,8 +382,6 @@ class BenchmarkingResultDayAheadWrite(DomainModelWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
@@ -412,12 +413,10 @@ class BenchmarkingResultDayAheadApply(BenchmarkingResultDayAheadWrite):
         )
         return super().__new__(cls)
 
-
 class BenchmarkingResultDayAheadList(DomainModelList[BenchmarkingResultDayAhead]):
     """List of benchmarking result day aheads in the read version."""
 
     _INSTANCE = BenchmarkingResultDayAhead
-
     def as_write(self) -> BenchmarkingResultDayAheadWriteList:
         """Convert these read versions of benchmarking result day ahead to the writing versions."""
         return BenchmarkingResultDayAheadWriteList([node.as_write() for node in self.data])
@@ -434,13 +433,10 @@ class BenchmarkingResultDayAheadList(DomainModelList[BenchmarkingResultDayAhead]
     @property
     def shop_result(self) -> ShopResultList:
         from ._shop_result import ShopResult, ShopResultList
-
         return ShopResultList([item.shop_result for item in self.data if isinstance(item.shop_result, ShopResult)])
-
     @property
     def alerts(self) -> AlertList:
         from ._alert import Alert, AlertList
-
         return AlertList([item for items in self.data for item in items.alerts or [] if isinstance(item, Alert)])
 
 
@@ -448,21 +444,17 @@ class BenchmarkingResultDayAheadWriteList(DomainModelWriteList[BenchmarkingResul
     """List of benchmarking result day aheads in the writing version."""
 
     _INSTANCE = BenchmarkingResultDayAheadWrite
-
     @property
     def shop_result(self) -> ShopResultWriteList:
         from ._shop_result import ShopResultWrite, ShopResultWriteList
-
         return ShopResultWriteList([item.shop_result for item in self.data if isinstance(item.shop_result, ShopResultWrite)])
-
     @property
     def alerts(self) -> AlertWriteList:
         from ._alert import AlertWrite, AlertWriteList
-
         return AlertWriteList([item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)])
 
-class BenchmarkingResultDayAheadApplyList(BenchmarkingResultDayAheadWriteList): ...
 
+class BenchmarkingResultDayAheadApplyList(BenchmarkingResultDayAheadWriteList): ...
 
 
 def _create_benchmarking_result_day_ahead_filter(

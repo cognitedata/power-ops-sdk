@@ -55,23 +55,23 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(NodeAPI[WaterValueBased
 
 
     def __call__(
-            self,
-            workflow_execution_id: str | list[str] | None = None,
-            workflow_execution_id_prefix: str | None = None,
-            min_workflow_step: int | None = None,
-            max_workflow_step: int | None = None,
-            function_name: str | list[str] | None = None,
-            function_name_prefix: str | None = None,
-            function_call_id: str | list[str] | None = None,
-            function_call_id_prefix: str | None = None,
-            min_bid_date: datetime.date | None = None,
-            max_bid_date: datetime.date | None = None,
-            bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-            partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
+        function_name: str | list[str] | None = None,
+        function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
+        min_bid_date: datetime.date | None = None,
+        max_bid_date: datetime.date | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> WaterValueBasedPartialBidMatrixCalculationInputQueryAPI[WaterValueBasedPartialBidMatrixCalculationInputList]:
         """Query starting at water value based partial bid matrix calculation inputs.
 
@@ -124,7 +124,6 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(NodeAPI[WaterValueBased
         )
         builder = DataClassQueryBuilder(WaterValueBasedPartialBidMatrixCalculationInputList)
         return WaterValueBasedPartialBidMatrixCalculationInputQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -343,8 +342,7 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(NodeAPI[WaterValueBased
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -370,8 +368,7 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(NodeAPI[WaterValueBased
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -399,8 +396,7 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(NodeAPI[WaterValueBased
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
@@ -668,7 +664,7 @@ class WaterValueBasedPartialBidMatrixCalculationInputAPI(NodeAPI[WaterValueBased
         )
 
         if retrieve_connections == "skip":
-                return self._list(
+            return self._list(
                 limit=limit,
                 filter=filter_,
                 sort_by=sort_by,  # type: ignore[arg-type]

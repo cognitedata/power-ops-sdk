@@ -36,7 +36,6 @@ if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1._api.shop_attribute_mapping_query import ShopAttributeMappingQueryAPI
 
 
-
 class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
     _view_id = dm.ViewId("power_ops_core", "ShopScenario", "1")
 
@@ -60,7 +59,6 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
-
     def output_definition(
         self,
         name: str | list[str] | None = None,
@@ -118,7 +116,6 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "ShopOutputTimeSeriesDefinition"),
-
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -160,7 +157,6 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
         if retrieve_time_resolution:
             self._query_append_time_resolution(from_)
         return ShopOutputTimeSeriesDefinitionQueryAPI(self._client, self._builder, node_filer, limit)
-
     def attribute_mappings_override(
         self,
         object_type: str | list[str] | None = None,
@@ -216,7 +212,6 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "ShopAttributeMapping"),
-
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -297,7 +292,6 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
                 result_cls=ShopModel,
             ),
         )
-
     def _query_append_commands(self, from_: str) -> None:
         self._builder.append(
             NodeQueryStep(
@@ -311,7 +305,6 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
                 result_cls=ShopCommands,
             ),
         )
-
     def _query_append_time_resolution(self, from_: str) -> None:
         self._builder.append(
             NodeQueryStep(

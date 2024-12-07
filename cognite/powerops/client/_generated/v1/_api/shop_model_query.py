@@ -33,7 +33,6 @@ if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1._api.shop_attribute_mapping_query import ShopAttributeMappingQueryAPI
 
 
-
 class ShopModelQueryAPI(QueryAPI[T_DomainModelList]):
     _view_id = dm.ViewId("power_ops_core", "ShopModel", "1")
 
@@ -57,7 +56,6 @@ class ShopModelQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
-
     def cog_shop_files_config(
         self,
         name: str | list[str] | None = None,
@@ -105,7 +103,6 @@ class ShopModelQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "ShopModel.cogShopFilesConfig"),
-
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -139,7 +136,6 @@ class ShopModelQueryAPI(QueryAPI[T_DomainModelList]):
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         return ShopFileQueryAPI(self._client, self._builder, node_filer, limit)
-
     def base_attribute_mappings(
         self,
         object_type: str | list[str] | None = None,
@@ -189,7 +185,6 @@ class ShopModelQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "ShopModel.baseAttributeMappings"),
-
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )

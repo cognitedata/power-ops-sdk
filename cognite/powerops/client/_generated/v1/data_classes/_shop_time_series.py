@@ -32,6 +32,7 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     TimeSeries,
     TimeSeriesWrite,
     TimeSeriesGraphQL,
+    TimeSeriesReferenceAPI,
     T_DomainModelList,
     as_direct_relation_reference,
     as_instance_dict_id,
@@ -71,6 +72,7 @@ _SHOPTIMESERIES_PROPERTIES_BY_FIELD = {
     "time_series": "timeSeries",
 }
 
+
 class ShopTimeSeriesGraphQL(GraphQLCore):
     """This represents the reading version of shop time series, used
     when data is retrieved from CDF using GraphQL.
@@ -86,6 +88,7 @@ class ShopTimeSeriesGraphQL(GraphQLCore):
         attribute_name: The name of the attribute
         time_series: Time series object from output of SHOP stored as a time series in cdf
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopTimeSeries", "1")
     object_type: Optional[str] = Field(None, alias="objectType")
     object_name: Optional[str] = Field(None, alias="objectName")
@@ -102,6 +105,8 @@ class ShopTimeSeriesGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -122,7 +127,6 @@ class ShopTimeSeriesGraphQL(GraphQLCore):
             attribute_name=self.attribute_name,
             time_series=self.time_series.as_read() if self.time_series else None,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -153,6 +157,7 @@ class ShopTimeSeries(DomainModel):
         attribute_name: The name of the attribute
         time_series: Time series object from output of SHOP stored as a time series in cdf
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopTimeSeries", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -162,6 +167,8 @@ class ShopTimeSeries(DomainModel):
     attribute_name: Optional[str] = Field(None, alias="attributeName")
     time_series: Union[TimeSeries, str, None] = Field(None, alias="timeSeries")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopTimeSeriesWrite:
         """Convert this read version of shop time series to the writing version."""
         return ShopTimeSeriesWrite(
@@ -183,7 +190,6 @@ class ShopTimeSeries(DomainModel):
         )
         return self.as_write()
 
-
 class ShopTimeSeriesWrite(DomainModelWrite):
     """This represents the writing version of shop time series.
 
@@ -198,6 +204,7 @@ class ShopTimeSeriesWrite(DomainModelWrite):
         attribute_name: The name of the attribute
         time_series: Time series object from output of SHOP stored as a time series in cdf
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopTimeSeries", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -206,6 +213,7 @@ class ShopTimeSeriesWrite(DomainModelWrite):
     object_name: Optional[str] = Field(None, alias="objectName")
     attribute_name: Optional[str] = Field(None, alias="attributeName")
     time_series: Union[TimeSeriesWrite, str, None] = Field(None, alias="timeSeries")
+
 
     def _to_instances_write(
         self,
@@ -231,7 +239,6 @@ class ShopTimeSeriesWrite(DomainModelWrite):
         if self.time_series is not None or write_none:
             properties["timeSeries"] = self.time_series if isinstance(self.time_series, str) or self.time_series is None else self.time_series.external_id
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -246,8 +253,6 @@ class ShopTimeSeriesWrite(DomainModelWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         if isinstance(self.time_series, CogniteTimeSeriesWrite):
             resources.time_series.append(self.time_series)
@@ -266,12 +271,10 @@ class ShopTimeSeriesApply(ShopTimeSeriesWrite):
         )
         return super().__new__(cls)
 
-
 class ShopTimeSeriesList(DomainModelList[ShopTimeSeries]):
     """List of shop time series in the read version."""
 
     _INSTANCE = ShopTimeSeries
-
     def as_write(self) -> ShopTimeSeriesWriteList:
         """Convert these read versions of shop time series to the writing versions."""
         return ShopTimeSeriesWriteList([node.as_write() for node in self.data])
@@ -292,7 +295,6 @@ class ShopTimeSeriesWriteList(DomainModelWriteList[ShopTimeSeriesWrite]):
     _INSTANCE = ShopTimeSeriesWrite
 
 class ShopTimeSeriesApplyList(ShopTimeSeriesWriteList): ...
-
 
 
 def _create_shop_time_series_filter(
@@ -377,6 +379,12 @@ class _ShopTimeSeriesQuery(NodeQueryCore[T_DomainModelList, ShopTimeSeriesList])
             self.object_type,
             self.object_name,
             self.attribute_name,
+        ])
+        self.time_series = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.time_series if isinstance(item.time_series, str) else item.time_series.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.time_series is not None and
+               (isinstance(item.time_series, str) or item.time_series.external_id is not None)
         ])
 
     def list_shop_time_series(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopTimeSeriesList:

@@ -52,20 +52,20 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
 
 
     def __call__(
-            self,
-            name: str | list[str] | None = None,
-            name_prefix: str | None = None,
-            label: str | list[str] | None = None,
-            label_prefix: str | None = None,
-            file_reference_prefix: str | list[str] | None = None,
-            file_reference_prefix_prefix: str | None = None,
-            min_order: int | None = None,
-            max_order: int | None = None,
-            is_ascii: bool | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        label: str | list[str] | None = None,
+        label_prefix: str | None = None,
+        file_reference_prefix: str | list[str] | None = None,
+        file_reference_prefix_prefix: str | None = None,
+        min_order: int | None = None,
+        max_order: int | None = None,
+        is_ascii: bool | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> ShopFileQueryAPI[ShopFileList]:
         """Query starting at shop files.
 
@@ -112,7 +112,6 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
         )
         builder = DataClassQueryBuilder(ShopFileList)
         return ShopFileQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -315,8 +314,7 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -339,8 +337,7 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -365,8 +362,7 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,

@@ -36,7 +36,6 @@ if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1._api.shop_model_with_assets_query import ShopModelWithAssetsQueryAPI
 
 
-
 class BenchmarkingConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
     _view_id = dm.ViewId("power_ops_core", "BenchmarkingConfigurationDayAhead", "1")
 
@@ -60,7 +59,6 @@ class BenchmarkingConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
-
     def bid_configurations(
         self,
         name: str | list[str] | None = None,
@@ -106,7 +104,6 @@ class BenchmarkingConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "benchmarkingBidConfigurations"),
-
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -142,7 +139,6 @@ class BenchmarkingConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         if retrieve_shop_end_specification:
             self._query_append_shop_end_specification(from_)
         return BidConfigurationDayAheadQueryAPI(self._client, self._builder, node_filer, limit)
-
     def assets_per_shop_model(
         self,
         shop_model: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
@@ -182,7 +178,6 @@ class BenchmarkingConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "assetsPerShopModel"),
-
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -255,7 +250,6 @@ class BenchmarkingConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
                 result_cls=PriceAreaDayAhead,
             ),
         )
-
     def _query_append_shop_start_specification(self, from_: str) -> None:
         self._builder.append(
             NodeQueryStep(
@@ -269,7 +263,6 @@ class BenchmarkingConfigurationDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
                 result_cls=DateSpecification,
             ),
         )
-
     def _query_append_shop_end_specification(self, from_: str) -> None:
         self._builder.append(
             NodeQueryStep(

@@ -54,17 +54,17 @@ class ShopTimeSeriesAPI(NodeAPI[ShopTimeSeries, ShopTimeSeriesWrite, ShopTimeSer
         self.time_series = ShopTimeSeriesTimeSeriesAPI(client, self._view_id)
 
     def __call__(
-            self,
-            object_type: str | list[str] | None = None,
-            object_type_prefix: str | None = None,
-            object_name: str | list[str] | None = None,
-            object_name_prefix: str | None = None,
-            attribute_name: str | list[str] | None = None,
-            attribute_name_prefix: str | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        object_type: str | list[str] | None = None,
+        object_type_prefix: str | None = None,
+        object_name: str | list[str] | None = None,
+        object_name_prefix: str | None = None,
+        attribute_name: str | list[str] | None = None,
+        attribute_name_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> ShopTimeSeriesQueryAPI[ShopTimeSeriesList]:
         """Query starting at shop time series.
 
@@ -105,7 +105,6 @@ class ShopTimeSeriesAPI(NodeAPI[ShopTimeSeries, ShopTimeSeriesWrite, ShopTimeSer
         )
         builder = DataClassQueryBuilder(ShopTimeSeriesList)
         return ShopTimeSeriesQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -296,8 +295,7 @@ class ShopTimeSeriesAPI(NodeAPI[ShopTimeSeries, ShopTimeSeriesWrite, ShopTimeSer
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -317,8 +315,7 @@ class ShopTimeSeriesAPI(NodeAPI[ShopTimeSeries, ShopTimeSeriesWrite, ShopTimeSer
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -340,8 +337,7 @@ class ShopTimeSeriesAPI(NodeAPI[ShopTimeSeries, ShopTimeSeriesWrite, ShopTimeSer
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,

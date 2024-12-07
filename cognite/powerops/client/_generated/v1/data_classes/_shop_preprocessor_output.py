@@ -36,7 +36,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     IntFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._function_output import FunctionOutput, FunctionOutputWrite
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._alert import Alert, AlertList, AlertGraphQL, AlertWrite, AlertWriteList
     from cognite.powerops.client._generated.v1.data_classes._shop_case import ShopCase, ShopCaseList, ShopCaseGraphQL, ShopCaseWrite, ShopCaseWriteList
@@ -67,6 +66,7 @@ _SHOPPREPROCESSOROUTPUT_PROPERTIES_BY_FIELD = {
     "function_call_id": "functionCallId",
 }
 
+
 class ShopPreprocessorOutputGraphQL(GraphQLCore):
     """This represents the reading version of shop preprocessor output, used
     when data is retrieved from CDF using GraphQL.
@@ -85,6 +85,7 @@ class ShopPreprocessorOutputGraphQL(GraphQLCore):
         alerts: An array of calculation level Alerts.
         case: The Case to trigger shop with
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopPreprocessorOutput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
@@ -104,6 +105,8 @@ class ShopPreprocessorOutputGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("function_input", "alerts", "case", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -133,12 +136,11 @@ class ShopPreprocessorOutputGraphQL(GraphQLCore):
             function_input=self.function_input.as_read()
 if isinstance(self.function_input, GraphQLCore)
 else self.function_input,
-            alerts=[alert.as_read() for alert in self.alerts or []],
+            alerts=[alert.as_read() for alert in self.alerts] if self.alerts is not None else None,
             case=self.case.as_read()
 if isinstance(self.case, GraphQLCore)
 else self.case,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -155,7 +157,7 @@ else self.case,
             function_input=self.function_input.as_write()
 if isinstance(self.function_input, GraphQLCore)
 else self.function_input,
-            alerts=[alert.as_write() for alert in self.alerts or []],
+            alerts=[alert.as_write() for alert in self.alerts] if self.alerts is not None else None,
             case=self.case.as_write()
 if isinstance(self.case, GraphQLCore)
 else self.case,
@@ -179,11 +181,14 @@ class ShopPreprocessorOutput(FunctionOutput):
         alerts: An array of calculation level Alerts.
         case: The Case to trigger shop with
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopPreprocessorOutput", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopPreprocessorOutput")
     case: Union[ShopCase, str, dm.NodeId, None] = Field(default=None, repr=False)
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopPreprocessorOutputWrite:
         """Convert this read version of shop preprocessor output to the writing version."""
         return ShopPreprocessorOutputWrite(
@@ -197,7 +202,7 @@ class ShopPreprocessorOutput(FunctionOutput):
             function_input=self.function_input.as_write()
 if isinstance(self.function_input, DomainModel)
 else self.function_input,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
+            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts] if self.alerts is not None else None,
             case=self.case.as_write()
 if isinstance(self.case, DomainModel)
 else self.case,
@@ -211,7 +216,6 @@ else self.case,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -222,7 +226,6 @@ else self.case,
         from ._alert import Alert
         from ._shop_case import ShopCase
         from ._shop_preprocessor_input import ShopPreprocessorInput
-
         for instance in instances.values():
             if isinstance(instance.function_input, (dm.NodeId, str)) and (function_input := nodes_by_id.get(instance.function_input)) and isinstance(
                     function_input, ShopPreprocessorInput
@@ -265,7 +268,6 @@ else self.case,
 
 
 
-
 class ShopPreprocessorOutputWrite(FunctionOutputWrite):
     """This represents the writing version of shop preprocessor output.
 
@@ -283,6 +285,7 @@ class ShopPreprocessorOutputWrite(FunctionOutputWrite):
         alerts: An array of calculation level Alerts.
         case: The Case to trigger shop with
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopPreprocessorOutput", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "ShopPreprocessorOutput")
@@ -297,6 +300,7 @@ class ShopPreprocessorOutputWrite(FunctionOutputWrite):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -333,7 +337,6 @@ class ShopPreprocessorOutputWrite(FunctionOutputWrite):
                 "externalId": self.case if isinstance(self.case, str) else self.case.external_id,
             }
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -348,8 +351,6 @@ class ShopPreprocessorOutputWrite(FunctionOutputWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
@@ -385,12 +386,10 @@ class ShopPreprocessorOutputApply(ShopPreprocessorOutputWrite):
         )
         return super().__new__(cls)
 
-
 class ShopPreprocessorOutputList(DomainModelList[ShopPreprocessorOutput]):
     """List of shop preprocessor outputs in the read version."""
 
     _INSTANCE = ShopPreprocessorOutput
-
     def as_write(self) -> ShopPreprocessorOutputWriteList:
         """Convert these read versions of shop preprocessor output to the writing versions."""
         return ShopPreprocessorOutputWriteList([node.as_write() for node in self.data])
@@ -407,47 +406,36 @@ class ShopPreprocessorOutputList(DomainModelList[ShopPreprocessorOutput]):
     @property
     def function_input(self) -> ShopPreprocessorInputList:
         from ._shop_preprocessor_input import ShopPreprocessorInput, ShopPreprocessorInputList
-
         return ShopPreprocessorInputList([item.function_input for item in self.data if isinstance(item.function_input, ShopPreprocessorInput)])
-
     @property
     def alerts(self) -> AlertList:
         from ._alert import Alert, AlertList
-
         return AlertList([item for items in self.data for item in items.alerts or [] if isinstance(item, Alert)])
 
     @property
     def case(self) -> ShopCaseList:
         from ._shop_case import ShopCase, ShopCaseList
-
         return ShopCaseList([item.case for item in self.data if isinstance(item.case, ShopCase)])
-
 
 class ShopPreprocessorOutputWriteList(DomainModelWriteList[ShopPreprocessorOutputWrite]):
     """List of shop preprocessor outputs in the writing version."""
 
     _INSTANCE = ShopPreprocessorOutputWrite
-
     @property
     def function_input(self) -> ShopPreprocessorInputWriteList:
         from ._shop_preprocessor_input import ShopPreprocessorInputWrite, ShopPreprocessorInputWriteList
-
         return ShopPreprocessorInputWriteList([item.function_input for item in self.data if isinstance(item.function_input, ShopPreprocessorInputWrite)])
-
     @property
     def alerts(self) -> AlertWriteList:
         from ._alert import AlertWrite, AlertWriteList
-
         return AlertWriteList([item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)])
 
     @property
     def case(self) -> ShopCaseWriteList:
         from ._shop_case import ShopCaseWrite, ShopCaseWriteList
-
         return ShopCaseWriteList([item.case for item in self.data if isinstance(item.case, ShopCaseWrite)])
 
 class ShopPreprocessorOutputApplyList(ShopPreprocessorOutputWriteList): ...
-
 
 
 def _create_shop_preprocessor_output_filter(

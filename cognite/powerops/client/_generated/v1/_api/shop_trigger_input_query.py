@@ -83,7 +83,6 @@ class ShopTriggerInputQueryAPI(QueryAPI[T_DomainModelList]):
                 result_cls=ShopPreprocessorInput,
             ),
         )
-
     def _query_append_case(self, from_: str) -> None:
         self._builder.append(
             NodeQueryStep(

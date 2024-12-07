@@ -29,7 +29,6 @@ if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1._api.shop_file_query import ShopFileQueryAPI
 
 
-
 class ShopCaseQueryAPI(QueryAPI[T_DomainModelList]):
     _view_id = dm.ViewId("power_ops_core", "ShopCase", "1")
 
@@ -53,7 +52,6 @@ class ShopCaseQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
-
     def shop_files(
         self,
         name: str | list[str] | None = None,
@@ -103,7 +101,6 @@ class ShopCaseQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "ShopCase.shopFiles"),
-
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )

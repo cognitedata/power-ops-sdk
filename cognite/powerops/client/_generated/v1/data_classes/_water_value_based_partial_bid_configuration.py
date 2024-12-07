@@ -36,7 +36,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     BooleanFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._partial_bid_configuration import PartialBidConfiguration, PartialBidConfigurationWrite
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._plant_water_value_based import PlantWaterValueBased, PlantWaterValueBasedList, PlantWaterValueBasedGraphQL, PlantWaterValueBasedWrite, PlantWaterValueBasedWriteList
 
@@ -64,6 +63,7 @@ _WATERVALUEBASEDPARTIALBIDCONFIGURATION_PROPERTIES_BY_FIELD = {
     "add_steps": "addSteps",
 }
 
+
 class WaterValueBasedPartialBidConfigurationGraphQL(GraphQLCore):
     """This represents the reading version of water value based partial bid configuration, used
     when data is retrieved from CDF using GraphQL.
@@ -79,6 +79,7 @@ class WaterValueBasedPartialBidConfigurationGraphQL(GraphQLCore):
         power_asset: TODO description (has to be a Plant)
         add_steps: TODO definition
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "WaterValueBasedPartialBidConfiguration", "1")
     name: Optional[str] = None
     method: Optional[str] = None
@@ -95,6 +96,8 @@ class WaterValueBasedPartialBidConfigurationGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("power_asset", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -124,7 +127,6 @@ if isinstance(self.power_asset, GraphQLCore)
 else self.power_asset,
             add_steps=self.add_steps,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -157,10 +159,13 @@ class WaterValueBasedPartialBidConfiguration(PartialBidConfiguration):
         power_asset: TODO description (has to be a Plant)
         add_steps: TODO definition
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "WaterValueBasedPartialBidConfiguration", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "WaterValueBasedPartialBidConfiguration")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> WaterValueBasedPartialBidConfigurationWrite:
         """Convert this read version of water value based partial bid configuration to the writing version."""
         return WaterValueBasedPartialBidConfigurationWrite(
@@ -183,7 +188,6 @@ else self.power_asset,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -192,13 +196,11 @@ else self.power_asset,
         edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
     ) -> None:
         from ._plant_water_value_based import PlantWaterValueBased
-
         for instance in instances.values():
             if isinstance(instance.power_asset, (dm.NodeId, str)) and (power_asset := nodes_by_id.get(instance.power_asset)) and isinstance(
                     power_asset, PlantWaterValueBased
             ):
                 instance.power_asset = power_asset
-
 
 
 class WaterValueBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
@@ -215,9 +217,11 @@ class WaterValueBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
         power_asset: TODO description (has to be a Plant)
         add_steps: TODO definition
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "WaterValueBasedPartialBidConfiguration", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "WaterValueBasedPartialBidConfiguration")
+
 
     def _to_instances_write(
         self,
@@ -246,7 +250,6 @@ class WaterValueBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
         if self.add_steps is not None:
             properties["addSteps"] = self.add_steps
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -261,8 +264,6 @@ class WaterValueBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         if isinstance(self.power_asset, DomainModelWrite):
             other_resources = self.power_asset._to_instances_write(cache)
@@ -282,12 +283,10 @@ class WaterValueBasedPartialBidConfigurationApply(WaterValueBasedPartialBidConfi
         )
         return super().__new__(cls)
 
-
 class WaterValueBasedPartialBidConfigurationList(DomainModelList[WaterValueBasedPartialBidConfiguration]):
     """List of water value based partial bid configurations in the read version."""
 
     _INSTANCE = WaterValueBasedPartialBidConfiguration
-
     def as_write(self) -> WaterValueBasedPartialBidConfigurationWriteList:
         """Convert these read versions of water value based partial bid configuration to the writing versions."""
         return WaterValueBasedPartialBidConfigurationWriteList([node.as_write() for node in self.data])
@@ -304,23 +303,18 @@ class WaterValueBasedPartialBidConfigurationList(DomainModelList[WaterValueBased
     @property
     def power_asset(self) -> PlantWaterValueBasedList:
         from ._plant_water_value_based import PlantWaterValueBased, PlantWaterValueBasedList
-
         return PlantWaterValueBasedList([item.power_asset for item in self.data if isinstance(item.power_asset, PlantWaterValueBased)])
-
 
 class WaterValueBasedPartialBidConfigurationWriteList(DomainModelWriteList[WaterValueBasedPartialBidConfigurationWrite]):
     """List of water value based partial bid configurations in the writing version."""
 
     _INSTANCE = WaterValueBasedPartialBidConfigurationWrite
-
     @property
     def power_asset(self) -> PlantWaterValueBasedWriteList:
         from ._plant_water_value_based import PlantWaterValueBasedWrite, PlantWaterValueBasedWriteList
-
         return PlantWaterValueBasedWriteList([item.power_asset for item in self.data if isinstance(item.power_asset, PlantWaterValueBasedWrite)])
 
 class WaterValueBasedPartialBidConfigurationApplyList(WaterValueBasedPartialBidConfigurationWriteList): ...
-
 
 
 def _create_water_value_based_partial_bid_configuration_filter(

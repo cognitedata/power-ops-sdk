@@ -38,7 +38,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     IntFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._function_input import FunctionInput, FunctionInputWrite
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._bid_configuration_day_ahead import BidConfigurationDayAhead, BidConfigurationDayAheadList, BidConfigurationDayAheadGraphQL, BidConfigurationDayAheadWrite, BidConfigurationDayAheadWriteList
 
@@ -68,6 +67,7 @@ _TASKDISPATCHERINPUT_PROPERTIES_BY_FIELD = {
     "bid_date": "bidDate",
 }
 
+
 class TaskDispatcherInputGraphQL(GraphQLCore):
     """This represents the reading version of task dispatcher input, used
     when data is retrieved from CDF using GraphQL.
@@ -85,6 +85,7 @@ class TaskDispatcherInputGraphQL(GraphQLCore):
         bid_configuration: The bid configuration field.
         bid_date: The bid date
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "TaskDispatcherInput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
@@ -103,6 +104,8 @@ class TaskDispatcherInputGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("bid_configuration", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -134,7 +137,6 @@ if isinstance(self.bid_configuration, GraphQLCore)
 else self.bid_configuration,
             bid_date=self.bid_date,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -171,12 +173,15 @@ class TaskDispatcherInput(FunctionInput):
         bid_configuration: The bid configuration field.
         bid_date: The bid date
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "TaskDispatcherInput", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "TaskDispatcherInput")
     bid_configuration: Union[BidConfigurationDayAhead, str, dm.NodeId, None] = Field(default=None, repr=False, alias="bidConfiguration")
     bid_date: Optional[datetime.date] = Field(None, alias="bidDate")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> TaskDispatcherInputWrite:
         """Convert this read version of task dispatcher input to the writing version."""
         return TaskDispatcherInputWrite(
@@ -201,7 +206,6 @@ else self.bid_configuration,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -210,13 +214,11 @@ else self.bid_configuration,
         edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
     ) -> None:
         from ._bid_configuration_day_ahead import BidConfigurationDayAhead
-
         for instance in instances.values():
             if isinstance(instance.bid_configuration, (dm.NodeId, str)) and (bid_configuration := nodes_by_id.get(instance.bid_configuration)) and isinstance(
                     bid_configuration, BidConfigurationDayAhead
             ):
                 instance.bid_configuration = bid_configuration
-
 
 
 class TaskDispatcherInputWrite(FunctionInputWrite):
@@ -235,6 +237,7 @@ class TaskDispatcherInputWrite(FunctionInputWrite):
         bid_configuration: The bid configuration field.
         bid_date: The bid date
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "TaskDispatcherInput", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "TaskDispatcherInput")
@@ -250,6 +253,7 @@ class TaskDispatcherInputWrite(FunctionInputWrite):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -283,7 +287,6 @@ class TaskDispatcherInputWrite(FunctionInputWrite):
         if self.bid_date is not None or write_none:
             properties["bidDate"] = self.bid_date.isoformat() if self.bid_date else None
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -298,8 +301,6 @@ class TaskDispatcherInputWrite(FunctionInputWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         if isinstance(self.bid_configuration, DomainModelWrite):
             other_resources = self.bid_configuration._to_instances_write(cache)
@@ -319,12 +320,10 @@ class TaskDispatcherInputApply(TaskDispatcherInputWrite):
         )
         return super().__new__(cls)
 
-
 class TaskDispatcherInputList(DomainModelList[TaskDispatcherInput]):
     """List of task dispatcher inputs in the read version."""
 
     _INSTANCE = TaskDispatcherInput
-
     def as_write(self) -> TaskDispatcherInputWriteList:
         """Convert these read versions of task dispatcher input to the writing versions."""
         return TaskDispatcherInputWriteList([node.as_write() for node in self.data])
@@ -341,23 +340,18 @@ class TaskDispatcherInputList(DomainModelList[TaskDispatcherInput]):
     @property
     def bid_configuration(self) -> BidConfigurationDayAheadList:
         from ._bid_configuration_day_ahead import BidConfigurationDayAhead, BidConfigurationDayAheadList
-
         return BidConfigurationDayAheadList([item.bid_configuration for item in self.data if isinstance(item.bid_configuration, BidConfigurationDayAhead)])
-
 
 class TaskDispatcherInputWriteList(DomainModelWriteList[TaskDispatcherInputWrite]):
     """List of task dispatcher inputs in the writing version."""
 
     _INSTANCE = TaskDispatcherInputWrite
-
     @property
     def bid_configuration(self) -> BidConfigurationDayAheadWriteList:
         from ._bid_configuration_day_ahead import BidConfigurationDayAheadWrite, BidConfigurationDayAheadWriteList
-
         return BidConfigurationDayAheadWriteList([item.bid_configuration for item in self.data if isinstance(item.bid_configuration, BidConfigurationDayAheadWrite)])
 
 class TaskDispatcherInputApplyList(TaskDispatcherInputWriteList): ...
-
 
 
 def _create_task_dispatcher_input_filter(

@@ -69,29 +69,29 @@ class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, Plant
         self.head_direct_time_series = PlantInformationHeadDirectTimeSeriesAPI(client, self._view_id)
 
     def __call__(
-            self,
-            name: str | list[str] | None = None,
-            name_prefix: str | None = None,
-            display_name: str | list[str] | None = None,
-            display_name_prefix: str | None = None,
-            min_ordering: int | None = None,
-            max_ordering: int | None = None,
-            asset_type: str | list[str] | None = None,
-            asset_type_prefix: str | None = None,
-            min_head_loss_factor: float | None = None,
-            max_head_loss_factor: float | None = None,
-            min_outlet_level: float | None = None,
-            max_outlet_level: float | None = None,
-            min_production_max: float | None = None,
-            max_production_max: float | None = None,
-            min_production_min: float | None = None,
-            max_production_min: float | None = None,
-            min_connection_losses: float | None = None,
-            max_connection_losses: float | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
+        min_head_loss_factor: float | None = None,
+        max_head_loss_factor: float | None = None,
+        min_outlet_level: float | None = None,
+        max_outlet_level: float | None = None,
+        min_production_max: float | None = None,
+        max_production_max: float | None = None,
+        min_production_min: float | None = None,
+        max_production_min: float | None = None,
+        min_connection_losses: float | None = None,
+        max_connection_losses: float | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> PlantInformationQueryAPI[PlantInformationList]:
         """Query starting at plant information.
 
@@ -156,7 +156,6 @@ class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, Plant
         )
         builder = DataClassQueryBuilder(PlantInformationList)
         return PlantInformationQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -272,7 +271,6 @@ class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, Plant
                 ),
                                                ]
         )
-
 
     def search(
         self,
@@ -413,8 +411,7 @@ class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, Plant
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -446,8 +443,7 @@ class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, Plant
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -481,8 +477,7 @@ class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, Plant
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
@@ -804,7 +799,7 @@ class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, Plant
         )
 
         if retrieve_connections == "skip":
-                return self._list(
+            return self._list(
                 limit=limit,
                 filter=filter_,
                 sort_by=sort_by,  # type: ignore[arg-type]

@@ -38,7 +38,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     IntFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._function_input import FunctionInput, FunctionInputWrite
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._bid_configuration_day_ahead import BidConfigurationDayAhead, BidConfigurationDayAheadList, BidConfigurationDayAheadGraphQL, BidConfigurationDayAheadWrite, BidConfigurationDayAheadWriteList
     from cognite.powerops.client._generated.v1.data_classes._partial_bid_configuration import PartialBidConfiguration, PartialBidConfigurationList, PartialBidConfigurationGraphQL, PartialBidConfigurationWrite, PartialBidConfigurationWriteList
@@ -69,6 +68,7 @@ _PARTIALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD = {
     "bid_date": "bidDate",
 }
 
+
 class PartialBidMatrixCalculationInputGraphQL(GraphQLCore):
     """This represents the reading version of partial bid matrix calculation input, used
     when data is retrieved from CDF using GraphQL.
@@ -87,6 +87,7 @@ class PartialBidMatrixCalculationInputGraphQL(GraphQLCore):
         bid_configuration: TODO description
         partial_bid_configuration: The partial bid configuration related to the bid calculation task
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PartialBidMatrixCalculationInput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
@@ -106,6 +107,8 @@ class PartialBidMatrixCalculationInputGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("bid_configuration", "partial_bid_configuration", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -140,7 +143,6 @@ else self.bid_configuration,
 if isinstance(self.partial_bid_configuration, GraphQLCore)
 else self.partial_bid_configuration,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -181,6 +183,7 @@ class PartialBidMatrixCalculationInput(FunctionInput):
         bid_configuration: TODO description
         partial_bid_configuration: The partial bid configuration related to the bid calculation task
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PartialBidMatrixCalculationInput", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = None
@@ -188,6 +191,8 @@ class PartialBidMatrixCalculationInput(FunctionInput):
     bid_configuration: Union[BidConfigurationDayAhead, str, dm.NodeId, None] = Field(default=None, repr=False, alias="bidConfiguration")
     partial_bid_configuration: Union[PartialBidConfiguration, str, dm.NodeId, None] = Field(default=None, repr=False, alias="partialBidConfiguration")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> PartialBidMatrixCalculationInputWrite:
         """Convert this read version of partial bid matrix calculation input to the writing version."""
         return PartialBidMatrixCalculationInputWrite(
@@ -215,7 +220,6 @@ else self.partial_bid_configuration,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -225,7 +229,6 @@ else self.partial_bid_configuration,
     ) -> None:
         from ._bid_configuration_day_ahead import BidConfigurationDayAhead
         from ._partial_bid_configuration import PartialBidConfiguration
-
         for instance in instances.values():
             if isinstance(instance.bid_configuration, (dm.NodeId, str)) and (bid_configuration := nodes_by_id.get(instance.bid_configuration)) and isinstance(
                     bid_configuration, BidConfigurationDayAhead
@@ -235,7 +238,6 @@ else self.partial_bid_configuration,
                     partial_bid_configuration, PartialBidConfiguration
             ):
                 instance.partial_bid_configuration = partial_bid_configuration
-
 
 
 class PartialBidMatrixCalculationInputWrite(FunctionInputWrite):
@@ -255,6 +257,7 @@ class PartialBidMatrixCalculationInputWrite(FunctionInputWrite):
         bid_configuration: TODO description
         partial_bid_configuration: The partial bid configuration related to the bid calculation task
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PartialBidMatrixCalculationInput", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
@@ -271,6 +274,7 @@ class PartialBidMatrixCalculationInputWrite(FunctionInputWrite):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -310,7 +314,6 @@ class PartialBidMatrixCalculationInputWrite(FunctionInputWrite):
                 "externalId": self.partial_bid_configuration if isinstance(self.partial_bid_configuration, str) else self.partial_bid_configuration.external_id,
             }
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -325,8 +328,6 @@ class PartialBidMatrixCalculationInputWrite(FunctionInputWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         if isinstance(self.bid_configuration, DomainModelWrite):
             other_resources = self.bid_configuration._to_instances_write(cache)
@@ -350,12 +351,10 @@ class PartialBidMatrixCalculationInputApply(PartialBidMatrixCalculationInputWrit
         )
         return super().__new__(cls)
 
-
 class PartialBidMatrixCalculationInputList(DomainModelList[PartialBidMatrixCalculationInput]):
     """List of partial bid matrix calculation inputs in the read version."""
 
     _INSTANCE = PartialBidMatrixCalculationInput
-
     def as_write(self) -> PartialBidMatrixCalculationInputWriteList:
         """Convert these read versions of partial bid matrix calculation input to the writing versions."""
         return PartialBidMatrixCalculationInputWriteList([node.as_write() for node in self.data])
@@ -372,35 +371,26 @@ class PartialBidMatrixCalculationInputList(DomainModelList[PartialBidMatrixCalcu
     @property
     def bid_configuration(self) -> BidConfigurationDayAheadList:
         from ._bid_configuration_day_ahead import BidConfigurationDayAhead, BidConfigurationDayAheadList
-
         return BidConfigurationDayAheadList([item.bid_configuration for item in self.data if isinstance(item.bid_configuration, BidConfigurationDayAhead)])
-
     @property
     def partial_bid_configuration(self) -> PartialBidConfigurationList:
         from ._partial_bid_configuration import PartialBidConfiguration, PartialBidConfigurationList
-
         return PartialBidConfigurationList([item.partial_bid_configuration for item in self.data if isinstance(item.partial_bid_configuration, PartialBidConfiguration)])
-
 
 class PartialBidMatrixCalculationInputWriteList(DomainModelWriteList[PartialBidMatrixCalculationInputWrite]):
     """List of partial bid matrix calculation inputs in the writing version."""
 
     _INSTANCE = PartialBidMatrixCalculationInputWrite
-
     @property
     def bid_configuration(self) -> BidConfigurationDayAheadWriteList:
         from ._bid_configuration_day_ahead import BidConfigurationDayAheadWrite, BidConfigurationDayAheadWriteList
-
         return BidConfigurationDayAheadWriteList([item.bid_configuration for item in self.data if isinstance(item.bid_configuration, BidConfigurationDayAheadWrite)])
-
     @property
     def partial_bid_configuration(self) -> PartialBidConfigurationWriteList:
         from ._partial_bid_configuration import PartialBidConfigurationWrite, PartialBidConfigurationWriteList
-
         return PartialBidConfigurationWriteList([item.partial_bid_configuration for item in self.data if isinstance(item.partial_bid_configuration, PartialBidConfigurationWrite)])
 
 class PartialBidMatrixCalculationInputApplyList(PartialBidMatrixCalculationInputWriteList): ...
-
 
 
 def _create_partial_bid_matrix_calculation_input_filter(

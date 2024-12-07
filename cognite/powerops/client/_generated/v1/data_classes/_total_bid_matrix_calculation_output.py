@@ -36,7 +36,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     IntFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._function_output import FunctionOutput, FunctionOutputWrite
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._alert import Alert, AlertList, AlertGraphQL, AlertWrite, AlertWriteList
     from cognite.powerops.client._generated.v1.data_classes._bid_document_day_ahead import BidDocumentDayAhead, BidDocumentDayAheadList, BidDocumentDayAheadGraphQL, BidDocumentDayAheadWrite, BidDocumentDayAheadWriteList
@@ -67,6 +66,7 @@ _TOTALBIDMATRIXCALCULATIONOUTPUT_PROPERTIES_BY_FIELD = {
     "function_call_id": "functionCallId",
 }
 
+
 class TotalBidMatrixCalculationOutputGraphQL(GraphQLCore):
     """This represents the reading version of total bid matrix calculation output, used
     when data is retrieved from CDF using GraphQL.
@@ -85,6 +85,7 @@ class TotalBidMatrixCalculationOutputGraphQL(GraphQLCore):
         alerts: An array of calculation level Alerts.
         bid_document: The bid document field.
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "TotalBidMatrixCalculationOutput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
@@ -104,6 +105,8 @@ class TotalBidMatrixCalculationOutputGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("function_input", "alerts", "bid_document", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -133,12 +136,11 @@ class TotalBidMatrixCalculationOutputGraphQL(GraphQLCore):
             function_input=self.function_input.as_read()
 if isinstance(self.function_input, GraphQLCore)
 else self.function_input,
-            alerts=[alert.as_read() for alert in self.alerts or []],
+            alerts=[alert.as_read() for alert in self.alerts] if self.alerts is not None else None,
             bid_document=self.bid_document.as_read()
 if isinstance(self.bid_document, GraphQLCore)
 else self.bid_document,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -155,7 +157,7 @@ else self.bid_document,
             function_input=self.function_input.as_write()
 if isinstance(self.function_input, GraphQLCore)
 else self.function_input,
-            alerts=[alert.as_write() for alert in self.alerts or []],
+            alerts=[alert.as_write() for alert in self.alerts] if self.alerts is not None else None,
             bid_document=self.bid_document.as_write()
 if isinstance(self.bid_document, GraphQLCore)
 else self.bid_document,
@@ -179,11 +181,14 @@ class TotalBidMatrixCalculationOutput(FunctionOutput):
         alerts: An array of calculation level Alerts.
         bid_document: The bid document field.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "TotalBidMatrixCalculationOutput", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "TotalBidMatrixCalculationOutput")
     bid_document: Union[BidDocumentDayAhead, str, dm.NodeId, None] = Field(default=None, repr=False, alias="bidDocument")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> TotalBidMatrixCalculationOutputWrite:
         """Convert this read version of total bid matrix calculation output to the writing version."""
         return TotalBidMatrixCalculationOutputWrite(
@@ -197,7 +202,7 @@ class TotalBidMatrixCalculationOutput(FunctionOutput):
             function_input=self.function_input.as_write()
 if isinstance(self.function_input, DomainModel)
 else self.function_input,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
+            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts] if self.alerts is not None else None,
             bid_document=self.bid_document.as_write()
 if isinstance(self.bid_document, DomainModel)
 else self.bid_document,
@@ -211,7 +216,6 @@ else self.bid_document,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -222,7 +226,6 @@ else self.bid_document,
         from ._alert import Alert
         from ._bid_document_day_ahead import BidDocumentDayAhead
         from ._total_bid_matrix_calculation_input import TotalBidMatrixCalculationInput
-
         for instance in instances.values():
             if isinstance(instance.function_input, (dm.NodeId, str)) and (function_input := nodes_by_id.get(instance.function_input)) and isinstance(
                     function_input, TotalBidMatrixCalculationInput
@@ -265,7 +268,6 @@ else self.bid_document,
 
 
 
-
 class TotalBidMatrixCalculationOutputWrite(FunctionOutputWrite):
     """This represents the writing version of total bid matrix calculation output.
 
@@ -283,6 +285,7 @@ class TotalBidMatrixCalculationOutputWrite(FunctionOutputWrite):
         alerts: An array of calculation level Alerts.
         bid_document: The bid document field.
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "TotalBidMatrixCalculationOutput", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "TotalBidMatrixCalculationOutput")
@@ -297,6 +300,7 @@ class TotalBidMatrixCalculationOutputWrite(FunctionOutputWrite):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -333,7 +337,6 @@ class TotalBidMatrixCalculationOutputWrite(FunctionOutputWrite):
                 "externalId": self.bid_document if isinstance(self.bid_document, str) else self.bid_document.external_id,
             }
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -348,8 +351,6 @@ class TotalBidMatrixCalculationOutputWrite(FunctionOutputWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
@@ -385,12 +386,10 @@ class TotalBidMatrixCalculationOutputApply(TotalBidMatrixCalculationOutputWrite)
         )
         return super().__new__(cls)
 
-
 class TotalBidMatrixCalculationOutputList(DomainModelList[TotalBidMatrixCalculationOutput]):
     """List of total bid matrix calculation outputs in the read version."""
 
     _INSTANCE = TotalBidMatrixCalculationOutput
-
     def as_write(self) -> TotalBidMatrixCalculationOutputWriteList:
         """Convert these read versions of total bid matrix calculation output to the writing versions."""
         return TotalBidMatrixCalculationOutputWriteList([node.as_write() for node in self.data])
@@ -407,47 +406,36 @@ class TotalBidMatrixCalculationOutputList(DomainModelList[TotalBidMatrixCalculat
     @property
     def function_input(self) -> TotalBidMatrixCalculationInputList:
         from ._total_bid_matrix_calculation_input import TotalBidMatrixCalculationInput, TotalBidMatrixCalculationInputList
-
         return TotalBidMatrixCalculationInputList([item.function_input for item in self.data if isinstance(item.function_input, TotalBidMatrixCalculationInput)])
-
     @property
     def alerts(self) -> AlertList:
         from ._alert import Alert, AlertList
-
         return AlertList([item for items in self.data for item in items.alerts or [] if isinstance(item, Alert)])
 
     @property
     def bid_document(self) -> BidDocumentDayAheadList:
         from ._bid_document_day_ahead import BidDocumentDayAhead, BidDocumentDayAheadList
-
         return BidDocumentDayAheadList([item.bid_document for item in self.data if isinstance(item.bid_document, BidDocumentDayAhead)])
-
 
 class TotalBidMatrixCalculationOutputWriteList(DomainModelWriteList[TotalBidMatrixCalculationOutputWrite]):
     """List of total bid matrix calculation outputs in the writing version."""
 
     _INSTANCE = TotalBidMatrixCalculationOutputWrite
-
     @property
     def function_input(self) -> TotalBidMatrixCalculationInputWriteList:
         from ._total_bid_matrix_calculation_input import TotalBidMatrixCalculationInputWrite, TotalBidMatrixCalculationInputWriteList
-
         return TotalBidMatrixCalculationInputWriteList([item.function_input for item in self.data if isinstance(item.function_input, TotalBidMatrixCalculationInputWrite)])
-
     @property
     def alerts(self) -> AlertWriteList:
         from ._alert import AlertWrite, AlertWriteList
-
         return AlertWriteList([item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)])
 
     @property
     def bid_document(self) -> BidDocumentDayAheadWriteList:
         from ._bid_document_day_ahead import BidDocumentDayAheadWrite, BidDocumentDayAheadWriteList
-
         return BidDocumentDayAheadWriteList([item.bid_document for item in self.data if isinstance(item.bid_document, BidDocumentDayAheadWrite)])
 
 class TotalBidMatrixCalculationOutputApplyList(TotalBidMatrixCalculationOutputWriteList): ...
-
 
 
 def _create_total_bid_matrix_calculation_output_filter(

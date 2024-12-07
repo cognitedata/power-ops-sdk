@@ -34,7 +34,6 @@ if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1._api.shop_time_series_query import ShopTimeSeriesQueryAPI
 
 
-
 class ShopResultQueryAPI(QueryAPI[T_DomainModelList]):
     _view_id = dm.ViewId("power_ops_core", "ShopResult", "1")
 
@@ -58,7 +57,6 @@ class ShopResultQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
-
     def alerts(
         self,
         min_time: datetime.datetime | None = None,
@@ -122,7 +120,6 @@ class ShopResultQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "calculationIssue"),
-
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -165,7 +162,6 @@ class ShopResultQueryAPI(QueryAPI[T_DomainModelList]):
         if retrieve_case:
             self._query_append_case(from_)
         return AlertQueryAPI(self._client, self._builder, node_filer, limit)
-
     def output_time_series(
         self,
         object_type: str | list[str] | None = None,
@@ -209,7 +205,6 @@ class ShopResultQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "ShopResult.outputTimeSeries"),
-
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )

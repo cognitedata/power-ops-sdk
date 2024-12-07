@@ -32,6 +32,7 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     TimeSeries,
     TimeSeriesWrite,
     TimeSeriesGraphQL,
+    TimeSeriesReferenceAPI,
     T_DomainModelList,
     as_direct_relation_reference,
     as_instance_dict_id,
@@ -47,7 +48,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
 )
 from cognite.powerops.client._generated.v1.data_classes._price_area_afrr import PriceAreaAFRR, PriceAreaAFRRWrite
 from cognite.powerops.client._generated.v1.data_classes._price_area_day_ahead import PriceAreaDayAhead, PriceAreaDayAheadWrite
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._bid_configuration_day_ahead import BidConfigurationDayAhead, BidConfigurationDayAheadList, BidConfigurationDayAheadGraphQL, BidConfigurationDayAheadWrite, BidConfigurationDayAheadWriteList
 
@@ -87,6 +87,7 @@ _PRICEAREAINFORMATION_PROPERTIES_BY_FIELD = {
     "price_scenarios": "priceScenarios",
 }
 
+
 class PriceAreaInformationGraphQL(GraphQLCore):
     """This represents the reading version of price area information, used
     when data is retrieved from CDF using GraphQL.
@@ -114,6 +115,7 @@ class PriceAreaInformationGraphQL(GraphQLCore):
         main_price_scenario: TODO
         price_scenarios: TODO
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceAreaInformation", "1")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
@@ -142,6 +144,7 @@ class PriceAreaInformationGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
     @field_validator("price_scenarios", mode="before")
     def clean_list(cls, value: Any) -> Any:
         if isinstance(value, list):
@@ -189,7 +192,6 @@ else self.default_bid_configuration,
             main_price_scenario=self.main_price_scenario.as_read() if self.main_price_scenario else None,
             price_scenarios=[price_scenario.as_read() for price_scenario in self.price_scenarios or []] if self.price_scenarios is not None else None,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -246,10 +248,13 @@ class PriceAreaInformation(PriceAreaAFRR, PriceAreaDayAhead):
         main_price_scenario: TODO
         price_scenarios: TODO
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceAreaInformation", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = None
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> PriceAreaInformationWrite:
         """Convert this read version of price area information to the writing version."""
         return PriceAreaInformationWrite(
@@ -284,7 +289,6 @@ else self.default_bid_configuration,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -293,13 +297,11 @@ else self.default_bid_configuration,
         edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
     ) -> None:
         from ._bid_configuration_day_ahead import BidConfigurationDayAhead
-
         for instance in instances.values():
             if isinstance(instance.default_bid_configuration, (dm.NodeId, str)) and (default_bid_configuration := nodes_by_id.get(instance.default_bid_configuration)) and isinstance(
                     default_bid_configuration, BidConfigurationDayAhead
             ):
                 instance.default_bid_configuration = default_bid_configuration
-
 
 
 class PriceAreaInformationWrite(PriceAreaAFRRWrite, PriceAreaDayAheadWrite):
@@ -328,9 +330,11 @@ class PriceAreaInformationWrite(PriceAreaAFRRWrite, PriceAreaDayAheadWrite):
         main_price_scenario: TODO
         price_scenarios: TODO
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceAreaInformation", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
+
 
     def _to_instances_write(
         self,
@@ -395,7 +399,6 @@ class PriceAreaInformationWrite(PriceAreaAFRRWrite, PriceAreaDayAheadWrite):
         if self.price_scenarios is not None or write_none:
             properties["priceScenarios"] = [price_scenario if isinstance(price_scenario, str) else price_scenario.external_id for price_scenario in self.price_scenarios or []] if self.price_scenarios is not None else None
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -410,8 +413,6 @@ class PriceAreaInformationWrite(PriceAreaAFRRWrite, PriceAreaDayAheadWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         if isinstance(self.default_bid_configuration, DomainModelWrite):
             other_resources = self.default_bid_configuration._to_instances_write(cache)
@@ -465,12 +466,10 @@ class PriceAreaInformationApply(PriceAreaInformationWrite):
         )
         return super().__new__(cls)
 
-
 class PriceAreaInformationList(DomainModelList[PriceAreaInformation]):
     """List of price area information in the read version."""
 
     _INSTANCE = PriceAreaInformation
-
     def as_write(self) -> PriceAreaInformationWriteList:
         """Convert these read versions of price area information to the writing versions."""
         return PriceAreaInformationWriteList([node.as_write() for node in self.data])
@@ -487,23 +486,18 @@ class PriceAreaInformationList(DomainModelList[PriceAreaInformation]):
     @property
     def default_bid_configuration(self) -> BidConfigurationDayAheadList:
         from ._bid_configuration_day_ahead import BidConfigurationDayAhead, BidConfigurationDayAheadList
-
         return BidConfigurationDayAheadList([item.default_bid_configuration for item in self.data if isinstance(item.default_bid_configuration, BidConfigurationDayAhead)])
-
 
 class PriceAreaInformationWriteList(DomainModelWriteList[PriceAreaInformationWrite]):
     """List of price area information in the writing version."""
 
     _INSTANCE = PriceAreaInformationWrite
-
     @property
     def default_bid_configuration(self) -> BidConfigurationDayAheadWriteList:
         from ._bid_configuration_day_ahead import BidConfigurationDayAheadWrite, BidConfigurationDayAheadWriteList
-
         return BidConfigurationDayAheadWriteList([item.default_bid_configuration for item in self.data if isinstance(item.default_bid_configuration, BidConfigurationDayAheadWrite)])
 
 class PriceAreaInformationApplyList(PriceAreaInformationWriteList): ...
-
 
 
 def _create_price_area_information_filter(
@@ -613,6 +607,74 @@ class _PriceAreaInformationQuery(NodeQueryCore[T_DomainModelList, PriceAreaInfor
             self.display_name,
             self.ordering,
             self.asset_type,
+        ])
+        self.capacity_price_up = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.capacity_price_up if isinstance(item.capacity_price_up, str) else item.capacity_price_up.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.capacity_price_up is not None and
+               (isinstance(item.capacity_price_up, str) or item.capacity_price_up.external_id is not None)
+        ])
+        self.capacity_price_down = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.capacity_price_down if isinstance(item.capacity_price_down, str) else item.capacity_price_down.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.capacity_price_down is not None and
+               (isinstance(item.capacity_price_down, str) or item.capacity_price_down.external_id is not None)
+        ])
+        self.activation_price_up = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.activation_price_up if isinstance(item.activation_price_up, str) else item.activation_price_up.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.activation_price_up is not None and
+               (isinstance(item.activation_price_up, str) or item.activation_price_up.external_id is not None)
+        ])
+        self.activation_price_down = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.activation_price_down if isinstance(item.activation_price_down, str) else item.activation_price_down.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.activation_price_down is not None and
+               (isinstance(item.activation_price_down, str) or item.activation_price_down.external_id is not None)
+        ])
+        self.relative_activation = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.relative_activation if isinstance(item.relative_activation, str) else item.relative_activation.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.relative_activation is not None and
+               (isinstance(item.relative_activation, str) or item.relative_activation.external_id is not None)
+        ])
+        self.total_capacity_allocation_up = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.total_capacity_allocation_up if isinstance(item.total_capacity_allocation_up, str) else item.total_capacity_allocation_up.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.total_capacity_allocation_up is not None and
+               (isinstance(item.total_capacity_allocation_up, str) or item.total_capacity_allocation_up.external_id is not None)
+        ])
+        self.total_capacity_allocation_down = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.total_capacity_allocation_down if isinstance(item.total_capacity_allocation_down, str) else item.total_capacity_allocation_down.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.total_capacity_allocation_down is not None and
+               (isinstance(item.total_capacity_allocation_down, str) or item.total_capacity_allocation_down.external_id is not None)
+        ])
+        self.own_capacity_allocation_up = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.own_capacity_allocation_up if isinstance(item.own_capacity_allocation_up, str) else item.own_capacity_allocation_up.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.own_capacity_allocation_up is not None and
+               (isinstance(item.own_capacity_allocation_up, str) or item.own_capacity_allocation_up.external_id is not None)
+        ])
+        self.own_capacity_allocation_down = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.own_capacity_allocation_down if isinstance(item.own_capacity_allocation_down, str) else item.own_capacity_allocation_down.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.own_capacity_allocation_down is not None and
+               (isinstance(item.own_capacity_allocation_down, str) or item.own_capacity_allocation_down.external_id is not None)
+        ])
+        self.main_price_scenario = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.main_price_scenario if isinstance(item.main_price_scenario, str) else item.main_price_scenario.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.main_price_scenario is not None and
+               (isinstance(item.main_price_scenario, str) or item.main_price_scenario.external_id is not None)
+        ])
+        self.price_scenarios = TimeSeriesReferenceAPI(client,  lambda limit: [
+            ts if isinstance(ts, str) else ts.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.price_scenarios is not None
+            for ts in item.price_scenarios
+            if ts is not None and
+               (isinstance(ts, str) or ts.external_id is not None)
         ])
 
     def list_price_area_information(self, limit: int = DEFAULT_QUERY_LIMIT) -> PriceAreaInformationList:

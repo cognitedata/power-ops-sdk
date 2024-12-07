@@ -15,6 +15,10 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.104.4] - 2024-12-06
+### Fixed
+* Switch curve properties to be float64 instead of float32
+
 ## [0.104.3] - 2024-12-03
 ### Added
 * Possibility to specify which CogShop service (`prod` or `staging`) to use

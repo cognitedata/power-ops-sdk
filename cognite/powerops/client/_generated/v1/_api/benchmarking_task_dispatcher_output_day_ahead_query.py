@@ -34,7 +34,6 @@ if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1._api.function_input_query import FunctionInputQueryAPI
 
 
-
 class BenchmarkingTaskDispatcherOutputDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
     _view_id = dm.ViewId("power_ops_core", "BenchmarkingTaskDispatcherOutputDayAhead", "1")
 
@@ -58,7 +57,6 @@ class BenchmarkingTaskDispatcherOutputDayAheadQueryAPI(QueryAPI[T_DomainModelLis
                 max_retrieve_limit=limit,
             )
         )
-
     def alerts(
         self,
         min_time: datetime.datetime | None = None,
@@ -122,7 +120,6 @@ class BenchmarkingTaskDispatcherOutputDayAheadQueryAPI(QueryAPI[T_DomainModelLis
         from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "calculationIssue"),
-
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )
@@ -165,7 +162,6 @@ class BenchmarkingTaskDispatcherOutputDayAheadQueryAPI(QueryAPI[T_DomainModelLis
         if retrieve_function_input:
             self._query_append_function_input(from_)
         return AlertQueryAPI(self._client, self._builder, node_filer, limit)
-
     def benchmarking_sub_tasks(
         self,
         workflow_execution_id: str | list[str] | None = None,
@@ -213,7 +209,6 @@ class BenchmarkingTaskDispatcherOutputDayAheadQueryAPI(QueryAPI[T_DomainModelLis
         from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "benchmarkingSubTasks"),
-
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )

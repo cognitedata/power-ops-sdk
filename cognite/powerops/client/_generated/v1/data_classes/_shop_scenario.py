@@ -35,7 +35,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     StringFilter,
 
 )
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._shop_attribute_mapping import ShopAttributeMapping, ShopAttributeMappingList, ShopAttributeMappingGraphQL, ShopAttributeMappingWrite, ShopAttributeMappingWriteList
     from cognite.powerops.client._generated.v1.data_classes._shop_commands import ShopCommands, ShopCommandsList, ShopCommandsGraphQL, ShopCommandsWrite, ShopCommandsWriteList
@@ -66,6 +65,7 @@ _SHOPSCENARIO_PROPERTIES_BY_FIELD = {
     "source": "source",
 }
 
+
 class ShopScenarioGraphQL(GraphQLCore, protected_namespaces=()):
     """This represents the reading version of shop scenario, used
     when data is retrieved from CDF using GraphQL.
@@ -84,6 +84,7 @@ class ShopScenarioGraphQL(GraphQLCore, protected_namespaces=()):
         output_definition: An array of output definitions for the time series
         attribute_mappings_override: An array of base mappings to override in shop model file
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopScenario", "1")
     name: Optional[str] = None
     model: Optional[ShopModelGraphQL] = Field(default=None, repr=False)
@@ -103,6 +104,8 @@ class ShopScenarioGraphQL(GraphQLCore, protected_namespaces=()):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("model", "commands", "time_resolution", "output_definition", "attribute_mappings_override", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -136,10 +139,9 @@ else self.commands,
             time_resolution=self.time_resolution.as_read()
 if isinstance(self.time_resolution, GraphQLCore)
 else self.time_resolution,
-            output_definition=[output_definition.as_read() for output_definition in self.output_definition or []],
-            attribute_mappings_override=[attribute_mappings_override.as_read() for attribute_mappings_override in self.attribute_mappings_override or []],
+            output_definition=[output_definition.as_read() for output_definition in self.output_definition] if self.output_definition is not None else None,
+            attribute_mappings_override=[attribute_mappings_override.as_read() for attribute_mappings_override in self.attribute_mappings_override] if self.attribute_mappings_override is not None else None,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -160,8 +162,8 @@ else self.commands,
             time_resolution=self.time_resolution.as_write()
 if isinstance(self.time_resolution, GraphQLCore)
 else self.time_resolution,
-            output_definition=[output_definition.as_write() for output_definition in self.output_definition or []],
-            attribute_mappings_override=[attribute_mappings_override.as_write() for attribute_mappings_override in self.attribute_mappings_override or []],
+            output_definition=[output_definition.as_write() for output_definition in self.output_definition] if self.output_definition is not None else None,
+            attribute_mappings_override=[attribute_mappings_override.as_write() for attribute_mappings_override in self.attribute_mappings_override] if self.attribute_mappings_override is not None else None,
         )
 
 
@@ -182,6 +184,7 @@ class ShopScenario(DomainModel, protected_namespaces=()):
         output_definition: An array of output definitions for the time series
         attribute_mappings_override: An array of base mappings to override in shop model file
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopScenario", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -194,6 +197,8 @@ class ShopScenario(DomainModel, protected_namespaces=()):
     output_definition: Optional[list[Union[ShopOutputTimeSeriesDefinition, str, dm.NodeId]]] = Field(default=None, repr=False, alias="outputDefinition")
     attribute_mappings_override: Optional[list[Union[ShopAttributeMapping, str, dm.NodeId]]] = Field(default=None, repr=False, alias="attributeMappingsOverride")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopScenarioWrite:
         """Convert this read version of shop scenario to the writing version."""
         return ShopScenarioWrite(
@@ -211,8 +216,8 @@ else self.commands,
             time_resolution=self.time_resolution.as_write()
 if isinstance(self.time_resolution, DomainModel)
 else self.time_resolution,
-            output_definition=[output_definition.as_write() if isinstance(output_definition, DomainModel) else output_definition for output_definition in self.output_definition or []],
-            attribute_mappings_override=[attribute_mappings_override.as_write() if isinstance(attribute_mappings_override, DomainModel) else attribute_mappings_override for attribute_mappings_override in self.attribute_mappings_override or []],
+            output_definition=[output_definition.as_write() if isinstance(output_definition, DomainModel) else output_definition for output_definition in self.output_definition] if self.output_definition is not None else None,
+            attribute_mappings_override=[attribute_mappings_override.as_write() if isinstance(attribute_mappings_override, DomainModel) else attribute_mappings_override for attribute_mappings_override in self.attribute_mappings_override] if self.attribute_mappings_override is not None else None,
         )
 
     def as_apply(self) -> ShopScenarioWrite:
@@ -223,7 +228,6 @@ else self.time_resolution,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -236,7 +240,6 @@ else self.time_resolution,
         from ._shop_model import ShopModel
         from ._shop_output_time_series_definition import ShopOutputTimeSeriesDefinition
         from ._shop_time_resolution import ShopTimeResolution
-
         for instance in instances.values():
             if isinstance(instance.model, (dm.NodeId, str)) and (model := nodes_by_id.get(instance.model)) and isinstance(
                     model, ShopModel
@@ -289,7 +292,6 @@ else self.time_resolution,
 
 
 
-
 class ShopScenarioWrite(DomainModelWrite, protected_namespaces=()):
     """This represents the writing version of shop scenario.
 
@@ -307,6 +309,7 @@ class ShopScenarioWrite(DomainModelWrite, protected_namespaces=()):
         output_definition: An array of output definitions for the time series
         attribute_mappings_override: An array of base mappings to override in shop model file
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopScenario", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -328,6 +331,7 @@ class ShopScenarioWrite(DomainModelWrite, protected_namespaces=()):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -364,7 +368,6 @@ class ShopScenarioWrite(DomainModelWrite, protected_namespaces=()):
                 "externalId": self.time_resolution if isinstance(self.time_resolution, str) else self.time_resolution.external_id,
             }
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -379,8 +382,6 @@ class ShopScenarioWrite(DomainModelWrite, protected_namespaces=()):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         edge_type = dm.DirectRelationReference("power_ops_types", "ShopOutputTimeSeriesDefinition")
         for output_definition in self.output_definition or []:
@@ -432,12 +433,10 @@ class ShopScenarioApply(ShopScenarioWrite):
         )
         return super().__new__(cls)
 
-
 class ShopScenarioList(DomainModelList[ShopScenario]):
     """List of shop scenarios in the read version."""
 
     _INSTANCE = ShopScenario
-
     def as_write(self) -> ShopScenarioWriteList:
         """Convert these read versions of shop scenario to the writing versions."""
         return ShopScenarioWriteList([node.as_write() for node in self.data])
@@ -454,31 +453,23 @@ class ShopScenarioList(DomainModelList[ShopScenario]):
     @property
     def model(self) -> ShopModelList:
         from ._shop_model import ShopModel, ShopModelList
-
         return ShopModelList([item.model for item in self.data if isinstance(item.model, ShopModel)])
-
     @property
     def commands(self) -> ShopCommandsList:
         from ._shop_commands import ShopCommands, ShopCommandsList
-
         return ShopCommandsList([item.commands for item in self.data if isinstance(item.commands, ShopCommands)])
-
     @property
     def time_resolution(self) -> ShopTimeResolutionList:
         from ._shop_time_resolution import ShopTimeResolution, ShopTimeResolutionList
-
         return ShopTimeResolutionList([item.time_resolution for item in self.data if isinstance(item.time_resolution, ShopTimeResolution)])
-
     @property
     def output_definition(self) -> ShopOutputTimeSeriesDefinitionList:
         from ._shop_output_time_series_definition import ShopOutputTimeSeriesDefinition, ShopOutputTimeSeriesDefinitionList
-
         return ShopOutputTimeSeriesDefinitionList([item for items in self.data for item in items.output_definition or [] if isinstance(item, ShopOutputTimeSeriesDefinition)])
 
     @property
     def attribute_mappings_override(self) -> ShopAttributeMappingList:
         from ._shop_attribute_mapping import ShopAttributeMapping, ShopAttributeMappingList
-
         return ShopAttributeMappingList([item for items in self.data for item in items.attribute_mappings_override or [] if isinstance(item, ShopAttributeMapping)])
 
 
@@ -486,39 +477,30 @@ class ShopScenarioWriteList(DomainModelWriteList[ShopScenarioWrite]):
     """List of shop scenarios in the writing version."""
 
     _INSTANCE = ShopScenarioWrite
-
     @property
     def model(self) -> ShopModelWriteList:
         from ._shop_model import ShopModelWrite, ShopModelWriteList
-
         return ShopModelWriteList([item.model for item in self.data if isinstance(item.model, ShopModelWrite)])
-
     @property
     def commands(self) -> ShopCommandsWriteList:
         from ._shop_commands import ShopCommandsWrite, ShopCommandsWriteList
-
         return ShopCommandsWriteList([item.commands for item in self.data if isinstance(item.commands, ShopCommandsWrite)])
-
     @property
     def time_resolution(self) -> ShopTimeResolutionWriteList:
         from ._shop_time_resolution import ShopTimeResolutionWrite, ShopTimeResolutionWriteList
-
         return ShopTimeResolutionWriteList([item.time_resolution for item in self.data if isinstance(item.time_resolution, ShopTimeResolutionWrite)])
-
     @property
     def output_definition(self) -> ShopOutputTimeSeriesDefinitionWriteList:
         from ._shop_output_time_series_definition import ShopOutputTimeSeriesDefinitionWrite, ShopOutputTimeSeriesDefinitionWriteList
-
         return ShopOutputTimeSeriesDefinitionWriteList([item for items in self.data for item in items.output_definition or [] if isinstance(item, ShopOutputTimeSeriesDefinitionWrite)])
 
     @property
     def attribute_mappings_override(self) -> ShopAttributeMappingWriteList:
         from ._shop_attribute_mapping import ShopAttributeMappingWrite, ShopAttributeMappingWriteList
-
         return ShopAttributeMappingWriteList([item for items in self.data for item in items.attribute_mappings_override or [] if isinstance(item, ShopAttributeMappingWrite)])
 
-class ShopScenarioApplyList(ShopScenarioWriteList): ...
 
+class ShopScenarioApplyList(ShopScenarioWriteList): ...
 
 
 def _create_shop_scenario_filter(

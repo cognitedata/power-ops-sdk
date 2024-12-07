@@ -57,22 +57,22 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         self.partial_bid_matrices_edge = TotalBidMatrixCalculationInputPartialBidMatricesAPI(client)
 
     def __call__(
-            self,
-            workflow_execution_id: str | list[str] | None = None,
-            workflow_execution_id_prefix: str | None = None,
-            min_workflow_step: int | None = None,
-            max_workflow_step: int | None = None,
-            function_name: str | list[str] | None = None,
-            function_name_prefix: str | None = None,
-            function_call_id: str | list[str] | None = None,
-            function_call_id_prefix: str | None = None,
-            bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-            min_bid_date: datetime.date | None = None,
-            max_bid_date: datetime.date | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
+        function_name: str | list[str] | None = None,
+        function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        min_bid_date: datetime.date | None = None,
+        max_bid_date: datetime.date | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> TotalBidMatrixCalculationInputQueryAPI[TotalBidMatrixCalculationInputList]:
         """Query starting at total bid matrix calculation inputs.
 
@@ -123,7 +123,6 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         )
         builder = DataClassQueryBuilder(TotalBidMatrixCalculationInputList)
         return TotalBidMatrixCalculationInputQueryAPI(self._client, builder, filter_, limit)
-
 
     def apply(
         self,
@@ -240,7 +239,6 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
                                                ]
         )
 
-
     def search(
         self,
         query: str,
@@ -352,8 +350,7 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> dm.aggregations.AggregatedNumberedValue:
-        ...
+    ) -> dm.aggregations.AggregatedNumberedValue: ...
 
     @overload
     def aggregate(
@@ -378,8 +375,7 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
@@ -406,8 +402,7 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
@@ -666,7 +661,7 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         )
 
         if retrieve_connections == "skip":
-                return self._list(
+            return self._list(
                 limit=limit,
                 filter=filter_,
                 sort_by=sort_by,  # type: ignore[arg-type]

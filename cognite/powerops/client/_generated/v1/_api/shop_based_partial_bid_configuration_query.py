@@ -83,7 +83,6 @@ class ShopBasedPartialBidConfigurationQueryAPI(QueryAPI[T_DomainModelList]):
                 result_cls=PowerAsset,
             ),
         )
-
     def _query_append_scenario_set(self, from_: str) -> None:
         self._builder.append(
             NodeQueryStep(

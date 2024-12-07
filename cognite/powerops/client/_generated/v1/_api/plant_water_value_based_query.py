@@ -28,7 +28,6 @@ if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1._api.generator_query import GeneratorQueryAPI
 
 
-
 class PlantWaterValueBasedQueryAPI(QueryAPI[T_DomainModelList]):
     _view_id = dm.ViewId("power_ops_core", "PlantWaterValueBased", "1")
 
@@ -52,7 +51,6 @@ class PlantWaterValueBasedQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
-
     def generators(
         self,
         name: str | list[str] | None = None,
@@ -116,7 +114,6 @@ class PlantWaterValueBasedQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = cast(str, self._builder.get_from())
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("power_ops_types", "isSubAssetOf"),
-
             external_id_prefix=external_id_prefix_edge,
             space=space_edge,
         )

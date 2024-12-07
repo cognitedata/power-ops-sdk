@@ -41,7 +41,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     NodeQueryCore,
     StringFilter,
 )
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._alert import Alert, AlertList, AlertGraphQL, AlertWrite, AlertWriteList
     from cognite.powerops.client._generated.v1.data_classes._shop_case import ShopCase, ShopCaseList, ShopCaseGraphQL, ShopCaseWrite, ShopCaseWriteList
@@ -73,6 +72,7 @@ _SHOPRESULT_PROPERTIES_BY_FIELD = {
     "cplex_logs": "cplexLogs",
 }
 
+
 class ShopResultGraphQL(GraphQLCore):
     """This represents the reading version of shop result, used
     when data is retrieved from CDF using GraphQL.
@@ -92,6 +92,7 @@ class ShopResultGraphQL(GraphQLCore):
         alerts: An array of calculation level Alerts.
         output_time_series: TODO
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopResult", "1")
     case: Optional[ShopCaseGraphQL] = Field(default=None, repr=False)
     objective_value: Optional[dict] = Field(None, alias="objectiveValue")
@@ -112,6 +113,8 @@ class ShopResultGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("case", "alerts", "output_time_series", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -142,10 +145,9 @@ else self.case,
             post_run=self.post_run.as_read() if self.post_run else None,
             messages=self.messages.as_read() if self.messages else None,
             cplex_logs=self.cplex_logs.as_read() if self.cplex_logs else None,
-            alerts=[alert.as_read() for alert in self.alerts or []],
-            output_time_series=[output_time_series.as_read() for output_time_series in self.output_time_series or []],
+            alerts=[alert.as_read() for alert in self.alerts] if self.alerts is not None else None,
+            output_time_series=[output_time_series.as_read() for output_time_series in self.output_time_series] if self.output_time_series is not None else None,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -163,8 +165,8 @@ else self.case,
             post_run=self.post_run.as_write() if self.post_run else None,
             messages=self.messages.as_write() if self.messages else None,
             cplex_logs=self.cplex_logs.as_write() if self.cplex_logs else None,
-            alerts=[alert.as_write() for alert in self.alerts or []],
-            output_time_series=[output_time_series.as_write() for output_time_series in self.output_time_series or []],
+            alerts=[alert.as_write() for alert in self.alerts] if self.alerts is not None else None,
+            output_time_series=[output_time_series.as_write() for output_time_series in self.output_time_series] if self.output_time_series is not None else None,
         )
 
 
@@ -186,6 +188,7 @@ class ShopResult(DomainModel):
         alerts: An array of calculation level Alerts.
         output_time_series: TODO
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopResult", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -199,6 +202,8 @@ class ShopResult(DomainModel):
     alerts: Optional[list[Union[Alert, str, dm.NodeId]]] = Field(default=None, repr=False)
     output_time_series: Optional[list[Union[ShopTimeSeries, str, dm.NodeId]]] = Field(default=None, repr=False, alias="outputTimeSeries")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopResultWrite:
         """Convert this read version of shop result to the writing version."""
         return ShopResultWrite(
@@ -213,8 +218,8 @@ else self.case,
             post_run=self.post_run.as_write() if isinstance(self.post_run, CogniteFileMetadata) else self.post_run,
             messages=self.messages.as_write() if isinstance(self.messages, CogniteFileMetadata) else self.messages,
             cplex_logs=self.cplex_logs.as_write() if isinstance(self.cplex_logs, CogniteFileMetadata) else self.cplex_logs,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            output_time_series=[output_time_series.as_write() if isinstance(output_time_series, DomainModel) else output_time_series for output_time_series in self.output_time_series or []],
+            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts] if self.alerts is not None else None,
+            output_time_series=[output_time_series.as_write() if isinstance(output_time_series, DomainModel) else output_time_series for output_time_series in self.output_time_series] if self.output_time_series is not None else None,
         )
 
     def as_apply(self) -> ShopResultWrite:
@@ -225,7 +230,6 @@ else self.case,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -236,7 +240,6 @@ else self.case,
         from ._alert import Alert
         from ._shop_case import ShopCase
         from ._shop_time_series import ShopTimeSeries
-
         for instance in instances.values():
             if isinstance(instance.case, (dm.NodeId, str)) and (case := nodes_by_id.get(instance.case)) and isinstance(
                     case, ShopCase
@@ -281,7 +284,6 @@ else self.case,
 
 
 
-
 class ShopResultWrite(DomainModelWrite):
     """This represents the writing version of shop result.
 
@@ -300,6 +302,7 @@ class ShopResultWrite(DomainModelWrite):
         alerts: An array of calculation level Alerts.
         output_time_series: TODO
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopResult", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -322,6 +325,7 @@ class ShopResultWrite(DomainModelWrite):
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -355,7 +359,6 @@ class ShopResultWrite(DomainModelWrite):
         if self.cplex_logs is not None or write_none:
             properties["cplexLogs"] = self.cplex_logs if isinstance(self.cplex_logs, str) or self.cplex_logs is None else self.cplex_logs.external_id
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -370,8 +373,6 @@ class ShopResultWrite(DomainModelWrite):
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
         for alert in self.alerts or []:
@@ -427,12 +428,10 @@ class ShopResultApply(ShopResultWrite):
         )
         return super().__new__(cls)
 
-
 class ShopResultList(DomainModelList[ShopResult]):
     """List of shop results in the read version."""
 
     _INSTANCE = ShopResult
-
     def as_write(self) -> ShopResultWriteList:
         """Convert these read versions of shop result to the writing versions."""
         return ShopResultWriteList([node.as_write() for node in self.data])
@@ -449,19 +448,15 @@ class ShopResultList(DomainModelList[ShopResult]):
     @property
     def case(self) -> ShopCaseList:
         from ._shop_case import ShopCase, ShopCaseList
-
         return ShopCaseList([item.case for item in self.data if isinstance(item.case, ShopCase)])
-
     @property
     def alerts(self) -> AlertList:
         from ._alert import Alert, AlertList
-
         return AlertList([item for items in self.data for item in items.alerts or [] if isinstance(item, Alert)])
 
     @property
     def output_time_series(self) -> ShopTimeSeriesList:
         from ._shop_time_series import ShopTimeSeries, ShopTimeSeriesList
-
         return ShopTimeSeriesList([item for items in self.data for item in items.output_time_series or [] if isinstance(item, ShopTimeSeries)])
 
 
@@ -469,27 +464,22 @@ class ShopResultWriteList(DomainModelWriteList[ShopResultWrite]):
     """List of shop results in the writing version."""
 
     _INSTANCE = ShopResultWrite
-
     @property
     def case(self) -> ShopCaseWriteList:
         from ._shop_case import ShopCaseWrite, ShopCaseWriteList
-
         return ShopCaseWriteList([item.case for item in self.data if isinstance(item.case, ShopCaseWrite)])
-
     @property
     def alerts(self) -> AlertWriteList:
         from ._alert import AlertWrite, AlertWriteList
-
         return AlertWriteList([item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)])
 
     @property
     def output_time_series(self) -> ShopTimeSeriesWriteList:
         from ._shop_time_series import ShopTimeSeriesWrite, ShopTimeSeriesWriteList
-
         return ShopTimeSeriesWriteList([item for items in self.data for item in items.output_time_series or [] if isinstance(item, ShopTimeSeriesWrite)])
 
-class ShopResultApplyList(ShopResultWriteList): ...
 
+class ShopResultApplyList(ShopResultWriteList): ...
 
 
 def _create_shop_result_filter(

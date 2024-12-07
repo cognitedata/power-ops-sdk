@@ -61,6 +61,7 @@ _FUNCTIONINPUT_PROPERTIES_BY_FIELD = {
     "function_call_id": "functionCallId",
 }
 
+
 class FunctionInputGraphQL(GraphQLCore):
     """This represents the reading version of function input, used
     when data is retrieved from CDF using GraphQL.
@@ -76,6 +77,7 @@ class FunctionInputGraphQL(GraphQLCore):
         function_name: The name of the function
         function_call_id: The function call id
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "FunctionInput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
@@ -92,6 +94,8 @@ class FunctionInputGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -112,7 +116,6 @@ class FunctionInputGraphQL(GraphQLCore):
             function_name=self.function_name,
             function_call_id=self.function_call_id,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -143,6 +146,7 @@ class FunctionInput(DomainModel):
         function_name: The name of the function
         function_call_id: The function call id
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "FunctionInput", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -152,6 +156,8 @@ class FunctionInput(DomainModel):
     function_name: str = Field(alias="functionName")
     function_call_id: str = Field(alias="functionCallId")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> FunctionInputWrite:
         """Convert this read version of function input to the writing version."""
         return FunctionInputWrite(
@@ -173,7 +179,6 @@ class FunctionInput(DomainModel):
         )
         return self.as_write()
 
-
 class FunctionInputWrite(DomainModelWrite):
     """This represents the writing version of function input.
 
@@ -188,6 +193,7 @@ class FunctionInputWrite(DomainModelWrite):
         function_name: The name of the function
         function_call_id: The function call id
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "FunctionInput", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -196,6 +202,7 @@ class FunctionInputWrite(DomainModelWrite):
     workflow_step: int = Field(alias="workflowStep")
     function_name: str = Field(alias="functionName")
     function_call_id: str = Field(alias="functionCallId")
+
 
     def _to_instances_write(
         self,
@@ -221,7 +228,6 @@ class FunctionInputWrite(DomainModelWrite):
         if self.function_call_id is not None:
             properties["functionCallId"] = self.function_call_id
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -237,8 +243,6 @@ class FunctionInputWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-
-
         return resources
 
 
@@ -253,12 +257,10 @@ class FunctionInputApply(FunctionInputWrite):
         )
         return super().__new__(cls)
 
-
 class FunctionInputList(DomainModelList[FunctionInput]):
     """List of function inputs in the read version."""
 
     _INSTANCE = FunctionInput
-
     def as_write(self) -> FunctionInputWriteList:
         """Convert these read versions of function input to the writing versions."""
         return FunctionInputWriteList([node.as_write() for node in self.data])
@@ -279,7 +281,6 @@ class FunctionInputWriteList(DomainModelWriteList[FunctionInputWrite]):
     _INSTANCE = FunctionInputWrite
 
 class FunctionInputApplyList(FunctionInputWriteList): ...
-
 
 
 def _create_function_input_filter(

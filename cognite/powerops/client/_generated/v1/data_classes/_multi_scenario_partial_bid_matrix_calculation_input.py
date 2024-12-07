@@ -38,7 +38,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     IntFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._partial_bid_matrix_calculation_input import PartialBidMatrixCalculationInput, PartialBidMatrixCalculationInputWrite
-
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._bid_configuration_day_ahead import BidConfigurationDayAhead, BidConfigurationDayAheadList, BidConfigurationDayAheadGraphQL, BidConfigurationDayAheadWrite, BidConfigurationDayAheadWriteList
     from cognite.powerops.client._generated.v1.data_classes._price_production import PriceProduction, PriceProductionList, PriceProductionGraphQL, PriceProductionWrite, PriceProductionWriteList
@@ -70,6 +69,7 @@ _MULTISCENARIOPARTIALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD = {
     "bid_date": "bidDate",
 }
 
+
 class MultiScenarioPartialBidMatrixCalculationInputGraphQL(GraphQLCore):
     """This represents the reading version of multi scenario partial bid matrix calculation input, used
     when data is retrieved from CDF using GraphQL.
@@ -89,6 +89,7 @@ class MultiScenarioPartialBidMatrixCalculationInputGraphQL(GraphQLCore):
         partial_bid_configuration: The partial bid configuration related to the bid calculation task
         price_production: An array of shop results with price/prod time series pairs for all plants included in the respective shop scenario
     """
+
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "MultiScenarioPartialBidMatrixCalculationInput", "1")
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
@@ -109,6 +110,8 @@ class MultiScenarioPartialBidMatrixCalculationInputGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+
     @field_validator("bid_configuration", "partial_bid_configuration", "price_production", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -142,9 +145,8 @@ else self.bid_configuration,
             partial_bid_configuration=self.partial_bid_configuration.as_read()
 if isinstance(self.partial_bid_configuration, GraphQLCore)
 else self.partial_bid_configuration,
-            price_production=[price_production.as_read() for price_production in self.price_production or []],
+            price_production=[price_production.as_read() for price_production in self.price_production] if self.price_production is not None else None,
         )
-
 
     # We do the ignore argument type as we let pydantic handle the type checking
     @no_type_check
@@ -165,7 +167,7 @@ else self.bid_configuration,
             partial_bid_configuration=self.partial_bid_configuration.as_write()
 if isinstance(self.partial_bid_configuration, GraphQLCore)
 else self.partial_bid_configuration,
-            price_production=[price_production.as_write() for price_production in self.price_production or []],
+            price_production=[price_production.as_write() for price_production in self.price_production] if self.price_production is not None else None,
         )
 
 
@@ -187,11 +189,14 @@ class MultiScenarioPartialBidMatrixCalculationInput(PartialBidMatrixCalculationI
         partial_bid_configuration: The partial bid configuration related to the bid calculation task
         price_production: An array of shop results with price/prod time series pairs for all plants included in the respective shop scenario
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "MultiScenarioPartialBidMatrixCalculationInput", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "MultiScenarioPartialBidMatrixCalculationInput")
     price_production: Optional[list[Union[PriceProduction, str, dm.NodeId]]] = Field(default=None, repr=False, alias="priceProduction")
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> MultiScenarioPartialBidMatrixCalculationInputWrite:
         """Convert this read version of multi scenario partial bid matrix calculation input to the writing version."""
         return MultiScenarioPartialBidMatrixCalculationInputWrite(
@@ -209,7 +214,7 @@ else self.bid_configuration,
             partial_bid_configuration=self.partial_bid_configuration.as_write()
 if isinstance(self.partial_bid_configuration, DomainModel)
 else self.partial_bid_configuration,
-            price_production=[price_production.as_write() if isinstance(price_production, DomainModel) else price_production for price_production in self.price_production or []],
+            price_production=[price_production.as_write() if isinstance(price_production, DomainModel) else price_production for price_production in self.price_production] if self.price_production is not None else None,
         )
 
     def as_apply(self) -> MultiScenarioPartialBidMatrixCalculationInputWrite:
@@ -220,7 +225,6 @@ else self.partial_bid_configuration,
             stacklevel=2,
         )
         return self.as_write()
-
     @classmethod
     def _update_connections(
         cls,
@@ -231,7 +235,6 @@ else self.partial_bid_configuration,
         from ._bid_configuration_day_ahead import BidConfigurationDayAhead
         from ._price_production import PriceProduction
         from ._shop_based_partial_bid_configuration import ShopBasedPartialBidConfiguration
-
         for instance in instances.values():
             if isinstance(instance.bid_configuration, (dm.NodeId, str)) and (bid_configuration := nodes_by_id.get(instance.bid_configuration)) and isinstance(
                     bid_configuration, BidConfigurationDayAhead
@@ -274,7 +277,6 @@ else self.partial_bid_configuration,
 
 
 
-
 class MultiScenarioPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalculationInputWrite):
     """This represents the writing version of multi scenario partial bid matrix calculation input.
 
@@ -293,6 +295,7 @@ class MultiScenarioPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalcula
         partial_bid_configuration: The partial bid configuration related to the bid calculation task
         price_production: An array of shop results with price/prod time series pairs for all plants included in the respective shop scenario
     """
+
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "MultiScenarioPartialBidMatrixCalculationInput", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "MultiScenarioPartialBidMatrixCalculationInput")
@@ -307,6 +310,7 @@ class MultiScenarioPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalcula
         elif isinstance(value, list):
             return [cls.as_node_id(item) for item in value]
         return value
+
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
@@ -346,7 +350,6 @@ class MultiScenarioPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalcula
                 "externalId": self.partial_bid_configuration if isinstance(self.partial_bid_configuration, str) else self.partial_bid_configuration.external_id,
             }
 
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -361,8 +364,6 @@ class MultiScenarioPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalcula
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-
-
 
         edge_type = dm.DirectRelationReference("power_ops_types", "PriceProduction")
         for price_production in self.price_production or []:
@@ -398,12 +399,10 @@ class MultiScenarioPartialBidMatrixCalculationInputApply(MultiScenarioPartialBid
         )
         return super().__new__(cls)
 
-
 class MultiScenarioPartialBidMatrixCalculationInputList(DomainModelList[MultiScenarioPartialBidMatrixCalculationInput]):
     """List of multi scenario partial bid matrix calculation inputs in the read version."""
 
     _INSTANCE = MultiScenarioPartialBidMatrixCalculationInput
-
     def as_write(self) -> MultiScenarioPartialBidMatrixCalculationInputWriteList:
         """Convert these read versions of multi scenario partial bid matrix calculation input to the writing versions."""
         return MultiScenarioPartialBidMatrixCalculationInputWriteList([node.as_write() for node in self.data])
@@ -420,19 +419,14 @@ class MultiScenarioPartialBidMatrixCalculationInputList(DomainModelList[MultiSce
     @property
     def bid_configuration(self) -> BidConfigurationDayAheadList:
         from ._bid_configuration_day_ahead import BidConfigurationDayAhead, BidConfigurationDayAheadList
-
         return BidConfigurationDayAheadList([item.bid_configuration for item in self.data if isinstance(item.bid_configuration, BidConfigurationDayAhead)])
-
     @property
     def partial_bid_configuration(self) -> ShopBasedPartialBidConfigurationList:
         from ._shop_based_partial_bid_configuration import ShopBasedPartialBidConfiguration, ShopBasedPartialBidConfigurationList
-
         return ShopBasedPartialBidConfigurationList([item.partial_bid_configuration for item in self.data if isinstance(item.partial_bid_configuration, ShopBasedPartialBidConfiguration)])
-
     @property
     def price_production(self) -> PriceProductionList:
         from ._price_production import PriceProduction, PriceProductionList
-
         return PriceProductionList([item for items in self.data for item in items.price_production or [] if isinstance(item, PriceProduction)])
 
 
@@ -440,27 +434,21 @@ class MultiScenarioPartialBidMatrixCalculationInputWriteList(DomainModelWriteLis
     """List of multi scenario partial bid matrix calculation inputs in the writing version."""
 
     _INSTANCE = MultiScenarioPartialBidMatrixCalculationInputWrite
-
     @property
     def bid_configuration(self) -> BidConfigurationDayAheadWriteList:
         from ._bid_configuration_day_ahead import BidConfigurationDayAheadWrite, BidConfigurationDayAheadWriteList
-
         return BidConfigurationDayAheadWriteList([item.bid_configuration for item in self.data if isinstance(item.bid_configuration, BidConfigurationDayAheadWrite)])
-
     @property
     def partial_bid_configuration(self) -> ShopBasedPartialBidConfigurationWriteList:
         from ._shop_based_partial_bid_configuration import ShopBasedPartialBidConfigurationWrite, ShopBasedPartialBidConfigurationWriteList
-
         return ShopBasedPartialBidConfigurationWriteList([item.partial_bid_configuration for item in self.data if isinstance(item.partial_bid_configuration, ShopBasedPartialBidConfigurationWrite)])
-
     @property
     def price_production(self) -> PriceProductionWriteList:
         from ._price_production import PriceProductionWrite, PriceProductionWriteList
-
         return PriceProductionWriteList([item for items in self.data for item in items.price_production or [] if isinstance(item, PriceProductionWrite)])
 
-class MultiScenarioPartialBidMatrixCalculationInputApplyList(MultiScenarioPartialBidMatrixCalculationInputWriteList): ...
 
+class MultiScenarioPartialBidMatrixCalculationInputApplyList(MultiScenarioPartialBidMatrixCalculationInputWriteList): ...
 
 
 def _create_multi_scenario_partial_bid_matrix_calculation_input_filter(
