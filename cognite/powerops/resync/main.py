@@ -65,4 +65,4 @@ def apply(client_configuration: Path, configuration: Path, client: PowerOpsClien
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
-    plan(Path("power_ops_config.yaml"), Path("resync/resync_configuration.yaml"))
+    plan(Path("power_ops_config.yaml"), Path("resync/configuration.yaml"))
