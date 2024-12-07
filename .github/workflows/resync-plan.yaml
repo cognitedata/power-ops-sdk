@@ -7,13 +7,13 @@ on:
     paths:
       - "cognite/powerops/resync/v1/**.py"
       - "cognite/powerops/cli.py"
-      - "tests/data/demo/v1/**.yaml"
-      - "tests/data/demo/v1/**.yml"
+      - "resync/**.yaml"
+      - "resync/**.yml"
 
 env:
   PYTHON_VERSION: "3.11"
   CLIENT_CONFIG_FILE: "power_ops_config.yaml"
-  CONFIGURATION_FILE: "tests/data/demo/v1/resync_configuration.yaml"
+  CONFIGURATION_FILE: "resync/configuration.yaml"
 
 jobs:
   resync-plan:
