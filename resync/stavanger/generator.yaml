@@ -15,10 +15,8 @@
   display_name: Sola G1
   ordering: 1
   asset_type: generator
-  penstock_number: "[SOURCE:files/stavanger.yaml]model.generator.Sola_G1.penstock"
 
 - name: Sola_G2
   display_name: Sola G2
   ordering: 1
   asset_type: generator
-  penstock_number: "[SOURCE:files/stavanger.yaml]model.generator.Sola_G2.penstock"

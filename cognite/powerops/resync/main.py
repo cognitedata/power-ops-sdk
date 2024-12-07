@@ -52,8 +52,7 @@ def apply(client_configuration: Path, configuration: Path, client: PowerOpsClien
     resync_importer = ResyncImporter.from_yaml(configuration, data_model_classes, client.cdf)
     resync_data_model_objects, external_ids = resync_importer.to_data_model()
 
-    if resync_importer.file_configuration:
-        file_external_ids = resync_importer.file_configuration.upload_files_to_cdf(client.cdf)
+    file_external_ids = ["foo_file"]  # TODO: get file external ids from resync_importer
 
     # TODO: check all linked sources exist
     check_all_linked_sources_exist(resync_data_model_objects, file_external_ids, [], external_ids)
@@ -62,3 +61,8 @@ def apply(client_configuration: Path, configuration: Path, client: PowerOpsClien
     client.v1.upsert(resync_data_model_objects, replace=resync_importer.overwrite_data)
 
     logger.info(f"Upserted {len(resync_data_model_objects)} objects")
+
+
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
+    plan(Path("power_ops_config.yaml"), Path("resync/configuration.yaml"))

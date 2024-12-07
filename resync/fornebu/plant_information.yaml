@@ -22,7 +22,6 @@
   display_name: Lund
   ordering: 1
   asset_type: plant
-  production_min: "[SOURCE:files/model.yaml]model.plant.Lund.p_min"
   water_value_time_series: "[external_id]136120"
   feeding_fee_time_series: "[external_id]9626"
   outlet_level_time_series: "[external_id]907223"

@@ -15,7 +15,6 @@ from pydantic import ValidationError
 import cognite.powerops.client._generated.v1.data_classes as v1_data_classes
 from cognite.powerops.resync.data_classes import (
     DataModelConfiguration,
-    FileUploadConfiguration,
     PropertyConfiguration,
 )
 from cognite.powerops.resync.utils import (
@@ -38,7 +37,6 @@ class ResyncImporter:
         working_directory: Path to the working directory.
         overwrite_data: A boolean to determine if data should be overwritten.
         data_set_id: An integer of the data set id.
-        file_configuration: A FileUploadConfiguration object detailing the configuration of file uploads.
         data_model_configuration: A dictionary of types to DataModelConfiguration detailing all configuration
                                   properties of the data model type.
         data_model_classes: A dictionary of types to DomainModelWrite classes detailing all data model classes to be
@@ -50,25 +48,20 @@ class ResyncImporter:
     folders_to_process: list[Path]
     data_model_classes: dict[str, type]
     data_model_configuration: dict[str, DataModelConfiguration]
-    file_configuration: Optional[FileUploadConfiguration]
 
     def __init__(
         self,
         working_directory: Path,
         overwrite_data: Optional[bool],
         data_model_classes: dict[str, type],
-        file_configuration: Optional[FileUploadConfiguration],
         data_model_configuration: Optional[dict[str, DataModelConfiguration]] = None,
     ) -> None:
         """Initializes the ResyncImporter"""
 
         self.working_directory = working_directory
         self.folders_to_process = [p for p in self.working_directory.iterdir() if p.is_dir()]
-        if Path(self.working_directory / "files") in self.folders_to_process:
-            self.folders_to_process.remove(self.working_directory / "files")
 
         self.overwrite_data = overwrite_data or False
-        self.file_configuration = file_configuration
         self.data_model_configuration = data_model_configuration or {}
         self.data_model_classes = data_model_classes
 
@@ -94,22 +87,9 @@ class ResyncImporter:
 
         working_directory = Path(configuration.get("working_directory", Path.cwd()))
 
-        if "file_configuration" in configuration:
-            file_configuration_dict = configuration.get("file_configuration", {})
-
-            data_set_id = file_configuration_dict.pop("data_set")
-
-            file_configuration = FileUploadConfiguration(
-                working_directory=working_directory,
-                data_set_id=data_set_id,
-                cdf_client=cdf_client,
-                **file_configuration_dict if file_configuration_dict else {},
-            )
-
         return cls(
             working_directory=working_directory,
             overwrite_data=configuration.get("overwrite_data"),
-            file_configuration=file_configuration,
             data_model_classes=data_model_classes,
         )
 
@@ -465,7 +445,7 @@ class ResyncImporter:
             instance_data = {}
         if not source_data:
             if property_configuration.source_file:
-                path = self.working_directory / Path(property_configuration.source_file)
+                path = Path(property_configuration.source_file)
                 source_data = load_yaml(path, "dict")
             else:
                 if property_configuration.default_value:
