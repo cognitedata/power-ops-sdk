@@ -92,7 +92,7 @@ The `default_value` will be used for any instances that do not have any values i
 ```
 generator:
   production_min:
-    source_file: "files/model.yaml"
+    source_file: "toolkit/modules/power_ops_template/files/[SOURCE-FILE]"
     extraction_path: "model.generator.[name].p_min"
     is_list: False
     default_value: 0.0
