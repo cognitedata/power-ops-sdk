@@ -257,3 +257,13 @@
     - "[name]market price"
     - "[name]plant production"
     - "[name]plant consumption"
+- name: "Stavanger base 15 min test"
+  model: "[name]Stavanger"
+  commands: "[name]default"
+  timeResolution: "[external_id]15min_1h_4h:0_24_72"
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - "[name]market price"
+    - "[name]plant production"
+    - "[name]plant consumption"
