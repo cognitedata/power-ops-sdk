@@ -24,7 +24,7 @@ edges to the existing references.
 
 1. resync configuration
    - Contains all general configuration regarding resync
-   - Refer to `power-ops-sdk/resync/resync_configuration.yaml` as an example
+   - Refer to `power-ops-sdk/resync/configuration.yaml` as an example
 2. data model configuration [Optional]
    - Contains data type specific configurations
    - One per subfolder in order to have different configurations per subfolder
@@ -68,12 +68,12 @@ edges to the existing references.
 │  ├─ market_configuration.yaml
 │  ├─ shop_commands.yaml
 │  └─ ... (all types)
-└─ resync_configuration.yaml
+└─ configuration.yaml
 ```
 
 [!WARNING]
 All data model files need to be located in subfolders from the root folder that is specified inside
-the `resync_configuration.yaml` in the `working_directory` field.
+the `configuration.yaml` in the `working_directory` field.
 
 ### Data Model Configuration
 
