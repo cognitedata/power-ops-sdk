@@ -24,14 +24,14 @@ edges to the existing references.
 
 1. resync configuration
    - Contains all general configuration regarding resync
-   - Refer to `power-ops-sdk/tests/data/demo/v1/resync_configuration.yaml` as an example
+   - Refer to `power-ops-sdk/resync/resync_configuration.yaml` as an example
 2. data model configuration [Optional]
    - Contains data type specific configurations
    - One per subfolder in order to have different configurations per subfolder
-   - Refer to `power-ops-sdk/tests/data/demo/v1/fornebu/data_model_configuration.yaml` as an example
+   - Refer to `power-ops-sdk/resync/fornebu/data_model_configuration.yaml` as an example
 3. data model population
    - Contains configuration of specific instances
-   - Refer to type examples in `power-ops-sdk/tests/data/demo/v1/fornebu` and `power-ops-sdk/tests/data/demo/v1/shared` as an example
+   - Refer to type examples in `power-ops-sdk/resync/fornebu`, `power-ops-sdk/resync/stavanger` and `power-ops-sdk/resync/shared` as an example
    - Currently recommendation is to only use resync for the below types but these can be expanded with further testing
      - market_configuration
      - price_area_information
@@ -49,23 +49,25 @@ edges to the existing references.
 ### Default folder structure
 
 ```
-📦 resync_v1
+📦 resync
 ├─ fornebu
 │  ├─ data_model_configuration.yaml
-│  ├─ bid_configuration_day_ahead.yaml
+│  ├─ water_value_based_partial_bid_configuration.yaml
+│  ├─ shop_based_partial_bid_configuration.yaml
+│  ├─ generator.yaml
+│  └─ ... (all types)
+├─ stavanger
+│  ├─ data_model_configuration.yaml
 │  ├─ water_value_based_partial_bid_configuration.yaml
 │  ├─ shop_based_partial_bid_configuration.yaml
 │  ├─ generator.yaml
 │  └─ ... (all types)
 ├─ shared
-│  ├─ data_model_configuration.yaml
+│  ├─ bid_configuration_day_ahead.yaml
 │  ├─ price_area_information.yaml
 │  ├─ market_configuration.yaml
 │  ├─ shop_commands.yaml
 │  └─ ... (all types)
-├─ files
-│  ├─ model.yaml
-│  └─ other_files.yaml
 └─ resync_configuration.yaml
 ```
 
@@ -153,17 +155,17 @@ See available commands:
 $ powerops --help
 ```
 
-Example of showing plan changes provided the configuration file path `tests/data/demo/v1/resync_configuration.yaml`:
+Example of showing plan changes provided the configuration file path `resync/resync_configuration.yaml`:
 
 ```bash
 # $ powerops plan_v1 power_ops_config.yaml resync_v1/resync_configuration.yaml
-$ powerops plan_v1 power_ops_config.yaml tests/data/demo/v1/resync_configuration.yaml
+$ powerops plan_v1 power_ops_config.yaml resync/resync_configuration.yaml
 ```
 
-Example of showing apply changes provided the configuration file path `tests/data/demo/v1/resync_configuration.yaml`:
+Example of showing apply changes provided the configuration file path `resync/resync_configuration.yaml`:
 
 ```bash
-$ powerops apply_v1 power_ops_config.yaml tests/data/demo/v1/resync_configuration.yaml
+$ powerops apply_v1 power_ops_config.yaml resync/resync_configuration.yaml
 ```
 
 [!NOTE]
