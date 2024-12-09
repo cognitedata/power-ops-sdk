@@ -15,6 +15,12 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.105.0] - 2024-12-09
+### Changed
+* Resync source file reference is now a full path reference
+### Removed
+* Resync file uploading
+
 ## [0.104.4] - 2024-12-06
 ### Fixed
 * Switch curve properties to be float64 instead of float32

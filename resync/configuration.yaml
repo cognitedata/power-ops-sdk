@@ -1,0 +1,4 @@
+# Path to the working directory where the data model and files are stored
+working_directory: "resync"
+# Whether to overwrite the data if it already exists, note this refers to the "replace" logic from the API for instances
+overwrite_data: True
