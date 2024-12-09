@@ -15,6 +15,12 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.105.1] - 2024-12-09
+### Changed
+* Set value of shop time resolution of existing shop scenarios
+### Added
+* A scenario and scenario set for using 15 minute resolution within SHOP
+
 ## [0.105.0] - 2024-12-09
 ### Changed
 * Resync source file reference is now a full path reference
