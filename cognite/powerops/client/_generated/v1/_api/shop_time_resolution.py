@@ -53,6 +53,8 @@ class ShopTimeResolutionAPI(NodeAPI[ShopTimeResolution, ShopTimeResolutionWrite,
 
     def __call__(
         self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
@@ -61,6 +63,8 @@ class ShopTimeResolutionAPI(NodeAPI[ShopTimeResolution, ShopTimeResolutionWrite,
         """Query starting at shop time resolutions.
 
         Args:
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop time resolutions to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -79,6 +83,8 @@ class ShopTimeResolutionAPI(NodeAPI[ShopTimeResolution, ShopTimeResolutionWrite,
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_shop_time_resolution_filter(
             self._view_id,
+            name,
+            name_prefix,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -188,6 +194,8 @@ class ShopTimeResolutionAPI(NodeAPI[ShopTimeResolution, ShopTimeResolutionWrite,
         self,
         query: str,
         properties: ShopTimeResolutionTextFields | SequenceNotStr[ShopTimeResolutionTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -201,6 +209,8 @@ class ShopTimeResolutionAPI(NodeAPI[ShopTimeResolution, ShopTimeResolutionWrite,
         Args:
             query: The search query,
             properties: The property to search, if nothing is passed all text fields will be searched.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop time resolutions to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -225,6 +235,8 @@ class ShopTimeResolutionAPI(NodeAPI[ShopTimeResolution, ShopTimeResolutionWrite,
         """
         filter_ = _create_shop_time_resolution_filter(
             self._view_id,
+            name,
+            name_prefix,
             external_id_prefix,
             space,
             filter,
@@ -245,6 +257,10 @@ class ShopTimeResolutionAPI(NodeAPI[ShopTimeResolution, ShopTimeResolutionWrite,
         aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
         property: ShopTimeResolutionFields | SequenceNotStr[ShopTimeResolutionFields] | None = None,
+        query: str | None = None,
+        search_property: ShopTimeResolutionTextFields | SequenceNotStr[ShopTimeResolutionTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -257,6 +273,10 @@ class ShopTimeResolutionAPI(NodeAPI[ShopTimeResolution, ShopTimeResolutionWrite,
         aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: None = None,
         property: ShopTimeResolutionFields | SequenceNotStr[ShopTimeResolutionFields] | None = None,
+        query: str | None = None,
+        search_property: ShopTimeResolutionTextFields | SequenceNotStr[ShopTimeResolutionTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -271,6 +291,10 @@ class ShopTimeResolutionAPI(NodeAPI[ShopTimeResolution, ShopTimeResolutionWrite,
         | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: ShopTimeResolutionFields | SequenceNotStr[ShopTimeResolutionFields],
         property: ShopTimeResolutionFields | SequenceNotStr[ShopTimeResolutionFields] | None = None,
+        query: str | None = None,
+        search_property: ShopTimeResolutionTextFields | SequenceNotStr[ShopTimeResolutionTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -284,6 +308,10 @@ class ShopTimeResolutionAPI(NodeAPI[ShopTimeResolution, ShopTimeResolutionWrite,
         | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: ShopTimeResolutionFields | SequenceNotStr[ShopTimeResolutionFields] | None = None,
         property: ShopTimeResolutionFields | SequenceNotStr[ShopTimeResolutionFields] | None = None,
+        query: str | None = None,
+        search_property: ShopTimeResolutionTextFields | SequenceNotStr[ShopTimeResolutionTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -299,6 +327,10 @@ class ShopTimeResolutionAPI(NodeAPI[ShopTimeResolution, ShopTimeResolutionWrite,
             aggregate: The aggregation to perform.
             group_by: The property to group by when doing the aggregation.
             property: The property to perform aggregation on.
+            query: The query to search for in the text field.
+            search_property: The text field to search in.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop time resolutions to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -319,6 +351,8 @@ class ShopTimeResolutionAPI(NodeAPI[ShopTimeResolution, ShopTimeResolutionWrite,
 
         filter_ = _create_shop_time_resolution_filter(
             self._view_id,
+            name,
+            name_prefix,
             external_id_prefix,
             space,
             filter,
@@ -327,8 +361,8 @@ class ShopTimeResolutionAPI(NodeAPI[ShopTimeResolution, ShopTimeResolutionWrite,
             aggregate=aggregate,
             group_by=group_by,  # type: ignore[arg-type]
             properties=property,  # type: ignore[arg-type]
-            query=None,
-            search_properties=None,
+            query=query,
+            search_properties=search_property,  # type: ignore[arg-type]
             limit=limit,
             filter=filter_,
         )
@@ -337,6 +371,10 @@ class ShopTimeResolutionAPI(NodeAPI[ShopTimeResolution, ShopTimeResolutionWrite,
         self,
         property: ShopTimeResolutionFields,
         interval: float,
+        query: str | None = None,
+        search_property: ShopTimeResolutionTextFields | SequenceNotStr[ShopTimeResolutionTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -347,6 +385,10 @@ class ShopTimeResolutionAPI(NodeAPI[ShopTimeResolution, ShopTimeResolutionWrite,
         Args:
             property: The property to use as the value in the histogram.
             interval: The interval to use for the histogram bins.
+            query: The query to search for in the text field.
+            search_property: The text field to search in.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop time resolutions to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -358,6 +400,8 @@ class ShopTimeResolutionAPI(NodeAPI[ShopTimeResolution, ShopTimeResolutionWrite,
         """
         filter_ = _create_shop_time_resolution_filter(
             self._view_id,
+            name,
+            name_prefix,
             external_id_prefix,
             space,
             filter,
@@ -365,8 +409,8 @@ class ShopTimeResolutionAPI(NodeAPI[ShopTimeResolution, ShopTimeResolutionWrite,
         return self._histogram(
             property,
             interval,
-            None,
-            None,
+            query,
+            search_property,  # type: ignore[arg-type]
             limit,
             filter_,
         )
@@ -383,6 +427,8 @@ class ShopTimeResolutionAPI(NodeAPI[ShopTimeResolution, ShopTimeResolutionWrite,
 
     def list(
         self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -394,6 +440,8 @@ class ShopTimeResolutionAPI(NodeAPI[ShopTimeResolution, ShopTimeResolutionWrite,
         """List/filter shop time resolutions
 
         Args:
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop time resolutions to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -418,6 +466,8 @@ class ShopTimeResolutionAPI(NodeAPI[ShopTimeResolution, ShopTimeResolutionWrite,
         """
         filter_ = _create_shop_time_resolution_filter(
             self._view_id,
+            name,
+            name_prefix,
             external_id_prefix,
             space,
             filter,

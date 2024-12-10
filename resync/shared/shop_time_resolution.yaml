@@ -1,0 +1,19 @@
+# ShopTimeResolution view definition
+#   name: String!
+#   minutes_after_start: [Int64]
+#   time_resolution_minutes: [Int64]
+
+- name: default
+  minutes_after_start:
+    - 0
+  time_resolution_minutes:
+    - 60
+- name: 15 min test
+  minutes_after_start:
+    - 0
+    - 1440 # 1 day
+    - 4320 # 3 days
+  time_resolution_minutes:
+    - 15
+    - 60
+    - 240 # 4 hours

@@ -33,6 +33,7 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     QueryCore,
     NodeQueryCore,
     StringFilter,
+
 )
 
 
@@ -44,15 +45,17 @@ __all__ = [
     "ShopTimeResolutionWriteList",
     "ShopTimeResolutionApplyList",
     "ShopTimeResolutionFields",
+    "ShopTimeResolutionTextFields",
     "ShopTimeResolutionGraphQL",
 ]
 
 
-ShopTimeResolutionTextFields = Literal["external_id", ]
-ShopTimeResolutionFields = Literal["external_id", "minutes_after_start", "time_resolution_minutes"]
+ShopTimeResolutionTextFields = Literal["external_id", "name"]
+ShopTimeResolutionFields = Literal["external_id", "name", "minutes_after_start", "time_resolution_minutes"]
 
 _SHOPTIMERESOLUTION_PROPERTIES_BY_FIELD = {
     "external_id": "externalId",
+    "name": "name",
     "minutes_after_start": "minutesAfterStart",
     "time_resolution_minutes": "timeResolutionMinutes",
 }
@@ -68,11 +71,13 @@ class ShopTimeResolutionGraphQL(GraphQLCore):
         space: The space where the node is located.
         external_id: The external id of the shop time resolution.
         data_record: The data record of the shop time resolution node.
+        name: The name field.
         minutes_after_start: Minutes after SHOP Simulation start.
         time_resolution_minutes: The SHOP time resolution (in minutes) to use for SHOP.
     """
 
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopTimeResolution", "1")
+    name: Optional[str] = None
     minutes_after_start: Optional[list[int]] = Field(None, alias="minutesAfterStart")
     time_resolution_minutes: Optional[list[int]] = Field(None, alias="timeResolutionMinutes")
 
@@ -103,6 +108,7 @@ class ShopTimeResolutionGraphQL(GraphQLCore):
                 last_updated_time=self.data_record.last_updated_time,
                 created_time=self.data_record.created_time,
             ),
+            name=self.name,
             minutes_after_start=self.minutes_after_start,
             time_resolution_minutes=self.time_resolution_minutes,
         )
@@ -115,6 +121,7 @@ class ShopTimeResolutionGraphQL(GraphQLCore):
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=0),
+            name=self.name,
             minutes_after_start=self.minutes_after_start,
             time_resolution_minutes=self.time_resolution_minutes,
         )
@@ -129,6 +136,7 @@ class ShopTimeResolution(DomainModel):
         space: The space where the node is located.
         external_id: The external id of the shop time resolution.
         data_record: The data record of the shop time resolution node.
+        name: The name field.
         minutes_after_start: Minutes after SHOP Simulation start.
         time_resolution_minutes: The SHOP time resolution (in minutes) to use for SHOP.
     """
@@ -137,6 +145,7 @@ class ShopTimeResolution(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopTimeResolution")
+    name: str
     minutes_after_start: list[int] = Field(alias="minutesAfterStart")
     time_resolution_minutes: list[int] = Field(alias="timeResolutionMinutes")
 
@@ -148,6 +157,7 @@ class ShopTimeResolution(DomainModel):
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
+            name=self.name,
             minutes_after_start=self.minutes_after_start,
             time_resolution_minutes=self.time_resolution_minutes,
         )
@@ -170,6 +180,7 @@ class ShopTimeResolutionWrite(DomainModelWrite):
         space: The space where the node is located.
         external_id: The external id of the shop time resolution.
         data_record: The data record of the shop time resolution node.
+        name: The name field.
         minutes_after_start: Minutes after SHOP Simulation start.
         time_resolution_minutes: The SHOP time resolution (in minutes) to use for SHOP.
     """
@@ -178,6 +189,7 @@ class ShopTimeResolutionWrite(DomainModelWrite):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "ShopTimeResolution")
+    name: str
     minutes_after_start: list[int] = Field(alias="minutesAfterStart")
     time_resolution_minutes: list[int] = Field(alias="timeResolutionMinutes")
 
@@ -193,6 +205,9 @@ class ShopTimeResolutionWrite(DomainModelWrite):
             return resources
 
         properties: dict[str, Any] = {}
+
+        if self.name is not None:
+            properties["name"] = self.name
 
         if self.minutes_after_start is not None:
             properties["minutesAfterStart"] = self.minutes_after_start
@@ -257,11 +272,19 @@ class ShopTimeResolutionApplyList(ShopTimeResolutionWriteList): ...
 
 def _create_shop_time_resolution_filter(
     view_id: dm.ViewId,
+    name: str | list[str] | None = None,
+    name_prefix: str | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters: list[dm.Filter] = []
+    if isinstance(name, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
+    if name and isinstance(name, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
+    if name_prefix is not None:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
@@ -304,6 +327,12 @@ class _ShopTimeResolutionQuery(NodeQueryCore[T_DomainModelList, ShopTimeResoluti
 
         self.space = StringFilter(self, ["node", "space"])
         self.external_id = StringFilter(self, ["node", "externalId"])
+        self.name = StringFilter(self, self._view_id.as_property_ref("name"))
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.name,
+        ])
 
     def list_shop_time_resolution(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopTimeResolutionList:
         return self._list(limit=limit)

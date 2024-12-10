@@ -46,3 +46,8 @@
     - "[name]Stavanger price plus 70 first 24h"
     - "[name]Stavanger price plus 100 first 24h"
     - "[name]Stavanger price plus 2000 first 24h"
+- name: Stavanger 1 scenario 15 min test
+  start_specification: "[name]Default Start"
+  end_specification: "[name]Default End"
+  scenarios:
+    - "[name]Stavanger base 15 min test"

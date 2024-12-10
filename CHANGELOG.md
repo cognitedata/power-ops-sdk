@@ -15,6 +15,10 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.106.0] - 2024-12-09
+### Added
+* `name` property for ShopTimeResolution
+
 ## [0.105.0] - 2024-12-09
 ### Changed
 * Resync source file reference is now a full path reference
