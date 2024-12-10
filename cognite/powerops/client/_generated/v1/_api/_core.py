@@ -697,9 +697,9 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE: dict[dm.DataModelId, dict[str, type[G
         "DateSpecification": data_classes.DateSpecificationGraphQL,
         "ShopOutputTimeSeriesDefinition": data_classes.ShopOutputTimeSeriesDefinitionGraphQL,
         "ShopFile": data_classes.ShopFileGraphQL,
-        "ShopTimeResolution": data_classes.ShopTimeResolutionGraphQL,
         "TurbineEfficiencyCurve": data_classes.TurbineEfficiencyCurveGraphQL,
         "GeneratorEfficiencyCurve": data_classes.GeneratorEfficiencyCurveGraphQL,
+        "ShopTimeResolution": data_classes.ShopTimeResolutionGraphQL,
     },
     dm.DataModelId("power_ops_core", "frontend_AFRRBid", "1"): {
         "BidDocumentAFRR": data_classes.BidDocumentAFRRGraphQL,
