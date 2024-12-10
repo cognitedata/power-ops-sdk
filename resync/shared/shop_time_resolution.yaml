@@ -6,10 +6,8 @@
 - name: default
   minutes_after_start:
     - 0
-    - 4320 # 3 days
   time_resolution_minutes:
     - 60
-    - 240 # 4 hours
 - name: 15 min test
   minutes_after_start:
     - 0
