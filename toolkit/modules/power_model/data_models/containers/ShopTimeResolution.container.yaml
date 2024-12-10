@@ -3,6 +3,15 @@ externalId: ShopTimeResolution
 name: ShopTimeResolution
 usedFor: node
 properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+    description: Name of the SHOP time resolution.
   minutesAfterStart:
     type:
       list: true

@@ -23,6 +23,13 @@ filter:
 implements: []
 version: "{{power_ops_data_model_version}}"
 properties:
+  name:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: ShopTimeResolution
+      type: container
+    containerPropertyIdentifier: name
+    name: name
   minutesAfterStart:
     container:
       space: "{{power_ops_models_space}}"

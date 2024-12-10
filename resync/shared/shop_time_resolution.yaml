@@ -1,4 +1,5 @@
 # ShopTimeResolution view definition
+#   name: String
 #   minutes_after_start: [Int64]
 #   time_resolution_minutes: [Int64]
 
