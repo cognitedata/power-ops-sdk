@@ -53,9 +53,9 @@ repos:
         files: ^.*.(py|pyi)$
         language: system
         pass_filenames: false
-    # - id: "resync"
-    #   name: "resync"
-    #   entry: "powerops pre-build power_ops_config.yaml resync/configuration.yaml --silent"
-    #   files: "resync/"
-    #   language: system
-    #   pass_filenames: false
+      - id: "resync"
+        name: "resync"
+        entry: "powerops pre-build power_ops_config.yaml resync/configuration.yaml --silent"
+        files: "resync/"
+        language: system
+        pass_filenames: false
