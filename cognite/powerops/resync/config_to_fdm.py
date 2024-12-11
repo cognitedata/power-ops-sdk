@@ -9,7 +9,22 @@ from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any, Optional
 
+import yaml
 from cognite.client import CogniteClient
+from cognite.client.data_classes.data_modeling import (
+    Boolean,
+    DirectRelation,
+    FileReference,
+    Float32,
+    Float64,
+    Int32,
+    Int64,
+    Json,
+    MappedProperty,
+    MultiEdgeConnection,
+    Text,
+    TimeSeriesReference,
+)
 from pydantic import ValidationError
 
 import cognite.powerops.client._generated.v1.data_classes as v1_data_classes
@@ -24,7 +39,7 @@ from cognite.powerops.resync.utils import (
 )
 from cognite.powerops.utils.serialization import load_yaml
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("rich")
 
 __all__ = ["ResyncImporter"]
 
@@ -33,37 +48,54 @@ class ResyncImporter:
     """Importer class for resync to populate the data model from yaml configuration files.
 
     Attributes:
-        data_model_configuration_file: Path to the data model configuration file.
         working_directory: Path to the working directory.
-        overwrite_data: A boolean to determine if data should be overwritten.
-        data_set_id: An integer of the data set id.
-        data_model_configuration: A dictionary of types to DataModelConfiguration detailing all configuration
-                                  properties of the data model type.
+        toolkit_directory: Path to the toolkit directory.
         data_model_classes: A dictionary of types to DomainModelWrite classes detailing all data model classes to be
                             used for the resync configuration.
+        data_model_configuration: A dictionary of types to DataModelConfiguration detailing all configuration
+                                  properties of the data model type.
+        ignore_nones: A boolean to ignore None values in the data model objects.
+        instance_space: A string of the instance space to be used for the data model objects.
+        models_space: A string of the models space to be used for the data model objects.
+        type_space: A string of the type space to be used for the data model objects.
     """
 
     working_directory: Path
-    overwrite_data: bool
+    toolkit_directory: Path
     folders_to_process: list[Path]
     data_model_classes: dict[str, type]
     data_model_configuration: dict[str, DataModelConfiguration]
+    ignore_nones: bool = True
+    instance_space: str = "{{power_ops_instance_space}}"
+    models_space: str = "{{power_ops_models_space}}"
+    type_space: str = "{{power_ops_type_space}}"
+    data_model_version: str = "{{power_ops_data_model_version}}"
 
     def __init__(
         self,
         working_directory: Path,
-        overwrite_data: Optional[bool],
+        toolkit_directory: Path,
         data_model_classes: dict[str, type],
         data_model_configuration: Optional[dict[str, DataModelConfiguration]] = None,
+        ignore_nones: bool = True,
+        instance_space: str = "{{power_ops_instance_space}}",
+        models_space: str = "{{power_ops_models_space}}",
+        data_model_version: str = "{{power_ops_data_model_version}}",
     ) -> None:
         """Initializes the ResyncImporter"""
 
         self.working_directory = working_directory
+        self.toolkit_directory = toolkit_directory
         self.folders_to_process = [p for p in self.working_directory.iterdir() if p.is_dir()]
 
-        self.overwrite_data = overwrite_data or False
         self.data_model_configuration = data_model_configuration or {}
         self.data_model_classes = data_model_classes
+
+        self.ignore_nones = ignore_nones
+
+        self.instance_space = instance_space
+        self.models_space = models_space
+        self.data_model_version = data_model_version
 
         v1_data_classes.DomainModelWrite.external_id_factory = ext_id_factory
 
@@ -87,13 +119,19 @@ class ResyncImporter:
 
         working_directory = Path(configuration.get("working_directory", Path.cwd()))
 
+        temp_toolkit_directory = configuration.get("toolkit_directory")
+        if temp_toolkit_directory:
+            toolkit_directory = Path(temp_toolkit_directory)
+        else:
+            raise ValueError("toolkit_directory is required in the configuration file")
+
         return cls(
             working_directory=working_directory,
-            overwrite_data=configuration.get("overwrite_data"),
+            toolkit_directory=toolkit_directory,
             data_model_classes=data_model_classes,
         )
 
-    def to_data_model(self) -> tuple[list[v1_data_classes.DomainModelWrite], list[str]]:
+    def to_data_model(self, client: CogniteClient) -> tuple[list[v1_data_classes.DomainModelWrite], list[str]]:
         """Converts configuration files to data model objects based on provided resync configuration.
 
         Retrieves raw data from files and using the resync configuration parses the data into
@@ -105,7 +143,7 @@ class ResyncImporter:
         """
 
         data_model_objects: dict[str, v1_data_classes.DomainModelWrite] = {}
-        external_ids: list[str] = []
+        type_nodes = {}
 
         for folder in self.folders_to_process:
             all_data_model_files = list((folder).glob("*.yaml"))
@@ -132,12 +170,38 @@ class ResyncImporter:
 
                 logger.info(f"Processing {data_model_file} as type {type_configuration.name}")
 
+                objects_to_add: list[v1_data_classes.DomainModelWrite] = []
                 for unprocessed_object in raw_data_model_objects:
                     results = self._dict_to_type_object(unprocessed_object, type_configuration)
+                    objects_to_add.extend(results[0].values())
                     data_model_objects.update(results[0])
-                    external_ids.extend(results[1])
 
-        return list(data_model_objects.values()), external_ids
+                grouped_objects_to_add: dict[type, list[v1_data_classes.DomainModelWrite]] = {}
+                for obj in objects_to_add:
+                    obj_type = type(obj)  # Get the type of the object
+                    if obj_type not in grouped_objects_to_add:
+                        grouped_objects_to_add[obj_type] = []  # Create a new list for this type
+                    grouped_objects_to_add[obj_type].append(obj)  # Add the object to the list
+
+                for obj_type, objects in grouped_objects_to_add.items():
+                    node_type = self._type_objects_to_file(
+                        objects,
+                        folder.stem,
+                        obj_type,
+                        client,
+                    )
+                    type_nodes.update(node_type)
+
+        if type_nodes:
+            node_type_yaml_file = self.toolkit_directory / "types.node.yaml"
+
+            with Path(node_type_yaml_file).open("w") as file:
+                yaml.dump(list(type_nodes.values()), file)
+
+            with Path(node_type_yaml_file).open("a") as file:
+                file.write("\n")  # Adding an extra blank line to match yaml formatting
+
+        return list(data_model_objects.values()), list(data_model_objects.keys())
 
     def _dict_to_type_object(
         self,
@@ -205,6 +269,177 @@ class ResyncImporter:
             ) from exc
 
         return generated_data_model_objects, reference_external_ids
+
+    def _type_objects_to_file(
+        self,
+        data_model_objects: list[v1_data_classes.DomainModelWrite],
+        prefix_name: str,
+        object_type: Any,
+        client: CogniteClient,
+    ) -> dict[str, dict[str, str]]:
+        """Converts a data model object into a dictionary object matching API spec and writes it to a file.
+
+        Provided the data model object input the object will be converted into a dictionary and written to a file.
+
+        Args:
+            data_model_object: A DomainModelWrite object to be converted into a dictionary and written to a file.
+        """
+
+        node_file_data = []
+        node_external_ids = []
+        edge_file_data = []
+        edge_external_ids = []
+
+        type_external_id = object_type.__name__.replace("Write", "")
+
+        view = client.data_modeling.views.retrieve(ids=[("power_ops_core", type_external_id)])[0]
+        properties = view.properties
+        edge_properties = {}
+        direct_relation_list_properties = {}
+        direct_relation_properties = {}
+        float_list_properties = {}
+        float_properties = {}
+        other_properties = {}
+
+        for name, info in properties.items():
+            if isinstance(info, MultiEdgeConnection):
+                edge_properties[name] = info.type
+            elif isinstance(info, MappedProperty):
+                if isinstance(info.type, DirectRelation):
+                    if info.type.is_list:
+                        direct_relation_list_properties[name] = info.type
+                    else:
+                        direct_relation_properties[name] = info.type
+                elif isinstance(info.type, Float64 | Float32):
+                    if info.type.is_list:
+                        float_list_properties[name] = info.type
+                    else:
+                        float_properties[name] = info.type
+                elif isinstance(info.type, Text | TimeSeriesReference | Boolean | Json | FileReference | Int64 | Int32):
+                    other_properties[name] = info.type
+                else:
+                    raise ValueError(f"Type mapped {info.type} is not supported")
+            else:
+                raise ValueError(f"Type {info} is not supported")
+
+        for obj in data_model_objects:
+            object_dump = obj.dump()
+            object_dump.pop("data_record")
+            object_dump.pop("space")
+            object_dump.pop("node_type")
+
+            external_id = object_dump.pop("externalId")
+
+            edges = {}
+            for property_name, info in object_dump.items():
+                if property_name in edge_properties:
+                    edges[property_name] = info
+                elif property_name in direct_relation_properties:
+                    object_dump[property_name] = {
+                        "space": self.instance_space,
+                        "externalId": object_dump[property_name],
+                    }
+                elif property_name in direct_relation_list_properties:
+                    object_dump[property_name] = [
+                        {
+                            "space": self.instance_space,
+                            "externalId": item,
+                        }
+                        for item in object_dump[property_name]
+                    ]
+                elif property_name in float_properties:
+                    if object_dump[property_name] is not None and object_dump[property_name].is_integer():
+                        object_dump[property_name] = int(object_dump[property_name])
+                elif property_name in float_list_properties:
+                    object_dump[property_name] = [
+                        int(num) if num.is_integer() else num for num in object_dump[property_name]
+                    ]
+
+            for edge_name in edges.keys():
+                object_dump.pop(edge_name)
+
+            for edge_name, edge_info in edges.items():
+                if not isinstance(edge_info, list):
+                    edge_info = [edge_info]  # type: ignore[assignment]
+                for edge_end_external_id in edge_info:  # type: ignore[attr-defined]
+                    if edge_end_external_id:
+                        edge_object = {
+                            "instanceType": "edge",
+                            "type": {
+                                "space": edge_properties[edge_name].space,
+                                "externalId": edge_properties[edge_name].external_id,
+                            },
+                            "space": self.instance_space,
+                            "externalId": f"{external_id}:{edge_end_external_id}",
+                            "startNode": {
+                                "space": self.instance_space,
+                                "externalId": external_id,
+                            },
+                            "endNode": {
+                                "space": self.instance_space,
+                                "externalId": edge_end_external_id,
+                            },
+                        }
+
+                        if edge_object["externalId"] not in edge_external_ids:
+                            edge_external_ids.append(edge_object["externalId"])
+                            edge_file_data.append(edge_object)
+                        else:
+                            logger.warning(f"Edge {edge_object['externalId']} already exists")
+
+            if self.ignore_nones:
+                object_dump = {k: v for k, v in object_dump.items() if v is not None}
+
+            node_object = {
+                "space": self.instance_space,
+                "externalId": external_id,
+                "type": {
+                    "space": self.type_space,
+                    "externalId": type_external_id,
+                },
+                "sources": [
+                    {
+                        "source": {
+                            "space": "{{power_ops_models_space}}",
+                            "externalId": type_external_id,
+                            "version": "{{power_ops_data_model_version}}",
+                            "type": "view",
+                        },
+                        "properties": object_dump,
+                    }
+                ],
+            }
+            if node_object["externalId"] not in node_external_ids:
+                node_external_ids.append(node_object["externalId"])
+                node_file_data.append(node_object)
+            else:
+                logger.warning(f"Node {node_object['externalId']} already exists")
+
+        file_name_prefix = f"{prefix_name}:{type_external_id}"
+
+        if node_file_data:
+            node_yaml_file = self.toolkit_directory / f"{file_name_prefix}.node.yaml"
+
+            with Path(node_yaml_file).open("w") as file:
+                yaml.dump(node_file_data, file)
+
+            with Path(node_yaml_file).open("a") as file:
+                file.write("\n")  # Adding an extra blank line to match yaml formatting
+
+        if edge_file_data:
+            edge_yaml_file = self.toolkit_directory / f"{file_name_prefix}.edge.yaml"
+            with Path(edge_yaml_file).open("w") as file:
+                yaml.dump(edge_file_data, file)
+            with Path(edge_yaml_file).open("a") as file:
+                file.write("\n")  # Adding an extra blank line to match yaml formatting
+
+        type_node = {
+            type_external_id: {
+                "externalId": type_external_id,
+                "space": self.type_space,
+            }
+        }
+        return type_node
 
     @staticmethod
     def _split_data_by_parsing_method(

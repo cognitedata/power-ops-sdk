@@ -1,0 +1,108 @@
+- externalId: shop_output_time_series_definition_market_price
+  sources:
+    - properties:
+        attributeName: sale_price
+        isStep: true
+        name: market price
+        objectName: price
+        objectType: market
+        unit: EUR/MWh
+      source:
+        externalId: ShopOutputTimeSeriesDefinition
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: '{{power_ops_type_space}}'
+- externalId: shop_output_time_series_definition_market_sale
+  sources:
+    - properties:
+        attributeName: sale
+        isStep: true
+        name: market sale
+        objectName: sales
+        objectType: market
+        unit: MWh
+      source:
+        externalId: ShopOutputTimeSeriesDefinition
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: '{{power_ops_type_space}}'
+- externalId: shop_output_time_series_definition_plant_production
+  sources:
+    - properties:
+        attributeName: production
+        isStep: true
+        name: plant production
+        objectName: production
+        objectType: plant
+        unit: MW
+      source:
+        externalId: ShopOutputTimeSeriesDefinition
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: '{{power_ops_type_space}}'
+- externalId: shop_output_time_series_definition_plant_consumption
+  sources:
+    - properties:
+        attributeName: consumption
+        isStep: true
+        name: plant consumption
+        objectName: consumption
+        objectType: plant
+        unit: MW
+      source:
+        externalId: ShopOutputTimeSeriesDefinition
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: '{{power_ops_type_space}}'
+- externalId: shop_output_time_series_definition_reservoir_water_value
+  sources:
+    - properties:
+        attributeName: water_value_global_result
+        isStep: true
+        name: reservoir water value
+        objectName: water_value
+        objectType: reservoir
+        unit: EUR/Mm3
+      source:
+        externalId: ShopOutputTimeSeriesDefinition
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: '{{power_ops_type_space}}'
+- externalId: shop_output_time_series_definition_reservoir_energy_conversion_factor
+  sources:
+    - properties:
+        attributeName: energy_conversion_factor
+        isStep: true
+        name: reservoir energy conversion factor
+        objectName: energy_conversion_factor
+        objectType: reservoir
+        unit: MWh/Mm3
+      source:
+        externalId: ShopOutputTimeSeriesDefinition
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: '{{power_ops_type_space}}'

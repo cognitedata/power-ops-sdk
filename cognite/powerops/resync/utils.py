@@ -3,8 +3,9 @@
 # mypy: disable-error-code="call-arg"
 from __future__ import annotations
 
+import hashlib
+import json
 import logging
-import random
 import re
 from typing import Any, Optional
 
@@ -13,7 +14,7 @@ from pydantic.alias_generators import to_snake
 import cognite.powerops.client._generated.v1.data_classes as v1_data_classes
 from cognite.powerops.client._generated.v1.data_classes._core import DomainModelWrite
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("rich")
 
 
 def get_prefix_from_type(domain_model_type: type) -> str:
@@ -113,9 +114,9 @@ def ext_id_factory(domain_model_type: type, data: dict) -> str:
 
     # TODO proper naming
     if domain_model_type is v1_data_classes.GeneratorEfficiencyCurveWrite:
-        return f"{type_prefix}_foo_{random.random()}"
+        return f"{type_prefix}:{_get_short_hash(data)}"
     elif domain_model_type is v1_data_classes.TurbineEfficiencyCurveWrite:
-        return f"{type_prefix}_foo_{random.random()}"
+        return f"{type_prefix}:{_get_short_hash(data)}"
 
     try:
         name = data["name"]
@@ -125,6 +126,12 @@ def ext_id_factory(domain_model_type: type, data: dict) -> str:
     cleaned_name = name.lower().replace(" ", "_").replace("-", "_")
 
     return f"{type_prefix}_{cleaned_name}"
+
+
+def _get_short_hash(data: dict) -> str:
+    dict_string = json.dumps(data, sort_keys=True)
+    hash_object = hashlib.sha256(dict_string.encode())
+    return hash_object.hexdigest()[:8]
 
 
 def get_external_id_from_field(
@@ -276,33 +283,3 @@ def parse_external_ids(
             data[key] = sub_data
 
     return data, reference_external_ids
-
-
-def check_all_linked_sources_exist(
-    data_model_objects: list,
-    file_external_ids: list[str],
-    time_series_external_ids: list[str],
-    other_external_ids: list[str],
-) -> None:
-    """Check that all linked sources exist or are referenced in the data model objects being upserted.
-
-    TODO: Implement this function.
-
-    Provided a list of external ids for files, time series, and other objects, this function checks that all linked
-    sources exist or are referenced in the data model objects being upserted. The function iterates over all data model
-    objects and checks that all linked sources exist or are referenced in the object. If a linked source does not exist,
-    the function raises an error.
-
-    Args:
-        data_model_objects: A list of all data model objects being upserted.
-        file_external_ids: A list of all external ids for files.
-        time_series_external_ids: A list of all external ids for time series.
-        other_external_ids: A list of all other external ids.
-
-    Raises:
-        ValueError: External id not found in linked sources.
-    """
-    print(data_model_objects)
-    print(file_external_ids)
-    print(time_series_external_ids)
-    print(other_external_ids)

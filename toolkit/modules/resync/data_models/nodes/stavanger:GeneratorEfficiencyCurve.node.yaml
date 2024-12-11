@@ -1,0 +1,18 @@
+- externalId: generator_efficiency_curve:6dac3bf7
+  sources:
+    - properties:
+        efficiency:
+          - 100
+          - 100
+        power:
+          - 0
+          - 10000
+      source:
+        externalId: GeneratorEfficiencyCurve
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: GeneratorEfficiencyCurve
+    space: '{{power_ops_type_space}}'

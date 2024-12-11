@@ -1,0 +1,27 @@
+- externalId: base_mapping_stavanger_reservoir_dale_inflow
+  sources:
+    - properties:
+        aggregation: MEAN
+        attributeName: inflow
+        objectName: Dale
+        objectType: reservoir
+        retrieve: RANGE
+        transformations:
+          - StaticValues:
+              parameters:
+                relative_datapoints:
+                  - offset_minute: 0.0
+                    offset_value: 22.0
+                  - offset_minute: 840.0
+                    offset_value: 12.0
+                  - offset_minute: 1200
+                    offset_value: 0.0
+      source:
+        externalId: ShopAttributeMapping
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: '{{power_ops_type_space}}'

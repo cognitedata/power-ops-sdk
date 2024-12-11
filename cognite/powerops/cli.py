@@ -34,22 +34,16 @@ def _version_callback(value: bool):
 def common(ctx: typer.Context, version: bool = typer.Option(None, "--version", callback=_version_callback)): ...
 
 
-@app.command("plan_v1", help="Plan the changes from the configuration files to the data model in CDF")
-def plan_v1(
+@app.command("pre-build", help="Create toolkit configuration files from a resync configuration file")
+def pre_build(
     path: Annotated[Path, typer.Argument(help="Path to configuration files")],
     configuration: Annotated[Path, typer.Argument(help="Path to resync configuration file")],
+    silent_mode: bool = typer.Option(False, "--silent", help="Silent mode for running in pre-commit hook"),
 ):
-    logging.info(f"Running plan on configuration files located in {path}")
-    powerops.resync.plan(path, configuration)
-
-
-@app.command("apply_v1", help="Apply the changes from the configuration files to the data model in CDF")
-def apply_v1(
-    path: Annotated[Path, typer.Argument(help="Path to configuration files")],
-    configuration: Annotated[Path, typer.Argument(help="Path to resync configuration file")],
-):
-    logging.info(f"Running apply on configuration files located in {path}")
-    powerops.resync.apply(path, configuration)
+    if silent_mode:  # Turn off logging if silent mode is enabled
+        log.setLevel(logging.CRITICAL)
+    log.info(f"Running pre_build on configuration files located in {path}")
+    powerops.resync.pre_build(path, configuration)
 
 
 def main():

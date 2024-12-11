@@ -1,0 +1,252 @@
+- externalId: generator_efficiency_curve:5a5d2435
+  sources:
+    - properties:
+        efficiency:
+          - 98.5
+          - 98.5
+        power:
+          - 0
+          - 100
+      source:
+        externalId: GeneratorEfficiencyCurve
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: GeneratorEfficiencyCurve
+    space: '{{power_ops_type_space}}'
+- externalId: generator_efficiency_curve:81d769a6
+  sources:
+    - properties:
+        efficiency:
+          - 97
+          - 97.5
+          - 97.9
+          - 98.2
+          - 98.3
+          - 98.43
+          - 98.6
+          - 98.64
+          - 98.65
+          - 98.63
+        power:
+          - 15
+          - 16.9
+          - 21.8
+          - 25.8
+          - 28.2
+          - 32.5
+          - 38.5
+          - 41.5
+          - 43
+          - 44
+      source:
+        externalId: GeneratorEfficiencyCurve
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: GeneratorEfficiencyCurve
+    space: '{{power_ops_type_space}}'
+- externalId: generator_efficiency_curve:cd6396a6
+  sources:
+    - properties:
+        efficiency:
+          - 97.6
+          - 98.11
+          - 98.44
+          - 98.52
+          - 98.51
+          - 98.5
+          - 98.49
+        power:
+          - 37.9
+          - 50
+          - 65
+          - 75
+          - 85
+          - 95
+          - 100
+      source:
+        externalId: GeneratorEfficiencyCurve
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: GeneratorEfficiencyCurve
+    space: '{{power_ops_type_space}}'
+- externalId: generator_efficiency_curve:d4933751
+  sources:
+    - properties:
+        efficiency:
+          - 96.2
+          - 97.45
+          - 98.14
+          - 98.29
+          - 98.31
+          - 98.3
+        power:
+          - 20
+          - 30
+          - 50
+          - 65
+          - 85
+          - 88
+      source:
+        externalId: GeneratorEfficiencyCurve
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: GeneratorEfficiencyCurve
+    space: '{{power_ops_type_space}}'
+- externalId: generator_efficiency_curve:d0c68b2b
+  sources:
+    - properties:
+        efficiency:
+          - 96.6
+          - 97.4
+          - 97.9
+          - 98.23
+          - 98.4
+          - 98.5
+          - 98.7
+          - 98.72
+          - 98.69
+        power:
+          - 17
+          - 20.5
+          - 23.8
+          - 27.3
+          - 31
+          - 34.3
+          - 41.2
+          - 44.8
+          - 50
+      source:
+        externalId: GeneratorEfficiencyCurve
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: GeneratorEfficiencyCurve
+    space: '{{power_ops_type_space}}'
+- externalId: generator_efficiency_curve:415890f2
+  sources:
+    - properties:
+        efficiency:
+          - 93.3
+          - 96.2
+          - 97.2
+          - 97.4
+        power:
+          - 1
+          - 2
+          - 3
+          - 3.4
+      source:
+        externalId: GeneratorEfficiencyCurve
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: GeneratorEfficiencyCurve
+    space: '{{power_ops_type_space}}'
+- externalId: generator_efficiency_curve:45440148
+  sources:
+    - properties:
+        efficiency:
+          - 97.68
+          - 98.3
+          - 98.46
+          - 98.55
+          - 98.6
+        power:
+          - 30
+          - 45
+          - 55
+          - 65
+          - 80
+      source:
+        externalId: GeneratorEfficiencyCurve
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: GeneratorEfficiencyCurve
+    space: '{{power_ops_type_space}}'
+- externalId: generator_efficiency_curve:1a9811bb
+  sources:
+    - properties:
+        efficiency:
+          - 96.91
+          - 97.88
+          - 98.33
+          - 98.52
+          - 98.6
+        power:
+          - 20
+          - 35
+          - 50
+          - 65
+          - 80
+      source:
+        externalId: GeneratorEfficiencyCurve
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: GeneratorEfficiencyCurve
+    space: '{{power_ops_type_space}}'
+- externalId: generator_efficiency_curve:c04055b4
+  sources:
+    - properties:
+        efficiency:
+          - 97
+          - 98.2
+          - 98.4
+          - 98.5
+          - 98.5
+        power:
+          - 4
+          - 11.6
+          - 15.2
+          - 19.2
+          - 20
+      source:
+        externalId: GeneratorEfficiencyCurve
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: GeneratorEfficiencyCurve
+    space: '{{power_ops_type_space}}'
+- externalId: generator_efficiency_curve:1c6693a8
+  sources:
+    - properties:
+        efficiency:
+          - 97.24
+          - 97.41
+          - 97.4
+        power:
+          - 1
+          - 4
+          - 5.1
+      source:
+        externalId: GeneratorEfficiencyCurve
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: GeneratorEfficiencyCurve
+    space: '{{power_ops_type_space}}'

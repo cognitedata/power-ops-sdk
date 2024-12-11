@@ -1,0 +1,95 @@
+- externalId: shop_scenario_set_fornebu_1_scenario
+  sources:
+    - properties:
+        endSpecification:
+          externalId: date_specification_default_end
+          space: '{{power_ops_instance_space}}'
+        name: Fornebu 1 scenario
+        startSpecification:
+          externalId: date_specification_default_start
+          space: '{{power_ops_instance_space}}'
+      source:
+        externalId: ShopScenarioSet
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopScenarioSet
+    space: '{{power_ops_type_space}}'
+- externalId: shop_scenario_set_fornebu_2_scenarios
+  sources:
+    - properties:
+        endSpecification:
+          externalId: date_specification_default_end
+          space: '{{power_ops_instance_space}}'
+        name: Fornebu 2 scenarios
+        startSpecification:
+          externalId: date_specification_default_start
+          space: '{{power_ops_instance_space}}'
+      source:
+        externalId: ShopScenarioSet
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopScenarioSet
+    space: '{{power_ops_type_space}}'
+- externalId: shop_scenario_set_fornebu_3_scenarios
+  sources:
+    - properties:
+        endSpecification:
+          externalId: date_specification_default_end
+          space: '{{power_ops_instance_space}}'
+        name: Fornebu 3 scenarios
+        startSpecification:
+          externalId: date_specification_default_start
+          space: '{{power_ops_instance_space}}'
+      source:
+        externalId: ShopScenarioSet
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopScenarioSet
+    space: '{{power_ops_type_space}}'
+- externalId: shop_scenario_set_fornebu_20_scenarios
+  sources:
+    - properties:
+        endSpecification:
+          externalId: date_specification_default_end
+          space: '{{power_ops_instance_space}}'
+        name: Fornebu 20 scenarios
+        startSpecification:
+          externalId: date_specification_default_start
+          space: '{{power_ops_instance_space}}'
+      source:
+        externalId: ShopScenarioSet
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopScenarioSet
+    space: '{{power_ops_type_space}}'
+- externalId: shop_scenario_set_fornebu_1_scenario_15_min_test
+  sources:
+    - properties:
+        endSpecification:
+          externalId: date_specification_default_end
+          space: '{{power_ops_instance_space}}'
+        name: Fornebu 1 scenario 15 min test
+        startSpecification:
+          externalId: date_specification_default_start
+          space: '{{power_ops_instance_space}}'
+      source:
+        externalId: ShopScenarioSet
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopScenarioSet
+    space: '{{power_ops_type_space}}'

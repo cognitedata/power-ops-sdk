@@ -1,0 +1,38 @@
+- externalId: turbine_efficiency_curve:eb016103
+  sources:
+    - properties:
+        efficiency:
+          - 90
+          - 95
+        flow:
+          - 3
+          - 10
+        head: 950
+      source:
+        externalId: TurbineEfficiencyCurve
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: TurbineEfficiencyCurve
+    space: '{{power_ops_type_space}}'
+- externalId: turbine_efficiency_curve:57dd9982
+  sources:
+    - properties:
+        efficiency:
+          - 91
+          - 96
+        flow:
+          - 3
+          - 10
+        head: 950
+      source:
+        externalId: TurbineEfficiencyCurve
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: TurbineEfficiencyCurve
+    space: '{{power_ops_type_space}}'

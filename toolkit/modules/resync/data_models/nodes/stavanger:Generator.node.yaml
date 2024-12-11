@@ -1,0 +1,44 @@
+- externalId: generator_sola_g1
+  sources:
+    - properties:
+        assetType: generator
+        displayName: Sola G1
+        generatorEfficiencyCurve:
+          externalId: generator_efficiency_curve:6dac3bf7
+          space: '{{power_ops_instance_space}}'
+        name: Sola_G1
+        ordering: 1
+        penstockNumber: 1
+        productionMin: 0
+        startStopCost: 0
+      source:
+        externalId: Generator
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: Generator
+    space: '{{power_ops_type_space}}'
+- externalId: generator_sola_g2
+  sources:
+    - properties:
+        assetType: generator
+        displayName: Sola G2
+        generatorEfficiencyCurve:
+          externalId: generator_efficiency_curve:6dac3bf7
+          space: '{{power_ops_instance_space}}'
+        name: Sola_G2
+        ordering: 1
+        penstockNumber: 1
+        productionMin: 0
+        startStopCost: 0
+      source:
+        externalId: Generator
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: Generator
+    space: '{{power_ops_type_space}}'

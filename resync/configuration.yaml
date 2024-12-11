@@ -1,4 +1,9 @@
 # Path to the working directory where the data model and files are stored
 working_directory: "resync"
-# Whether to overwrite the data if it already exists, note this refers to the "replace" logic from the API for instances
-overwrite_data: True
+# Path to the directory where the data model node and edge files are stored
+toolkit_directory: "toolkit/modules/resync/data_models/nodes"
+ignore_nones: true
+instance_space: "{{power_ops_instance_space}}"
+models_space: "{{power_ops_models_space}}"
+type_space: "{{power_ops_type_space}}"
+data_model_version: "{{power_ops_data_model_version}}"

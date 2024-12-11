@@ -1,0 +1,12 @@
+- endNode:
+    externalId: base_mapping_stavanger_reservoir_dale_inflow
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_stavanger:base_mapping_stavanger_reservoir_dale_inflow
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_stavanger
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types

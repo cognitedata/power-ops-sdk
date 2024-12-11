@@ -12,7 +12,7 @@
   commands: "[name]default"
   time_resolution: "[name|type:ShopTimeResolution]default"
   source: resync
-  attribute_mappings_override: []
+  # attribute_mappings_override: []
   output_definition:
     - "[name]market price"
     - "[name]plant production"

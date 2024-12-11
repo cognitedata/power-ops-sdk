@@ -1,0 +1,17 @@
+- externalId: shop_model_stavanger
+  sources:
+    - properties:
+        model: SHOP_Stavanger_model
+        modelVersion: '1'
+        name: Stavanger
+        penaltyLimit: 100
+        shopVersion: 16.0.2
+      source:
+        externalId: ShopModel
+        space: '{{power_ops_models_space}}'
+        type: view
+        version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel
+    space: '{{power_ops_type_space}}'
