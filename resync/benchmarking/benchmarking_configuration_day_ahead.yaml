@@ -1,0 +1,14 @@
+# BenchmarkingConfigurationDayAhead view definition
+# - name: String!
+#   price_area: PriceAreaDayAhead
+#   shopStartSpecification: DateSpecification
+#   shopEndSpecification: DateSpecification
+#   bidConfigurations: [BidConfigurationDayAhead]
+#   assetsPerShopModel: [ShopModelWithAssets]
+
+- name: Day Ahead Benchmarking Configuration NO2
+  price_area:
+  shop_start_specification:
+  shop_end_specification:
+  bid_configurations:
+  assets_per_shop_model:
