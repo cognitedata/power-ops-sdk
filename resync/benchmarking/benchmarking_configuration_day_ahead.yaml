@@ -1,14 +1,21 @@
 # BenchmarkingConfigurationDayAhead view definition
 # - name: String!
 #   price_area: PriceAreaDayAhead
-#   shopStartSpecification: DateSpecification
-#   shopEndSpecification: DateSpecification
-#   bidConfigurations: [BidConfigurationDayAhead]
-#   assetsPerShopModel: [ShopModelWithAssets]
+#   shop_start_specification: DateSpecification
+#   shop_end_specification: DateSpecification
+#   bid_configurations: [BidConfigurationDayAhead]
+#   assets_per_shop_model: [ShopModelWithAssets]
 
 - name: Day Ahead Benchmarking Configuration NO2
-  price_area:
-  shop_start_specification:
-  shop_end_specification:
+  price_area: "[external_id]price_area_information_no2"
+  shop_start_specification: "[name]Default Start"
+  shop_end_specification: "[name]Default End"
   bid_configurations:
+    - "[name]Price Independent NO2"
+    - "[name]Multi Scenario 2 NO2"
+    - "[name]Multi Scenario 3 NO2"
+    - "[name]Water Value NO2 Full"
+    - "[name]NO2 Combination"
   assets_per_shop_model:
+    - "[external_id]shop_model_with_assets:fornebu"
+    - "[external_id]shop_model_with_assets:stavanger"
