@@ -7,7 +7,7 @@ from cognite.powerops.client import PowerOpsClient
 from cognite.powerops.resync.config_to_fdm import ResyncImporter
 from cognite.powerops.resync.utils import get_data_model_write_classes
 
-logger = logging.getLogger("rich")
+logger = logging.getLogger(__name__)
 
 
 def pre_build(client_configuration: Path, configuration: Path) -> None:
@@ -24,7 +24,7 @@ def pre_build(client_configuration: Path, configuration: Path) -> None:
     data_model_classes = get_data_model_write_classes(client.v1)
 
     resync_importer = ResyncImporter.from_yaml(configuration, data_model_classes, client.cdf)
-    resync_data_model_objects, external_ids = resync_importer.to_data_model(client.cdf)
+    resync_data_model_objects, external_ids = resync_importer.to_toolkit_nodes_edges(client.cdf)
 
     logger.info(resync_data_model_objects)
     logger.info(f"Generated {len(resync_data_model_objects)} node objects")

@@ -5,7 +5,6 @@ from pathlib import Path
 from typing import Annotated
 
 import typer
-from rich.logging import Console, RichHandler
 
 from cognite import powerops
 
@@ -15,11 +14,9 @@ for third_party in ["cognite-sdk", "requests", "urllib3", "msal", "requests_oaut
     third_party_logger.propagate = False
 
 FORMAT = "%(message)s"
-logging.basicConfig(
-    level=logging.INFO, format=FORMAT, datefmt="[%X]", handlers=[RichHandler(console=Console(stderr=True))]
-)
+logging.basicConfig(level=logging.INFO, format=FORMAT, datefmt="[%X]")
 
-log = logging.getLogger("rich")
+logger = logging.getLogger(__name__)
 
 app = typer.Typer(pretty_exceptions_short=False, pretty_exceptions_show_locals=False, pretty_exceptions_enable=False)
 
@@ -41,8 +38,8 @@ def pre_build(
     silent_mode: bool = typer.Option(False, "--silent", help="Silent mode for running in pre-commit hook"),
 ):
     if silent_mode:  # Turn off logging if silent mode is enabled
-        log.setLevel(logging.CRITICAL)
-    log.info(f"Running pre_build on configuration files located in {path}")
+        logger.setLevel(logging.CRITICAL)
+    logger.info(f"Running pre_build on configuration files located in {path}")
     powerops.resync.pre_build(path, configuration)
 
 

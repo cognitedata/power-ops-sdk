@@ -39,7 +39,7 @@ from cognite.powerops.resync.utils import (
 )
 from cognite.powerops.utils.serialization import load_yaml
 
-logger = logging.getLogger("rich")
+logger = logging.getLogger(__name__)
 
 __all__ = ["ResyncImporter"]
 
@@ -131,11 +131,11 @@ class ResyncImporter:
             data_model_classes=data_model_classes,
         )
 
-    def to_data_model(self, client: CogniteClient) -> tuple[list[v1_data_classes.DomainModelWrite], list[str]]:
-        """Converts configuration files to data model objects based on provided resync configuration.
+    def to_toolkit_nodes_edges(self, client: CogniteClient) -> tuple[list[v1_data_classes.DomainModelWrite], list[str]]:
+        """Converts configuration files to toolkit format files for relevant nodes and edges.
 
         Retrieves raw data from files and using the resync configuration parses the data into
-        data model objects.
+        pygen data model objects which are then dumped and formatted into dictionary yaml toolkit format.
 
         Returns:
             data_model_objects: A list of all data model objects created from the configuration files.
