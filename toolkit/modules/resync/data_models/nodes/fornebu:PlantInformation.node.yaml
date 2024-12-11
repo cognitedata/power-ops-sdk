@@ -1,30 +1,3 @@
-- externalId: plant_information_lund
-  sources:
-  - properties:
-      assetType: plant
-      connectionLosses: 0
-      displayName: Lund
-      feedingFeeTimeSeries: '9626'
-      headLossFactor: 0.002
-      inletLevelTimeSeries: '907230'
-      name: Lund
-      ordering: 1
-      outletLevel: 1240
-      outletLevelTimeSeries: '907223'
-      penstockHeadLossFactors:
-      - 0.022
-      productionMax: 10000000000000000000
-      productionMin: 0
-      waterValueTimeSeries: '136120'
-    source:
-      externalId: PlantInformation
-      space: '{{power_ops_models_space}}'
-      type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
-  type:
-    externalId: PlantInformation
-    space: '{{power_ops_type_space}}'
 - externalId: plant_information_dalby
   sources:
   - properties:
@@ -117,6 +90,33 @@
       outletLevel: 1030
       penstockHeadLossFactors:
       - 0
+      productionMax: 10000000000000000000
+      productionMin: 0
+      waterValueTimeSeries: '136120'
+    source:
+      externalId: PlantInformation
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: PlantInformation
+    space: '{{power_ops_type_space}}'
+- externalId: plant_information_lund
+  sources:
+  - properties:
+      assetType: plant
+      connectionLosses: 0
+      displayName: Lund
+      feedingFeeTimeSeries: '9626'
+      headLossFactor: 0.002
+      inletLevelTimeSeries: '907230'
+      name: Lund
+      ordering: 1
+      outletLevel: 1240
+      outletLevelTimeSeries: '907223'
+      penstockHeadLossFactors:
+      - 0.022
       productionMax: 10000000000000000000
       productionMin: 0
       waterValueTimeSeries: '136120'

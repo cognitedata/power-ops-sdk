@@ -1,52 +1,4 @@
 - endNode:
-    externalId: turbine_efficiency_curve:fd328c45
-    space: '{{power_ops_instance_space}}'
-  externalId: generator_lund_g1:turbine_efficiency_curve:fd328c45
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: generator_lund_g1
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: isSubAssetOf
-    space: power_ops_types
-- endNode:
-    externalId: turbine_efficiency_curve:867012dc
-    space: '{{power_ops_instance_space}}'
-  externalId: generator_lund_g1:turbine_efficiency_curve:867012dc
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: generator_lund_g1
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: isSubAssetOf
-    space: power_ops_types
-- endNode:
-    externalId: turbine_efficiency_curve:ed35efb6
-    space: '{{power_ops_instance_space}}'
-  externalId: generator_holen_g1:turbine_efficiency_curve:ed35efb6
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: generator_holen_g1
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: isSubAssetOf
-    space: power_ops_types
-- endNode:
-    externalId: turbine_efficiency_curve:3577e35f
-    space: '{{power_ops_instance_space}}'
-  externalId: generator_rull1_g1:turbine_efficiency_curve:3577e35f
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: generator_rull1_g1
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: isSubAssetOf
-    space: power_ops_types
-- endNode:
     externalId: turbine_efficiency_curve:b5ffe6ac
     space: '{{power_ops_instance_space}}'
   externalId: generator_dalby_g1:turbine_efficiency_curve:b5ffe6ac
@@ -59,13 +11,13 @@
     externalId: isSubAssetOf
     space: power_ops_types
 - endNode:
-    externalId: turbine_efficiency_curve:dbf9ab9a
+    externalId: turbine_efficiency_curve:ed35efb6
     space: '{{power_ops_instance_space}}'
-  externalId: generator_landet_g1:turbine_efficiency_curve:dbf9ab9a
+  externalId: generator_holen_g1:turbine_efficiency_curve:ed35efb6
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
-    externalId: generator_landet_g1
+    externalId: generator_holen_g1
     space: '{{power_ops_instance_space}}'
   type:
     externalId: isSubAssetOf
@@ -95,6 +47,18 @@
     externalId: isSubAssetOf
     space: power_ops_types
 - endNode:
+    externalId: turbine_efficiency_curve:dbf9ab9a
+    space: '{{power_ops_instance_space}}'
+  externalId: generator_landet_g1:turbine_efficiency_curve:dbf9ab9a
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: generator_landet_g1
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: isSubAssetOf
+    space: power_ops_types
+- endNode:
     externalId: turbine_efficiency_curve:f5b06c39
     space: '{{power_ops_instance_space}}'
   externalId: generator_lien_krv_g1:turbine_efficiency_curve:f5b06c39
@@ -102,6 +66,42 @@
   space: '{{power_ops_instance_space}}'
   startNode:
     externalId: generator_lien_krv_g1
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: isSubAssetOf
+    space: power_ops_types
+- endNode:
+    externalId: turbine_efficiency_curve:867012dc
+    space: '{{power_ops_instance_space}}'
+  externalId: generator_lund_g1:turbine_efficiency_curve:867012dc
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: generator_lund_g1
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: isSubAssetOf
+    space: power_ops_types
+- endNode:
+    externalId: turbine_efficiency_curve:fd328c45
+    space: '{{power_ops_instance_space}}'
+  externalId: generator_lund_g1:turbine_efficiency_curve:fd328c45
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: generator_lund_g1
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: isSubAssetOf
+    space: power_ops_types
+- endNode:
+    externalId: turbine_efficiency_curve:3577e35f
+    space: '{{power_ops_instance_space}}'
+  externalId: generator_rull1_g1:turbine_efficiency_curve:3577e35f
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: generator_rull1_g1
     space: '{{power_ops_instance_space}}'
   type:
     externalId: isSubAssetOf

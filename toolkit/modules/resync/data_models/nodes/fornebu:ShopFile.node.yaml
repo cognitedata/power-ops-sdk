@@ -1,11 +1,11 @@
-- externalId: shop_file_water_value_cut_file_reservoir_mapping
+- externalId: shop_file_water_value_cut_file
   sources:
   - properties:
-      fileReference: SHOP_Fornebu_water_value_cut_file_reservoir_mapping
+      fileReference: SHOP_Fornebu_water_value_cut_file
       isAscii: true
-      label: water_value_cut_file_reservoir_mapping
-      name: water_value_cut_file_reservoir_mapping
-      order: 1
+      label: water_value_cut_file
+      name: water_value_cut_file
+      order: 2
     source:
       externalId: ShopFile
       space: '{{power_ops_models_space}}'
@@ -15,14 +15,14 @@
   type:
     externalId: ShopFile
     space: '{{power_ops_type_space}}'
-- externalId: shop_file_water_value_cut_file
+- externalId: shop_file_water_value_cut_file_reservoir_mapping
   sources:
   - properties:
-      fileReference: SHOP_Fornebu_water_value_cut_file
+      fileReference: SHOP_Fornebu_water_value_cut_file_reservoir_mapping
       isAscii: true
-      label: water_value_cut_file
-      name: water_value_cut_file
-      order: 2
+      label: water_value_cut_file_reservoir_mapping
+      name: water_value_cut_file_reservoir_mapping
+      order: 1
     source:
       externalId: ShopFile
       space: '{{power_ops_models_space}}'

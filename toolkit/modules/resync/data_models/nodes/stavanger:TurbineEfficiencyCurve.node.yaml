@@ -1,9 +1,9 @@
-- externalId: turbine_efficiency_curve:eb016103
+- externalId: turbine_efficiency_curve:57dd9982
   sources:
   - properties:
       efficiency:
-      - 90
-      - 95
+      - 91
+      - 96
       flow:
       - 3
       - 10
@@ -17,12 +17,12 @@
   type:
     externalId: TurbineEfficiencyCurve
     space: '{{power_ops_type_space}}'
-- externalId: turbine_efficiency_curve:57dd9982
+- externalId: turbine_efficiency_curve:eb016103
   sources:
   - properties:
       efficiency:
-      - 91
-      - 96
+      - 90
+      - 95
       flow:
       - 3
       - 10

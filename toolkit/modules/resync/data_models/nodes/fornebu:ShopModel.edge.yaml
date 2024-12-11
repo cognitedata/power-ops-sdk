@@ -1,26 +1,26 @@
 - endNode:
-    externalId: shop_file_water_value_cut_file_reservoir_mapping
+    externalId: base_mapping_fornebu_creek_intake_blakstad_inflow
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:shop_file_water_value_cut_file_reservoir_mapping
+  externalId: shop_model_fornebu:base_mapping_fornebu_creek_intake_blakstad_inflow
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
     externalId: shop_model_fornebu
     space: '{{power_ops_instance_space}}'
   type:
-    externalId: ShopModel.cogShopFilesConfig
+    externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: shop_file_water_value_cut_file
+    externalId: base_mapping_fornebu_creek_intake_fjerdingby_intake_inflow
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:shop_file_water_value_cut_file
+  externalId: shop_model_fornebu:base_mapping_fornebu_creek_intake_fjerdingby_intake_inflow
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
     externalId: shop_model_fornebu
     space: '{{power_ops_instance_space}}'
   type:
-    externalId: ShopModel.cogShopFilesConfig
+    externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
     externalId: base_mapping_fornebu_creek_intake_fjerdingby_intake_overflow_cost
@@ -35,9 +35,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_creek_intake_sandvika_inflow
+    externalId: base_mapping_fornebu_creek_intake_golebiowski_intake_inflow
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_creek_intake_sandvika_inflow
+  externalId: shop_model_fornebu:base_mapping_fornebu_creek_intake_golebiowski_intake_inflow
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -59,9 +59,45 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
+    externalId: base_mapping_fornebu_creek_intake_gustad_inflow
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_creek_intake_gustad_inflow
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_creek_intake_lont_intake_inflow
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_creek_intake_lont_intake_inflow
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
     externalId: base_mapping_fornebu_creek_intake_lont_intake_overflow_cost
     space: '{{power_ops_instance_space}}'
   externalId: shop_model_fornebu:base_mapping_fornebu_creek_intake_lont_intake_overflow_cost
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_creek_intake_narvhus_inflow
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_creek_intake_narvhus_inflow
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -83,9 +119,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_gate_b_hagen_strand_max_flow
+    externalId: base_mapping_fornebu_creek_intake_sandvika_inflow
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_gate_b_hagen_strand_max_flow
+  externalId: shop_model_fornebu:base_mapping_fornebu_creek_intake_sandvika_inflow
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -95,21 +131,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_gate_b_sirefelt_knute_rullsvatn_max_flow
+    externalId: base_mapping_fornebu_creek_intake_vigrestad_inflow
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_gate_b_sirefelt_knute_rullsvatn_max_flow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_gate_b_danielsen_lundvann_max_flow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_gate_b_danielsen_lundvann_max_flow
+  externalId: shop_model_fornebu:base_mapping_fornebu_creek_intake_vigrestad_inflow
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -131,9 +155,21 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_gate_b_nielsen_blakstadana_max_flow
+    externalId: base_mapping_fornebu_gate_b_danielsen_lundvann_max_flow
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_gate_b_nielsen_blakstadana_max_flow
+  externalId: shop_model_fornebu:base_mapping_fornebu_gate_b_danielsen_lundvann_max_flow
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_gate_b_hagen_strand_max_flow
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_gate_b_hagen_strand_max_flow
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -167,6 +203,30 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
+    externalId: base_mapping_fornebu_gate_b_nielsen_blakstadana_max_flow
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_gate_b_nielsen_blakstadana_max_flow
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_gate_b_sirefelt_knute_rullsvatn_max_flow
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_gate_b_sirefelt_knute_rullsvatn_max_flow
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
     externalId: base_mapping_fornebu_gate_f_blakstadana_knute_rullsvatn_max_flow
     space: '{{power_ops_instance_space}}'
   externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_blakstadana_knute_rullsvatn_max_flow
@@ -179,9 +239,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_gate_f_hagen_strand_max_flow
+    externalId: base_mapping_fornebu_gate_f_dalbysvatn_knute_rullsvatn_max_flow
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_hagen_strand_max_flow
+  externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_dalbysvatn_knute_rullsvatn_max_flow
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -194,18 +254,6 @@
     externalId: base_mapping_fornebu_gate_f_finnvasstol_dalbysvatn_max_flow
     space: '{{power_ops_instance_space}}'
   externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_finnvasstol_dalbysvatn_max_flow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_gate_f_hovden_hagen_max_flow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_hovden_hagen_max_flow
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -239,66 +287,6 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_gate_f_varhaug_max_flow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_varhaug_max_flow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_gate_f_tangvall_max_flow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_tangvall_max_flow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_gate_f_sirefelt_knute_rullsvatn_max_flow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_sirefelt_knute_rullsvatn_max_flow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_gate_f_lundvann_lensvik_max_flow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_lundvann_lensvik_max_flow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_gate_f_nupstj_max_flow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_nupstj_max_flow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
     externalId: base_mapping_fornebu_gate_f_golebiowski_dalbysvatn_max_flow
     space: '{{power_ops_instance_space}}'
   externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_golebiowski_dalbysvatn_max_flow
@@ -311,9 +299,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_gate_f_lont_dalbysvatn_max_flow
+    externalId: base_mapping_fornebu_gate_f_hagen_strand_max_flow
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_lont_dalbysvatn_max_flow
+  externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_hagen_strand_max_flow
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -323,57 +311,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_gate_f_dalbysvatn_knute_rullsvatn_max_flow
+    externalId: base_mapping_fornebu_gate_f_hovden_hagen_max_flow
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_dalbysvatn_knute_rullsvatn_max_flow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_gate_f_nielsen_max_flow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_nielsen_max_flow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_gate_f_narvhus_rullsvatn_max_flow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_narvhus_rullsvatn_max_flow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_gate_f_rullsvatn_rullslaagen_max_flow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_rullsvatn_rullslaagen_max_flow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_gate_f_ranemsletta_1183_livincovs_max_flow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_ranemsletta_1183_livincovs_max_flow
+  externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_hovden_hagen_max_flow
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -407,9 +347,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_gate_w_finnvasstol_strand_tunnel_max_flow
+    externalId: base_mapping_fornebu_gate_f_lont_dalbysvatn_max_flow
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_gate_w_finnvasstol_strand_tunnel_max_flow
+  externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_lont_dalbysvatn_max_flow
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -419,9 +359,117 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_gate_w_hovden_livincovs_max_flow
+    externalId: base_mapping_fornebu_gate_f_lundvann_lensvik_max_flow
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_gate_w_hovden_livincovs_max_flow
+  externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_lundvann_lensvik_max_flow
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_gate_f_narvhus_rullsvatn_max_flow
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_narvhus_rullsvatn_max_flow
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_gate_f_nielsen_max_flow
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_nielsen_max_flow
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_gate_f_nupstj_max_flow
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_nupstj_max_flow
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_gate_f_ranemsletta_1183_livincovs_max_flow
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_ranemsletta_1183_livincovs_max_flow
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_gate_f_rullsvatn_rullslaagen_max_flow
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_rullsvatn_rullslaagen_max_flow
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_gate_f_sirefelt_knute_rullsvatn_max_flow
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_sirefelt_knute_rullsvatn_max_flow
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_gate_f_tangvall_max_flow
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_tangvall_max_flow
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_gate_f_varhaug_max_flow
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_gate_f_varhaug_max_flow
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_gate_w_finnvasstol_strand_tunnel_max_flow
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_gate_w_finnvasstol_strand_tunnel_max_flow
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -443,21 +491,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_gate_w_varhaug_max_flow
+    externalId: base_mapping_fornebu_gate_w_hovden_livincovs_max_flow
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_gate_w_varhaug_max_flow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_gate_w_tangvall_max_flow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_gate_w_tangvall_max_flow
+  externalId: shop_model_fornebu:base_mapping_fornebu_gate_w_hovden_livincovs_max_flow
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -479,9 +515,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_holen_g1_startcost
+    externalId: base_mapping_fornebu_gate_w_tangvall_max_flow
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_holen_g1_startcost
+  externalId: shop_model_fornebu:base_mapping_fornebu_gate_w_tangvall_max_flow
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -491,381 +527,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_holen_g1_min_p_constr
+    externalId: base_mapping_fornebu_gate_w_varhaug_max_flow
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_holen_g1_min_p_constr
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_holen_g1_max_p_constr
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_holen_g1_max_p_constr
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_holen_g1_p_fcr_min
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_holen_g1_p_fcr_min
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_holen_g1_p_fcr_max
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_holen_g1_p_fcr_max
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_holen_g1_p_rr_min
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_holen_g1_p_rr_min
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_holen_g1_droop_min
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_holen_g1_droop_min
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_holen_g1_droop_max
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_holen_g1_droop_max
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_lund_g1_startcost
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lund_g1_startcost
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_lund_g1_p_fcr_min
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lund_g1_p_fcr_min
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_lund_g1_p_fcr_max
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lund_g1_p_fcr_max
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_lund_g1_p_rr_min
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lund_g1_p_rr_min
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_lund_g1_droop_min
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lund_g1_droop_min
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_lund_g1_droop_max
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lund_g1_droop_max
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_lien_krv_g1_startcost
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lien_krv_g1_startcost
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_lien_krv_g1_min_p_constr
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lien_krv_g1_min_p_constr
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_lien_krv_g1_max_p_constr
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lien_krv_g1_max_p_constr
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_lien_krv_g1_p_fcr_min
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lien_krv_g1_p_fcr_min
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_lien_krv_g1_p_fcr_max
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lien_krv_g1_p_fcr_max
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_lien_krv_g1_p_rr_min
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lien_krv_g1_p_rr_min
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_lien_krv_g1_droop_min
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lien_krv_g1_droop_min
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_lien_krv_g1_droop_max
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lien_krv_g1_droop_max
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_landet_g1_startcost
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_landet_g1_startcost
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_landet_g1_max_p_constr
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_landet_g1_max_p_constr
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_landet_g1_p_fcr_min
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_landet_g1_p_fcr_min
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_landet_g1_p_fcr_max
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_landet_g1_p_fcr_max
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_landet_g1_p_rr_min
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_landet_g1_p_rr_min
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_landet_g1_droop_min
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_landet_g1_droop_min
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_landet_g1_droop_max
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_landet_g1_droop_max
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_dalby_g1_startcost
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_dalby_g1_startcost
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_dalby_g1_p_fcr_min
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_dalby_g1_p_fcr_min
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_dalby_g1_p_fcr_max
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_dalby_g1_p_fcr_max
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_dalby_g1_p_rr_min
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_dalby_g1_p_rr_min
+  externalId: shop_model_fornebu:base_mapping_fornebu_gate_w_varhaug_max_flow
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -887,18 +551,6 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_dalby_g1_droop_min
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_dalby_g1_droop_min
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
     externalId: base_mapping_fornebu_generator_dalby_g1_droop_max
     space: '{{power_ops_instance_space}}'
   externalId: shop_model_fornebu:base_mapping_fornebu_generator_dalby_g1_droop_max
@@ -911,9 +563,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_dalby_g2_startcost
+    externalId: base_mapping_fornebu_generator_dalby_g1_droop_min
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_dalby_g2_startcost
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_dalby_g1_droop_min
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -923,9 +575,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_dalby_g2_p_fcr_min
+    externalId: base_mapping_fornebu_generator_dalby_g1_maintenance_flag
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_dalby_g2_p_fcr_min
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_dalby_g1_maintenance_flag
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -935,9 +587,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_dalby_g2_p_fcr_max
+    externalId: base_mapping_fornebu_generator_dalby_g1_p_fcr_max
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_dalby_g2_p_fcr_max
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_dalby_g1_p_fcr_max
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -947,9 +599,33 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_dalby_g2_p_rr_min
+    externalId: base_mapping_fornebu_generator_dalby_g1_p_fcr_min
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_dalby_g2_p_rr_min
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_dalby_g1_p_fcr_min
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_dalby_g1_p_rr_min
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_dalby_g1_p_rr_min
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_dalby_g1_startcost
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_dalby_g1_startcost
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -971,18 +647,6 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_dalby_g2_droop_min
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_dalby_g2_droop_min
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
     externalId: base_mapping_fornebu_generator_dalby_g2_droop_max
     space: '{{power_ops_instance_space}}'
   externalId: shop_model_fornebu:base_mapping_fornebu_generator_dalby_g2_droop_max
@@ -995,9 +659,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_rull1_g1_startcost
+    externalId: base_mapping_fornebu_generator_dalby_g2_droop_min
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g1_startcost
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_dalby_g2_droop_min
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1007,9 +671,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_rull1_g1_max_p_constr
+    externalId: base_mapping_fornebu_generator_dalby_g2_maintenance_flag
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g1_max_p_constr
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_dalby_g2_maintenance_flag
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1019,9 +683,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_rull1_g1_p_fcr_min
+    externalId: base_mapping_fornebu_generator_dalby_g2_p_fcr_max
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g1_p_fcr_min
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_dalby_g2_p_fcr_max
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1031,9 +695,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_rull1_g1_p_fcr_max
+    externalId: base_mapping_fornebu_generator_dalby_g2_p_fcr_min
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g1_p_fcr_max
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_dalby_g2_p_fcr_min
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1043,9 +707,417 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_rull1_g1_p_rr_min
+    externalId: base_mapping_fornebu_generator_dalby_g2_p_rr_min
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g1_p_rr_min
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_dalby_g2_p_rr_min
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_dalby_g2_startcost
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_dalby_g2_startcost
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_holen_g1_droop_max
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_holen_g1_droop_max
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_holen_g1_droop_min
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_holen_g1_droop_min
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_holen_g1_maintenance_flag
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_holen_g1_maintenance_flag
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_holen_g1_max_p_constr
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_holen_g1_max_p_constr
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_holen_g1_min_p_constr
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_holen_g1_min_p_constr
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_holen_g1_p_fcr_max
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_holen_g1_p_fcr_max
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_holen_g1_p_fcr_min
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_holen_g1_p_fcr_min
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_holen_g1_p_rr_min
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_holen_g1_p_rr_min
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_holen_g1_startcost
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_holen_g1_startcost
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_landet_g1_droop_max
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_landet_g1_droop_max
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_landet_g1_droop_min
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_landet_g1_droop_min
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_landet_g1_maintenance_flag
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_landet_g1_maintenance_flag
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_landet_g1_max_p_constr
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_landet_g1_max_p_constr
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_landet_g1_p_fcr_max
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_landet_g1_p_fcr_max
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_landet_g1_p_fcr_min
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_landet_g1_p_fcr_min
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_landet_g1_p_rr_min
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_landet_g1_p_rr_min
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_landet_g1_startcost
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_landet_g1_startcost
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_lien_krv_g1_droop_max
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lien_krv_g1_droop_max
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_lien_krv_g1_droop_min
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lien_krv_g1_droop_min
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_lien_krv_g1_maintenance_flag
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lien_krv_g1_maintenance_flag
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_lien_krv_g1_max_p_constr
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lien_krv_g1_max_p_constr
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_lien_krv_g1_min_p_constr
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lien_krv_g1_min_p_constr
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_lien_krv_g1_p_fcr_max
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lien_krv_g1_p_fcr_max
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_lien_krv_g1_p_fcr_min
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lien_krv_g1_p_fcr_min
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_lien_krv_g1_p_rr_min
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lien_krv_g1_p_rr_min
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_lien_krv_g1_startcost
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lien_krv_g1_startcost
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_lund_g1_droop_max
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lund_g1_droop_max
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_lund_g1_droop_min
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lund_g1_droop_min
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_lund_g1_maintenance_flag
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lund_g1_maintenance_flag
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_lund_g1_p_fcr_max
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lund_g1_p_fcr_max
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_lund_g1_p_fcr_min
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lund_g1_p_fcr_min
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_lund_g1_p_rr_min
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lund_g1_p_rr_min
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_lund_g1_startcost
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lund_g1_startcost
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1067,18 +1139,6 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_rull1_g1_droop_min
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g1_droop_min
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
     externalId: base_mapping_fornebu_generator_rull1_g1_droop_max
     space: '{{power_ops_instance_space}}'
   externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g1_droop_max
@@ -1091,9 +1151,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_rull1_g2_startcost
+    externalId: base_mapping_fornebu_generator_rull1_g1_droop_min
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g2_startcost
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g1_droop_min
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1103,9 +1163,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_rull1_g2_min_p_constr
+    externalId: base_mapping_fornebu_generator_rull1_g1_maintenance_flag
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g2_min_p_constr
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g1_maintenance_flag
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1115,9 +1175,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_rull1_g2_max_p_constr
+    externalId: base_mapping_fornebu_generator_rull1_g1_max_p_constr
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g2_max_p_constr
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g1_max_p_constr
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1127,9 +1187,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_rull1_g2_p_fcr_min
+    externalId: base_mapping_fornebu_generator_rull1_g1_p_fcr_max
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g2_p_fcr_min
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g1_p_fcr_max
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1139,9 +1199,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_rull1_g2_p_fcr_max
+    externalId: base_mapping_fornebu_generator_rull1_g1_p_fcr_min
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g2_p_fcr_max
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g1_p_fcr_min
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1151,9 +1211,21 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_rull1_g2_p_rr_min
+    externalId: base_mapping_fornebu_generator_rull1_g1_p_rr_min
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g2_p_rr_min
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g1_p_rr_min
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_rull1_g1_startcost
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g1_startcost
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1175,18 +1247,6 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_rull1_g2_droop_min
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g2_droop_min
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
     externalId: base_mapping_fornebu_generator_rull1_g2_droop_max
     space: '{{power_ops_instance_space}}'
   externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g2_droop_max
@@ -1199,9 +1259,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_rull2_g1_startcost
+    externalId: base_mapping_fornebu_generator_rull1_g2_droop_min
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g1_startcost
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g2_droop_min
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1211,9 +1271,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_rull2_g1_p_fcr_min
+    externalId: base_mapping_fornebu_generator_rull1_g2_maintenance_flag
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g1_p_fcr_min
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g2_maintenance_flag
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1223,9 +1283,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_rull2_g1_p_fcr_max
+    externalId: base_mapping_fornebu_generator_rull1_g2_max_p_constr
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g1_p_fcr_max
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g2_max_p_constr
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1235,9 +1295,57 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_rull2_g1_p_rr_min
+    externalId: base_mapping_fornebu_generator_rull1_g2_min_p_constr
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g1_p_rr_min
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g2_min_p_constr
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_rull1_g2_p_fcr_max
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g2_p_fcr_max
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_rull1_g2_p_fcr_min
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g2_p_fcr_min
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_rull1_g2_p_rr_min
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g2_p_rr_min
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_rull1_g2_startcost
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g2_startcost
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1259,18 +1367,6 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_rull2_g1_droop_min
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g1_droop_min
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
     externalId: base_mapping_fornebu_generator_rull2_g1_droop_max
     space: '{{power_ops_instance_space}}'
   externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g1_droop_max
@@ -1283,9 +1379,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_rull2_g2_startcost
+    externalId: base_mapping_fornebu_generator_rull2_g1_droop_min
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g2_startcost
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g1_droop_min
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1295,9 +1391,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_rull2_g2_max_p_constr
+    externalId: base_mapping_fornebu_generator_rull2_g1_maintenance_flag
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g2_max_p_constr
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g1_maintenance_flag
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1307,9 +1403,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_rull2_g2_p_fcr_min
+    externalId: base_mapping_fornebu_generator_rull2_g1_p_fcr_max
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g2_p_fcr_min
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g1_p_fcr_max
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1319,9 +1415,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_rull2_g2_p_fcr_max
+    externalId: base_mapping_fornebu_generator_rull2_g1_p_fcr_min
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g2_p_fcr_max
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g1_p_fcr_min
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1331,9 +1427,21 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_rull2_g2_p_rr_min
+    externalId: base_mapping_fornebu_generator_rull2_g1_p_rr_min
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g2_p_rr_min
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g1_p_rr_min
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_rull2_g1_startcost
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g1_startcost
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1355,18 +1463,6 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_rull2_g2_droop_min
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g2_droop_min
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
     externalId: base_mapping_fornebu_generator_rull2_g2_droop_max
     space: '{{power_ops_instance_space}}'
   externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g2_droop_max
@@ -1379,9 +1475,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_scott_g1_startcost
+    externalId: base_mapping_fornebu_generator_rull2_g2_droop_min
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_scott_g1_startcost
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g2_droop_min
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1391,9 +1487,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_scott_g1_p_fcr_min
+    externalId: base_mapping_fornebu_generator_rull2_g2_maintenance_flag
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_scott_g1_p_fcr_min
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g2_maintenance_flag
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1403,9 +1499,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_scott_g1_p_fcr_max
+    externalId: base_mapping_fornebu_generator_rull2_g2_max_p_constr
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_scott_g1_p_fcr_max
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g2_max_p_constr
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1415,9 +1511,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_scott_g1_p_rr_min
+    externalId: base_mapping_fornebu_generator_rull2_g2_p_fcr_max
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_scott_g1_p_rr_min
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g2_p_fcr_max
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1427,9 +1523,33 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_scott_g1_droop_min
+    externalId: base_mapping_fornebu_generator_rull2_g2_p_fcr_min
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_scott_g1_droop_min
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g2_p_fcr_min
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_rull2_g2_p_rr_min
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g2_p_rr_min
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_rull2_g2_startcost
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g2_startcost
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1451,9 +1571,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_strand_krv_g1_startcost
+    externalId: base_mapping_fornebu_generator_scott_g1_droop_min
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_strand_krv_g1_startcost
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_scott_g1_droop_min
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1463,9 +1583,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_strand_krv_g1_p_fcr_min
+    externalId: base_mapping_fornebu_generator_scott_g1_maintenance_flag
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_strand_krv_g1_p_fcr_min
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_scott_g1_maintenance_flag
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1475,9 +1595,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_strand_krv_g1_p_fcr_max
+    externalId: base_mapping_fornebu_generator_scott_g1_p_fcr_max
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_strand_krv_g1_p_fcr_max
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_scott_g1_p_fcr_max
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1487,9 +1607,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_strand_krv_g1_p_rr_min
+    externalId: base_mapping_fornebu_generator_scott_g1_p_fcr_min
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_strand_krv_g1_p_rr_min
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_scott_g1_p_fcr_min
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1499,9 +1619,21 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_generator_strand_krv_g1_droop_min
+    externalId: base_mapping_fornebu_generator_scott_g1_p_rr_min
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_strand_krv_g1_droop_min
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_scott_g1_p_rr_min
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_scott_g1_startcost
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_scott_g1_startcost
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1523,9 +1655,93 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
+    externalId: base_mapping_fornebu_generator_strand_krv_g1_droop_min
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_strand_krv_g1_droop_min
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_strand_krv_g1_maintenance_flag
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_strand_krv_g1_maintenance_flag
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_strand_krv_g1_p_fcr_max
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_strand_krv_g1_p_fcr_max
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_strand_krv_g1_p_fcr_min
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_strand_krv_g1_p_fcr_min
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_strand_krv_g1_p_rr_min
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_strand_krv_g1_p_rr_min
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_generator_strand_krv_g1_startcost
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_generator_strand_krv_g1_startcost
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
     externalId: base_mapping_fornebu_junction_sandvika_min_pressure
     space: '{{power_ops_instance_space}}'
   externalId: shop_model_fornebu:base_mapping_fornebu_junction_sandvika_min_pressure
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_market_dayahead_buy_price
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_market_dayahead_buy_price
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1571,9 +1787,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_plant_holen_prod_area
+    externalId: base_mapping_fornebu_market_dayahead_sale_price
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_holen_prod_area
+  externalId: shop_model_fornebu:base_mapping_fornebu_market_dayahead_sale_price
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1583,9 +1799,57 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_plant_holen_mip_flag
+    externalId: base_mapping_fornebu_plant_dalby_max_q_constr
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_holen_mip_flag
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_dalby_max_q_constr
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_plant_dalby_mip_flag
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_dalby_mip_flag
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_plant_dalby_prod_area
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_dalby_prod_area
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_plant_dalby_production_schedule
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_dalby_production_schedule
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_plant_dalby_production_schedule_flag
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_dalby_production_schedule_flag
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1619,9 +1883,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_plant_lund_prod_area
+    externalId: base_mapping_fornebu_plant_holen_mip_flag
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_lund_prod_area
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_holen_mip_flag
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1631,9 +1895,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_plant_lund_mip_flag
+    externalId: base_mapping_fornebu_plant_holen_prod_area
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_lund_mip_flag
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_holen_prod_area
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1643,9 +1907,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_plant_lund_max_q_constr
+    externalId: base_mapping_fornebu_plant_holen_production_schedule
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_lund_max_q_constr
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_holen_production_schedule
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1655,57 +1919,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_plant_lien_krv_prod_area
+    externalId: base_mapping_fornebu_plant_holen_production_schedule_flag
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_lien_krv_prod_area
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_plant_lien_krv_mip_flag
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_lien_krv_mip_flag
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_plant_lien_krv_max_q_constr
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_lien_krv_max_q_constr
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_plant_landet_prod_area
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_landet_prod_area
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_plant_landet_mip_flag
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_landet_mip_flag
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_holen_production_schedule_flag
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1739,9 +1955,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_plant_dalby_prod_area
+    externalId: base_mapping_fornebu_plant_landet_mip_flag
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_dalby_prod_area
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_landet_mip_flag
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1751,9 +1967,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_plant_dalby_mip_flag
+    externalId: base_mapping_fornebu_plant_landet_prod_area
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_dalby_mip_flag
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_landet_prod_area
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1763,9 +1979,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_plant_dalby_max_q_constr
+    externalId: base_mapping_fornebu_plant_landet_production_schedule
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_dalby_max_q_constr
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_landet_production_schedule
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1775,9 +1991,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_plant_rull1_prod_area
+    externalId: base_mapping_fornebu_plant_landet_production_schedule_flag
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_rull1_prod_area
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_landet_production_schedule_flag
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1787,9 +2003,117 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_plant_rull1_mip_flag
+    externalId: base_mapping_fornebu_plant_lien_krv_max_q_constr
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_rull1_mip_flag
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_lien_krv_max_q_constr
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_plant_lien_krv_mip_flag
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_lien_krv_mip_flag
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_plant_lien_krv_prod_area
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_lien_krv_prod_area
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_plant_lien_krv_production_schedule
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_lien_krv_production_schedule
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_plant_lien_krv_production_schedule_flag
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_lien_krv_production_schedule_flag
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_plant_lund_max_q_constr
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_lund_max_q_constr
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_plant_lund_mip_flag
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_lund_mip_flag
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_plant_lund_prod_area
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_lund_prod_area
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_plant_lund_production_schedule
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_lund_production_schedule
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_plant_lund_production_schedule_flag
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_lund_production_schedule_flag
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1823,9 +2147,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_plant_rull2_prod_area
+    externalId: base_mapping_fornebu_plant_rull1_mip_flag
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_rull2_prod_area
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_rull1_mip_flag
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1835,9 +2159,33 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_plant_rull2_mip_flag
+    externalId: base_mapping_fornebu_plant_rull1_prod_area
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_rull2_mip_flag
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_rull1_prod_area
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_plant_rull1_production_schedule
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_rull1_production_schedule
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_plant_rull1_production_schedule_flag
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_rull1_production_schedule_flag
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1859,9 +2207,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_plant_scott_prod_area
+    externalId: base_mapping_fornebu_plant_rull2_mip_flag
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_scott_prod_area
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_rull2_mip_flag
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1871,9 +2219,33 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_plant_scott_mip_flag
+    externalId: base_mapping_fornebu_plant_rull2_prod_area
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_scott_mip_flag
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_rull2_prod_area
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_plant_rull2_production_schedule
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_rull2_production_schedule
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_plant_rull2_production_schedule_flag
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_rull2_production_schedule_flag
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1895,9 +2267,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_plant_strand_krv_prod_area
+    externalId: base_mapping_fornebu_plant_scott_mip_flag
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_strand_krv_prod_area
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_scott_mip_flag
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1907,9 +2279,33 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_plant_strand_krv_mip_flag
+    externalId: base_mapping_fornebu_plant_scott_prod_area
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_strand_krv_mip_flag
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_scott_prod_area
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_plant_scott_production_schedule
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_scott_production_schedule
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_plant_scott_production_schedule_flag
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_scott_production_schedule_flag
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1931,9 +2327,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_reservoir_sirefelt_tactical_limit_max
+    externalId: base_mapping_fornebu_plant_strand_krv_mip_flag
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_sirefelt_tactical_limit_max
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_strand_krv_mip_flag
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1943,9 +2339,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_reservoir_danielsen_tactical_limit_max
+    externalId: base_mapping_fornebu_plant_strand_krv_prod_area
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_danielsen_tactical_limit_max
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_strand_krv_prod_area
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1955,9 +2351,21 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_reservoir_dalbysvatn_tactical_limit_max
+    externalId: base_mapping_fornebu_plant_strand_krv_production_schedule
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_dalbysvatn_tactical_limit_max
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_strand_krv_production_schedule
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_plant_strand_krv_production_schedule_flag
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_plant_strand_krv_production_schedule_flag
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -1991,561 +2399,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_creek_intake_blakstad_inflow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_creek_intake_blakstad_inflow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_creek_intake_fjerdingby_intake_inflow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_creek_intake_fjerdingby_intake_inflow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_creek_intake_vigrestad_inflow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_creek_intake_vigrestad_inflow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_creek_intake_golebiowski_intake_inflow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_creek_intake_golebiowski_intake_inflow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_creek_intake_lont_intake_inflow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_creek_intake_lont_intake_inflow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_creek_intake_narvhus_inflow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_creek_intake_narvhus_inflow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_creek_intake_gustad_inflow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_creek_intake_gustad_inflow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_holen_g1_maintenance_flag
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_holen_g1_maintenance_flag
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_lund_g1_maintenance_flag
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lund_g1_maintenance_flag
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_lien_krv_g1_maintenance_flag
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_lien_krv_g1_maintenance_flag
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_landet_g1_maintenance_flag
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_landet_g1_maintenance_flag
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_dalby_g1_maintenance_flag
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_dalby_g1_maintenance_flag
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_dalby_g2_maintenance_flag
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_dalby_g2_maintenance_flag
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_rull1_g1_maintenance_flag
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g1_maintenance_flag
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_rull1_g2_maintenance_flag
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull1_g2_maintenance_flag
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_rull2_g1_maintenance_flag
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g1_maintenance_flag
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_rull2_g2_maintenance_flag
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_rull2_g2_maintenance_flag
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_scott_g1_maintenance_flag
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_scott_g1_maintenance_flag
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_generator_strand_krv_g1_maintenance_flag
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_generator_strand_krv_g1_maintenance_flag
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_plant_holen_production_schedule
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_holen_production_schedule
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_plant_lund_production_schedule
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_lund_production_schedule
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_plant_lien_krv_production_schedule
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_lien_krv_production_schedule
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_plant_landet_production_schedule
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_landet_production_schedule
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_plant_dalby_production_schedule
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_dalby_production_schedule
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_plant_rull1_production_schedule
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_rull1_production_schedule
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_plant_rull2_production_schedule
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_rull2_production_schedule
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_plant_scott_production_schedule
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_scott_production_schedule
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_plant_strand_krv_production_schedule
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_strand_krv_production_schedule
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_reservoir_hagen_start_head
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_hagen_start_head
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_reservoir_hagen_inflow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_hagen_inflow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_reservoir_hovden_start_vol
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_hovden_start_vol
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_reservoir_hovden_inflow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_hovden_inflow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_reservoir_frosta_start_head
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_frosta_start_head
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_reservoir_frosta_inflow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_frosta_inflow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_reservoir_varhaug_start_head
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_varhaug_start_head
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_reservoir_varhaug_inflow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_varhaug_inflow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_reservoir_tangvall_start_head
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_tangvall_start_head
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_reservoir_tangvall_inflow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_tangvall_inflow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_reservoir_sirefelt_start_head
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_sirefelt_start_head
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_reservoir_sirefelt_inflow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_sirefelt_inflow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_reservoir_lundvann_start_vol
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_lundvann_start_vol
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_reservoir_lundvann_inflow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_lundvann_inflow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_reservoir_danielsen_start_head
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_danielsen_start_head
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_reservoir_danielsen_inflow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_danielsen_inflow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_reservoir_dalbysvatn_start_head
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_dalbysvatn_start_head
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
     externalId: base_mapping_fornebu_reservoir_dalbysvatn_inflow
     space: '{{power_ops_instance_space}}'
   externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_dalbysvatn_inflow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_reservoir_dalbysvatn_min_head_constr
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_dalbysvatn_min_head_constr
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -2567,9 +2423,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_reservoir_nielsen_start_head
+    externalId: base_mapping_fornebu_reservoir_dalbysvatn_min_head_constr
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_nielsen_start_head
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_dalbysvatn_min_head_constr
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -2579,9 +2435,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_reservoir_nielsen_inflow
+    externalId: base_mapping_fornebu_reservoir_dalbysvatn_start_head
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_nielsen_inflow
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_dalbysvatn_start_head
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -2591,9 +2447,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_reservoir_ranemsletta_1183_start_head
+    externalId: base_mapping_fornebu_reservoir_dalbysvatn_tactical_limit_max
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_ranemsletta_1183_start_head
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_dalbysvatn_tactical_limit_max
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -2603,9 +2459,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_reservoir_ranemsletta_1183_inflow
+    externalId: base_mapping_fornebu_reservoir_danielsen_inflow
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_ranemsletta_1183_inflow
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_danielsen_inflow
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -2615,9 +2471,93 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_reservoir_lensvik_start_head
+    externalId: base_mapping_fornebu_reservoir_danielsen_start_head
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_lensvik_start_head
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_danielsen_start_head
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_reservoir_danielsen_tactical_limit_max
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_danielsen_tactical_limit_max
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_reservoir_frosta_inflow
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_frosta_inflow
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_reservoir_frosta_start_head
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_frosta_start_head
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_reservoir_hagen_inflow
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_hagen_inflow
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_reservoir_hagen_start_head
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_hagen_start_head
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_reservoir_hovden_inflow
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_hovden_inflow
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_reservoir_hovden_start_vol
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_hovden_start_vol
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -2639,45 +2579,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_reservoir_strand_start_head
+    externalId: base_mapping_fornebu_reservoir_lensvik_start_head
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_strand_start_head
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_reservoir_strand_inflow
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_strand_inflow
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_reservoir_strand_tunnel_start_head
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_strand_tunnel_start_head
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_model_fornebu
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_reservoir_livincovs_start_head
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_livincovs_start_head
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_lensvik_start_head
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -2699,9 +2603,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_market_dayahead_buy_price
+    externalId: base_mapping_fornebu_reservoir_livincovs_start_head
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_market_dayahead_buy_price
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_livincovs_start_head
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -2711,9 +2615,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_market_dayahead_sale_price
+    externalId: base_mapping_fornebu_reservoir_lundvann_inflow
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_market_dayahead_sale_price
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_lundvann_inflow
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -2723,9 +2627,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_plant_strand_krv_production_schedule_flag
+    externalId: base_mapping_fornebu_reservoir_lundvann_start_vol
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_strand_krv_production_schedule_flag
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_lundvann_start_vol
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -2735,9 +2639,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_plant_rull2_production_schedule_flag
+    externalId: base_mapping_fornebu_reservoir_nielsen_inflow
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_rull2_production_schedule_flag
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_nielsen_inflow
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -2747,9 +2651,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_plant_rull1_production_schedule_flag
+    externalId: base_mapping_fornebu_reservoir_nielsen_start_head
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_rull1_production_schedule_flag
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_nielsen_start_head
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -2759,9 +2663,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_plant_lien_krv_production_schedule_flag
+    externalId: base_mapping_fornebu_reservoir_ranemsletta_1183_inflow
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_lien_krv_production_schedule_flag
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_ranemsletta_1183_inflow
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -2771,9 +2675,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_plant_dalby_production_schedule_flag
+    externalId: base_mapping_fornebu_reservoir_ranemsletta_1183_start_head
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_dalby_production_schedule_flag
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_ranemsletta_1183_start_head
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -2783,9 +2687,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_plant_holen_production_schedule_flag
+    externalId: base_mapping_fornebu_reservoir_sirefelt_inflow
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_holen_production_schedule_flag
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_sirefelt_inflow
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -2795,9 +2699,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_plant_landet_production_schedule_flag
+    externalId: base_mapping_fornebu_reservoir_sirefelt_start_head
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_landet_production_schedule_flag
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_sirefelt_start_head
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -2807,9 +2711,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_plant_scott_production_schedule_flag
+    externalId: base_mapping_fornebu_reservoir_sirefelt_tactical_limit_max
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_scott_production_schedule_flag
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_sirefelt_tactical_limit_max
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -2819,9 +2723,9 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_plant_lund_production_schedule_flag
+    externalId: base_mapping_fornebu_reservoir_strand_inflow
     space: '{{power_ops_instance_space}}'
-  externalId: shop_model_fornebu:base_mapping_fornebu_plant_lund_production_schedule_flag
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_strand_inflow
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -2829,4 +2733,100 @@
     space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_reservoir_strand_start_head
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_strand_start_head
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_reservoir_strand_tunnel_start_head
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_strand_tunnel_start_head
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_reservoir_tangvall_inflow
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_tangvall_inflow
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_reservoir_tangvall_start_head
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_tangvall_start_head
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_reservoir_varhaug_inflow
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_varhaug_inflow
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_fornebu_reservoir_varhaug_start_head
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:base_mapping_fornebu_reservoir_varhaug_start_head
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: shop_file_water_value_cut_file
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:shop_file_water_value_cut_file
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.cogShopFilesConfig
+    space: power_ops_types
+- endNode:
+    externalId: shop_file_water_value_cut_file_reservoir_mapping
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_model_fornebu:shop_file_water_value_cut_file_reservoir_mapping
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_model_fornebu
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModel.cogShopFilesConfig
     space: power_ops_types

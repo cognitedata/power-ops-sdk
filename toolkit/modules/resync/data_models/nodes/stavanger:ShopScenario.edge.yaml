@@ -11,18 +11,6 @@
     externalId: ShopOutputTimeSeriesDefinition
     space: power_ops_types
 - endNode:
-    externalId: shop_output_time_series_definition_plant_production
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_base:shop_output_time_series_definition_plant_production
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_base
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
     externalId: shop_output_time_series_definition_plant_consumption
     space: '{{power_ops_instance_space}}'
   externalId: shop_scenario_stavanger_base:shop_output_time_series_definition_plant_consumption
@@ -35,25 +23,25 @@
     externalId: ShopOutputTimeSeriesDefinition
     space: power_ops_types
 - endNode:
-    externalId: shop_output_time_series_definition_market_price
+    externalId: shop_output_time_series_definition_plant_production
     space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_500_first_24h:shop_output_time_series_definition_market_price
+  externalId: shop_scenario_stavanger_base:shop_output_time_series_definition_plant_production
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
-    externalId: shop_scenario_stavanger_price_minus_500_first_24h
+    externalId: shop_scenario_stavanger_base
     space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopOutputTimeSeriesDefinition
     space: power_ops_types
 - endNode:
-    externalId: shop_output_time_series_definition_plant_production
+    externalId: shop_output_time_series_definition_market_price
     space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_500_first_24h:shop_output_time_series_definition_plant_production
+  externalId: shop_scenario_stavanger_base_15_min_test:shop_output_time_series_definition_market_price
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
-    externalId: shop_scenario_stavanger_price_minus_500_first_24h
+    externalId: shop_scenario_stavanger_base_15_min_test
     space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopOutputTimeSeriesDefinition
@@ -61,47 +49,11 @@
 - endNode:
     externalId: shop_output_time_series_definition_plant_consumption
     space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_500_first_24h:shop_output_time_series_definition_plant_consumption
+  externalId: shop_scenario_stavanger_base_15_min_test:shop_output_time_series_definition_plant_consumption
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
-    externalId: shop_scenario_stavanger_price_minus_500_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: no2_buy_price_minus_500_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_500_first_24h:no2_buy_price_minus_500_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_500_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: no2_sale_price_minus_500_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_500_first_24h:no2_sale_price_minus_500_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_500_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_market_price
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_200_first_24h:shop_output_time_series_definition_market_price
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_200_first_24h
+    externalId: shop_scenario_stavanger_base_15_min_test
     space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopOutputTimeSeriesDefinition
@@ -109,383 +61,11 @@
 - endNode:
     externalId: shop_output_time_series_definition_plant_production
     space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_200_first_24h:shop_output_time_series_definition_plant_production
+  externalId: shop_scenario_stavanger_base_15_min_test:shop_output_time_series_definition_plant_production
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
-    externalId: shop_scenario_stavanger_price_minus_200_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_consumption
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_200_first_24h:shop_output_time_series_definition_plant_consumption
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_200_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: no2_buy_price_minus_200_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_200_first_24h:no2_buy_price_minus_200_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_200_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: no2_sale_price_minus_200_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_200_first_24h:no2_sale_price_minus_200_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_200_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_market_price
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_50_first_24h:shop_output_time_series_definition_market_price
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_50_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_production
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_50_first_24h:shop_output_time_series_definition_plant_production
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_50_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_consumption
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_50_first_24h:shop_output_time_series_definition_plant_consumption
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_50_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: no2_buy_price_minus_50_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_50_first_24h:no2_buy_price_minus_50_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_50_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: no2_sale_price_minus_50_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_50_first_24h:no2_sale_price_minus_50_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_50_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_market_price
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_40_first_24h:shop_output_time_series_definition_market_price
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_40_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_production
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_40_first_24h:shop_output_time_series_definition_plant_production
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_40_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_consumption
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_40_first_24h:shop_output_time_series_definition_plant_consumption
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_40_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: no2_buy_price_minus_40_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_40_first_24h:no2_buy_price_minus_40_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_40_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: no2_sale_price_minus_40_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_40_first_24h:no2_sale_price_minus_40_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_40_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_market_price
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_30_first_24h:shop_output_time_series_definition_market_price
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_30_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_production
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_30_first_24h:shop_output_time_series_definition_plant_production
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_30_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_consumption
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_30_first_24h:shop_output_time_series_definition_plant_consumption
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_30_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: no2_buy_price_minus_30_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_30_first_24h:no2_buy_price_minus_30_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_30_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: no2_sale_price_minus_30_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_30_first_24h:no2_sale_price_minus_30_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_30_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_market_price
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_20_first_24h:shop_output_time_series_definition_market_price
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_20_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_production
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_20_first_24h:shop_output_time_series_definition_plant_production
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_20_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_consumption
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_20_first_24h:shop_output_time_series_definition_plant_consumption
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_20_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: no2_buy_price_minus_20_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_20_first_24h:no2_buy_price_minus_20_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_20_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: no2_sale_price_minus_20_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_20_first_24h:no2_sale_price_minus_20_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_20_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_market_price
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_15_first_24h:shop_output_time_series_definition_market_price
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_15_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_production
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_15_first_24h:shop_output_time_series_definition_plant_production
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_15_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_consumption
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_15_first_24h:shop_output_time_series_definition_plant_consumption
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_15_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: no2_buy_price_minus_15_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_15_first_24h:no2_buy_price_minus_15_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_15_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: no2_sale_price_minus_15_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_15_first_24h:no2_sale_price_minus_15_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_15_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_market_price
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_10_first_24h:shop_output_time_series_definition_market_price
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_10_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_production
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_10_first_24h:shop_output_time_series_definition_plant_production
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_10_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_consumption
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_10_first_24h:shop_output_time_series_definition_plant_consumption
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_10_first_24h
+    externalId: shop_scenario_stavanger_base_15_min_test
     space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopOutputTimeSeriesDefinition
@@ -517,23 +97,11 @@
 - endNode:
     externalId: shop_output_time_series_definition_market_price
     space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_5_first_24h:shop_output_time_series_definition_market_price
+  externalId: shop_scenario_stavanger_price_minus_10_first_24h:shop_output_time_series_definition_market_price
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
-    externalId: shop_scenario_stavanger_price_minus_5_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_production
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_5_first_24h:shop_output_time_series_definition_plant_production
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_minus_5_first_24h
+    externalId: shop_scenario_stavanger_price_minus_10_first_24h
     space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopOutputTimeSeriesDefinition
@@ -541,11 +109,443 @@
 - endNode:
     externalId: shop_output_time_series_definition_plant_consumption
     space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_minus_5_first_24h:shop_output_time_series_definition_plant_consumption
+  externalId: shop_scenario_stavanger_price_minus_10_first_24h:shop_output_time_series_definition_plant_consumption
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
-    externalId: shop_scenario_stavanger_price_minus_5_first_24h
+    externalId: shop_scenario_stavanger_price_minus_10_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_production
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_10_first_24h:shop_output_time_series_definition_plant_production
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_10_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: no2_buy_price_minus_15_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_15_first_24h:no2_buy_price_minus_15_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_15_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: no2_sale_price_minus_15_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_15_first_24h:no2_sale_price_minus_15_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_15_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_market_price
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_15_first_24h:shop_output_time_series_definition_market_price
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_15_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_consumption
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_15_first_24h:shop_output_time_series_definition_plant_consumption
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_15_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_production
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_15_first_24h:shop_output_time_series_definition_plant_production
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_15_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: no2_buy_price_minus_200_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_200_first_24h:no2_buy_price_minus_200_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_200_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: no2_sale_price_minus_200_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_200_first_24h:no2_sale_price_minus_200_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_200_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_market_price
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_200_first_24h:shop_output_time_series_definition_market_price
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_200_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_consumption
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_200_first_24h:shop_output_time_series_definition_plant_consumption
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_200_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_production
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_200_first_24h:shop_output_time_series_definition_plant_production
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_200_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: no2_buy_price_minus_20_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_20_first_24h:no2_buy_price_minus_20_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_20_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: no2_sale_price_minus_20_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_20_first_24h:no2_sale_price_minus_20_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_20_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_market_price
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_20_first_24h:shop_output_time_series_definition_market_price
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_20_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_consumption
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_20_first_24h:shop_output_time_series_definition_plant_consumption
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_20_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_production
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_20_first_24h:shop_output_time_series_definition_plant_production
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_20_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: no2_buy_price_minus_30_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_30_first_24h:no2_buy_price_minus_30_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_30_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: no2_sale_price_minus_30_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_30_first_24h:no2_sale_price_minus_30_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_30_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_market_price
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_30_first_24h:shop_output_time_series_definition_market_price
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_30_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_consumption
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_30_first_24h:shop_output_time_series_definition_plant_consumption
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_30_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_production
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_30_first_24h:shop_output_time_series_definition_plant_production
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_30_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: no2_buy_price_minus_40_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_40_first_24h:no2_buy_price_minus_40_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_40_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: no2_sale_price_minus_40_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_40_first_24h:no2_sale_price_minus_40_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_40_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_market_price
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_40_first_24h:shop_output_time_series_definition_market_price
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_40_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_consumption
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_40_first_24h:shop_output_time_series_definition_plant_consumption
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_40_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_production
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_40_first_24h:shop_output_time_series_definition_plant_production
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_40_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: no2_buy_price_minus_500_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_500_first_24h:no2_buy_price_minus_500_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_500_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: no2_sale_price_minus_500_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_500_first_24h:no2_sale_price_minus_500_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_500_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_market_price
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_500_first_24h:shop_output_time_series_definition_market_price
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_500_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_consumption
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_500_first_24h:shop_output_time_series_definition_plant_consumption
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_500_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_production
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_500_first_24h:shop_output_time_series_definition_plant_production
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_500_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: no2_buy_price_minus_50_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_50_first_24h:no2_buy_price_minus_50_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_50_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: no2_sale_price_minus_50_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_50_first_24h:no2_sale_price_minus_50_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_50_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_market_price
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_50_first_24h:shop_output_time_series_definition_market_price
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_50_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_consumption
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_50_first_24h:shop_output_time_series_definition_plant_consumption
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_50_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_production
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_minus_50_first_24h:shop_output_time_series_definition_plant_production
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_minus_50_first_24h
     space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopOutputTimeSeriesDefinition
@@ -577,23 +577,11 @@
 - endNode:
     externalId: shop_output_time_series_definition_market_price
     space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_5_first_24h:shop_output_time_series_definition_market_price
+  externalId: shop_scenario_stavanger_price_minus_5_first_24h:shop_output_time_series_definition_market_price
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
-    externalId: shop_scenario_stavanger_price_plus_5_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_production
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_5_first_24h:shop_output_time_series_definition_plant_production
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_5_first_24h
+    externalId: shop_scenario_stavanger_price_minus_5_first_24h
     space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopOutputTimeSeriesDefinition
@@ -601,47 +589,11 @@
 - endNode:
     externalId: shop_output_time_series_definition_plant_consumption
     space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_5_first_24h:shop_output_time_series_definition_plant_consumption
+  externalId: shop_scenario_stavanger_price_minus_5_first_24h:shop_output_time_series_definition_plant_consumption
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
-    externalId: shop_scenario_stavanger_price_plus_5_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: no2_buy_price_plus_5_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_5_first_24h:no2_buy_price_plus_5_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_5_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: no2_sale_price_plus_5_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_5_first_24h:no2_sale_price_plus_5_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_5_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_market_price
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_10_first_24h:shop_output_time_series_definition_market_price
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_10_first_24h
+    externalId: shop_scenario_stavanger_price_minus_5_first_24h
     space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopOutputTimeSeriesDefinition
@@ -649,563 +601,11 @@
 - endNode:
     externalId: shop_output_time_series_definition_plant_production
     space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_10_first_24h:shop_output_time_series_definition_plant_production
+  externalId: shop_scenario_stavanger_price_minus_5_first_24h:shop_output_time_series_definition_plant_production
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
-    externalId: shop_scenario_stavanger_price_plus_10_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_consumption
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_10_first_24h:shop_output_time_series_definition_plant_consumption
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_10_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: no2_buy_price_plus_10_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_10_first_24h:no2_buy_price_plus_10_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_10_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: no2_sale_price_plus_10_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_10_first_24h:no2_sale_price_plus_10_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_10_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_market_price
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_15_first_24h:shop_output_time_series_definition_market_price
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_15_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_production
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_15_first_24h:shop_output_time_series_definition_plant_production
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_15_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_consumption
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_15_first_24h:shop_output_time_series_definition_plant_consumption
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_15_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: no2_buy_price_plus_15_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_15_first_24h:no2_buy_price_plus_15_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_15_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: no2_sale_price_plus_15_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_15_first_24h:no2_sale_price_plus_15_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_15_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_market_price
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_20_first_24h:shop_output_time_series_definition_market_price
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_20_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_production
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_20_first_24h:shop_output_time_series_definition_plant_production
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_20_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_consumption
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_20_first_24h:shop_output_time_series_definition_plant_consumption
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_20_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: no2_buy_price_plus_20_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_20_first_24h:no2_buy_price_plus_20_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_20_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: no2_sale_price_plus_20_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_20_first_24h:no2_sale_price_plus_20_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_20_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_market_price
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_30_first_24h:shop_output_time_series_definition_market_price
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_30_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_production
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_30_first_24h:shop_output_time_series_definition_plant_production
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_30_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_consumption
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_30_first_24h:shop_output_time_series_definition_plant_consumption
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_30_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: no2_buy_price_plus_30_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_30_first_24h:no2_buy_price_plus_30_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_30_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: no2_sale_price_plus_30_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_30_first_24h:no2_sale_price_plus_30_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_30_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_market_price
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_40_first_24h:shop_output_time_series_definition_market_price
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_40_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_production
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_40_first_24h:shop_output_time_series_definition_plant_production
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_40_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_consumption
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_40_first_24h:shop_output_time_series_definition_plant_consumption
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_40_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: no2_buy_price_plus_40_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_40_first_24h:no2_buy_price_plus_40_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_40_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: no2_sale_price_plus_40_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_40_first_24h:no2_sale_price_plus_40_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_40_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_market_price
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_50_first_24h:shop_output_time_series_definition_market_price
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_50_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_production
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_50_first_24h:shop_output_time_series_definition_plant_production
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_50_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_consumption
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_50_first_24h:shop_output_time_series_definition_plant_consumption
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_50_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: no2_buy_price_plus_50_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_50_first_24h:no2_buy_price_plus_50_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_50_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: no2_sale_price_plus_50_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_50_first_24h:no2_sale_price_plus_50_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_50_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_market_price
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_70_first_24h:shop_output_time_series_definition_market_price
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_70_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_production
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_70_first_24h:shop_output_time_series_definition_plant_production
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_70_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_consumption
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_70_first_24h:shop_output_time_series_definition_plant_consumption
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_70_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: no2_buy_price_plus_70_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_70_first_24h:no2_buy_price_plus_70_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_70_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: no2_sale_price_plus_70_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_70_first_24h:no2_sale_price_plus_70_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_70_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_market_price
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_100_first_24h:shop_output_time_series_definition_market_price
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_100_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_production
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_100_first_24h:shop_output_time_series_definition_plant_production
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_100_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_consumption
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_100_first_24h:shop_output_time_series_definition_plant_consumption
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_100_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: no2_buy_price_plus_100_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_100_first_24h:no2_buy_price_plus_100_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_100_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: no2_sale_price_plus_100_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_100_first_24h:no2_sale_price_plus_100_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_100_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_market_price
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_2000_first_24h:shop_output_time_series_definition_market_price
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_2000_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_production
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_2000_first_24h:shop_output_time_series_definition_plant_production
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_2000_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_consumption
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_2000_first_24h:shop_output_time_series_definition_plant_consumption
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_2000_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: no2_buy_price_plus_2000_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_2000_first_24h:no2_buy_price_plus_2000_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_2000_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: no2_sale_price_plus_2000_first_24h
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_plus_2000_first_24h:no2_sale_price_plus_2000_first_24h
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_plus_2000_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopAttributeMapping
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_market_price
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_multiply_0_first_24h:shop_output_time_series_definition_market_price
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_multiply_0_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_production
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_multiply_0_first_24h:shop_output_time_series_definition_plant_production
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_multiply_0_first_24h
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_consumption
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_price_multiply_0_first_24h:shop_output_time_series_definition_plant_consumption
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_price_multiply_0_first_24h
+    externalId: shop_scenario_stavanger_price_minus_5_first_24h
     space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopOutputTimeSeriesDefinition
@@ -1237,23 +637,11 @@
 - endNode:
     externalId: shop_output_time_series_definition_market_price
     space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_base_15_min_test:shop_output_time_series_definition_market_price
+  externalId: shop_scenario_stavanger_price_multiply_0_first_24h:shop_output_time_series_definition_market_price
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
-    externalId: shop_scenario_stavanger_base_15_min_test
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopOutputTimeSeriesDefinition
-    space: power_ops_types
-- endNode:
-    externalId: shop_output_time_series_definition_plant_production
-    space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_base_15_min_test:shop_output_time_series_definition_plant_production
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: shop_scenario_stavanger_base_15_min_test
+    externalId: shop_scenario_stavanger_price_multiply_0_first_24h
     space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopOutputTimeSeriesDefinition
@@ -1261,11 +649,623 @@
 - endNode:
     externalId: shop_output_time_series_definition_plant_consumption
     space: '{{power_ops_instance_space}}'
-  externalId: shop_scenario_stavanger_base_15_min_test:shop_output_time_series_definition_plant_consumption
+  externalId: shop_scenario_stavanger_price_multiply_0_first_24h:shop_output_time_series_definition_plant_consumption
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
-    externalId: shop_scenario_stavanger_base_15_min_test
+    externalId: shop_scenario_stavanger_price_multiply_0_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_production
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_multiply_0_first_24h:shop_output_time_series_definition_plant_production
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_multiply_0_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: no2_buy_price_plus_100_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_100_first_24h:no2_buy_price_plus_100_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_100_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: no2_sale_price_plus_100_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_100_first_24h:no2_sale_price_plus_100_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_100_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_market_price
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_100_first_24h:shop_output_time_series_definition_market_price
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_100_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_consumption
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_100_first_24h:shop_output_time_series_definition_plant_consumption
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_100_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_production
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_100_first_24h:shop_output_time_series_definition_plant_production
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_100_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: no2_buy_price_plus_10_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_10_first_24h:no2_buy_price_plus_10_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_10_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: no2_sale_price_plus_10_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_10_first_24h:no2_sale_price_plus_10_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_10_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_market_price
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_10_first_24h:shop_output_time_series_definition_market_price
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_10_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_consumption
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_10_first_24h:shop_output_time_series_definition_plant_consumption
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_10_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_production
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_10_first_24h:shop_output_time_series_definition_plant_production
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_10_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: no2_buy_price_plus_15_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_15_first_24h:no2_buy_price_plus_15_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_15_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: no2_sale_price_plus_15_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_15_first_24h:no2_sale_price_plus_15_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_15_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_market_price
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_15_first_24h:shop_output_time_series_definition_market_price
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_15_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_consumption
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_15_first_24h:shop_output_time_series_definition_plant_consumption
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_15_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_production
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_15_first_24h:shop_output_time_series_definition_plant_production
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_15_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: no2_buy_price_plus_2000_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_2000_first_24h:no2_buy_price_plus_2000_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_2000_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: no2_sale_price_plus_2000_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_2000_first_24h:no2_sale_price_plus_2000_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_2000_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_market_price
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_2000_first_24h:shop_output_time_series_definition_market_price
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_2000_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_consumption
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_2000_first_24h:shop_output_time_series_definition_plant_consumption
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_2000_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_production
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_2000_first_24h:shop_output_time_series_definition_plant_production
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_2000_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: no2_buy_price_plus_20_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_20_first_24h:no2_buy_price_plus_20_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_20_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: no2_sale_price_plus_20_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_20_first_24h:no2_sale_price_plus_20_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_20_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_market_price
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_20_first_24h:shop_output_time_series_definition_market_price
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_20_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_consumption
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_20_first_24h:shop_output_time_series_definition_plant_consumption
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_20_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_production
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_20_first_24h:shop_output_time_series_definition_plant_production
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_20_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: no2_buy_price_plus_30_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_30_first_24h:no2_buy_price_plus_30_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_30_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: no2_sale_price_plus_30_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_30_first_24h:no2_sale_price_plus_30_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_30_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_market_price
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_30_first_24h:shop_output_time_series_definition_market_price
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_30_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_consumption
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_30_first_24h:shop_output_time_series_definition_plant_consumption
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_30_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_production
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_30_first_24h:shop_output_time_series_definition_plant_production
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_30_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: no2_buy_price_plus_40_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_40_first_24h:no2_buy_price_plus_40_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_40_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: no2_sale_price_plus_40_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_40_first_24h:no2_sale_price_plus_40_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_40_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_market_price
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_40_first_24h:shop_output_time_series_definition_market_price
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_40_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_consumption
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_40_first_24h:shop_output_time_series_definition_plant_consumption
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_40_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_production
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_40_first_24h:shop_output_time_series_definition_plant_production
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_40_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: no2_buy_price_plus_50_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_50_first_24h:no2_buy_price_plus_50_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_50_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: no2_sale_price_plus_50_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_50_first_24h:no2_sale_price_plus_50_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_50_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_market_price
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_50_first_24h:shop_output_time_series_definition_market_price
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_50_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_consumption
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_50_first_24h:shop_output_time_series_definition_plant_consumption
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_50_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_production
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_50_first_24h:shop_output_time_series_definition_plant_production
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_50_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: no2_buy_price_plus_5_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_5_first_24h:no2_buy_price_plus_5_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_5_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: no2_sale_price_plus_5_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_5_first_24h:no2_sale_price_plus_5_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_5_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_market_price
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_5_first_24h:shop_output_time_series_definition_market_price
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_5_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_consumption
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_5_first_24h:shop_output_time_series_definition_plant_consumption
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_5_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_production
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_5_first_24h:shop_output_time_series_definition_plant_production
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_5_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: no2_buy_price_plus_70_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_70_first_24h:no2_buy_price_plus_70_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_70_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: no2_sale_price_plus_70_first_24h
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_70_first_24h:no2_sale_price_plus_70_first_24h
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_70_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_market_price
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_70_first_24h:shop_output_time_series_definition_market_price
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_70_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_consumption
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_70_first_24h:shop_output_time_series_definition_plant_consumption
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_70_first_24h
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_production
+    space: '{{power_ops_instance_space}}'
+  externalId: shop_scenario_stavanger_price_plus_70_first_24h:shop_output_time_series_definition_plant_production
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: shop_scenario_stavanger_price_plus_70_first_24h
     space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopOutputTimeSeriesDefinition

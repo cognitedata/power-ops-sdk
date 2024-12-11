@@ -40,17 +40,17 @@
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
-- externalId: shop_based_partial_bid_configuration_sola_3_step
+- externalId: shop_based_partial_bid_configuration_sola_20
   sources:
   - properties:
-      addSteps: true
-      method: multi scenario 3
-      name: Sola 3 step
+      addSteps: false
+      method: multi scenario 20
+      name: Sola 20
       powerAsset:
         externalId: plant_information_sola
         space: '{{power_ops_instance_space}}'
       scenarioSet:
-        externalId: shop_scenario_set_stavanger_3_scenarios
+        externalId: shop_scenario_set_stavanger_20_scenarios
         space: '{{power_ops_instance_space}}'
     source:
       externalId: ShopBasedPartialBidConfiguration
@@ -82,17 +82,17 @@
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
-- externalId: shop_based_partial_bid_configuration_sola_20
+- externalId: shop_based_partial_bid_configuration_sola_3_step
   sources:
   - properties:
-      addSteps: false
-      method: multi scenario 20
-      name: Sola 20
+      addSteps: true
+      method: multi scenario 3
+      name: Sola 3 step
       powerAsset:
         externalId: plant_information_sola
         space: '{{power_ops_instance_space}}'
       scenarioSet:
-        externalId: shop_scenario_set_stavanger_20_scenarios
+        externalId: shop_scenario_set_stavanger_3_scenarios
         space: '{{power_ops_instance_space}}'
     source:
       externalId: ShopBasedPartialBidConfiguration

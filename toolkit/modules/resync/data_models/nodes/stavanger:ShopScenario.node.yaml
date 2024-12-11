@@ -21,7 +21,7 @@
   type:
     externalId: ShopScenario
     space: '{{power_ops_type_space}}'
-- externalId: shop_scenario_stavanger_price_minus_500_first_24h
+- externalId: shop_scenario_stavanger_base_15_min_test
   sources:
   - properties:
       commands:
@@ -30,10 +30,10 @@
       model:
         externalId: shop_model_stavanger
         space: '{{power_ops_instance_space}}'
-      name: Stavanger price minus 500 first 24h
+      name: Stavanger base 15 min test
       source: resync
       timeResolution:
-        externalId: shop_time_resolution_default
+        externalId: 15min_1h_4h:0_24_72
         space: '{{power_ops_instance_space}}'
     source:
       externalId: ShopScenario
@@ -44,7 +44,7 @@
   type:
     externalId: ShopScenario
     space: '{{power_ops_type_space}}'
-- externalId: shop_scenario_stavanger_price_minus_200_first_24h
+- externalId: shop_scenario_stavanger_price_minus_10_first_24h
   sources:
   - properties:
       commands:
@@ -53,99 +53,7 @@
       model:
         externalId: shop_model_stavanger
         space: '{{power_ops_instance_space}}'
-      name: Stavanger price minus 200 first 24h
-      source: resync
-      timeResolution:
-        externalId: shop_time_resolution_default
-        space: '{{power_ops_instance_space}}'
-    source:
-      externalId: ShopScenario
-      space: '{{power_ops_models_space}}'
-      type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopScenario
-    space: '{{power_ops_type_space}}'
-- externalId: shop_scenario_stavanger_price_minus_50_first_24h
-  sources:
-  - properties:
-      commands:
-        externalId: shop_commands_default
-        space: '{{power_ops_instance_space}}'
-      model:
-        externalId: shop_model_stavanger
-        space: '{{power_ops_instance_space}}'
-      name: Stavanger price minus 50 first 24h
-      source: resync
-      timeResolution:
-        externalId: shop_time_resolution_default
-        space: '{{power_ops_instance_space}}'
-    source:
-      externalId: ShopScenario
-      space: '{{power_ops_models_space}}'
-      type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopScenario
-    space: '{{power_ops_type_space}}'
-- externalId: shop_scenario_stavanger_price_minus_40_first_24h
-  sources:
-  - properties:
-      commands:
-        externalId: shop_commands_default
-        space: '{{power_ops_instance_space}}'
-      model:
-        externalId: shop_model_stavanger
-        space: '{{power_ops_instance_space}}'
-      name: Stavanger price minus 40 first 24h
-      source: resync
-      timeResolution:
-        externalId: shop_time_resolution_default
-        space: '{{power_ops_instance_space}}'
-    source:
-      externalId: ShopScenario
-      space: '{{power_ops_models_space}}'
-      type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopScenario
-    space: '{{power_ops_type_space}}'
-- externalId: shop_scenario_stavanger_price_minus_30_first_24h
-  sources:
-  - properties:
-      commands:
-        externalId: shop_commands_default
-        space: '{{power_ops_instance_space}}'
-      model:
-        externalId: shop_model_stavanger
-        space: '{{power_ops_instance_space}}'
-      name: Stavanger price minus 30 first 24h
-      source: resync
-      timeResolution:
-        externalId: shop_time_resolution_default
-        space: '{{power_ops_instance_space}}'
-    source:
-      externalId: ShopScenario
-      space: '{{power_ops_models_space}}'
-      type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopScenario
-    space: '{{power_ops_type_space}}'
-- externalId: shop_scenario_stavanger_price_minus_20_first_24h
-  sources:
-  - properties:
-      commands:
-        externalId: shop_commands_default
-        space: '{{power_ops_instance_space}}'
-      model:
-        externalId: shop_model_stavanger
-        space: '{{power_ops_instance_space}}'
-      name: Stavanger price minus 20 first 24h
+      name: Stavanger price minus 10 first 24h
       source: resync
       timeResolution:
         externalId: shop_time_resolution_default
@@ -182,7 +90,7 @@
   type:
     externalId: ShopScenario
     space: '{{power_ops_type_space}}'
-- externalId: shop_scenario_stavanger_price_minus_10_first_24h
+- externalId: shop_scenario_stavanger_price_minus_200_first_24h
   sources:
   - properties:
       commands:
@@ -191,7 +99,122 @@
       model:
         externalId: shop_model_stavanger
         space: '{{power_ops_instance_space}}'
-      name: Stavanger price minus 10 first 24h
+      name: Stavanger price minus 200 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_default
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopScenario
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopScenario
+    space: '{{power_ops_type_space}}'
+- externalId: shop_scenario_stavanger_price_minus_20_first_24h
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: '{{power_ops_instance_space}}'
+      model:
+        externalId: shop_model_stavanger
+        space: '{{power_ops_instance_space}}'
+      name: Stavanger price minus 20 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_default
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopScenario
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopScenario
+    space: '{{power_ops_type_space}}'
+- externalId: shop_scenario_stavanger_price_minus_30_first_24h
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: '{{power_ops_instance_space}}'
+      model:
+        externalId: shop_model_stavanger
+        space: '{{power_ops_instance_space}}'
+      name: Stavanger price minus 30 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_default
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopScenario
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopScenario
+    space: '{{power_ops_type_space}}'
+- externalId: shop_scenario_stavanger_price_minus_40_first_24h
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: '{{power_ops_instance_space}}'
+      model:
+        externalId: shop_model_stavanger
+        space: '{{power_ops_instance_space}}'
+      name: Stavanger price minus 40 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_default
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopScenario
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopScenario
+    space: '{{power_ops_type_space}}'
+- externalId: shop_scenario_stavanger_price_minus_500_first_24h
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: '{{power_ops_instance_space}}'
+      model:
+        externalId: shop_model_stavanger
+        space: '{{power_ops_instance_space}}'
+      name: Stavanger price minus 500 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_default
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopScenario
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopScenario
+    space: '{{power_ops_type_space}}'
+- externalId: shop_scenario_stavanger_price_minus_50_first_24h
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: '{{power_ops_instance_space}}'
+      model:
+        externalId: shop_model_stavanger
+        space: '{{power_ops_instance_space}}'
+      name: Stavanger price minus 50 first 24h
       source: resync
       timeResolution:
         externalId: shop_time_resolution_default
@@ -228,7 +251,7 @@
   type:
     externalId: ShopScenario
     space: '{{power_ops_type_space}}'
-- externalId: shop_scenario_stavanger_price_plus_5_first_24h
+- externalId: shop_scenario_stavanger_price_multiply_0_first_24h
   sources:
   - properties:
       commands:
@@ -237,7 +260,30 @@
       model:
         externalId: shop_model_stavanger
         space: '{{power_ops_instance_space}}'
-      name: Stavanger price plus 5 first 24h
+      name: Stavanger price multiply 0 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_default
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopScenario
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopScenario
+    space: '{{power_ops_type_space}}'
+- externalId: shop_scenario_stavanger_price_plus_100_first_24h
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: '{{power_ops_instance_space}}'
+      model:
+        externalId: shop_model_stavanger
+        space: '{{power_ops_instance_space}}'
+      name: Stavanger price plus 100 first 24h
       source: resync
       timeResolution:
         externalId: shop_time_resolution_default
@@ -284,6 +330,29 @@
         externalId: shop_model_stavanger
         space: '{{power_ops_instance_space}}'
       name: Stavanger price plus 15 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_default
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopScenario
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopScenario
+    space: '{{power_ops_type_space}}'
+- externalId: shop_scenario_stavanger_price_plus_2000_first_24h
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: '{{power_ops_instance_space}}'
+      model:
+        externalId: shop_model_stavanger
+        space: '{{power_ops_instance_space}}'
+      name: Stavanger price plus 2000 first 24h
       source: resync
       timeResolution:
         externalId: shop_time_resolution_default
@@ -389,6 +458,29 @@
   type:
     externalId: ShopScenario
     space: '{{power_ops_type_space}}'
+- externalId: shop_scenario_stavanger_price_plus_5_first_24h
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: '{{power_ops_instance_space}}'
+      model:
+        externalId: shop_model_stavanger
+        space: '{{power_ops_instance_space}}'
+      name: Stavanger price plus 5 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_default
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopScenario
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopScenario
+    space: '{{power_ops_type_space}}'
 - externalId: shop_scenario_stavanger_price_plus_70_first_24h
   sources:
   - properties:
@@ -402,98 +494,6 @@
       source: resync
       timeResolution:
         externalId: shop_time_resolution_default
-        space: '{{power_ops_instance_space}}'
-    source:
-      externalId: ShopScenario
-      space: '{{power_ops_models_space}}'
-      type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopScenario
-    space: '{{power_ops_type_space}}'
-- externalId: shop_scenario_stavanger_price_plus_100_first_24h
-  sources:
-  - properties:
-      commands:
-        externalId: shop_commands_default
-        space: '{{power_ops_instance_space}}'
-      model:
-        externalId: shop_model_stavanger
-        space: '{{power_ops_instance_space}}'
-      name: Stavanger price plus 100 first 24h
-      source: resync
-      timeResolution:
-        externalId: shop_time_resolution_default
-        space: '{{power_ops_instance_space}}'
-    source:
-      externalId: ShopScenario
-      space: '{{power_ops_models_space}}'
-      type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopScenario
-    space: '{{power_ops_type_space}}'
-- externalId: shop_scenario_stavanger_price_plus_2000_first_24h
-  sources:
-  - properties:
-      commands:
-        externalId: shop_commands_default
-        space: '{{power_ops_instance_space}}'
-      model:
-        externalId: shop_model_stavanger
-        space: '{{power_ops_instance_space}}'
-      name: Stavanger price plus 2000 first 24h
-      source: resync
-      timeResolution:
-        externalId: shop_time_resolution_default
-        space: '{{power_ops_instance_space}}'
-    source:
-      externalId: ShopScenario
-      space: '{{power_ops_models_space}}'
-      type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopScenario
-    space: '{{power_ops_type_space}}'
-- externalId: shop_scenario_stavanger_price_multiply_0_first_24h
-  sources:
-  - properties:
-      commands:
-        externalId: shop_commands_default
-        space: '{{power_ops_instance_space}}'
-      model:
-        externalId: shop_model_stavanger
-        space: '{{power_ops_instance_space}}'
-      name: Stavanger price multiply 0 first 24h
-      source: resync
-      timeResolution:
-        externalId: shop_time_resolution_default
-        space: '{{power_ops_instance_space}}'
-    source:
-      externalId: ShopScenario
-      space: '{{power_ops_models_space}}'
-      type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopScenario
-    space: '{{power_ops_type_space}}'
-- externalId: shop_scenario_stavanger_base_15_min_test
-  sources:
-  - properties:
-      commands:
-        externalId: shop_commands_default
-        space: '{{power_ops_instance_space}}'
-      model:
-        externalId: shop_model_stavanger
-        space: '{{power_ops_instance_space}}'
-      name: Stavanger base 15 min test
-      source: resync
-      timeResolution:
-        externalId: 15min_1h_4h:0_24_72
         space: '{{power_ops_instance_space}}'
     source:
       externalId: ShopScenario

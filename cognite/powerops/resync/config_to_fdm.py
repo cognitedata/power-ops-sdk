@@ -195,8 +195,10 @@ class ResyncImporter:
         if type_nodes:
             node_type_yaml_file = self.toolkit_directory / "types.node.yaml"
 
+            sorted_data = sorted(list(type_nodes.values()), key=lambda x: x["externalId"])
+
             with Path(node_type_yaml_file).open("w") as file:
-                yaml.dump(list(type_nodes.values()), file)
+                yaml.dump(sorted_data, file, sort_keys=True)
 
         return list(data_model_objects.values()), list(data_model_objects.keys())
 
@@ -417,13 +419,18 @@ class ResyncImporter:
         if node_file_data:
             node_yaml_file = self.toolkit_directory / f"{file_name_prefix}.node.yaml"
 
+            sorted_data = sorted(node_file_data, key=lambda x: x["externalId"])
+
             with Path(node_yaml_file).open("w") as file:
-                yaml.dump(node_file_data, file)
+                yaml.dump(sorted_data, file)
 
         if edge_file_data:
             edge_yaml_file = self.toolkit_directory / f"{file_name_prefix}.edge.yaml"
+
+            sorted_data = sorted(edge_file_data, key=lambda x: x["externalId"])
+
             with Path(edge_yaml_file).open("w") as file:
-                yaml.dump(edge_file_data, file)
+                yaml.dump(sorted_data, file)
 
         type_node = {
             type_external_id: {

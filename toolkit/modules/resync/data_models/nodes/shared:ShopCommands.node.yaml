@@ -1,3 +1,21 @@
+- externalId: shop_commands_alternative_x
+  sources:
+  - properties:
+      commands:
+      - penalty flag /on /plant /schedule
+      - start sim 3
+      - set code /inc
+      - start sim 4
+      name: alternative X
+    source:
+      externalId: ShopCommands
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopCommands
+    space: '{{power_ops_type_space}}'
 - externalId: shop_commands_default
   sources:
   - properties:
@@ -19,24 +37,6 @@
       - set code /inc
       - start sim 4
       name: default
-    source:
-      externalId: ShopCommands
-      space: '{{power_ops_models_space}}'
-      type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
-  type:
-    externalId: ShopCommands
-    space: '{{power_ops_type_space}}'
-- externalId: shop_commands_alternative_x
-  sources:
-  - properties:
-      commands:
-      - penalty flag /on /plant /schedule
-      - start sim 3
-      - set code /inc
-      - start sim 4
-      name: alternative X
     source:
       externalId: ShopCommands
       space: '{{power_ops_models_space}}'

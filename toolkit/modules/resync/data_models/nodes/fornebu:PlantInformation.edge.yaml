@@ -1,16 +1,4 @@
 - endNode:
-    externalId: generator_lund_g1
-    space: '{{power_ops_instance_space}}'
-  externalId: plant_information_lund:generator_lund_g1
-  instanceType: edge
-  space: '{{power_ops_instance_space}}'
-  startNode:
-    externalId: plant_information_lund
-    space: '{{power_ops_instance_space}}'
-  type:
-    externalId: isSubAssetOf
-    space: power_ops_types
-- endNode:
     externalId: generator_dalby_g1
     space: '{{power_ops_instance_space}}'
   externalId: plant_information_dalby:generator_dalby_g1
@@ -71,13 +59,13 @@
     externalId: isSubAssetOf
     space: power_ops_types
 - endNode:
-    externalId: generator_rull1_g2
+    externalId: generator_lund_g1
     space: '{{power_ops_instance_space}}'
-  externalId: plant_information_rull1:generator_rull1_g2
+  externalId: plant_information_lund:generator_lund_g1
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
-    externalId: plant_information_rull1
+    externalId: plant_information_lund
     space: '{{power_ops_instance_space}}'
   type:
     externalId: isSubAssetOf
@@ -95,9 +83,21 @@
     externalId: isSubAssetOf
     space: power_ops_types
 - endNode:
-    externalId: generator_rull2_g2
+    externalId: generator_rull1_g2
     space: '{{power_ops_instance_space}}'
-  externalId: plant_information_rull2:generator_rull2_g2
+  externalId: plant_information_rull1:generator_rull1_g2
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: plant_information_rull1
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: isSubAssetOf
+    space: power_ops_types
+- endNode:
+    externalId: generator_rull2_g1
+    space: '{{power_ops_instance_space}}'
+  externalId: plant_information_rull2:generator_rull2_g1
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
@@ -107,9 +107,9 @@
     externalId: isSubAssetOf
     space: power_ops_types
 - endNode:
-    externalId: generator_rull2_g1
+    externalId: generator_rull2_g2
     space: '{{power_ops_instance_space}}'
-  externalId: plant_information_rull2:generator_rull2_g1
+  externalId: plant_information_rull2:generator_rull2_g2
   instanceType: edge
   space: '{{power_ops_instance_space}}'
   startNode:
