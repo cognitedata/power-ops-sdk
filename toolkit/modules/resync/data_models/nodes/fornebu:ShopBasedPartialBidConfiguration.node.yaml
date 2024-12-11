@@ -1,1322 +1,1322 @@
 - externalId: shop_based_partial_bid_configuration_lund_2_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 2
-        name: Lund 2 step
-        powerAsset:
-          externalId: plant_information_lund
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_2_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 2
+      name: Lund 2 step
+      powerAsset:
+        externalId: plant_information_lund
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_2_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_lund_3_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 3
-        name: Lund 3 step
-        powerAsset:
-          externalId: plant_information_lund
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_3_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 3
+      name: Lund 3 step
+      powerAsset:
+        externalId: plant_information_lund
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_3_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_lund_20_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 20
-        name: Lund 20 step
-        powerAsset:
-          externalId: plant_information_lund
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_20_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 20
+      name: Lund 20 step
+      powerAsset:
+        externalId: plant_information_lund
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_20_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_lund_1
   sources:
-    - properties:
-        addSteps: false
-        method: price independent
-        name: Lund 1
-        powerAsset:
-          externalId: plant_information_lund
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_1_scenario
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: price independent
+      name: Lund 1
+      powerAsset:
+        externalId: plant_information_lund
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_1_scenario
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_lund_2
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 2
-        name: Lund 2
-        powerAsset:
-          externalId: plant_information_lund
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_2_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 2
+      name: Lund 2
+      powerAsset:
+        externalId: plant_information_lund
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_2_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_lund_3
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 3
-        name: Lund 3
-        powerAsset:
-          externalId: plant_information_lund
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_3_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 3
+      name: Lund 3
+      powerAsset:
+        externalId: plant_information_lund
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_3_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_lund_20
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 20
-        name: Lund 20
-        powerAsset:
-          externalId: plant_information_lund
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_20_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 20
+      name: Lund 20
+      powerAsset:
+        externalId: plant_information_lund
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_20_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_rull2_2_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 2
-        name: Rull2 2 step
-        powerAsset:
-          externalId: plant_information_rull2
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_2_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 2
+      name: Rull2 2 step
+      powerAsset:
+        externalId: plant_information_rull2
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_2_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_rull2_3_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 3
-        name: Rull2 3 step
-        powerAsset:
-          externalId: plant_information_rull2
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_3_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 3
+      name: Rull2 3 step
+      powerAsset:
+        externalId: plant_information_rull2
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_3_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_rull2_20_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 20
-        name: Rull2 20 step
-        powerAsset:
-          externalId: plant_information_rull2
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_20_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 20
+      name: Rull2 20 step
+      powerAsset:
+        externalId: plant_information_rull2
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_20_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_rull2_1
   sources:
-    - properties:
-        addSteps: false
-        method: price independent
-        name: Rull2 1
-        powerAsset:
-          externalId: plant_information_rull2
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_1_scenario
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: price independent
+      name: Rull2 1
+      powerAsset:
+        externalId: plant_information_rull2
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_1_scenario
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_rull2_2
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 2
-        name: Rull2 2
-        powerAsset:
-          externalId: plant_information_rull2
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_2_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 2
+      name: Rull2 2
+      powerAsset:
+        externalId: plant_information_rull2
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_2_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_rull2_3
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 3
-        name: Rull2 3
-        powerAsset:
-          externalId: plant_information_rull2
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_3_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 3
+      name: Rull2 3
+      powerAsset:
+        externalId: plant_information_rull2
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_3_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_rull2_20
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 20
-        name: Rull2 20
-        powerAsset:
-          externalId: plant_information_rull2
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_20_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 20
+      name: Rull2 20
+      powerAsset:
+        externalId: plant_information_rull2
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_20_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_scott_2_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 2
-        name: Scott 2 step
-        powerAsset:
-          externalId: plant_information_scott
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_2_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 2
+      name: Scott 2 step
+      powerAsset:
+        externalId: plant_information_scott
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_2_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_scott_3_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 3
-        name: Scott 3 step
-        powerAsset:
-          externalId: plant_information_scott
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_3_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 3
+      name: Scott 3 step
+      powerAsset:
+        externalId: plant_information_scott
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_3_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_scott_20_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 20
-        name: Scott 20 step
-        powerAsset:
-          externalId: plant_information_scott
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_20_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 20
+      name: Scott 20 step
+      powerAsset:
+        externalId: plant_information_scott
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_20_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_scott_1
   sources:
-    - properties:
-        addSteps: false
-        method: price independent
-        name: Scott 1
-        powerAsset:
-          externalId: plant_information_scott
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_1_scenario
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: price independent
+      name: Scott 1
+      powerAsset:
+        externalId: plant_information_scott
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_1_scenario
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_scott_2
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 2
-        name: Scott 2
-        powerAsset:
-          externalId: plant_information_scott
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_2_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 2
+      name: Scott 2
+      powerAsset:
+        externalId: plant_information_scott
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_2_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_scott_3
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 3
-        name: Scott 3
-        powerAsset:
-          externalId: plant_information_scott
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_3_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 3
+      name: Scott 3
+      powerAsset:
+        externalId: plant_information_scott
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_3_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_scott_20
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 20
-        name: Scott 20
-        powerAsset:
-          externalId: plant_information_scott
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_20_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 20
+      name: Scott 20
+      powerAsset:
+        externalId: plant_information_scott
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_20_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_strand_krv_2_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 2
-        name: Strand_krv 2 step
-        powerAsset:
-          externalId: plant_information_strand_krv
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_2_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 2
+      name: Strand_krv 2 step
+      powerAsset:
+        externalId: plant_information_strand_krv
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_2_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_strand_krv_3_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 3
-        name: Strand_krv 3 step
-        powerAsset:
-          externalId: plant_information_strand_krv
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_3_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 3
+      name: Strand_krv 3 step
+      powerAsset:
+        externalId: plant_information_strand_krv
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_3_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_strand_krv_20_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 20
-        name: Strand_krv 20 step
-        powerAsset:
-          externalId: plant_information_strand_krv
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_20_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 20
+      name: Strand_krv 20 step
+      powerAsset:
+        externalId: plant_information_strand_krv
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_20_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_strand_krv_1
   sources:
-    - properties:
-        addSteps: false
-        method: price independent
-        name: Strand_krv 1
-        powerAsset:
-          externalId: plant_information_strand_krv
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_1_scenario
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: price independent
+      name: Strand_krv 1
+      powerAsset:
+        externalId: plant_information_strand_krv
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_1_scenario
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_strand_krv_2
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 2
-        name: Strand_krv 2
-        powerAsset:
-          externalId: plant_information_strand_krv
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_2_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 2
+      name: Strand_krv 2
+      powerAsset:
+        externalId: plant_information_strand_krv
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_2_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_strand_krv_3
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 3
-        name: Strand_krv 3
-        powerAsset:
-          externalId: plant_information_strand_krv
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_3_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 3
+      name: Strand_krv 3
+      powerAsset:
+        externalId: plant_information_strand_krv
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_3_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_strand_krv_20
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 20
-        name: Strand_krv 20
-        powerAsset:
-          externalId: plant_information_strand_krv
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_20_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 20
+      name: Strand_krv 20
+      powerAsset:
+        externalId: plant_information_strand_krv
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_20_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_dalby_2_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 2
-        name: Dalby 2 step
-        powerAsset:
-          externalId: plant_information_dalby
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_2_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 2
+      name: Dalby 2 step
+      powerAsset:
+        externalId: plant_information_dalby
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_2_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_dalby_3_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 3
-        name: Dalby 3 step
-        powerAsset:
-          externalId: plant_information_dalby
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_3_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 3
+      name: Dalby 3 step
+      powerAsset:
+        externalId: plant_information_dalby
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_3_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_dalby_20_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 20
-        name: Dalby 20 step
-        powerAsset:
-          externalId: plant_information_dalby
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_20_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 20
+      name: Dalby 20 step
+      powerAsset:
+        externalId: plant_information_dalby
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_20_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_dalby_1
   sources:
-    - properties:
-        addSteps: false
-        method: price independent
-        name: Dalby 1
-        powerAsset:
-          externalId: plant_information_dalby
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_1_scenario
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: price independent
+      name: Dalby 1
+      powerAsset:
+        externalId: plant_information_dalby
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_1_scenario
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_dalby_2
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 2
-        name: Dalby 2
-        powerAsset:
-          externalId: plant_information_dalby
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_2_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 2
+      name: Dalby 2
+      powerAsset:
+        externalId: plant_information_dalby
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_2_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_dalby_3
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 3
-        name: Dalby 3
-        powerAsset:
-          externalId: plant_information_dalby
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_3_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 3
+      name: Dalby 3
+      powerAsset:
+        externalId: plant_information_dalby
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_3_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_dalby_20
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 20
-        name: Dalby 20
-        powerAsset:
-          externalId: plant_information_dalby
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_20_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 20
+      name: Dalby 20
+      powerAsset:
+        externalId: plant_information_dalby
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_20_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_landet_2_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 2
-        name: Landet 2 step
-        powerAsset:
-          externalId: plant_information_landet
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_2_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 2
+      name: Landet 2 step
+      powerAsset:
+        externalId: plant_information_landet
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_2_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_landet_3_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 3
-        name: Landet 3 step
-        powerAsset:
-          externalId: plant_information_landet
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_3_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 3
+      name: Landet 3 step
+      powerAsset:
+        externalId: plant_information_landet
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_3_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_landet_20_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 20
-        name: Landet 20 step
-        powerAsset:
-          externalId: plant_information_landet
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_20_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 20
+      name: Landet 20 step
+      powerAsset:
+        externalId: plant_information_landet
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_20_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_landet_1
   sources:
-    - properties:
-        addSteps: false
-        method: price independent
-        name: Landet 1
-        powerAsset:
-          externalId: plant_information_landet
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_1_scenario
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: price independent
+      name: Landet 1
+      powerAsset:
+        externalId: plant_information_landet
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_1_scenario
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_landet_2
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 2
-        name: Landet 2
-        powerAsset:
-          externalId: plant_information_landet
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_2_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 2
+      name: Landet 2
+      powerAsset:
+        externalId: plant_information_landet
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_2_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_landet_3
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 3
-        name: Landet 3
-        powerAsset:
-          externalId: plant_information_landet
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_3_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 3
+      name: Landet 3
+      powerAsset:
+        externalId: plant_information_landet
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_3_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_landet_20
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 20
-        name: Landet 20
-        powerAsset:
-          externalId: plant_information_landet
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_20_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 20
+      name: Landet 20
+      powerAsset:
+        externalId: plant_information_landet
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_20_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_rull1_2_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 2
-        name: Rull1 2 step
-        powerAsset:
-          externalId: plant_information_rull1
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_2_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 2
+      name: Rull1 2 step
+      powerAsset:
+        externalId: plant_information_rull1
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_2_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_rull1_3_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 3
-        name: Rull1 3 step
-        powerAsset:
-          externalId: plant_information_rull1
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_3_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 3
+      name: Rull1 3 step
+      powerAsset:
+        externalId: plant_information_rull1
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_3_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_rull1_20_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 20
-        name: Rull1 20 step
-        powerAsset:
-          externalId: plant_information_rull1
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_20_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 20
+      name: Rull1 20 step
+      powerAsset:
+        externalId: plant_information_rull1
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_20_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_rull1_1
   sources:
-    - properties:
-        addSteps: false
-        method: price independent
-        name: Rull1 1
-        powerAsset:
-          externalId: plant_information_rull1
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_1_scenario
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: price independent
+      name: Rull1 1
+      powerAsset:
+        externalId: plant_information_rull1
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_1_scenario
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_rull1_2
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 2
-        name: Rull1 2
-        powerAsset:
-          externalId: plant_information_rull1
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_2_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 2
+      name: Rull1 2
+      powerAsset:
+        externalId: plant_information_rull1
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_2_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_rull1_3
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 3
-        name: Rull1 3
-        powerAsset:
-          externalId: plant_information_rull1
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_3_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 3
+      name: Rull1 3
+      powerAsset:
+        externalId: plant_information_rull1
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_3_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_rull1_20
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 20
-        name: Rull1 20
-        powerAsset:
-          externalId: plant_information_rull1
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_20_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 20
+      name: Rull1 20
+      powerAsset:
+        externalId: plant_information_rull1
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_20_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_lien_krv_2_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 2
-        name: Lien_krv 2 step
-        powerAsset:
-          externalId: plant_information_lien_krv
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_2_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 2
+      name: Lien_krv 2 step
+      powerAsset:
+        externalId: plant_information_lien_krv
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_2_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_lien_krv_3_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 3
-        name: Lien_krv 3 step
-        powerAsset:
-          externalId: plant_information_lien_krv
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_3_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 3
+      name: Lien_krv 3 step
+      powerAsset:
+        externalId: plant_information_lien_krv
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_3_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_lien_krv_20_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 20
-        name: Lien_krv 20 step
-        powerAsset:
-          externalId: plant_information_lien_krv
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_20_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 20
+      name: Lien_krv 20 step
+      powerAsset:
+        externalId: plant_information_lien_krv
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_20_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_lien_krv_1
   sources:
-    - properties:
-        addSteps: false
-        method: price independent
-        name: Lien_krv 1
-        powerAsset:
-          externalId: plant_information_lien_krv
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_1_scenario
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: price independent
+      name: Lien_krv 1
+      powerAsset:
+        externalId: plant_information_lien_krv
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_1_scenario
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_lien_krv_2
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 2
-        name: Lien_krv 2
-        powerAsset:
-          externalId: plant_information_lien_krv
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_2_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 2
+      name: Lien_krv 2
+      powerAsset:
+        externalId: plant_information_lien_krv
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_2_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_lien_krv_3
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 3
-        name: Lien_krv 3
-        powerAsset:
-          externalId: plant_information_lien_krv
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_3_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 3
+      name: Lien_krv 3
+      powerAsset:
+        externalId: plant_information_lien_krv
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_3_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_lien_krv_20
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 20
-        name: Lien_krv 20
-        powerAsset:
-          externalId: plant_information_lien_krv
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_20_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 20
+      name: Lien_krv 20
+      powerAsset:
+        externalId: plant_information_lien_krv
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_20_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_holen_2_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 2
-        name: Holen 2 step
-        powerAsset:
-          externalId: plant_information_holen
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_2_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 2
+      name: Holen 2 step
+      powerAsset:
+        externalId: plant_information_holen
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_2_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_holen_3_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 3
-        name: Holen 3 step
-        powerAsset:
-          externalId: plant_information_holen
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_3_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 3
+      name: Holen 3 step
+      powerAsset:
+        externalId: plant_information_holen
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_3_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_holen_20_step
   sources:
-    - properties:
-        addSteps: true
-        method: multi scenario 20
-        name: Holen 20 step
-        powerAsset:
-          externalId: plant_information_holen
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_20_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: multi scenario 20
+      name: Holen 20 step
+      powerAsset:
+        externalId: plant_information_holen
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_20_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_holen_1
   sources:
-    - properties:
-        addSteps: false
-        method: price independent
-        name: Holen 1
-        powerAsset:
-          externalId: plant_information_holen
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_1_scenario
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: price independent
+      name: Holen 1
+      powerAsset:
+        externalId: plant_information_holen
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_1_scenario
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_holen_2
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 2
-        name: Holen 2
-        powerAsset:
-          externalId: plant_information_holen
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_2_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 2
+      name: Holen 2
+      powerAsset:
+        externalId: plant_information_holen
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_2_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_holen_3
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 3
-        name: Holen 3
-        powerAsset:
-          externalId: plant_information_holen
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_3_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 3
+      name: Holen 3
+      powerAsset:
+        externalId: plant_information_holen
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_3_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: shop_based_partial_bid_configuration_holen_20
   sources:
-    - properties:
-        addSteps: false
-        method: multi scenario 20
-        name: Holen 20
-        powerAsset:
-          externalId: plant_information_holen
-          space: '{{power_ops_instance_space}}'
-        scenarioSet:
-          externalId: shop_scenario_set_fornebu_20_scenarios
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: ShopBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: multi scenario 20
+      name: Holen 20
+      powerAsset:
+        externalId: plant_information_holen
+        space: '{{power_ops_instance_space}}'
+      scenarioSet:
+        externalId: shop_scenario_set_fornebu_20_scenarios
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopBasedPartialBidConfiguration

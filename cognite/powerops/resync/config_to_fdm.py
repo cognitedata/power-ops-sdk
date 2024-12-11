@@ -198,9 +198,6 @@ class ResyncImporter:
             with Path(node_type_yaml_file).open("w") as file:
                 yaml.dump(list(type_nodes.values()), file)
 
-            with Path(node_type_yaml_file).open("a") as file:
-                file.write("\n")  # Adding an extra blank line to match yaml formatting
-
         return list(data_model_objects.values()), list(data_model_objects.keys())
 
     def _dict_to_type_object(
@@ -423,15 +420,10 @@ class ResyncImporter:
             with Path(node_yaml_file).open("w") as file:
                 yaml.dump(node_file_data, file)
 
-            with Path(node_yaml_file).open("a") as file:
-                file.write("\n")  # Adding an extra blank line to match yaml formatting
-
         if edge_file_data:
             edge_yaml_file = self.toolkit_directory / f"{file_name_prefix}.edge.yaml"
             with Path(edge_yaml_file).open("w") as file:
                 yaml.dump(edge_file_data, file)
-            with Path(edge_yaml_file).open("a") as file:
-                file.write("\n")  # Adding an extra blank line to match yaml formatting
 
         type_node = {
             type_external_id: {

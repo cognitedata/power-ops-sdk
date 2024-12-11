@@ -1,25 +1,25 @@
 - externalId: plant_information_sola
   sources:
-    - properties:
-        assetType: plant
-        connectionLosses: 0
-        displayName: Sola
-        feedingFeeTimeSeries: '9626'
-        headLossFactor: 0
-        inletLevelTimeSeries: test_data_stavanger:dale_reservoir_level_masl
-        name: Sola
-        ordering: 1
-        outletLevel: 30
-        penstockHeadLossFactors:
-          - 0
-        productionMax: 10000000000
-        productionMin: 0
-        waterValueTimeSeries: '136120'
-      source:
-        externalId: PlantInformation
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      assetType: plant
+      connectionLosses: 0
+      displayName: Sola
+      feedingFeeTimeSeries: '9626'
+      headLossFactor: 0
+      inletLevelTimeSeries: test_data_stavanger:dale_reservoir_level_masl
+      name: Sola
+      ordering: 1
+      outletLevel: 30
+      penstockHeadLossFactors:
+      - 0
+      productionMax: 10000000000
+      productionMin: 0
+      waterValueTimeSeries: '136120'
+    source:
+      externalId: PlantInformation
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: PlantInformation

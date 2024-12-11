@@ -2,6 +2,7 @@
 working_directory: "resync"
 # Path to the directory where the data model node and edge files are stored
 toolkit_directory: "toolkit/modules/resync/data_models/nodes"
+# Ignore None values in the data model
 ignore_nones: true
 instance_space: "{{power_ops_instance_space}}"
 models_space: "{{power_ops_models_space}}"

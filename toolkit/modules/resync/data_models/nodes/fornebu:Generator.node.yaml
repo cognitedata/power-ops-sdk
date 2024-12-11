@@ -1,239 +1,239 @@
 - externalId: generator_lund_g1
   sources:
-    - properties:
-        assetType: generator
-        availabilityTimeSeries: is_available_Lund_G1
-        displayName: Lund G1
-        generatorEfficiencyCurve:
-          externalId: generator_efficiency_curve:5a5d2435
-          space: '{{power_ops_instance_space}}'
-        name: Lund_G1
-        ordering: 1
-        penstockNumber: 1
-        productionMin: 0.6
-        startStopCost: 100
-        startStopCostTimeSeries: start_stop_cost_Lund_G1
-      source:
-        externalId: Generator
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      assetType: generator
+      availabilityTimeSeries: is_available_Lund_G1
+      displayName: Lund G1
+      generatorEfficiencyCurve:
+        externalId: generator_efficiency_curve:5a5d2435
+        space: '{{power_ops_instance_space}}'
+      name: Lund_G1
+      ordering: 1
+      penstockNumber: 1
+      productionMin: 0.6
+      startStopCost: 100
+      startStopCostTimeSeries: start_stop_cost_Lund_G1
+    source:
+      externalId: Generator
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: Generator
     space: '{{power_ops_type_space}}'
 - externalId: generator_holen_g1
   sources:
-    - properties:
-        assetType: generator
-        availabilityTimeSeries: is_available_Lund_G1
-        displayName: Holen G1
-        generatorEfficiencyCurve:
-          externalId: generator_efficiency_curve:81d769a6
-          space: '{{power_ops_instance_space}}'
-        name: Holen_G1
-        ordering: 1
-        penstockNumber: 1
-        productionMin: 27
-        startStopCost: 200
-        startStopCostTimeSeries: start_stop_cost_Lund_G1
-      source:
-        externalId: Generator
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      assetType: generator
+      availabilityTimeSeries: is_available_Lund_G1
+      displayName: Holen G1
+      generatorEfficiencyCurve:
+        externalId: generator_efficiency_curve:81d769a6
+        space: '{{power_ops_instance_space}}'
+      name: Holen_G1
+      ordering: 1
+      penstockNumber: 1
+      productionMin: 27
+      startStopCost: 200
+      startStopCostTimeSeries: start_stop_cost_Lund_G1
+    source:
+      externalId: Generator
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: Generator
     space: '{{power_ops_type_space}}'
 - externalId: generator_rull1_g1
   sources:
-    - properties:
-        assetType: generator
-        availabilityTimeSeries: is_available_Lund_G1
-        displayName: Rull 1 G1
-        generatorEfficiencyCurve:
-          externalId: generator_efficiency_curve:cd6396a6
-          space: '{{power_ops_instance_space}}'
-        name: Rull1_G1
-        ordering: 1
-        penstockNumber: 1
-        productionMin: 40
-        startStopCost: 250
-        startStopCostTimeSeries: start_stop_cost_Lund_G1
-      source:
-        externalId: Generator
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      assetType: generator
+      availabilityTimeSeries: is_available_Lund_G1
+      displayName: Rull 1 G1
+      generatorEfficiencyCurve:
+        externalId: generator_efficiency_curve:cd6396a6
+        space: '{{power_ops_instance_space}}'
+      name: Rull1_G1
+      ordering: 1
+      penstockNumber: 1
+      productionMin: 40
+      startStopCost: 250
+      startStopCostTimeSeries: start_stop_cost_Lund_G1
+    source:
+      externalId: Generator
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: Generator
     space: '{{power_ops_type_space}}'
 - externalId: generator_dalby_g1
   sources:
-    - properties:
-        assetType: generator
-        availabilityTimeSeries: is_available_Lund_G1
-        displayName: Dalby G1
-        generatorEfficiencyCurve:
-          externalId: generator_efficiency_curve:d4933751
-          space: '{{power_ops_instance_space}}'
-        name: Dalby_G1
-        ordering: 1
-        penstockNumber: 1
-        productionMin: 40
-        startStopCost: 500
-        startStopCostTimeSeries: start_stop_cost_Lund_G1
-      source:
-        externalId: Generator
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      assetType: generator
+      availabilityTimeSeries: is_available_Lund_G1
+      displayName: Dalby G1
+      generatorEfficiencyCurve:
+        externalId: generator_efficiency_curve:d4933751
+        space: '{{power_ops_instance_space}}'
+      name: Dalby_G1
+      ordering: 1
+      penstockNumber: 1
+      productionMin: 40
+      startStopCost: 500
+      startStopCostTimeSeries: start_stop_cost_Lund_G1
+    source:
+      externalId: Generator
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: Generator
     space: '{{power_ops_type_space}}'
 - externalId: generator_landet_g1
   sources:
-    - properties:
-        assetType: generator
-        availabilityTimeSeries: is_available_Lund_G1
-        displayName: Landet G1
-        generatorEfficiencyCurve:
-          externalId: generator_efficiency_curve:d0c68b2b
-          space: '{{power_ops_instance_space}}'
-        name: Landet_G1
-        ordering: 1
-        penstockNumber: 1
-        productionMin: 25
-        startStopCost: 200
-        startStopCostTimeSeries: start_stop_cost_Lund_G1
-      source:
-        externalId: Generator
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      assetType: generator
+      availabilityTimeSeries: is_available_Lund_G1
+      displayName: Landet G1
+      generatorEfficiencyCurve:
+        externalId: generator_efficiency_curve:d0c68b2b
+        space: '{{power_ops_instance_space}}'
+      name: Landet_G1
+      ordering: 1
+      penstockNumber: 1
+      productionMin: 25
+      startStopCost: 200
+      startStopCostTimeSeries: start_stop_cost_Lund_G1
+    source:
+      externalId: Generator
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: Generator
     space: '{{power_ops_type_space}}'
 - externalId: generator_lien_krv_g1
   sources:
-    - properties:
-        assetType: generator
-        availabilityTimeSeries: is_available_Lund_G1
-        displayName: Lien krv G1
-        generatorEfficiencyCurve:
-          externalId: generator_efficiency_curve:415890f2
-          space: '{{power_ops_instance_space}}'
-        name: Lien_krv_G1
-        ordering: 1
-        penstockNumber: 1
-        productionMin: 1.2
-        startStopCost: 150
-        startStopCostTimeSeries: start_stop_cost_Lund_G1
-      source:
-        externalId: Generator
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      assetType: generator
+      availabilityTimeSeries: is_available_Lund_G1
+      displayName: Lien krv G1
+      generatorEfficiencyCurve:
+        externalId: generator_efficiency_curve:415890f2
+        space: '{{power_ops_instance_space}}'
+      name: Lien_krv_G1
+      ordering: 1
+      penstockNumber: 1
+      productionMin: 1.2
+      startStopCost: 150
+      startStopCostTimeSeries: start_stop_cost_Lund_G1
+    source:
+      externalId: Generator
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: Generator
     space: '{{power_ops_type_space}}'
 - externalId: generator_rull2_g1
   sources:
-    - properties:
-        assetType: generator
-        availabilityTimeSeries: is_available_Lund_G1
-        displayName: Rull2 G1
-        generatorEfficiencyCurve:
-          externalId: generator_efficiency_curve:45440148
-          space: '{{power_ops_instance_space}}'
-        name: Rull2_G1
-        ordering: 1
-        penstockNumber: 1
-        productionMin: 32
-        startStopCost: 250
-        startStopCostTimeSeries: start_stop_cost_Lund_G1
-      source:
-        externalId: Generator
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      assetType: generator
+      availabilityTimeSeries: is_available_Lund_G1
+      displayName: Rull2 G1
+      generatorEfficiencyCurve:
+        externalId: generator_efficiency_curve:45440148
+        space: '{{power_ops_instance_space}}'
+      name: Rull2_G1
+      ordering: 1
+      penstockNumber: 1
+      productionMin: 32
+      startStopCost: 250
+      startStopCostTimeSeries: start_stop_cost_Lund_G1
+    source:
+      externalId: Generator
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: Generator
     space: '{{power_ops_type_space}}'
 - externalId: generator_rull2_g2
   sources:
-    - properties:
-        assetType: generator
-        availabilityTimeSeries: is_available_Lund_G1
-        displayName: Rull2 G2
-        generatorEfficiencyCurve:
-          externalId: generator_efficiency_curve:1a9811bb
-          space: '{{power_ops_instance_space}}'
-        name: Rull2_G2
-        ordering: 1
-        penstockNumber: 2
-        productionMin: 32
-        startStopCost: 250
-        startStopCostTimeSeries: start_stop_cost_Lund_G1
-      source:
-        externalId: Generator
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      assetType: generator
+      availabilityTimeSeries: is_available_Lund_G1
+      displayName: Rull2 G2
+      generatorEfficiencyCurve:
+        externalId: generator_efficiency_curve:1a9811bb
+        space: '{{power_ops_instance_space}}'
+      name: Rull2_G2
+      ordering: 1
+      penstockNumber: 2
+      productionMin: 32
+      startStopCost: 250
+      startStopCostTimeSeries: start_stop_cost_Lund_G1
+    source:
+      externalId: Generator
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: Generator
     space: '{{power_ops_type_space}}'
 - externalId: generator_scott_g1
   sources:
-    - properties:
-        assetType: generator
-        availabilityTimeSeries: is_available_Lund_G1
-        displayName: Scott G1
-        generatorEfficiencyCurve:
-          externalId: generator_efficiency_curve:c04055b4
-          space: '{{power_ops_instance_space}}'
-        name: Scott_G1
-        ordering: 1
-        penstockNumber: 1
-        productionMin: 8
-        startStopCost: 150
-        startStopCostTimeSeries: start_stop_cost_Lund_G1
-      source:
-        externalId: Generator
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      assetType: generator
+      availabilityTimeSeries: is_available_Lund_G1
+      displayName: Scott G1
+      generatorEfficiencyCurve:
+        externalId: generator_efficiency_curve:c04055b4
+        space: '{{power_ops_instance_space}}'
+      name: Scott_G1
+      ordering: 1
+      penstockNumber: 1
+      productionMin: 8
+      startStopCost: 150
+      startStopCostTimeSeries: start_stop_cost_Lund_G1
+    source:
+      externalId: Generator
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: Generator
     space: '{{power_ops_type_space}}'
 - externalId: generator_strand_krv_g1
   sources:
-    - properties:
-        assetType: generator
-        availabilityTimeSeries: is_available_Lund_G1
-        displayName: Strand krv G1
-        generatorEfficiencyCurve:
-          externalId: generator_efficiency_curve:1c6693a8
-          space: '{{power_ops_instance_space}}'
-        name: Strand_krv_G1
-        ordering: 1
-        penstockNumber: 1
-        productionMin: 4.2
-        startStopCost: 150
-        startStopCostTimeSeries: start_stop_cost_Lund_G1
-      source:
-        externalId: Generator
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      assetType: generator
+      availabilityTimeSeries: is_available_Lund_G1
+      displayName: Strand krv G1
+      generatorEfficiencyCurve:
+        externalId: generator_efficiency_curve:1c6693a8
+        space: '{{power_ops_instance_space}}'
+      name: Strand_krv_G1
+      ordering: 1
+      penstockNumber: 1
+      productionMin: 4.2
+      startStopCost: 150
+      startStopCostTimeSeries: start_stop_cost_Lund_G1
+    source:
+      externalId: Generator
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: Generator

@@ -1,236 +1,236 @@
 - externalId: plant_information_lund
   sources:
-    - properties:
-        assetType: plant
-        connectionLosses: 0
-        displayName: Lund
-        feedingFeeTimeSeries: '9626'
-        headLossFactor: 0.002
-        inletLevelTimeSeries: '907230'
-        name: Lund
-        ordering: 1
-        outletLevel: 1240
-        outletLevelTimeSeries: '907223'
-        penstockHeadLossFactors:
-          - 0.022
-        productionMax: 10000000000000000000
-        productionMin: 0
-        waterValueTimeSeries: '136120'
-      source:
-        externalId: PlantInformation
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      assetType: plant
+      connectionLosses: 0
+      displayName: Lund
+      feedingFeeTimeSeries: '9626'
+      headLossFactor: 0.002
+      inletLevelTimeSeries: '907230'
+      name: Lund
+      ordering: 1
+      outletLevel: 1240
+      outletLevelTimeSeries: '907223'
+      penstockHeadLossFactors:
+      - 0.022
+      productionMax: 10000000000000000000
+      productionMin: 0
+      waterValueTimeSeries: '136120'
+    source:
+      externalId: PlantInformation
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: PlantInformation
     space: '{{power_ops_type_space}}'
 - externalId: plant_information_dalby
   sources:
-    - properties:
-        assetType: plant
-        connectionLosses: 0
-        displayName: Dalby
-        feedingFeeTimeSeries: '9626'
-        headLossFactor: 0.002105
-        inletLevelTimeSeries: inlet_level_Dalby
-        name: Dalby
-        ordering: 2
-        outletLevel: 365
-        penstockHeadLossFactors:
-          - 0.0006
-        productionMax: 10000000000000000000
-        productionMin: 0
-        waterValueTimeSeries: '136120'
-      source:
-        externalId: PlantInformation
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      assetType: plant
+      connectionLosses: 0
+      displayName: Dalby
+      feedingFeeTimeSeries: '9626'
+      headLossFactor: 0.002105
+      inletLevelTimeSeries: inlet_level_Dalby
+      name: Dalby
+      ordering: 2
+      outletLevel: 365
+      penstockHeadLossFactors:
+      - 0.0006
+      productionMax: 10000000000000000000
+      productionMin: 0
+      waterValueTimeSeries: '136120'
+    source:
+      externalId: PlantInformation
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: PlantInformation
     space: '{{power_ops_type_space}}'
 - externalId: plant_information_holen
   sources:
-    - properties:
-        assetType: plant
-        connectionLosses: 0
-        displayName: Holen
-        feedingFeeTimeSeries: '9626'
-        headLossFactor: 0.0339
-        inletLevelTimeSeries: inlet_level_Holen
-        name: Holen
-        ordering: 3
-        outletLevel: 628
-        penstockHeadLossFactors:
-          - 0.0113
-        productionMax: 10000000000000000000
-        productionMin: 0
-        waterValueTimeSeries: '136120'
-      source:
-        externalId: PlantInformation
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      assetType: plant
+      connectionLosses: 0
+      displayName: Holen
+      feedingFeeTimeSeries: '9626'
+      headLossFactor: 0.0339
+      inletLevelTimeSeries: inlet_level_Holen
+      name: Holen
+      ordering: 3
+      outletLevel: 628
+      penstockHeadLossFactors:
+      - 0.0113
+      productionMax: 10000000000000000000
+      productionMin: 0
+      waterValueTimeSeries: '136120'
+    source:
+      externalId: PlantInformation
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: PlantInformation
     space: '{{power_ops_type_space}}'
 - externalId: plant_information_landet
   sources:
-    - properties:
-        assetType: plant
-        connectionLosses: 0
-        displayName: Landet
-        feedingFeeTimeSeries: '9626'
-        headLossFactor: 0.02007
-        inletLevelTimeSeries: inlet_level_Landet
-        name: Landet
-        ordering: 4
-        outletLevel: 670
-        penstockHeadLossFactors:
-          - 0
-        productionMax: 10000000000000000000
-        productionMin: 0
-        waterValueTimeSeries: '136120'
-      source:
-        externalId: PlantInformation
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      assetType: plant
+      connectionLosses: 0
+      displayName: Landet
+      feedingFeeTimeSeries: '9626'
+      headLossFactor: 0.02007
+      inletLevelTimeSeries: inlet_level_Landet
+      name: Landet
+      ordering: 4
+      outletLevel: 670
+      penstockHeadLossFactors:
+      - 0
+      productionMax: 10000000000000000000
+      productionMin: 0
+      waterValueTimeSeries: '136120'
+    source:
+      externalId: PlantInformation
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: PlantInformation
     space: '{{power_ops_type_space}}'
 - externalId: plant_information_lien_krv
   sources:
-    - properties:
-        assetType: plant
-        connectionLosses: 0
-        displayName: Lien krv
-        feedingFeeTimeSeries: '9626'
-        headLossFactor: 0.8
-        inletLevelTimeSeries: inlet_level_Lien_krv
-        name: Lien_krv
-        ordering: 5
-        outletLevel: 1030
-        penstockHeadLossFactors:
-          - 0
-        productionMax: 10000000000000000000
-        productionMin: 0
-        waterValueTimeSeries: '136120'
-      source:
-        externalId: PlantInformation
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      assetType: plant
+      connectionLosses: 0
+      displayName: Lien krv
+      feedingFeeTimeSeries: '9626'
+      headLossFactor: 0.8
+      inletLevelTimeSeries: inlet_level_Lien_krv
+      name: Lien_krv
+      ordering: 5
+      outletLevel: 1030
+      penstockHeadLossFactors:
+      - 0
+      productionMax: 10000000000000000000
+      productionMin: 0
+      waterValueTimeSeries: '136120'
+    source:
+      externalId: PlantInformation
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: PlantInformation
     space: '{{power_ops_type_space}}'
 - externalId: plant_information_rull1
   sources:
-    - properties:
-        assetType: plant
-        connectionLosses: 0
-        displayName: Rull 1
-        feedingFeeTimeSeries: '9626'
-        headLossFactor: 0.00107
-        inletLevelTimeSeries: inlet_level_Rull1
-        name: Rull1
-        ordering: 6
-        outletLevel: 68
-        penstockHeadLossFactors:
-          - 0.0007
-          - 0.0005
-        productionMax: 10000000000000000000
-        productionMin: 0
-        waterValueTimeSeries: '136120'
-      source:
-        externalId: PlantInformation
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      assetType: plant
+      connectionLosses: 0
+      displayName: Rull 1
+      feedingFeeTimeSeries: '9626'
+      headLossFactor: 0.00107
+      inletLevelTimeSeries: inlet_level_Rull1
+      name: Rull1
+      ordering: 6
+      outletLevel: 68
+      penstockHeadLossFactors:
+      - 0.0007
+      - 0.0005
+      productionMax: 10000000000000000000
+      productionMin: 0
+      waterValueTimeSeries: '136120'
+    source:
+      externalId: PlantInformation
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: PlantInformation
     space: '{{power_ops_type_space}}'
 - externalId: plant_information_rull2
   sources:
-    - properties:
-        assetType: plant
-        connectionLosses: 0
-        displayName: Rull 2
-        feedingFeeTimeSeries: '9626'
-        headLossFactor: 0.0225
-        inletLevelTimeSeries: inlet_level_Rull2
-        name: Rull2
-        ordering: 7
-        outletLevel: 68
-        penstockHeadLossFactors:
-          - 0.0018
-          - 0.0041
-        productionMax: 10000000000000000000
-        productionMin: 0
-        waterValueTimeSeries: '136120'
-      source:
-        externalId: PlantInformation
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      assetType: plant
+      connectionLosses: 0
+      displayName: Rull 2
+      feedingFeeTimeSeries: '9626'
+      headLossFactor: 0.0225
+      inletLevelTimeSeries: inlet_level_Rull2
+      name: Rull2
+      ordering: 7
+      outletLevel: 68
+      penstockHeadLossFactors:
+      - 0.0018
+      - 0.0041
+      productionMax: 10000000000000000000
+      productionMin: 0
+      waterValueTimeSeries: '136120'
+    source:
+      externalId: PlantInformation
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: PlantInformation
     space: '{{power_ops_type_space}}'
 - externalId: plant_information_scott
   sources:
-    - properties:
-        assetType: plant
-        connectionLosses: 0
-        displayName: Scott
-        feedingFeeTimeSeries: '9626'
-        headLossFactor: 0.003399
-        inletLevelTimeSeries: inlet_level_Scott
-        name: Scott
-        ordering: 8
-        outletLevel: 1013
-        penstockHeadLossFactors:
-          - 0.022
-        productionMax: 10000000000000000000
-        productionMin: 0
-        waterValueTimeSeries: '136120'
-      source:
-        externalId: PlantInformation
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      assetType: plant
+      connectionLosses: 0
+      displayName: Scott
+      feedingFeeTimeSeries: '9626'
+      headLossFactor: 0.003399
+      inletLevelTimeSeries: inlet_level_Scott
+      name: Scott
+      ordering: 8
+      outletLevel: 1013
+      penstockHeadLossFactors:
+      - 0.022
+      productionMax: 10000000000000000000
+      productionMin: 0
+      waterValueTimeSeries: '136120'
+    source:
+      externalId: PlantInformation
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: PlantInformation
     space: '{{power_ops_type_space}}'
 - externalId: plant_information_strand_krv
   sources:
-    - properties:
-        assetType: plant
-        connectionLosses: 0
-        displayName: Strand krv
-        feedingFeeTimeSeries: '9626'
-        headLossFactor: 0
-        inletLevelTimeSeries: inlet_level_Strand_krv
-        name: Strand_krv
-        ordering: 9
-        outletLevel: 753.06
-        penstockHeadLossFactors:
-          - 0.3125
-        productionMax: 10000000000000000000
-        productionMin: 0
-        waterValueTimeSeries: '136120'
-      source:
-        externalId: PlantInformation
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      assetType: plant
+      connectionLosses: 0
+      displayName: Strand krv
+      feedingFeeTimeSeries: '9626'
+      headLossFactor: 0
+      inletLevelTimeSeries: inlet_level_Strand_krv
+      name: Strand_krv
+      ordering: 9
+      outletLevel: 753.06
+      penstockHeadLossFactors:
+      - 0.3125
+      productionMax: 10000000000000000000
+      productionMin: 0
+      waterValueTimeSeries: '136120'
+    source:
+      externalId: PlantInformation
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: PlantInformation

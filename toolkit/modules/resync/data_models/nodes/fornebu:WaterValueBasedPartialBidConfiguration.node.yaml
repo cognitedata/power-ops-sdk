@@ -1,179 +1,179 @@
 - externalId: water_value_based_partial_bid_configuration_plant_lund
   sources:
-    - properties:
-        addSteps: false
-        method: Water Value Based Bid Generation (WVBBG)
-        name: Plant Lund
-        powerAsset:
-          externalId: plant_information_lund
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: WaterValueBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: Water Value Based Bid Generation (WVBBG)
+      name: Plant Lund
+      powerAsset:
+        externalId: plant_information_lund
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: WaterValueBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: WaterValueBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: water_value_based_partial_bid_configuration_plant_lund_step
   sources:
-    - properties:
-        addSteps: true
-        method: Water Value Based Bid Generation (WVBBG)
-        name: Plant Lund Step
-        powerAsset:
-          externalId: plant_information_lund
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: WaterValueBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: Water Value Based Bid Generation (WVBBG)
+      name: Plant Lund Step
+      powerAsset:
+        externalId: plant_information_lund
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: WaterValueBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: WaterValueBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: water_value_based_partial_bid_configuration_plant_dalby_step
   sources:
-    - properties:
-        addSteps: true
-        method: Water Value Based Bid Generation (WVBBG)
-        name: Plant Dalby Step
-        powerAsset:
-          externalId: plant_information_dalby
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: WaterValueBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: Water Value Based Bid Generation (WVBBG)
+      name: Plant Dalby Step
+      powerAsset:
+        externalId: plant_information_dalby
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: WaterValueBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: WaterValueBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: water_value_based_partial_bid_configuration_plant_holen
   sources:
-    - properties:
-        addSteps: false
-        method: Water Value Based Bid Generation (WVBBG)
-        name: Plant Holen
-        powerAsset:
-          externalId: plant_information_holen
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: WaterValueBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: Water Value Based Bid Generation (WVBBG)
+      name: Plant Holen
+      powerAsset:
+        externalId: plant_information_holen
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: WaterValueBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: WaterValueBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: water_value_based_partial_bid_configuration_plant_landet_step
   sources:
-    - properties:
-        addSteps: true
-        method: Water Value Based Bid Generation (WVBBG)
-        name: Plant Landet Step
-        powerAsset:
-          externalId: plant_information_landet
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: WaterValueBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: Water Value Based Bid Generation (WVBBG)
+      name: Plant Landet Step
+      powerAsset:
+        externalId: plant_information_landet
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: WaterValueBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: WaterValueBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: water_value_based_partial_bid_configuration_plant_lien_krv
   sources:
-    - properties:
-        addSteps: false
-        method: Water Value Based Bid Generation (WVBBG)
-        name: Plant Lien_krv
-        powerAsset:
-          externalId: plant_information_lien_krv
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: WaterValueBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: Water Value Based Bid Generation (WVBBG)
+      name: Plant Lien_krv
+      powerAsset:
+        externalId: plant_information_lien_krv
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: WaterValueBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: WaterValueBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: water_value_based_partial_bid_configuration_plant_rull1_step
   sources:
-    - properties:
-        addSteps: true
-        method: Water Value Based Bid Generation (WVBBG)
-        name: Plant Rull1 Step
-        powerAsset:
-          externalId: plant_information_rull1
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: WaterValueBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: Water Value Based Bid Generation (WVBBG)
+      name: Plant Rull1 Step
+      powerAsset:
+        externalId: plant_information_rull1
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: WaterValueBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: WaterValueBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: water_value_based_partial_bid_configuration_plant_rull2
   sources:
-    - properties:
-        addSteps: false
-        method: Water Value Based Bid Generation (WVBBG)
-        name: Plant Rull2
-        powerAsset:
-          externalId: plant_information_rull2
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: WaterValueBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: Water Value Based Bid Generation (WVBBG)
+      name: Plant Rull2
+      powerAsset:
+        externalId: plant_information_rull2
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: WaterValueBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: WaterValueBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: water_value_based_partial_bid_configuration_plant_scott_step
   sources:
-    - properties:
-        addSteps: true
-        method: Water Value Based Bid Generation (WVBBG)
-        name: Plant Scott Step
-        powerAsset:
-          externalId: plant_information_scott
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: WaterValueBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: Water Value Based Bid Generation (WVBBG)
+      name: Plant Scott Step
+      powerAsset:
+        externalId: plant_information_scott
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: WaterValueBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: WaterValueBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: water_value_based_partial_bid_configuration_plant_strand_krv
   sources:
-    - properties:
-        addSteps: false
-        method: Water Value Based Bid Generation (WVBBG)
-        name: Plant Strand_krv
-        powerAsset:
-          externalId: plant_information_strand_krv
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: WaterValueBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: Water Value Based Bid Generation (WVBBG)
+      name: Plant Strand_krv
+      powerAsset:
+        externalId: plant_information_strand_krv
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: WaterValueBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: WaterValueBasedPartialBidConfiguration

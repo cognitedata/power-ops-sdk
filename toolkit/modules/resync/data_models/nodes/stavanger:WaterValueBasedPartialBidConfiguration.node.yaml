@@ -1,35 +1,35 @@
 - externalId: water_value_based_partial_bid_configuration_plant_sola
   sources:
-    - properties:
-        addSteps: false
-        method: Water Value Based Bid Generation (WVBBG)
-        name: Plant Sola
-        powerAsset:
-          externalId: plant_information_sola
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: WaterValueBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: false
+      method: Water Value Based Bid Generation (WVBBG)
+      name: Plant Sola
+      powerAsset:
+        externalId: plant_information_sola
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: WaterValueBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: WaterValueBasedPartialBidConfiguration
     space: '{{power_ops_type_space}}'
 - externalId: water_value_based_partial_bid_configuration_plant_sola_step
   sources:
-    - properties:
-        addSteps: true
-        method: Water Value Based Bid Generation (WVBBG)
-        name: Plant Sola Step
-        powerAsset:
-          externalId: plant_information_sola
-          space: '{{power_ops_instance_space}}'
-      source:
-        externalId: WaterValueBasedPartialBidConfiguration
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      addSteps: true
+      method: Water Value Based Bid Generation (WVBBG)
+      name: Plant Sola Step
+      powerAsset:
+        externalId: plant_information_sola
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: WaterValueBasedPartialBidConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: WaterValueBasedPartialBidConfiguration

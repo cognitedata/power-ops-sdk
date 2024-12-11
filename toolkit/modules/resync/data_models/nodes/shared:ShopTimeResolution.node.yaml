@@ -1,37 +1,37 @@
 - externalId: shop_time_resolution_default
   sources:
-    - properties:
-        minutesAfterStart:
-          - 0
-        name: default
-        timeResolutionMinutes:
-          - 60
-      source:
-        externalId: ShopTimeResolution
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      minutesAfterStart:
+      - 0
+      name: default
+      timeResolutionMinutes:
+      - 60
+    source:
+      externalId: ShopTimeResolution
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopTimeResolution
     space: '{{power_ops_type_space}}'
 - externalId: shop_time_resolution_15_min_test
   sources:
-    - properties:
-        minutesAfterStart:
-          - 0
-          - 1440
-          - 4320
-        name: 15 min test
-        timeResolutionMinutes:
-          - 15
-          - 60
-          - 240
-      source:
-        externalId: ShopTimeResolution
-        space: '{{power_ops_models_space}}'
-        type: view
-        version: '{{power_ops_data_model_version}}'
+  - properties:
+      minutesAfterStart:
+      - 0
+      - 1440
+      - 4320
+      name: 15 min test
+      timeResolutionMinutes:
+      - 15
+      - 60
+      - 240
+    source:
+      externalId: ShopTimeResolution
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
   space: '{{power_ops_instance_space}}'
   type:
     externalId: ShopTimeResolution

@@ -1,6 +1,7 @@
 doublestar: true
 exclude:
   - "**/test_apply/demo_*.yml"
+  - "toolkit/modules/resync/**/*.yaml"
 formatter:
   type: basic
   disallow_anchors: true
