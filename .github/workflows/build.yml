@@ -6,6 +6,11 @@ on:
 
 env:
   PYTHON_VERSION: "3.10"
+  CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+  CLIENT_ID: ${{ vars.CLIENT_ID }}
+  PROJECT: ${{ vars.PROJECT }}
+  CLUSTER: ${{ vars.CLUSTER }}
+  TENANT_ID: ${{ vars.TENANT_ID }}
 
 jobs:
   lint:
@@ -52,12 +57,6 @@ jobs:
           poetry install
 
       - name: Test
-        env:
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-          CLIENT_ID: ${{ vars.CLIENT_ID }}
-          PROJECT: ${{ vars.PROJECT }}
-          CLUSTER: ${{ vars.CLUSTER }}
-          TENANT_ID: ${{ vars.TENANT_ID }}
         run: pytest --cov --cov-report term --cov-report xml:coverage.xml
 
       - uses: codecov/codecov-action@v5
