@@ -49,4 +49,15 @@
   default_bid_configuration: "[name]Multi Scenario 2 NO2"
   main_price_scenario: "[external_id]6694" # TODO: check if this is right
   price_scenarios:
-    - "[external_id]ext_id_ts"
+- name: NO3
+  display_name: "Midt-Norge (NO3)"
+  ordering: 3
+  asset_type: price_area
+- name: NO4
+  display_name: "Nord-Norge (NO4)"
+  ordering: 4
+  asset_type: price_area
+- name: NO5
+  display_name: "Vestlandet (NO5)"
+  ordering: 5
+  asset_type: price_area
