@@ -30,6 +30,7 @@ repos:
         exclude: "mkdocs.yml|^test_apply/demo_.*.yml"
       - id: debug-statements
       - id: end-of-file-fixer
+        exclude: "^toolkit/modules/resync/.+yaml$"
       - id: name-tests-test
         args:
           - --pytest-test-first
@@ -51,5 +52,11 @@ repos:
         # module as we refactor it.
         entry: dmypy run -- cognite/powerops/resync cognite/powerops/utils
         files: ^.*.(py|pyi)$
+        language: system
+        pass_filenames: false
+      - id: "resync"
+        name: "resync"
+        entry: "powerops pre-build power_ops_config.yaml resync/configuration.yaml --silent"
+        files: "resync/"
         language: system
         pass_filenames: false

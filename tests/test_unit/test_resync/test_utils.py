@@ -100,11 +100,9 @@ def test_ext_id_factory_for_special_types():
     with mock.patch("random.random", random_mock):
         assert (
             ext_id_factory(GeneratorEfficiencyCurveWrite, {"name": "Test Name"})
-            == "generator_efficiency_curve_foo_12345"
+            == "generator_efficiency_curve:77af638c"
         )
-        assert (
-            ext_id_factory(TurbineEfficiencyCurveWrite, {"name": "Test Name"}) == "turbine_efficiency_curve_foo_12345"
-        )
+        assert ext_id_factory(TurbineEfficiencyCurveWrite, {"name": "Test Name"}) == "turbine_efficiency_curve:77af638c"
 
 
 def test_ext_id_factory():

@@ -260,7 +260,7 @@
 - name: "Fornebu base 15 min test"
   model: "[name]Fornebu"
   commands: "[name]default"
-  time_resolution: "[external_id]15min_1h_4h:0_24_72"
+  time_resolution: "[name|type:ShopTimeResolution]15 min test"
   source: resync
   attribute_mappings_override: []
   output_definition:

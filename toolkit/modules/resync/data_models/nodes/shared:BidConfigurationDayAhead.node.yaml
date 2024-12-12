@@ -1,0 +1,308 @@
+- externalId: bid_configuration_day_ahead_15_min_test_combination
+  sources:
+  - properties:
+      bidDateSpecification:
+        externalId: date_specification_default_biddate
+        space: '{{power_ops_instance_space}}'
+      marketConfiguration:
+        externalId: market_configuration_nord_pool_day_ahead_15_min
+        space: '{{power_ops_instance_space}}'
+      name: 15 min Test Combination
+      priceArea:
+        externalId: price_area_information_no2
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: BidConfigurationDayAhead
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: BidConfigurationDayAhead
+    space: '{{power_ops_type_space}}'
+- externalId: bid_configuration_day_ahead_15_min_test_multi_scenario_3
+  sources:
+  - properties:
+      bidDateSpecification:
+        externalId: date_specification_default_biddate
+        space: '{{power_ops_instance_space}}'
+      marketConfiguration:
+        externalId: market_configuration_nord_pool_day_ahead_15_min
+        space: '{{power_ops_instance_space}}'
+      name: 15 min Test Multi Scenario 3
+      priceArea:
+        externalId: price_area_information_no2
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: BidConfigurationDayAhead
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: BidConfigurationDayAhead
+    space: '{{power_ops_type_space}}'
+- externalId: bid_configuration_day_ahead_15_min_test_water_value
+  sources:
+  - properties:
+      bidDateSpecification:
+        externalId: date_specification_default_biddate
+        space: '{{power_ops_instance_space}}'
+      marketConfiguration:
+        externalId: market_configuration_nord_pool_day_ahead_15_min
+        space: '{{power_ops_instance_space}}'
+      name: 15 min Test Water Value
+      priceArea:
+        externalId: price_area_information_no2
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: BidConfigurationDayAhead
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: BidConfigurationDayAhead
+    space: '{{power_ops_type_space}}'
+- externalId: bid_configuration_day_ahead_multi_scenario_20_no2
+  sources:
+  - properties:
+      bidDateSpecification:
+        externalId: date_specification_default_biddate
+        space: '{{power_ops_instance_space}}'
+      marketConfiguration:
+        externalId: market_configuration_nord_pool_day_ahead
+        space: '{{power_ops_instance_space}}'
+      name: Multi scenario 20 NO2
+      priceArea:
+        externalId: price_area_information_no2
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: BidConfigurationDayAhead
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: BidConfigurationDayAhead
+    space: '{{power_ops_type_space}}'
+- externalId: bid_configuration_day_ahead_multi_scenario_2_no2
+  sources:
+  - properties:
+      bidDateSpecification:
+        externalId: date_specification_default_biddate
+        space: '{{power_ops_instance_space}}'
+      marketConfiguration:
+        externalId: market_configuration_nord_pool_day_ahead
+        space: '{{power_ops_instance_space}}'
+      name: Multi Scenario 2 NO2
+      priceArea:
+        externalId: price_area_information_no2
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: BidConfigurationDayAhead
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: BidConfigurationDayAhead
+    space: '{{power_ops_type_space}}'
+- externalId: bid_configuration_day_ahead_multi_scenario_3_no2
+  sources:
+  - properties:
+      bidDateSpecification:
+        externalId: date_specification_default_biddate
+        space: '{{power_ops_instance_space}}'
+      marketConfiguration:
+        externalId: market_configuration_nord_pool_day_ahead
+        space: '{{power_ops_instance_space}}'
+      name: Multi Scenario 3 NO2
+      priceArea:
+        externalId: price_area_information_no2
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: BidConfigurationDayAhead
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: BidConfigurationDayAhead
+    space: '{{power_ops_type_space}}'
+- externalId: bid_configuration_day_ahead_multi_scenario_3_sola
+  sources:
+  - properties:
+      bidDateSpecification:
+        externalId: date_specification_default_biddate
+        space: '{{power_ops_instance_space}}'
+      marketConfiguration:
+        externalId: market_configuration_nord_pool_day_ahead
+        space: '{{power_ops_instance_space}}'
+      name: Multi Scenario 3 Sola
+      priceArea:
+        externalId: price_area_information_no2
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: BidConfigurationDayAhead
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: BidConfigurationDayAhead
+    space: '{{power_ops_type_space}}'
+- externalId: bid_configuration_day_ahead_no2_combination
+  sources:
+  - properties:
+      bidDateSpecification:
+        externalId: date_specification_default_biddate
+        space: '{{power_ops_instance_space}}'
+      marketConfiguration:
+        externalId: market_configuration_nord_pool_day_ahead
+        space: '{{power_ops_instance_space}}'
+      name: NO2 Combination
+      priceArea:
+        externalId: price_area_information_no2
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: BidConfigurationDayAhead
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: BidConfigurationDayAhead
+    space: '{{power_ops_type_space}}'
+- externalId: bid_configuration_day_ahead_price_independent_no2
+  sources:
+  - properties:
+      bidDateSpecification:
+        externalId: date_specification_default_biddate
+        space: '{{power_ops_instance_space}}'
+      marketConfiguration:
+        externalId: market_configuration_nord_pool_day_ahead
+        space: '{{power_ops_instance_space}}'
+      name: Price Independent NO2
+      priceArea:
+        externalId: price_area_information_no2
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: BidConfigurationDayAhead
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: BidConfigurationDayAhead
+    space: '{{power_ops_type_space}}'
+- externalId: bid_configuration_day_ahead_water_value_no2_full
+  sources:
+  - properties:
+      bidDateSpecification:
+        externalId: date_specification_default_biddate
+        space: '{{power_ops_instance_space}}'
+      marketConfiguration:
+        externalId: market_configuration_nord_pool_day_ahead
+        space: '{{power_ops_instance_space}}'
+      name: Water Value NO2 Full
+      priceArea:
+        externalId: price_area_information_no2
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: BidConfigurationDayAhead
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: BidConfigurationDayAhead
+    space: '{{power_ops_type_space}}'
+- externalId: bid_configuration_day_ahead_water_value_no2_lund
+  sources:
+  - properties:
+      bidDateSpecification:
+        externalId: date_specification_default_biddate
+        space: '{{power_ops_instance_space}}'
+      marketConfiguration:
+        externalId: market_configuration_nord_pool_day_ahead
+        space: '{{power_ops_instance_space}}'
+      name: Water Value NO2 Lund
+      priceArea:
+        externalId: price_area_information_no2
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: BidConfigurationDayAhead
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: BidConfigurationDayAhead
+    space: '{{power_ops_type_space}}'
+- externalId: bid_configuration_day_ahead_water_value_no2_lund_step
+  sources:
+  - properties:
+      bidDateSpecification:
+        externalId: date_specification_default_biddate
+        space: '{{power_ops_instance_space}}'
+      marketConfiguration:
+        externalId: market_configuration_nord_pool_day_ahead
+        space: '{{power_ops_instance_space}}'
+      name: Water Value NO2 Lund Step
+      priceArea:
+        externalId: price_area_information_no2
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: BidConfigurationDayAhead
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: BidConfigurationDayAhead
+    space: '{{power_ops_type_space}}'
+- externalId: bid_configuration_day_ahead_water_value_no2_sola
+  sources:
+  - properties:
+      bidDateSpecification:
+        externalId: date_specification_default_biddate
+        space: '{{power_ops_instance_space}}'
+      marketConfiguration:
+        externalId: market_configuration_nord_pool_day_ahead
+        space: '{{power_ops_instance_space}}'
+      name: Water Value NO2 Sola
+      priceArea:
+        externalId: price_area_information_no2
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: BidConfigurationDayAhead
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: BidConfigurationDayAhead
+    space: '{{power_ops_type_space}}'
+- externalId: bid_configuration_day_ahead_water_value_no2_sola_step
+  sources:
+  - properties:
+      bidDateSpecification:
+        externalId: date_specification_default_biddate
+        space: '{{power_ops_instance_space}}'
+      marketConfiguration:
+        externalId: market_configuration_nord_pool_day_ahead
+        space: '{{power_ops_instance_space}}'
+      name: Water Value NO2 Sola Step
+      priceArea:
+        externalId: price_area_information_no2
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: BidConfigurationDayAhead
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: BidConfigurationDayAhead
+    space: '{{power_ops_type_space}}'

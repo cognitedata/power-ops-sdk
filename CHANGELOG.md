@@ -15,6 +15,12 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.107.0] - 2024-12-11
+### Added
+* Resync pre_build to create toolkit files from resync configurations
+### Deprecated
+* Resync `plan` and `apply`
+
 ## [0.106.0] - 2024-12-09
 ### Added
 * `name` property for ShopTimeResolution

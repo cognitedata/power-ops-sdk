@@ -1,0 +1,24 @@
+- endNode:
+    externalId: turbine_efficiency_curve:eb016103
+    space: '{{power_ops_instance_space}}'
+  externalId: generator_sola_g1:turbine_efficiency_curve:eb016103
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: generator_sola_g1
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: isSubAssetOf
+    space: power_ops_types
+- endNode:
+    externalId: turbine_efficiency_curve:57dd9982
+    space: '{{power_ops_instance_space}}'
+  externalId: generator_sola_g2:turbine_efficiency_curve:57dd9982
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: generator_sola_g2
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: isSubAssetOf
+    space: power_ops_types

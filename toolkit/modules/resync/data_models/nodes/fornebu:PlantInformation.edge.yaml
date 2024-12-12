@@ -1,0 +1,144 @@
+- endNode:
+    externalId: generator_dalby_g1
+    space: '{{power_ops_instance_space}}'
+  externalId: plant_information_dalby:generator_dalby_g1
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: plant_information_dalby
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: isSubAssetOf
+    space: power_ops_types
+- endNode:
+    externalId: generator_dalby_g2
+    space: '{{power_ops_instance_space}}'
+  externalId: plant_information_dalby:generator_dalby_g2
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: plant_information_dalby
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: isSubAssetOf
+    space: power_ops_types
+- endNode:
+    externalId: generator_holen_g1
+    space: '{{power_ops_instance_space}}'
+  externalId: plant_information_holen:generator_holen_g1
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: plant_information_holen
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: isSubAssetOf
+    space: power_ops_types
+- endNode:
+    externalId: generator_landet_g1
+    space: '{{power_ops_instance_space}}'
+  externalId: plant_information_landet:generator_landet_g1
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: plant_information_landet
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: isSubAssetOf
+    space: power_ops_types
+- endNode:
+    externalId: generator_lien_krv_g1
+    space: '{{power_ops_instance_space}}'
+  externalId: plant_information_lien_krv:generator_lien_krv_g1
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: plant_information_lien_krv
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: isSubAssetOf
+    space: power_ops_types
+- endNode:
+    externalId: generator_lund_g1
+    space: '{{power_ops_instance_space}}'
+  externalId: plant_information_lund:generator_lund_g1
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: plant_information_lund
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: isSubAssetOf
+    space: power_ops_types
+- endNode:
+    externalId: generator_rull1_g1
+    space: '{{power_ops_instance_space}}'
+  externalId: plant_information_rull1:generator_rull1_g1
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: plant_information_rull1
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: isSubAssetOf
+    space: power_ops_types
+- endNode:
+    externalId: generator_rull1_g2
+    space: '{{power_ops_instance_space}}'
+  externalId: plant_information_rull1:generator_rull1_g2
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: plant_information_rull1
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: isSubAssetOf
+    space: power_ops_types
+- endNode:
+    externalId: generator_rull2_g1
+    space: '{{power_ops_instance_space}}'
+  externalId: plant_information_rull2:generator_rull2_g1
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: plant_information_rull2
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: isSubAssetOf
+    space: power_ops_types
+- endNode:
+    externalId: generator_rull2_g2
+    space: '{{power_ops_instance_space}}'
+  externalId: plant_information_rull2:generator_rull2_g2
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: plant_information_rull2
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: isSubAssetOf
+    space: power_ops_types
+- endNode:
+    externalId: generator_scott_g1
+    space: '{{power_ops_instance_space}}'
+  externalId: plant_information_scott:generator_scott_g1
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: plant_information_scott
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: isSubAssetOf
+    space: power_ops_types
+- endNode:
+    externalId: generator_strand_krv_g1
+    space: '{{power_ops_instance_space}}'
+  externalId: plant_information_strand_krv:generator_strand_krv_g1
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: plant_information_strand_krv
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: isSubAssetOf
+    space: power_ops_types
