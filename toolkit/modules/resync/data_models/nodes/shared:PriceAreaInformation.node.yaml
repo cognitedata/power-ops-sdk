@@ -46,6 +46,8 @@
       ordering: 2
       ownCapacityAllocationDown: ext_id_ts
       ownCapacityAllocationUp: ext_id_ts
+      priceScenarios:
+      - ext_id_ts
       relativeActivation: ext_id_ts
       totalCapacityAllocationDown: ext_id_ts
       totalCapacityAllocationUp: ext_id_ts
