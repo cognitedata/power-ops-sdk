@@ -1,0 +1,6 @@
+# BencmarkingProductionObligation view definition
+# - name: String
+# - time_series: TimeSeries
+- external_id: benchmarking_production_obligation:0
+  name: No production
+  time_series: dummy_time_series_with_zeros
