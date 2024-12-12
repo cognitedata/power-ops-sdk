@@ -65,7 +65,7 @@
   - properties:
       assetType: price_area
       defaultBidConfiguration:
-        externalId: null
+        externalId: bid_configuration_day_ahead_multi_scenario_no3
         space: '{{power_ops_instance_space}}'
       displayName: Midt-Norge (NO3)
       name: NO3
@@ -84,7 +84,7 @@
   - properties:
       assetType: price_area
       defaultBidConfiguration:
-        externalId: null
+        externalId: bid_configuration_day_ahead_multi_scenario_no4
         space: '{{power_ops_instance_space}}'
       displayName: Nord-Norge (NO4)
       name: NO4
@@ -103,7 +103,7 @@
   - properties:
       assetType: price_area
       defaultBidConfiguration:
-        externalId: null
+        externalId: bid_configuration_day_ahead_multi_scenario_no5
         space: '{{power_ops_instance_space}}'
       displayName: Vestlandet (NO5)
       name: NO5
