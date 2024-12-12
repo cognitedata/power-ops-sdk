@@ -33,7 +33,7 @@
       name: Stavanger base 15 min test
       source: resync
       timeResolution:
-        externalId: 15min_1h_4h:0_24_72
+        externalId: shop_time_resolution_15_min_test
         space: '{{power_ops_instance_space}}'
     source:
       externalId: ShopScenario
