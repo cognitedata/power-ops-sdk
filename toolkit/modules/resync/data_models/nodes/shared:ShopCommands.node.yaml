@@ -1,0 +1,48 @@
+- externalId: shop_commands_alternative_x
+  sources:
+  - properties:
+      commands:
+      - penalty flag /on /plant /schedule
+      - start sim 3
+      - set code /inc
+      - start sim 4
+      name: alternative X
+    source:
+      externalId: ShopCommands
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopCommands
+    space: '{{power_ops_type_space}}'
+- externalId: shop_commands_default
+  sources:
+  - properties:
+      commands:
+      - set time_delay_unit MINUTE
+      - set ramping /on
+      - set stop_cost_from_start_cost /on
+      - set bypass_loss /on
+      - set mipgap 0.001000
+      - set timelimit 600.000
+      - set reserve_ramping_cost 1
+      - set fcr_n_equality_flag /on
+      - set reserve_slack_cost 1
+      - set reserve_min_capacity 0.02
+      - set dyn_seg /on
+      - set dyn_juncloss /on
+      - penalty flag /on /plant /schedule
+      - start sim 3
+      - set code /inc
+      - start sim 4
+      name: default
+    source:
+      externalId: ShopCommands
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopCommands
+    space: '{{power_ops_type_space}}'

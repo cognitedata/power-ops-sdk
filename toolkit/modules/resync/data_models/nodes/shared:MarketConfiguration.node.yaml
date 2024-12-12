@@ -1,0 +1,42 @@
+- externalId: market_configuration_nord_pool_day_ahead
+  sources:
+  - properties:
+      maxPrice: 4000
+      minPrice: -500
+      name: Nord Pool Day-Ahead
+      priceSteps: 200
+      priceUnit: EUR/MWh
+      tickSize: 0.1
+      timeUnit: 1h
+      timezone: Europe/Oslo
+      tradeLot: 0.1
+    source:
+      externalId: MarketConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: MarketConfiguration
+    space: '{{power_ops_type_space}}'
+- externalId: market_configuration_nord_pool_day_ahead_15_min
+  sources:
+  - properties:
+      maxPrice: 4000
+      minPrice: -500
+      name: Nord Pool Day-Ahead 15 min
+      priceSteps: 200
+      priceUnit: EUR/MWh
+      tickSize: 0.1
+      timeUnit: 15m
+      timezone: Europe/Oslo
+      tradeLot: 0.1
+    source:
+      externalId: MarketConfiguration
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: MarketConfiguration
+    space: '{{power_ops_type_space}}'

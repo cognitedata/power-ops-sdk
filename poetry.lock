@@ -499,13 +499,13 @@ format = ["black (>=24.4.2)"]
 
 [[package]]
 name = "cognite-sdk"
-version = "7.70.2"
+version = "7.70.4"
 description = "Cognite Python SDK"
 optional = false
 python-versions = "<4.0,>=3.10"
 files = [
-    {file = "cognite_sdk-7.70.2-py3-none-any.whl", hash = "sha256:9d20f5320a93beac4ad684f710b2eddb0980b54ccf5d6c4fe55af3654fefb93b"},
-    {file = "cognite_sdk-7.70.2.tar.gz", hash = "sha256:882c28aba8cdf7c529852a9ac0a885eef7db6e2021667d5a93cfa4f0aa293636"},
+    {file = "cognite_sdk-7.70.4-py3-none-any.whl", hash = "sha256:f413b3008ba71e83e7aacd6836427f14317946bef2ca9c8748a8bfae841fda77"},
+    {file = "cognite_sdk-7.70.4.tar.gz", hash = "sha256:811d1663cad138aa9d47a8639b2594b9cbf3558039051562981f999809c7db4c"},
 ]
 
 [package.dependencies]
@@ -1490,18 +1490,18 @@ test = ["jupyter-server (>=2.0.0)", "pytest (>=7.0)", "pytest-jupyter[server] (>
 
 [[package]]
 name = "jupyterlab"
-version = "4.3.2"
+version = "4.3.3"
 description = "JupyterLab computational environment"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "jupyterlab-4.3.2-py3-none-any.whl", hash = "sha256:e87100cbab8b886ff7a4f325c856100ba6fdfe916162a85409daf0e707e19d1d"},
-    {file = "jupyterlab-4.3.2.tar.gz", hash = "sha256:3c0a6882dbddcc0a7bfdd5e2236f351b2b263e48780236e6996c2aca13ac5b22"},
+    {file = "jupyterlab-4.3.3-py3-none-any.whl", hash = "sha256:32a8fd30677e734ffcc3916a4758b9dab21b02015b668c60eb36f84357b7d4b1"},
+    {file = "jupyterlab-4.3.3.tar.gz", hash = "sha256:76fa39e548fdac94dc1204af5956c556f54c785f70ee26aa47ea08eda4d5bbcd"},
 ]
 
 [package.dependencies]
 async-lru = ">=1.0.0"
-httpx = ">=0.28.0,<0.29.0"
+httpx = ">=0.25.0"
 ipykernel = ">=6.5.0"
 jinja2 = ">=3.0.3"
 jupyter-core = "*"
@@ -3906,4 +3906,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "501f26bf9c5fcb44d91e871622f510c9768e13ef8798925ef8d178a578a2735e"
+content-hash = "87a243abe70c28b2b952073973cfc98559d1e158892a2ec20c5c218ff332fb12"

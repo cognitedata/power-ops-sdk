@@ -5,7 +5,6 @@ from pathlib import Path
 from typing import Annotated
 
 import typer
-from rich.logging import Console, RichHandler
 
 from cognite import powerops
 
@@ -15,11 +14,9 @@ for third_party in ["cognite-sdk", "requests", "urllib3", "msal", "requests_oaut
     third_party_logger.propagate = False
 
 FORMAT = "%(message)s"
-logging.basicConfig(
-    level=logging.INFO, format=FORMAT, datefmt="[%X]", handlers=[RichHandler(console=Console(stderr=True))]
-)
+logging.basicConfig(level=logging.INFO, format=FORMAT, datefmt="[%X]")
 
-log = logging.getLogger("rich")
+logger = logging.getLogger(__name__)
 
 app = typer.Typer(pretty_exceptions_short=False, pretty_exceptions_show_locals=False, pretty_exceptions_enable=False)
 
@@ -34,22 +31,16 @@ def _version_callback(value: bool):
 def common(ctx: typer.Context, version: bool = typer.Option(None, "--version", callback=_version_callback)): ...
 
 
-@app.command("plan_v1", help="Plan the changes from the configuration files to the data model in CDF")
-def plan_v1(
+@app.command("pre-build", help="Create toolkit configuration files from a resync configuration file")
+def pre_build(
     path: Annotated[Path, typer.Argument(help="Path to configuration files")],
     configuration: Annotated[Path, typer.Argument(help="Path to resync configuration file")],
+    silent_mode: bool = typer.Option(False, "--silent", help="Silent mode for running in pre-commit hook"),
 ):
-    logging.info(f"Running plan on configuration files located in {path}")
-    powerops.resync.plan(path, configuration)
-
-
-@app.command("apply_v1", help="Apply the changes from the configuration files to the data model in CDF")
-def apply_v1(
-    path: Annotated[Path, typer.Argument(help="Path to configuration files")],
-    configuration: Annotated[Path, typer.Argument(help="Path to resync configuration file")],
-):
-    logging.info(f"Running apply on configuration files located in {path}")
-    powerops.resync.apply(path, configuration)
+    if silent_mode:  # Turn off logging if silent mode is enabled
+        logger.setLevel(logging.CRITICAL)
+    logger.info(f"Running pre_build on configuration files located in {path}")
+    powerops.resync.pre_build(path, configuration)
 
 
 def main():

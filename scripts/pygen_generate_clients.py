@@ -4,8 +4,6 @@ This script is used to generate the Power Ops client. It is not used in the norm
 
 from pathlib import Path
 from cognite.pygen import generate_sdk
-from rich import print
-from rich.panel import Panel
 
 from cognite.powerops import PowerOpsClient
 from cognite.client import data_modeling as dm
@@ -34,13 +32,7 @@ def main():
         "compute_BenchmarkingDayAhead",
     ]
 
-    print(
-        Panel(
-            f"Generating DM v1 Client for all {len(v1_models)} models",
-            title="Generating DM v1 client",
-            style="bold blue",
-        )
-    )
+    print(f"Generating DM v1 Client for all {len(v1_models)} models")
     generate_sdk(
         [dm.DataModelId(space, external_id, version) for external_id in v1_models],
         client,
@@ -52,7 +44,7 @@ def main():
         overwrite=True,
         format_code=True,
     )
-    print(Panel("Done generating v1 client", title="Done", style="bold green"))
+    print("Done generating v1 client")
 
 
 if __name__ == "__main__":

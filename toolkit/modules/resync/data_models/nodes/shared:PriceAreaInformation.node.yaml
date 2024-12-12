@@ -1,0 +1,119 @@
+- externalId: price_area_information_no1
+  sources:
+  - properties:
+      activationPriceDown: ext_id_ts
+      activationPriceUp: ext_id_ts
+      assetType: price_area
+      capacityPriceDown: ext_id_ts
+      capacityPriceUp: ext_id_ts
+      defaultBidConfiguration:
+        externalId: bid_configuration_day_ahead_multi_scenario_no1
+        space: '{{power_ops_instance_space}}'
+      displayName: "\xD8stlandet (NO1)"
+      mainPriceScenario: ext_id_ts
+      name: NO1
+      ordering: 1
+      ownCapacityAllocationDown: ext_id_ts
+      ownCapacityAllocationUp: ext_id_ts
+      priceScenarios:
+      - ext_id_ts
+      relativeActivation: ext_id_ts
+      totalCapacityAllocationDown: ext_id_ts
+      totalCapacityAllocationUp: ext_id_ts
+    source:
+      externalId: PriceAreaInformation
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: PriceAreaInformation
+    space: '{{power_ops_type_space}}'
+- externalId: price_area_information_no2
+  sources:
+  - properties:
+      activationPriceDown: ext_id_ts
+      activationPriceUp: ext_id_ts
+      assetType: price_area
+      capacityPriceDown: ext_id_ts
+      capacityPriceUp: ext_id_ts
+      defaultBidConfiguration:
+        externalId: bid_configuration_day_ahead_multi_scenario_2_no2
+        space: '{{power_ops_instance_space}}'
+      displayName: "S\xF8rlandet (NO2)"
+      mainPriceScenario: '6694'
+      name: NO2
+      ordering: 2
+      ownCapacityAllocationDown: ext_id_ts
+      ownCapacityAllocationUp: ext_id_ts
+      priceScenarios:
+      - ext_id_ts
+      relativeActivation: ext_id_ts
+      totalCapacityAllocationDown: ext_id_ts
+      totalCapacityAllocationUp: ext_id_ts
+    source:
+      externalId: PriceAreaInformation
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: PriceAreaInformation
+    space: '{{power_ops_type_space}}'
+- externalId: price_area_information_no3
+  sources:
+  - properties:
+      assetType: price_area
+      defaultBidConfiguration:
+        externalId: bid_configuration_day_ahead_multi_scenario_no3
+        space: '{{power_ops_instance_space}}'
+      displayName: Midt-Norge (NO3)
+      name: NO3
+      ordering: 3
+    source:
+      externalId: PriceAreaInformation
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: PriceAreaInformation
+    space: '{{power_ops_type_space}}'
+- externalId: price_area_information_no4
+  sources:
+  - properties:
+      assetType: price_area
+      defaultBidConfiguration:
+        externalId: bid_configuration_day_ahead_multi_scenario_no4
+        space: '{{power_ops_instance_space}}'
+      displayName: Nord-Norge (NO4)
+      name: NO4
+      ordering: 4
+    source:
+      externalId: PriceAreaInformation
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: PriceAreaInformation
+    space: '{{power_ops_type_space}}'
+- externalId: price_area_information_no5
+  sources:
+  - properties:
+      assetType: price_area
+      defaultBidConfiguration:
+        externalId: bid_configuration_day_ahead_multi_scenario_no5
+        space: '{{power_ops_instance_space}}'
+      displayName: Vestlandet (NO5)
+      name: NO5
+      ordering: 5
+    source:
+      externalId: PriceAreaInformation
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: PriceAreaInformation
+    space: '{{power_ops_type_space}}'
