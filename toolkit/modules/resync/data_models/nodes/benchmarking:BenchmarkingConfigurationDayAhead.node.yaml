@@ -1,0 +1,22 @@
+- externalId: benchmarking_configuration_day_ahead_day_ahead_benchmarking_configuration_no2
+  sources:
+  - properties:
+      name: Day Ahead Benchmarking Configuration NO2
+      priceArea:
+        externalId: price_area_information_no2
+        space: '{{power_ops_instance_space}}'
+      shopEndSpecification:
+        externalId: date_specification_default_end
+        space: '{{power_ops_instance_space}}'
+      shopStartSpecification:
+        externalId: date_specification_default_start
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: BenchmarkingConfigurationDayAhead
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: BenchmarkingConfigurationDayAhead
+    space: '{{power_ops_type_space}}'
