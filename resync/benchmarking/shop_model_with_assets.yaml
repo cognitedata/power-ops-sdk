@@ -1,0 +1,27 @@
+# BidConfigurationDayAhead view definition
+# - shop_model: ShopModel
+# - shop_commands: ShopCommands
+# - power_assets: [PowerAsset]
+# - production_obligations: [BenchmarkingProductionObligationDayAhead]
+
+- external_id: shop_model_with_assets:fornebu
+  shop_model: "[name]Fornebu"
+  shop_commands: "[external_id]shop_commands_default"
+  power_assets:
+    - "[external_id]plant_information_lien_krv"
+    - "[external_id]plant_information_scott"
+    - "[external_id]plant_information_rull1"
+    - "[external_id]plant_information_holen"
+    - "[external_id]plant_information_dalby"
+    - "[external_id]plant_information_strand_krv"
+    - "[external_id]plant_information_landet"
+    - "[external_id]plant_information_lund"
+    - "[external_id]plant_information_rull2"
+  production_obligations: []
+- external_id: shop_model_with_assets:stavanger
+  shop_model: "[name]Stavanger"
+  shop_commands: "[external_id]shop_commands_default"
+  power_assets:
+    - "[external_id]plant_information_sola"
+  production_obligations:
+    - "[external_id]benchmarking_production_obligation:0"

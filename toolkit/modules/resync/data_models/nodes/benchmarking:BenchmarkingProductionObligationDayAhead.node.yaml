@@ -1,0 +1,14 @@
+- externalId: benchmarking_production_obligation:0
+  sources:
+  - properties:
+      name: No production
+      timeSeries: dummy_time_series_with_zeros
+    source:
+      externalId: BenchmarkingProductionObligationDayAhead
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: BenchmarkingProductionObligationDayAhead
+    space: '{{power_ops_type_space}}'

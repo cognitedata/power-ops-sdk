@@ -12,6 +12,6 @@
   model_version: "1"
   shop_version: "16.0.2"
   penalty_limit: 100.0
-  model: "[external_id]SHOP_Stavanger_model"
+  model: "[external_id]SHOP_model_stavanger"
   base_attribute_mappings:
     - "[external_id]base_mapping_stavanger_reservoir_dale_inflow"

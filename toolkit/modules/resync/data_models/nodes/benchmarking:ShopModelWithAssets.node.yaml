@@ -1,0 +1,36 @@
+- externalId: shop_model_with_assets:fornebu
+  sources:
+  - properties:
+      shopCommands:
+        externalId: shop_commands_default
+        space: '{{power_ops_instance_space}}'
+      shopModel:
+        externalId: shop_model_fornebu
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopModelWithAssets
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModelWithAssets
+    space: '{{power_ops_type_space}}'
+- externalId: shop_model_with_assets:stavanger
+  sources:
+  - properties:
+      shopCommands:
+        externalId: shop_commands_default
+        space: '{{power_ops_instance_space}}'
+      shopModel:
+        externalId: shop_model_stavanger
+        space: '{{power_ops_instance_space}}'
+    source:
+      externalId: ShopModelWithAssets
+      space: '{{power_ops_models_space}}'
+      type: view
+      version: '{{power_ops_data_model_version}}'
+  space: '{{power_ops_instance_space}}'
+  type:
+    externalId: ShopModelWithAssets
+    space: '{{power_ops_type_space}}'
