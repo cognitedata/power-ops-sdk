@@ -33,7 +33,7 @@ def common(ctx: typer.Context, version: bool = typer.Option(None, "--version", c
 
 @app.command("pre-build", help="Create toolkit configuration files from a resync configuration file")
 def pre_build(
-    path: Annotated[Path, typer.Argument(help="Path to configuration files")],
+    path: Annotated[Path, typer.Argument(help="Path to CDF configuration file")],
     configuration: Annotated[Path, typer.Argument(help="Path to resync configuration file")],
     silent_mode: bool = typer.Option(False, "--silent", help="Silent mode for running in pre-commit hook"),
 ):
@@ -41,6 +41,19 @@ def pre_build(
         logger.setLevel(logging.CRITICAL)
     logger.info(f"Running pre_build on configuration files located in {path}")
     powerops.resync.pre_build(path, configuration)
+
+
+@app.command("purge", help="Deletes any data in CDF that is not included in the resync pre-build output")
+def purge(
+    path: Annotated[Path, typer.Argument(help="Path to CDF configuration file")],
+    configuration: Annotated[Path, typer.Argument(help="Path to resync configuration file")],
+    silent_mode: bool = typer.Option(False, "--silent", help="Silent mode for running in pre-commit hook"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Dry run mode for running in pre-commit hook"),
+):
+    if silent_mode:  # Turn off logging if silent mode is enabled
+        logger.setLevel(logging.CRITICAL)
+    logger.info("Running purge")
+    powerops.resync.purge(path, configuration, dry_run)
 
 
 def main():
