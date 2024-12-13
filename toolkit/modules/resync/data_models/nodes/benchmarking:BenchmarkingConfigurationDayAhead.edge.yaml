@@ -1,0 +1,84 @@
+- endNode:
+    externalId: bid_configuration_day_ahead_multi_scenario_2_no2
+    space: '{{power_ops_instance_space}}'
+  externalId: benchmarking_configuration_day_ahead_day_ahead_benchmarking_configuration_no2:bid_configuration_day_ahead_multi_scenario_2_no2
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: benchmarking_configuration_day_ahead_day_ahead_benchmarking_configuration_no2
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: benchmarkingBidConfigurations
+    space: power_ops_types
+- endNode:
+    externalId: bid_configuration_day_ahead_multi_scenario_3_no2
+    space: '{{power_ops_instance_space}}'
+  externalId: benchmarking_configuration_day_ahead_day_ahead_benchmarking_configuration_no2:bid_configuration_day_ahead_multi_scenario_3_no2
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: benchmarking_configuration_day_ahead_day_ahead_benchmarking_configuration_no2
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: benchmarkingBidConfigurations
+    space: power_ops_types
+- endNode:
+    externalId: bid_configuration_day_ahead_no2_combination
+    space: '{{power_ops_instance_space}}'
+  externalId: benchmarking_configuration_day_ahead_day_ahead_benchmarking_configuration_no2:bid_configuration_day_ahead_no2_combination
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: benchmarking_configuration_day_ahead_day_ahead_benchmarking_configuration_no2
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: benchmarkingBidConfigurations
+    space: power_ops_types
+- endNode:
+    externalId: bid_configuration_day_ahead_price_independent_no2
+    space: '{{power_ops_instance_space}}'
+  externalId: benchmarking_configuration_day_ahead_day_ahead_benchmarking_configuration_no2:bid_configuration_day_ahead_price_independent_no2
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: benchmarking_configuration_day_ahead_day_ahead_benchmarking_configuration_no2
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: benchmarkingBidConfigurations
+    space: power_ops_types
+- endNode:
+    externalId: bid_configuration_day_ahead_water_value_no2_full
+    space: '{{power_ops_instance_space}}'
+  externalId: benchmarking_configuration_day_ahead_day_ahead_benchmarking_configuration_no2:bid_configuration_day_ahead_water_value_no2_full
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: benchmarking_configuration_day_ahead_day_ahead_benchmarking_configuration_no2
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: benchmarkingBidConfigurations
+    space: power_ops_types
+- endNode:
+    externalId: shop_model_with_assets:fornebu
+    space: '{{power_ops_instance_space}}'
+  externalId: benchmarking_configuration_day_ahead_day_ahead_benchmarking_configuration_no2:shop_model_with_assets:fornebu
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: benchmarking_configuration_day_ahead_day_ahead_benchmarking_configuration_no2
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: assetsPerShopModel
+    space: power_ops_types
+- endNode:
+    externalId: shop_model_with_assets:stavanger
+    space: '{{power_ops_instance_space}}'
+  externalId: benchmarking_configuration_day_ahead_day_ahead_benchmarking_configuration_no2:shop_model_with_assets:stavanger
+  instanceType: edge
+  space: '{{power_ops_instance_space}}'
+  startNode:
+    externalId: benchmarking_configuration_day_ahead_day_ahead_benchmarking_configuration_no2
+    space: '{{power_ops_instance_space}}'
+  type:
+    externalId: assetsPerShopModel
+    space: power_ops_types

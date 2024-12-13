@@ -1,7 +1,7 @@
 - externalId: shop_model_stavanger
   sources:
   - properties:
-      model: SHOP_Stavanger_model
+      model: SHOP_model_stavanger
       modelVersion: '1'
       name: Stavanger
       penaltyLimit: 100

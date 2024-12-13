@@ -1,3 +1,7 @@
+- externalId: BenchmarkingConfigurationDayAhead
+  space: '{{power_ops_type_space}}'
+- externalId: BenchmarkingProductionObligationDayAhead
+  space: '{{power_ops_type_space}}'
 - externalId: BidConfigurationDayAhead
   space: '{{power_ops_type_space}}'
 - externalId: DateSpecification
@@ -21,6 +25,8 @@
 - externalId: ShopFile
   space: '{{power_ops_type_space}}'
 - externalId: ShopModel
+  space: '{{power_ops_type_space}}'
+- externalId: ShopModelWithAssets
   space: '{{power_ops_type_space}}'
 - externalId: ShopOutputTimeSeriesDefinition
   space: '{{power_ops_type_space}}'
