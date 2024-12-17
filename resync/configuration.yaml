@@ -11,3 +11,9 @@ instance_space: "{{power_ops_instance_space}}"
 models_space: "{{power_ops_models_space}}"
 type_space: "{{power_ops_type_space}}"
 data_model_version: "{{power_ops_data_model_version}}"
+
+# Purge configuration
+toolkit_modules:
+  - "toolkit/modules/resync/data_models/nodes"
+# The name of the data external id used for reync purge, defaults to config_ResyncConfiguration
+data_model_name: "config_ResyncConfiguration"

@@ -5,6 +5,7 @@ from pathlib import Path
 
 from cognite.powerops.client import PowerOpsClient
 from cognite.powerops.resync.config_to_fdm import ResyncImporter
+from cognite.powerops.resync.purge import ResyncPurge
 from cognite.powerops.resync.utils import get_data_model_write_classes
 
 logger = logging.getLogger(__name__)
@@ -29,3 +30,12 @@ def pre_build(client_configuration: Path, configuration: Path) -> None:
     logger.info(resync_data_model_objects)
     logger.info(f"Generated {len(resync_data_model_objects)} node objects")
     logger.info(f"External IDs: {external_ids}")
+
+
+def purge(client_configuration: Path, configuration: Path, dry_run: bool = False) -> None:
+    """Foo"""
+
+    client = PowerOpsClient.from_config(client_configuration)
+
+    resync_purge = ResyncPurge.from_yaml(configuration, client.cdf, dry_run)
+    resync_purge.purge()
