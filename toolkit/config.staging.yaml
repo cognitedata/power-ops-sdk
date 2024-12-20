@@ -4,7 +4,7 @@ environment:
   # doesn't match the environment variables (valid options are dev, staging, prod)
   type: staging
   selected:
-    # - modules/power_model
+    - modules/power_model
     - modules/resync
     # - modules/power_ops_template
 
