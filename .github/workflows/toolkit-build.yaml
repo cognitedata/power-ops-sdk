@@ -116,7 +116,7 @@ jobs:
         run: |
           echo Running resync plan in CDF environment $PROJECT
           set -o pipefail
-          powerops purge $CLIENT_CONFIG_FILE $CONFIGURATION_FILE --dry-run | tee resync-logs/purge.log
+          powerops purge $CLIENT_CONFIG_FILE $CONFIGURATION_FILE --dry-run --logs resync-logs/purge.log
 
       - name: Store logs
         id: store-logs

@@ -9,7 +9,7 @@ from cognite.client.data_classes.filters import In
 
 from cognite.powerops.utils.serialization import load_yaml
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("resync")
 
 
 class ResyncPurge:
@@ -90,29 +90,30 @@ class ResyncPurge:
 
     def purge(self) -> None:
         """Purges resync data from CDF."""
-        logger.info("Purging resync data")
 
         node_ids, edge_ids = self.get_toolkit_external_ids()
         views_with_nodes_to_delete = self.get_nodes_to_delete(node_ids)
 
+        logger.info("NODES to be deleted:")
         all_nodes_to_delete: list[NodeId] = []
         for view, nodes in views_with_nodes_to_delete.items():
-            logger.info(f"Found {len(nodes)} nodes of type {view} to delete.")
+            logger.info(f"- {view}: {len(nodes)}")
             if self.verbose:
-                logger.info(f"External ids of node type {view}: {nodes}")
+                logger.info(f"   * External ids: {nodes}")
             all_nodes_to_delete.extend(nodes)
 
-        logger.info(f"Found {len(all_nodes_to_delete)} nodes in total to delete.")
-
+        logger.info("EDGES to be deleted:")
         all_edges_to_delete = []
         edges_to_delete = self.get_edges_to_delete(edge_ids)
         for edge_type, edges in edges_to_delete.items():
-            logger.info(f"Found {len(edges)} edges of type {edge_type} to delete.")
+            logger.info(f"- {edge_type}: {len(edges)}")
             if self.verbose:
-                logger.info(f"External ids of edge type {edge_type}: {edges}")
+                logger.info(f"   * External ids of edge type {edge_type}: {edges}")
             all_edges_to_delete.extend(edges)
 
-        logger.info(f"Found {len(all_edges_to_delete)} edges in total to delete.")
+        logger.info("Purge Summary:")
+        logger.info(f"- Found {len(all_nodes_to_delete)} nodes in total to delete.")
+        logger.info(f"- Found {len(all_edges_to_delete)} edges in total to delete.")
 
         if self.dry_run:
             logger.info("Dry run mode enabled. Exiting without deleting any data.")

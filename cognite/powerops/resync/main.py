@@ -8,7 +8,7 @@ from cognite.powerops.resync.config_to_fdm import ResyncImporter
 from cognite.powerops.resync.purge import ResyncPurge
 from cognite.powerops.resync.utils import get_data_model_write_classes
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("resync")
 
 
 def pre_build(client_configuration: Path, configuration: Path) -> None:
@@ -18,6 +18,7 @@ def pre_build(client_configuration: Path, configuration: Path) -> None:
     objects from the configuration. The plan is then printed to the console.
 
     Args:
+        client_configuration: Path to the CDF client configuration file.
         configuration: Path to the resync configuration file.
     """
     client = PowerOpsClient.from_config(client_configuration)
@@ -33,7 +34,14 @@ def pre_build(client_configuration: Path, configuration: Path) -> None:
 
 
 def purge(client_configuration: Path, configuration: Path, dry_run: bool = False, verbose: bool = False) -> None:
-    """Foo"""
+    """Checks which nodes & edges are not included in the toolkit files to be deleted.
+
+    Args:
+        client_configuration: Path to the CDF client configuration file.
+        configuration: Path to the resync configuration file.
+        dry_run: Whether or not to actually delete the nodes/edges.
+        verbose: Print out detailed information about nodes & edges to delete.
+    """
 
     client = PowerOpsClient.from_config(client_configuration)
 

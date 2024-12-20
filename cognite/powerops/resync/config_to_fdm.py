@@ -39,7 +39,7 @@ from cognite.powerops.resync.utils import (
 )
 from cognite.powerops.utils.serialization import load_yaml
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("resync")
 
 __all__ = ["ResyncImporter"]
 
