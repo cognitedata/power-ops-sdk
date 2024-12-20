@@ -49,11 +49,12 @@ def purge(
     configuration: Annotated[Path, typer.Argument(help="Path to resync configuration file")],
     silent_mode: bool = typer.Option(False, "--silent", help="Silent mode for running in pre-commit hook"),
     dry_run: bool = typer.Option(False, "--dry-run", help="Dry run mode for running in pre-commit hook"),
+    verbose: bool = typer.Option(False, "--verbose", help="Verbose mode for listing all nodes to be deleted"),
 ):
     if silent_mode:  # Turn off logging if silent mode is enabled
         logger.setLevel(logging.CRITICAL)
     logger.info("Running purge")
-    powerops.resync.purge(path, configuration, dry_run)
+    powerops.resync.purge(path, configuration, dry_run, verbose)
 
 
 def main():

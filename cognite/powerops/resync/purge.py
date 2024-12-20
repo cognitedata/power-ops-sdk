@@ -1,33 +1,48 @@
 from __future__ import annotations
 
 import logging
-from typing import Optional
 from pathlib import Path
+
 from cognite.client import CogniteClient
-from cognite.client.data_classes.data_modeling import ViewId
+from cognite.client.data_classes.data_modeling import Edge, Node, ViewId
+from cognite.client.data_classes.filters import In
+
 from cognite.powerops.utils.serialization import load_yaml
 
 logger = logging.getLogger(__name__)
 
+
 class ResyncPurge:
     """Class for purging resync data from CDF."""
+
     toolkit_modules: list[Path]
-    data_model_name: str = "config_ResyncConfiguration"
+    models_space: str
+    data_model_version: str
+    client: CogniteClient
+    exclude_edges: list[str]
+    exclude_nodes: list[str]
     dry_run: bool = False
-    client: CogniteClient = None
+    verbose: bool = False
 
     def __init__(
         self,
         toolkit_directory: list[Path],
         dry_run: bool,
+        verbose: bool,
         client: CogniteClient,
-        data_model_name: Optional[str] = None,
+        models_space: str,
+        data_model_version: str,
+        exclude_edges: list[str],
+        exclude_nodes: list[str],
     ):
         self.toolkit_directory = toolkit_directory
-        if data_model_name:
-            self.data_model_name = data_model_name
         self.dry_run = dry_run
         self.client = client
+        self.data_model_version = data_model_version
+        self.models_space = models_space
+        self.verbose = verbose
+        self.exclude_edges = exclude_edges
+        self.exclude_nodes = exclude_nodes
 
     @classmethod
     def from_yaml(
@@ -35,6 +50,7 @@ class ResyncPurge:
         configuration_path: Path,
         cdf_client: CogniteClient,
         dry_run: bool = False,
+        verbose: bool = False,
     ) -> ResyncPurge:
         """Creates a ResyncImporter object from a resync configuration file.
 
@@ -58,47 +74,137 @@ class ResyncPurge:
         else:
             raise ValueError("toolkit_directory is required in the configuration file")
 
-        data_model_name = configuration.get("data_model_name")
-
         return cls(
             toolkit_directory=toolkit_directory,
             dry_run=dry_run,
+            verbose=verbose,
             client=cdf_client,
-            data_model_name=data_model_name,
+            data_model_version=configuration["data_model_version"],
+            models_space=configuration["models_space"],
+            exclude_nodes=configuration.get("exclude_nodes", []),
+            exclude_edges=configuration.get("exclude_edges", []),
         )
 
     def purge(self) -> None:
         """Purges resync data from CDF."""
-        print("Purging resync data")
+        logger.info("Purging resync data")
 
-        view_ids = self.get_views_in_data_model()
+        node_ids, edge_ids = self.get_toolkit_external_ids()
+        views_with_nodes_to_delete = self.get_nodes_to_delete(node_ids)
 
-        for view_id in view_ids:
-            print(view_id)
+        all_nodes_to_delete = []
+        for view, nodes in views_with_nodes_to_delete.items():
+            logger.info(f"Found {len(nodes)} nodes of type {view} to delete.")
+            if self.verbose:
+                logger.info(f"External ids of node type {view}: {nodes}")
+            all_nodes_to_delete.extend(nodes)
 
-        node_ids = self.get_toolkit_node_external_ids()
+        logger.info(f"Found {len(all_nodes_to_delete)} nodes in total to delete.")
+
+        all_edges_to_delete = []
+        edges_to_delete = self.get_edges_to_delete(edge_ids)
+        for edge_type, edges in edges_to_delete.items():
+            logger.info(f"Found {len(edges)} edges of type {edge_type} to delete.")
+            if self.verbose:
+                logger.info(f"External ids of edge type {edge_type}: {edges}")
+            all_edges_to_delete.extend(edges)
+
+        logger.info(f"Found {len(all_edges_to_delete)} edges in total to delete.")
 
         if self.dry_run:
-            print("Dry run mode enabled. Exiting without deleting any data.")
+            logger.info("Dry run mode enabled. Exiting without deleting any data.")
             return
 
-        # Delete nodes
+        self.client.data_modeling.instances.delete(nodes=all_nodes_to_delete, edges=all_edges_to_delete)
+        logger.info(f"Deleted {len(all_nodes_to_delete)} nodes and {len(all_edges_to_delete)} edges.")
 
+    def get_toolkit_external_ids(self) -> tuple[dict[str, list[tuple[str, str]]], dict[str, list[tuple[str, str]]]]:
+        """Get all node and external IDs from the toolkit files."""
 
-    def get_views_in_data_model(self) -> list[ViewId]:
-        """Get all views in the data model."""
-
-        return self.client.data_modeling.data_models.retrieve(("power_ops_core", self.data_model_name, "1"))[0].views
-
-    def get_toolkit_node_external_ids(self) -> dict[str, list[str]]:
-        """Get all node external IDs from the toolkit files."""
-
-
+        node_external_ids: dict[str, list[tuple[str]]] = {}
+        edge_external_ids: dict[str, list[tuple[str]]] = {}
         for toolkit_directory in self.toolkit_directory:
-            yaml_files = list(toolkit_directory.rglob('*.yaml')) + list(toolkit_directory.rglob('*.yml'))
+            yaml_files = list(toolkit_directory.rglob("*.yaml")) + list(toolkit_directory.rglob("*.yml"))
             for file in yaml_files:
-                nodes = load_yaml(file, expected_return_type="list")
-                for node in nodes:
-                    print(node)
+                instances = load_yaml(file, expected_return_type="list")
+                for instance in instances:
+                    if instance_type := instance.get("instanceType"):
+                        if instance_type == "node":
+                            external_id: tuple[str, str] = (instance["space"], instance["externalId"])
+                            node_type = instance.get("type")
+                            if node_type:
+                                node_type_xid = node_type["externalId"]
+                                if node_type_xid in node_external_ids:
+                                    temp_list = node_external_ids[node_type_xid]
+                                    temp_list.append(external_id)
+                                    node_external_ids[node_type_xid] = temp_list
+                                else:
+                                    node_external_ids[node_type_xid] = [external_id]
+                        elif instance_type == "edge":
+                            external_id: tuple[str, str] = (instance["space"], instance["externalId"])
+                            edge_type = instance.get("type")
+                            if edge_type:
+                                edge_type_xid = edge_type["externalId"]
+                                if edge_type_xid in edge_external_ids:
+                                    temp_list = edge_external_ids[edge_type_xid]
+                                    temp_list.append(external_id)
+                                    edge_external_ids[edge_type_xid] = temp_list
+                                else:
+                                    edge_external_ids[edge_type_xid] = [external_id]
 
-        return {}
+        return node_external_ids, edge_external_ids
+
+    def get_nodes_to_delete(self, node_ids: dict[str, list[tuple[str, str]]]) -> dict[str, list[Node]]:
+        """Gets all the nodes that exist that are not in the toolkit files."""
+
+        views_with_nodes_to_delete: dict[str, list[Node]] = {}
+        for view_xid in node_ids.keys():
+            if view_xid not in self.exclude_nodes:
+                view_id = ViewId(self.models_space, view_xid, self.data_model_version)
+                existing_nodes = self.client.data_modeling.instances.list(
+                    instance_type="node", limit=None, sources=view_id
+                )
+                toolkit_nodes = node_ids.get(view_xid, [])
+                for node in existing_nodes:
+                    temp_node = (node.space, node.external_id)
+                    if temp_node not in toolkit_nodes:
+                        if view_xid in views_with_nodes_to_delete:
+                            temp_list = views_with_nodes_to_delete[view_xid]
+                            temp_list.append(node)
+                            views_with_nodes_to_delete[view_xid] = temp_list
+                        else:
+                            views_with_nodes_to_delete[view_xid] = [node]
+
+        return views_with_nodes_to_delete
+
+    def get_edges_to_delete(self, edge_ids: dict[str, list[tuple[str, str]]]) -> dict[str, list[Edge]]:
+        """Gets all the edges that exist that are not in the toolkit files."""
+
+        for edge_type in self.exclude_edges:
+            edge_ids.pop(edge_type, None)
+
+        spaces = set()
+        for edges in edge_ids.values():
+            for edge in edges:
+                spaces.add(edge[0])
+
+        type_filter = In(
+            ("type", "externalId"), list(edge_ids.keys())
+        )  # TODO: fix filter to only get edges of types from list
+
+        existing_edges = self.client.data_modeling.instances.list(
+            instance_type="edge", limit=None, space=spaces, include_typing=True
+        )
+        types_with_nodes_to_delete = {}
+        for edge in existing_edges:
+            type_xid = edge.type.external_id
+            if type_xid in edge_ids:  # TODO: remove if when filter is used
+                if edge.external_id not in type_xid:
+                    if type_xid in types_with_nodes_to_delete.keys():
+                        temp_list = types_with_nodes_to_delete[type_xid]
+                        temp_list.append(edge)
+                        types_with_nodes_to_delete[type_xid] = temp_list
+                    else:
+                        types_with_nodes_to_delete[type_xid] = [edge]
+
+        return types_with_nodes_to_delete

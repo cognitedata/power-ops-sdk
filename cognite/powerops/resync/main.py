@@ -32,10 +32,10 @@ def pre_build(client_configuration: Path, configuration: Path) -> None:
     logger.info(f"External IDs: {external_ids}")
 
 
-def purge(client_configuration: Path, configuration: Path, dry_run: bool = False) -> None:
+def purge(client_configuration: Path, configuration: Path, dry_run: bool = False, verbose: bool = False) -> None:
     """Foo"""
 
     client = PowerOpsClient.from_config(client_configuration)
 
-    resync_purge = ResyncPurge.from_yaml(configuration, client.cdf, dry_run)
+    resync_purge = ResyncPurge.from_yaml(configuration, client.cdf, dry_run, verbose)
     resync_purge.purge()

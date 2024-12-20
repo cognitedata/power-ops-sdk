@@ -5,15 +5,12 @@ toolkit_directory: "toolkit/modules/resync/data_models/nodes"
 # If set to true, properties with None values will be skipped and not written to the data model files.
 # This is useful to get more concise toolkit deploy dry run verbose output, so it's recommended when using verbose mode.
 ignore_nones: true
-# The following variables are used to replace placeholders in the data model files. It's recommended to use the same
-# values as in the toolkit configuration file so that the data model files are consistent with toolkit configuration.
-instance_space: "{{power_ops_instance_space}}"
-models_space: "{{power_ops_models_space}}"
-type_space: "{{power_ops_type_space}}"
-data_model_version: "{{power_ops_data_model_version}}"
+# The following variables are used to replace placeholders in the data model files.
+instance_space: "power_ops_instances"
+models_space: "power_ops_core"
+type_space: "power_ops_types"
+data_model_version: "1"
 
 # Purge configuration
 toolkit_modules:
   - "toolkit/modules/resync/data_models/nodes"
-# The name of the data external id used for reync purge, defaults to config_ResyncConfiguration
-data_model_name: "config_ResyncConfiguration"

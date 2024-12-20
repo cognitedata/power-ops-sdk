@@ -66,10 +66,10 @@ class ResyncImporter:
     data_model_classes: dict[str, type]
     data_model_configuration: dict[str, DataModelConfiguration]
     ignore_nones: bool = True
-    instance_space: str = "{{power_ops_instance_space}}"
-    models_space: str = "{{power_ops_models_space}}"
-    type_space: str = "{{power_ops_type_space}}"
-    data_model_version: str = "{{power_ops_data_model_version}}"
+    instance_space: str = "power_ops_instances"
+    models_space: str = "power_ops_core"
+    type_space: str = "power_ops_types"
+    data_model_version: str = "1"
 
     def __init__(
         self,
@@ -78,9 +78,10 @@ class ResyncImporter:
         data_model_classes: dict[str, type],
         data_model_configuration: Optional[dict[str, DataModelConfiguration]] = None,
         ignore_nones: bool = True,
-        instance_space: str = "{{power_ops_instance_space}}",
-        models_space: str = "{{power_ops_models_space}}",
-        data_model_version: str = "{{power_ops_data_model_version}}",
+        instance_space: str = "power_ops_instances",
+        models_space: str = "power_ops_core",
+        type_space: str = "power_ops_types",
+        data_model_version: str = "1",
     ) -> None:
         """Initializes the ResyncImporter"""
 
@@ -95,6 +96,7 @@ class ResyncImporter:
 
         self.instance_space = instance_space
         self.models_space = models_space
+        self.type_space = type_space
         self.data_model_version = data_model_version
 
         v1_data_classes.DomainModelWrite.external_id_factory = ext_id_factory
@@ -129,6 +131,11 @@ class ResyncImporter:
             working_directory=working_directory,
             toolkit_directory=toolkit_directory,
             data_model_classes=data_model_classes,
+            ignore_nones=configuration.get("ignore_nones"),
+            instance_space=configuration.get("instance_space"),
+            models_space=configuration.get("models_space"),
+            type_space=configuration.get("type_space"),
+            data_model_version=configuration.get("data_model_version"),
         )
 
     def to_toolkit_nodes_edges(self, client: CogniteClient) -> tuple[list[v1_data_classes.DomainModelWrite], list[str]]:
@@ -392,6 +399,7 @@ class ResyncImporter:
             node_object = {
                 "space": self.instance_space,
                 "externalId": external_id,
+                "instanceType": "node",
                 "type": {
                     "space": self.type_space,
                     "externalId": type_external_id,
@@ -399,9 +407,9 @@ class ResyncImporter:
                 "sources": [
                     {
                         "source": {
-                            "space": "{{power_ops_models_space}}",
+                            "space": "power_ops_core",
                             "externalId": type_external_id,
-                            "version": "{{power_ops_data_model_version}}",
+                            "version": "1",
                             "type": "view",
                         },
                         "properties": object_dump,
