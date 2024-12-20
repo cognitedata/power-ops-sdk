@@ -73,4 +73,4 @@ jobs:
           TENANT_ID: ${{ vars.TENANT_ID }}
         run: |
           echo Running resync plan in CDF environment $PROJECT
-          powerops purge $CLIENT_CONFIG_FILE $CONFIGURATION_FILE --dry-run
+          powerops purge $CLIENT_CONFIG_FILE $CONFIGURATION_FILE
