@@ -89,6 +89,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Create a folder for logs
+        run: |
+          if [ ! -d "cdf-tk-logs" ]; then
+            mkdir cdf-tk-logs
+          fi
+
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
