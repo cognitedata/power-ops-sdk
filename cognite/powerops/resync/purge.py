@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from typing import Literal
 
 from cognite.client import CogniteClient
 from cognite.client.data_classes.data_modeling import EdgeId, NodeId, ViewId
@@ -195,7 +194,7 @@ class ResyncPurge:
 
         type_filter = In(("edge", "type"), types)
         existing_edges = self.client.data_modeling.instances.list(  # type: ignore[call-overload]
-            instance_type=Literal["edge"], limit=None, space=spaces, include_typing=True, filter=type_filter
+            instance_type="edge", limit=None, space=spaces, include_typing=True, filter=type_filter
         )
 
         types_with_nodes_to_delete: dict[str, list[EdgeId]] = {}
