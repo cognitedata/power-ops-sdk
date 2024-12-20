@@ -33,7 +33,7 @@ jobs:
       image: ${{ needs.get-toolkit-version.outputs.image }}
       env:
         LOGIN_FLOW: client_credentials
-        CDF_CLUSTER: ${{ vars.CLUSTE }}
+        CDF_CLUSTER: ${{ vars.CLUSTER }}
         CDF_PROJECT: ${{ vars.PROJECT }}
         IDP_CLIENT_ID: ${{ vars.CLIENT_ID }}
         IDP_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
