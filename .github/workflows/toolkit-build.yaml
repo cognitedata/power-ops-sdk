@@ -80,7 +80,6 @@ jobs:
 
   resync-purge:
     name: Resync Purge Dry Run to CDF project ${{ vars.PROJECT }}
-    needs: build-modules
     environment:
       name: CI
     runs-on: ubuntu-latest
@@ -129,7 +128,7 @@ jobs:
           if-no-files-found: error
 
   pr-writeback:
-    needs: resync-purge
+    needs: [build-modules, resync-purge]
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -178,7 +177,7 @@ jobs:
 
           RUN_LINK="[$GITHUB_RUN_ID]($REPO_URL/actions/runs/$GITHUB_RUN_ID)"
 
-          printf 'Toolkit dry run triggered: %s\n\n%s\n%s\n\n```\n%s\n```\n' \
+          printf 'Toolkit dry run triggered: %s\n\n%s\n%s\n%s\n\n```\n%s\n```\n\n%s\n' \
             "$RUN_LINK" "$B_STATUS" "$DR_STATUS" "$RP_STATUS" "$MSG" "$MSG_PURGE" > pr-comment-body.txt
 
           gh pr comment $PR_NUMBER -F pr-comment-body.txt
