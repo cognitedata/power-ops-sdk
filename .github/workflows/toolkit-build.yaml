@@ -78,8 +78,52 @@ jobs:
           retention-days: 1
           if-no-files-found: error
 
-  pr-writeback:
+  resync-purge:
+    name: Resync Purge Dry Run to CDF project ${{ vars.PROJECT }}
     needs: build-modules
+    environment:
+      name: CI
+    runs-on: ubuntu-latest
+    outputs:
+      purge-status: ${{ steps.purge.outcome }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip poetry==1.*
+          poetry config virtualenvs.create false
+          poetry install
+
+      - name: Run resync plan
+        id: purge
+        env:
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          CLIENT_ID: ${{ vars.CLIENT_ID }}
+          PROJECT: ${{ vars.PROJECT }}
+          CLUSTER: ${{ vars.CLUSTER }}
+          TENANT_ID: ${{ vars.TENANT_ID }}
+        continue-on-error: true
+        run: |
+          echo Running resync plan in CDF environment $PROJECT
+          set -o pipefail
+          powerops purge $CLIENT_CONFIG_FILE $CONFIGURATION_FILE --dry-run | tee cdf-tk-logs/purge.log
+
+      - name: Store logs
+        id: store-logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: cdf-tk-logs
+          path: cdf-tk-logs/
+          retention-days: 1
+          if-no-files-found: error
+
+  pr-writeback:
+    needs: resync-purge
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -99,13 +143,20 @@ jobs:
           set -e
           B_STATUS="Build status: **${{ needs.build-modules.outputs.build-status }}**"
           DR_STATUS="Dry run status: **${{ needs.build-modules.outputs.deploy-status }}**"
+          RP_STATUS="Resync purge status: **${{ needs.resync-purge.outputs.purge-status }}**"
 
           if [ -f cdf-tk-logs/deploy.log ]; then
             MSG=$(cat cdf-tk-logs/deploy.log)
           elif [ -f cdf-tk-logs/build.log ]; then
             MSG=$(cat cdf-tk-logs/build.log)
           else
-            MSG='Error. Check workflow run for details.'
+            MSG='Error. Check toolkit workflow run for details.'
+          fi
+
+          if [ -f cdf-tk-logs/purge.log ]; then
+            MSG_PURGE=$(cat cdf-tk-logs/purge.log)
+          else
+            MSG_PURGE='Error. Check purge workflow run for details.'
           fi
 
           REPO_URL=$(jq '.repository.html_url' -r < "$GITHUB_EVENT_PATH")
@@ -114,37 +165,8 @@ jobs:
           RUN_LINK="[$GITHUB_RUN_ID]($REPO_URL/actions/runs/$GITHUB_RUN_ID)"
 
           printf 'Toolkit dry run triggered: %s\n\n%s\n%s\n\n```\n%s\n```\n' \
-            "$RUN_LINK" "$B_STATUS" "$DR_STATUS" "$MSG" > pr-comment-body.txt
+            "$RUN_LINK" "$B_STATUS" "$DR_STATUS" "$RP_STATUS" "$MSG" "$MSG_PURGE" > pr-comment-body.txt
 
           gh pr comment $PR_NUMBER -F pr-comment-body.txt
         env:
           GH_TOKEN: ${{ github.token }}
-
-  resync-purge:
-    name: Resync Purge Dry Run to CDF project ${{ vars.PROJECT }}
-    needs: build-modules
-    environment:
-      name: CI
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      - name: Install dependencies
-        run: |
-          python3 -m pip install --upgrade pip poetry==1.*
-          poetry config virtualenvs.create false
-          poetry install
-      - name: Run resync plan
-        env:
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-          CLIENT_ID: ${{ vars.CLIENT_ID }}
-          PROJECT: ${{ vars.PROJECT }}
-          CLUSTER: ${{ vars.CLUSTER }}
-          TENANT_ID: ${{ vars.TENANT_ID }}
-        run: |
-          echo Running resync plan in CDF environment $PROJECT
-          powerops purge $CLIENT_CONFIG_FILE $CONFIGURATION_FILE --dry-run
