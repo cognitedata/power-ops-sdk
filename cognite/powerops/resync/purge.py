@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
+from typing import Literal
 
 from cognite.client import CogniteClient
-from cognite.client.data_classes.data_modeling import Edge, Node, ViewId
+from cognite.client.data_classes.data_modeling import EdgeId, NodeId, ViewId
 from cognite.client.data_classes.filters import In
 
 from cognite.powerops.utils.serialization import load_yaml
@@ -31,6 +32,7 @@ class ResyncPurge:
         verbose: bool,
         client: CogniteClient,
         models_space: str,
+        type_space: str,
         data_model_version: str,
         exclude_edges: list[str],
         exclude_nodes: list[str],
@@ -40,6 +42,7 @@ class ResyncPurge:
         self.client = client
         self.data_model_version = data_model_version
         self.models_space = models_space
+        self.type_space = type_space
         self.verbose = verbose
         self.exclude_edges = exclude_edges
         self.exclude_nodes = exclude_nodes
@@ -81,6 +84,7 @@ class ResyncPurge:
             client=cdf_client,
             data_model_version=configuration["data_model_version"],
             models_space=configuration["models_space"],
+            type_space=configuration["type_space"],
             exclude_nodes=configuration.get("exclude_nodes", []),
             exclude_edges=configuration.get("exclude_edges", []),
         )
@@ -92,7 +96,7 @@ class ResyncPurge:
         node_ids, edge_ids = self.get_toolkit_external_ids()
         views_with_nodes_to_delete = self.get_nodes_to_delete(node_ids)
 
-        all_nodes_to_delete = []
+        all_nodes_to_delete: list[NodeId] = []
         for view, nodes in views_with_nodes_to_delete.items():
             logger.info(f"Found {len(nodes)} nodes of type {view} to delete.")
             if self.verbose:
@@ -121,16 +125,16 @@ class ResyncPurge:
     def get_toolkit_external_ids(self) -> tuple[dict[str, list[tuple[str, str]]], dict[str, list[tuple[str, str]]]]:
         """Get all node and external IDs from the toolkit files."""
 
-        node_external_ids: dict[str, list[tuple[str]]] = {}
-        edge_external_ids: dict[str, list[tuple[str]]] = {}
+        node_external_ids: dict[str, list[tuple[str, str]]] = {}
+        edge_external_ids: dict[str, list[tuple[str, str]]] = {}
         for toolkit_directory in self.toolkit_directory:
             yaml_files = list(toolkit_directory.rglob("*.yaml")) + list(toolkit_directory.rglob("*.yml"))
             for file in yaml_files:
                 instances = load_yaml(file, expected_return_type="list")
                 for instance in instances:
                     if instance_type := instance.get("instanceType"):
+                        external_id: tuple[str, str] = (instance["space"], instance["externalId"])
                         if instance_type == "node":
-                            external_id: tuple[str, str] = (instance["space"], instance["externalId"])
                             node_type = instance.get("type")
                             if node_type:
                                 node_type_xid = node_type["externalId"]
@@ -141,7 +145,6 @@ class ResyncPurge:
                                 else:
                                     node_external_ids[node_type_xid] = [external_id]
                         elif instance_type == "edge":
-                            external_id: tuple[str, str] = (instance["space"], instance["externalId"])
                             edge_type = instance.get("type")
                             if edge_type:
                                 edge_type_xid = edge_type["externalId"]
@@ -154,10 +157,10 @@ class ResyncPurge:
 
         return node_external_ids, edge_external_ids
 
-    def get_nodes_to_delete(self, node_ids: dict[str, list[tuple[str, str]]]) -> dict[str, list[Node]]:
+    def get_nodes_to_delete(self, node_ids: dict[str, list[tuple[str, str]]]) -> dict[str, list[NodeId]]:
         """Gets all the nodes that exist that are not in the toolkit files."""
 
-        views_with_nodes_to_delete: dict[str, list[Node]] = {}
+        views_with_nodes_to_delete: dict[str, list[NodeId]] = {}
         for view_xid in node_ids.keys():
             if view_xid not in self.exclude_nodes:
                 view_id = ViewId(self.models_space, view_xid, self.data_model_version)
@@ -170,14 +173,14 @@ class ResyncPurge:
                     if temp_node not in toolkit_nodes:
                         if view_xid in views_with_nodes_to_delete:
                             temp_list = views_with_nodes_to_delete[view_xid]
-                            temp_list.append(node)
+                            temp_list.append(node.as_id())
                             views_with_nodes_to_delete[view_xid] = temp_list
                         else:
-                            views_with_nodes_to_delete[view_xid] = [node]
+                            views_with_nodes_to_delete[view_xid] = [node.as_id()]
 
         return views_with_nodes_to_delete
 
-    def get_edges_to_delete(self, edge_ids: dict[str, list[tuple[str, str]]]) -> dict[str, list[Edge]]:
+    def get_edges_to_delete(self, edge_ids: dict[str, list[tuple[str, str]]]) -> dict[str, list[EdgeId]]:
         """Gets all the edges that exist that are not in the toolkit files."""
 
         for edge_type in self.exclude_edges:
@@ -185,26 +188,26 @@ class ResyncPurge:
 
         spaces = set()
         for edges in edge_ids.values():
-            for edge in edges:
-                spaces.add(edge[0])
+            for tk_edge in edges:
+                spaces.add(tk_edge[0])
 
-        type_filter = In(
-            ("type", "externalId"), list(edge_ids.keys())
-        )  # TODO: fix filter to only get edges of types from list
+        types = [{"space": self.type_space, "externalId": xid} for xid in edge_ids.keys()]
 
-        existing_edges = self.client.data_modeling.instances.list(
-            instance_type="edge", limit=None, space=spaces, include_typing=True
+        type_filter = In(("edge", "type"), types)
+        existing_edges = self.client.data_modeling.instances.list(  # type: ignore[call-overload]
+            instance_type=Literal["edge"], limit=None, space=spaces, include_typing=True, filter=type_filter
         )
-        types_with_nodes_to_delete = {}
+
+        types_with_nodes_to_delete: dict[str, list[EdgeId]] = {}
         for edge in existing_edges:
             type_xid = edge.type.external_id
-            if type_xid in edge_ids:  # TODO: remove if when filter is used
-                if edge.external_id not in type_xid:
-                    if type_xid in types_with_nodes_to_delete.keys():
-                        temp_list = types_with_nodes_to_delete[type_xid]
-                        temp_list.append(edge)
-                        types_with_nodes_to_delete[type_xid] = temp_list
-                    else:
-                        types_with_nodes_to_delete[type_xid] = [edge]
+            xids_for_type = edge_ids[type_xid]
+            if (edge.space, edge.external_id) not in xids_for_type:
+                if type_xid in types_with_nodes_to_delete.keys():
+                    temp_list = types_with_nodes_to_delete[type_xid]
+                    temp_list.append(edge.as_id())
+                    types_with_nodes_to_delete[type_xid] = temp_list
+                else:
+                    types_with_nodes_to_delete[type_xid] = [edge.as_id()]
 
         return types_with_nodes_to_delete

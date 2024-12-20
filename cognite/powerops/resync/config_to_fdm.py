@@ -131,11 +131,11 @@ class ResyncImporter:
             working_directory=working_directory,
             toolkit_directory=toolkit_directory,
             data_model_classes=data_model_classes,
-            ignore_nones=configuration.get("ignore_nones"),
-            instance_space=configuration.get("instance_space"),
-            models_space=configuration.get("models_space"),
-            type_space=configuration.get("type_space"),
-            data_model_version=configuration.get("data_model_version"),
+            ignore_nones=configuration.get("ignore_nones", True),
+            instance_space=configuration.get("instance_space", "power_ops_instances"),
+            models_space=configuration.get("models_space", "power_ops_core"),
+            type_space=configuration.get("type_space", "power_ops_types"),
+            data_model_version=configuration.get("data_model_version", "1"),
         )
 
     def to_toolkit_nodes_edges(self, client: CogniteClient) -> tuple[list[v1_data_classes.DomainModelWrite], list[str]]:
