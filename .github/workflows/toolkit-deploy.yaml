@@ -27,7 +27,7 @@ jobs:
     name: Toolkit Deploy
     needs: get-toolkit-version
     runs-on: ubuntu-latest
-    environment:
+    environment: CD
     container:
       image: ${{ needs.get-toolkit-version.outputs.image }}
       env:
