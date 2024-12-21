@@ -11,6 +11,7 @@ on:
 
 env:
   COLUMNS: 99
+  PYTHON_VERSION: "3.11"
   TOOLKIT_ENV: staging
   TOOLKIT_VERSION: 0.3.18
 
