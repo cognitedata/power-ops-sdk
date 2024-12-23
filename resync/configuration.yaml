@@ -14,9 +14,12 @@ data_model_version: "1"
 # Purge configuration
 toolkit_modules:
   - "toolkit/modules/resync/data_models/nodes"
-# The type of nodes to exclude from deletion
+# The type of nodes to exclude from deletion, if the node type doesn't have any edges you shouldn't need to add any
+# types to the `exclude_edges` list.
 exclude_nodes:
   - "ShopFile"
   - "ShopScenario"
-# The type of edges to exclude from deletion
-# exclude_edges:
+# The type of edges to exclude from deletion, recommended to only exclude edge types based on excluding the relevant node
+exclude_edges: []
+# NOTE: resync does not handle clean up of edges tied to toolkit "owned" nodes if you've excluded the type as resync doesn't
+# have a way to categorize edges/nodes by resourced "owned" or "not owned" by toolkit
