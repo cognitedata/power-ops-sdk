@@ -1,0 +1,77 @@
+name: Toolkit Deploy Staging
+
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "toolkit/**"
+      - ".github/workflows/toolkit-deploy.yaml"
+      - "!**/*.md"
+
+env:
+  COLUMNS: 99
+  PYTHON_VERSION: "3.11"
+  TOOLKIT_ENV: staging
+  TOOLKIT_VERSION: 0.3.18
+
+jobs:
+  get-toolkit-version:
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.image.outputs.image }}
+    steps:
+      - id: image
+        run: echo "image=cognite/toolkit:$TOOLKIT_VERSION" >> "$GITHUB_OUTPUT"
+  deploy-modules:
+    name: Toolkit Deploy
+    needs: get-toolkit-version
+    runs-on: ubuntu-latest
+    environment: CD
+    container:
+      image: ${{ needs.get-toolkit-version.outputs.image }}
+      env:
+        LOGIN_FLOW: client_credentials
+        CDF_CLUSTER: ${{ secrets.CDF_CLUSTER }}
+        CDF_PROJECT: ${{ secrets.CDF_PROJECT }}
+        IDP_CLIENT_ID: ${{ secrets.IDP_CLIENT_ID }}
+        IDP_CLIENT_SECRET: ${{ secrets.IDP_CLIENT_SECRET }}
+        IDP_TENANT_ID: ${{ secrets.ENTRA_ID_TENANT_ID }}
+        VOLUE_INSIGHT_API_CLIENT_ID: ${{ secrets.VOLUE_INSIGHT_API_CLIENT_ID }}
+        VOLUE_INSIGHT_API_CLIENT_SECRET: ${{ secrets.VOLUE_INSIGHT_API_CLIENT_SECRET }}
+        WF_TRIGGER_SECRET: ${{ secrets.WF_TRIGGER_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build modules
+        run: cdf build --env $TOOLKIT_ENV --build-dir cdf-tk-build
+      - name: Deploy modules
+        run: cdf deploy cdf-tk-build
+
+  resync-purge:
+    name: Resync Purge to CDF project ${{ vars.PROJECT }}
+    needs: deploy-modules
+    environment:
+      name: CD
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip poetry==1.*
+          poetry config virtualenvs.create false
+          poetry install
+      - name: Run resync plan
+        env:
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          CLIENT_ID: ${{ vars.CLIENT_ID }}
+          PROJECT: ${{ vars.PROJECT }}
+          CLUSTER: ${{ vars.CLUSTER }}
+          TENANT_ID: ${{ vars.TENANT_ID }}
+        run: |
+          echo Running resync plan in CDF environment $PROJECT
+          powerops purge $CLIENT_CONFIG_FILE $CONFIGURATION_FILE

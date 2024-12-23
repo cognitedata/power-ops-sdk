@@ -1,4 +1,5 @@
 - externalId: base_mapping_fornebu_creek_intake_blakstad_inflow
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -16,14 +17,15 @@
             constant: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_creek_intake_fjerdingby_intake_inflow
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -41,14 +43,15 @@
             constant: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_creek_intake_fjerdingby_intake_overflow_cost
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -64,14 +67,15 @@
               offset_value: 100000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_creek_intake_golebiowski_intake_inflow
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -89,14 +93,15 @@
             constant: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_creek_intake_golebiowski_intake_overflow_cost
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -112,14 +117,15 @@
               offset_value: 100000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_creek_intake_gustad_inflow
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -137,14 +143,15 @@
             constant: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_creek_intake_lont_intake_inflow
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -162,14 +169,15 @@
             constant: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_creek_intake_lont_intake_overflow_cost
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -185,14 +193,15 @@
               offset_value: 100000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_creek_intake_narvhus_inflow
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -210,14 +219,15 @@
             constant: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_creek_intake_narvhus_overflow_cost
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -233,14 +243,15 @@
               offset_value: 100000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_creek_intake_sandvika_inflow
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -256,14 +267,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_creek_intake_vigrestad_inflow
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -281,14 +293,15 @@
             constant: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_b_dalbysvatn_knute_rullsvatn_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -304,14 +317,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_b_danielsen_lundvann_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -327,14 +341,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_b_hagen_strand_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -350,14 +365,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_b_lensvik_dalbysvatn_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -373,14 +389,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_b_livincovs_dalbysvatn_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -396,14 +413,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_b_nielsen_blakstadana_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -419,14 +437,15 @@
               offset_value: 10.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_b_sirefelt_knute_rullsvatn_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -442,14 +461,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_f_blakstadana_knute_rullsvatn_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -465,14 +485,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_f_dalbysvatn_knute_rullsvatn_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -488,14 +509,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_f_finnvasstol_dalbysvatn_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -511,14 +533,15 @@
               offset_value: 10.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_f_fjerdingby_dalbysvatn_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -534,14 +557,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_f_frosta_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -557,14 +581,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_f_golebiowski_dalbysvatn_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -580,14 +605,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_f_hagen_strand_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -603,14 +629,15 @@
               offset_value: 100.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_f_hovden_hagen_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -626,14 +653,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_f_lensvik_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -649,14 +677,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_f_livincovs_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -672,14 +701,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_f_lont_dalbysvatn_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -695,14 +725,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_f_lundvann_lensvik_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -718,14 +749,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_f_narvhus_rullsvatn_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -741,14 +773,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_f_nielsen_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -764,14 +797,15 @@
               offset_value: 10.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_f_nupstj_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -787,14 +821,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_f_ranemsletta_1183_livincovs_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -810,14 +845,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_f_rullsvatn_rullslaagen_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -833,14 +869,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_f_sirefelt_knute_rullsvatn_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -856,14 +893,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_f_tangvall_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -879,14 +917,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_f_varhaug_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -902,14 +941,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_w_finnvasstol_strand_tunnel_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -925,14 +965,15 @@
               offset_value: 6.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_w_frosta_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -948,14 +989,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_w_hovden_livincovs_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -971,14 +1013,15 @@
               offset_value: 10.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_w_rullsvatn_rullslaagen_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -994,14 +1037,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_w_tangvall_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -1017,14 +1061,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_gate_w_varhaug_max_flow
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -1040,14 +1085,15 @@
               offset_value: 30.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_dalby_g1_droop_cost
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1063,14 +1109,15 @@
               offset_value: 50000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_dalby_g1_droop_max
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1086,14 +1133,15 @@
               offset_value: 12.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_dalby_g1_droop_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1109,14 +1157,15 @@
               offset_value: 2.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_dalby_g1_maintenance_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: max
@@ -1134,14 +1183,15 @@
             constant: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_dalby_g1_p_fcr_max
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1157,14 +1207,15 @@
               offset_value: 85.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_dalby_g1_p_fcr_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1180,14 +1231,15 @@
               offset_value: 38.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_dalby_g1_p_rr_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1203,14 +1255,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_dalby_g1_startcost
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1226,14 +1279,15 @@
               offset_value: 500.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_dalby_g2_droop_cost
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1249,14 +1303,15 @@
               offset_value: 50000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_dalby_g2_droop_max
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1272,14 +1327,15 @@
               offset_value: 12.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_dalby_g2_droop_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1295,14 +1351,15 @@
               offset_value: 2.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_dalby_g2_maintenance_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: max
@@ -1320,14 +1377,15 @@
             constant: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_dalby_g2_p_fcr_max
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1343,14 +1401,15 @@
               offset_value: 85.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_dalby_g2_p_fcr_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1366,14 +1425,15 @@
               offset_value: 38.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_dalby_g2_p_rr_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1389,14 +1449,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_dalby_g2_startcost
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1412,14 +1473,15 @@
               offset_value: 250.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_holen_g1_droop_max
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1435,14 +1497,15 @@
               offset_value: 6.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_holen_g1_droop_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1458,14 +1521,15 @@
               offset_value: 6.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_holen_g1_maintenance_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: max
@@ -1483,14 +1547,15 @@
             constant: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_holen_g1_max_p_constr
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -1506,14 +1571,15 @@
               offset_value: 38.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_holen_g1_min_p_constr
+  instanceType: node
   sources:
   - properties:
       aggregation: max
@@ -1529,14 +1595,15 @@
               offset_value: 28.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_holen_g1_p_fcr_max
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1552,14 +1619,15 @@
               offset_value: 45.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_holen_g1_p_fcr_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1575,14 +1643,15 @@
               offset_value: 27.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_holen_g1_p_rr_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1598,14 +1667,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_holen_g1_startcost
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1621,14 +1691,15 @@
               offset_value: 200.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_landet_g1_droop_max
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1644,14 +1715,15 @@
               offset_value: 6.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_landet_g1_droop_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1667,14 +1739,15 @@
               offset_value: 6.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_landet_g1_maintenance_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: max
@@ -1692,14 +1765,15 @@
             constant: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_landet_g1_max_p_constr
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -1715,14 +1789,15 @@
               offset_value: 48.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_landet_g1_p_fcr_max
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1738,14 +1813,15 @@
               offset_value: 50.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_landet_g1_p_fcr_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1761,14 +1837,15 @@
               offset_value: 25.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_landet_g1_p_rr_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1784,14 +1861,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_landet_g1_startcost
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1807,14 +1885,15 @@
               offset_value: 200.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_lien_krv_g1_droop_max
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1830,14 +1909,15 @@
               offset_value: 8.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_lien_krv_g1_droop_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1853,14 +1933,15 @@
               offset_value: 4.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_lien_krv_g1_maintenance_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: max
@@ -1878,14 +1959,15 @@
             constant: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_lien_krv_g1_max_p_constr
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -1901,14 +1983,15 @@
               offset_value: 3.1
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_lien_krv_g1_min_p_constr
+  instanceType: node
   sources:
   - properties:
       aggregation: max
@@ -1924,14 +2007,15 @@
               offset_value: 2.5
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_lien_krv_g1_p_fcr_max
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1947,14 +2031,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_lien_krv_g1_p_fcr_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1970,14 +2055,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_lien_krv_g1_p_rr_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1993,14 +2079,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_lien_krv_g1_startcost
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2016,14 +2103,15 @@
               offset_value: 150.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_lund_g1_droop_max
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2039,14 +2127,15 @@
               offset_value: 12.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_lund_g1_droop_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2062,14 +2151,15 @@
               offset_value: 4.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_lund_g1_maintenance_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: max
@@ -2087,14 +2177,15 @@
             constant: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_lund_g1_p_fcr_max
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2110,14 +2201,15 @@
               offset_value: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_lund_g1_p_fcr_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2133,14 +2225,15 @@
               offset_value: 0.6
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_lund_g1_p_rr_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2156,14 +2249,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_lund_g1_startcost
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2179,14 +2273,15 @@
               offset_value: 100.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull1_g1_droop_cost
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2202,14 +2297,15 @@
               offset_value: 50000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull1_g1_droop_max
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2225,14 +2321,15 @@
               offset_value: 12.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull1_g1_droop_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2248,14 +2345,15 @@
               offset_value: 2.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull1_g1_maintenance_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: max
@@ -2273,14 +2371,15 @@
             constant: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull1_g1_max_p_constr
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -2296,14 +2395,15 @@
               offset_value: 90.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull1_g1_p_fcr_max
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2319,14 +2419,15 @@
               offset_value: 95.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull1_g1_p_fcr_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2342,14 +2443,15 @@
               offset_value: 38.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull1_g1_p_rr_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2365,14 +2467,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull1_g1_startcost
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2388,14 +2491,15 @@
               offset_value: 250.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull1_g2_droop_cost
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2411,14 +2515,15 @@
               offset_value: 50000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull1_g2_droop_max
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2434,14 +2539,15 @@
               offset_value: 12.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull1_g2_droop_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2457,14 +2563,15 @@
               offset_value: 2.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull1_g2_maintenance_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: max
@@ -2482,14 +2589,15 @@
             constant: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull1_g2_max_p_constr
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -2505,14 +2613,15 @@
               offset_value: 95.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull1_g2_min_p_constr
+  instanceType: node
   sources:
   - properties:
       aggregation: max
@@ -2528,14 +2637,15 @@
               offset_value: 43.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull1_g2_p_fcr_max
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2551,14 +2661,15 @@
               offset_value: 85.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull1_g2_p_fcr_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2574,14 +2685,15 @@
               offset_value: 38.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull1_g2_p_rr_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2597,14 +2709,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull1_g2_startcost
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2620,14 +2733,15 @@
               offset_value: 250.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull2_g1_droop_cost
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2643,14 +2757,15 @@
               offset_value: 50000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull2_g1_droop_max
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2666,14 +2781,15 @@
               offset_value: 12.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull2_g1_droop_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2689,14 +2805,15 @@
               offset_value: 4.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull2_g1_maintenance_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: max
@@ -2714,14 +2831,15 @@
             constant: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull2_g1_p_fcr_max
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2737,14 +2855,15 @@
               offset_value: 74.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull2_g1_p_fcr_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2760,14 +2879,15 @@
               offset_value: 32.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull2_g1_p_rr_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2783,14 +2903,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull2_g1_startcost
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2806,14 +2927,15 @@
               offset_value: 250.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull2_g2_droop_cost
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2829,14 +2951,15 @@
               offset_value: 50000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull2_g2_droop_max
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2852,14 +2975,15 @@
               offset_value: 12.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull2_g2_droop_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2875,14 +2999,15 @@
               offset_value: 4.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull2_g2_maintenance_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: max
@@ -2900,14 +3025,15 @@
             constant: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull2_g2_max_p_constr
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -2923,14 +3049,15 @@
               offset_value: 74.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull2_g2_p_fcr_max
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2946,14 +3073,15 @@
               offset_value: 76.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull2_g2_p_fcr_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2969,14 +3097,15 @@
               offset_value: 32.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull2_g2_p_rr_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -2992,14 +3121,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_rull2_g2_startcost
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -3015,14 +3145,15 @@
               offset_value: 250.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_scott_g1_droop_max
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -3038,14 +3169,15 @@
               offset_value: 6.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_scott_g1_droop_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -3061,14 +3193,15 @@
               offset_value: 6.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_scott_g1_maintenance_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: max
@@ -3086,14 +3219,15 @@
             constant: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_scott_g1_p_fcr_max
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -3109,14 +3243,15 @@
               offset_value: 19.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_scott_g1_p_fcr_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -3132,14 +3267,15 @@
               offset_value: 7.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_scott_g1_p_rr_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -3155,14 +3291,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_scott_g1_startcost
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -3178,14 +3315,15 @@
               offset_value: 150.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_strand_krv_g1_droop_max
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -3201,14 +3339,15 @@
               offset_value: 12.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_strand_krv_g1_droop_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -3224,14 +3363,15 @@
               offset_value: 4.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_strand_krv_g1_maintenance_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: max
@@ -3249,14 +3389,15 @@
             constant: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_strand_krv_g1_p_fcr_max
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -3272,14 +3413,15 @@
               offset_value: 4.9
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_strand_krv_g1_p_fcr_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -3295,14 +3437,15 @@
               offset_value: 4.2
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_strand_krv_g1_p_rr_min
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -3318,14 +3461,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_generator_strand_krv_g1_startcost
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -3341,14 +3485,15 @@
               offset_value: 150.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_junction_sandvika_min_pressure
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -3364,14 +3509,15 @@
               offset_value: 672.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_market_dayahead_buy_price
+  instanceType: node
   sources:
   - properties:
       aggregation: mean
@@ -3389,14 +3535,15 @@
             constant: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_market_dayahead_load
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -3412,14 +3559,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_market_dayahead_max_buy
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -3435,14 +3583,15 @@
               offset_value: 10000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_market_dayahead_max_sale
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -3458,14 +3607,15 @@
               offset_value: 10000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_market_dayahead_sale_price
+  instanceType: node
   sources:
   - properties:
       aggregation: mean
@@ -3476,14 +3626,15 @@
       timeSeries: '6694'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_dalby_max_q_constr
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -3499,14 +3650,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_dalby_mip_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: first
@@ -3522,14 +3674,15 @@
               offset_value: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_dalby_prod_area
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -3545,14 +3698,15 @@
               offset_value: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_dalby_production_schedule
+  instanceType: node
   sources:
   - properties:
       aggregation: first
@@ -3563,14 +3717,15 @@
       timeSeries: '136442'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_dalby_production_schedule_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -3586,14 +3741,15 @@
               offset_value: 0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_holen_max_p_constr
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -3609,14 +3765,15 @@
               offset_value: 42.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_holen_max_q_constr
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -3632,14 +3789,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_holen_mip_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: first
@@ -3655,14 +3813,15 @@
               offset_value: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_holen_prod_area
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -3678,14 +3837,15 @@
               offset_value: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_holen_production_schedule
+  instanceType: node
   sources:
   - properties:
       aggregation: first
@@ -3696,14 +3856,15 @@
       timeSeries: '136445'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_holen_production_schedule_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -3719,14 +3880,15 @@
               offset_value: 0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_landet_max_p_constr
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -3742,14 +3904,15 @@
               offset_value: 48.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_landet_max_q_constr
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -3765,14 +3928,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_landet_mip_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: first
@@ -3788,14 +3952,15 @@
               offset_value: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_landet_prod_area
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -3811,14 +3976,15 @@
               offset_value: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_landet_production_schedule
+  instanceType: node
   sources:
   - properties:
       aggregation: first
@@ -3829,14 +3995,15 @@
       timeSeries: '136446'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_landet_production_schedule_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -3852,14 +4019,15 @@
               offset_value: 0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_lien_krv_max_q_constr
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -3875,14 +4043,15 @@
               offset_value: 2.7
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_lien_krv_mip_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: first
@@ -3898,14 +4067,15 @@
               offset_value: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_lien_krv_prod_area
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -3921,14 +4091,15 @@
               offset_value: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_lien_krv_production_schedule
+  instanceType: node
   sources:
   - properties:
       aggregation: first
@@ -3939,14 +4110,15 @@
       timeSeries: '136449'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_lien_krv_production_schedule_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -3962,14 +4134,15 @@
               offset_value: 0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_lund_max_q_constr
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -3985,14 +4158,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_lund_mip_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: first
@@ -4008,14 +4182,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_lund_prod_area
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -4031,14 +4206,15 @@
               offset_value: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_lund_production_schedule
+  instanceType: node
   sources:
   - properties:
       aggregation: first
@@ -4049,14 +4225,15 @@
       timeSeries: '136450'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_lund_production_schedule_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -4072,14 +4249,15 @@
               offset_value: 0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_rull1_max_p_constr
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -4095,14 +4273,15 @@
               offset_value: 184.999
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_rull1_max_q_constr
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -4118,14 +4297,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_rull1_mip_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: first
@@ -4141,14 +4321,15 @@
               offset_value: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_rull1_prod_area
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -4164,14 +4345,15 @@
               offset_value: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_rull1_production_schedule
+  instanceType: node
   sources:
   - properties:
       aggregation: first
@@ -4182,14 +4364,15 @@
       timeSeries: '136443'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_rull1_production_schedule_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -4205,14 +4388,15 @@
               offset_value: 0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_rull2_max_q_constr
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -4228,14 +4412,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_rull2_mip_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: first
@@ -4251,14 +4436,15 @@
               offset_value: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_rull2_prod_area
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -4274,14 +4460,15 @@
               offset_value: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_rull2_production_schedule
+  instanceType: node
   sources:
   - properties:
       aggregation: first
@@ -4292,14 +4479,15 @@
       timeSeries: '136444'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_rull2_production_schedule_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -4315,14 +4503,15 @@
               offset_value: 0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_scott_max_q_constr
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -4338,14 +4527,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_scott_mip_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: first
@@ -4361,14 +4551,15 @@
               offset_value: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_scott_prod_area
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -4384,14 +4575,15 @@
               offset_value: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_scott_production_schedule
+  instanceType: node
   sources:
   - properties:
       aggregation: first
@@ -4402,14 +4594,15 @@
       timeSeries: '136447'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_scott_production_schedule_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -4425,14 +4618,15 @@
               offset_value: 0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_strand_krv_max_q_constr
+  instanceType: node
   sources:
   - properties:
       aggregation: min
@@ -4448,14 +4642,15 @@
               offset_value: 1000.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_strand_krv_mip_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: first
@@ -4471,14 +4666,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_strand_krv_prod_area
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -4494,14 +4690,15 @@
               offset_value: 1.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_strand_krv_production_schedule
+  instanceType: node
   sources:
   - properties:
       aggregation: first
@@ -4512,14 +4709,15 @@
       timeSeries: '136448'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_strand_krv_production_schedule_flag
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -4535,14 +4733,15 @@
               offset_value: 0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_production_group_t2landet_max_p_limit
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -4558,14 +4757,15 @@
               offset_value: 48.6
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reserve_group_rkom_up_rr_up_obligation
+  instanceType: node
   sources:
   - properties:
       aggregation: max
@@ -4581,14 +4781,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_dalbysvatn_inflow
+  instanceType: node
   sources:
   - properties:
       aggregation: mean
@@ -4599,14 +4800,15 @@
       timeSeries: '624330'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_dalbysvatn_max_head_constr
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -4617,14 +4819,15 @@
       timeSeries: '603779'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_dalbysvatn_min_head_constr
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -4635,14 +4838,15 @@
       timeSeries: '582116'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_dalbysvatn_start_head
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -4653,14 +4857,15 @@
       timeSeries: '501440'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_dalbysvatn_tactical_limit_max
+  instanceType: node
   sources:
   - properties:
       aggregation: mean
@@ -4676,14 +4881,15 @@
               offset_value: 109.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_danielsen_inflow
+  instanceType: node
   sources:
   - properties:
       aggregation: mean
@@ -4694,14 +4900,15 @@
       timeSeries: '649828'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_danielsen_start_head
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -4712,14 +4919,15 @@
       timeSeries: '501439'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_danielsen_tactical_limit_max
+  instanceType: node
   sources:
   - properties:
       aggregation: mean
@@ -4735,14 +4943,15 @@
               offset_value: 9.2
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_frosta_inflow
+  instanceType: node
   sources:
   - properties:
       aggregation: mean
@@ -4753,14 +4962,15 @@
       timeSeries: '649837'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_frosta_start_head
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -4771,14 +4981,15 @@
       timeSeries: '501437'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_hagen_inflow
+  instanceType: node
   sources:
   - properties:
       aggregation: mean
@@ -4789,14 +5000,15 @@
       timeSeries: '649827'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_hagen_start_head
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -4807,14 +5019,15 @@
       timeSeries: '501436'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_hovden_inflow
+  instanceType: node
   sources:
   - properties:
       aggregation: mean
@@ -4825,14 +5038,15 @@
       timeSeries: '649831'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_hovden_start_vol
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -4843,14 +5057,15 @@
       timeSeries: '601729'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_lensvik_inflow
+  instanceType: node
   sources:
   - properties:
       aggregation: mean
@@ -4861,14 +5076,15 @@
       timeSeries: '649792'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_lensvik_start_head
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -4879,14 +5095,15 @@
       timeSeries: '501428'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_livincovs_inflow
+  instanceType: node
   sources:
   - properties:
       aggregation: mean
@@ -4904,14 +5121,15 @@
             constant: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_livincovs_start_head
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -4922,14 +5140,15 @@
       timeSeries: '501438'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_lundvann_inflow
+  instanceType: node
   sources:
   - properties:
       aggregation: mean
@@ -4940,14 +5159,15 @@
       timeSeries: '649832'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_lundvann_start_vol
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -4958,14 +5178,15 @@
       timeSeries: '601728'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_nielsen_inflow
+  instanceType: node
   sources:
   - properties:
       aggregation: mean
@@ -4976,14 +5197,15 @@
       timeSeries: '649836'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_nielsen_start_head
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -4994,14 +5216,15 @@
       timeSeries: '501431'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_ranemsletta_1183_inflow
+  instanceType: node
   sources:
   - properties:
       aggregation: mean
@@ -5012,14 +5235,15 @@
       timeSeries: '769827'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_ranemsletta_1183_start_head
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5030,14 +5254,15 @@
       timeSeries: '770346'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_sirefelt_inflow
+  instanceType: node
   sources:
   - properties:
       aggregation: mean
@@ -5048,14 +5273,15 @@
       timeSeries: '649835'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_sirefelt_start_head
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5066,14 +5292,15 @@
       timeSeries: '501433'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_sirefelt_tactical_limit_max
+  instanceType: node
   sources:
   - properties:
       aggregation: mean
@@ -5089,14 +5316,15 @@
               offset_value: 1.42
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_strand_inflow
+  instanceType: node
   sources:
   - properties:
       aggregation: mean
@@ -5107,14 +5335,15 @@
       timeSeries: '649826'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_strand_start_head
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5125,14 +5354,15 @@
       timeSeries: '501430'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_strand_tunnel_start_head
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5143,14 +5373,15 @@
       timeSeries: '501428'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_tangvall_inflow
+  instanceType: node
   sources:
   - properties:
       aggregation: mean
@@ -5161,14 +5392,15 @@
       timeSeries: '649830'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_tangvall_start_head
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5179,14 +5411,15 @@
       timeSeries: '501441'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_varhaug_inflow
+  instanceType: node
   sources:
   - properties:
       aggregation: mean
@@ -5197,14 +5430,15 @@
       timeSeries: '649838'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: base_mapping_fornebu_reservoir_varhaug_start_head
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5215,14 +5449,15 @@
       timeSeries: '740791'
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_minus_0_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5241,14 +5476,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_minus_100_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5267,14 +5503,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_minus_10_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5293,14 +5530,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_minus_120_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5319,14 +5557,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_minus_140_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5345,14 +5584,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_minus_15_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5371,14 +5611,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_minus_160_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5397,14 +5638,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_minus_180_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5423,14 +5665,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_minus_200_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5449,14 +5692,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_minus_20_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5475,14 +5719,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_minus_30_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5501,14 +5746,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_minus_40_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5527,14 +5773,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_minus_500_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5553,14 +5800,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_minus_50_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5579,14 +5827,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_minus_5_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5605,14 +5854,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_minus_60_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5631,14 +5881,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_minus_80_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5657,14 +5908,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_multiply_0_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5690,14 +5942,15 @@
               offset_value: 0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_plus_100_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5716,14 +5969,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_plus_10_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5742,14 +5996,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_plus_120_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5768,14 +6023,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_plus_140_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5794,14 +6050,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_plus_15_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5820,14 +6077,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_plus_160_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5846,14 +6104,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_plus_180_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5872,14 +6131,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_plus_2000_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5898,14 +6158,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_plus_200_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5924,14 +6185,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_plus_20_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5950,14 +6212,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_plus_30_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -5976,14 +6239,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_plus_40_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6002,14 +6266,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_plus_50_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6028,14 +6293,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_plus_5_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6054,14 +6320,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_plus_60_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6080,14 +6347,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_plus_70_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6106,14 +6374,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_buy_price_plus_80_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6132,14 +6401,15 @@
               offset_value: 0.01
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_minus_0_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6158,14 +6428,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_minus_100_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6184,14 +6455,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_minus_10_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6210,14 +6482,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_minus_120_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6236,14 +6509,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_minus_140_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6262,14 +6536,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_minus_15_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6288,14 +6563,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_minus_160_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6314,14 +6590,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_minus_180_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6340,14 +6617,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_minus_200_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6366,14 +6644,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_minus_20_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6392,14 +6671,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_minus_30_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6418,14 +6698,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_minus_40_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6444,14 +6725,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_minus_500_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6470,14 +6752,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_minus_50_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6496,14 +6779,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_minus_5_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6522,14 +6806,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_minus_60_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6548,14 +6833,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_minus_80_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6574,14 +6860,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_multiply_0_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6600,14 +6887,15 @@
               offset_value: 0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_plus_100_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6626,14 +6914,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_plus_10_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6652,14 +6941,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_plus_120_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6678,14 +6968,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_plus_140_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6704,14 +6995,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_plus_15_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6730,14 +7022,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_plus_160_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6756,14 +7049,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_plus_180_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6782,14 +7076,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_plus_2000_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6808,14 +7103,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_plus_200_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6834,14 +7130,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_plus_20_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6860,14 +7157,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_plus_30_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6886,14 +7184,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_plus_40_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6912,14 +7211,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_plus_50_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6938,14 +7238,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_plus_5_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6964,14 +7265,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_plus_60_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -6990,14 +7292,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_plus_70_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -7016,14 +7319,15 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: no2_sale_price_plus_80_first_24h
+  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -7042,10 +7346,10 @@
               offset_value: 0.0
     source:
       externalId: ShopAttributeMapping
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopAttributeMapping
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types

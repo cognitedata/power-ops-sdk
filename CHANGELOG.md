@@ -15,6 +15,10 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.108.0] - 2024-12-20
+### Added
+* Resync purge to clean up any nodes & edges not included in the toolkit files generated from resync pre_build
+
 ## [0.107.0] - 2024-12-11
 ### Added
 * Resync pre_build to create toolkit files from resync configurations

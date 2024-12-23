@@ -14,7 +14,7 @@ from pydantic.alias_generators import to_snake
 import cognite.powerops.client._generated.v1.data_classes as v1_data_classes
 from cognite.powerops.client._generated.v1.data_classes._core import DomainModelWrite
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("resync")
 
 
 def get_prefix_from_type(domain_model_type: type) -> str:

@@ -2,7 +2,7 @@
 default_env = "dev"
 default_organization_dir = "toolkit"
 
-[feature_flags]
+[alpha_flags]
 require-kind = true
 edges = true
 

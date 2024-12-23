@@ -1,4 +1,5 @@
 - externalId: turbine_efficiency_curve:1fd3bbb5
+  instanceType: node
   sources:
   - properties:
       efficiency:
@@ -28,14 +29,15 @@
       head: 280
     source:
       externalId: TurbineEfficiencyCurve
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: TurbineEfficiencyCurve
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: turbine_efficiency_curve:2c4daed3
+  instanceType: node
   sources:
   - properties:
       efficiency:
@@ -65,14 +67,15 @@
       head: 300
     source:
       externalId: TurbineEfficiencyCurve
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: TurbineEfficiencyCurve
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: turbine_efficiency_curve:3577e35f
+  instanceType: node
   sources:
   - properties:
       efficiency:
@@ -184,14 +187,15 @@
       head: 305
     source:
       externalId: TurbineEfficiencyCurve
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: TurbineEfficiencyCurve
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: turbine_efficiency_curve:3add0f77
+  instanceType: node
   sources:
   - properties:
       efficiency:
@@ -259,14 +263,15 @@
       head: 150
     source:
       externalId: TurbineEfficiencyCurve
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: TurbineEfficiencyCurve
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: turbine_efficiency_curve:5c4bd634
+  instanceType: node
   sources:
   - properties:
       efficiency:
@@ -336,14 +341,15 @@
       head: 545
     source:
       externalId: TurbineEfficiencyCurve
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: TurbineEfficiencyCurve
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: turbine_efficiency_curve:7617ebbd
+  instanceType: node
   sources:
   - properties:
       efficiency:
@@ -413,14 +419,15 @@
       head: 545
     source:
       externalId: TurbineEfficiencyCurve
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: TurbineEfficiencyCurve
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: turbine_efficiency_curve:867012dc
+  instanceType: node
   sources:
   - properties:
       efficiency:
@@ -490,14 +497,15 @@
       head: 60
     source:
       externalId: TurbineEfficiencyCurve
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: TurbineEfficiencyCurve
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: turbine_efficiency_curve:953d6684
+  instanceType: node
   sources:
   - properties:
       efficiency:
@@ -567,14 +575,15 @@
       head: 200
     source:
       externalId: TurbineEfficiencyCurve
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: TurbineEfficiencyCurve
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: turbine_efficiency_curve:b5ffe6ac
+  instanceType: node
   sources:
   - properties:
       efficiency:
@@ -644,14 +653,15 @@
       head: 340
     source:
       externalId: TurbineEfficiencyCurve
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: TurbineEfficiencyCurve
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: turbine_efficiency_curve:dbf9ab9a
+  instanceType: node
   sources:
   - properties:
       efficiency:
@@ -681,14 +691,15 @@
       head: 260
     source:
       externalId: TurbineEfficiencyCurve
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: TurbineEfficiencyCurve
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: turbine_efficiency_curve:ed35efb6
+  instanceType: node
   sources:
   - properties:
       efficiency:
@@ -758,14 +769,15 @@
       head: 300
     source:
       externalId: TurbineEfficiencyCurve
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: TurbineEfficiencyCurve
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: turbine_efficiency_curve:f5b06c39
+  instanceType: node
   sources:
   - properties:
       efficiency:
@@ -783,14 +795,15 @@
       head: 154
     source:
       externalId: TurbineEfficiencyCurve
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: TurbineEfficiencyCurve
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: turbine_efficiency_curve:fd328c45
+  instanceType: node
   sources:
   - properties:
       efficiency:
@@ -860,10 +873,10 @@
       head: 56
     source:
       externalId: TurbineEfficiencyCurve
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: TurbineEfficiencyCurve
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types

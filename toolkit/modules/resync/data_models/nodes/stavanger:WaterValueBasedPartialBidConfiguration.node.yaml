@@ -1,4 +1,5 @@
 - externalId: water_value_based_partial_bid_configuration_plant_sola
+  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -6,17 +7,18 @@
       name: Plant Sola
       powerAsset:
         externalId: plant_information_sola
-        space: '{{power_ops_instance_space}}'
+        space: power_ops_instances
     source:
       externalId: WaterValueBasedPartialBidConfiguration
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: WaterValueBasedPartialBidConfiguration
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: water_value_based_partial_bid_configuration_plant_sola_step
+  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -24,13 +26,13 @@
       name: Plant Sola Step
       powerAsset:
         externalId: plant_information_sola
-        space: '{{power_ops_instance_space}}'
+        space: power_ops_instances
     source:
       externalId: WaterValueBasedPartialBidConfiguration
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: WaterValueBasedPartialBidConfiguration
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types

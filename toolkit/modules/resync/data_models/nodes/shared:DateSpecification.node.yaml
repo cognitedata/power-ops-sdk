@@ -1,4 +1,5 @@
 - externalId: date_specification_default_biddate
+  instanceType: node
   sources:
   - properties:
       floorFrame: hour
@@ -9,14 +10,15 @@
         days: -400
     source:
       externalId: DateSpecification
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: DateSpecification
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: date_specification_default_end
+  instanceType: node
   sources:
   - properties:
       floorFrame: week
@@ -28,14 +30,15 @@
         weeks: 2
     source:
       externalId: DateSpecification
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: DateSpecification
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: date_specification_default_start
+  instanceType: node
   sources:
   - properties:
       floorFrame: day
@@ -46,14 +49,15 @@
         days: -400
     source:
       externalId: DateSpecification
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: DateSpecification
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: date_specification_end_of_next_week
+  instanceType: node
   sources:
   - properties:
       floorFrame: week
@@ -64,14 +68,15 @@
         weeks: 2
     source:
       externalId: DateSpecification
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: DateSpecification
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: date_specification_start_of_tomorrow
+  instanceType: node
   sources:
   - properties:
       floorFrame: day
@@ -82,10 +87,10 @@
         days: 1
     source:
       externalId: DateSpecification
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: DateSpecification
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types

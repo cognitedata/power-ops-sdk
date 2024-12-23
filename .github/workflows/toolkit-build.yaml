@@ -1,0 +1,185 @@
+name: Toolkit Dry Run Dev
+
+on:
+  pull_request:
+    paths:
+      - "toolkit/**"
+      - ".github/workflows/toolkit-build.yaml"
+      - "!**/*.md"
+
+env:
+  COLUMNS: 99
+  TOOLKIT_ENV: staging
+  TOOLKIT_VERSION: 0.3.18
+  PYTHON_VERSION: "3.11"
+  CLIENT_CONFIG_FILE: "power_ops_config.yaml"
+  CONFIGURATION_FILE: "resync/configuration.yaml"
+
+jobs:
+  get-toolkit-version:
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.image.outputs.image }}
+    steps:
+      - id: image
+        run: echo "image=cognite/toolkit:$TOOLKIT_VERSION" >> "$GITHUB_OUTPUT"
+
+  build-modules:
+    name: Toolkit Dry Run
+    needs: get-toolkit-version
+    runs-on: ubuntu-latest
+    environment: CI
+    container:
+      image: ${{ needs.get-toolkit-version.outputs.image }}
+      env:
+        LOGIN_FLOW: client_credentials
+        CDF_CLUSTER: ${{ vars.CLUSTER }}
+        CDF_PROJECT: ${{ vars.PROJECT }}
+        IDP_CLIENT_ID: ${{ vars.CLIENT_ID }}
+        IDP_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+        IDP_TENANT_ID: ${{ vars.TENANT_ID }}
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      build-status: ${{ steps.build.outcome }}
+      deploy-status: ${{ steps.deploy.outcome }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create a folder for logs
+        run: |
+          if [ ! -d "cdf-tk-logs" ]; then
+            mkdir cdf-tk-logs
+          fi
+      - name: Opt-in for data collection
+        run: cdf collect opt-in
+
+      - name: Build modules
+        id: build
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          cdf build --verbose --env $TOOLKIT_ENV --build-dir cdf-tk-build | tee cdf-tk-logs/build.log
+
+      - name: Dry run modules deployment
+        id: deploy
+        continue-on-error: true
+        if: ${{ steps.build.outcome == 'success' }}
+        run: |
+          set -o pipefail
+          cdf deploy --verbose --dry-run cdf-tk-build | tee cdf-tk-logs/deploy.log
+
+      - name: Store logs
+        id: store-logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: cdf-tk-logs
+          path: cdf-tk-logs/
+          retention-days: 1
+          if-no-files-found: error
+
+  resync-purge:
+    name: Resync Purge Dry Run to CDF project ${{ vars.PROJECT }}
+    environment:
+      name: CI
+    runs-on: ubuntu-latest
+    outputs:
+      purge-status: ${{ steps.purge.outcome }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create a folder for logs
+        run: |
+          if [ ! -d "resync-logs" ]; then
+            mkdir resync-logs
+          fi
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip poetry==1.*
+          poetry config virtualenvs.create false
+          poetry install
+
+      - name: Run resync plan
+        id: purge
+        env:
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          CLIENT_ID: ${{ vars.CLIENT_ID }}
+          PROJECT: ${{ vars.PROJECT }}
+          CLUSTER: ${{ vars.CLUSTER }}
+          TENANT_ID: ${{ vars.TENANT_ID }}
+        continue-on-error: true
+        run: |
+          echo Running resync plan in CDF environment $PROJECT
+          set -o pipefail
+          powerops purge $CLIENT_CONFIG_FILE $CONFIGURATION_FILE --dry-run --logs resync-logs/purge.log
+
+      - name: Store logs
+        id: store-logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: resync-logs
+          path: resync-logs/
+          retention-days: 1
+          if-no-files-found: error
+
+  pr-writeback:
+    needs: [build-modules, resync-purge]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download toolkit log files
+        id: download-tk-logs
+        uses: actions/download-artifact@v4
+        with:
+          name: cdf-tk-logs
+          path: cdf-tk-logs
+
+      - name: Download resync log files
+        id: download-resync-logs
+        uses: actions/download-artifact@v4
+        with:
+          name: resync-logs
+          path: resync-logs
+
+      - name: Write a comment back to the PR
+        id: write_comment
+        shell: bash
+        run: |
+          set -e
+          B_STATUS="Build status: **${{ needs.build-modules.outputs.build-status }}**"
+          DR_STATUS="Dry run status: **${{ needs.build-modules.outputs.deploy-status }}**"
+          RP_STATUS="Resync purge status: **${{ needs.resync-purge.outputs.purge-status }}**"
+
+          if [ -f cdf-tk-logs/deploy.log ]; then
+            MSG=$(cat cdf-tk-logs/deploy.log)
+          elif [ -f cdf-tk-logs/build.log ]; then
+            MSG=$(cat cdf-tk-logs/build.log)
+          else
+            MSG='Error. Check toolkit workflow run for details.'
+          fi
+
+          if [ -f resync-logs/purge.log ]; then
+            MSG_PURGE=$(cat resync-logs/purge.log)
+          else
+            MSG_PURGE='Error. Check purge workflow run for details.'
+          fi
+
+          REPO_URL=$(jq '.repository.html_url' -r < "$GITHUB_EVENT_PATH")
+          PR_NUMBER=$(jq '.number' -r < "$GITHUB_EVENT_PATH")
+
+          RUN_LINK="[$GITHUB_RUN_ID]($REPO_URL/actions/runs/$GITHUB_RUN_ID)"
+
+          printf 'Toolkit dry run triggered: %s\n\n%s\n%s\n%s\n\n```\n%s\n```\n\n%s\n' \
+            "$RUN_LINK" "$B_STATUS" "$DR_STATUS" "$RP_STATUS" "$MSG" "$MSG_PURGE" > pr-comment-body.txt
+
+          gh pr comment $PR_NUMBER -F pr-comment-body.txt
+        env:
+          GH_TOKEN: ${{ github.token }}

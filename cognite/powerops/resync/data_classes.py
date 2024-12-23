@@ -11,7 +11,7 @@ from typing import Any, Optional
 
 from cognite.powerops.utils.serialization import load_yaml
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("resync")
 
 
 @dataclass

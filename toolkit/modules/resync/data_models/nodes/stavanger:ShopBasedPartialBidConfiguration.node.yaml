@@ -1,4 +1,5 @@
 - externalId: shop_based_partial_bid_configuration_sola_1
+  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -6,20 +7,21 @@
       name: Sola 1
       powerAsset:
         externalId: plant_information_sola
-        space: '{{power_ops_instance_space}}'
+        space: power_ops_instances
       scenarioSet:
         externalId: shop_scenario_set_stavanger_1_scenario
-        space: '{{power_ops_instance_space}}'
+        space: power_ops_instances
     source:
       externalId: ShopBasedPartialBidConfiguration
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopBasedPartialBidConfiguration
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_sola_2
+  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -27,20 +29,21 @@
       name: Sola 2
       powerAsset:
         externalId: plant_information_sola
-        space: '{{power_ops_instance_space}}'
+        space: power_ops_instances
       scenarioSet:
         externalId: shop_scenario_set_stavanger_2_scenarios
-        space: '{{power_ops_instance_space}}'
+        space: power_ops_instances
     source:
       externalId: ShopBasedPartialBidConfiguration
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopBasedPartialBidConfiguration
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_sola_20
+  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -48,20 +51,21 @@
       name: Sola 20
       powerAsset:
         externalId: plant_information_sola
-        space: '{{power_ops_instance_space}}'
+        space: power_ops_instances
       scenarioSet:
         externalId: shop_scenario_set_stavanger_20_scenarios
-        space: '{{power_ops_instance_space}}'
+        space: power_ops_instances
     source:
       externalId: ShopBasedPartialBidConfiguration
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopBasedPartialBidConfiguration
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_sola_3
+  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -69,20 +73,21 @@
       name: Sola 3
       powerAsset:
         externalId: plant_information_sola
-        space: '{{power_ops_instance_space}}'
+        space: power_ops_instances
       scenarioSet:
         externalId: shop_scenario_set_stavanger_3_scenarios
-        space: '{{power_ops_instance_space}}'
+        space: power_ops_instances
     source:
       externalId: ShopBasedPartialBidConfiguration
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopBasedPartialBidConfiguration
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_sola_3_step
+  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -90,16 +95,16 @@
       name: Sola 3 step
       powerAsset:
         externalId: plant_information_sola
-        space: '{{power_ops_instance_space}}'
+        space: power_ops_instances
       scenarioSet:
         externalId: shop_scenario_set_stavanger_3_scenarios
-        space: '{{power_ops_instance_space}}'
+        space: power_ops_instances
     source:
       externalId: ShopBasedPartialBidConfiguration
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopBasedPartialBidConfiguration
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
