@@ -14,3 +14,9 @@ data_model_version: "1"
 # Purge configuration
 toolkit_modules:
   - "toolkit/modules/resync/data_models/nodes"
+# The type of nodes to exclude from deletion
+exclude_nodes:
+  - "ShopFile"
+  - "ShopScenario"
+# The type of edges to exclude from deletion
+# exclude_edges:
