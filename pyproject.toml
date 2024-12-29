@@ -54,7 +54,7 @@ line-length = 120
 indent-width = 4
 target-version = "py310"
 # TODO: remove scripts from exclude if problems are fixed
-exclude = ["scripts", "cognite/powerops/client/_generated", "tutorials"]
+exclude = ["scripts", "cognite/powerops/client/_generated", "tutorials", "toolkit/modules/shop_result_explorer/streamlit/shop_result_explorer/"]
 fix = true
 
 [tool.ruff.format]
