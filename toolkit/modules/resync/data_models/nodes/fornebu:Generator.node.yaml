@@ -1,4 +1,5 @@
 - externalId: generator_dalby_g1
+  instanceType: node
   sources:
   - properties:
       assetType: generator
@@ -6,7 +7,7 @@
       displayName: Dalby G1
       generatorEfficiencyCurve:
         externalId: generator_efficiency_curve:d4933751
-        space: '{{power_ops_instance_space}}'
+        space: power_ops_instances
       name: Dalby_G1
       ordering: 1
       penstockNumber: 1
@@ -15,14 +16,15 @@
       startStopCostTimeSeries: start_stop_cost_Lund_G1
     source:
       externalId: Generator
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: Generator
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: generator_holen_g1
+  instanceType: node
   sources:
   - properties:
       assetType: generator
@@ -30,7 +32,7 @@
       displayName: Holen G1
       generatorEfficiencyCurve:
         externalId: generator_efficiency_curve:81d769a6
-        space: '{{power_ops_instance_space}}'
+        space: power_ops_instances
       name: Holen_G1
       ordering: 1
       penstockNumber: 1
@@ -39,14 +41,15 @@
       startStopCostTimeSeries: start_stop_cost_Lund_G1
     source:
       externalId: Generator
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: Generator
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: generator_landet_g1
+  instanceType: node
   sources:
   - properties:
       assetType: generator
@@ -54,7 +57,7 @@
       displayName: Landet G1
       generatorEfficiencyCurve:
         externalId: generator_efficiency_curve:d0c68b2b
-        space: '{{power_ops_instance_space}}'
+        space: power_ops_instances
       name: Landet_G1
       ordering: 1
       penstockNumber: 1
@@ -63,14 +66,15 @@
       startStopCostTimeSeries: start_stop_cost_Lund_G1
     source:
       externalId: Generator
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: Generator
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: generator_lien_krv_g1
+  instanceType: node
   sources:
   - properties:
       assetType: generator
@@ -78,7 +82,7 @@
       displayName: Lien krv G1
       generatorEfficiencyCurve:
         externalId: generator_efficiency_curve:415890f2
-        space: '{{power_ops_instance_space}}'
+        space: power_ops_instances
       name: Lien_krv_G1
       ordering: 1
       penstockNumber: 1
@@ -87,14 +91,15 @@
       startStopCostTimeSeries: start_stop_cost_Lund_G1
     source:
       externalId: Generator
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: Generator
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: generator_lund_g1
+  instanceType: node
   sources:
   - properties:
       assetType: generator
@@ -102,7 +107,7 @@
       displayName: Lund G1
       generatorEfficiencyCurve:
         externalId: generator_efficiency_curve:5a5d2435
-        space: '{{power_ops_instance_space}}'
+        space: power_ops_instances
       name: Lund_G1
       ordering: 1
       penstockNumber: 1
@@ -111,14 +116,15 @@
       startStopCostTimeSeries: start_stop_cost_Lund_G1
     source:
       externalId: Generator
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: Generator
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: generator_rull1_g1
+  instanceType: node
   sources:
   - properties:
       assetType: generator
@@ -126,7 +132,7 @@
       displayName: Rull 1 G1
       generatorEfficiencyCurve:
         externalId: generator_efficiency_curve:cd6396a6
-        space: '{{power_ops_instance_space}}'
+        space: power_ops_instances
       name: Rull1_G1
       ordering: 1
       penstockNumber: 1
@@ -135,14 +141,15 @@
       startStopCostTimeSeries: start_stop_cost_Lund_G1
     source:
       externalId: Generator
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: Generator
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: generator_rull2_g1
+  instanceType: node
   sources:
   - properties:
       assetType: generator
@@ -150,7 +157,7 @@
       displayName: Rull2 G1
       generatorEfficiencyCurve:
         externalId: generator_efficiency_curve:45440148
-        space: '{{power_ops_instance_space}}'
+        space: power_ops_instances
       name: Rull2_G1
       ordering: 1
       penstockNumber: 1
@@ -159,14 +166,15 @@
       startStopCostTimeSeries: start_stop_cost_Lund_G1
     source:
       externalId: Generator
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: Generator
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: generator_rull2_g2
+  instanceType: node
   sources:
   - properties:
       assetType: generator
@@ -174,7 +182,7 @@
       displayName: Rull2 G2
       generatorEfficiencyCurve:
         externalId: generator_efficiency_curve:1a9811bb
-        space: '{{power_ops_instance_space}}'
+        space: power_ops_instances
       name: Rull2_G2
       ordering: 1
       penstockNumber: 2
@@ -183,14 +191,15 @@
       startStopCostTimeSeries: start_stop_cost_Lund_G1
     source:
       externalId: Generator
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: Generator
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: generator_scott_g1
+  instanceType: node
   sources:
   - properties:
       assetType: generator
@@ -198,7 +207,7 @@
       displayName: Scott G1
       generatorEfficiencyCurve:
         externalId: generator_efficiency_curve:c04055b4
-        space: '{{power_ops_instance_space}}'
+        space: power_ops_instances
       name: Scott_G1
       ordering: 1
       penstockNumber: 1
@@ -207,14 +216,15 @@
       startStopCostTimeSeries: start_stop_cost_Lund_G1
     source:
       externalId: Generator
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: Generator
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: generator_strand_krv_g1
+  instanceType: node
   sources:
   - properties:
       assetType: generator
@@ -222,7 +232,7 @@
       displayName: Strand krv G1
       generatorEfficiencyCurve:
         externalId: generator_efficiency_curve:1c6693a8
-        space: '{{power_ops_instance_space}}'
+        space: power_ops_instances
       name: Strand_krv_G1
       ordering: 1
       penstockNumber: 1
@@ -231,10 +241,10 @@
       startStopCostTimeSeries: start_stop_cost_Lund_G1
     source:
       externalId: Generator
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: Generator
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
