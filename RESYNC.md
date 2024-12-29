@@ -160,7 +160,7 @@ Step 1: Example of generating toolkit files:
 $ powerops pre-build power_ops_config.yaml resync/configuration.yaml
 ```
 
-Step 2: Example of dry run purging nodes/edges not in the generated toolkit files:
+Step 2: Example of dry run purging (deleting) nodes/edges not in the generated toolkit files:
 
 ```bash
 $ powerops purge power_ops_config.yaml resync/configuration.yaml --dry-run
