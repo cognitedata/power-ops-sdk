@@ -175,8 +175,6 @@ $ powerops purge power_ops_config.yaml resync/configuration.yaml
 ```
 
 
-[!NOTE]
-Current implementation requires suffixing every command with "v1" in order to use the FDM v1 compatible resources.
 
 ## CI/CD
 
