@@ -1,22 +1,18 @@
 # Resync FDM v1
 
-Resource Sync, `resync`, used to sync configuration files with CDF through the CLI tool `powerops`.
+Resource Sync, `resync`, used to sync configuration files with CDF through the CLI tool `powerops`. Resync will generate a
+set of toolkit files which can then be used to run toolkit for detailed diff before deploying changes. As toolkit doesn't
+know what resources should be deleted to clean up changes we've implemented `resync purge` which deletes nodes and edges not
+defined in the toolkit folder.
 
-[!NOTE]
-The current implementation does not support calculating the `connection_losses` so a value must be provided if the
+**NOTE:** The current implementation does not support calculating the `connection_losses` so a value must be provided if the
 bid generation method requires it.
 
-[!NOTE]
-The current implementation requires that "from_type/to_type" is provided in order to find the generator connections to
+**NOTE:** The current implementation requires that "from_type/to_type" is provided in order to find the generator connections to
 plants.
 
-[!WARNING]
-All generators/plants must be listed in the configuration in order to be processed by resync. A configuration to include
+**WARNING:** All generators/plants must be listed in the configuration in order to be processed by resync. A configuration to include
 all assets in a model file is in the backlog to be implemented.
-
-[!WARNING]
-Current implementation does not clean up any edges that were removed from the configurations, but will only append new
-edges to the existing references.
 
 ## Configuration
 
@@ -32,7 +28,7 @@ edges to the existing references.
 3. data model population
    - Contains configuration of specific instances
    - Refer to type examples in `power-ops-sdk/resync/fornebu`, `power-ops-sdk/resync/stavanger` and `power-ops-sdk/resync/shared` as an example
-   - Currently recommendation is to only use resync for the below types but these can be expanded with further testing
+   - Current recommendation is to only use resync for the below types but these can be expanded with further testing
      - market_configuration
      - price_area_information
      - bid_configuration_day_ahead
@@ -71,8 +67,7 @@ edges to the existing references.
 └─ configuration.yaml
 ```
 
-[!WARNING]
-All data model files need to be located in subfolders from the root folder that is specified inside
+**WARNING:** All data model files need to be located in subfolders from the root folder that is specified inside
 the `configuration.yaml` in the `working_directory` field.
 
 ### Data Model Configuration
@@ -117,6 +112,9 @@ overridden by a custom `extraction_path`. This option currently only supports pr
   production_min: "[SOURCE:files/model.yaml]model.plant.Lund.p_min"
 ```
 
+**NOTE:** It is recommended to keep your source files in a toolkit module managing CDF files as this will also ensure the
+source file gets uploaded to CDF and changes to the file managed by toolkit.
+
 ### References
 
 Since there are many fields that references other fields or existing CDF resources you can use their external_id or
@@ -147,7 +145,8 @@ For example, the two *partials* external_ids would become `water_value_based_par
 
 ## Usage
 
-Instructions assume Cognite client is configured through `power_ops_config.yaml`
+Instructions assume Cognite client is configured through `power_ops_config.yaml` and resync configuration is located at
+`resync/configuration.yaml`.
 
 See available commands:
 
@@ -155,17 +154,31 @@ See available commands:
 $ powerops --help
 ```
 
-Example of showing plan changes provided the configuration file path `resync/configuration.yaml`:
+Step 1: Example of generating toolkit files:
 
 ```bash
-$ powerops plan_v1 power_ops_config.yaml resync/configuration.yaml
+$ powerops pre-build power_ops_config.yaml resync/configuration.yaml
 ```
 
-Example of showing apply changes provided the configuration file path `resync/configuration.yaml`:
+Step 2: Example of dry run purging (deleting) nodes/edges not in the generated toolkit files:
 
 ```bash
-$ powerops apply_v1 power_ops_config.yaml resync/configuration.yaml
+$ powerops purge power_ops_config.yaml resync/configuration.yaml --dry-run
 ```
 
-[!NOTE]
-Current implementation requires suffixing every command with "v1" in order to use the FDM v1 compatible resources.
+Step 3: Build and deploy toolkit module, see toolkit documentation for details here.
+
+Step 4: Example of purging nodes/edges not in the generated toolkit files when satisfied with dry-run output:
+
+```bash
+$ powerops purge power_ops_config.yaml resync/configuration.yaml
+```
+
+
+
+## CI/CD
+
+Refer to CI/CD setup in this repo to see how resync & toolkit can be automated through PRs.
+- [.pre-commit-config.yaml](.pre-commit-config.yaml)
+- [.github/workflows/toolkit-build.yaml](.github/workflows/toolkit-build.yaml)
+- [.github/workflows/toolkit-deploy.yaml](.github/workflows/toolkit-deploy.yaml)

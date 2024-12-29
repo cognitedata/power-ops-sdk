@@ -1,4 +1,5 @@
 - externalId: shop_time_resolution_15_min_test
+  instanceType: node
   sources:
   - properties:
       minutesAfterStart:
@@ -12,14 +13,15 @@
       - 240
     source:
       externalId: ShopTimeResolution
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopTimeResolution
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
 - externalId: shop_time_resolution_default
+  instanceType: node
   sources:
   - properties:
       minutesAfterStart:
@@ -29,10 +31,10 @@
       - 60
     source:
       externalId: ShopTimeResolution
-      space: '{{power_ops_models_space}}'
+      space: power_ops_core
       type: view
-      version: '{{power_ops_data_model_version}}'
-  space: '{{power_ops_instance_space}}'
+      version: '1'
+  space: power_ops_instances
   type:
     externalId: ShopTimeResolution
-    space: '{{power_ops_type_space}}'
+    space: power_ops_types
