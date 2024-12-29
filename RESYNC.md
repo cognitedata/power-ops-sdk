@@ -1,7 +1,7 @@
 # Resync FDM v1
 
 Resource Sync, `resync`, used to sync configuration files with CDF through the CLI tool `powerops`. Resync will generate a
-set of toolkit files which can then me used to run toolkit for  detailed diff before deploying changes. As toolkit doesn't
+set of toolkit files which can then be used to run toolkit for detailed diff before deploying changes. As toolkit doesn't
 know what resources should be deleted to clean up changes we've implemented resync purge which deletes nodes and edges not
 defined in the toolkit folder.
 
