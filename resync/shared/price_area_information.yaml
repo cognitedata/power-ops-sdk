@@ -29,7 +29,6 @@
   total_capacity_allocation_down: "[external_id]ext_id_ts"
   own_capacity_allocation_up: "[external_id]ext_id_ts"
   own_capacity_allocation_down: "[external_id]ext_id_ts"
-  default_bid_configuration: "[name]Multi Scenario NO1" # TODO: doesn't exist yet
   main_price_scenario: "[external_id]ext_id_ts"
   price_scenarios:
     - "[external_id]ext_id_ts"
@@ -54,14 +53,11 @@
   display_name: "Midt-Norge (NO3)"
   ordering: 3
   asset_type: price_area
-  default_bid_configuration: "[name]Multi Scenario NO3" # TODO: doesn't exist yet
 - name: NO4
   display_name: "Nord-Norge (NO4)"
   ordering: 4
   asset_type: price_area
-  default_bid_configuration: "[name]Multi Scenario NO4" # TODO: doesn't exist yet
 - name: NO5
   display_name: "Vestlandet (NO5)"
   ordering: 5
   asset_type: price_area
-  default_bid_configuration: "[name]Multi Scenario NO5" # TODO: doesn't exist yet
