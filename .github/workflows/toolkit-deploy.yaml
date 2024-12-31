@@ -32,14 +32,11 @@ jobs:
       image: ${{ needs.get-toolkit-version.outputs.image }}
       env:
         LOGIN_FLOW: client_credentials
-        CDF_CLUSTER: ${{ secrets.CDF_CLUSTER }}
-        CDF_PROJECT: ${{ secrets.CDF_PROJECT }}
-        IDP_CLIENT_ID: ${{ secrets.IDP_CLIENT_ID }}
-        IDP_CLIENT_SECRET: ${{ secrets.IDP_CLIENT_SECRET }}
-        IDP_TENANT_ID: ${{ secrets.ENTRA_ID_TENANT_ID }}
-        VOLUE_INSIGHT_API_CLIENT_ID: ${{ secrets.VOLUE_INSIGHT_API_CLIENT_ID }}
-        VOLUE_INSIGHT_API_CLIENT_SECRET: ${{ secrets.VOLUE_INSIGHT_API_CLIENT_SECRET }}
-        WF_TRIGGER_SECRET: ${{ secrets.WF_TRIGGER_SECRET }}
+        CDF_CLUSTER: ${{ vars.CLUSTER }}
+        CDF_PROJECT: ${{ vars.PROJECT }}
+        IDP_CLIENT_ID: ${{ vars.CLIENT_ID }}
+        IDP_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+        IDP_TENANT_ID: ${{ vars.TENANT_ID }}
     steps:
       - uses: actions/checkout@v4
       - name: Build modules
