@@ -7,9 +7,6 @@
       assetType: price_area
       capacityPriceDown: ext_id_ts
       capacityPriceUp: ext_id_ts
-      defaultBidConfiguration:
-        externalId: bid_configuration_day_ahead_multi_scenario_no1
-        space: power_ops_instances
       displayName: "\xD8stlandet (NO1)"
       mainPriceScenario: ext_id_ts
       name: NO1
@@ -67,9 +64,6 @@
   sources:
   - properties:
       assetType: price_area
-      defaultBidConfiguration:
-        externalId: bid_configuration_day_ahead_multi_scenario_no3
-        space: power_ops_instances
       displayName: Midt-Norge (NO3)
       name: NO3
       ordering: 3
@@ -87,9 +81,6 @@
   sources:
   - properties:
       assetType: price_area
-      defaultBidConfiguration:
-        externalId: bid_configuration_day_ahead_multi_scenario_no4
-        space: power_ops_instances
       displayName: Nord-Norge (NO4)
       name: NO4
       ordering: 4
@@ -107,9 +98,6 @@
   sources:
   - properties:
       assetType: price_area
-      defaultBidConfiguration:
-        externalId: bid_configuration_day_ahead_multi_scenario_no5
-        space: power_ops_instances
       displayName: Vestlandet (NO5)
       name: NO5
       ordering: 5

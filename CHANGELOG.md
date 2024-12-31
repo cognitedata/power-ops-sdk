@@ -15,6 +15,10 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.109.0] - 2024-12-31
+### Fixed
+* Resync build handles direct relations that are none
+
 ## [0.108.0] - 2024-12-20
 ### Added
 * Resync purge to clean up any nodes & edges not included in the toolkit files generated from resync pre_build
