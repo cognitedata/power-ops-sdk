@@ -32,11 +32,7 @@ from cognite.powerops.resync.data_classes import (
     DataModelConfiguration,
     PropertyConfiguration,
 )
-from cognite.powerops.resync.utils import (
-    check_input_keys,
-    ext_id_factory,
-    parse_external_ids,
-)
+from cognite.powerops.resync.utils import check_input_keys, ext_id_factory, parse_external_ids
 from cognite.powerops.utils.serialization import load_yaml
 
 logger = logging.getLogger("resync")
@@ -340,7 +336,7 @@ class ResyncImporter:
             for property_name, info in object_dump.items():
                 if property_name in edge_properties:
                     edges[property_name] = info
-                elif property_name in direct_relation_properties:
+                elif property_name in direct_relation_properties and object_dump[property_name] is not None:
                     object_dump[property_name] = {
                         "space": self.instance_space,
                         "externalId": object_dump[property_name],
@@ -352,6 +348,7 @@ class ResyncImporter:
                             "externalId": item,
                         }
                         for item in object_dump[property_name]
+                        if item is not None
                     ]
                 elif property_name in float_properties:
                     if object_dump[property_name] is not None and object_dump[property_name].is_integer():
