@@ -27,14 +27,13 @@ repos:
       - id: check-builtin-literals
       - id: check-docstring-first
       - id: check-yaml
-        exclude: "mkdocs.yml|^test_apply/demo_.*.yml"
       - id: debug-statements
       - id: end-of-file-fixer
         exclude: "^toolkit/modules/resync/.+yaml$"
       - id: name-tests-test
         args:
           - --pytest-test-first
-        exclude: "constants.py|mock_.*.py"
+        exclude: "constants.py"
       - id: trailing-whitespace
       - id: no-commit-to-branch
 
