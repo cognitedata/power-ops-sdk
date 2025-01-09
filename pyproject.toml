@@ -8,12 +8,15 @@ authors = [
 ]
 license = "Apache 2.0"
 repository = "https://github.com/cognitedata/power-ops-sdk"
-packages = [{include = "cognite", from = "."}]
+
 dynamic = [ "dependencies" ]
 requires-python = ">=3.10,<3.13"
 
 [tool.poetry]
 requires-poetry = ">=2.0"
+packages = [
+    {include = "cognite", from = "."},
+]
 
 [tool.poetry.dependencies]
 typer = "^0.12.0"
