@@ -1,17 +1,21 @@
-[tool.poetry]
+[project]
 name = "cognite-power-ops"
 version = "0.109.0"
 description = "SDK for power markets operations on Cognite Data Fusion"
 readme = "README.md"
-authors = ["Cognite <support@cognite.com>"]
+authors = [
+    {name = "Cognite", email = "support@cognite.com"}
+]
 license = "Apache 2.0"
-documentation = "https://cognite-power-ops-sdk.readthedocs-hosted.com/en/latest/"
-homepage = "https://cognite-power-ops-sdk.readthedocs-hosted.com/en/latest/"
 repository = "https://github.com/cognitedata/power-ops-sdk"
 packages = [{include = "cognite", from = "."}]
+dynamic = [ "dependencies" ]
+requires-python = ">=3.10,<3.13"
+
+[tool.poetry]
+requires-poetry = ">=2.0"
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.13"
 typer = "^0.12.0"
 PyYAML = "^6.0"
 cognite-sdk = {version = ">=7.67.1", extras = ["pandas"]}
@@ -31,7 +35,7 @@ toml = ">=0.10"
 cachelib = "^0.13.0"
 
 
-[tool.poetry.scripts]
+[project.scripts]
 powerops = "cognite.powerops.cli:main"
 
 [tool.poetry.group.dev.dependencies]
