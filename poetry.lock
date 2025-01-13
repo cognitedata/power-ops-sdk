@@ -503,15 +503,15 @@ colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
 name = "cognite-pygen"
-version = "0.99.60"
+version = "0.99.61"
 description = "Cognite Python SDK Generator"
 optional = false
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
 markers = "python_version <= \"3.11\" or python_version >= \"3.12\""
 files = [
-    {file = "cognite_pygen-0.99.60-py3-none-any.whl", hash = "sha256:8264032b3c954800511fcb5aa2c95de34728f9f0a0e49b979f3d5571b7696288"},
-    {file = "cognite_pygen-0.99.60.tar.gz", hash = "sha256:48c31d0f90a1e992624b973d3365e9dce5c73e73d5cd50c3d52fceeef23d7fe3"},
+    {file = "cognite_pygen-0.99.61-py3-none-any.whl", hash = "sha256:fccfbdceaeab851b9934ff6530a5ab19bd017cdd444cf0e0ab1456d0fa19ce21"},
+    {file = "cognite_pygen-0.99.61.tar.gz", hash = "sha256:a3ea86720196e109974fa41614ddf30dc136643461a23d5a2dff7e34aa6c7333"},
 ]
 
 [package.dependencies]
@@ -527,15 +527,15 @@ format = ["black (>=24.4.2)"]
 
 [[package]]
 name = "cognite-sdk"
-version = "7.71.3"
+version = "7.71.4"
 description = "Cognite Python SDK"
 optional = false
 python-versions = "<4.0,>=3.10"
 groups = ["main", "dev"]
 markers = "python_version <= \"3.11\" or python_version >= \"3.12\""
 files = [
-    {file = "cognite_sdk-7.71.3-py3-none-any.whl", hash = "sha256:01b6e9a14a3e38feb9692c1c09f190e18cd4118ba2d25ee0723bc9796c55ca26"},
-    {file = "cognite_sdk-7.71.3.tar.gz", hash = "sha256:6b938ed7e030e3aadbcf0724315819780a9966202a158c204e37e1ec4130c02d"},
+    {file = "cognite_sdk-7.71.4-py3-none-any.whl", hash = "sha256:b27dc1c3014d869f9339b0df28aea07e4b436430945af637e0399ef99e847a8e"},
+    {file = "cognite_sdk-7.71.4.tar.gz", hash = "sha256:5bc38c014fd2b36d8d8f7b724f73742b1d91906f287e3e94ddf82c93141eb7c6"},
 ]
 
 [package.dependencies]
@@ -2978,15 +2978,15 @@ dev = ["pre-commit", "pytest-asyncio", "tox"]
 
 [[package]]
 name = "pytest-regressions"
-version = "2.6.0"
+version = "2.7.0"
 description = "Easy to use fixtures to write regression tests."
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.9"
 groups = ["dev"]
 markers = "python_version <= \"3.11\" or python_version >= \"3.12\""
 files = [
-    {file = "pytest_regressions-2.6.0-py3-none-any.whl", hash = "sha256:5c4a4763415f765770449190097a99b3a8a6ebf20b24e6d90a32da6644e5d041"},
-    {file = "pytest_regressions-2.6.0.tar.gz", hash = "sha256:e3dce521fac11199a2a91a1b8837974d708c7e8665b8c9668b3a721b556c8183"},
+    {file = "pytest_regressions-2.7.0-py3-none-any.whl", hash = "sha256:69f5e3f03493cf0ef84d96d23e50a546617c198b1d7746f2e2b9e441cbab4847"},
+    {file = "pytest_regressions-2.7.0.tar.gz", hash = "sha256:4c30064e0923929012c94f5d6f35205be06fd8709c7f0dba0228e05c460af05e"},
 ]
 
 [package.dependencies]
