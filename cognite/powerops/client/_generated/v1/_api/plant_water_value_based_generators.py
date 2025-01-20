@@ -28,8 +28,8 @@ class PlantWaterValueBasedGeneratorsAPI(EdgeAPI):
             to_generator_space: Location of the generators.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of generator edges to return. Defaults to 25. Set to -1, float("inf") or None
-                to return all items.
+            limit: Maximum number of generator edges to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
 
         Returns:
             The requested generator edges.
@@ -40,7 +40,9 @@ class PlantWaterValueBasedGeneratorsAPI(EdgeAPI):
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> plant_water_value_based = client.plant_water_value_based.generators_edge.list("my_plant_water_value_based", limit=5)
+                >>> plant_water_value_based = client.plant_water_value_based.generators_edge.list(
+                ...     "my_plant_water_value_based", limit=5
+                ... )
 
         """
         filter_ = _create_edge_filter(

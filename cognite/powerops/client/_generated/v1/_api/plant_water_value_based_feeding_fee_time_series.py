@@ -3,19 +3,21 @@ from __future__ import annotations
 import datetime
 import warnings
 from collections.abc import Sequence
-from typing import Literal, cast
+from typing import Literal
 
 import pandas as pd
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import Datapoints, DatapointsArrayList, DatapointsList, TimeSeriesList
 from cognite.client.data_classes.datapoints import Aggregate
-from cognite.powerops.client._generated.v1.data_classes._plant_water_value_based import _create_plant_water_value_based_filter
-from cognite.powerops.client._generated.v1.data_classes._core import QueryStep, DataClassQueryBuilder, DomainModelList
-from cognite.powerops.client._generated.v1._api._core import DEFAULT_LIMIT_READ
+from cognite.client.utils._time import ZoneInfo
 
+from cognite.powerops.client._generated.v1._api._core import DEFAULT_LIMIT_READ
+from cognite.powerops.client._generated.v1.data_classes._plant_water_value_based import _create_plant_water_value_based_filter
+from cognite.powerops.client._generated.v1.data_classes._core import QueryBuilder, QueryStep
 
 ColumnNames = Literal["name", "displayName", "ordering", "assetType", "headLossFactor", "outletLevel", "productionMax", "productionMin", "connectionLosses", "productionMaxTimeSeries", "productionMinTimeSeries", "waterValueTimeSeries", "feedingFeeTimeSeries", "outletLevelTimeSeries", "inletLevelTimeSeries", "headDirectTimeSeries"]
+
 
 class PlantWaterValueBasedFeedingFeeTimeSeriesQuery:
     def __init__(
@@ -37,29 +39,57 @@ class PlantWaterValueBasedFeedingFeeTimeSeriesQuery:
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
+        timezone: str | datetime.timezone | ZoneInfo | None = None,
         target_unit: str | None = None,
         target_unit_system: str | None = None,
         limit: int | None = None,
         include_outside_points: bool = False,
+        include_status: bool = False,
+        ignore_bad_datapoints: bool = True,
+        treat_uncertain_as_bad: bool = True,
     ) -> DatapointsList:
         """`Retrieve datapoints for the `plant_water_value_based.feeding_fee_time_series` timeseries.
 
         **Performance guide**:
             In order to retrieve millions of datapoints as efficiently as possible, here are a few guidelines:
 
-            1. For the best speed, and significantly lower memory usage, consider using ``retrieve_arrays(...)`` which uses ``numpy.ndarrays`` for data storage.
-            2. Only unlimited queries with (``limit=None``) are fetched in parallel, so specifying a large finite ``limit`` like 1 million, comes with severe performance penalty as data is fetched serially.
-            3. Try to avoid specifying `start` and `end` to be very far from the actual data: If you had data from 2000 to 2015, don't set start=0 (1970).
+            1. For the best speed, and significantly lower memory usage, consider using
+               ``retrieve_arrays(...)`` which uses ``numpy.ndarrays`` for data storage.
+            2. Only unlimited queries with (``limit=None``) are fetched in parallel, so specifying a large
+               finite ``limit`` like 1 million, comes with severe performance penalty as data is fetched serially.
+            3. Try to avoid specifying `start` and `end` to be very far from the actual data: If you had data
+               from 2000 to 2015, don't set start=0 (1970).
 
         Args:
             start: Inclusive start. Default: 1970-01-01 UTC.
             end: Exclusive end. Default: "now"
             aggregates: Single aggregate or list of aggregates to retrieve. Default: None (raw datapoints returned)
             granularity The granularity to fetch aggregates at. e.g. '15s', '2h', '10d'. Default: None.
-            target_unit: The unit_external_id of the data points returned. If the time series does not have an unit_external_id that can be converted to the target_unit, an error will be returned. Cannot be used with target_unit_system.
+            timezone (str | datetime.timezone | ZoneInfo | None): For raw datapoints, which timezone
+                to use when displaying (will not affect what is retrieved). For aggregates, which timezone
+                to align to for granularity 'hour' and longer. Align to the start of the hour, -day or -month.
+                For timezones of type Region/Location, like 'Europe/Oslo', pass a string or ``ZoneInfo`` instance.
+                The aggregate duration will then vary, typically due to daylight saving time. You can also use a
+                fixed offset from UTC by passing a string like '+04:00', 'UTC-7' or 'UTC-02:30' or an instance of
+                ``datetime.timezone``. Note: Historical timezones with second offset are not supported,
+                and timezones with minute offsets (e.g. UTC+05:30 or Asia/Kolkata) may take longer to execute.
+            target_unit: The unit_external_id of the data points returned. If the time series does not have an
+                unit_external_id that can be converted to the target_unit, an error will be returned.
+                Cannot be used with target_unit_system.
             target_unit_system: The unit system of the data points returned. Cannot be used with target_unit.
-            limit (int | None): Maximum number of datapoints to return for each time series. Default: None (no limit)
-            include_outside_points (bool): Whether to include outside points. Not allowed when fetching aggregates. Default: False
+            limit: Maximum number of datapoints to return for each time series. Default: None (no limit)
+            include_outside_points: Whether to include outside points. Not allowed when fetching aggregates.
+                Default: False
+            include_status (bool): Also return the status code, an integer, for each datapoint in the response.
+                Only relevant for raw datapoint queries, not aggregates.
+            ignore_bad_datapoints (bool): Treat datapoints with a bad status code as if they do not exist.
+                If set to false, raw queries will include bad datapoints in the response, and aggregates
+                will in general omit the time period between a bad datapoint and the next good datapoint.
+                Also, the period between a bad datapoint and the previous good datapoint will be considered
+                constant. Default: True.
+            treat_uncertain_as_bad (bool): Treat datapoints with uncertain status codes as bad. If false,
+                treat datapoints with uncertain status codes as good. Used for both raw queries and aggregates.
+                Default: True.
 
         Returns:
             A ``DatapointsList`` with the requested datapoints.
@@ -67,11 +97,14 @@ class PlantWaterValueBasedFeedingFeeTimeSeriesQuery:
         Examples:
 
             In this example,
-            we are using the time-ago format to get raw data for the 'my_feeding_fee_time_series' from 2 weeks ago up until now::
+            we are using the time-ago format to get raw data for the
+            'my_feeding_fee_time_series' from 2 weeks ago up until now::
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> plant_water_value_based_datapoints = client.plant_water_value_based.feeding_fee_time_series(external_id="my_feeding_fee_time_series").retrieve(start="2w-ago")
+                >>> plant_water_value_based_datapoints = client.plant_water_value_based.feeding_fee_time_series(
+                ...         external_id="my_feeding_fee_time_series"
+                ...     ).retrieve(start="2w-ago")
         """
         external_ids = self._retrieve_timeseries_external_ids_with_extra()
         if external_ids:
@@ -82,10 +115,14 @@ class PlantWaterValueBasedFeedingFeeTimeSeriesQuery:
                 end=end,
                 aggregates=aggregates,  # type: ignore[arg-type]
                 granularity=granularity,
+                timezone=timezone,
                 target_unit=target_unit,
                 target_unit_system=target_unit_system,
                 limit=limit,
                 include_outside_points=include_outside_points,
+                include_status=include_status,
+                ignore_bad_datapoints=ignore_bad_datapoints,
+                treat_uncertain_as_bad=treat_uncertain_as_bad,
             )
         else:
             return DatapointsList([])
@@ -97,29 +134,57 @@ class PlantWaterValueBasedFeedingFeeTimeSeriesQuery:
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
+        timezone: str | datetime.timezone | ZoneInfo | None = None,
         target_unit: str | None = None,
         target_unit_system: str | None = None,
         limit: int | None = None,
         include_outside_points: bool = False,
+        include_status: bool = False,
+        ignore_bad_datapoints: bool = True,
+        treat_uncertain_as_bad: bool = True,
     ) -> DatapointsArrayList:
         """`Retrieve numpy arrays for the `plant_water_value_based.feeding_fee_time_series` timeseries.
 
         **Performance guide**:
             In order to retrieve millions of datapoints as efficiently as possible, here are a few guidelines:
 
-            1. For the best speed, and significantly lower memory usage, consider using ``retrieve_arrays(...)`` which uses ``numpy.ndarrays`` for data storage.
-            2. Only unlimited queries with (``limit=None``) are fetched in parallel, so specifying a large finite ``limit`` like 1 million, comes with severe performance penalty as data is fetched serially.
-            3. Try to avoid specifying `start` and `end` to be very far from the actual data: If you had data from 2000 to 2015, don't set start=0 (1970).
+            1. For the best speed, and significantly lower memory usage, consider using
+               ``retrieve_arrays(...)`` which uses ``numpy.ndarrays`` for data storage.
+            2. Only unlimited queries with (``limit=None``) are fetched in parallel, so specifying a large
+               finite ``limit`` like 1 million, comes with severe performance penalty as data is fetched serially.
+            3. Try to avoid specifying `start` and `end` to be very far from the actual data: If you had
+               data from 2000 to 2015, don't set start=0 (1970).
 
         Args:
             start: Inclusive start. Default: 1970-01-01 UTC.
             end: Exclusive end. Default: "now"
             aggregates: Single aggregate or list of aggregates to retrieve. Default: None (raw datapoints returned)
             granularity The granularity to fetch aggregates at. e.g. '15s', '2h', '10d'. Default: None.
-            target_unit: The unit_external_id of the data points returned. If the time series does not have an unit_external_id that can be converted to the target_unit, an error will be returned. Cannot be used with target_unit_system.
+            timezone (str | datetime.timezone | ZoneInfo | None): For raw datapoints, which timezone to use when
+                displaying (will not affect what is retrieved). For aggregates, which timezone to align to for
+                granularity 'hour' and longer. Align to the start of the hour, -day or -month. For timezones of
+                type Region/Location, like 'Europe/Oslo', pass a string or ``ZoneInfo`` instance. The aggregate
+                duration will then vary, typically due to daylight saving time. You can also use a fixed offset
+                from UTC by passing a string like '+04:00', 'UTC-7' or 'UTC-02:30' or an instance of
+                ``datetime.timezone``. Note: Historical timezones with second offset are not supported, and timezones
+                with minute offsets (e.g. UTC+05:30 or Asia/Kolkata) may take longer to execute.
+            target_unit: The unit_external_id of the data points returned. If the time series does not have an
+                unit_external_id that can be converted to the target_unit, an error will be returned.
+                Cannot be used with target_unit_system.
             target_unit_system: The unit system of the data points returned. Cannot be used with target_unit.
-            limit (int | None): Maximum number of datapoints to return for each time series. Default: None (no limit)
-            include_outside_points (bool): Whether to include outside points. Not allowed when fetching aggregates. Default: False
+            limit: Maximum number of datapoints to return for each time series. Default: None (no limit)
+            include_outside_points: Whether to include outside points. Not allowed when fetching aggregates.
+                Default: False
+            include_status (bool): Also return the status code, an integer, for each datapoint in the response.
+                Only relevant for raw datapoint queries, not aggregates.
+            ignore_bad_datapoints (bool): Treat datapoints with a bad status code as if they do not exist.
+                If set to false, raw queries will include bad datapoints in the response, and aggregates will
+                in general omit the time period between a bad datapoint and the next good datapoint. Also, the
+                period between a bad datapoint and the previous good datapoint will be considered constant.
+                Default: True.
+            treat_uncertain_as_bad (bool): Treat datapoints with uncertain status codes as bad. If false,
+                treat datapoints with uncertain status codes as good. Used for both raw queries and aggregates.
+                Default: True.
 
         Returns:
             A ``DatapointsArrayList`` with the requested datapoints.
@@ -127,11 +192,14 @@ class PlantWaterValueBasedFeedingFeeTimeSeriesQuery:
         Examples:
 
             In this example,
-            we are using the time-ago format to get raw data for the 'my_feeding_fee_time_series' from 2 weeks ago up until now::
+            we are using the time-ago format to get raw data for the 'my_feeding_fee_time_series'
+            from 2 weeks ago up until now:
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> plant_water_value_based_datapoints = client.plant_water_value_based.feeding_fee_time_series(external_id="my_feeding_fee_time_series").retrieve_array(start="2w-ago")
+                >>> plant_water_value_based_datapoints = client.plant_water_value_based.feeding_fee_time_series(
+                ...     external_id="my_feeding_fee_time_series"
+                ... ).retrieve_array(start="2w-ago")
         """
         external_ids = self._retrieve_timeseries_external_ids_with_extra()
         if external_ids:
@@ -142,10 +210,14 @@ class PlantWaterValueBasedFeedingFeeTimeSeriesQuery:
                 end=end,
                 aggregates=aggregates,  # type: ignore[arg-type]
                 granularity=granularity,
+                timezone=timezone,
                 target_unit=target_unit,
                 target_unit_system=target_unit_system,
                 limit=limit,
                 include_outside_points=include_outside_points,
+                include_status=include_status,
+                ignore_bad_datapoints=ignore_bad_datapoints,
+                treat_uncertain_as_bad=treat_uncertain_as_bad,
             )
         else:
             return DatapointsArrayList([])
@@ -157,10 +229,14 @@ class PlantWaterValueBasedFeedingFeeTimeSeriesQuery:
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
+        timezone: str | datetime.timezone | ZoneInfo | None = None,
         target_unit: str | None = None,
         target_unit_system: str | None = None,
         limit: int | None = None,
         include_outside_points: bool = False,
+        include_status: bool = False,
+        ignore_bad_datapoints: bool = True,
+        treat_uncertain_as_bad: bool = True,
         uniform_index: bool = False,
         include_aggregate_name: bool = True,
         include_granularity_name: bool = False,
@@ -171,22 +247,51 @@ class PlantWaterValueBasedFeedingFeeTimeSeriesQuery:
         **Performance guide**:
             In order to retrieve millions of datapoints as efficiently as possible, here are a few guidelines:
 
-            1. For the best speed, and significantly lower memory usage, consider using ``retrieve_arrays(...)`` which uses ``numpy.ndarrays`` for data storage.
-            2. Only unlimited queries with (``limit=None``) are fetched in parallel, so specifying a large finite ``limit`` like 1 million, comes with severe performance penalty as data is fetched serially.
-            3. Try to avoid specifying `start` and `end` to be very far from the actual data: If you had data from 2000 to 2015, don't set start=0 (1970).
+            1. For the best speed, and significantly lower memory usage, consider using
+               ``retrieve_arrays(...)`` which uses ``numpy.ndarrays`` for data storage.
+            2. Only unlimited queries with (``limit=None``) are fetched in parallel, so specifying a
+               large finite ``limit`` like 1 million, comes with severe performance penalty as data is fetched serially.
+            3. Try to avoid specifying `start` and `end` to be very far from the actual data: If you had data
+               from 2000 to 2015, don't set start=0 (1970).
 
         Args:
             start: Inclusive start. Default: 1970-01-01 UTC.
             end: Exclusive end. Default: "now"
             aggregates: Single aggregate or list of aggregates to retrieve. Default: None (raw datapoints returned)
             granularity The granularity to fetch aggregates at. e.g. '15s', '2h', '10d'. Default: None.
-            target_unit: The unit_external_id of the data points returned. If the time series does not have an unit_external_id that can be converted to the target_unit, an error will be returned. Cannot be used with target_unit_system.
+            timezone (str | datetime.timezone | ZoneInfo | None): For raw datapoints, which timezone to use when
+                displaying (will not affect what is retrieved). For aggregates, which timezone to align to for
+                granularity 'hour' and longer. Align to the start of the hour, -day or -month. For timezones of
+                type Region/Location, like 'Europe/Oslo', pass a string or ``ZoneInfo`` instance. The aggregate
+                duration will then vary, typically due to daylight saving time. You can also use a fixed offset
+                from UTC by passing a string like '+04:00', 'UTC-7' or 'UTC-02:30' or an instance of
+                ``datetime.timezone``. Note: Historical timezones with second offset are not supported,
+                and timezones with minute offsets (e.g. UTC+05:30 or Asia/Kolkata) may take longer to execute.
+            target_unit: The unit_external_id of the data points returned. If the time series does not have an
+                unit_external_id that can be converted to the target_unit, an error will be returned. Cannot be used
+                with target_unit_system.
             target_unit_system: The unit system of the data points returned. Cannot be used with target_unit.
             limit: Maximum number of datapoints to return for each time series. Default: None (no limit)
-            include_outside_points: Whether to include outside points. Not allowed when fetching aggregates. Default: False
-            uniform_index: If only querying aggregates AND a single granularity is used, AND no limit is used, specifying `uniform_index=True` will return a dataframe with an equidistant datetime index from the earliest `start` to the latest `end` (missing values will be NaNs). If these requirements are not met, a ValueError is raised. Default: False
-            include_aggregate_name: Include 'aggregate' in the column name, e.g. `my-ts|average`. Ignored for raw time series. Default: True
-            include_granularity_name: Include 'granularity' in the column name, e.g. `my-ts|12h`. Added after 'aggregate' when present. Ignored for raw time series. Default: False
+            include_outside_points: Whether to include outside points. Not allowed when fetching aggregates.
+                Default: False
+            include_status (bool): Also return the status code, an integer, for each datapoint in the response.
+                Only relevant for raw datapoint queries, not aggregates.
+            ignore_bad_datapoints (bool): Treat datapoints with a bad status code as if they do not exist.
+                If set to false, raw queries will include bad datapoints in the response, and aggregates will
+                in general omit the time period between a bad datapoint and the next good datapoint. Also,
+                the period between a bad datapoint and the previous good datapoint will be considered
+                constant. Default: True.
+            treat_uncertain_as_bad (bool): Treat datapoints with uncertain status codes as bad. If false,
+                treat datapoints with uncertain status codes as good. Used for both raw queries and aggregates.
+                Default: True.
+            uniform_index: If only querying aggregates AND a single granularity is used, AND no limit is used,
+                specifying `uniform_index=True` will return a dataframe with an equidistant datetime index from
+                the earliest `start` to the latest `end` (missing values will be NaNs). If these requirements
+                are not met, a ValueError is raised. Default: False
+            include_aggregate_name: Include 'aggregate' in the column name, e.g. `my-ts|average`.
+                Ignored for raw time series. Default: True
+            include_granularity_name: Include 'granularity' in the column name, e.g. `my-ts|12h`. Added after
+                'aggregate' when present. Ignored for raw time series. Default: False
             column_names: Which property to use for column names. Defauts to feedingFeeTimeSeries
 
 
@@ -196,11 +301,14 @@ class PlantWaterValueBasedFeedingFeeTimeSeriesQuery:
         Examples:
 
             In this example,
-            we are using the time-ago format to get raw data for the 'my_feeding_fee_time_series' from 2 weeks ago up until now::
+            we are using the time-ago format to get raw data for the 'my_feeding_fee_time_series'
+            from 2 weeks ago up until now::
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> plant_water_value_based_datapoints = client.plant_water_value_based.feeding_fee_time_series(external_id="my_feeding_fee_time_series").retrieve_dataframe(start="2w-ago")
+                >>> plant_water_value_based_datapoints = client.plant_water_value_based.feeding_fee_time_series(
+                ...     external_id="my_feeding_fee_time_series"
+                ... ).retrieve_dataframe(start="2w-ago")
         """
         external_ids = self._retrieve_timeseries_external_ids_with_extra(column_names)
         if external_ids:
@@ -210,10 +318,14 @@ class PlantWaterValueBasedFeedingFeeTimeSeriesQuery:
                 end=end,
                 aggregates=aggregates,  # type: ignore[arg-type]
                 granularity=granularity,
+                timezone=timezone,
                 target_unit=target_unit,
                 target_unit_system=target_unit_system,
                 limit=limit,
                 include_outside_points=include_outside_points,
+                include_status=include_status,
+                ignore_bad_datapoints=ignore_bad_datapoints,
+                treat_uncertain_as_bad=treat_uncertain_as_bad,
                 uniform_index=uniform_index,
                 include_aggregate_name=include_aggregate_name,
                 include_granularity_name=include_granularity_name,
@@ -248,22 +360,33 @@ class PlantWaterValueBasedFeedingFeeTimeSeriesQuery:
         **Performance guide**:
             In order to retrieve millions of datapoints as efficiently as possible, here are a few guidelines:
 
-            1. For the best speed, and significantly lower memory usage, consider using ``retrieve_arrays(...)`` which uses ``numpy.ndarrays`` for data storage.
-            2. Only unlimited queries with (``limit=None``) are fetched in parallel, so specifying a large finite ``limit`` like 1 million, comes with severe performance penalty as data is fetched serially.
-            3. Try to avoid specifying `start` and `end` to be very far from the actual data: If you had data from 2000 to 2015, don't set start=0 (1970).
+            1. For the best speed, and significantly lower memory usage, consider using
+               ``retrieve_arrays(...)`` which uses ``numpy.ndarrays`` for data storage.
+            2. Only unlimited queries with (``limit=None``) are fetched in parallel, so specifying a large finite
+               ``limit`` like 1 million, comes with severe performance penalty as data is fetched serially.
+            3. Try to avoid specifying `start` and `end` to be very far from the actual data: If you had data
+               from 2000 to 2015, don't set start=0 (1970).
 
         Args:
             start: Inclusive start.
             end: Exclusive end
             aggregates: Single aggregate or list of aggregates to retrieve. Default: None (raw datapoints returned)
             granularity The granularity to fetch aggregates at. e.g. '15s', '2h', '10d'. Default: None.
-            target_unit: The unit_external_id of the data points returned. If the time series does not have an unit_external_id that can be converted to the target_unit, an error will be returned. Cannot be used with target_unit_system.
+            target_unit: The unit_external_id of the data points returned. If the time series does not have an
+                unit_external_id that can be converted to the target_unit, an error will be returned.
+                Cannot be used with target_unit_system.
             target_unit_system: The unit system of the data points returned. Cannot be used with target_unit.
             limit: Maximum number of datapoints to return for each time series. Default: None (no limit)
-            include_outside_points: Whether to include outside points. Not allowed when fetching aggregates. Default: False
-            uniform_index: If only querying aggregates AND a single granularity is used, AND no limit is used, specifying `uniform_index=True` will return a dataframe with an equidistant datetime index from the earliest `start` to the latest `end` (missing values will be NaNs). If these requirements are not met, a ValueError is raised. Default: False
-            include_aggregate_name: Include 'aggregate' in the column name, e.g. `my-ts|average`. Ignored for raw time series. Default: True
-            include_granularity_name: Include 'granularity' in the column name, e.g. `my-ts|12h`. Added after 'aggregate' when present. Ignored for raw time series. Default: False
+            include_outside_points: Whether to include outside points. Not allowed when fetching aggregates.
+                Default: False
+            uniform_index: If only querying aggregates AND a single granularity is used, AND no limit is used,
+                specifying `uniform_index=True` will return a dataframe with an equidistant datetime index from
+                the earliest `start` to the latest `end` (missing values will be NaNs). If these requirements
+                are not met, a ValueError is raised. Default: False
+            include_aggregate_name: Include 'aggregate' in the column name, e.g. `my-ts|average`. Ignored for
+                raw time series. Default: True
+            include_granularity_name: Include 'granularity' in the column name, e.g. `my-ts|12h`. Added after
+                'aggregate' when present. Ignored for raw time series. Default: False
             column_names: Which property to use for column names. Defauts to feedingFeeTimeSeries
 
 
@@ -273,7 +396,8 @@ class PlantWaterValueBasedFeedingFeeTimeSeriesQuery:
         Examples:
 
             In this example,
-            get weekly aggregates for the 'my_feeding_fee_time_series' for the first month of 2023 in Oslo time:
+            get weekly aggregates for the 'my_feeding_fee_time_series' for the
+            first month of 2023 in Oslo time:
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> from datetime import datetime, timezone
@@ -409,11 +533,14 @@ class PlantWaterValueBasedFeedingFeeTimeSeriesAPI:
             max_connection_losses: The maximum value of the connection loss to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of plant water value baseds to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of plant water value baseds to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own
+                filtering which will be ANDed with the filter above.
 
         Returns:
-            A query object that can be used to retrieve datapoins for the plant_water_value_based.feeding_fee_time_series timeseries
+            A query object that can be used to retrieve datapoins for
+            the plant_water_value_based.feeding_fee_time_series timeseries
             selected in this method.
 
         Examples:
@@ -422,7 +549,9 @@ class PlantWaterValueBasedFeedingFeeTimeSeriesAPI:
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> plant_water_value_baseds = client.plant_water_value_based.feeding_fee_time_series(limit=5).retrieve()
+                >>> plant_water_value_baseds = client.plant_water_value_based.feeding_fee_time_series(
+                ...     limit=5
+                ... ).retrieve()
 
         """
         warnings.warn(
@@ -511,8 +640,10 @@ class PlantWaterValueBasedFeedingFeeTimeSeriesAPI:
             max_connection_losses: The maximum value of the connection loss to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of plant water value baseds to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of plant water value baseds to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own
+                filtering which will be ANDed with the filter above.
 
         Returns:
             List of Timeseries plant_water_value_based.feeding_fee_time_series.
@@ -578,7 +709,7 @@ def _retrieve_timeseries_external_ids_with_extra_feeding_fee_time_series(
     has_property = dm.filters.Exists(property=view_id.as_property_ref("feedingFeeTimeSeries"))
     filter_ = dm.filters.And(filter_, has_data, has_property) if filter_ else dm.filters.And(has_data, has_property)
 
-    builder = DataClassQueryBuilder[DomainModelList](None)
+    builder = QueryBuilder()
     builder.append(
         QueryStep(
             name="nodes",

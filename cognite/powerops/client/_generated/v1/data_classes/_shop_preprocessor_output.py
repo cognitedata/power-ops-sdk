@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import warnings
 from collections.abc import Sequence
-from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
+from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
-from pydantic import field_validator, model_validator
+from pydantic import field_validator, model_validator, ValidationInfo
 
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
@@ -23,16 +23,17 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     GraphQLCore,
     ResourcesWrite,
     T_DomainModelList,
-    as_direct_relation_reference,
-    as_instance_dict_id,
     as_node_id,
-    as_pygen_node_id,
-    are_nodes_equal,
+    as_read_args,
+    as_write_args,
     is_tuple_id,
-    select_best_node,
+    as_instance_dict_id,
+    parse_single_connection,
     QueryCore,
     NodeQueryCore,
     StringFilter,
+    ViewPropertyId,
+    DirectRelationFilter,
     IntFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._function_output import FunctionOutput, FunctionOutputWrite
@@ -115,53 +116,13 @@ class ShopPreprocessorOutputGraphQL(GraphQLCore):
             return value["items"]
         return value
 
-    # We do the ignore argument type as we let pydantic handle the type checking
-    @no_type_check
     def as_read(self) -> ShopPreprocessorOutput:
         """Convert this GraphQL format of shop preprocessor output to the reading format."""
-        if self.data_record is None:
-            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
-        return ShopPreprocessorOutput(
-            space=self.space,
-            external_id=self.external_id,
-            data_record=DataRecord(
-                version=0,
-                last_updated_time=self.data_record.last_updated_time,
-                created_time=self.data_record.created_time,
-            ),
-            workflow_execution_id=self.workflow_execution_id,
-            workflow_step=self.workflow_step,
-            function_name=self.function_name,
-            function_call_id=self.function_call_id,
-            function_input=self.function_input.as_read()
-if isinstance(self.function_input, GraphQLCore)
-else self.function_input,
-            alerts=[alert.as_read() for alert in self.alerts] if self.alerts is not None else None,
-            case=self.case.as_read()
-if isinstance(self.case, GraphQLCore)
-else self.case,
-        )
+        return ShopPreprocessorOutput.model_validate(as_read_args(self))
 
-    # We do the ignore argument type as we let pydantic handle the type checking
-    @no_type_check
     def as_write(self) -> ShopPreprocessorOutputWrite:
         """Convert this GraphQL format of shop preprocessor output to the writing format."""
-        return ShopPreprocessorOutputWrite(
-            space=self.space,
-            external_id=self.external_id,
-            data_record=DataRecordWrite(existing_version=0),
-            workflow_execution_id=self.workflow_execution_id,
-            workflow_step=self.workflow_step,
-            function_name=self.function_name,
-            function_call_id=self.function_call_id,
-            function_input=self.function_input.as_write()
-if isinstance(self.function_input, GraphQLCore)
-else self.function_input,
-            alerts=[alert.as_write() for alert in self.alerts] if self.alerts is not None else None,
-            case=self.case.as_write()
-if isinstance(self.case, GraphQLCore)
-else self.case,
-        )
+        return ShopPreprocessorOutputWrite.model_validate(as_write_args(self))
 
 
 class ShopPreprocessorOutput(FunctionOutput):
@@ -186,27 +147,21 @@ class ShopPreprocessorOutput(FunctionOutput):
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopPreprocessorOutput")
     case: Union[ShopCase, str, dm.NodeId, None] = Field(default=None, repr=False)
+    @field_validator("function_input", "case", mode="before")
+    @classmethod
+    def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
+        return parse_single_connection(value, info.field_name)
 
-    # We do the ignore argument type as we let pydantic handle the type checking
-    @no_type_check
+    @field_validator("alerts", mode="before")
+    @classmethod
+    def parse_list(cls, value: Any, info: ValidationInfo) -> Any:
+        if value is None:
+            return None
+        return [parse_single_connection(item, info.field_name) for item in value]
+
     def as_write(self) -> ShopPreprocessorOutputWrite:
         """Convert this read version of shop preprocessor output to the writing version."""
-        return ShopPreprocessorOutputWrite(
-            space=self.space,
-            external_id=self.external_id,
-            data_record=DataRecordWrite(existing_version=self.data_record.version),
-            workflow_execution_id=self.workflow_execution_id,
-            workflow_step=self.workflow_step,
-            function_name=self.function_name,
-            function_call_id=self.function_call_id,
-            function_input=self.function_input.as_write()
-if isinstance(self.function_input, DomainModel)
-else self.function_input,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts] if self.alerts is not None else None,
-            case=self.case.as_write()
-if isinstance(self.case, DomainModel)
-else self.case,
-        )
+        return ShopPreprocessorOutputWrite.model_validate(as_write_args(self))
 
     def as_apply(self) -> ShopPreprocessorOutputWrite:
         """Convert this read version of shop preprocessor output to the writing version."""
@@ -216,56 +171,6 @@ else self.case,
             stacklevel=2,
         )
         return self.as_write()
-    @classmethod
-    def _update_connections(
-        cls,
-        instances: dict[dm.NodeId | str, ShopPreprocessorOutput],  # type: ignore[override]
-        nodes_by_id: dict[dm.NodeId | str, DomainModel],
-        edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
-    ) -> None:
-        from ._alert import Alert
-        from ._shop_case import ShopCase
-        from ._shop_preprocessor_input import ShopPreprocessorInput
-        for instance in instances.values():
-            if isinstance(instance.function_input, (dm.NodeId, str)) and (function_input := nodes_by_id.get(instance.function_input)) and isinstance(
-                    function_input, ShopPreprocessorInput
-            ):
-                instance.function_input = function_input
-            if isinstance(instance.case, (dm.NodeId, str)) and (case := nodes_by_id.get(instance.case)) and isinstance(
-                    case, ShopCase
-            ):
-                instance.case = case
-            if edges := edges_by_source_node.get(instance.as_id()):
-                alerts: list[Alert | str | dm.NodeId] = []
-                for edge in edges:
-                    value: DomainModel | DomainRelation | str | dm.NodeId
-                    if isinstance(edge, DomainRelation):
-                        value = edge
-                    else:
-                        other_end: dm.DirectRelationReference = (
-                            edge.end_node
-                            if edge.start_node.space == instance.space
-                            and edge.start_node.external_id == instance.external_id
-                            else edge.start_node
-                        )
-                        destination: dm.NodeId | str = (
-                            as_node_id(other_end)
-                            if other_end.space != DEFAULT_INSTANCE_SPACE
-                            else other_end.external_id
-                        )
-                        if destination in nodes_by_id:
-                            value = nodes_by_id[destination]
-                        else:
-                            value = destination
-                    edge_type = edge.edge_type if isinstance(edge, DomainRelation) else edge.type
-
-                    if edge_type == dm.DirectRelationReference("power_ops_types", "calculationIssue") and isinstance(
-                        value, (Alert, str, dm.NodeId)
-                    ):
-                        alerts.append(value)
-
-                instance.alerts = alerts or None
-
 
 
 class ShopPreprocessorOutputWrite(FunctionOutputWrite):
@@ -285,6 +190,9 @@ class ShopPreprocessorOutputWrite(FunctionOutputWrite):
         alerts: An array of calculation level Alerts.
         case: The Case to trigger shop with
     """
+    _container_fields: ClassVar[tuple[str, ...]] = ("case", "function_call_id", "function_input", "function_name", "workflow_execution_id", "workflow_step",)
+    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")),)
+    _direct_relations: ClassVar[tuple[str, ...]] = ("case", "function_input",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopPreprocessorOutput", "1")
 
@@ -301,84 +209,12 @@ class ShopPreprocessorOutputWrite(FunctionOutputWrite):
             return [cls.as_node_id(item) for item in value]
         return value
 
-    def _to_instances_write(
-        self,
-        cache: set[tuple[str, str]],
-        write_none: bool = False,
-        allow_version_increase: bool = False,
-    ) -> ResourcesWrite:
-        resources = ResourcesWrite()
-        if self.as_tuple_id() in cache:
-            return resources
-
-        properties: dict[str, Any] = {}
-
-        if self.workflow_execution_id is not None:
-            properties["workflowExecutionId"] = self.workflow_execution_id
-
-        if self.workflow_step is not None:
-            properties["workflowStep"] = self.workflow_step
-
-        if self.function_name is not None:
-            properties["functionName"] = self.function_name
-
-        if self.function_call_id is not None:
-            properties["functionCallId"] = self.function_call_id
-
-        if self.function_input is not None:
-            properties["functionInput"] = {
-                "space":  self.space if isinstance(self.function_input, str) else self.function_input.space,
-                "externalId": self.function_input if isinstance(self.function_input, str) else self.function_input.external_id,
-            }
-
-        if self.case is not None:
-            properties["case"] = {
-                "space":  self.space if isinstance(self.case, str) else self.case.space,
-                "externalId": self.case if isinstance(self.case, str) else self.case.external_id,
-            }
-
-        if properties:
-            this_node = dm.NodeApply(
-                space=self.space,
-                external_id=self.external_id,
-                existing_version=None if allow_version_increase else self.data_record.existing_version,
-                type=as_direct_relation_reference(self.node_type),
-                sources=[
-                    dm.NodeOrEdgeData(
-                        source=self._view_id,
-                        properties=properties,
-                )],
-            )
-            resources.nodes.append(this_node)
-            cache.add(self.as_tuple_id())
-
-        edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
-        for alert in self.alerts or []:
-            other_resources = DomainRelationWrite.from_edge_to_resources(
-                cache,
-                start_node=self,
-                end_node=alert,
-                edge_type=edge_type,
-                write_none=write_none,
-                allow_version_increase=allow_version_increase,
-            )
-            resources.extend(other_resources)
-
-        if isinstance(self.function_input, DomainModelWrite):
-            other_resources = self.function_input._to_instances_write(cache)
-            resources.extend(other_resources)
-
-        if isinstance(self.case, DomainModelWrite):
-            other_resources = self.case._to_instances_write(cache)
-            resources.extend(other_resources)
-
-        return resources
-
 
 class ShopPreprocessorOutputApply(ShopPreprocessorOutputWrite):
     def __new__(cls, *args, **kwargs) -> ShopPreprocessorOutputApply:
         warnings.warn(
-            "ShopPreprocessorOutputApply is deprecated and will be removed in v1.0. Use ShopPreprocessorOutputWrite instead."
+            "ShopPreprocessorOutputApply is deprecated and will be removed in v1.0. "
+            "Use ShopPreprocessorOutputWrite instead. "
             "The motivation for this change is that Write is a more descriptive name for the writing version of the"
             "ShopPreprocessorOutput.",
             UserWarning,
@@ -507,6 +343,7 @@ class _ShopPreprocessorOutputQuery(NodeQueryCore[T_DomainModelList, ShopPreproce
         result_list_cls: type[T_DomainModelList],
         expression: dm.query.ResultSetExpression | None = None,
         connection_name: str | None = None,
+        connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
         reverse_expression: dm.query.ResultSetExpression | None = None,
     ):
@@ -522,6 +359,7 @@ class _ShopPreprocessorOutputQuery(NodeQueryCore[T_DomainModelList, ShopPreproce
             expression,
             dm.filters.HasData(views=[self._view_id]),
             connection_name,
+            connection_property,
             connection_type,
             reverse_expression,
         )
@@ -537,6 +375,7 @@ class _ShopPreprocessorOutputQuery(NodeQueryCore[T_DomainModelList, ShopPreproce
                     direction="outwards",
                 ),
                 connection_name="function_input",
+                connection_property=ViewPropertyId(self._view_id, "functionInput"),
             )
 
         if _AlertQuery not in created_types:
@@ -550,6 +389,7 @@ class _ShopPreprocessorOutputQuery(NodeQueryCore[T_DomainModelList, ShopPreproce
                     chain_to="destination",
                 ),
                 connection_name="alerts",
+                connection_property=ViewPropertyId(self._view_id, "alerts"),
             )
 
         if _ShopCaseQuery not in created_types:
@@ -563,6 +403,7 @@ class _ShopPreprocessorOutputQuery(NodeQueryCore[T_DomainModelList, ShopPreproce
                     direction="outwards",
                 ),
                 connection_name="case",
+                connection_property=ViewPropertyId(self._view_id, "case"),
             )
 
         self.space = StringFilter(self, ["node", "space"])
@@ -571,6 +412,8 @@ class _ShopPreprocessorOutputQuery(NodeQueryCore[T_DomainModelList, ShopPreproce
         self.workflow_step = IntFilter(self, self._view_id.as_property_ref("workflowStep"))
         self.function_name = StringFilter(self, self._view_id.as_property_ref("functionName"))
         self.function_call_id = StringFilter(self, self._view_id.as_property_ref("functionCallId"))
+        self.function_input_filter = DirectRelationFilter(self, self._view_id.as_property_ref("functionInput"))
+        self.case_filter = DirectRelationFilter(self, self._view_id.as_property_ref("case"))
         self._filter_classes.extend([
             self.space,
             self.external_id,
@@ -578,6 +421,8 @@ class _ShopPreprocessorOutputQuery(NodeQueryCore[T_DomainModelList, ShopPreproce
             self.workflow_step,
             self.function_name,
             self.function_call_id,
+            self.function_input_filter,
+            self.case_filter,
         ])
 
     def list_shop_preprocessor_output(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopPreprocessorOutputList:

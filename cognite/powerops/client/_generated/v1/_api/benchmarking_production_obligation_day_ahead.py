@@ -1,21 +1,35 @@
 from __future__ import annotations
 
-from collections.abc import Sequence
-from typing import overload, Literal
 import warnings
+from collections.abc import Sequence
+from typing import Any, ClassVar, Literal, overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    instantiate_classes,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
-    NodeQueryStep,
-    EdgeQueryStep,
-    DataClassQueryBuilder,
+    QueryStepFactory,
+    QueryBuilder,
+    QueryUnpacker,
+    ViewPropertyId,
+)
+from cognite.powerops.client._generated.v1.data_classes._benchmarking_production_obligation_day_ahead import (
+    BenchmarkingProductionObligationDayAheadQuery,
+    _BENCHMARKINGPRODUCTIONOBLIGATIONDAYAHEAD_PROPERTIES_BY_FIELD,
+    _create_benchmarking_production_obligation_day_ahead_filter,
 )
 from cognite.powerops.client._generated.v1.data_classes import (
+    DomainModel,
     DomainModelCore,
     DomainModelWrite,
     ResourcesWriteResult,
@@ -26,24 +40,13 @@ from cognite.powerops.client._generated.v1.data_classes import (
     BenchmarkingProductionObligationDayAheadWriteList,
     BenchmarkingProductionObligationDayAheadTextFields,
 )
-from cognite.powerops.client._generated.v1.data_classes._benchmarking_production_obligation_day_ahead import (
-    BenchmarkingProductionObligationDayAheadQuery,
-    _BENCHMARKINGPRODUCTIONOBLIGATIONDAYAHEAD_PROPERTIES_BY_FIELD,
-    _create_benchmarking_production_obligation_day_ahead_filter,
-)
-from cognite.powerops.client._generated.v1._api._core import (
-    DEFAULT_LIMIT_READ,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-)
 from cognite.powerops.client._generated.v1._api.benchmarking_production_obligation_day_ahead_time_series import BenchmarkingProductionObligationDayAheadTimeSeriesAPI
 from cognite.powerops.client._generated.v1._api.benchmarking_production_obligation_day_ahead_query import BenchmarkingProductionObligationDayAheadQueryAPI
 
 
 class BenchmarkingProductionObligationDayAheadAPI(NodeAPI[BenchmarkingProductionObligationDayAhead, BenchmarkingProductionObligationDayAheadWrite, BenchmarkingProductionObligationDayAheadList, BenchmarkingProductionObligationDayAheadWriteList]):
     _view_id = dm.ViewId("power_ops_core", "BenchmarkingProductionObligationDayAhead", "1")
-    _properties_by_field = _BENCHMARKINGPRODUCTIONOBLIGATIONDAYAHEAD_PROPERTIES_BY_FIELD
+    _properties_by_field: ClassVar[dict[str, str]] = _BENCHMARKINGPRODUCTIONOBLIGATIONDAYAHEAD_PROPERTIES_BY_FIELD
     _class_type = BenchmarkingProductionObligationDayAhead
     _class_list = BenchmarkingProductionObligationDayAheadList
     _class_write_list = BenchmarkingProductionObligationDayAheadWriteList
@@ -61,7 +64,7 @@ class BenchmarkingProductionObligationDayAheadAPI(NodeAPI[BenchmarkingProduction
         space: str | list[str] | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
-    ) -> BenchmarkingProductionObligationDayAheadQueryAPI[BenchmarkingProductionObligationDayAheadList]:
+    ) -> BenchmarkingProductionObligationDayAheadQueryAPI[BenchmarkingProductionObligationDayAhead, BenchmarkingProductionObligationDayAheadList]:
         """Query starting at benchmarking production obligation day aheads.
 
         Args:
@@ -69,8 +72,10 @@ class BenchmarkingProductionObligationDayAheadAPI(NodeAPI[BenchmarkingProduction
             name_prefix: The prefix of the name to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of benchmarking production obligation day aheads to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of benchmarking production obligation day aheads to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
+                your own filtering which will be ANDed with the filter above.
 
         Returns:
             A query API for benchmarking production obligation day aheads.
@@ -91,8 +96,9 @@ class BenchmarkingProductionObligationDayAheadAPI(NodeAPI[BenchmarkingProduction
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = DataClassQueryBuilder(BenchmarkingProductionObligationDayAheadList)
-        return BenchmarkingProductionObligationDayAheadQueryAPI(self._client, builder, filter_, limit)
+        return BenchmarkingProductionObligationDayAheadQueryAPI(
+            self._client, QueryBuilder(), self._class_type, self._class_list, None, filter_, limit
+        )
 
     def apply(
         self,
@@ -103,10 +109,14 @@ class BenchmarkingProductionObligationDayAheadAPI(NodeAPI[BenchmarkingProduction
         """Add or update (upsert) benchmarking production obligation day aheads.
 
         Args:
-            benchmarking_production_obligation_day_ahead: Benchmarking production obligation day ahead or sequence of benchmarking production obligation day aheads to upsert.
-            replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
-                Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
-            write_none (bool): This method, will by default, skip properties that are set to None. However, if you want to set properties to None,
+            benchmarking_production_obligation_day_ahead: Benchmarking production obligation day ahead or
+                sequence of benchmarking production obligation day aheads to upsert.
+            replace (bool): How do we behave when a property value exists? Do we replace all matching and
+                existing values with the supplied values (true)?
+                Or should we merge in new values for properties together with the existing values (false)?
+                Note: This setting applies for all nodes or edges specified in the ingestion call.
+            write_none (bool): This method, will by default, skip properties that are set to None.
+                However, if you want to set properties to None,
                 you can set this parameter to True. Note this only applies to properties that are nullable.
         Returns:
             Created instance(s), i.e., nodes, edges, and time series.
@@ -118,7 +128,9 @@ class BenchmarkingProductionObligationDayAheadAPI(NodeAPI[BenchmarkingProduction
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> from cognite.powerops.client._generated.v1.data_classes import BenchmarkingProductionObligationDayAheadWrite
                 >>> client = PowerOpsModelsV1Client()
-                >>> benchmarking_production_obligation_day_ahead = BenchmarkingProductionObligationDayAheadWrite(external_id="my_benchmarking_production_obligation_day_ahead", ...)
+                >>> benchmarking_production_obligation_day_ahead = BenchmarkingProductionObligationDayAheadWrite(
+                ...     external_id="my_benchmarking_production_obligation_day_ahead", ...
+                ... )
                 >>> result = client.benchmarking_production_obligation_day_ahead.apply(benchmarking_production_obligation_day_ahead)
 
         """
@@ -164,14 +176,24 @@ class BenchmarkingProductionObligationDayAheadAPI(NodeAPI[BenchmarkingProduction
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingProductionObligationDayAhead | None:
-        ...
+    def retrieve(
+        self,
+        external_id: str | dm.NodeId | tuple[str, str],
+        space: str = DEFAULT_INSTANCE_SPACE,
+    ) -> BenchmarkingProductionObligationDayAhead | None: ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingProductionObligationDayAheadList:
-        ...
+    def retrieve(
+        self,
+        external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]],
+        space: str = DEFAULT_INSTANCE_SPACE,
+    ) -> BenchmarkingProductionObligationDayAheadList: ...
 
-    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingProductionObligationDayAhead | BenchmarkingProductionObligationDayAheadList | None:
+    def retrieve(
+        self,
+        external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]],
+        space: str = DEFAULT_INSTANCE_SPACE,
+    ) -> BenchmarkingProductionObligationDayAhead | BenchmarkingProductionObligationDayAheadList | None:
         """Retrieve one or more benchmarking production obligation day aheads by id(s).
 
         Args:
@@ -187,10 +209,15 @@ class BenchmarkingProductionObligationDayAheadAPI(NodeAPI[BenchmarkingProduction
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> benchmarking_production_obligation_day_ahead = client.benchmarking_production_obligation_day_ahead.retrieve("my_benchmarking_production_obligation_day_ahead")
+                >>> benchmarking_production_obligation_day_ahead = client.benchmarking_production_obligation_day_ahead.retrieve(
+                ...     "my_benchmarking_production_obligation_day_ahead"
+                ... )
 
         """
-        return self._retrieve(external_id, space)
+        return self._retrieve(
+            external_id,
+            space,
+        )
 
     def search(
         self,
@@ -215,12 +242,14 @@ class BenchmarkingProductionObligationDayAheadAPI(NodeAPI[BenchmarkingProduction
             name_prefix: The prefix of the name to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of benchmarking production obligation day aheads to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of benchmarking production obligation day aheads to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
-                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                This will override the sort_by and direction. This allows you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
 
         Returns:
@@ -232,7 +261,9 @@ class BenchmarkingProductionObligationDayAheadAPI(NodeAPI[BenchmarkingProduction
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> benchmarking_production_obligation_day_aheads = client.benchmarking_production_obligation_day_ahead.search('my_benchmarking_production_obligation_day_ahead')
+                >>> benchmarking_production_obligation_day_aheads = client.benchmarking_production_obligation_day_ahead.search(
+                ...     'my_benchmarking_production_obligation_day_ahead'
+                ... )
 
         """
         filter_ = _create_benchmarking_production_obligation_day_ahead_filter(
@@ -335,8 +366,10 @@ class BenchmarkingProductionObligationDayAheadAPI(NodeAPI[BenchmarkingProduction
             name_prefix: The prefix of the name to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of benchmarking production obligation day aheads to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of benchmarking production obligation day aheads to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
+                your own filtering which will be ANDed with the filter above.
 
         Returns:
             Aggregation results.
@@ -393,8 +426,10 @@ class BenchmarkingProductionObligationDayAheadAPI(NodeAPI[BenchmarkingProduction
             name_prefix: The prefix of the name to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of benchmarking production obligation day aheads to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of benchmarking production obligation day aheads to return.
+                Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             Bucketed histogram results.
@@ -417,15 +452,29 @@ class BenchmarkingProductionObligationDayAheadAPI(NodeAPI[BenchmarkingProduction
             filter_,
         )
 
-    def query(self) -> BenchmarkingProductionObligationDayAheadQuery:
-        """Start a query for benchmarking production obligation day aheads."""
-        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
-        return BenchmarkingProductionObligationDayAheadQuery(self._client)
-
     def select(self) -> BenchmarkingProductionObligationDayAheadQuery:
         """Start selecting from benchmarking production obligation day aheads."""
-        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
         return BenchmarkingProductionObligationDayAheadQuery(self._client)
+
+    def _query(
+        self,
+        filter_: dm.Filter | None,
+        limit: int,
+        retrieve_connections: Literal["skip", "identifier", "full"],
+        sort: list[InstanceSort] | None = None,
+    ) -> list[dict[str, Any]]:
+        builder = QueryBuilder()
+        factory = QueryStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
+        builder.append(factory.root(
+            filter=filter_,
+            sort=sort,
+            limit=limit,
+            has_container_fields=True,
+        ))
+        unpack_edges: Literal["skip", "identifier"] = "identifier" if retrieve_connections == "identifier" else "skip"
+        builder.execute_query(self._client, remove_not_connected=True if unpack_edges == "skip" else False)
+        return QueryUnpacker(builder, edges=unpack_edges).unpack()
+
 
     def list(
         self,
@@ -446,8 +495,10 @@ class BenchmarkingProductionObligationDayAheadAPI(NodeAPI[BenchmarkingProduction
             name_prefix: The prefix of the name to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of benchmarking production obligation day aheads to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of benchmarking production obligation day aheads to return.
+                Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
@@ -474,11 +525,5 @@ class BenchmarkingProductionObligationDayAheadAPI(NodeAPI[BenchmarkingProduction
             space,
             filter,
         )
-
-        return self._list(
-            limit=limit,
-            filter=filter_,
-            sort_by=sort_by,  # type: ignore[arg-type]
-            direction=direction,
-            sort=sort,
-        )
+        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        return self._list(limit=limit,  filter=filter_, sort=sort_input)

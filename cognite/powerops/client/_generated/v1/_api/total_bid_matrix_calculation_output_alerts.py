@@ -28,8 +28,8 @@ class TotalBidMatrixCalculationOutputAlertsAPI(EdgeAPI):
             to_alert_space: Location of the alerts.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of alert edges to return. Defaults to 25. Set to -1, float("inf") or None
-                to return all items.
+            limit: Maximum number of alert edges to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
 
         Returns:
             The requested alert edges.
@@ -40,7 +40,9 @@ class TotalBidMatrixCalculationOutputAlertsAPI(EdgeAPI):
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> total_bid_matrix_calculation_output = client.total_bid_matrix_calculation_output.alerts_edge.list("my_total_bid_matrix_calculation_output", limit=5)
+                >>> total_bid_matrix_calculation_output = client.total_bid_matrix_calculation_output.alerts_edge.list(
+                ...     "my_total_bid_matrix_calculation_output", limit=5
+                ... )
 
         """
         filter_ = _create_edge_filter(

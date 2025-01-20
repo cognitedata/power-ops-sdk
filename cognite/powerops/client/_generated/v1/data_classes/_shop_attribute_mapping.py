@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import warnings
 from collections.abc import Sequence
-from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
+from typing import Any, ClassVar, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm, CogniteClient
 from cognite.client.data_classes import (
@@ -10,7 +10,7 @@ from cognite.client.data_classes import (
     TimeSeriesWrite as CogniteTimeSeriesWrite,
 )
 from pydantic import Field
-from pydantic import field_validator, model_validator
+from pydantic import field_validator, model_validator, ValidationInfo
 
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
@@ -34,16 +34,16 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     TimeSeriesGraphQL,
     TimeSeriesReferenceAPI,
     T_DomainModelList,
-    as_direct_relation_reference,
-    as_instance_dict_id,
     as_node_id,
-    as_pygen_node_id,
-    are_nodes_equal,
+    as_read_args,
+    as_write_args,
     is_tuple_id,
-    select_best_node,
+    as_instance_dict_id,
+    parse_single_connection,
     QueryCore,
     NodeQueryCore,
     StringFilter,
+    ViewPropertyId,
 
 )
 
@@ -117,45 +117,13 @@ class ShopAttributeMappingGraphQL(GraphQLCore):
 
 
 
-    # We do the ignore argument type as we let pydantic handle the type checking
-    @no_type_check
     def as_read(self) -> ShopAttributeMapping:
         """Convert this GraphQL format of shop attribute mapping to the reading format."""
-        if self.data_record is None:
-            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
-        return ShopAttributeMapping(
-            space=self.space,
-            external_id=self.external_id,
-            data_record=DataRecord(
-                version=0,
-                last_updated_time=self.data_record.last_updated_time,
-                created_time=self.data_record.created_time,
-            ),
-            object_type=self.object_type,
-            object_name=self.object_name,
-            attribute_name=self.attribute_name,
-            time_series=self.time_series.as_read() if self.time_series else None,
-            transformations=self.transformations,
-            retrieve=self.retrieve,
-            aggregation=self.aggregation,
-        )
+        return ShopAttributeMapping.model_validate(as_read_args(self))
 
-    # We do the ignore argument type as we let pydantic handle the type checking
-    @no_type_check
     def as_write(self) -> ShopAttributeMappingWrite:
         """Convert this GraphQL format of shop attribute mapping to the writing format."""
-        return ShopAttributeMappingWrite(
-            space=self.space,
-            external_id=self.external_id,
-            data_record=DataRecordWrite(existing_version=0),
-            object_type=self.object_type,
-            object_name=self.object_name,
-            attribute_name=self.attribute_name,
-            time_series=self.time_series.as_write() if self.time_series else None,
-            transformations=self.transformations,
-            retrieve=self.retrieve,
-            aggregation=self.aggregation,
-        )
+        return ShopAttributeMappingWrite.model_validate(as_write_args(self))
 
 
 class ShopAttributeMapping(DomainModel):
@@ -188,22 +156,10 @@ class ShopAttributeMapping(DomainModel):
     retrieve: Optional[str] = None
     aggregation: Optional[str] = None
 
-    # We do the ignore argument type as we let pydantic handle the type checking
-    @no_type_check
+
     def as_write(self) -> ShopAttributeMappingWrite:
         """Convert this read version of shop attribute mapping to the writing version."""
-        return ShopAttributeMappingWrite(
-            space=self.space,
-            external_id=self.external_id,
-            data_record=DataRecordWrite(existing_version=self.data_record.version),
-            object_type=self.object_type,
-            object_name=self.object_name,
-            attribute_name=self.attribute_name,
-            time_series=self.time_series.as_write() if isinstance(self.time_series, CogniteTimeSeries) else self.time_series,
-            transformations=self.transformations,
-            retrieve=self.retrieve,
-            aggregation=self.aggregation,
-        )
+        return ShopAttributeMappingWrite.model_validate(as_write_args(self))
 
     def as_apply(self) -> ShopAttributeMappingWrite:
         """Convert this read version of shop attribute mapping to the writing version."""
@@ -213,6 +169,7 @@ class ShopAttributeMapping(DomainModel):
             stacklevel=2,
         )
         return self.as_write()
+
 
 class ShopAttributeMappingWrite(DomainModelWrite):
     """This represents the writing version of shop attribute mapping.
@@ -231,6 +188,7 @@ class ShopAttributeMappingWrite(DomainModelWrite):
         retrieve: How to retrieve time series data
         aggregation: How to aggregate time series data
     """
+    _container_fields: ClassVar[tuple[str, ...]] = ("aggregation", "attribute_name", "object_name", "object_type", "retrieve", "time_series", "transformations",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopAttributeMapping", "1")
 
@@ -245,64 +203,12 @@ class ShopAttributeMappingWrite(DomainModelWrite):
     aggregation: Optional[str] = None
 
 
-    def _to_instances_write(
-        self,
-        cache: set[tuple[str, str]],
-        write_none: bool = False,
-        allow_version_increase: bool = False,
-    ) -> ResourcesWrite:
-        resources = ResourcesWrite()
-        if self.as_tuple_id() in cache:
-            return resources
-
-        properties: dict[str, Any] = {}
-
-        if self.object_type is not None:
-            properties["objectType"] = self.object_type
-
-        if self.object_name is not None:
-            properties["objectName"] = self.object_name
-
-        if self.attribute_name is not None:
-            properties["attributeName"] = self.attribute_name
-
-        if self.time_series is not None or write_none:
-            properties["timeSeries"] = self.time_series if isinstance(self.time_series, str) or self.time_series is None else self.time_series.external_id
-
-        if self.transformations is not None or write_none:
-            properties["transformations"] = self.transformations
-
-        if self.retrieve is not None or write_none:
-            properties["retrieve"] = self.retrieve
-
-        if self.aggregation is not None or write_none:
-            properties["aggregation"] = self.aggregation
-
-        if properties:
-            this_node = dm.NodeApply(
-                space=self.space,
-                external_id=self.external_id,
-                existing_version=None if allow_version_increase else self.data_record.existing_version,
-                type=as_direct_relation_reference(self.node_type),
-                sources=[
-                    dm.NodeOrEdgeData(
-                        source=self._view_id,
-                        properties=properties,
-                )],
-            )
-            resources.nodes.append(this_node)
-            cache.add(self.as_tuple_id())
-
-        if isinstance(self.time_series, CogniteTimeSeriesWrite):
-            resources.time_series.append(self.time_series)
-
-        return resources
-
 
 class ShopAttributeMappingApply(ShopAttributeMappingWrite):
     def __new__(cls, *args, **kwargs) -> ShopAttributeMappingApply:
         warnings.warn(
-            "ShopAttributeMappingApply is deprecated and will be removed in v1.0. Use ShopAttributeMappingWrite instead."
+            "ShopAttributeMappingApply is deprecated and will be removed in v1.0. "
+            "Use ShopAttributeMappingWrite instead. "
             "The motivation for this change is that Write is a more descriptive name for the writing version of the"
             "ShopAttributeMapping.",
             UserWarning,
@@ -407,6 +313,7 @@ class _ShopAttributeMappingQuery(NodeQueryCore[T_DomainModelList, ShopAttributeM
         result_list_cls: type[T_DomainModelList],
         expression: dm.query.ResultSetExpression | None = None,
         connection_name: str | None = None,
+        connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
         reverse_expression: dm.query.ResultSetExpression | None = None,
     ):
@@ -419,6 +326,7 @@ class _ShopAttributeMappingQuery(NodeQueryCore[T_DomainModelList, ShopAttributeM
             expression,
             dm.filters.HasData(views=[self._view_id]),
             connection_name,
+            connection_property,
             connection_type,
             reverse_expression,
         )

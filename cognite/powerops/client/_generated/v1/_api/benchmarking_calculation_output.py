@@ -1,21 +1,35 @@
 from __future__ import annotations
 
-from collections.abc import Sequence
-from typing import overload, Literal
 import warnings
+from collections.abc import Sequence
+from typing import Any, ClassVar, Literal, overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    instantiate_classes,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
-    NodeQueryStep,
-    EdgeQueryStep,
-    DataClassQueryBuilder,
+    QueryStepFactory,
+    QueryBuilder,
+    QueryUnpacker,
+    ViewPropertyId,
+)
+from cognite.powerops.client._generated.v1.data_classes._benchmarking_calculation_output import (
+    BenchmarkingCalculationOutputQuery,
+    _BENCHMARKINGCALCULATIONOUTPUT_PROPERTIES_BY_FIELD,
+    _create_benchmarking_calculation_output_filter,
 )
 from cognite.powerops.client._generated.v1.data_classes import (
+    DomainModel,
     DomainModelCore,
     DomainModelWrite,
     ResourcesWriteResult,
@@ -29,17 +43,6 @@ from cognite.powerops.client._generated.v1.data_classes import (
     BenchmarkingCalculationInput,
     BenchmarkingResultDayAhead,
 )
-from cognite.powerops.client._generated.v1.data_classes._benchmarking_calculation_output import (
-    BenchmarkingCalculationOutputQuery,
-    _BENCHMARKINGCALCULATIONOUTPUT_PROPERTIES_BY_FIELD,
-    _create_benchmarking_calculation_output_filter,
-)
-from cognite.powerops.client._generated.v1._api._core import (
-    DEFAULT_LIMIT_READ,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-)
 from cognite.powerops.client._generated.v1._api.benchmarking_calculation_output_alerts import BenchmarkingCalculationOutputAlertsAPI
 from cognite.powerops.client._generated.v1._api.benchmarking_calculation_output_benchmarking_results import BenchmarkingCalculationOutputBenchmarkingResultsAPI
 from cognite.powerops.client._generated.v1._api.benchmarking_calculation_output_query import BenchmarkingCalculationOutputQueryAPI
@@ -47,7 +50,7 @@ from cognite.powerops.client._generated.v1._api.benchmarking_calculation_output_
 
 class BenchmarkingCalculationOutputAPI(NodeAPI[BenchmarkingCalculationOutput, BenchmarkingCalculationOutputWrite, BenchmarkingCalculationOutputList, BenchmarkingCalculationOutputWriteList]):
     _view_id = dm.ViewId("power_ops_core", "BenchmarkingCalculationOutput", "1")
-    _properties_by_field = _BENCHMARKINGCALCULATIONOUTPUT_PROPERTIES_BY_FIELD
+    _properties_by_field: ClassVar[dict[str, str]] = _BENCHMARKINGCALCULATIONOUTPUT_PROPERTIES_BY_FIELD
     _class_type = BenchmarkingCalculationOutput
     _class_list = BenchmarkingCalculationOutputList
     _class_write_list = BenchmarkingCalculationOutputWriteList
@@ -73,7 +76,7 @@ class BenchmarkingCalculationOutputAPI(NodeAPI[BenchmarkingCalculationOutput, Be
         space: str | list[str] | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
-    ) -> BenchmarkingCalculationOutputQueryAPI[BenchmarkingCalculationOutputList]:
+    ) -> BenchmarkingCalculationOutputQueryAPI[BenchmarkingCalculationOutput, BenchmarkingCalculationOutputList]:
         """Query starting at benchmarking calculation outputs.
 
         Args:
@@ -88,8 +91,10 @@ class BenchmarkingCalculationOutputAPI(NodeAPI[BenchmarkingCalculationOutput, Be
             function_input: The function input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of benchmarking calculation outputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of benchmarking calculation outputs to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
+                your own filtering which will be ANDed with the filter above.
 
         Returns:
             A query API for benchmarking calculation outputs.
@@ -117,8 +122,9 @@ class BenchmarkingCalculationOutputAPI(NodeAPI[BenchmarkingCalculationOutput, Be
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = DataClassQueryBuilder(BenchmarkingCalculationOutputList)
-        return BenchmarkingCalculationOutputQueryAPI(self._client, builder, filter_, limit)
+        return BenchmarkingCalculationOutputQueryAPI(
+            self._client, QueryBuilder(), self._class_type, self._class_list, None, filter_, limit
+        )
 
     def apply(
         self,
@@ -128,15 +134,15 @@ class BenchmarkingCalculationOutputAPI(NodeAPI[BenchmarkingCalculationOutput, Be
     ) -> ResourcesWriteResult:
         """Add or update (upsert) benchmarking calculation outputs.
 
-        Note: This method iterates through all nodes and timeseries linked to benchmarking_calculation_output and creates them including the edges
-        between the nodes. For example, if any of `function_input`, `alerts` or `benchmarking_results` are set, then these
-        nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
-
         Args:
-            benchmarking_calculation_output: Benchmarking calculation output or sequence of benchmarking calculation outputs to upsert.
-            replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
-                Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
-            write_none (bool): This method, will by default, skip properties that are set to None. However, if you want to set properties to None,
+            benchmarking_calculation_output: Benchmarking calculation output or
+                sequence of benchmarking calculation outputs to upsert.
+            replace (bool): How do we behave when a property value exists? Do we replace all matching and
+                existing values with the supplied values (true)?
+                Or should we merge in new values for properties together with the existing values (false)?
+                Note: This setting applies for all nodes or edges specified in the ingestion call.
+            write_none (bool): This method, will by default, skip properties that are set to None.
+                However, if you want to set properties to None,
                 you can set this parameter to True. Note this only applies to properties that are nullable.
         Returns:
             Created instance(s), i.e., nodes, edges, and time series.
@@ -148,7 +154,9 @@ class BenchmarkingCalculationOutputAPI(NodeAPI[BenchmarkingCalculationOutput, Be
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> from cognite.powerops.client._generated.v1.data_classes import BenchmarkingCalculationOutputWrite
                 >>> client = PowerOpsModelsV1Client()
-                >>> benchmarking_calculation_output = BenchmarkingCalculationOutputWrite(external_id="my_benchmarking_calculation_output", ...)
+                >>> benchmarking_calculation_output = BenchmarkingCalculationOutputWrite(
+                ...     external_id="my_benchmarking_calculation_output", ...
+                ... )
                 >>> result = client.benchmarking_calculation_output.apply(benchmarking_calculation_output)
 
         """
@@ -194,19 +202,35 @@ class BenchmarkingCalculationOutputAPI(NodeAPI[BenchmarkingCalculationOutput, Be
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingCalculationOutput | None:
-        ...
+    def retrieve(
+        self,
+        external_id: str | dm.NodeId | tuple[str, str],
+        space: str = DEFAULT_INSTANCE_SPACE,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
+    ) -> BenchmarkingCalculationOutput | None: ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingCalculationOutputList:
-        ...
+    def retrieve(
+        self,
+        external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]],
+        space: str = DEFAULT_INSTANCE_SPACE,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
+    ) -> BenchmarkingCalculationOutputList: ...
 
-    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingCalculationOutput | BenchmarkingCalculationOutputList | None:
+    def retrieve(
+        self,
+        external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]],
+        space: str = DEFAULT_INSTANCE_SPACE,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
+    ) -> BenchmarkingCalculationOutput | BenchmarkingCalculationOutputList | None:
         """Retrieve one or more benchmarking calculation outputs by id(s).
 
         Args:
             external_id: External id or list of external ids of the benchmarking calculation outputs.
             space: The space where all the benchmarking calculation outputs are located.
+            retrieve_connections: Whether to retrieve `function_input`, `alerts` and `benchmarking_results` for the
+            benchmarking calculation outputs. Defaults to 'skip'.'skip' will not retrieve any connections, 'identifier'
+            will only retrieve the identifier of the connected items, and 'full' will retrieve the full connected items.
 
         Returns:
             The requested benchmarking calculation outputs.
@@ -217,29 +241,15 @@ class BenchmarkingCalculationOutputAPI(NodeAPI[BenchmarkingCalculationOutput, Be
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> benchmarking_calculation_output = client.benchmarking_calculation_output.retrieve("my_benchmarking_calculation_output")
+                >>> benchmarking_calculation_output = client.benchmarking_calculation_output.retrieve(
+                ...     "my_benchmarking_calculation_output"
+                ... )
 
         """
         return self._retrieve(
             external_id,
             space,
-            retrieve_edges=True,
-            edge_api_name_type_direction_view_id_penta=[
-                (
-                    self.alerts_edge,
-                    "alerts",
-                    dm.DirectRelationReference("power_ops_types", "calculationIssue"),
-                    "outwards",
-                    dm.ViewId("power_ops_core", "Alert", "1"),
-                ),
-                (
-                    self.benchmarking_results_edge,
-                    "benchmarking_results",
-                    dm.DirectRelationReference("power_ops_types", "BenchmarkingResultsDayAhead"),
-                    "outwards",
-                    dm.ViewId("power_ops_core", "BenchmarkingResultDayAhead", "1"),
-                ),
-                                               ]
+            retrieve_connections=retrieve_connections,
         )
 
     def search(
@@ -279,12 +289,14 @@ class BenchmarkingCalculationOutputAPI(NodeAPI[BenchmarkingCalculationOutput, Be
             function_input: The function input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of benchmarking calculation outputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of benchmarking calculation outputs to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
-                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                This will override the sort_by and direction. This allows you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
 
         Returns:
@@ -296,7 +308,9 @@ class BenchmarkingCalculationOutputAPI(NodeAPI[BenchmarkingCalculationOutput, Be
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> benchmarking_calculation_outputs = client.benchmarking_calculation_output.search('my_benchmarking_calculation_output')
+                >>> benchmarking_calculation_outputs = client.benchmarking_calculation_output.search(
+                ...     'my_benchmarking_calculation_output'
+                ... )
 
         """
         filter_ = _create_benchmarking_calculation_output_filter(
@@ -441,8 +455,10 @@ class BenchmarkingCalculationOutputAPI(NodeAPI[BenchmarkingCalculationOutput, Be
             function_input: The function input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of benchmarking calculation outputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of benchmarking calculation outputs to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
+                your own filtering which will be ANDed with the filter above.
 
         Returns:
             Aggregation results.
@@ -520,8 +536,10 @@ class BenchmarkingCalculationOutputAPI(NodeAPI[BenchmarkingCalculationOutput, Be
             function_input: The function input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of benchmarking calculation outputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of benchmarking calculation outputs to return.
+                Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             Bucketed histogram results.
@@ -551,15 +569,55 @@ class BenchmarkingCalculationOutputAPI(NodeAPI[BenchmarkingCalculationOutput, Be
             filter_,
         )
 
-    def query(self) -> BenchmarkingCalculationOutputQuery:
-        """Start a query for benchmarking calculation outputs."""
-        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
-        return BenchmarkingCalculationOutputQuery(self._client)
-
     def select(self) -> BenchmarkingCalculationOutputQuery:
         """Start selecting from benchmarking calculation outputs."""
-        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
         return BenchmarkingCalculationOutputQuery(self._client)
+
+    def _query(
+        self,
+        filter_: dm.Filter | None,
+        limit: int,
+        retrieve_connections: Literal["skip", "identifier", "full"],
+        sort: list[InstanceSort] | None = None,
+    ) -> list[dict[str, Any]]:
+        builder = QueryBuilder()
+        factory = QueryStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
+        builder.append(factory.root(
+            filter=filter_,
+            sort=sort,
+            limit=limit,
+            has_container_fields=True,
+        ))
+        builder.extend(
+            factory.from_edge(
+                Alert._view_id,
+                "outwards",
+                ViewPropertyId(self._view_id, "alerts"),
+                include_end_node=retrieve_connections == "full",
+                has_container_fields=True,
+            )
+        )
+        builder.extend(
+            factory.from_edge(
+                BenchmarkingResultDayAhead._view_id,
+                "outwards",
+                ViewPropertyId(self._view_id, "benchmarkingResults"),
+                include_end_node=retrieve_connections == "full",
+                has_container_fields=True,
+            )
+        )
+        if retrieve_connections == "full":
+            builder.extend(
+                factory.from_direct_relation(
+                    BenchmarkingCalculationInput._view_id,
+                    ViewPropertyId(self._view_id, "functionInput"),
+                    has_container_fields=True,
+                )
+            )
+        unpack_edges: Literal["skip", "identifier"] = "identifier" if retrieve_connections == "identifier" else "skip"
+        builder.execute_query(self._client, remove_not_connected=True if unpack_edges == "skip" else False)
+        return QueryUnpacker(builder, edges=unpack_edges).unpack()
+
 
     def list(
         self,
@@ -595,15 +653,18 @@ class BenchmarkingCalculationOutputAPI(NodeAPI[BenchmarkingCalculationOutput, Be
             function_input: The function input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of benchmarking calculation outputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of benchmarking calculation outputs to return.
+                Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
                 This will override the sort_by and direction. This allowos you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
-            retrieve_connections: Whether to retrieve `function_input`, `alerts` and `benchmarking_results` for the benchmarking calculation outputs. Defaults to 'skip'.
-                'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier of the connected items, and 'full' will retrieve the full connected items.
+            retrieve_connections: Whether to retrieve `function_input`, `alerts` and `benchmarking_results` for the
+            benchmarking calculation outputs. Defaults to 'skip'.'skip' will not retrieve any connections, 'identifier'
+            will only retrieve the identifier of the connected items, and 'full' will retrieve the full connected items.
 
         Returns:
             List of requested benchmarking calculation outputs
@@ -632,86 +693,8 @@ class BenchmarkingCalculationOutputAPI(NodeAPI[BenchmarkingCalculationOutput, Be
             space,
             filter,
         )
-
+        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
-            return self._list(
-                limit=limit,
-                filter=filter_,
-                sort_by=sort_by,  # type: ignore[arg-type]
-                direction=direction,
-                sort=sort,
-            )
-
-        builder = DataClassQueryBuilder(BenchmarkingCalculationOutputList)
-        has_data = dm.filters.HasData(views=[self._view_id])
-        builder.append(
-            NodeQueryStep(
-                builder.create_name(None),
-                dm.query.NodeResultSetExpression(
-                    filter=dm.filters.And(filter_, has_data) if filter_ else has_data,
-                    sort=self._create_sort(sort_by, direction, sort),  # type: ignore[arg-type]
-                ),
-                BenchmarkingCalculationOutput,
-                max_retrieve_limit=limit,
-                raw_filter=filter_,
-            )
-        )
-        from_root = builder.get_from()
-        edge_alerts = builder.create_name(from_root)
-        builder.append(
-            EdgeQueryStep(
-                edge_alerts,
-                dm.query.EdgeResultSetExpression(
-                    from_=from_root,
-                    direction="outwards",
-                    chain_to="destination",
-                ),
-            )
-        )
-        edge_benchmarking_results = builder.create_name(from_root)
-        builder.append(
-            EdgeQueryStep(
-                edge_benchmarking_results,
-                dm.query.EdgeResultSetExpression(
-                    from_=from_root,
-                    direction="outwards",
-                    chain_to="destination",
-                ),
-            )
-        )
-        if retrieve_connections == "full":
-            builder.append(
-                NodeQueryStep(
-                    builder.create_name( edge_alerts),
-                    dm.query.NodeResultSetExpression(
-                        from_= edge_alerts,
-                        filter=dm.filters.HasData(views=[Alert._view_id]),
-                    ),
-                    Alert,
-                )
-            )
-            builder.append(
-                NodeQueryStep(
-                    builder.create_name( edge_benchmarking_results),
-                    dm.query.NodeResultSetExpression(
-                        from_= edge_benchmarking_results,
-                        filter=dm.filters.HasData(views=[BenchmarkingResultDayAhead._view_id]),
-                    ),
-                    BenchmarkingResultDayAhead,
-                )
-            )
-            builder.append(
-                NodeQueryStep(
-                    builder.create_name(from_root),
-                    dm.query.NodeResultSetExpression(
-                        from_=from_root,
-                        filter=dm.filters.HasData(views=[BenchmarkingCalculationInput._view_id]),
-                        direction="outwards",
-                        through=self._view_id.as_property_ref("functionInput"),
-                    ),
-                    BenchmarkingCalculationInput,
-                )
-            )
-        # We know that that all nodes are connected as it is not possible to filter on connections
-        builder.execute_query(self._client, remove_not_connected=False)
-        return builder.unpack()
+            return self._list(limit=limit,  filter=filter_, sort=sort_input)
+        values = self._query(filter_, limit, retrieve_connections, sort_input)
+        return self._class_list(instantiate_classes(self._class_type, values, "list"))
