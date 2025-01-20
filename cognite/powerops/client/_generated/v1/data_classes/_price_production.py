@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import warnings
 from collections.abc import Sequence
-from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm, CogniteClient
 from cognite.client.data_classes import (
@@ -10,7 +10,7 @@ from cognite.client.data_classes import (
     TimeSeriesWrite as CogniteTimeSeriesWrite,
 )
 from pydantic import Field
-from pydantic import field_validator, model_validator, ValidationInfo
+from pydantic import field_validator, model_validator
 
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
@@ -34,17 +34,17 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     TimeSeriesGraphQL,
     TimeSeriesReferenceAPI,
     T_DomainModelList,
-    as_node_id,
-    as_read_args,
-    as_write_args,
-    is_tuple_id,
+    as_direct_relation_reference,
     as_instance_dict_id,
-    parse_single_connection,
+    as_node_id,
+    as_pygen_node_id,
+    are_nodes_equal,
+    is_tuple_id,
+    select_best_node,
     QueryCore,
     NodeQueryCore,
     StringFilter,
-    ViewPropertyId,
-    DirectRelationFilter,
+
 )
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._shop_result import ShopResult, ShopResultList, ShopResultGraphQL, ShopResultWrite, ShopResultWriteList
@@ -116,13 +116,43 @@ class PriceProductionGraphQL(GraphQLCore):
             return value["items"]
         return value
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> PriceProduction:
         """Convert this GraphQL format of price production to the reading format."""
-        return PriceProduction.model_validate(as_read_args(self))
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return PriceProduction(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            name=self.name,
+            price=self.price.as_read() if self.price else None,
+            production=self.production.as_read() if self.production else None,
+            shop_result=self.shop_result.as_read()
+if isinstance(self.shop_result, GraphQLCore)
+else self.shop_result,
+        )
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> PriceProductionWrite:
         """Convert this GraphQL format of price production to the writing format."""
-        return PriceProductionWrite.model_validate(as_write_args(self))
+        return PriceProductionWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            name=self.name,
+            price=self.price.as_write() if self.price else None,
+            production=self.production.as_write() if self.production else None,
+            shop_result=self.shop_result.as_write()
+if isinstance(self.shop_result, GraphQLCore)
+else self.shop_result,
+        )
 
 
 class PriceProduction(DomainModel):
@@ -148,15 +178,22 @@ class PriceProduction(DomainModel):
     price: Union[TimeSeries, str, None] = None
     production: Union[TimeSeries, str, None] = None
     shop_result: Union[ShopResult, str, dm.NodeId, None] = Field(default=None, repr=False, alias="shopResult")
-    @field_validator("shop_result", mode="before")
-    @classmethod
-    def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
-        return parse_single_connection(value, info.field_name)
 
-
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> PriceProductionWrite:
         """Convert this read version of price production to the writing version."""
-        return PriceProductionWrite.model_validate(as_write_args(self))
+        return PriceProductionWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=self.data_record.version),
+            name=self.name,
+            price=self.price.as_write() if isinstance(self.price, CogniteTimeSeries) else self.price,
+            production=self.production.as_write() if isinstance(self.production, CogniteTimeSeries) else self.production,
+            shop_result=self.shop_result.as_write()
+if isinstance(self.shop_result, DomainModel)
+else self.shop_result,
+        )
 
     def as_apply(self) -> PriceProductionWrite:
         """Convert this read version of price production to the writing version."""
@@ -166,6 +203,19 @@ class PriceProduction(DomainModel):
             stacklevel=2,
         )
         return self.as_write()
+    @classmethod
+    def _update_connections(
+        cls,
+        instances: dict[dm.NodeId | str, PriceProduction],  # type: ignore[override]
+        nodes_by_id: dict[dm.NodeId | str, DomainModel],
+        edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
+    ) -> None:
+        from ._shop_result import ShopResult
+        for instance in instances.values():
+            if isinstance(instance.shop_result, (dm.NodeId, str)) and (shop_result := nodes_by_id.get(instance.shop_result)) and isinstance(
+                    shop_result, ShopResult
+            ):
+                instance.shop_result = shop_result
 
 
 class PriceProductionWrite(DomainModelWrite):
@@ -182,8 +232,6 @@ class PriceProductionWrite(DomainModelWrite):
         production: The production field.
         shop_result: The shop result field.
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("name", "price", "production", "shop_result",)
-    _direct_relations: ClassVar[tuple[str, ...]] = ("shop_result",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceProduction", "1")
 
@@ -204,12 +252,65 @@ class PriceProductionWrite(DomainModelWrite):
             return [cls.as_node_id(item) for item in value]
         return value
 
+    def _to_instances_write(
+        self,
+        cache: set[tuple[str, str]],
+        write_none: bool = False,
+        allow_version_increase: bool = False,
+    ) -> ResourcesWrite:
+        resources = ResourcesWrite()
+        if self.as_tuple_id() in cache:
+            return resources
+
+        properties: dict[str, Any] = {}
+
+        if self.name is not None:
+            properties["name"] = self.name
+
+        if self.price is not None or write_none:
+            properties["price"] = self.price if isinstance(self.price, str) or self.price is None else self.price.external_id
+
+        if self.production is not None or write_none:
+            properties["production"] = self.production if isinstance(self.production, str) or self.production is None else self.production.external_id
+
+        if self.shop_result is not None:
+            properties["shopResult"] = {
+                "space":  self.space if isinstance(self.shop_result, str) else self.shop_result.space,
+                "externalId": self.shop_result if isinstance(self.shop_result, str) else self.shop_result.external_id,
+            }
+
+        if properties:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
+                type=as_direct_relation_reference(self.node_type),
+                sources=[
+                    dm.NodeOrEdgeData(
+                        source=self._view_id,
+                        properties=properties,
+                )],
+            )
+            resources.nodes.append(this_node)
+            cache.add(self.as_tuple_id())
+
+        if isinstance(self.shop_result, DomainModelWrite):
+            other_resources = self.shop_result._to_instances_write(cache)
+            resources.extend(other_resources)
+
+        if isinstance(self.price, CogniteTimeSeriesWrite):
+            resources.time_series.append(self.price)
+
+        if isinstance(self.production, CogniteTimeSeriesWrite):
+            resources.time_series.append(self.production)
+
+        return resources
+
 
 class PriceProductionApply(PriceProductionWrite):
     def __new__(cls, *args, **kwargs) -> PriceProductionApply:
         warnings.warn(
-            "PriceProductionApply is deprecated and will be removed in v1.0. "
-            "Use PriceProductionWrite instead. "
+            "PriceProductionApply is deprecated and will be removed in v1.0. Use PriceProductionWrite instead."
             "The motivation for this change is that Write is a more descriptive name for the writing version of the"
             "PriceProduction.",
             UserWarning,
@@ -295,7 +396,6 @@ class _PriceProductionQuery(NodeQueryCore[T_DomainModelList, PriceProductionList
         result_list_cls: type[T_DomainModelList],
         expression: dm.query.ResultSetExpression | None = None,
         connection_name: str | None = None,
-        connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
         reverse_expression: dm.query.ResultSetExpression | None = None,
     ):
@@ -309,7 +409,6 @@ class _PriceProductionQuery(NodeQueryCore[T_DomainModelList, PriceProductionList
             expression,
             dm.filters.HasData(views=[self._view_id]),
             connection_name,
-            connection_property,
             connection_type,
             reverse_expression,
         )
@@ -325,18 +424,15 @@ class _PriceProductionQuery(NodeQueryCore[T_DomainModelList, PriceProductionList
                     direction="outwards",
                 ),
                 connection_name="shop_result",
-                connection_property=ViewPropertyId(self._view_id, "shopResult"),
             )
 
         self.space = StringFilter(self, ["node", "space"])
         self.external_id = StringFilter(self, ["node", "externalId"])
         self.name = StringFilter(self, self._view_id.as_property_ref("name"))
-        self.shop_result_filter = DirectRelationFilter(self, self._view_id.as_property_ref("shopResult"))
         self._filter_classes.extend([
             self.space,
             self.external_id,
             self.name,
-            self.shop_result_filter,
         ])
         self.price = TimeSeriesReferenceAPI(client,  lambda limit: [
             item.price if isinstance(item.price, str) else item.price.external_id #type: ignore[misc]

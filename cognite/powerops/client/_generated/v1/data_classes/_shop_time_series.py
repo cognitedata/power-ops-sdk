@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import warnings
 from collections.abc import Sequence
-from typing import Any, ClassVar, Literal, Optional, Union
+from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm, CogniteClient
 from cognite.client.data_classes import (
@@ -10,7 +10,7 @@ from cognite.client.data_classes import (
     TimeSeriesWrite as CogniteTimeSeriesWrite,
 )
 from pydantic import Field
-from pydantic import field_validator, model_validator, ValidationInfo
+from pydantic import field_validator, model_validator
 
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
@@ -34,16 +34,16 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     TimeSeriesGraphQL,
     TimeSeriesReferenceAPI,
     T_DomainModelList,
-    as_node_id,
-    as_read_args,
-    as_write_args,
-    is_tuple_id,
+    as_direct_relation_reference,
     as_instance_dict_id,
-    parse_single_connection,
+    as_node_id,
+    as_pygen_node_id,
+    are_nodes_equal,
+    is_tuple_id,
+    select_best_node,
     QueryCore,
     NodeQueryCore,
     StringFilter,
-    ViewPropertyId,
 
 )
 
@@ -108,13 +108,39 @@ class ShopTimeSeriesGraphQL(GraphQLCore):
 
 
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> ShopTimeSeries:
         """Convert this GraphQL format of shop time series to the reading format."""
-        return ShopTimeSeries.model_validate(as_read_args(self))
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return ShopTimeSeries(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            object_type=self.object_type,
+            object_name=self.object_name,
+            attribute_name=self.attribute_name,
+            time_series=self.time_series.as_read() if self.time_series else None,
+        )
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopTimeSeriesWrite:
         """Convert this GraphQL format of shop time series to the writing format."""
-        return ShopTimeSeriesWrite.model_validate(as_write_args(self))
+        return ShopTimeSeriesWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            object_type=self.object_type,
+            object_name=self.object_name,
+            attribute_name=self.attribute_name,
+            time_series=self.time_series.as_write() if self.time_series else None,
+        )
 
 
 class ShopTimeSeries(DomainModel):
@@ -141,10 +167,19 @@ class ShopTimeSeries(DomainModel):
     attribute_name: Optional[str] = Field(None, alias="attributeName")
     time_series: Union[TimeSeries, str, None] = Field(None, alias="timeSeries")
 
-
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopTimeSeriesWrite:
         """Convert this read version of shop time series to the writing version."""
-        return ShopTimeSeriesWrite.model_validate(as_write_args(self))
+        return ShopTimeSeriesWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=self.data_record.version),
+            object_type=self.object_type,
+            object_name=self.object_name,
+            attribute_name=self.attribute_name,
+            time_series=self.time_series.as_write() if isinstance(self.time_series, CogniteTimeSeries) else self.time_series,
+        )
 
     def as_apply(self) -> ShopTimeSeriesWrite:
         """Convert this read version of shop time series to the writing version."""
@@ -154,7 +189,6 @@ class ShopTimeSeries(DomainModel):
             stacklevel=2,
         )
         return self.as_write()
-
 
 class ShopTimeSeriesWrite(DomainModelWrite):
     """This represents the writing version of shop time series.
@@ -170,7 +204,6 @@ class ShopTimeSeriesWrite(DomainModelWrite):
         attribute_name: The name of the attribute
         time_series: Time series object from output of SHOP stored as a time series in cdf
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("attribute_name", "object_name", "object_type", "time_series",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopTimeSeries", "1")
 
@@ -182,12 +215,55 @@ class ShopTimeSeriesWrite(DomainModelWrite):
     time_series: Union[TimeSeriesWrite, str, None] = Field(None, alias="timeSeries")
 
 
+    def _to_instances_write(
+        self,
+        cache: set[tuple[str, str]],
+        write_none: bool = False,
+        allow_version_increase: bool = False,
+    ) -> ResourcesWrite:
+        resources = ResourcesWrite()
+        if self.as_tuple_id() in cache:
+            return resources
+
+        properties: dict[str, Any] = {}
+
+        if self.object_type is not None or write_none:
+            properties["objectType"] = self.object_type
+
+        if self.object_name is not None or write_none:
+            properties["objectName"] = self.object_name
+
+        if self.attribute_name is not None or write_none:
+            properties["attributeName"] = self.attribute_name
+
+        if self.time_series is not None or write_none:
+            properties["timeSeries"] = self.time_series if isinstance(self.time_series, str) or self.time_series is None else self.time_series.external_id
+
+        if properties:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
+                type=as_direct_relation_reference(self.node_type),
+                sources=[
+                    dm.NodeOrEdgeData(
+                        source=self._view_id,
+                        properties=properties,
+                )],
+            )
+            resources.nodes.append(this_node)
+            cache.add(self.as_tuple_id())
+
+        if isinstance(self.time_series, CogniteTimeSeriesWrite):
+            resources.time_series.append(self.time_series)
+
+        return resources
+
 
 class ShopTimeSeriesApply(ShopTimeSeriesWrite):
     def __new__(cls, *args, **kwargs) -> ShopTimeSeriesApply:
         warnings.warn(
-            "ShopTimeSeriesApply is deprecated and will be removed in v1.0. "
-            "Use ShopTimeSeriesWrite instead. "
+            "ShopTimeSeriesApply is deprecated and will be removed in v1.0. Use ShopTimeSeriesWrite instead."
             "The motivation for this change is that Write is a more descriptive name for the writing version of the"
             "ShopTimeSeries.",
             UserWarning,
@@ -276,7 +352,6 @@ class _ShopTimeSeriesQuery(NodeQueryCore[T_DomainModelList, ShopTimeSeriesList])
         result_list_cls: type[T_DomainModelList],
         expression: dm.query.ResultSetExpression | None = None,
         connection_name: str | None = None,
-        connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
         reverse_expression: dm.query.ResultSetExpression | None = None,
     ):
@@ -289,7 +364,6 @@ class _ShopTimeSeriesQuery(NodeQueryCore[T_DomainModelList, ShopTimeSeriesList])
             expression,
             dm.filters.HasData(views=[self._view_id]),
             connection_name,
-            connection_property,
             connection_type,
             reverse_expression,
         )

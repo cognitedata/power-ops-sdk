@@ -1,19 +1,17 @@
 from __future__ import annotations
 
 import warnings
-from collections.abc import Sequence
 from pathlib import Path
-from typing import Any
+from typing import Any, Sequence
 
-from cognite.client import ClientConfig, CogniteClient
-from cognite.client import data_modeling as dm
+from cognite.client import ClientConfig, CogniteClient, data_modeling as dm
+from cognite.client.data_classes import TimeSeriesList, FileMetadataList, SequenceList
 from cognite.client.credentials import OAuthClientCredentials
-from cognite.client.data_classes import FileMetadataList, SequenceList, TimeSeriesList
 
-from cognite.powerops.client._generated.v1 import data_classes
 from cognite.powerops.client._generated.v1._api import (    AlertAPI,    BenchmarkingCalculationInputAPI,    BenchmarkingCalculationOutputAPI,    BenchmarkingConfigurationDayAheadAPI,    BenchmarkingProductionObligationDayAheadAPI,    BenchmarkingResultDayAheadAPI,    BenchmarkingShopCaseAPI,    BenchmarkingTaskDispatcherInputDayAheadAPI,    BenchmarkingTaskDispatcherOutputDayAheadAPI,    BidConfigurationDayAheadAPI,    BidDocumentAPI,    BidDocumentAFRRAPI,    BidDocumentDayAheadAPI,    BidMatrixAPI,    BidMatrixInformationAPI,    BidRowAPI,    DateSpecificationAPI,    FunctionInputAPI,    FunctionOutputAPI,    GeneratorAPI,    GeneratorEfficiencyCurveAPI,    MarketConfigurationAPI,    MultiScenarioPartialBidMatrixCalculationInputAPI,    PartialBidConfigurationAPI,    PartialBidMatrixCalculationInputAPI,    PartialBidMatrixCalculationOutputAPI,    PartialBidMatrixInformationAPI,    PartialBidMatrixInformationWithScenariosAPI,    PlantAPI,    PlantInformationAPI,    PlantWaterValueBasedAPI,    PowerAssetAPI,    PriceAreaAPI,    PriceAreaAFRRAPI,    PriceAreaDayAheadAPI,    PriceAreaInformationAPI,    PriceProductionAPI,    ShopAttributeMappingAPI,    ShopBasedPartialBidConfigurationAPI,    ShopCaseAPI,    ShopCommandsAPI,    ShopFileAPI,    ShopModelAPI,    ShopModelWithAssetsAPI,    ShopOutputTimeSeriesDefinitionAPI,    ShopPenaltyReportAPI,    ShopPreprocessorInputAPI,    ShopPreprocessorOutputAPI,    ShopResultAPI,    ShopScenarioAPI,    ShopScenarioSetAPI,    ShopTimeResolutionAPI,    ShopTimeSeriesAPI,    ShopTriggerInputAPI,    ShopTriggerOutputAPI,    TaskDispatcherInputAPI,    TaskDispatcherOutputAPI,    TotalBidMatrixCalculationInputAPI,    TotalBidMatrixCalculationOutputAPI,    TurbineEfficiencyCurveAPI,    WaterValueBasedPartialBidConfigurationAPI,    WaterValueBasedPartialBidMatrixCalculationInputAPI,    WatercourseAPI,)
-from cognite.powerops.client._generated.v1._api._core import GraphQLQueryResponse, SequenceNotStr
+from cognite.powerops.client._generated.v1._api._core import SequenceNotStr, GraphQLQueryResponse
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE, GraphQLList
+from cognite.powerops.client._generated.v1 import data_classes
 
 class BenchmarkingDayAheadAPIs:
     """
@@ -414,9 +412,9 @@ class PowerOpsModelsV1Client:
     PowerOpsModelsV1Client
 
     Generated with:
-        pygen = 0.99.60
-        cognite-sdk = 7.71.3
-        pydantic = 2.10.5
+        pygen = 0.99.57
+        cognite-sdk = 7.70.2
+        pydantic = 2.10.3
 
     """
 
@@ -428,7 +426,7 @@ class PowerOpsModelsV1Client:
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
         # The client name is used for aggregated logging of Pygen Usage
-        client.config.client_name = "CognitePygen:0.99.60"
+        client.config.client_name = "CognitePygen:0.99.57"
 
         self.benchmarking_day_ahead = BenchmarkingDayAheadAPIs(client)
         self.shop_based_day_ahead_bid_process = ShopBasedDayAheadBidProcesAPIs(client)
@@ -455,30 +453,18 @@ class PowerOpsModelsV1Client:
 
         Args:
             items: One or more instances of the pygen generated data classes.
-            replace (bool): How do we behave when a property value exists? Do we replace all matching and
-                existing values with the supplied values (true)?
-                Or should we merge in new values for properties together with the existing values (false)?
-                Note: This setting applies for all nodes or edges specified in the ingestion call.
-            write_none (bool): This method will, by default, skip properties that are set to None. However,
-                if you want to set properties to None,
+            replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
+                Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
+            write_none (bool): This method will, by default, skip properties that are set to None. However, if you want to set properties to None,
                 you can set this parameter to True. Note this only applies to properties that are nullable.
-            allow_version_increase (bool): If set to true, the version of the instance will be increased
-                if the instance already exists.
+            allow_version_increase (bool): If set to true, the version of the instance will be increased if the instance already exists.
                 If you get an error: 'A version conflict caused the ingest to fail', you can set this to true to allow
                 the version to increase.
         Returns:
             Created instance(s), i.e., nodes, edges, and time series.
 
         """
-        if write_none is True:
-            warnings.warn(
-                "The write_none argument is deprecated and will be removed in v1.0. "
-                "Setting it has no effect. Instead, pygen will detect properties "
-                "that are explicitly set to None and write them.",
-                UserWarning,
-                stacklevel=2,
-            )
-        instances = self._create_instances(items, allow_version_increase)
+        instances = self._create_instances(items, write_none, allow_version_increase)
         result = self._client.data_modeling.instances.apply(
             nodes=instances.nodes,
             edges=instances.edges,
@@ -504,17 +490,19 @@ class PowerOpsModelsV1Client:
     def _create_instances(
         self,
         items: data_classes.DomainModelWrite | Sequence[data_classes.DomainModelWrite],
+        write_none: bool,
         allow_version_increase: bool,
     ) -> data_classes.ResourcesWrite:
         if isinstance(items, data_classes.DomainModelWrite):
-            instances = items.to_instances_write(False, allow_version_increase)
+            instances = items.to_instances_write(write_none, allow_version_increase)
         else:
             instances = data_classes.ResourcesWrite()
             cache: set[tuple[str, str]] = set()
             for item in items:
                 instances.extend(
-                    item._to_resources_write(
+                    item._to_instances_write(
                         cache,
+                        write_none,
                         allow_version_increase,
                     )
                 )
@@ -530,13 +518,10 @@ class PowerOpsModelsV1Client:
 
         Args:
             items: One or more instances of the pygen generated data classes.
-            replace (bool): How do we behave when a property value exists? Do we replace all matching
-                and existing values with the supplied values (true)?
-                Or should we merge in new values for properties together with the existing values (false)?
-                Note: This setting applies for all nodes or edges specified in the ingestion call.
-            write_none (bool): This method will, by default, skip properties that are set to None. However,
-                if you want to set properties to None, you can set this parameter to True. Note this
-                only applies to properties that are nullable.
+            replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
+                Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
+            write_none (bool): This method will, by default, skip properties that are set to None. However, if you want to set properties to None,
+                you can set this parameter to True. Note this only applies to properties that are nullable.
         Returns:
             Created instance(s), i.e., nodes, edges, and time series.
 
@@ -582,7 +567,7 @@ class PowerOpsModelsV1Client:
         elif isinstance(external_id, dm.NodeId):
             return self._client.data_modeling.instances.delete(nodes=external_id)
         elif isinstance(external_id, data_classes.DomainModelWrite):
-            resources = self._create_instances(external_id, False)
+            resources = self._create_instances(external_id, False, False)
             return self._client.data_modeling.instances.delete(
                 nodes=resources.nodes.as_ids(),
                 edges=resources.edges.as_ids(),
@@ -596,7 +581,7 @@ class PowerOpsModelsV1Client:
                 elif isinstance(item, dm.NodeId):
                     node_ids.append(item)
                 elif isinstance(item, data_classes.DomainModelWrite):
-                    resources = self._create_instances(item, False)
+                    resources = self._create_instances(item, False, False)
                     node_ids.extend(resources.nodes.as_ids())
                     edge_ids.extend(resources.edges.as_ids())
                 else:

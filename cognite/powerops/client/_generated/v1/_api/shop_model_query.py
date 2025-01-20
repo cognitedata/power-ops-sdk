@@ -10,22 +10,21 @@ from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     ShopModel,
 )
-from cognite.powerops.client._generated.v1.data_classes._core import (
-    DEFAULT_QUERY_LIMIT,
-    ViewPropertyId,
-    T_DomainModel,
-    T_DomainModelList,
-    QueryBuilder,
-    QueryStep,
-)
 from cognite.powerops.client._generated.v1.data_classes._shop_file import (
+    ShopFile,
     _create_shop_file_filter,
 )
 from cognite.powerops.client._generated.v1.data_classes._shop_attribute_mapping import (
+    ShopAttributeMapping,
     _create_shop_attribute_mapping_filter,
 )
 from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_QUERY_LIMIT,
+    EdgeQueryStep,
+    NodeQueryStep,
+    DataClassQueryBuilder,
     QueryAPI,
+    T_DomainModelList,
     _create_edge_filter,
 )
 
@@ -34,31 +33,27 @@ if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1._api.shop_attribute_mapping_query import ShopAttributeMappingQueryAPI
 
 
-class ShopModelQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
+class ShopModelQueryAPI(QueryAPI[T_DomainModelList]):
     _view_id = dm.ViewId("power_ops_core", "ShopModel", "1")
 
     def __init__(
         self,
         client: CogniteClient,
-        builder: QueryBuilder,
-        result_cls: type[T_DomainModel],
-        result_list_cls: type[T_DomainModelList],
-        connection_property: ViewPropertyId | None = None,
+        builder: DataClassQueryBuilder[T_DomainModelList],
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
-        super().__init__(client, builder, result_cls, result_list_cls)
+        super().__init__(client, builder)
         from_ = self._builder.get_from()
         self._builder.append(
-            QueryStep(
+            NodeQueryStep(
                 name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
                     from_=from_,
                     filter=filter_,
                 ),
+                result_cls=ShopModel,
                 max_retrieve_limit=limit,
-                view_id=self._view_id,
-                connection_property=connection_property,
             )
         )
     def cog_shop_files_config(
@@ -78,27 +73,26 @@ class ShopModelQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
         space_edge: str | list[str] | None = None,
         filter: dm.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
-    ) -> ShopFileQueryAPI[T_DomainModel, T_DomainModelList]:
+    ) -> ShopFileQueryAPI[T_DomainModelList]:
         """Query along the cog shop files config edges of the shop model.
 
         Args:
-            name:
-            name_prefix:
-            label:
-            label_prefix:
-            file_reference_prefix:
-            file_reference_prefix_prefix:
-            min_order:
-            max_order:
-            is_ascii:
-            external_id_prefix:
-            space:
-            external_id_prefix_edge:
-            space_edge:
-            filter: (Advanced) Filter applied to node. If the filtering available in the
-                above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            limit: Maximum number of cog shop files config edges to return.
-                Defaults to 3. Set to -1, float("inf") or None to return all items.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
+            label: The label to filter on.
+            label_prefix: The prefix of the label to filter on.
+            file_reference_prefix: The file reference prefix to filter on.
+            file_reference_prefix_prefix: The prefix of the file reference prefix to filter on.
+            min_order: The minimum value of the order to filter on.
+            max_order: The maximum value of the order to filter on.
+            is_ascii: The is ascii to filter on.
+            external_id_prefix: The prefix of the external ID to filter on.
+            space: The space to filter on.
+            external_id_prefix_edge: The prefix of the external ID to filter on.
+            space_edge: The space to filter on.
+            filter: (Advanced) Filter applied to node. If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of cog shop files config edges to return. Defaults to 3. Set to -1, float("inf") or None
+                to return all items.
 
         Returns:
             ShopFileQueryAPI: The query API for the shop file.
@@ -113,7 +107,7 @@ class ShopModelQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
             space=space_edge,
         )
         self._builder.append(
-            QueryStep(
+            EdgeQueryStep(
                 name=self._builder.create_name(from_),
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
@@ -121,13 +115,12 @@ class ShopModelQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
                     direction="outwards",
                 ),
                 max_retrieve_limit=limit,
-                connection_property=ViewPropertyId(self._view_id, "cogShopFilesConfig"),
             )
         )
 
         view_id = ShopFileQueryAPI._view_id
         has_data = dm.filters.HasData(views=[view_id])
-        node_filter = _create_shop_file_filter(
+        node_filer = _create_shop_file_filter(
             view_id,
             name,
             name_prefix,
@@ -142,15 +135,7 @@ class ShopModelQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        return (ShopFileQueryAPI(
-            self._client,
-            self._builder,
-            self._result_cls,
-            self._result_list_cls,
-            ViewPropertyId(self._view_id, "end_node"),
-            node_filter,
-            limit,
-        ))
+        return ShopFileQueryAPI(self._client, self._builder, node_filer, limit)
     def base_attribute_mappings(
         self,
         object_type: str | list[str] | None = None,
@@ -169,28 +154,27 @@ class ShopModelQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
         space_edge: str | list[str] | None = None,
         filter: dm.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
-    ) -> ShopAttributeMappingQueryAPI[T_DomainModel, T_DomainModelList]:
+    ) -> ShopAttributeMappingQueryAPI[T_DomainModelList]:
         """Query along the base attribute mapping edges of the shop model.
 
         Args:
-            object_type:
-            object_type_prefix:
-            object_name:
-            object_name_prefix:
-            attribute_name:
-            attribute_name_prefix:
-            retrieve:
-            retrieve_prefix:
-            aggregation:
-            aggregation_prefix:
-            external_id_prefix:
-            space:
-            external_id_prefix_edge:
-            space_edge:
-            filter: (Advanced) Filter applied to node. If the filtering available in the
-                above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            limit: Maximum number of base attribute mapping edges to return.
-                Defaults to 3. Set to -1, float("inf") or None to return all items.
+            object_type: The object type to filter on.
+            object_type_prefix: The prefix of the object type to filter on.
+            object_name: The object name to filter on.
+            object_name_prefix: The prefix of the object name to filter on.
+            attribute_name: The attribute name to filter on.
+            attribute_name_prefix: The prefix of the attribute name to filter on.
+            retrieve: The retrieve to filter on.
+            retrieve_prefix: The prefix of the retrieve to filter on.
+            aggregation: The aggregation to filter on.
+            aggregation_prefix: The prefix of the aggregation to filter on.
+            external_id_prefix: The prefix of the external ID to filter on.
+            space: The space to filter on.
+            external_id_prefix_edge: The prefix of the external ID to filter on.
+            space_edge: The space to filter on.
+            filter: (Advanced) Filter applied to node. If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of base attribute mapping edges to return. Defaults to 3. Set to -1, float("inf") or None
+                to return all items.
 
         Returns:
             ShopAttributeMappingQueryAPI: The query API for the shop attribute mapping.
@@ -205,7 +189,7 @@ class ShopModelQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
             space=space_edge,
         )
         self._builder.append(
-            QueryStep(
+            EdgeQueryStep(
                 name=self._builder.create_name(from_),
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
@@ -213,13 +197,12 @@ class ShopModelQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
                     direction="outwards",
                 ),
                 max_retrieve_limit=limit,
-                connection_property=ViewPropertyId(self._view_id, "baseAttributeMappings"),
             )
         )
 
         view_id = ShopAttributeMappingQueryAPI._view_id
         has_data = dm.filters.HasData(views=[view_id])
-        node_filter = _create_shop_attribute_mapping_filter(
+        node_filer = _create_shop_attribute_mapping_filter(
             view_id,
             object_type,
             object_type_prefix,
@@ -235,15 +218,7 @@ class ShopModelQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        return (ShopAttributeMappingQueryAPI(
-            self._client,
-            self._builder,
-            self._result_cls,
-            self._result_list_cls,
-            ViewPropertyId(self._view_id, "end_node"),
-            node_filter,
-            limit,
-        ))
+        return ShopAttributeMappingQueryAPI(self._client, self._builder, node_filer, limit)
 
     def query(
         self,

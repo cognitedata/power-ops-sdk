@@ -1,35 +1,21 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
-from typing import Any, ClassVar, Literal, overload
+from typing import overload, Literal
+import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1._api._core import (
-    DEFAULT_LIMIT_READ,
-    instantiate_classes,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-)
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
-    QueryStepFactory,
-    QueryBuilder,
-    QueryUnpacker,
-    ViewPropertyId,
-)
-from cognite.powerops.client._generated.v1.data_classes._function_input import (
-    FunctionInputQuery,
-    _FUNCTIONINPUT_PROPERTIES_BY_FIELD,
-    _create_function_input_filter,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
 )
 from cognite.powerops.client._generated.v1.data_classes import (
-    DomainModel,
     DomainModelCore,
     DomainModelWrite,
     ResourcesWriteResult,
@@ -47,13 +33,24 @@ from cognite.powerops.client._generated.v1.data_classes import (
     TaskDispatcherInput,
     TotalBidMatrixCalculationInput,
 )
+from cognite.powerops.client._generated.v1.data_classes._function_input import (
+    FunctionInputQuery,
+    _FUNCTIONINPUT_PROPERTIES_BY_FIELD,
+    _create_function_input_filter,
+)
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
 from cognite.powerops.client._generated.v1._api.function_input_query import FunctionInputQueryAPI
 
 
 class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputList, FunctionInputWriteList]):
     _view_id = dm.ViewId("power_ops_core", "FunctionInput", "1")
-    _properties_by_field: ClassVar[dict[str, str]] = _FUNCTIONINPUT_PROPERTIES_BY_FIELD
-    _direct_children_by_external_id: ClassVar[dict[str, type[DomainModel]]] = {
+    _properties_by_field = _FUNCTIONINPUT_PROPERTIES_BY_FIELD
+    _direct_children_by_external_id = {
         "BenchmarkingCalculationInput": BenchmarkingCalculationInput,
         "BenchmarkingTaskDispatcherInputDayAhead": BenchmarkingTaskDispatcherInputDayAhead,
         "PartialBidMatrixCalculationInput": PartialBidMatrixCalculationInput,
@@ -84,7 +81,7 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
         space: str | list[str] | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
-    ) -> FunctionInputQueryAPI[FunctionInput, FunctionInputList]:
+    ) -> FunctionInputQueryAPI[FunctionInputList]:
         """Query starting at function inputs.
 
         Args:
@@ -98,10 +95,8 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
             function_call_id_prefix: The prefix of the function call id to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of function inputs to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
-                your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of function inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             A query API for function inputs.
@@ -128,9 +123,8 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        return FunctionInputQueryAPI(
-            self._client, QueryBuilder(), self._class_type, self._class_list, None, filter_, limit
-        )
+        builder = DataClassQueryBuilder(FunctionInputList)
+        return FunctionInputQueryAPI(self._client, builder, filter_, limit)
 
     def apply(
         self,
@@ -141,14 +135,10 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
         """Add or update (upsert) function inputs.
 
         Args:
-            function_input: Function input or
-                sequence of function inputs to upsert.
-            replace (bool): How do we behave when a property value exists? Do we replace all matching and
-                existing values with the supplied values (true)?
-                Or should we merge in new values for properties together with the existing values (false)?
-                Note: This setting applies for all nodes or edges specified in the ingestion call.
-            write_none (bool): This method, will by default, skip properties that are set to None.
-                However, if you want to set properties to None,
+            function_input: Function input or sequence of function inputs to upsert.
+            replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
+                Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
+            write_none (bool): This method, will by default, skip properties that are set to None. However, if you want to set properties to None,
                 you can set this parameter to True. Note this only applies to properties that are nullable.
         Returns:
             Created instance(s), i.e., nodes, edges, and time series.
@@ -160,9 +150,7 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> from cognite.powerops.client._generated.v1.data_classes import FunctionInputWrite
                 >>> client = PowerOpsModelsV1Client()
-                >>> function_input = FunctionInputWrite(
-                ...     external_id="my_function_input", ...
-                ... )
+                >>> function_input = FunctionInputWrite(external_id="my_function_input", ...)
                 >>> result = client.function_input.apply(function_input)
 
         """
@@ -208,27 +196,14 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(
-        self,
-        external_id: str | dm.NodeId | tuple[str, str],
-        space: str = DEFAULT_INSTANCE_SPACE,
-        as_child_class: SequenceNotStr[Literal["BenchmarkingCalculationInput", "BenchmarkingTaskDispatcherInputDayAhead", "PartialBidMatrixCalculationInput", "ShopPreprocessorInput", "ShopTriggerInput", "TaskDispatcherInput", "TotalBidMatrixCalculationInput"]] | None = None,
-    ) -> FunctionInput | None: ...
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["BenchmarkingCalculationInput", "BenchmarkingTaskDispatcherInputDayAhead", "PartialBidMatrixCalculationInput", "ShopPreprocessorInput", "ShopTriggerInput", "TaskDispatcherInput", "TotalBidMatrixCalculationInput"]] | None = None) -> FunctionInput | None:
+        ...
 
     @overload
-    def retrieve(
-        self,
-        external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]],
-        space: str = DEFAULT_INSTANCE_SPACE,
-        as_child_class: SequenceNotStr[Literal["BenchmarkingCalculationInput", "BenchmarkingTaskDispatcherInputDayAhead", "PartialBidMatrixCalculationInput", "ShopPreprocessorInput", "ShopTriggerInput", "TaskDispatcherInput", "TotalBidMatrixCalculationInput"]] | None = None,
-    ) -> FunctionInputList: ...
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["BenchmarkingCalculationInput", "BenchmarkingTaskDispatcherInputDayAhead", "PartialBidMatrixCalculationInput", "ShopPreprocessorInput", "ShopTriggerInput", "TaskDispatcherInput", "TotalBidMatrixCalculationInput"]] | None = None) -> FunctionInputList:
+        ...
 
-    def retrieve(
-        self,
-        external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]],
-        space: str = DEFAULT_INSTANCE_SPACE,
-        as_child_class: SequenceNotStr[Literal["BenchmarkingCalculationInput", "BenchmarkingTaskDispatcherInputDayAhead", "PartialBidMatrixCalculationInput", "ShopPreprocessorInput", "ShopTriggerInput", "TaskDispatcherInput", "TotalBidMatrixCalculationInput"]] | None = None,
-    ) -> FunctionInput | FunctionInputList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["BenchmarkingCalculationInput", "BenchmarkingTaskDispatcherInputDayAhead", "PartialBidMatrixCalculationInput", "ShopPreprocessorInput", "ShopTriggerInput", "TaskDispatcherInput", "TotalBidMatrixCalculationInput"]] | None = None) -> FunctionInput | FunctionInputList | None:
         """Retrieve one or more function inputs by id(s).
 
         Args:
@@ -247,16 +222,10 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> function_input = client.function_input.retrieve(
-                ...     "my_function_input"
-                ... )
+                >>> function_input = client.function_input.retrieve("my_function_input")
 
         """
-        return self._retrieve(
-            external_id,
-            space,
-            as_child_class=as_child_class
-        )
+        return self._retrieve(external_id, space, as_child_class=as_child_class)
 
     def search(
         self,
@@ -293,14 +262,12 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
             function_call_id_prefix: The prefix of the function call id to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of function inputs to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient,
-                you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of function inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
-                This will override the sort_by and direction. This allows you to sort by multiple fields and
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
 
         Returns:
@@ -312,9 +279,7 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> function_inputs = client.function_input.search(
-                ...     'my_function_input'
-                ... )
+                >>> function_inputs = client.function_input.search('my_function_input')
 
         """
         filter_ = _create_function_input_filter(
@@ -453,10 +418,8 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
             function_call_id_prefix: The prefix of the function call id to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of function inputs to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
-                your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of function inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             Aggregation results.
@@ -531,10 +494,8 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
             function_call_id_prefix: The prefix of the function call id to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of function inputs to return.
-                Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient,
-                you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of function inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             Bucketed histogram results.
@@ -563,29 +524,15 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
             filter_,
         )
 
-    def select(self) -> FunctionInputQuery:
-        """Start selecting from function inputs."""
+    def query(self) -> FunctionInputQuery:
+        """Start a query for function inputs."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
         return FunctionInputQuery(self._client)
 
-    def _query(
-        self,
-        filter_: dm.Filter | None,
-        limit: int,
-        retrieve_connections: Literal["skip", "identifier", "full"],
-        sort: list[InstanceSort] | None = None,
-    ) -> list[dict[str, Any]]:
-        builder = QueryBuilder()
-        factory = QueryStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(factory.root(
-            filter=filter_,
-            sort=sort,
-            limit=limit,
-            has_container_fields=True,
-        ))
-        unpack_edges: Literal["skip", "identifier"] = "identifier" if retrieve_connections == "identifier" else "skip"
-        builder.execute_query(self._client, remove_not_connected=True if unpack_edges == "skip" else False)
-        return QueryUnpacker(builder, edges=unpack_edges).unpack()
-
+    def select(self) -> FunctionInputQuery:
+        """Start selecting from function inputs."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return FunctionInputQuery(self._client)
 
     def list(
         self,
@@ -618,10 +565,8 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
             function_call_id_prefix: The prefix of the function call id to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of function inputs to return.
-                Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient,
-                you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of function inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
@@ -654,5 +599,11 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
             space,
             filter,
         )
-        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
-        return self._list(limit=limit,  filter=filter_, sort=sort_input)
+
+        return self._list(
+            limit=limit,
+            filter=filter_,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
+        )

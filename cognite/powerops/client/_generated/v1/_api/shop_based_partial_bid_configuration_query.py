@@ -12,46 +12,39 @@ from cognite.powerops.client._generated.v1.data_classes import (
     PowerAsset,
     ShopScenarioSet,
 )
-from cognite.powerops.client._generated.v1.data_classes._core import (
-    DEFAULT_QUERY_LIMIT,
-    ViewPropertyId,
-    T_DomainModel,
-    T_DomainModelList,
-    QueryBuilder,
-    QueryStep,
-)
 from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_QUERY_LIMIT,
+    EdgeQueryStep,
+    NodeQueryStep,
+    DataClassQueryBuilder,
     QueryAPI,
+    T_DomainModelList,
     _create_edge_filter,
 )
 
 
 
-class ShopBasedPartialBidConfigurationQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
+class ShopBasedPartialBidConfigurationQueryAPI(QueryAPI[T_DomainModelList]):
     _view_id = dm.ViewId("power_ops_core", "ShopBasedPartialBidConfiguration", "1")
 
     def __init__(
         self,
         client: CogniteClient,
-        builder: QueryBuilder,
-        result_cls: type[T_DomainModel],
-        result_list_cls: type[T_DomainModelList],
-        connection_property: ViewPropertyId | None = None,
+        builder: DataClassQueryBuilder[T_DomainModelList],
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
-        super().__init__(client, builder, result_cls, result_list_cls)
+        super().__init__(client, builder)
         from_ = self._builder.get_from()
         self._builder.append(
-            QueryStep(
+            NodeQueryStep(
                 name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
                     from_=from_,
                     filter=filter_,
                 ),
+                result_cls=ShopBasedPartialBidConfiguration,
                 max_retrieve_limit=limit,
-                view_id=self._view_id,
-                connection_property=connection_property,
             )
         )
 
@@ -63,12 +56,8 @@ class ShopBasedPartialBidConfigurationQueryAPI(QueryAPI[T_DomainModel, T_DomainM
         """Execute query and return the result.
 
         Args:
-            retrieve_power_asset: Whether to retrieve the
-                power asset for each
-                shop based partial bid configuration or not.
-            retrieve_scenario_set: Whether to retrieve the
-                scenario set for each
-                shop based partial bid configuration or not.
+            retrieve_power_asset: Whether to retrieve the power asset for each shop based partial bid configuration or not.
+            retrieve_scenario_set: Whether to retrieve the scenario set for each shop based partial bid configuration or not.
 
         Returns:
             The list of the source nodes of the query.
@@ -83,7 +72,7 @@ class ShopBasedPartialBidConfigurationQueryAPI(QueryAPI[T_DomainModel, T_DomainM
 
     def _query_append_power_asset(self, from_: str) -> None:
         self._builder.append(
-            QueryStep(
+            NodeQueryStep(
                 name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
                     from_=from_,
@@ -91,13 +80,12 @@ class ShopBasedPartialBidConfigurationQueryAPI(QueryAPI[T_DomainModel, T_DomainM
                     direction="outwards",
                     filter=dm.filters.HasData(views=[PowerAsset._view_id]),
                 ),
-                view_id=PowerAsset._view_id,
-                connection_property=ViewPropertyId(self._view_id, "powerAsset"),
+                result_cls=PowerAsset,
             ),
         )
     def _query_append_scenario_set(self, from_: str) -> None:
         self._builder.append(
-            QueryStep(
+            NodeQueryStep(
                 name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
                     from_=from_,
@@ -105,7 +93,6 @@ class ShopBasedPartialBidConfigurationQueryAPI(QueryAPI[T_DomainModel, T_DomainM
                     direction="outwards",
                     filter=dm.filters.HasData(views=[ShopScenarioSet._view_id]),
                 ),
-                view_id=ShopScenarioSet._view_id,
-                connection_property=ViewPropertyId(self._view_id, "scenarioSet"),
+                result_cls=ShopScenarioSet,
             ),
         )

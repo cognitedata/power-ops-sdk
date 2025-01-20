@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import warnings
 from collections.abc import Sequence
-from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm, CogniteClient
 from cognite.client.data_classes import (
@@ -12,7 +12,7 @@ from cognite.client.data_classes import (
     SequenceWrite as CogniteSequenceWrite,
 )
 from pydantic import Field
-from pydantic import field_validator, model_validator, ValidationInfo
+from pydantic import field_validator, model_validator
 
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
@@ -39,17 +39,16 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     SequenceWrite,
     SequenceGraphQL,
     T_DomainModelList,
-    as_node_id,
-    as_read_args,
-    as_write_args,
-    is_tuple_id,
+    as_direct_relation_reference,
     as_instance_dict_id,
-    parse_single_connection,
+    as_node_id,
+    as_pygen_node_id,
+    are_nodes_equal,
+    is_tuple_id,
+    select_best_node,
     QueryCore,
     NodeQueryCore,
     StringFilter,
-    ViewPropertyId,
-    DirectRelationFilter,
     FloatFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._partial_bid_matrix_information import PartialBidMatrixInformation, PartialBidMatrixInformationWrite
@@ -143,13 +142,57 @@ class PartialBidMatrixInformationWithScenariosGraphQL(GraphQLCore):
             return value["items"]
         return value
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> PartialBidMatrixInformationWithScenarios:
         """Convert this GraphQL format of partial bid matrix information with scenario to the reading format."""
-        return PartialBidMatrixInformationWithScenarios.model_validate(as_read_args(self))
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return PartialBidMatrixInformationWithScenarios(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            state=self.state,
+            bid_matrix=self.bid_matrix.as_read() if self.bid_matrix else None,
+            linked_time_series=[linked_time_series.as_read() for linked_time_series in self.linked_time_series or []] if self.linked_time_series is not None else None,
+            alerts=[alert.as_read() for alert in self.alerts] if self.alerts is not None else None,
+            underlying_bid_matrices=[underlying_bid_matrice.as_read() for underlying_bid_matrice in self.underlying_bid_matrices] if self.underlying_bid_matrices is not None else None,
+            power_asset=self.power_asset.as_read()
+if isinstance(self.power_asset, GraphQLCore)
+else self.power_asset,
+            resource_cost=self.resource_cost,
+            partial_bid_configuration=self.partial_bid_configuration.as_read()
+if isinstance(self.partial_bid_configuration, GraphQLCore)
+else self.partial_bid_configuration,
+            multi_scenario_input=[multi_scenario_input.as_read() for multi_scenario_input in self.multi_scenario_input] if self.multi_scenario_input is not None else None,
+        )
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> PartialBidMatrixInformationWithScenariosWrite:
         """Convert this GraphQL format of partial bid matrix information with scenario to the writing format."""
-        return PartialBidMatrixInformationWithScenariosWrite.model_validate(as_write_args(self))
+        return PartialBidMatrixInformationWithScenariosWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            state=self.state,
+            bid_matrix=self.bid_matrix.as_write() if self.bid_matrix else None,
+            linked_time_series=[linked_time_series.as_write() for linked_time_series in self.linked_time_series or []] if self.linked_time_series is not None else None,
+            alerts=[alert.as_write() for alert in self.alerts] if self.alerts is not None else None,
+            underlying_bid_matrices=[underlying_bid_matrice.as_write() for underlying_bid_matrice in self.underlying_bid_matrices] if self.underlying_bid_matrices is not None else None,
+            power_asset=self.power_asset.as_write()
+if isinstance(self.power_asset, GraphQLCore)
+else self.power_asset,
+            resource_cost=self.resource_cost,
+            partial_bid_configuration=self.partial_bid_configuration.as_write()
+if isinstance(self.partial_bid_configuration, GraphQLCore)
+else self.partial_bid_configuration,
+            multi_scenario_input=[multi_scenario_input.as_write() for multi_scenario_input in self.multi_scenario_input] if self.multi_scenario_input is not None else None,
+        )
 
 
 class PartialBidMatrixInformationWithScenarios(PartialBidMatrixInformation):
@@ -176,21 +219,29 @@ class PartialBidMatrixInformationWithScenarios(PartialBidMatrixInformation):
 
     node_type: Union[dm.DirectRelationReference, None] = None
     multi_scenario_input: Optional[list[Union[PriceProduction, str, dm.NodeId]]] = Field(default=None, repr=False, alias="multiScenarioInput")
-    @field_validator("power_asset", "partial_bid_configuration", mode="before")
-    @classmethod
-    def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
-        return parse_single_connection(value, info.field_name)
 
-    @field_validator("alerts", "underlying_bid_matrices", "multi_scenario_input", mode="before")
-    @classmethod
-    def parse_list(cls, value: Any, info: ValidationInfo) -> Any:
-        if value is None:
-            return None
-        return [parse_single_connection(item, info.field_name) for item in value]
-
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> PartialBidMatrixInformationWithScenariosWrite:
         """Convert this read version of partial bid matrix information with scenario to the writing version."""
-        return PartialBidMatrixInformationWithScenariosWrite.model_validate(as_write_args(self))
+        return PartialBidMatrixInformationWithScenariosWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=self.data_record.version),
+            state=self.state,
+            bid_matrix=self.bid_matrix.as_write() if isinstance(self.bid_matrix, CogniteSequence) else self.bid_matrix,
+            linked_time_series=[linked_time_series.as_write() if isinstance(linked_time_series, CogniteTimeSeries) else linked_time_series for linked_time_series in self.linked_time_series] if self.linked_time_series is not None else None,
+            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts] if self.alerts is not None else None,
+            underlying_bid_matrices=[underlying_bid_matrice.as_write() if isinstance(underlying_bid_matrice, DomainModel) else underlying_bid_matrice for underlying_bid_matrice in self.underlying_bid_matrices] if self.underlying_bid_matrices is not None else None,
+            power_asset=self.power_asset.as_write()
+if isinstance(self.power_asset, DomainModel)
+else self.power_asset,
+            resource_cost=self.resource_cost,
+            partial_bid_configuration=self.partial_bid_configuration.as_write()
+if isinstance(self.partial_bid_configuration, DomainModel)
+else self.partial_bid_configuration,
+            multi_scenario_input=[multi_scenario_input.as_write() if isinstance(multi_scenario_input, DomainModel) else multi_scenario_input for multi_scenario_input in self.multi_scenario_input] if self.multi_scenario_input is not None else None,
+        )
 
     def as_apply(self) -> PartialBidMatrixInformationWithScenariosWrite:
         """Convert this read version of partial bid matrix information with scenario to the writing version."""
@@ -200,6 +251,70 @@ class PartialBidMatrixInformationWithScenarios(PartialBidMatrixInformation):
             stacklevel=2,
         )
         return self.as_write()
+    @classmethod
+    def _update_connections(
+        cls,
+        instances: dict[dm.NodeId | str, PartialBidMatrixInformationWithScenarios],  # type: ignore[override]
+        nodes_by_id: dict[dm.NodeId | str, DomainModel],
+        edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
+    ) -> None:
+        from ._alert import Alert
+        from ._bid_matrix import BidMatrix
+        from ._partial_bid_configuration import PartialBidConfiguration
+        from ._power_asset import PowerAsset
+        from ._price_production import PriceProduction
+        for instance in instances.values():
+            if isinstance(instance.power_asset, (dm.NodeId, str)) and (power_asset := nodes_by_id.get(instance.power_asset)) and isinstance(
+                    power_asset, PowerAsset
+            ):
+                instance.power_asset = power_asset
+            if isinstance(instance.partial_bid_configuration, (dm.NodeId, str)) and (partial_bid_configuration := nodes_by_id.get(instance.partial_bid_configuration)) and isinstance(
+                    partial_bid_configuration, PartialBidConfiguration
+            ):
+                instance.partial_bid_configuration = partial_bid_configuration
+            if edges := edges_by_source_node.get(instance.as_id()):
+                alerts: list[Alert | str | dm.NodeId] = []
+                underlying_bid_matrices: list[BidMatrix | str | dm.NodeId] = []
+                multi_scenario_input: list[PriceProduction | str | dm.NodeId] = []
+                for edge in edges:
+                    value: DomainModel | DomainRelation | str | dm.NodeId
+                    if isinstance(edge, DomainRelation):
+                        value = edge
+                    else:
+                        other_end: dm.DirectRelationReference = (
+                            edge.end_node
+                            if edge.start_node.space == instance.space
+                            and edge.start_node.external_id == instance.external_id
+                            else edge.start_node
+                        )
+                        destination: dm.NodeId | str = (
+                            as_node_id(other_end)
+                            if other_end.space != DEFAULT_INSTANCE_SPACE
+                            else other_end.external_id
+                        )
+                        if destination in nodes_by_id:
+                            value = nodes_by_id[destination]
+                        else:
+                            value = destination
+                    edge_type = edge.edge_type if isinstance(edge, DomainRelation) else edge.type
+
+                    if edge_type == dm.DirectRelationReference("power_ops_types", "calculationIssue") and isinstance(
+                        value, (Alert, str, dm.NodeId)
+                    ):
+                        alerts.append(value)
+                    if edge_type == dm.DirectRelationReference("power_ops_types", "intermediateBidMatrix") and isinstance(
+                        value, (BidMatrix, str, dm.NodeId)
+                    ):
+                        underlying_bid_matrices.append(value)
+                    if edge_type == dm.DirectRelationReference("power_ops_types", "calculationIssue") and isinstance(
+                        value, (PriceProduction, str, dm.NodeId)
+                    ):
+                        multi_scenario_input.append(value)
+
+                instance.alerts = alerts or None
+                instance.underlying_bid_matrices = underlying_bid_matrices or None
+                instance.multi_scenario_input = multi_scenario_input or None
+
 
 
 class PartialBidMatrixInformationWithScenariosWrite(PartialBidMatrixInformationWrite):
@@ -221,9 +336,6 @@ class PartialBidMatrixInformationWithScenariosWrite(PartialBidMatrixInformationW
         partial_bid_configuration: The partial bid configuration field.
         multi_scenario_input: TODO
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("bid_matrix", "linked_time_series", "partial_bid_configuration", "power_asset", "resource_cost", "state",)
-    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")), ("multi_scenario_input", dm.DirectRelationReference("power_ops_types", "calculationIssue")), ("underlying_bid_matrices", dm.DirectRelationReference("power_ops_types", "intermediateBidMatrix")),)
-    _direct_relations: ClassVar[tuple[str, ...]] = ("partial_bid_configuration", "power_asset",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PartialBidMatrixInformationWithScenarios", "1")
 
@@ -240,12 +352,115 @@ class PartialBidMatrixInformationWithScenariosWrite(PartialBidMatrixInformationW
             return [cls.as_node_id(item) for item in value]
         return value
 
+    def _to_instances_write(
+        self,
+        cache: set[tuple[str, str]],
+        write_none: bool = False,
+        allow_version_increase: bool = False,
+    ) -> ResourcesWrite:
+        resources = ResourcesWrite()
+        if self.as_tuple_id() in cache:
+            return resources
+
+        properties: dict[str, Any] = {}
+
+        if self.state is not None:
+            properties["state"] = self.state
+
+        if self.bid_matrix is not None or write_none:
+            properties["bidMatrix"] = self.bid_matrix if isinstance(self.bid_matrix, str) or self.bid_matrix is None else self.bid_matrix.external_id
+
+        if self.linked_time_series is not None or write_none:
+            properties["linkedTimeSeries"] = [linked_time_series if isinstance(linked_time_series, str) else linked_time_series.external_id for linked_time_series in self.linked_time_series or []] if self.linked_time_series is not None else None
+
+        if self.power_asset is not None:
+            properties["powerAsset"] = {
+                "space":  self.space if isinstance(self.power_asset, str) else self.power_asset.space,
+                "externalId": self.power_asset if isinstance(self.power_asset, str) else self.power_asset.external_id,
+            }
+
+        if self.resource_cost is not None or write_none:
+            properties["resourceCost"] = self.resource_cost
+
+        if self.partial_bid_configuration is not None:
+            properties["partialBidConfiguration"] = {
+                "space":  self.space if isinstance(self.partial_bid_configuration, str) else self.partial_bid_configuration.space,
+                "externalId": self.partial_bid_configuration if isinstance(self.partial_bid_configuration, str) else self.partial_bid_configuration.external_id,
+            }
+
+        if properties:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
+                type=as_direct_relation_reference(self.node_type),
+                sources=[
+                    dm.NodeOrEdgeData(
+                        source=self._view_id,
+                        properties=properties,
+                )],
+            )
+            resources.nodes.append(this_node)
+            cache.add(self.as_tuple_id())
+
+        edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
+        for alert in self.alerts or []:
+            other_resources = DomainRelationWrite.from_edge_to_resources(
+                cache,
+                start_node=self,
+                end_node=alert,
+                edge_type=edge_type,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
+            )
+            resources.extend(other_resources)
+
+        edge_type = dm.DirectRelationReference("power_ops_types", "intermediateBidMatrix")
+        for underlying_bid_matrice in self.underlying_bid_matrices or []:
+            other_resources = DomainRelationWrite.from_edge_to_resources(
+                cache,
+                start_node=self,
+                end_node=underlying_bid_matrice,
+                edge_type=edge_type,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
+            )
+            resources.extend(other_resources)
+
+        edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
+        for multi_scenario_input in self.multi_scenario_input or []:
+            other_resources = DomainRelationWrite.from_edge_to_resources(
+                cache,
+                start_node=self,
+                end_node=multi_scenario_input,
+                edge_type=edge_type,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
+            )
+            resources.extend(other_resources)
+
+        if isinstance(self.power_asset, DomainModelWrite):
+            other_resources = self.power_asset._to_instances_write(cache)
+            resources.extend(other_resources)
+
+        if isinstance(self.partial_bid_configuration, DomainModelWrite):
+            other_resources = self.partial_bid_configuration._to_instances_write(cache)
+            resources.extend(other_resources)
+
+        if isinstance(self.bid_matrix, CogniteSequenceWrite):
+            resources.sequences.append(self.bid_matrix)
+
+        for linked_time_series in self.linked_time_series or []:
+            if isinstance(linked_time_series, CogniteTimeSeriesWrite):
+                resources.time_series.append(linked_time_series)
+
+        return resources
+
 
 class PartialBidMatrixInformationWithScenariosApply(PartialBidMatrixInformationWithScenariosWrite):
     def __new__(cls, *args, **kwargs) -> PartialBidMatrixInformationWithScenariosApply:
         warnings.warn(
-            "PartialBidMatrixInformationWithScenariosApply is deprecated and will be removed in v1.0. "
-            "Use PartialBidMatrixInformationWithScenariosWrite instead. "
+            "PartialBidMatrixInformationWithScenariosApply is deprecated and will be removed in v1.0. Use PartialBidMatrixInformationWithScenariosWrite instead."
             "The motivation for this change is that Write is a more descriptive name for the writing version of the"
             "PartialBidMatrixInformationWithScenarios.",
             UserWarning,
@@ -378,7 +593,6 @@ class _PartialBidMatrixInformationWithScenariosQuery(NodeQueryCore[T_DomainModel
         result_list_cls: type[T_DomainModelList],
         expression: dm.query.ResultSetExpression | None = None,
         connection_name: str | None = None,
-        connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
         reverse_expression: dm.query.ResultSetExpression | None = None,
     ):
@@ -396,7 +610,6 @@ class _PartialBidMatrixInformationWithScenariosQuery(NodeQueryCore[T_DomainModel
             expression,
             dm.filters.HasData(views=[self._view_id]),
             connection_name,
-            connection_property,
             connection_type,
             reverse_expression,
         )
@@ -412,7 +625,6 @@ class _PartialBidMatrixInformationWithScenariosQuery(NodeQueryCore[T_DomainModel
                     chain_to="destination",
                 ),
                 connection_name="alerts",
-                connection_property=ViewPropertyId(self._view_id, "alerts"),
             )
 
         if _BidMatrixQuery not in created_types:
@@ -426,7 +638,6 @@ class _PartialBidMatrixInformationWithScenariosQuery(NodeQueryCore[T_DomainModel
                     chain_to="destination",
                 ),
                 connection_name="underlying_bid_matrices",
-                connection_property=ViewPropertyId(self._view_id, "underlyingBidMatrices"),
             )
 
         if _PowerAssetQuery not in created_types:
@@ -440,7 +651,6 @@ class _PartialBidMatrixInformationWithScenariosQuery(NodeQueryCore[T_DomainModel
                     direction="outwards",
                 ),
                 connection_name="power_asset",
-                connection_property=ViewPropertyId(self._view_id, "powerAsset"),
             )
 
         if _PartialBidConfigurationQuery not in created_types:
@@ -454,7 +664,6 @@ class _PartialBidMatrixInformationWithScenariosQuery(NodeQueryCore[T_DomainModel
                     direction="outwards",
                 ),
                 connection_name="partial_bid_configuration",
-                connection_property=ViewPropertyId(self._view_id, "partialBidConfiguration"),
             )
 
         if _PriceProductionQuery not in created_types:
@@ -468,22 +677,17 @@ class _PartialBidMatrixInformationWithScenariosQuery(NodeQueryCore[T_DomainModel
                     chain_to="destination",
                 ),
                 connection_name="multi_scenario_input",
-                connection_property=ViewPropertyId(self._view_id, "multiScenarioInput"),
             )
 
         self.space = StringFilter(self, ["node", "space"])
         self.external_id = StringFilter(self, ["node", "externalId"])
         self.state = StringFilter(self, self._view_id.as_property_ref("state"))
-        self.power_asset_filter = DirectRelationFilter(self, self._view_id.as_property_ref("powerAsset"))
         self.resource_cost = FloatFilter(self, self._view_id.as_property_ref("resourceCost"))
-        self.partial_bid_configuration_filter = DirectRelationFilter(self, self._view_id.as_property_ref("partialBidConfiguration"))
         self._filter_classes.extend([
             self.space,
             self.external_id,
             self.state,
-            self.power_asset_filter,
             self.resource_cost,
-            self.partial_bid_configuration_filter,
         ])
         self.linked_time_series = TimeSeriesReferenceAPI(client,  lambda limit: [
             ts if isinstance(ts, str) else ts.external_id #type: ignore[misc]

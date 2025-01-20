@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import warnings
 from collections.abc import Sequence
-from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm, CogniteClient
 from cognite.client.data_classes import (
@@ -12,7 +12,7 @@ from cognite.client.data_classes import (
     SequenceWrite as CogniteSequenceWrite,
 )
 from pydantic import Field
-from pydantic import field_validator, model_validator, ValidationInfo
+from pydantic import field_validator, model_validator
 
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
@@ -39,16 +39,16 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     SequenceWrite,
     SequenceGraphQL,
     T_DomainModelList,
-    as_node_id,
-    as_read_args,
-    as_write_args,
-    is_tuple_id,
+    as_direct_relation_reference,
     as_instance_dict_id,
-    parse_single_connection,
+    as_node_id,
+    as_pygen_node_id,
+    are_nodes_equal,
+    is_tuple_id,
+    select_best_node,
     QueryCore,
     NodeQueryCore,
     StringFilter,
-    ViewPropertyId,
 
 )
 from cognite.powerops.client._generated.v1.data_classes._bid_matrix import BidMatrix, BidMatrixWrite
@@ -130,13 +130,41 @@ class BidMatrixInformationGraphQL(GraphQLCore):
             return value["items"]
         return value
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> BidMatrixInformation:
         """Convert this GraphQL format of bid matrix information to the reading format."""
-        return BidMatrixInformation.model_validate(as_read_args(self))
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return BidMatrixInformation(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            state=self.state,
+            bid_matrix=self.bid_matrix.as_read() if self.bid_matrix else None,
+            linked_time_series=[linked_time_series.as_read() for linked_time_series in self.linked_time_series or []] if self.linked_time_series is not None else None,
+            alerts=[alert.as_read() for alert in self.alerts] if self.alerts is not None else None,
+            underlying_bid_matrices=[underlying_bid_matrice.as_read() for underlying_bid_matrice in self.underlying_bid_matrices] if self.underlying_bid_matrices is not None else None,
+        )
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> BidMatrixInformationWrite:
         """Convert this GraphQL format of bid matrix information to the writing format."""
-        return BidMatrixInformationWrite.model_validate(as_write_args(self))
+        return BidMatrixInformationWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            state=self.state,
+            bid_matrix=self.bid_matrix.as_write() if self.bid_matrix else None,
+            linked_time_series=[linked_time_series.as_write() for linked_time_series in self.linked_time_series or []] if self.linked_time_series is not None else None,
+            alerts=[alert.as_write() for alert in self.alerts] if self.alerts is not None else None,
+            underlying_bid_matrices=[underlying_bid_matrice.as_write() for underlying_bid_matrice in self.underlying_bid_matrices] if self.underlying_bid_matrices is not None else None,
+        )
 
 
 class BidMatrixInformation(BidMatrix):
@@ -162,16 +190,20 @@ class BidMatrixInformation(BidMatrix):
     alerts: Optional[list[Union[Alert, str, dm.NodeId]]] = Field(default=None, repr=False)
     underlying_bid_matrices: Optional[list[Union[BidMatrix, str, dm.NodeId]]] = Field(default=None, repr=False, alias="underlyingBidMatrices")
 
-    @field_validator("alerts", "underlying_bid_matrices", mode="before")
-    @classmethod
-    def parse_list(cls, value: Any, info: ValidationInfo) -> Any:
-        if value is None:
-            return None
-        return [parse_single_connection(item, info.field_name) for item in value]
-
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> BidMatrixInformationWrite:
         """Convert this read version of bid matrix information to the writing version."""
-        return BidMatrixInformationWrite.model_validate(as_write_args(self))
+        return BidMatrixInformationWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=self.data_record.version),
+            state=self.state,
+            bid_matrix=self.bid_matrix.as_write() if isinstance(self.bid_matrix, CogniteSequence) else self.bid_matrix,
+            linked_time_series=[linked_time_series.as_write() if isinstance(linked_time_series, CogniteTimeSeries) else linked_time_series for linked_time_series in self.linked_time_series] if self.linked_time_series is not None else None,
+            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts] if self.alerts is not None else None,
+            underlying_bid_matrices=[underlying_bid_matrice.as_write() if isinstance(underlying_bid_matrice, DomainModel) else underlying_bid_matrice for underlying_bid_matrice in self.underlying_bid_matrices] if self.underlying_bid_matrices is not None else None,
+        )
 
     def as_apply(self) -> BidMatrixInformationWrite:
         """Convert this read version of bid matrix information to the writing version."""
@@ -181,6 +213,53 @@ class BidMatrixInformation(BidMatrix):
             stacklevel=2,
         )
         return self.as_write()
+    @classmethod
+    def _update_connections(
+        cls,
+        instances: dict[dm.NodeId | str, BidMatrixInformation],  # type: ignore[override]
+        nodes_by_id: dict[dm.NodeId | str, DomainModel],
+        edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
+    ) -> None:
+        from ._alert import Alert
+        from ._bid_matrix import BidMatrix
+        for instance in instances.values():
+            if edges := edges_by_source_node.get(instance.as_id()):
+                alerts: list[Alert | str | dm.NodeId] = []
+                underlying_bid_matrices: list[BidMatrix | str | dm.NodeId] = []
+                for edge in edges:
+                    value: DomainModel | DomainRelation | str | dm.NodeId
+                    if isinstance(edge, DomainRelation):
+                        value = edge
+                    else:
+                        other_end: dm.DirectRelationReference = (
+                            edge.end_node
+                            if edge.start_node.space == instance.space
+                            and edge.start_node.external_id == instance.external_id
+                            else edge.start_node
+                        )
+                        destination: dm.NodeId | str = (
+                            as_node_id(other_end)
+                            if other_end.space != DEFAULT_INSTANCE_SPACE
+                            else other_end.external_id
+                        )
+                        if destination in nodes_by_id:
+                            value = nodes_by_id[destination]
+                        else:
+                            value = destination
+                    edge_type = edge.edge_type if isinstance(edge, DomainRelation) else edge.type
+
+                    if edge_type == dm.DirectRelationReference("power_ops_types", "calculationIssue") and isinstance(
+                        value, (Alert, str, dm.NodeId)
+                    ):
+                        alerts.append(value)
+                    if edge_type == dm.DirectRelationReference("power_ops_types", "intermediateBidMatrix") and isinstance(
+                        value, (BidMatrix, str, dm.NodeId)
+                    ):
+                        underlying_bid_matrices.append(value)
+
+                instance.alerts = alerts or None
+                instance.underlying_bid_matrices = underlying_bid_matrices or None
+
 
 
 class BidMatrixInformationWrite(BidMatrixWrite):
@@ -198,8 +277,6 @@ class BidMatrixInformationWrite(BidMatrixWrite):
         alerts: An array of calculation level Alerts.
         underlying_bid_matrices: An array of intermediate BidMatrices.
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("bid_matrix", "linked_time_series", "state",)
-    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")), ("underlying_bid_matrices", dm.DirectRelationReference("power_ops_types", "intermediateBidMatrix")),)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidMatrixInformation", "1")
 
@@ -218,12 +295,80 @@ class BidMatrixInformationWrite(BidMatrixWrite):
             return [cls.as_node_id(item) for item in value]
         return value
 
+    def _to_instances_write(
+        self,
+        cache: set[tuple[str, str]],
+        write_none: bool = False,
+        allow_version_increase: bool = False,
+    ) -> ResourcesWrite:
+        resources = ResourcesWrite()
+        if self.as_tuple_id() in cache:
+            return resources
+
+        properties: dict[str, Any] = {}
+
+        if self.state is not None:
+            properties["state"] = self.state
+
+        if self.bid_matrix is not None or write_none:
+            properties["bidMatrix"] = self.bid_matrix if isinstance(self.bid_matrix, str) or self.bid_matrix is None else self.bid_matrix.external_id
+
+        if self.linked_time_series is not None or write_none:
+            properties["linkedTimeSeries"] = [linked_time_series if isinstance(linked_time_series, str) else linked_time_series.external_id for linked_time_series in self.linked_time_series or []] if self.linked_time_series is not None else None
+
+        if properties:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
+                type=as_direct_relation_reference(self.node_type),
+                sources=[
+                    dm.NodeOrEdgeData(
+                        source=self._view_id,
+                        properties=properties,
+                )],
+            )
+            resources.nodes.append(this_node)
+            cache.add(self.as_tuple_id())
+
+        edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
+        for alert in self.alerts or []:
+            other_resources = DomainRelationWrite.from_edge_to_resources(
+                cache,
+                start_node=self,
+                end_node=alert,
+                edge_type=edge_type,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
+            )
+            resources.extend(other_resources)
+
+        edge_type = dm.DirectRelationReference("power_ops_types", "intermediateBidMatrix")
+        for underlying_bid_matrice in self.underlying_bid_matrices or []:
+            other_resources = DomainRelationWrite.from_edge_to_resources(
+                cache,
+                start_node=self,
+                end_node=underlying_bid_matrice,
+                edge_type=edge_type,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
+            )
+            resources.extend(other_resources)
+
+        if isinstance(self.bid_matrix, CogniteSequenceWrite):
+            resources.sequences.append(self.bid_matrix)
+
+        for linked_time_series in self.linked_time_series or []:
+            if isinstance(linked_time_series, CogniteTimeSeriesWrite):
+                resources.time_series.append(linked_time_series)
+
+        return resources
+
 
 class BidMatrixInformationApply(BidMatrixInformationWrite):
     def __new__(cls, *args, **kwargs) -> BidMatrixInformationApply:
         warnings.warn(
-            "BidMatrixInformationApply is deprecated and will be removed in v1.0. "
-            "Use BidMatrixInformationWrite instead. "
+            "BidMatrixInformationApply is deprecated and will be removed in v1.0. Use BidMatrixInformationWrite instead."
             "The motivation for this change is that Write is a more descriptive name for the writing version of the"
             "BidMatrixInformation.",
             UserWarning,
@@ -316,7 +461,6 @@ class _BidMatrixInformationQuery(NodeQueryCore[T_DomainModelList, BidMatrixInfor
         result_list_cls: type[T_DomainModelList],
         expression: dm.query.ResultSetExpression | None = None,
         connection_name: str | None = None,
-        connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
         reverse_expression: dm.query.ResultSetExpression | None = None,
     ):
@@ -331,7 +475,6 @@ class _BidMatrixInformationQuery(NodeQueryCore[T_DomainModelList, BidMatrixInfor
             expression,
             dm.filters.HasData(views=[self._view_id]),
             connection_name,
-            connection_property,
             connection_type,
             reverse_expression,
         )
@@ -347,7 +490,6 @@ class _BidMatrixInformationQuery(NodeQueryCore[T_DomainModelList, BidMatrixInfor
                     chain_to="destination",
                 ),
                 connection_name="alerts",
-                connection_property=ViewPropertyId(self._view_id, "alerts"),
             )
 
         if _BidMatrixQuery not in created_types:
@@ -361,7 +503,6 @@ class _BidMatrixInformationQuery(NodeQueryCore[T_DomainModelList, BidMatrixInfor
                     chain_to="destination",
                 ),
                 connection_name="underlying_bid_matrices",
-                connection_property=ViewPropertyId(self._view_id, "underlyingBidMatrices"),
             )
 
         self.space = StringFilter(self, ["node", "space"])

@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import warnings
 from collections.abc import Sequence
-from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
-from pydantic import field_validator, model_validator, ValidationInfo
+from pydantic import field_validator, model_validator
 
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
@@ -23,17 +23,16 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     GraphQLCore,
     ResourcesWrite,
     T_DomainModelList,
-    as_node_id,
-    as_read_args,
-    as_write_args,
-    is_tuple_id,
+    as_direct_relation_reference,
     as_instance_dict_id,
-    parse_single_connection,
+    as_node_id,
+    as_pygen_node_id,
+    are_nodes_equal,
+    is_tuple_id,
+    select_best_node,
     QueryCore,
     NodeQueryCore,
     StringFilter,
-    ViewPropertyId,
-    DirectRelationFilter,
     IntFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._function_output import FunctionOutput, FunctionOutputWrite
@@ -116,13 +115,53 @@ class ShopTriggerOutputGraphQL(GraphQLCore):
             return value["items"]
         return value
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> ShopTriggerOutput:
         """Convert this GraphQL format of shop trigger output to the reading format."""
-        return ShopTriggerOutput.model_validate(as_read_args(self))
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return ShopTriggerOutput(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            workflow_execution_id=self.workflow_execution_id,
+            workflow_step=self.workflow_step,
+            function_name=self.function_name,
+            function_call_id=self.function_call_id,
+            function_input=self.function_input.as_read()
+if isinstance(self.function_input, GraphQLCore)
+else self.function_input,
+            alerts=[alert.as_read() for alert in self.alerts] if self.alerts is not None else None,
+            shop_result=self.shop_result.as_read()
+if isinstance(self.shop_result, GraphQLCore)
+else self.shop_result,
+        )
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopTriggerOutputWrite:
         """Convert this GraphQL format of shop trigger output to the writing format."""
-        return ShopTriggerOutputWrite.model_validate(as_write_args(self))
+        return ShopTriggerOutputWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            workflow_execution_id=self.workflow_execution_id,
+            workflow_step=self.workflow_step,
+            function_name=self.function_name,
+            function_call_id=self.function_call_id,
+            function_input=self.function_input.as_write()
+if isinstance(self.function_input, GraphQLCore)
+else self.function_input,
+            alerts=[alert.as_write() for alert in self.alerts] if self.alerts is not None else None,
+            shop_result=self.shop_result.as_write()
+if isinstance(self.shop_result, GraphQLCore)
+else self.shop_result,
+        )
 
 
 class ShopTriggerOutput(FunctionOutput):
@@ -147,21 +186,27 @@ class ShopTriggerOutput(FunctionOutput):
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopTriggerOutput")
     shop_result: Union[ShopResult, str, dm.NodeId, None] = Field(default=None, repr=False, alias="shopResult")
-    @field_validator("function_input", "shop_result", mode="before")
-    @classmethod
-    def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
-        return parse_single_connection(value, info.field_name)
 
-    @field_validator("alerts", mode="before")
-    @classmethod
-    def parse_list(cls, value: Any, info: ValidationInfo) -> Any:
-        if value is None:
-            return None
-        return [parse_single_connection(item, info.field_name) for item in value]
-
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopTriggerOutputWrite:
         """Convert this read version of shop trigger output to the writing version."""
-        return ShopTriggerOutputWrite.model_validate(as_write_args(self))
+        return ShopTriggerOutputWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=self.data_record.version),
+            workflow_execution_id=self.workflow_execution_id,
+            workflow_step=self.workflow_step,
+            function_name=self.function_name,
+            function_call_id=self.function_call_id,
+            function_input=self.function_input.as_write()
+if isinstance(self.function_input, DomainModel)
+else self.function_input,
+            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts] if self.alerts is not None else None,
+            shop_result=self.shop_result.as_write()
+if isinstance(self.shop_result, DomainModel)
+else self.shop_result,
+        )
 
     def as_apply(self) -> ShopTriggerOutputWrite:
         """Convert this read version of shop trigger output to the writing version."""
@@ -171,6 +216,56 @@ class ShopTriggerOutput(FunctionOutput):
             stacklevel=2,
         )
         return self.as_write()
+    @classmethod
+    def _update_connections(
+        cls,
+        instances: dict[dm.NodeId | str, ShopTriggerOutput],  # type: ignore[override]
+        nodes_by_id: dict[dm.NodeId | str, DomainModel],
+        edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
+    ) -> None:
+        from ._alert import Alert
+        from ._shop_result import ShopResult
+        from ._shop_trigger_input import ShopTriggerInput
+        for instance in instances.values():
+            if isinstance(instance.function_input, (dm.NodeId, str)) and (function_input := nodes_by_id.get(instance.function_input)) and isinstance(
+                    function_input, ShopTriggerInput
+            ):
+                instance.function_input = function_input
+            if isinstance(instance.shop_result, (dm.NodeId, str)) and (shop_result := nodes_by_id.get(instance.shop_result)) and isinstance(
+                    shop_result, ShopResult
+            ):
+                instance.shop_result = shop_result
+            if edges := edges_by_source_node.get(instance.as_id()):
+                alerts: list[Alert | str | dm.NodeId] = []
+                for edge in edges:
+                    value: DomainModel | DomainRelation | str | dm.NodeId
+                    if isinstance(edge, DomainRelation):
+                        value = edge
+                    else:
+                        other_end: dm.DirectRelationReference = (
+                            edge.end_node
+                            if edge.start_node.space == instance.space
+                            and edge.start_node.external_id == instance.external_id
+                            else edge.start_node
+                        )
+                        destination: dm.NodeId | str = (
+                            as_node_id(other_end)
+                            if other_end.space != DEFAULT_INSTANCE_SPACE
+                            else other_end.external_id
+                        )
+                        if destination in nodes_by_id:
+                            value = nodes_by_id[destination]
+                        else:
+                            value = destination
+                    edge_type = edge.edge_type if isinstance(edge, DomainRelation) else edge.type
+
+                    if edge_type == dm.DirectRelationReference("power_ops_types", "calculationIssue") and isinstance(
+                        value, (Alert, str, dm.NodeId)
+                    ):
+                        alerts.append(value)
+
+                instance.alerts = alerts or None
+
 
 
 class ShopTriggerOutputWrite(FunctionOutputWrite):
@@ -190,9 +285,6 @@ class ShopTriggerOutputWrite(FunctionOutputWrite):
         alerts: An array of calculation level Alerts.
         shop_result: The shop result field.
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("function_call_id", "function_input", "function_name", "shop_result", "workflow_execution_id", "workflow_step",)
-    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")),)
-    _direct_relations: ClassVar[tuple[str, ...]] = ("function_input", "shop_result",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopTriggerOutput", "1")
 
@@ -209,12 +301,84 @@ class ShopTriggerOutputWrite(FunctionOutputWrite):
             return [cls.as_node_id(item) for item in value]
         return value
 
+    def _to_instances_write(
+        self,
+        cache: set[tuple[str, str]],
+        write_none: bool = False,
+        allow_version_increase: bool = False,
+    ) -> ResourcesWrite:
+        resources = ResourcesWrite()
+        if self.as_tuple_id() in cache:
+            return resources
+
+        properties: dict[str, Any] = {}
+
+        if self.workflow_execution_id is not None:
+            properties["workflowExecutionId"] = self.workflow_execution_id
+
+        if self.workflow_step is not None:
+            properties["workflowStep"] = self.workflow_step
+
+        if self.function_name is not None:
+            properties["functionName"] = self.function_name
+
+        if self.function_call_id is not None:
+            properties["functionCallId"] = self.function_call_id
+
+        if self.function_input is not None:
+            properties["functionInput"] = {
+                "space":  self.space if isinstance(self.function_input, str) else self.function_input.space,
+                "externalId": self.function_input if isinstance(self.function_input, str) else self.function_input.external_id,
+            }
+
+        if self.shop_result is not None:
+            properties["shopResult"] = {
+                "space":  self.space if isinstance(self.shop_result, str) else self.shop_result.space,
+                "externalId": self.shop_result if isinstance(self.shop_result, str) else self.shop_result.external_id,
+            }
+
+        if properties:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
+                type=as_direct_relation_reference(self.node_type),
+                sources=[
+                    dm.NodeOrEdgeData(
+                        source=self._view_id,
+                        properties=properties,
+                )],
+            )
+            resources.nodes.append(this_node)
+            cache.add(self.as_tuple_id())
+
+        edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
+        for alert in self.alerts or []:
+            other_resources = DomainRelationWrite.from_edge_to_resources(
+                cache,
+                start_node=self,
+                end_node=alert,
+                edge_type=edge_type,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
+            )
+            resources.extend(other_resources)
+
+        if isinstance(self.function_input, DomainModelWrite):
+            other_resources = self.function_input._to_instances_write(cache)
+            resources.extend(other_resources)
+
+        if isinstance(self.shop_result, DomainModelWrite):
+            other_resources = self.shop_result._to_instances_write(cache)
+            resources.extend(other_resources)
+
+        return resources
+
 
 class ShopTriggerOutputApply(ShopTriggerOutputWrite):
     def __new__(cls, *args, **kwargs) -> ShopTriggerOutputApply:
         warnings.warn(
-            "ShopTriggerOutputApply is deprecated and will be removed in v1.0. "
-            "Use ShopTriggerOutputWrite instead. "
+            "ShopTriggerOutputApply is deprecated and will be removed in v1.0. Use ShopTriggerOutputWrite instead."
             "The motivation for this change is that Write is a more descriptive name for the writing version of the"
             "ShopTriggerOutput.",
             UserWarning,
@@ -343,7 +507,6 @@ class _ShopTriggerOutputQuery(NodeQueryCore[T_DomainModelList, ShopTriggerOutput
         result_list_cls: type[T_DomainModelList],
         expression: dm.query.ResultSetExpression | None = None,
         connection_name: str | None = None,
-        connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
         reverse_expression: dm.query.ResultSetExpression | None = None,
     ):
@@ -359,7 +522,6 @@ class _ShopTriggerOutputQuery(NodeQueryCore[T_DomainModelList, ShopTriggerOutput
             expression,
             dm.filters.HasData(views=[self._view_id]),
             connection_name,
-            connection_property,
             connection_type,
             reverse_expression,
         )
@@ -375,7 +537,6 @@ class _ShopTriggerOutputQuery(NodeQueryCore[T_DomainModelList, ShopTriggerOutput
                     direction="outwards",
                 ),
                 connection_name="function_input",
-                connection_property=ViewPropertyId(self._view_id, "functionInput"),
             )
 
         if _AlertQuery not in created_types:
@@ -389,7 +550,6 @@ class _ShopTriggerOutputQuery(NodeQueryCore[T_DomainModelList, ShopTriggerOutput
                     chain_to="destination",
                 ),
                 connection_name="alerts",
-                connection_property=ViewPropertyId(self._view_id, "alerts"),
             )
 
         if _ShopResultQuery not in created_types:
@@ -403,7 +563,6 @@ class _ShopTriggerOutputQuery(NodeQueryCore[T_DomainModelList, ShopTriggerOutput
                     direction="outwards",
                 ),
                 connection_name="shop_result",
-                connection_property=ViewPropertyId(self._view_id, "shopResult"),
             )
 
         self.space = StringFilter(self, ["node", "space"])
@@ -412,8 +571,6 @@ class _ShopTriggerOutputQuery(NodeQueryCore[T_DomainModelList, ShopTriggerOutput
         self.workflow_step = IntFilter(self, self._view_id.as_property_ref("workflowStep"))
         self.function_name = StringFilter(self, self._view_id.as_property_ref("functionName"))
         self.function_call_id = StringFilter(self, self._view_id.as_property_ref("functionCallId"))
-        self.function_input_filter = DirectRelationFilter(self, self._view_id.as_property_ref("functionInput"))
-        self.shop_result_filter = DirectRelationFilter(self, self._view_id.as_property_ref("shopResult"))
         self._filter_classes.extend([
             self.space,
             self.external_id,
@@ -421,8 +578,6 @@ class _ShopTriggerOutputQuery(NodeQueryCore[T_DomainModelList, ShopTriggerOutput
             self.workflow_step,
             self.function_name,
             self.function_call_id,
-            self.function_input_filter,
-            self.shop_result_filter,
         ])
 
     def list_shop_trigger_output(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopTriggerOutputList:

@@ -28,8 +28,8 @@ class BenchmarkingShopCaseShopFilesAPI(EdgeAPI):
             to_shop_file_space: Location of the shop files.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shop file edges to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of shop file edges to return. Defaults to 25. Set to -1, float("inf") or None
+                to return all items.
 
         Returns:
             The requested shop file edges.
@@ -40,9 +40,7 @@ class BenchmarkingShopCaseShopFilesAPI(EdgeAPI):
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> benchmarking_shop_case = client.benchmarking_shop_case.shop_files_edge.list(
-                ...     "my_benchmarking_shop_case", limit=5
-                ... )
+                >>> benchmarking_shop_case = client.benchmarking_shop_case.shop_files_edge.list("my_benchmarking_shop_case", limit=5)
 
         """
         filter_ = _create_edge_filter(

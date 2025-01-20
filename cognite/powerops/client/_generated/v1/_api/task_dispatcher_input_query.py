@@ -11,46 +11,39 @@ from cognite.powerops.client._generated.v1.data_classes import (
     TaskDispatcherInput,
     BidConfigurationDayAhead,
 )
-from cognite.powerops.client._generated.v1.data_classes._core import (
-    DEFAULT_QUERY_LIMIT,
-    ViewPropertyId,
-    T_DomainModel,
-    T_DomainModelList,
-    QueryBuilder,
-    QueryStep,
-)
 from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_QUERY_LIMIT,
+    EdgeQueryStep,
+    NodeQueryStep,
+    DataClassQueryBuilder,
     QueryAPI,
+    T_DomainModelList,
     _create_edge_filter,
 )
 
 
 
-class TaskDispatcherInputQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
+class TaskDispatcherInputQueryAPI(QueryAPI[T_DomainModelList]):
     _view_id = dm.ViewId("power_ops_core", "TaskDispatcherInput", "1")
 
     def __init__(
         self,
         client: CogniteClient,
-        builder: QueryBuilder,
-        result_cls: type[T_DomainModel],
-        result_list_cls: type[T_DomainModelList],
-        connection_property: ViewPropertyId | None = None,
+        builder: DataClassQueryBuilder[T_DomainModelList],
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
-        super().__init__(client, builder, result_cls, result_list_cls)
+        super().__init__(client, builder)
         from_ = self._builder.get_from()
         self._builder.append(
-            QueryStep(
+            NodeQueryStep(
                 name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
                     from_=from_,
                     filter=filter_,
                 ),
+                result_cls=TaskDispatcherInput,
                 max_retrieve_limit=limit,
-                view_id=self._view_id,
-                connection_property=connection_property,
             )
         )
 
@@ -61,9 +54,7 @@ class TaskDispatcherInputQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
         """Execute query and return the result.
 
         Args:
-            retrieve_bid_configuration: Whether to retrieve the
-                bid configuration for each
-                task dispatcher input or not.
+            retrieve_bid_configuration: Whether to retrieve the bid configuration for each task dispatcher input or not.
 
         Returns:
             The list of the source nodes of the query.
@@ -76,7 +67,7 @@ class TaskDispatcherInputQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
 
     def _query_append_bid_configuration(self, from_: str) -> None:
         self._builder.append(
-            QueryStep(
+            NodeQueryStep(
                 name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
                     from_=from_,
@@ -84,7 +75,6 @@ class TaskDispatcherInputQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
                     direction="outwards",
                     filter=dm.filters.HasData(views=[BidConfigurationDayAhead._view_id]),
                 ),
-                view_id=BidConfigurationDayAhead._view_id,
-                connection_property=ViewPropertyId(self._view_id, "bidConfiguration"),
+                result_cls=BidConfigurationDayAhead,
             ),
         )

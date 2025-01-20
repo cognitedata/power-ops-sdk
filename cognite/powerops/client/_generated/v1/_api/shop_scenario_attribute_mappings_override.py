@@ -28,8 +28,8 @@ class ShopScenarioAttributeMappingsOverrideAPI(EdgeAPI):
             to_shop_attribute_mapping_space: Location of the shop attribute mappings.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of attribute mappings override edges to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of attribute mappings override edges to return. Defaults to 25. Set to -1, float("inf") or None
+                to return all items.
 
         Returns:
             The requested attribute mappings override edges.
@@ -40,9 +40,7 @@ class ShopScenarioAttributeMappingsOverrideAPI(EdgeAPI):
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> shop_scenario = client.shop_scenario.attribute_mappings_override_edge.list(
-                ...     "my_shop_scenario", limit=5
-                ... )
+                >>> shop_scenario = client.shop_scenario.attribute_mappings_override_edge.list("my_shop_scenario", limit=5)
 
         """
         filter_ = _create_edge_filter(

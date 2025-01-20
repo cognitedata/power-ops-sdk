@@ -1,35 +1,21 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
-from typing import Any, ClassVar, Literal, overload
+from typing import overload, Literal
+import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1._api._core import (
-    DEFAULT_LIMIT_READ,
-    instantiate_classes,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-)
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
-    QueryStepFactory,
-    QueryBuilder,
-    QueryUnpacker,
-    ViewPropertyId,
-)
-from cognite.powerops.client._generated.v1.data_classes._watercourse import (
-    WatercourseQuery,
-    _WATERCOURSE_PROPERTIES_BY_FIELD,
-    _create_watercourse_filter,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
 )
 from cognite.powerops.client._generated.v1.data_classes import (
-    DomainModel,
     DomainModelCore,
     DomainModelWrite,
     ResourcesWriteResult,
@@ -40,12 +26,23 @@ from cognite.powerops.client._generated.v1.data_classes import (
     WatercourseWriteList,
     WatercourseTextFields,
 )
+from cognite.powerops.client._generated.v1.data_classes._watercourse import (
+    WatercourseQuery,
+    _WATERCOURSE_PROPERTIES_BY_FIELD,
+    _create_watercourse_filter,
+)
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
 from cognite.powerops.client._generated.v1._api.watercourse_query import WatercourseQueryAPI
 
 
 class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, WatercourseWriteList]):
     _view_id = dm.ViewId("power_ops_core", "Watercourse", "1")
-    _properties_by_field: ClassVar[dict[str, str]] = _WATERCOURSE_PROPERTIES_BY_FIELD
+    _properties_by_field = _WATERCOURSE_PROPERTIES_BY_FIELD
     _class_type = Watercourse
     _class_list = WatercourseList
     _class_write_list = WatercourseWriteList
@@ -68,7 +65,7 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
         space: str | list[str] | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
-    ) -> WatercourseQueryAPI[Watercourse, WatercourseList]:
+    ) -> WatercourseQueryAPI[WatercourseList]:
         """Query starting at watercourses.
 
         Args:
@@ -82,10 +79,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
             asset_type_prefix: The prefix of the asset type to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of watercourses to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
-                your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of watercourses to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             A query API for watercourses.
@@ -112,9 +107,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        return WatercourseQueryAPI(
-            self._client, QueryBuilder(), self._class_type, self._class_list, None, filter_, limit
-        )
+        builder = DataClassQueryBuilder(WatercourseList)
+        return WatercourseQueryAPI(self._client, builder, filter_, limit)
 
     def apply(
         self,
@@ -125,14 +119,10 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
         """Add or update (upsert) watercourses.
 
         Args:
-            watercourse: Watercourse or
-                sequence of watercourses to upsert.
-            replace (bool): How do we behave when a property value exists? Do we replace all matching and
-                existing values with the supplied values (true)?
-                Or should we merge in new values for properties together with the existing values (false)?
-                Note: This setting applies for all nodes or edges specified in the ingestion call.
-            write_none (bool): This method, will by default, skip properties that are set to None.
-                However, if you want to set properties to None,
+            watercourse: Watercourse or sequence of watercourses to upsert.
+            replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
+                Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
+            write_none (bool): This method, will by default, skip properties that are set to None. However, if you want to set properties to None,
                 you can set this parameter to True. Note this only applies to properties that are nullable.
         Returns:
             Created instance(s), i.e., nodes, edges, and time series.
@@ -144,9 +134,7 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> from cognite.powerops.client._generated.v1.data_classes import WatercourseWrite
                 >>> client = PowerOpsModelsV1Client()
-                >>> watercourse = WatercourseWrite(
-                ...     external_id="my_watercourse", ...
-                ... )
+                >>> watercourse = WatercourseWrite(external_id="my_watercourse", ...)
                 >>> result = client.watercourse.apply(watercourse)
 
         """
@@ -192,24 +180,14 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(
-        self,
-        external_id: str | dm.NodeId | tuple[str, str],
-        space: str = DEFAULT_INSTANCE_SPACE,
-    ) -> Watercourse | None: ...
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> Watercourse | None:
+        ...
 
     @overload
-    def retrieve(
-        self,
-        external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]],
-        space: str = DEFAULT_INSTANCE_SPACE,
-    ) -> WatercourseList: ...
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> WatercourseList:
+        ...
 
-    def retrieve(
-        self,
-        external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]],
-        space: str = DEFAULT_INSTANCE_SPACE,
-    ) -> Watercourse | WatercourseList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> Watercourse | WatercourseList | None:
         """Retrieve one or more watercourses by id(s).
 
         Args:
@@ -225,15 +203,10 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> watercourse = client.watercourse.retrieve(
-                ...     "my_watercourse"
-                ... )
+                >>> watercourse = client.watercourse.retrieve("my_watercourse")
 
         """
-        return self._retrieve(
-            external_id,
-            space,
-        )
+        return self._retrieve(external_id, space)
 
     def search(
         self,
@@ -270,14 +243,12 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
             asset_type_prefix: The prefix of the asset type to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of watercourses to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient,
-                you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of watercourses to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
-                This will override the sort_by and direction. This allows you to sort by multiple fields and
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
 
         Returns:
@@ -289,9 +260,7 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> watercourses = client.watercourse.search(
-                ...     'my_watercourse'
-                ... )
+                >>> watercourses = client.watercourse.search('my_watercourse')
 
         """
         filter_ = _create_watercourse_filter(
@@ -430,10 +399,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
             asset_type_prefix: The prefix of the asset type to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of watercourses to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
-                your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of watercourses to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             Aggregation results.
@@ -508,10 +475,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
             asset_type_prefix: The prefix of the asset type to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of watercourses to return.
-                Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient,
-                you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of watercourses to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             Bucketed histogram results.
@@ -540,29 +505,15 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
             filter_,
         )
 
-    def select(self) -> WatercourseQuery:
-        """Start selecting from watercourses."""
+    def query(self) -> WatercourseQuery:
+        """Start a query for watercourses."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
         return WatercourseQuery(self._client)
 
-    def _query(
-        self,
-        filter_: dm.Filter | None,
-        limit: int,
-        retrieve_connections: Literal["skip", "identifier", "full"],
-        sort: list[InstanceSort] | None = None,
-    ) -> list[dict[str, Any]]:
-        builder = QueryBuilder()
-        factory = QueryStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(factory.root(
-            filter=filter_,
-            sort=sort,
-            limit=limit,
-            has_container_fields=True,
-        ))
-        unpack_edges: Literal["skip", "identifier"] = "identifier" if retrieve_connections == "identifier" else "skip"
-        builder.execute_query(self._client, remove_not_connected=True if unpack_edges == "skip" else False)
-        return QueryUnpacker(builder, edges=unpack_edges).unpack()
-
+    def select(self) -> WatercourseQuery:
+        """Start selecting from watercourses."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return WatercourseQuery(self._client)
 
     def list(
         self,
@@ -595,10 +546,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
             asset_type_prefix: The prefix of the asset type to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of watercourses to return.
-                Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient,
-                you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of watercourses to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
@@ -631,5 +580,11 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
             space,
             filter,
         )
-        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
-        return self._list(limit=limit,  filter=filter_, sort=sort_input)
+
+        return self._list(
+            limit=limit,
+            filter=filter_,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
+        )

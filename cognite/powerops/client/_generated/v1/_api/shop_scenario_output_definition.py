@@ -28,8 +28,8 @@ class ShopScenarioOutputDefinitionAPI(EdgeAPI):
             to_shop_output_time_series_definition_space: Location of the shop output time series definitions.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of output definition edges to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of output definition edges to return. Defaults to 25. Set to -1, float("inf") or None
+                to return all items.
 
         Returns:
             The requested output definition edges.
@@ -40,9 +40,7 @@ class ShopScenarioOutputDefinitionAPI(EdgeAPI):
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> shop_scenario = client.shop_scenario.output_definition_edge.list(
-                ...     "my_shop_scenario", limit=5
-                ... )
+                >>> shop_scenario = client.shop_scenario.output_definition_edge.list("my_shop_scenario", limit=5)
 
         """
         filter_ = _create_edge_filter(

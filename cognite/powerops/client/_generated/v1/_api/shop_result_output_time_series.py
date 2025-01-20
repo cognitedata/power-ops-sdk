@@ -28,8 +28,8 @@ class ShopResultOutputTimeSeriesAPI(EdgeAPI):
             to_shop_time_series_space: Location of the shop time series.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of output time series edges to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of output time series edges to return. Defaults to 25. Set to -1, float("inf") or None
+                to return all items.
 
         Returns:
             The requested output time series edges.
@@ -40,9 +40,7 @@ class ShopResultOutputTimeSeriesAPI(EdgeAPI):
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> shop_result = client.shop_result.output_time_series_edge.list(
-                ...     "my_shop_result", limit=5
-                ... )
+                >>> shop_result = client.shop_result.output_time_series_edge.list("my_shop_result", limit=5)
 
         """
         filter_ = _create_edge_filter(

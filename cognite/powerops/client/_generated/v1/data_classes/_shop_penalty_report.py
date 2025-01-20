@@ -3,11 +3,11 @@ from __future__ import annotations
 import datetime
 import warnings
 from collections.abc import Sequence
-from typing import Any, ClassVar, Literal, Optional, Union
+from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
-from pydantic import field_validator, model_validator, ValidationInfo
+from pydantic import field_validator, model_validator
 
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
@@ -24,16 +24,16 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     GraphQLCore,
     ResourcesWrite,
     T_DomainModelList,
-    as_node_id,
-    as_read_args,
-    as_write_args,
-    is_tuple_id,
+    as_direct_relation_reference,
     as_instance_dict_id,
-    parse_single_connection,
+    as_node_id,
+    as_pygen_node_id,
+    are_nodes_equal,
+    is_tuple_id,
+    select_best_node,
     QueryCore,
     NodeQueryCore,
     StringFilter,
-    ViewPropertyId,
     IntFilter,
     TimestampFilter,
 )
@@ -85,14 +85,11 @@ class ShopPenaltyReportGraphQL(GraphQLCore):
         workflow_execution_id: Process ID in the workflow that the alert is related to
         title: Summary description of the alert
         description: Detailed description of the alert
-        severity: CRITICAL (calculation could not completed) WARNING  (calculation completed, with major issue) INFO
-            (calculation completed, with minor issues)
+        severity: CRITICAL (calculation could not completed) WARNING  (calculation completed, with major issue) INFO     (calculation completed, with minor issues)
         alert_type: Classification of the alert (not in current alerting implementation)
-        status_code: Unique status code for the alert. May be used by the frontend to avoid use of hardcoded
-            description (i.e. like a translation)
+        status_code: Unique status code for the alert. May be used by the frontend to avoid use of hardcoded description (i.e. like a translation)
         event_ids: An array of associated alert CDF Events (e.g. SHOP Run events)
-        calculation_run: The identifier of the parent Bid Calculation (required so that alerts can be created before
-            the BidDocument)
+        calculation_run: The identifier of the parent Bid Calculation (required so that alerts can be created before the BidDocument)
         penalties: TODO
     """
 
@@ -121,13 +118,51 @@ class ShopPenaltyReportGraphQL(GraphQLCore):
 
 
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> ShopPenaltyReport:
         """Convert this GraphQL format of shop penalty report to the reading format."""
-        return ShopPenaltyReport.model_validate(as_read_args(self))
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return ShopPenaltyReport(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            time=self.time,
+            workflow_execution_id=self.workflow_execution_id,
+            title=self.title,
+            description=self.description,
+            severity=self.severity,
+            alert_type=self.alert_type,
+            status_code=self.status_code,
+            event_ids=self.event_ids,
+            calculation_run=self.calculation_run,
+            penalties=self.penalties,
+        )
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopPenaltyReportWrite:
         """Convert this GraphQL format of shop penalty report to the writing format."""
-        return ShopPenaltyReportWrite.model_validate(as_write_args(self))
+        return ShopPenaltyReportWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            time=self.time,
+            workflow_execution_id=self.workflow_execution_id,
+            title=self.title,
+            description=self.description,
+            severity=self.severity,
+            alert_type=self.alert_type,
+            status_code=self.status_code,
+            event_ids=self.event_ids,
+            calculation_run=self.calculation_run,
+            penalties=self.penalties,
+        )
 
 
 class ShopPenaltyReport(Alert):
@@ -143,14 +178,11 @@ class ShopPenaltyReport(Alert):
         workflow_execution_id: Process ID in the workflow that the alert is related to
         title: Summary description of the alert
         description: Detailed description of the alert
-        severity: CRITICAL (calculation could not completed) WARNING  (calculation completed, with major issue) INFO
-            (calculation completed, with minor issues)
+        severity: CRITICAL (calculation could not completed) WARNING  (calculation completed, with major issue) INFO     (calculation completed, with minor issues)
         alert_type: Classification of the alert (not in current alerting implementation)
-        status_code: Unique status code for the alert. May be used by the frontend to avoid use of hardcoded
-            description (i.e. like a translation)
+        status_code: Unique status code for the alert. May be used by the frontend to avoid use of hardcoded description (i.e. like a translation)
         event_ids: An array of associated alert CDF Events (e.g. SHOP Run events)
-        calculation_run: The identifier of the parent Bid Calculation (required so that alerts can be created before
-            the BidDocument)
+        calculation_run: The identifier of the parent Bid Calculation (required so that alerts can be created before the BidDocument)
         penalties: TODO
     """
 
@@ -159,10 +191,25 @@ class ShopPenaltyReport(Alert):
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopPenaltyReport")
     penalties: Optional[list[dict]] = None
 
-
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopPenaltyReportWrite:
         """Convert this read version of shop penalty report to the writing version."""
-        return ShopPenaltyReportWrite.model_validate(as_write_args(self))
+        return ShopPenaltyReportWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=self.data_record.version),
+            time=self.time,
+            workflow_execution_id=self.workflow_execution_id,
+            title=self.title,
+            description=self.description,
+            severity=self.severity,
+            alert_type=self.alert_type,
+            status_code=self.status_code,
+            event_ids=self.event_ids,
+            calculation_run=self.calculation_run,
+            penalties=self.penalties,
+        )
 
     def as_apply(self) -> ShopPenaltyReportWrite:
         """Convert this read version of shop penalty report to the writing version."""
@@ -172,7 +219,6 @@ class ShopPenaltyReport(Alert):
             stacklevel=2,
         )
         return self.as_write()
-
 
 class ShopPenaltyReportWrite(AlertWrite):
     """This represents the writing version of shop penalty report.
@@ -187,17 +233,13 @@ class ShopPenaltyReportWrite(AlertWrite):
         workflow_execution_id: Process ID in the workflow that the alert is related to
         title: Summary description of the alert
         description: Detailed description of the alert
-        severity: CRITICAL (calculation could not completed) WARNING  (calculation completed, with major issue) INFO
-            (calculation completed, with minor issues)
+        severity: CRITICAL (calculation could not completed) WARNING  (calculation completed, with major issue) INFO     (calculation completed, with minor issues)
         alert_type: Classification of the alert (not in current alerting implementation)
-        status_code: Unique status code for the alert. May be used by the frontend to avoid use of hardcoded
-            description (i.e. like a translation)
+        status_code: Unique status code for the alert. May be used by the frontend to avoid use of hardcoded description (i.e. like a translation)
         event_ids: An array of associated alert CDF Events (e.g. SHOP Run events)
-        calculation_run: The identifier of the parent Bid Calculation (required so that alerts can be created before
-            the BidDocument)
+        calculation_run: The identifier of the parent Bid Calculation (required so that alerts can be created before the BidDocument)
         penalties: TODO
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("alert_type", "calculation_run", "description", "event_ids", "penalties", "severity", "status_code", "time", "title", "workflow_execution_id",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopPenaltyReport", "1")
 
@@ -205,12 +247,70 @@ class ShopPenaltyReportWrite(AlertWrite):
     penalties: Optional[list[dict]] = None
 
 
+    def _to_instances_write(
+        self,
+        cache: set[tuple[str, str]],
+        write_none: bool = False,
+        allow_version_increase: bool = False,
+    ) -> ResourcesWrite:
+        resources = ResourcesWrite()
+        if self.as_tuple_id() in cache:
+            return resources
+
+        properties: dict[str, Any] = {}
+
+        if self.time is not None:
+            properties["time"] = self.time.isoformat(timespec="milliseconds") if self.time else None
+
+        if self.workflow_execution_id is not None or write_none:
+            properties["workflowExecutionId"] = self.workflow_execution_id
+
+        if self.title is not None:
+            properties["title"] = self.title
+
+        if self.description is not None or write_none:
+            properties["description"] = self.description
+
+        if self.severity is not None or write_none:
+            properties["severity"] = self.severity
+
+        if self.alert_type is not None or write_none:
+            properties["alertType"] = self.alert_type
+
+        if self.status_code is not None or write_none:
+            properties["statusCode"] = self.status_code
+
+        if self.event_ids is not None or write_none:
+            properties["eventIds"] = self.event_ids
+
+        if self.calculation_run is not None or write_none:
+            properties["calculationRun"] = self.calculation_run
+
+        if self.penalties is not None or write_none:
+            properties["penalties"] = self.penalties
+
+        if properties:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
+                type=as_direct_relation_reference(self.node_type),
+                sources=[
+                    dm.NodeOrEdgeData(
+                        source=self._view_id,
+                        properties=properties,
+                )],
+            )
+            resources.nodes.append(this_node)
+            cache.add(self.as_tuple_id())
+
+        return resources
+
 
 class ShopPenaltyReportApply(ShopPenaltyReportWrite):
     def __new__(cls, *args, **kwargs) -> ShopPenaltyReportApply:
         warnings.warn(
-            "ShopPenaltyReportApply is deprecated and will be removed in v1.0. "
-            "Use ShopPenaltyReportWrite instead. "
+            "ShopPenaltyReportApply is deprecated and will be removed in v1.0. Use ShopPenaltyReportWrite instead."
             "The motivation for this change is that Write is a more descriptive name for the writing version of the"
             "ShopPenaltyReport.",
             UserWarning,
@@ -331,7 +431,6 @@ class _ShopPenaltyReportQuery(NodeQueryCore[T_DomainModelList, ShopPenaltyReport
         result_list_cls: type[T_DomainModelList],
         expression: dm.query.ResultSetExpression | None = None,
         connection_name: str | None = None,
-        connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
         reverse_expression: dm.query.ResultSetExpression | None = None,
     ):
@@ -344,7 +443,6 @@ class _ShopPenaltyReportQuery(NodeQueryCore[T_DomainModelList, ShopPenaltyReport
             expression,
             dm.filters.HasData(views=[self._view_id]),
             connection_name,
-            connection_property,
             connection_type,
             reverse_expression,
         )

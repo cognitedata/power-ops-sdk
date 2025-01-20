@@ -28,8 +28,8 @@ class BidDocumentAFRRAlertsAPI(EdgeAPI):
             to_alert_space: Location of the alerts.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of alert edges to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of alert edges to return. Defaults to 25. Set to -1, float("inf") or None
+                to return all items.
 
         Returns:
             The requested alert edges.
@@ -40,9 +40,7 @@ class BidDocumentAFRRAlertsAPI(EdgeAPI):
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> bid_document_afrr = client.bid_document_afrr.alerts_edge.list(
-                ...     "my_bid_document_afrr", limit=5
-                ... )
+                >>> bid_document_afrr = client.bid_document_afrr.alerts_edge.list("my_bid_document_afrr", limit=5)
 
         """
         filter_ = _create_edge_filter(

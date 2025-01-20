@@ -1,35 +1,21 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
-from typing import Any, ClassVar, Literal, overload
+from typing import overload, Literal
+import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1._api._core import (
-    DEFAULT_LIMIT_READ,
-    instantiate_classes,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-)
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
-    QueryStepFactory,
-    QueryBuilder,
-    QueryUnpacker,
-    ViewPropertyId,
-)
-from cognite.powerops.client._generated.v1.data_classes._turbine_efficiency_curve import (
-    TurbineEfficiencyCurveQuery,
-    _TURBINEEFFICIENCYCURVE_PROPERTIES_BY_FIELD,
-    _create_turbine_efficiency_curve_filter,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
 )
 from cognite.powerops.client._generated.v1.data_classes import (
-    DomainModel,
     DomainModelCore,
     DomainModelWrite,
     ResourcesWriteResult,
@@ -40,12 +26,23 @@ from cognite.powerops.client._generated.v1.data_classes import (
     TurbineEfficiencyCurveWriteList,
     TurbineEfficiencyCurveTextFields,
 )
+from cognite.powerops.client._generated.v1.data_classes._turbine_efficiency_curve import (
+    TurbineEfficiencyCurveQuery,
+    _TURBINEEFFICIENCYCURVE_PROPERTIES_BY_FIELD,
+    _create_turbine_efficiency_curve_filter,
+)
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
 from cognite.powerops.client._generated.v1._api.turbine_efficiency_curve_query import TurbineEfficiencyCurveQueryAPI
 
 
 class TurbineEfficiencyCurveAPI(NodeAPI[TurbineEfficiencyCurve, TurbineEfficiencyCurveWrite, TurbineEfficiencyCurveList, TurbineEfficiencyCurveWriteList]):
     _view_id = dm.ViewId("power_ops_core", "TurbineEfficiencyCurve", "1")
-    _properties_by_field: ClassVar[dict[str, str]] = _TURBINEEFFICIENCYCURVE_PROPERTIES_BY_FIELD
+    _properties_by_field = _TURBINEEFFICIENCYCURVE_PROPERTIES_BY_FIELD
     _class_type = TurbineEfficiencyCurve
     _class_list = TurbineEfficiencyCurveList
     _class_write_list = TurbineEfficiencyCurveWriteList
@@ -62,7 +59,7 @@ class TurbineEfficiencyCurveAPI(NodeAPI[TurbineEfficiencyCurve, TurbineEfficienc
         space: str | list[str] | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
-    ) -> TurbineEfficiencyCurveQueryAPI[TurbineEfficiencyCurve, TurbineEfficiencyCurveList]:
+    ) -> TurbineEfficiencyCurveQueryAPI[TurbineEfficiencyCurveList]:
         """Query starting at turbine efficiency curves.
 
         Args:
@@ -70,10 +67,8 @@ class TurbineEfficiencyCurveAPI(NodeAPI[TurbineEfficiencyCurve, TurbineEfficienc
             max_head: The maximum value of the head to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of turbine efficiency curves to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
-                your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of turbine efficiency curves to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             A query API for turbine efficiency curves.
@@ -94,9 +89,8 @@ class TurbineEfficiencyCurveAPI(NodeAPI[TurbineEfficiencyCurve, TurbineEfficienc
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        return TurbineEfficiencyCurveQueryAPI(
-            self._client, QueryBuilder(), self._class_type, self._class_list, None, filter_, limit
-        )
+        builder = DataClassQueryBuilder(TurbineEfficiencyCurveList)
+        return TurbineEfficiencyCurveQueryAPI(self._client, builder, filter_, limit)
 
     def apply(
         self,
@@ -107,14 +101,10 @@ class TurbineEfficiencyCurveAPI(NodeAPI[TurbineEfficiencyCurve, TurbineEfficienc
         """Add or update (upsert) turbine efficiency curves.
 
         Args:
-            turbine_efficiency_curve: Turbine efficiency curve or
-                sequence of turbine efficiency curves to upsert.
-            replace (bool): How do we behave when a property value exists? Do we replace all matching and
-                existing values with the supplied values (true)?
-                Or should we merge in new values for properties together with the existing values (false)?
-                Note: This setting applies for all nodes or edges specified in the ingestion call.
-            write_none (bool): This method, will by default, skip properties that are set to None.
-                However, if you want to set properties to None,
+            turbine_efficiency_curve: Turbine efficiency curve or sequence of turbine efficiency curves to upsert.
+            replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
+                Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
+            write_none (bool): This method, will by default, skip properties that are set to None. However, if you want to set properties to None,
                 you can set this parameter to True. Note this only applies to properties that are nullable.
         Returns:
             Created instance(s), i.e., nodes, edges, and time series.
@@ -126,9 +116,7 @@ class TurbineEfficiencyCurveAPI(NodeAPI[TurbineEfficiencyCurve, TurbineEfficienc
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> from cognite.powerops.client._generated.v1.data_classes import TurbineEfficiencyCurveWrite
                 >>> client = PowerOpsModelsV1Client()
-                >>> turbine_efficiency_curve = TurbineEfficiencyCurveWrite(
-                ...     external_id="my_turbine_efficiency_curve", ...
-                ... )
+                >>> turbine_efficiency_curve = TurbineEfficiencyCurveWrite(external_id="my_turbine_efficiency_curve", ...)
                 >>> result = client.turbine_efficiency_curve.apply(turbine_efficiency_curve)
 
         """
@@ -174,24 +162,14 @@ class TurbineEfficiencyCurveAPI(NodeAPI[TurbineEfficiencyCurve, TurbineEfficienc
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(
-        self,
-        external_id: str | dm.NodeId | tuple[str, str],
-        space: str = DEFAULT_INSTANCE_SPACE,
-    ) -> TurbineEfficiencyCurve | None: ...
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> TurbineEfficiencyCurve | None:
+        ...
 
     @overload
-    def retrieve(
-        self,
-        external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]],
-        space: str = DEFAULT_INSTANCE_SPACE,
-    ) -> TurbineEfficiencyCurveList: ...
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> TurbineEfficiencyCurveList:
+        ...
 
-    def retrieve(
-        self,
-        external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]],
-        space: str = DEFAULT_INSTANCE_SPACE,
-    ) -> TurbineEfficiencyCurve | TurbineEfficiencyCurveList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> TurbineEfficiencyCurve | TurbineEfficiencyCurveList | None:
         """Retrieve one or more turbine efficiency curves by id(s).
 
         Args:
@@ -207,15 +185,10 @@ class TurbineEfficiencyCurveAPI(NodeAPI[TurbineEfficiencyCurve, TurbineEfficienc
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> turbine_efficiency_curve = client.turbine_efficiency_curve.retrieve(
-                ...     "my_turbine_efficiency_curve"
-                ... )
+                >>> turbine_efficiency_curve = client.turbine_efficiency_curve.retrieve("my_turbine_efficiency_curve")
 
         """
-        return self._retrieve(
-            external_id,
-            space,
-        )
+        return self._retrieve(external_id, space)
 
     def search(
         self,
@@ -240,14 +213,12 @@ class TurbineEfficiencyCurveAPI(NodeAPI[TurbineEfficiencyCurve, TurbineEfficienc
             max_head: The maximum value of the head to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of turbine efficiency curves to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient,
-                you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of turbine efficiency curves to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
-                This will override the sort_by and direction. This allows you to sort by multiple fields and
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
 
         Returns:
@@ -259,9 +230,7 @@ class TurbineEfficiencyCurveAPI(NodeAPI[TurbineEfficiencyCurve, TurbineEfficienc
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> turbine_efficiency_curves = client.turbine_efficiency_curve.search(
-                ...     'my_turbine_efficiency_curve'
-                ... )
+                >>> turbine_efficiency_curves = client.turbine_efficiency_curve.search('my_turbine_efficiency_curve')
 
         """
         filter_ = _create_turbine_efficiency_curve_filter(
@@ -354,10 +323,8 @@ class TurbineEfficiencyCurveAPI(NodeAPI[TurbineEfficiencyCurve, TurbineEfficienc
             max_head: The maximum value of the head to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of turbine efficiency curves to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
-                your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of turbine efficiency curves to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             Aggregation results.
@@ -410,10 +377,8 @@ class TurbineEfficiencyCurveAPI(NodeAPI[TurbineEfficiencyCurve, TurbineEfficienc
             max_head: The maximum value of the head to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of turbine efficiency curves to return.
-                Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient,
-                you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of turbine efficiency curves to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             Bucketed histogram results.
@@ -436,29 +401,15 @@ class TurbineEfficiencyCurveAPI(NodeAPI[TurbineEfficiencyCurve, TurbineEfficienc
             filter_,
         )
 
-    def select(self) -> TurbineEfficiencyCurveQuery:
-        """Start selecting from turbine efficiency curves."""
+    def query(self) -> TurbineEfficiencyCurveQuery:
+        """Start a query for turbine efficiency curves."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
         return TurbineEfficiencyCurveQuery(self._client)
 
-    def _query(
-        self,
-        filter_: dm.Filter | None,
-        limit: int,
-        retrieve_connections: Literal["skip", "identifier", "full"],
-        sort: list[InstanceSort] | None = None,
-    ) -> list[dict[str, Any]]:
-        builder = QueryBuilder()
-        factory = QueryStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(factory.root(
-            filter=filter_,
-            sort=sort,
-            limit=limit,
-            has_container_fields=True,
-        ))
-        unpack_edges: Literal["skip", "identifier"] = "identifier" if retrieve_connections == "identifier" else "skip"
-        builder.execute_query(self._client, remove_not_connected=True if unpack_edges == "skip" else False)
-        return QueryUnpacker(builder, edges=unpack_edges).unpack()
-
+    def select(self) -> TurbineEfficiencyCurveQuery:
+        """Start selecting from turbine efficiency curves."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return TurbineEfficiencyCurveQuery(self._client)
 
     def list(
         self,
@@ -479,10 +430,8 @@ class TurbineEfficiencyCurveAPI(NodeAPI[TurbineEfficiencyCurve, TurbineEfficienc
             max_head: The maximum value of the head to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of turbine efficiency curves to return.
-                Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient,
-                you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of turbine efficiency curves to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
@@ -509,5 +458,11 @@ class TurbineEfficiencyCurveAPI(NodeAPI[TurbineEfficiencyCurve, TurbineEfficienc
             space,
             filter,
         )
-        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
-        return self._list(limit=limit,  filter=filter_, sort=sort_input)
+
+        return self._list(
+            limit=limit,
+            filter=filter_,
+            sort_by=sort_by,  # type: ignore[arg-type]
+            direction=direction,
+            sort=sort,
+        )

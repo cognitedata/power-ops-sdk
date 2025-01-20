@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import warnings
 from collections.abc import Sequence
-from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
-from pydantic import field_validator, model_validator, ValidationInfo
+from pydantic import field_validator, model_validator
 
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
@@ -23,17 +23,16 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     GraphQLCore,
     ResourcesWrite,
     T_DomainModelList,
-    as_node_id,
-    as_read_args,
-    as_write_args,
-    is_tuple_id,
+    as_direct_relation_reference,
     as_instance_dict_id,
-    parse_single_connection,
+    as_node_id,
+    as_pygen_node_id,
+    are_nodes_equal,
+    is_tuple_id,
+    select_best_node,
     QueryCore,
     NodeQueryCore,
     StringFilter,
-    ViewPropertyId,
-    DirectRelationFilter,
     IntFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._function_input import FunctionInput, FunctionInputWrite
@@ -116,13 +115,53 @@ class ShopTriggerInputGraphQL(GraphQLCore):
             return value["items"]
         return value
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> ShopTriggerInput:
         """Convert this GraphQL format of shop trigger input to the reading format."""
-        return ShopTriggerInput.model_validate(as_read_args(self))
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return ShopTriggerInput(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            workflow_execution_id=self.workflow_execution_id,
+            workflow_step=self.workflow_step,
+            function_name=self.function_name,
+            function_call_id=self.function_call_id,
+            cog_shop_tag=self.cog_shop_tag,
+            preprocessor_input=self.preprocessor_input.as_read()
+if isinstance(self.preprocessor_input, GraphQLCore)
+else self.preprocessor_input,
+            case=self.case.as_read()
+if isinstance(self.case, GraphQLCore)
+else self.case,
+        )
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopTriggerInputWrite:
         """Convert this GraphQL format of shop trigger input to the writing format."""
-        return ShopTriggerInputWrite.model_validate(as_write_args(self))
+        return ShopTriggerInputWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            workflow_execution_id=self.workflow_execution_id,
+            workflow_step=self.workflow_step,
+            function_name=self.function_name,
+            function_call_id=self.function_call_id,
+            cog_shop_tag=self.cog_shop_tag,
+            preprocessor_input=self.preprocessor_input.as_write()
+if isinstance(self.preprocessor_input, GraphQLCore)
+else self.preprocessor_input,
+            case=self.case.as_write()
+if isinstance(self.case, GraphQLCore)
+else self.case,
+        )
 
 
 class ShopTriggerInput(FunctionInput):
@@ -149,15 +188,27 @@ class ShopTriggerInput(FunctionInput):
     cog_shop_tag: Optional[str] = Field(None, alias="cogShopTag")
     preprocessor_input: Union[ShopPreprocessorInput, str, dm.NodeId, None] = Field(default=None, repr=False, alias="preprocessorInput")
     case: Union[ShopCase, str, dm.NodeId, None] = Field(default=None, repr=False)
-    @field_validator("preprocessor_input", "case", mode="before")
-    @classmethod
-    def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
-        return parse_single_connection(value, info.field_name)
 
-
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopTriggerInputWrite:
         """Convert this read version of shop trigger input to the writing version."""
-        return ShopTriggerInputWrite.model_validate(as_write_args(self))
+        return ShopTriggerInputWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=self.data_record.version),
+            workflow_execution_id=self.workflow_execution_id,
+            workflow_step=self.workflow_step,
+            function_name=self.function_name,
+            function_call_id=self.function_call_id,
+            cog_shop_tag=self.cog_shop_tag,
+            preprocessor_input=self.preprocessor_input.as_write()
+if isinstance(self.preprocessor_input, DomainModel)
+else self.preprocessor_input,
+            case=self.case.as_write()
+if isinstance(self.case, DomainModel)
+else self.case,
+        )
 
     def as_apply(self) -> ShopTriggerInputWrite:
         """Convert this read version of shop trigger input to the writing version."""
@@ -167,6 +218,24 @@ class ShopTriggerInput(FunctionInput):
             stacklevel=2,
         )
         return self.as_write()
+    @classmethod
+    def _update_connections(
+        cls,
+        instances: dict[dm.NodeId | str, ShopTriggerInput],  # type: ignore[override]
+        nodes_by_id: dict[dm.NodeId | str, DomainModel],
+        edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
+    ) -> None:
+        from ._shop_case import ShopCase
+        from ._shop_preprocessor_input import ShopPreprocessorInput
+        for instance in instances.values():
+            if isinstance(instance.preprocessor_input, (dm.NodeId, str)) and (preprocessor_input := nodes_by_id.get(instance.preprocessor_input)) and isinstance(
+                    preprocessor_input, ShopPreprocessorInput
+            ):
+                instance.preprocessor_input = preprocessor_input
+            if isinstance(instance.case, (dm.NodeId, str)) and (case := nodes_by_id.get(instance.case)) and isinstance(
+                    case, ShopCase
+            ):
+                instance.case = case
 
 
 class ShopTriggerInputWrite(FunctionInputWrite):
@@ -186,8 +255,6 @@ class ShopTriggerInputWrite(FunctionInputWrite):
         preprocessor_input: The preprocessor input to the shop run
         case: The SHOP case (with all details like model, scenario, and time series)
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("case", "cog_shop_tag", "function_call_id", "function_name", "preprocessor_input", "workflow_execution_id", "workflow_step",)
-    _direct_relations: ClassVar[tuple[str, ...]] = ("case", "preprocessor_input",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopTriggerInput", "1")
 
@@ -206,12 +273,75 @@ class ShopTriggerInputWrite(FunctionInputWrite):
             return [cls.as_node_id(item) for item in value]
         return value
 
+    def _to_instances_write(
+        self,
+        cache: set[tuple[str, str]],
+        write_none: bool = False,
+        allow_version_increase: bool = False,
+    ) -> ResourcesWrite:
+        resources = ResourcesWrite()
+        if self.as_tuple_id() in cache:
+            return resources
+
+        properties: dict[str, Any] = {}
+
+        if self.workflow_execution_id is not None:
+            properties["workflowExecutionId"] = self.workflow_execution_id
+
+        if self.workflow_step is not None:
+            properties["workflowStep"] = self.workflow_step
+
+        if self.function_name is not None:
+            properties["functionName"] = self.function_name
+
+        if self.function_call_id is not None:
+            properties["functionCallId"] = self.function_call_id
+
+        if self.cog_shop_tag is not None or write_none:
+            properties["cogShopTag"] = self.cog_shop_tag
+
+        if self.preprocessor_input is not None:
+            properties["preprocessorInput"] = {
+                "space":  self.space if isinstance(self.preprocessor_input, str) else self.preprocessor_input.space,
+                "externalId": self.preprocessor_input if isinstance(self.preprocessor_input, str) else self.preprocessor_input.external_id,
+            }
+
+        if self.case is not None:
+            properties["case"] = {
+                "space":  self.space if isinstance(self.case, str) else self.case.space,
+                "externalId": self.case if isinstance(self.case, str) else self.case.external_id,
+            }
+
+        if properties:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
+                type=as_direct_relation_reference(self.node_type),
+                sources=[
+                    dm.NodeOrEdgeData(
+                        source=self._view_id,
+                        properties=properties,
+                )],
+            )
+            resources.nodes.append(this_node)
+            cache.add(self.as_tuple_id())
+
+        if isinstance(self.preprocessor_input, DomainModelWrite):
+            other_resources = self.preprocessor_input._to_instances_write(cache)
+            resources.extend(other_resources)
+
+        if isinstance(self.case, DomainModelWrite):
+            other_resources = self.case._to_instances_write(cache)
+            resources.extend(other_resources)
+
+        return resources
+
 
 class ShopTriggerInputApply(ShopTriggerInputWrite):
     def __new__(cls, *args, **kwargs) -> ShopTriggerInputApply:
         warnings.warn(
-            "ShopTriggerInputApply is deprecated and will be removed in v1.0. "
-            "Use ShopTriggerInputWrite instead. "
+            "ShopTriggerInputApply is deprecated and will be removed in v1.0. Use ShopTriggerInputWrite instead."
             "The motivation for this change is that Write is a more descriptive name for the writing version of the"
             "ShopTriggerInput.",
             UserWarning,
@@ -338,7 +468,6 @@ class _ShopTriggerInputQuery(NodeQueryCore[T_DomainModelList, ShopTriggerInputLi
         result_list_cls: type[T_DomainModelList],
         expression: dm.query.ResultSetExpression | None = None,
         connection_name: str | None = None,
-        connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
         reverse_expression: dm.query.ResultSetExpression | None = None,
     ):
@@ -353,7 +482,6 @@ class _ShopTriggerInputQuery(NodeQueryCore[T_DomainModelList, ShopTriggerInputLi
             expression,
             dm.filters.HasData(views=[self._view_id]),
             connection_name,
-            connection_property,
             connection_type,
             reverse_expression,
         )
@@ -369,7 +497,6 @@ class _ShopTriggerInputQuery(NodeQueryCore[T_DomainModelList, ShopTriggerInputLi
                     direction="outwards",
                 ),
                 connection_name="preprocessor_input",
-                connection_property=ViewPropertyId(self._view_id, "preprocessorInput"),
             )
 
         if _ShopCaseQuery not in created_types:
@@ -383,7 +510,6 @@ class _ShopTriggerInputQuery(NodeQueryCore[T_DomainModelList, ShopTriggerInputLi
                     direction="outwards",
                 ),
                 connection_name="case",
-                connection_property=ViewPropertyId(self._view_id, "case"),
             )
 
         self.space = StringFilter(self, ["node", "space"])
@@ -393,8 +519,6 @@ class _ShopTriggerInputQuery(NodeQueryCore[T_DomainModelList, ShopTriggerInputLi
         self.function_name = StringFilter(self, self._view_id.as_property_ref("functionName"))
         self.function_call_id = StringFilter(self, self._view_id.as_property_ref("functionCallId"))
         self.cog_shop_tag = StringFilter(self, self._view_id.as_property_ref("cogShopTag"))
-        self.preprocessor_input_filter = DirectRelationFilter(self, self._view_id.as_property_ref("preprocessorInput"))
-        self.case_filter = DirectRelationFilter(self, self._view_id.as_property_ref("case"))
         self._filter_classes.extend([
             self.space,
             self.external_id,
@@ -403,8 +527,6 @@ class _ShopTriggerInputQuery(NodeQueryCore[T_DomainModelList, ShopTriggerInputLi
             self.function_name,
             self.function_call_id,
             self.cog_shop_tag,
-            self.preprocessor_input_filter,
-            self.case_filter,
         ])
 
     def list_shop_trigger_input(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopTriggerInputList:

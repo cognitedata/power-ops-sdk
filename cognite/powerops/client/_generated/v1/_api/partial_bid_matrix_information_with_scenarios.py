@@ -1,35 +1,21 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
-from typing import Any, ClassVar, Literal, overload
+from typing import overload, Literal
+import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
-from cognite.powerops.client._generated.v1._api._core import (
-    DEFAULT_LIMIT_READ,
-    instantiate_classes,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-)
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
-    QueryStepFactory,
-    QueryBuilder,
-    QueryUnpacker,
-    ViewPropertyId,
-)
-from cognite.powerops.client._generated.v1.data_classes._partial_bid_matrix_information_with_scenarios import (
-    PartialBidMatrixInformationWithScenariosQuery,
-    _PARTIALBIDMATRIXINFORMATIONWITHSCENARIOS_PROPERTIES_BY_FIELD,
-    _create_partial_bid_matrix_information_with_scenario_filter,
+    NodeQueryStep,
+    EdgeQueryStep,
+    DataClassQueryBuilder,
 )
 from cognite.powerops.client._generated.v1.data_classes import (
-    DomainModel,
     DomainModelCore,
     DomainModelWrite,
     ResourcesWriteResult,
@@ -45,6 +31,17 @@ from cognite.powerops.client._generated.v1.data_classes import (
     PowerAsset,
     PriceProduction,
 )
+from cognite.powerops.client._generated.v1.data_classes._partial_bid_matrix_information_with_scenarios import (
+    PartialBidMatrixInformationWithScenariosQuery,
+    _PARTIALBIDMATRIXINFORMATIONWITHSCENARIOS_PROPERTIES_BY_FIELD,
+    _create_partial_bid_matrix_information_with_scenario_filter,
+)
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
 from cognite.powerops.client._generated.v1._api.partial_bid_matrix_information_with_scenarios_alerts import PartialBidMatrixInformationWithScenariosAlertsAPI
 from cognite.powerops.client._generated.v1._api.partial_bid_matrix_information_with_scenarios_underlying_bid_matrices import PartialBidMatrixInformationWithScenariosUnderlyingBidMatricesAPI
 from cognite.powerops.client._generated.v1._api.partial_bid_matrix_information_with_scenarios_multi_scenario_input import PartialBidMatrixInformationWithScenariosMultiScenarioInputAPI
@@ -54,7 +51,7 @@ from cognite.powerops.client._generated.v1._api.partial_bid_matrix_information_w
 
 class PartialBidMatrixInformationWithScenariosAPI(NodeAPI[PartialBidMatrixInformationWithScenarios, PartialBidMatrixInformationWithScenariosWrite, PartialBidMatrixInformationWithScenariosList, PartialBidMatrixInformationWithScenariosWriteList]):
     _view_id = dm.ViewId("power_ops_core", "PartialBidMatrixInformationWithScenarios", "1")
-    _properties_by_field: ClassVar[dict[str, str]] = _PARTIALBIDMATRIXINFORMATIONWITHSCENARIOS_PROPERTIES_BY_FIELD
+    _properties_by_field = _PARTIALBIDMATRIXINFORMATIONWITHSCENARIOS_PROPERTIES_BY_FIELD
     _class_type = PartialBidMatrixInformationWithScenarios
     _class_list = PartialBidMatrixInformationWithScenariosList
     _class_write_list = PartialBidMatrixInformationWithScenariosWriteList
@@ -79,7 +76,7 @@ class PartialBidMatrixInformationWithScenariosAPI(NodeAPI[PartialBidMatrixInform
         space: str | list[str] | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
-    ) -> PartialBidMatrixInformationWithScenariosQueryAPI[PartialBidMatrixInformationWithScenarios, PartialBidMatrixInformationWithScenariosList]:
+    ) -> PartialBidMatrixInformationWithScenariosQueryAPI[PartialBidMatrixInformationWithScenariosList]:
         """Query starting at partial bid matrix information with scenarios.
 
         Args:
@@ -91,10 +88,8 @@ class PartialBidMatrixInformationWithScenariosAPI(NodeAPI[PartialBidMatrixInform
             partial_bid_configuration: The partial bid configuration to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of partial bid matrix information with scenarios to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
-                your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of partial bid matrix information with scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             A query API for partial bid matrix information with scenarios.
@@ -119,9 +114,8 @@ class PartialBidMatrixInformationWithScenariosAPI(NodeAPI[PartialBidMatrixInform
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        return PartialBidMatrixInformationWithScenariosQueryAPI(
-            self._client, QueryBuilder(), self._class_type, self._class_list, None, filter_, limit
-        )
+        builder = DataClassQueryBuilder(PartialBidMatrixInformationWithScenariosList)
+        return PartialBidMatrixInformationWithScenariosQueryAPI(self._client, builder, filter_, limit)
 
     def apply(
         self,
@@ -131,15 +125,15 @@ class PartialBidMatrixInformationWithScenariosAPI(NodeAPI[PartialBidMatrixInform
     ) -> ResourcesWriteResult:
         """Add or update (upsert) partial bid matrix information with scenarios.
 
+        Note: This method iterates through all nodes and timeseries linked to partial_bid_matrix_information_with_scenario and creates them including the edges
+        between the nodes. For example, if any of `alerts`, `underlying_bid_matrices`, `power_asset`, `partial_bid_configuration` or `multi_scenario_input` are set, then these
+        nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
+
         Args:
-            partial_bid_matrix_information_with_scenario: Partial bid matrix information with scenario or
-                sequence of partial bid matrix information with scenarios to upsert.
-            replace (bool): How do we behave when a property value exists? Do we replace all matching and
-                existing values with the supplied values (true)?
-                Or should we merge in new values for properties together with the existing values (false)?
-                Note: This setting applies for all nodes or edges specified in the ingestion call.
-            write_none (bool): This method, will by default, skip properties that are set to None.
-                However, if you want to set properties to None,
+            partial_bid_matrix_information_with_scenario: Partial bid matrix information with scenario or sequence of partial bid matrix information with scenarios to upsert.
+            replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
+                Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
+            write_none (bool): This method, will by default, skip properties that are set to None. However, if you want to set properties to None,
                 you can set this parameter to True. Note this only applies to properties that are nullable.
         Returns:
             Created instance(s), i.e., nodes, edges, and time series.
@@ -151,9 +145,7 @@ class PartialBidMatrixInformationWithScenariosAPI(NodeAPI[PartialBidMatrixInform
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> from cognite.powerops.client._generated.v1.data_classes import PartialBidMatrixInformationWithScenariosWrite
                 >>> client = PowerOpsModelsV1Client()
-                >>> partial_bid_matrix_information_with_scenario = PartialBidMatrixInformationWithScenariosWrite(
-                ...     external_id="my_partial_bid_matrix_information_with_scenario", ...
-                ... )
+                >>> partial_bid_matrix_information_with_scenario = PartialBidMatrixInformationWithScenariosWrite(external_id="my_partial_bid_matrix_information_with_scenario", ...)
                 >>> result = client.partial_bid_matrix_information_with_scenarios.apply(partial_bid_matrix_information_with_scenario)
 
         """
@@ -199,36 +191,19 @@ class PartialBidMatrixInformationWithScenariosAPI(NodeAPI[PartialBidMatrixInform
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(
-        self,
-        external_id: str | dm.NodeId | tuple[str, str],
-        space: str = DEFAULT_INSTANCE_SPACE,
-        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
-    ) -> PartialBidMatrixInformationWithScenarios | None: ...
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> PartialBidMatrixInformationWithScenarios | None:
+        ...
 
     @overload
-    def retrieve(
-        self,
-        external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]],
-        space: str = DEFAULT_INSTANCE_SPACE,
-        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
-    ) -> PartialBidMatrixInformationWithScenariosList: ...
+    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> PartialBidMatrixInformationWithScenariosList:
+        ...
 
-    def retrieve(
-        self,
-        external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]],
-        space: str = DEFAULT_INSTANCE_SPACE,
-        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
-    ) -> PartialBidMatrixInformationWithScenarios | PartialBidMatrixInformationWithScenariosList | None:
+    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> PartialBidMatrixInformationWithScenarios | PartialBidMatrixInformationWithScenariosList | None:
         """Retrieve one or more partial bid matrix information with scenarios by id(s).
 
         Args:
             external_id: External id or list of external ids of the partial bid matrix information with scenarios.
             space: The space where all the partial bid matrix information with scenarios are located.
-            retrieve_connections: Whether to retrieve `alerts`, `underlying_bid_matrices`, `power_asset`,
-            `partial_bid_configuration` and `multi_scenario_input` for the partial bid matrix information with
-            scenarios. Defaults to 'skip'.'skip' will not retrieve any connections, 'identifier' will only retrieve the
-            identifier of the connected items, and 'full' will retrieve the full connected items.
 
         Returns:
             The requested partial bid matrix information with scenarios.
@@ -239,15 +214,36 @@ class PartialBidMatrixInformationWithScenariosAPI(NodeAPI[PartialBidMatrixInform
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> partial_bid_matrix_information_with_scenario = client.partial_bid_matrix_information_with_scenarios.retrieve(
-                ...     "my_partial_bid_matrix_information_with_scenario"
-                ... )
+                >>> partial_bid_matrix_information_with_scenario = client.partial_bid_matrix_information_with_scenarios.retrieve("my_partial_bid_matrix_information_with_scenario")
 
         """
         return self._retrieve(
             external_id,
             space,
-            retrieve_connections=retrieve_connections,
+            retrieve_edges=True,
+            edge_api_name_type_direction_view_id_penta=[
+                (
+                    self.alerts_edge,
+                    "alerts",
+                    dm.DirectRelationReference("power_ops_types", "calculationIssue"),
+                    "outwards",
+                    dm.ViewId("power_ops_core", "Alert", "1"),
+                ),
+                (
+                    self.underlying_bid_matrices_edge,
+                    "underlying_bid_matrices",
+                    dm.DirectRelationReference("power_ops_types", "intermediateBidMatrix"),
+                    "outwards",
+                    dm.ViewId("power_ops_core", "BidMatrix", "1"),
+                ),
+                (
+                    self.multi_scenario_input_edge,
+                    "multi_scenario_input",
+                    dm.DirectRelationReference("power_ops_types", "calculationIssue"),
+                    "outwards",
+                    dm.ViewId("power_ops_core", "PriceProduction", "1"),
+                ),
+                                               ]
         )
 
     def search(
@@ -281,14 +277,12 @@ class PartialBidMatrixInformationWithScenariosAPI(NodeAPI[PartialBidMatrixInform
             partial_bid_configuration: The partial bid configuration to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of partial bid matrix information with scenarios to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient,
-                you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of partial bid matrix information with scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
-                This will override the sort_by and direction. This allows you to sort by multiple fields and
+                This will override the sort_by and direction. This allowos you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
 
         Returns:
@@ -300,9 +294,7 @@ class PartialBidMatrixInformationWithScenariosAPI(NodeAPI[PartialBidMatrixInform
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> partial_bid_matrix_information_with_scenarios = client.partial_bid_matrix_information_with_scenarios.search(
-                ...     'my_partial_bid_matrix_information_with_scenario'
-                ... )
+                >>> partial_bid_matrix_information_with_scenarios = client.partial_bid_matrix_information_with_scenarios.search('my_partial_bid_matrix_information_with_scenario')
 
         """
         filter_ = _create_partial_bid_matrix_information_with_scenario_filter(
@@ -429,10 +421,8 @@ class PartialBidMatrixInformationWithScenariosAPI(NodeAPI[PartialBidMatrixInform
             partial_bid_configuration: The partial bid configuration to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of partial bid matrix information with scenarios to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
-                your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of partial bid matrix information with scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             Aggregation results.
@@ -501,10 +491,8 @@ class PartialBidMatrixInformationWithScenariosAPI(NodeAPI[PartialBidMatrixInform
             partial_bid_configuration: The partial bid configuration to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of partial bid matrix information with scenarios to return.
-                Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient,
-                you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of partial bid matrix information with scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             Bucketed histogram results.
@@ -531,71 +519,15 @@ class PartialBidMatrixInformationWithScenariosAPI(NodeAPI[PartialBidMatrixInform
             filter_,
         )
 
-    def select(self) -> PartialBidMatrixInformationWithScenariosQuery:
-        """Start selecting from partial bid matrix information with scenarios."""
+    def query(self) -> PartialBidMatrixInformationWithScenariosQuery:
+        """Start a query for partial bid matrix information with scenarios."""
+        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
         return PartialBidMatrixInformationWithScenariosQuery(self._client)
 
-    def _query(
-        self,
-        filter_: dm.Filter | None,
-        limit: int,
-        retrieve_connections: Literal["skip", "identifier", "full"],
-        sort: list[InstanceSort] | None = None,
-    ) -> list[dict[str, Any]]:
-        builder = QueryBuilder()
-        factory = QueryStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(factory.root(
-            filter=filter_,
-            sort=sort,
-            limit=limit,
-            has_container_fields=True,
-        ))
-        builder.extend(
-            factory.from_edge(
-                Alert._view_id,
-                "outwards",
-                ViewPropertyId(self._view_id, "alerts"),
-                include_end_node=retrieve_connections == "full",
-                has_container_fields=True,
-            )
-        )
-        builder.extend(
-            factory.from_edge(
-                BidMatrix._view_id,
-                "outwards",
-                ViewPropertyId(self._view_id, "underlyingBidMatrices"),
-                include_end_node=retrieve_connections == "full",
-                has_container_fields=True,
-            )
-        )
-        builder.extend(
-            factory.from_edge(
-                PriceProduction._view_id,
-                "outwards",
-                ViewPropertyId(self._view_id, "multiScenarioInput"),
-                include_end_node=retrieve_connections == "full",
-                has_container_fields=True,
-            )
-        )
-        if retrieve_connections == "full":
-            builder.extend(
-                factory.from_direct_relation(
-                    PowerAsset._view_id,
-                    ViewPropertyId(self._view_id, "powerAsset"),
-                    has_container_fields=True,
-                )
-            )
-            builder.extend(
-                factory.from_direct_relation(
-                    PartialBidConfiguration._view_id,
-                    ViewPropertyId(self._view_id, "partialBidConfiguration"),
-                    has_container_fields=True,
-                )
-            )
-        unpack_edges: Literal["skip", "identifier"] = "identifier" if retrieve_connections == "identifier" else "skip"
-        builder.execute_query(self._client, remove_not_connected=True if unpack_edges == "skip" else False)
-        return QueryUnpacker(builder, edges=unpack_edges).unpack()
-
+    def select(self) -> PartialBidMatrixInformationWithScenariosQuery:
+        """Start selecting from partial bid matrix information with scenarios."""
+        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
+        return PartialBidMatrixInformationWithScenariosQuery(self._client)
 
     def list(
         self,
@@ -625,19 +557,15 @@ class PartialBidMatrixInformationWithScenariosAPI(NodeAPI[PartialBidMatrixInform
             partial_bid_configuration: The partial bid configuration to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of partial bid matrix information with scenarios to return.
-                Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient,
-                you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of partial bid matrix information with scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
                 This will override the sort_by and direction. This allowos you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
-            retrieve_connections: Whether to retrieve `alerts`, `underlying_bid_matrices`, `power_asset`,
-            `partial_bid_configuration` and `multi_scenario_input` for the partial bid matrix information with
-            scenarios. Defaults to 'skip'.'skip' will not retrieve any connections, 'identifier' will only retrieve the
-            identifier of the connected items, and 'full' will retrieve the full connected items.
+            retrieve_connections: Whether to retrieve `alerts`, `underlying_bid_matrices`, `power_asset`, `partial_bid_configuration` and `multi_scenario_input` for the partial bid matrix information with scenarios. Defaults to 'skip'.
+                'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier of the connected items, and 'full' will retrieve the full connected items.
 
         Returns:
             List of requested partial bid matrix information with scenarios
@@ -663,8 +591,119 @@ class PartialBidMatrixInformationWithScenariosAPI(NodeAPI[PartialBidMatrixInform
             space,
             filter,
         )
-        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+
         if retrieve_connections == "skip":
-            return self._list(limit=limit,  filter=filter_, sort=sort_input)
-        values = self._query(filter_, limit, retrieve_connections, sort_input)
-        return self._class_list(instantiate_classes(self._class_type, values, "list"))
+            return self._list(
+                limit=limit,
+                filter=filter_,
+                sort_by=sort_by,  # type: ignore[arg-type]
+                direction=direction,
+                sort=sort,
+            )
+
+        builder = DataClassQueryBuilder(PartialBidMatrixInformationWithScenariosList)
+        has_data = dm.filters.HasData(views=[self._view_id])
+        builder.append(
+            NodeQueryStep(
+                builder.create_name(None),
+                dm.query.NodeResultSetExpression(
+                    filter=dm.filters.And(filter_, has_data) if filter_ else has_data,
+                    sort=self._create_sort(sort_by, direction, sort),  # type: ignore[arg-type]
+                ),
+                PartialBidMatrixInformationWithScenarios,
+                max_retrieve_limit=limit,
+                raw_filter=filter_,
+            )
+        )
+        from_root = builder.get_from()
+        edge_alerts = builder.create_name(from_root)
+        builder.append(
+            EdgeQueryStep(
+                edge_alerts,
+                dm.query.EdgeResultSetExpression(
+                    from_=from_root,
+                    direction="outwards",
+                    chain_to="destination",
+                ),
+            )
+        )
+        edge_underlying_bid_matrices = builder.create_name(from_root)
+        builder.append(
+            EdgeQueryStep(
+                edge_underlying_bid_matrices,
+                dm.query.EdgeResultSetExpression(
+                    from_=from_root,
+                    direction="outwards",
+                    chain_to="destination",
+                ),
+            )
+        )
+        edge_multi_scenario_input = builder.create_name(from_root)
+        builder.append(
+            EdgeQueryStep(
+                edge_multi_scenario_input,
+                dm.query.EdgeResultSetExpression(
+                    from_=from_root,
+                    direction="outwards",
+                    chain_to="destination",
+                ),
+            )
+        )
+        if retrieve_connections == "full":
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name( edge_alerts),
+                    dm.query.NodeResultSetExpression(
+                        from_= edge_alerts,
+                        filter=dm.filters.HasData(views=[Alert._view_id]),
+                    ),
+                    Alert,
+                )
+            )
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name( edge_underlying_bid_matrices),
+                    dm.query.NodeResultSetExpression(
+                        from_= edge_underlying_bid_matrices,
+                        filter=dm.filters.HasData(views=[BidMatrix._view_id]),
+                    ),
+                    BidMatrix,
+                )
+            )
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name( edge_multi_scenario_input),
+                    dm.query.NodeResultSetExpression(
+                        from_= edge_multi_scenario_input,
+                        filter=dm.filters.HasData(views=[PriceProduction._view_id]),
+                    ),
+                    PriceProduction,
+                )
+            )
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name(from_root),
+                    dm.query.NodeResultSetExpression(
+                        from_=from_root,
+                        filter=dm.filters.HasData(views=[PowerAsset._view_id]),
+                        direction="outwards",
+                        through=self._view_id.as_property_ref("powerAsset"),
+                    ),
+                    PowerAsset,
+                )
+            )
+            builder.append(
+                NodeQueryStep(
+                    builder.create_name(from_root),
+                    dm.query.NodeResultSetExpression(
+                        from_=from_root,
+                        filter=dm.filters.HasData(views=[PartialBidConfiguration._view_id]),
+                        direction="outwards",
+                        through=self._view_id.as_property_ref("partialBidConfiguration"),
+                    ),
+                    PartialBidConfiguration,
+                )
+            )
+        # We know that that all nodes are connected as it is not possible to filter on connections
+        builder.execute_query(self._client, remove_not_connected=False)
+        return builder.unpack()

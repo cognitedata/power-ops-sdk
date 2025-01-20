@@ -28,8 +28,8 @@ class FunctionOutputAlertsAPI(EdgeAPI):
             to_alert_space: Location of the alerts.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of alert edges to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of alert edges to return. Defaults to 25. Set to -1, float("inf") or None
+                to return all items.
 
         Returns:
             The requested alert edges.
@@ -40,9 +40,7 @@ class FunctionOutputAlertsAPI(EdgeAPI):
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> function_output = client.function_output.alerts_edge.list(
-                ...     "my_function_output", limit=5
-                ... )
+                >>> function_output = client.function_output.alerts_edge.list("my_function_output", limit=5)
 
         """
         filter_ = _create_edge_filter(

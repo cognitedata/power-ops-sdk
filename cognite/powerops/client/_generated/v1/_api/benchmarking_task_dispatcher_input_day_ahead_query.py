@@ -11,46 +11,39 @@ from cognite.powerops.client._generated.v1.data_classes import (
     BenchmarkingTaskDispatcherInputDayAhead,
     BenchmarkingConfigurationDayAhead,
 )
-from cognite.powerops.client._generated.v1.data_classes._core import (
-    DEFAULT_QUERY_LIMIT,
-    ViewPropertyId,
-    T_DomainModel,
-    T_DomainModelList,
-    QueryBuilder,
-    QueryStep,
-)
 from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_QUERY_LIMIT,
+    EdgeQueryStep,
+    NodeQueryStep,
+    DataClassQueryBuilder,
     QueryAPI,
+    T_DomainModelList,
     _create_edge_filter,
 )
 
 
 
-class BenchmarkingTaskDispatcherInputDayAheadQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
+class BenchmarkingTaskDispatcherInputDayAheadQueryAPI(QueryAPI[T_DomainModelList]):
     _view_id = dm.ViewId("power_ops_core", "BenchmarkingTaskDispatcherInputDayAhead", "1")
 
     def __init__(
         self,
         client: CogniteClient,
-        builder: QueryBuilder,
-        result_cls: type[T_DomainModel],
-        result_list_cls: type[T_DomainModelList],
-        connection_property: ViewPropertyId | None = None,
+        builder: DataClassQueryBuilder[T_DomainModelList],
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
-        super().__init__(client, builder, result_cls, result_list_cls)
+        super().__init__(client, builder)
         from_ = self._builder.get_from()
         self._builder.append(
-            QueryStep(
+            NodeQueryStep(
                 name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
                     from_=from_,
                     filter=filter_,
                 ),
+                result_cls=BenchmarkingTaskDispatcherInputDayAhead,
                 max_retrieve_limit=limit,
-                view_id=self._view_id,
-                connection_property=connection_property,
             )
         )
 
@@ -61,9 +54,7 @@ class BenchmarkingTaskDispatcherInputDayAheadQueryAPI(QueryAPI[T_DomainModel, T_
         """Execute query and return the result.
 
         Args:
-            retrieve_benchmarking_config: Whether to retrieve the
-                benchmarking config for each
-                benchmarking task dispatcher input day ahead or not.
+            retrieve_benchmarking_config: Whether to retrieve the benchmarking config for each benchmarking task dispatcher input day ahead or not.
 
         Returns:
             The list of the source nodes of the query.
@@ -76,7 +67,7 @@ class BenchmarkingTaskDispatcherInputDayAheadQueryAPI(QueryAPI[T_DomainModel, T_
 
     def _query_append_benchmarking_config(self, from_: str) -> None:
         self._builder.append(
-            QueryStep(
+            NodeQueryStep(
                 name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
                     from_=from_,
@@ -84,7 +75,6 @@ class BenchmarkingTaskDispatcherInputDayAheadQueryAPI(QueryAPI[T_DomainModel, T_
                     direction="outwards",
                     filter=dm.filters.HasData(views=[BenchmarkingConfigurationDayAhead._view_id]),
                 ),
-                view_id=BenchmarkingConfigurationDayAhead._view_id,
-                connection_property=ViewPropertyId(self._view_id, "benchmarkingConfig"),
+                result_cls=BenchmarkingConfigurationDayAhead,
             ),
         )

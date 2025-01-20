@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import warnings
 from collections.abc import Sequence
-from typing import Any, ClassVar, Literal, Optional, Union
+from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
-from pydantic import field_validator, model_validator, ValidationInfo
+from pydantic import field_validator, model_validator
 
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
@@ -23,16 +23,16 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     GraphQLCore,
     ResourcesWrite,
     T_DomainModelList,
-    as_node_id,
-    as_read_args,
-    as_write_args,
-    is_tuple_id,
+    as_direct_relation_reference,
     as_instance_dict_id,
-    parse_single_connection,
+    as_node_id,
+    as_pygen_node_id,
+    are_nodes_equal,
+    is_tuple_id,
+    select_best_node,
     QueryCore,
     NodeQueryCore,
     StringFilter,
-    ViewPropertyId,
     FloatFilter,
     IntFilter,
 )
@@ -84,11 +84,9 @@ class MarketConfigurationGraphQL(GraphQLCore):
         timezone: The timezone field.
         price_unit: Unit of measurement for the price ('EUR/MWh')
         price_steps: The maximum number of price steps
-        tick_size: 'Granularity' of the price; tick size = 0.1 means that prices must be 'rounded to nearest 0.1' (i.
-            e. 66.43 is not allowed, but 66.4 is)
+        tick_size: 'Granularity' of the price; tick size = 0.1 means that prices must be 'rounded to nearest 0.1' (i. e. 66.43 is not allowed, but 66.4 is)
         time_unit: The time unit ('1h')
-        trade_lot: 'Granularity' of the volumes; trade lot = 0.2 means that volumes must be 'rounded to nearest 0.2'
-            (i. e. 66.5 is not allowed, but 66.4 is)
+        trade_lot: 'Granularity' of the volumes; trade lot = 0.2 means that volumes must be 'rounded to nearest 0.2' (i. e. 66.5 is not allowed, but 66.4 is)
     """
 
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "MarketConfiguration", "1")
@@ -115,13 +113,49 @@ class MarketConfigurationGraphQL(GraphQLCore):
 
 
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> MarketConfiguration:
         """Convert this GraphQL format of market configuration to the reading format."""
-        return MarketConfiguration.model_validate(as_read_args(self))
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return MarketConfiguration(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            name=self.name,
+            max_price=self.max_price,
+            min_price=self.min_price,
+            timezone=self.timezone,
+            price_unit=self.price_unit,
+            price_steps=self.price_steps,
+            tick_size=self.tick_size,
+            time_unit=self.time_unit,
+            trade_lot=self.trade_lot,
+        )
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> MarketConfigurationWrite:
         """Convert this GraphQL format of market configuration to the writing format."""
-        return MarketConfigurationWrite.model_validate(as_write_args(self))
+        return MarketConfigurationWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            name=self.name,
+            max_price=self.max_price,
+            min_price=self.min_price,
+            timezone=self.timezone,
+            price_unit=self.price_unit,
+            price_steps=self.price_steps,
+            tick_size=self.tick_size,
+            time_unit=self.time_unit,
+            trade_lot=self.trade_lot,
+        )
 
 
 class MarketConfiguration(DomainModel):
@@ -139,11 +173,9 @@ class MarketConfiguration(DomainModel):
         timezone: The timezone field.
         price_unit: Unit of measurement for the price ('EUR/MWh')
         price_steps: The maximum number of price steps
-        tick_size: 'Granularity' of the price; tick size = 0.1 means that prices must be 'rounded to nearest 0.1' (i.
-            e. 66.43 is not allowed, but 66.4 is)
+        tick_size: 'Granularity' of the price; tick size = 0.1 means that prices must be 'rounded to nearest 0.1' (i. e. 66.43 is not allowed, but 66.4 is)
         time_unit: The time unit ('1h')
-        trade_lot: 'Granularity' of the volumes; trade lot = 0.2 means that volumes must be 'rounded to nearest 0.2'
-            (i. e. 66.5 is not allowed, but 66.4 is)
+        trade_lot: 'Granularity' of the volumes; trade lot = 0.2 means that volumes must be 'rounded to nearest 0.2' (i. e. 66.5 is not allowed, but 66.4 is)
     """
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "MarketConfiguration", "1")
@@ -160,10 +192,24 @@ class MarketConfiguration(DomainModel):
     time_unit: str = Field(alias="timeUnit")
     trade_lot: float = Field(alias="tradeLot")
 
-
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> MarketConfigurationWrite:
         """Convert this read version of market configuration to the writing version."""
-        return MarketConfigurationWrite.model_validate(as_write_args(self))
+        return MarketConfigurationWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=self.data_record.version),
+            name=self.name,
+            max_price=self.max_price,
+            min_price=self.min_price,
+            timezone=self.timezone,
+            price_unit=self.price_unit,
+            price_steps=self.price_steps,
+            tick_size=self.tick_size,
+            time_unit=self.time_unit,
+            trade_lot=self.trade_lot,
+        )
 
     def as_apply(self) -> MarketConfigurationWrite:
         """Convert this read version of market configuration to the writing version."""
@@ -173,7 +219,6 @@ class MarketConfiguration(DomainModel):
             stacklevel=2,
         )
         return self.as_write()
-
 
 class MarketConfigurationWrite(DomainModelWrite):
     """This represents the writing version of market configuration.
@@ -190,13 +235,10 @@ class MarketConfigurationWrite(DomainModelWrite):
         timezone: The timezone field.
         price_unit: Unit of measurement for the price ('EUR/MWh')
         price_steps: The maximum number of price steps
-        tick_size: 'Granularity' of the price; tick size = 0.1 means that prices must be 'rounded to nearest 0.1' (i.
-            e. 66.43 is not allowed, but 66.4 is)
+        tick_size: 'Granularity' of the price; tick size = 0.1 means that prices must be 'rounded to nearest 0.1' (i. e. 66.43 is not allowed, but 66.4 is)
         time_unit: The time unit ('1h')
-        trade_lot: 'Granularity' of the volumes; trade lot = 0.2 means that volumes must be 'rounded to nearest 0.2'
-            (i. e. 66.5 is not allowed, but 66.4 is)
+        trade_lot: 'Granularity' of the volumes; trade lot = 0.2 means that volumes must be 'rounded to nearest 0.2' (i. e. 66.5 is not allowed, but 66.4 is)
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("max_price", "min_price", "name", "price_steps", "price_unit", "tick_size", "time_unit", "timezone", "trade_lot",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "MarketConfiguration", "1")
 
@@ -213,12 +255,67 @@ class MarketConfigurationWrite(DomainModelWrite):
     trade_lot: float = Field(alias="tradeLot")
 
 
+    def _to_instances_write(
+        self,
+        cache: set[tuple[str, str]],
+        write_none: bool = False,
+        allow_version_increase: bool = False,
+    ) -> ResourcesWrite:
+        resources = ResourcesWrite()
+        if self.as_tuple_id() in cache:
+            return resources
+
+        properties: dict[str, Any] = {}
+
+        if self.name is not None:
+            properties["name"] = self.name
+
+        if self.max_price is not None:
+            properties["maxPrice"] = self.max_price
+
+        if self.min_price is not None:
+            properties["minPrice"] = self.min_price
+
+        if self.timezone is not None:
+            properties["timezone"] = self.timezone
+
+        if self.price_unit is not None:
+            properties["priceUnit"] = self.price_unit
+
+        if self.price_steps is not None:
+            properties["priceSteps"] = self.price_steps
+
+        if self.tick_size is not None:
+            properties["tickSize"] = self.tick_size
+
+        if self.time_unit is not None:
+            properties["timeUnit"] = self.time_unit
+
+        if self.trade_lot is not None:
+            properties["tradeLot"] = self.trade_lot
+
+        if properties:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
+                type=as_direct_relation_reference(self.node_type),
+                sources=[
+                    dm.NodeOrEdgeData(
+                        source=self._view_id,
+                        properties=properties,
+                )],
+            )
+            resources.nodes.append(this_node)
+            cache.add(self.as_tuple_id())
+
+        return resources
+
 
 class MarketConfigurationApply(MarketConfigurationWrite):
     def __new__(cls, *args, **kwargs) -> MarketConfigurationApply:
         warnings.warn(
-            "MarketConfigurationApply is deprecated and will be removed in v1.0. "
-            "Use MarketConfigurationWrite instead. "
+            "MarketConfigurationApply is deprecated and will be removed in v1.0. Use MarketConfigurationWrite instead."
             "The motivation for this change is that Write is a more descriptive name for the writing version of the"
             "MarketConfiguration.",
             UserWarning,
@@ -335,7 +432,6 @@ class _MarketConfigurationQuery(NodeQueryCore[T_DomainModelList, MarketConfigura
         result_list_cls: type[T_DomainModelList],
         expression: dm.query.ResultSetExpression | None = None,
         connection_name: str | None = None,
-        connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
         reverse_expression: dm.query.ResultSetExpression | None = None,
     ):
@@ -348,7 +444,6 @@ class _MarketConfigurationQuery(NodeQueryCore[T_DomainModelList, MarketConfigura
             expression,
             dm.filters.HasData(views=[self._view_id]),
             connection_name,
-            connection_property,
             connection_type,
             reverse_expression,
         )

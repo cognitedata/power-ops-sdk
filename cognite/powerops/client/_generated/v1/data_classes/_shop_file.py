@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import warnings
 from collections.abc import Sequence
-from typing import Any, ClassVar, Literal, Optional, Union
+from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
 
 from cognite.client import data_modeling as dm, CogniteClient
 from cognite.client.data_classes import (
@@ -10,7 +10,7 @@ from cognite.client.data_classes import (
     FileMetadataWrite as CogniteFileMetadataWrite,
 )
 from pydantic import Field
-from pydantic import field_validator, model_validator, ValidationInfo
+from pydantic import field_validator, model_validator
 
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
@@ -30,16 +30,16 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     FileMetadataWrite,
     FileMetadataGraphQL,
     T_DomainModelList,
-    as_node_id,
-    as_read_args,
-    as_write_args,
-    is_tuple_id,
+    as_direct_relation_reference,
     as_instance_dict_id,
-    parse_single_connection,
+    as_node_id,
+    as_pygen_node_id,
+    are_nodes_equal,
+    is_tuple_id,
+    select_best_node,
     QueryCore,
     NodeQueryCore,
     StringFilter,
-    ViewPropertyId,
     BooleanFilter,
     IntFilter,
 )
@@ -111,13 +111,43 @@ class ShopFileGraphQL(GraphQLCore):
 
 
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_read(self) -> ShopFile:
         """Convert this GraphQL format of shop file to the reading format."""
-        return ShopFile.model_validate(as_read_args(self))
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return ShopFile(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            name=self.name,
+            label=self.label,
+            file_reference=self.file_reference.as_read() if self.file_reference else None,
+            file_reference_prefix=self.file_reference_prefix,
+            order=self.order,
+            is_ascii=self.is_ascii,
+        )
 
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopFileWrite:
         """Convert this GraphQL format of shop file to the writing format."""
-        return ShopFileWrite.model_validate(as_write_args(self))
+        return ShopFileWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            name=self.name,
+            label=self.label,
+            file_reference=self.file_reference.as_write() if self.file_reference else None,
+            file_reference_prefix=self.file_reference_prefix,
+            order=self.order,
+            is_ascii=self.is_ascii,
+        )
 
 
 class ShopFile(DomainModel):
@@ -148,10 +178,21 @@ class ShopFile(DomainModel):
     order: int
     is_ascii: bool = Field(alias="isAscii")
 
-
+    # We do the ignore argument type as we let pydantic handle the type checking
+    @no_type_check
     def as_write(self) -> ShopFileWrite:
         """Convert this read version of shop file to the writing version."""
-        return ShopFileWrite.model_validate(as_write_args(self))
+        return ShopFileWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=self.data_record.version),
+            name=self.name,
+            label=self.label,
+            file_reference=self.file_reference.as_write() if isinstance(self.file_reference, CogniteFileMetadata) else self.file_reference,
+            file_reference_prefix=self.file_reference_prefix,
+            order=self.order,
+            is_ascii=self.is_ascii,
+        )
 
     def as_apply(self) -> ShopFileWrite:
         """Convert this read version of shop file to the writing version."""
@@ -161,7 +202,6 @@ class ShopFile(DomainModel):
             stacklevel=2,
         )
         return self.as_write()
-
 
 class ShopFileWrite(DomainModelWrite):
     """This represents the writing version of shop file.
@@ -179,7 +219,6 @@ class ShopFileWrite(DomainModelWrite):
         order: The order in which the file should be loaded into pyshop
         is_ascii: The file extension of the file
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("file_reference", "file_reference_prefix", "is_ascii", "label", "name", "order",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopFile", "1")
 
@@ -193,12 +232,61 @@ class ShopFileWrite(DomainModelWrite):
     is_ascii: bool = Field(alias="isAscii")
 
 
+    def _to_instances_write(
+        self,
+        cache: set[tuple[str, str]],
+        write_none: bool = False,
+        allow_version_increase: bool = False,
+    ) -> ResourcesWrite:
+        resources = ResourcesWrite()
+        if self.as_tuple_id() in cache:
+            return resources
+
+        properties: dict[str, Any] = {}
+
+        if self.name is not None:
+            properties["name"] = self.name
+
+        if self.label is not None:
+            properties["label"] = self.label
+
+        if self.file_reference is not None or write_none:
+            properties["fileReference"] = self.file_reference if isinstance(self.file_reference, str) or self.file_reference is None else self.file_reference.external_id
+
+        if self.file_reference_prefix is not None or write_none:
+            properties["fileReferencePrefix"] = self.file_reference_prefix
+
+        if self.order is not None:
+            properties["order"] = self.order
+
+        if self.is_ascii is not None:
+            properties["isAscii"] = self.is_ascii
+
+        if properties:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
+                type=as_direct_relation_reference(self.node_type),
+                sources=[
+                    dm.NodeOrEdgeData(
+                        source=self._view_id,
+                        properties=properties,
+                )],
+            )
+            resources.nodes.append(this_node)
+            cache.add(self.as_tuple_id())
+
+        if isinstance(self.file_reference, CogniteFileMetadataWrite):
+            resources.files.append(self.file_reference)
+
+        return resources
+
 
 class ShopFileApply(ShopFileWrite):
     def __new__(cls, *args, **kwargs) -> ShopFileApply:
         warnings.warn(
-            "ShopFileApply is deprecated and will be removed in v1.0. "
-            "Use ShopFileWrite instead. "
+            "ShopFileApply is deprecated and will be removed in v1.0. Use ShopFileWrite instead."
             "The motivation for this change is that Write is a more descriptive name for the writing version of the"
             "ShopFile.",
             UserWarning,
@@ -294,7 +382,6 @@ class _ShopFileQuery(NodeQueryCore[T_DomainModelList, ShopFileList]):
         result_list_cls: type[T_DomainModelList],
         expression: dm.query.ResultSetExpression | None = None,
         connection_name: str | None = None,
-        connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
         reverse_expression: dm.query.ResultSetExpression | None = None,
     ):
@@ -307,7 +394,6 @@ class _ShopFileQuery(NodeQueryCore[T_DomainModelList, ShopFileList]):
             expression,
             dm.filters.HasData(views=[self._view_id]),
             connection_name,
-            connection_property,
             connection_type,
             reverse_expression,
         )

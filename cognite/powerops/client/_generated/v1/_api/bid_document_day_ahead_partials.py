@@ -28,8 +28,8 @@ class BidDocumentDayAheadPartialsAPI(EdgeAPI):
             to_partial_bid_matrix_information_space: Location of the partial bid matrix information.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of partial edges to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of partial edges to return. Defaults to 25. Set to -1, float("inf") or None
+                to return all items.
 
         Returns:
             The requested partial edges.
@@ -40,9 +40,7 @@ class BidDocumentDayAheadPartialsAPI(EdgeAPI):
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> bid_document_day_ahead = client.bid_document_day_ahead.partials_edge.list(
-                ...     "my_bid_document_day_ahead", limit=5
-                ... )
+                >>> bid_document_day_ahead = client.bid_document_day_ahead.partials_edge.list("my_bid_document_day_ahead", limit=5)
 
         """
         filter_ = _create_edge_filter(
