@@ -13,21 +13,22 @@ from cognite.powerops.client._generated.v1.data_classes import (
     ShopCommands,
     ShopTimeResolution,
 )
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_QUERY_LIMIT,
+    ViewPropertyId,
+    T_DomainModel,
+    T_DomainModelList,
+    QueryBuilder,
+    QueryStep,
+)
 from cognite.powerops.client._generated.v1.data_classes._shop_output_time_series_definition import (
-    ShopOutputTimeSeriesDefinition,
     _create_shop_output_time_series_definition_filter,
 )
 from cognite.powerops.client._generated.v1.data_classes._shop_attribute_mapping import (
-    ShopAttributeMapping,
     _create_shop_attribute_mapping_filter,
 )
 from cognite.powerops.client._generated.v1._api._core import (
-    DEFAULT_QUERY_LIMIT,
-    EdgeQueryStep,
-    NodeQueryStep,
-    DataClassQueryBuilder,
     QueryAPI,
-    T_DomainModelList,
     _create_edge_filter,
 )
 
@@ -36,27 +37,31 @@ if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1._api.shop_attribute_mapping_query import ShopAttributeMappingQueryAPI
 
 
-class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
+class ShopScenarioQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
     _view_id = dm.ViewId("power_ops_core", "ShopScenario", "1")
 
     def __init__(
         self,
         client: CogniteClient,
-        builder: DataClassQueryBuilder[T_DomainModelList],
+        builder: QueryBuilder,
+        result_cls: type[T_DomainModel],
+        result_list_cls: type[T_DomainModelList],
+        connection_property: ViewPropertyId | None = None,
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
-        super().__init__(client, builder)
+        super().__init__(client, builder, result_cls, result_list_cls)
         from_ = self._builder.get_from()
         self._builder.append(
-            NodeQueryStep(
+            QueryStep(
                 name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
                     from_=from_,
                     filter=filter_,
                 ),
-                result_cls=ShopScenario,
                 max_retrieve_limit=limit,
+                view_id=self._view_id,
+                connection_property=connection_property,
             )
         )
     def output_definition(
@@ -81,31 +86,35 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
         retrieve_model: bool = False,
         retrieve_commands: bool = False,
         retrieve_time_resolution: bool = False,
-    ) -> ShopOutputTimeSeriesDefinitionQueryAPI[T_DomainModelList]:
+    ) -> ShopOutputTimeSeriesDefinitionQueryAPI[T_DomainModel, T_DomainModelList]:
         """Query along the output definition edges of the shop scenario.
 
         Args:
-            name: The name to filter on.
-            name_prefix: The prefix of the name to filter on.
-            object_type: The object type to filter on.
-            object_type_prefix: The prefix of the object type to filter on.
-            object_name: The object name to filter on.
-            object_name_prefix: The prefix of the object name to filter on.
-            attribute_name: The attribute name to filter on.
-            attribute_name_prefix: The prefix of the attribute name to filter on.
-            unit: The unit to filter on.
-            unit_prefix: The prefix of the unit to filter on.
-            is_step: The is step to filter on.
-            external_id_prefix: The prefix of the external ID to filter on.
-            space: The space to filter on.
-            external_id_prefix_edge: The prefix of the external ID to filter on.
-            space_edge: The space to filter on.
-            filter: (Advanced) Filter applied to node. If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            limit: Maximum number of output definition edges to return. Defaults to 3. Set to -1, float("inf") or None
-                to return all items.
-            retrieve_model: Whether to retrieve the model for each shop scenario or not.
-            retrieve_commands: Whether to retrieve the command for each shop scenario or not.
-            retrieve_time_resolution: Whether to retrieve the time resolution for each shop scenario or not.
+            name:
+            name_prefix:
+            object_type:
+            object_type_prefix:
+            object_name:
+            object_name_prefix:
+            attribute_name:
+            attribute_name_prefix:
+            unit:
+            unit_prefix:
+            is_step:
+            external_id_prefix:
+            space:
+            external_id_prefix_edge:
+            space_edge:
+            filter: (Advanced) Filter applied to node. If the filtering available in the
+                above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of output definition edges to return.
+                Defaults to 3. Set to -1, float("inf") or None to return all items.
+            retrieve_model: Whether to retrieve the model
+                for each shop scenario or not.
+            retrieve_commands: Whether to retrieve the command
+                for each shop scenario or not.
+            retrieve_time_resolution: Whether to retrieve the time resolution
+                for each shop scenario or not.
 
         Returns:
             ShopOutputTimeSeriesDefinitionQueryAPI: The query API for the shop output time series definition.
@@ -120,7 +129,7 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
             space=space_edge,
         )
         self._builder.append(
-            EdgeQueryStep(
+            QueryStep(
                 name=self._builder.create_name(from_),
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
@@ -128,12 +137,13 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
                     direction="outwards",
                 ),
                 max_retrieve_limit=limit,
+                connection_property=ViewPropertyId(self._view_id, "outputDefinition"),
             )
         )
 
         view_id = ShopOutputTimeSeriesDefinitionQueryAPI._view_id
         has_data = dm.filters.HasData(views=[view_id])
-        node_filer = _create_shop_output_time_series_definition_filter(
+        node_filter = _create_shop_output_time_series_definition_filter(
             view_id,
             name,
             name_prefix,
@@ -156,7 +166,15 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
             self._query_append_commands(from_)
         if retrieve_time_resolution:
             self._query_append_time_resolution(from_)
-        return ShopOutputTimeSeriesDefinitionQueryAPI(self._client, self._builder, node_filer, limit)
+        return (ShopOutputTimeSeriesDefinitionQueryAPI(
+            self._client,
+            self._builder,
+            self._result_cls,
+            self._result_list_cls,
+            ViewPropertyId(self._view_id, "end_node"),
+            node_filter,
+            limit,
+        ))
     def attribute_mappings_override(
         self,
         object_type: str | list[str] | None = None,
@@ -178,30 +196,34 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
         retrieve_model: bool = False,
         retrieve_commands: bool = False,
         retrieve_time_resolution: bool = False,
-    ) -> ShopAttributeMappingQueryAPI[T_DomainModelList]:
+    ) -> ShopAttributeMappingQueryAPI[T_DomainModel, T_DomainModelList]:
         """Query along the attribute mappings override edges of the shop scenario.
 
         Args:
-            object_type: The object type to filter on.
-            object_type_prefix: The prefix of the object type to filter on.
-            object_name: The object name to filter on.
-            object_name_prefix: The prefix of the object name to filter on.
-            attribute_name: The attribute name to filter on.
-            attribute_name_prefix: The prefix of the attribute name to filter on.
-            retrieve: The retrieve to filter on.
-            retrieve_prefix: The prefix of the retrieve to filter on.
-            aggregation: The aggregation to filter on.
-            aggregation_prefix: The prefix of the aggregation to filter on.
-            external_id_prefix: The prefix of the external ID to filter on.
-            space: The space to filter on.
-            external_id_prefix_edge: The prefix of the external ID to filter on.
-            space_edge: The space to filter on.
-            filter: (Advanced) Filter applied to node. If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            limit: Maximum number of attribute mappings override edges to return. Defaults to 3. Set to -1, float("inf") or None
-                to return all items.
-            retrieve_model: Whether to retrieve the model for each shop scenario or not.
-            retrieve_commands: Whether to retrieve the command for each shop scenario or not.
-            retrieve_time_resolution: Whether to retrieve the time resolution for each shop scenario or not.
+            object_type:
+            object_type_prefix:
+            object_name:
+            object_name_prefix:
+            attribute_name:
+            attribute_name_prefix:
+            retrieve:
+            retrieve_prefix:
+            aggregation:
+            aggregation_prefix:
+            external_id_prefix:
+            space:
+            external_id_prefix_edge:
+            space_edge:
+            filter: (Advanced) Filter applied to node. If the filtering available in the
+                above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of attribute mappings override edges to return.
+                Defaults to 3. Set to -1, float("inf") or None to return all items.
+            retrieve_model: Whether to retrieve the model
+                for each shop scenario or not.
+            retrieve_commands: Whether to retrieve the command
+                for each shop scenario or not.
+            retrieve_time_resolution: Whether to retrieve the time resolution
+                for each shop scenario or not.
 
         Returns:
             ShopAttributeMappingQueryAPI: The query API for the shop attribute mapping.
@@ -216,7 +238,7 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
             space=space_edge,
         )
         self._builder.append(
-            EdgeQueryStep(
+            QueryStep(
                 name=self._builder.create_name(from_),
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
@@ -224,12 +246,13 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
                     direction="outwards",
                 ),
                 max_retrieve_limit=limit,
+                connection_property=ViewPropertyId(self._view_id, "attributeMappingsOverride"),
             )
         )
 
         view_id = ShopAttributeMappingQueryAPI._view_id
         has_data = dm.filters.HasData(views=[view_id])
-        node_filer = _create_shop_attribute_mapping_filter(
+        node_filter = _create_shop_attribute_mapping_filter(
             view_id,
             object_type,
             object_type_prefix,
@@ -251,7 +274,15 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
             self._query_append_commands(from_)
         if retrieve_time_resolution:
             self._query_append_time_resolution(from_)
-        return ShopAttributeMappingQueryAPI(self._client, self._builder, node_filer, limit)
+        return (ShopAttributeMappingQueryAPI(
+            self._client,
+            self._builder,
+            self._result_cls,
+            self._result_list_cls,
+            ViewPropertyId(self._view_id, "end_node"),
+            node_filter,
+            limit,
+        ))
 
     def query(
         self,
@@ -262,9 +293,15 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
         """Execute query and return the result.
 
         Args:
-            retrieve_model: Whether to retrieve the model for each shop scenario or not.
-            retrieve_commands: Whether to retrieve the command for each shop scenario or not.
-            retrieve_time_resolution: Whether to retrieve the time resolution for each shop scenario or not.
+            retrieve_model: Whether to retrieve the
+                model for each
+                shop scenario or not.
+            retrieve_commands: Whether to retrieve the
+                command for each
+                shop scenario or not.
+            retrieve_time_resolution: Whether to retrieve the
+                time resolution for each
+                shop scenario or not.
 
         Returns:
             The list of the source nodes of the query.
@@ -281,7 +318,7 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
 
     def _query_append_model(self, from_: str) -> None:
         self._builder.append(
-            NodeQueryStep(
+            QueryStep(
                 name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
                     from_=from_,
@@ -289,12 +326,13 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
                     direction="outwards",
                     filter=dm.filters.HasData(views=[ShopModel._view_id]),
                 ),
-                result_cls=ShopModel,
+                view_id=ShopModel._view_id,
+                connection_property=ViewPropertyId(self._view_id, "model"),
             ),
         )
     def _query_append_commands(self, from_: str) -> None:
         self._builder.append(
-            NodeQueryStep(
+            QueryStep(
                 name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
                     from_=from_,
@@ -302,12 +340,13 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
                     direction="outwards",
                     filter=dm.filters.HasData(views=[ShopCommands._view_id]),
                 ),
-                result_cls=ShopCommands,
+                view_id=ShopCommands._view_id,
+                connection_property=ViewPropertyId(self._view_id, "commands"),
             ),
         )
     def _query_append_time_resolution(self, from_: str) -> None:
         self._builder.append(
-            NodeQueryStep(
+            QueryStep(
                 name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
                     from_=from_,
@@ -315,6 +354,7 @@ class ShopScenarioQueryAPI(QueryAPI[T_DomainModelList]):
                     direction="outwards",
                     filter=dm.filters.HasData(views=[ShopTimeResolution._view_id]),
                 ),
-                result_cls=ShopTimeResolution,
+                view_id=ShopTimeResolution._view_id,
+                connection_property=ViewPropertyId(self._view_id, "timeResolution"),
             ),
         )

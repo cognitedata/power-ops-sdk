@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import warnings
 from collections.abc import Sequence
-from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
+from typing import Any, ClassVar, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm, CogniteClient
 from cognite.client.data_classes import (
@@ -10,7 +10,7 @@ from cognite.client.data_classes import (
     SequenceWrite as CogniteSequenceWrite,
 )
 from pydantic import Field
-from pydantic import field_validator, model_validator
+from pydantic import field_validator, model_validator, ValidationInfo
 
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
@@ -33,16 +33,16 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     SequenceWrite,
     SequenceGraphQL,
     T_DomainModelList,
-    as_direct_relation_reference,
-    as_instance_dict_id,
     as_node_id,
-    as_pygen_node_id,
-    are_nodes_equal,
+    as_read_args,
+    as_write_args,
     is_tuple_id,
-    select_best_node,
+    as_instance_dict_id,
+    parse_single_connection,
     QueryCore,
     NodeQueryCore,
     StringFilter,
+    ViewPropertyId,
 
 )
 
@@ -101,35 +101,13 @@ class BidMatrixGraphQL(GraphQLCore):
 
 
 
-    # We do the ignore argument type as we let pydantic handle the type checking
-    @no_type_check
     def as_read(self) -> BidMatrix:
         """Convert this GraphQL format of bid matrix to the reading format."""
-        if self.data_record is None:
-            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
-        return BidMatrix(
-            space=self.space,
-            external_id=self.external_id,
-            data_record=DataRecord(
-                version=0,
-                last_updated_time=self.data_record.last_updated_time,
-                created_time=self.data_record.created_time,
-            ),
-            state=self.state,
-            bid_matrix=self.bid_matrix.as_read() if self.bid_matrix else None,
-        )
+        return BidMatrix.model_validate(as_read_args(self))
 
-    # We do the ignore argument type as we let pydantic handle the type checking
-    @no_type_check
     def as_write(self) -> BidMatrixWrite:
         """Convert this GraphQL format of bid matrix to the writing format."""
-        return BidMatrixWrite(
-            space=self.space,
-            external_id=self.external_id,
-            data_record=DataRecordWrite(existing_version=0),
-            state=self.state,
-            bid_matrix=self.bid_matrix.as_write() if self.bid_matrix else None,
-        )
+        return BidMatrixWrite.model_validate(as_write_args(self))
 
 
 class BidMatrix(DomainModel):
@@ -152,17 +130,10 @@ class BidMatrix(DomainModel):
     state: str
     bid_matrix: Union[SequenceRead, str, None] = Field(None, alias="bidMatrix")
 
-    # We do the ignore argument type as we let pydantic handle the type checking
-    @no_type_check
+
     def as_write(self) -> BidMatrixWrite:
         """Convert this read version of bid matrix to the writing version."""
-        return BidMatrixWrite(
-            space=self.space,
-            external_id=self.external_id,
-            data_record=DataRecordWrite(existing_version=self.data_record.version),
-            state=self.state,
-            bid_matrix=self.bid_matrix.as_write() if isinstance(self.bid_matrix, CogniteSequence) else self.bid_matrix,
-        )
+        return BidMatrixWrite.model_validate(as_write_args(self))
 
     def as_apply(self) -> BidMatrixWrite:
         """Convert this read version of bid matrix to the writing version."""
@@ -172,6 +143,7 @@ class BidMatrix(DomainModel):
             stacklevel=2,
         )
         return self.as_write()
+
 
 class BidMatrixWrite(DomainModelWrite):
     """This represents the writing version of bid matrix.
@@ -185,6 +157,7 @@ class BidMatrixWrite(DomainModelWrite):
         state: The state field.
         bid_matrix: The bid matrix field.
     """
+    _container_fields: ClassVar[tuple[str, ...]] = ("bid_matrix", "state",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidMatrix", "1")
 
@@ -194,49 +167,12 @@ class BidMatrixWrite(DomainModelWrite):
     bid_matrix: Union[SequenceWrite, str, None] = Field(None, alias="bidMatrix")
 
 
-    def _to_instances_write(
-        self,
-        cache: set[tuple[str, str]],
-        write_none: bool = False,
-        allow_version_increase: bool = False,
-    ) -> ResourcesWrite:
-        resources = ResourcesWrite()
-        if self.as_tuple_id() in cache:
-            return resources
-
-        properties: dict[str, Any] = {}
-
-        if self.state is not None:
-            properties["state"] = self.state
-
-        if self.bid_matrix is not None or write_none:
-            properties["bidMatrix"] = self.bid_matrix if isinstance(self.bid_matrix, str) or self.bid_matrix is None else self.bid_matrix.external_id
-
-        if properties:
-            this_node = dm.NodeApply(
-                space=self.space,
-                external_id=self.external_id,
-                existing_version=None if allow_version_increase else self.data_record.existing_version,
-                type=as_direct_relation_reference(self.node_type),
-                sources=[
-                    dm.NodeOrEdgeData(
-                        source=self._view_id,
-                        properties=properties,
-                )],
-            )
-            resources.nodes.append(this_node)
-            cache.add(self.as_tuple_id())
-
-        if isinstance(self.bid_matrix, CogniteSequenceWrite):
-            resources.sequences.append(self.bid_matrix)
-
-        return resources
-
 
 class BidMatrixApply(BidMatrixWrite):
     def __new__(cls, *args, **kwargs) -> BidMatrixApply:
         warnings.warn(
-            "BidMatrixApply is deprecated and will be removed in v1.0. Use BidMatrixWrite instead."
+            "BidMatrixApply is deprecated and will be removed in v1.0. "
+            "Use BidMatrixWrite instead. "
             "The motivation for this change is that Write is a more descriptive name for the writing version of the"
             "BidMatrix.",
             UserWarning,
@@ -309,6 +245,7 @@ class _BidMatrixQuery(NodeQueryCore[T_DomainModelList, BidMatrixList]):
         result_list_cls: type[T_DomainModelList],
         expression: dm.query.ResultSetExpression | None = None,
         connection_name: str | None = None,
+        connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
         reverse_expression: dm.query.ResultSetExpression | None = None,
     ):
@@ -321,6 +258,7 @@ class _BidMatrixQuery(NodeQueryCore[T_DomainModelList, BidMatrixList]):
             expression,
             dm.filters.HasData(views=[self._view_id]),
             connection_name,
+            connection_property,
             connection_type,
             reverse_expression,
         )

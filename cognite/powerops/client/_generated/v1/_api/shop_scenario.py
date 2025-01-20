@@ -1,21 +1,35 @@
 from __future__ import annotations
 
-from collections.abc import Sequence
-from typing import overload, Literal
 import warnings
+from collections.abc import Sequence
+from typing import Any, ClassVar, Literal, overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    instantiate_classes,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
-    NodeQueryStep,
-    EdgeQueryStep,
-    DataClassQueryBuilder,
+    QueryStepFactory,
+    QueryBuilder,
+    QueryUnpacker,
+    ViewPropertyId,
+)
+from cognite.powerops.client._generated.v1.data_classes._shop_scenario import (
+    ShopScenarioQuery,
+    _SHOPSCENARIO_PROPERTIES_BY_FIELD,
+    _create_shop_scenario_filter,
 )
 from cognite.powerops.client._generated.v1.data_classes import (
+    DomainModel,
     DomainModelCore,
     DomainModelWrite,
     ResourcesWriteResult,
@@ -31,17 +45,6 @@ from cognite.powerops.client._generated.v1.data_classes import (
     ShopOutputTimeSeriesDefinition,
     ShopTimeResolution,
 )
-from cognite.powerops.client._generated.v1.data_classes._shop_scenario import (
-    ShopScenarioQuery,
-    _SHOPSCENARIO_PROPERTIES_BY_FIELD,
-    _create_shop_scenario_filter,
-)
-from cognite.powerops.client._generated.v1._api._core import (
-    DEFAULT_LIMIT_READ,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-)
 from cognite.powerops.client._generated.v1._api.shop_scenario_output_definition import ShopScenarioOutputDefinitionAPI
 from cognite.powerops.client._generated.v1._api.shop_scenario_attribute_mappings_override import ShopScenarioAttributeMappingsOverrideAPI
 from cognite.powerops.client._generated.v1._api.shop_scenario_query import ShopScenarioQueryAPI
@@ -49,7 +52,7 @@ from cognite.powerops.client._generated.v1._api.shop_scenario_query import ShopS
 
 class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList, ShopScenarioWriteList]):
     _view_id = dm.ViewId("power_ops_core", "ShopScenario", "1")
-    _properties_by_field = _SHOPSCENARIO_PROPERTIES_BY_FIELD
+    _properties_by_field: ClassVar[dict[str, str]] = _SHOPSCENARIO_PROPERTIES_BY_FIELD
     _class_type = ShopScenario
     _class_list = ShopScenarioList
     _class_write_list = ShopScenarioWriteList
@@ -73,7 +76,7 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
-    ) -> ShopScenarioQueryAPI[ShopScenarioList]:
+    ) -> ShopScenarioQueryAPI[ShopScenario, ShopScenarioList]:
         """Query starting at shop scenarios.
 
         Args:
@@ -86,8 +89,10 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
             time_resolution: The time resolution to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shop scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of shop scenarios to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
+                your own filtering which will be ANDed with the filter above.
 
         Returns:
             A query API for shop scenarios.
@@ -113,8 +118,9 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = DataClassQueryBuilder(ShopScenarioList)
-        return ShopScenarioQueryAPI(self._client, builder, filter_, limit)
+        return ShopScenarioQueryAPI(
+            self._client, QueryBuilder(), self._class_type, self._class_list, None, filter_, limit
+        )
 
     def apply(
         self,
@@ -124,15 +130,15 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
     ) -> ResourcesWriteResult:
         """Add or update (upsert) shop scenarios.
 
-        Note: This method iterates through all nodes and timeseries linked to shop_scenario and creates them including the edges
-        between the nodes. For example, if any of `model`, `commands`, `time_resolution`, `output_definition` or `attribute_mappings_override` are set, then these
-        nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
-
         Args:
-            shop_scenario: Shop scenario or sequence of shop scenarios to upsert.
-            replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
-                Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
-            write_none (bool): This method, will by default, skip properties that are set to None. However, if you want to set properties to None,
+            shop_scenario: Shop scenario or
+                sequence of shop scenarios to upsert.
+            replace (bool): How do we behave when a property value exists? Do we replace all matching and
+                existing values with the supplied values (true)?
+                Or should we merge in new values for properties together with the existing values (false)?
+                Note: This setting applies for all nodes or edges specified in the ingestion call.
+            write_none (bool): This method, will by default, skip properties that are set to None.
+                However, if you want to set properties to None,
                 you can set this parameter to True. Note this only applies to properties that are nullable.
         Returns:
             Created instance(s), i.e., nodes, edges, and time series.
@@ -144,7 +150,9 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> from cognite.powerops.client._generated.v1.data_classes import ShopScenarioWrite
                 >>> client = PowerOpsModelsV1Client()
-                >>> shop_scenario = ShopScenarioWrite(external_id="my_shop_scenario", ...)
+                >>> shop_scenario = ShopScenarioWrite(
+                ...     external_id="my_shop_scenario", ...
+                ... )
                 >>> result = client.shop_scenario.apply(shop_scenario)
 
         """
@@ -190,19 +198,36 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopScenario | None:
-        ...
+    def retrieve(
+        self,
+        external_id: str | dm.NodeId | tuple[str, str],
+        space: str = DEFAULT_INSTANCE_SPACE,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
+    ) -> ShopScenario | None: ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> ShopScenarioList:
-        ...
+    def retrieve(
+        self,
+        external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]],
+        space: str = DEFAULT_INSTANCE_SPACE,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
+    ) -> ShopScenarioList: ...
 
-    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> ShopScenario | ShopScenarioList | None:
+    def retrieve(
+        self,
+        external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]],
+        space: str = DEFAULT_INSTANCE_SPACE,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
+    ) -> ShopScenario | ShopScenarioList | None:
         """Retrieve one or more shop scenarios by id(s).
 
         Args:
             external_id: External id or list of external ids of the shop scenarios.
             space: The space where all the shop scenarios are located.
+            retrieve_connections: Whether to retrieve `model`, `commands`, `time_resolution`, `output_definition` and
+            `attribute_mappings_override` for the shop scenarios. Defaults to 'skip'.'skip' will not retrieve any
+            connections, 'identifier' will only retrieve the identifier of the connected items, and 'full' will retrieve
+            the full connected items.
 
         Returns:
             The requested shop scenarios.
@@ -213,29 +238,15 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> shop_scenario = client.shop_scenario.retrieve("my_shop_scenario")
+                >>> shop_scenario = client.shop_scenario.retrieve(
+                ...     "my_shop_scenario"
+                ... )
 
         """
         return self._retrieve(
             external_id,
             space,
-            retrieve_edges=True,
-            edge_api_name_type_direction_view_id_penta=[
-                (
-                    self.output_definition_edge,
-                    "output_definition",
-                    dm.DirectRelationReference("power_ops_types", "ShopOutputTimeSeriesDefinition"),
-                    "outwards",
-                    dm.ViewId("power_ops_core", "ShopOutputTimeSeriesDefinition", "1"),
-                ),
-                (
-                    self.attribute_mappings_override_edge,
-                    "attribute_mappings_override",
-                    dm.DirectRelationReference("power_ops_types", "ShopAttributeMapping"),
-                    "outwards",
-                    dm.ViewId("power_ops_core", "ShopAttributeMapping", "1"),
-                ),
-                                               ]
+            retrieve_connections=retrieve_connections,
         )
 
     def search(
@@ -271,12 +282,14 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
             time_resolution: The time resolution to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shop scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of shop scenarios to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
-                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                This will override the sort_by and direction. This allows you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
 
         Returns:
@@ -288,7 +301,9 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> shop_scenarios = client.shop_scenario.search('my_shop_scenario')
+                >>> shop_scenarios = client.shop_scenario.search(
+                ...     'my_shop_scenario'
+                ... )
 
         """
         filter_ = _create_shop_scenario_filter(
@@ -421,8 +436,10 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
             time_resolution: The time resolution to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shop scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of shop scenarios to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
+                your own filtering which will be ANDed with the filter above.
 
         Returns:
             Aggregation results.
@@ -494,8 +511,10 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
             time_resolution: The time resolution to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shop scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of shop scenarios to return.
+                Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             Bucketed histogram results.
@@ -523,15 +542,69 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
             filter_,
         )
 
-    def query(self) -> ShopScenarioQuery:
-        """Start a query for shop scenarios."""
-        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
-        return ShopScenarioQuery(self._client)
-
     def select(self) -> ShopScenarioQuery:
         """Start selecting from shop scenarios."""
-        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
         return ShopScenarioQuery(self._client)
+
+    def _query(
+        self,
+        filter_: dm.Filter | None,
+        limit: int,
+        retrieve_connections: Literal["skip", "identifier", "full"],
+        sort: list[InstanceSort] | None = None,
+    ) -> list[dict[str, Any]]:
+        builder = QueryBuilder()
+        factory = QueryStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
+        builder.append(factory.root(
+            filter=filter_,
+            sort=sort,
+            limit=limit,
+            has_container_fields=True,
+        ))
+        builder.extend(
+            factory.from_edge(
+                ShopOutputTimeSeriesDefinition._view_id,
+                "outwards",
+                ViewPropertyId(self._view_id, "outputDefinition"),
+                include_end_node=retrieve_connections == "full",
+                has_container_fields=True,
+            )
+        )
+        builder.extend(
+            factory.from_edge(
+                ShopAttributeMapping._view_id,
+                "outwards",
+                ViewPropertyId(self._view_id, "attributeMappingsOverride"),
+                include_end_node=retrieve_connections == "full",
+                has_container_fields=True,
+            )
+        )
+        if retrieve_connections == "full":
+            builder.extend(
+                factory.from_direct_relation(
+                    ShopModel._view_id,
+                    ViewPropertyId(self._view_id, "model"),
+                    has_container_fields=True,
+                )
+            )
+            builder.extend(
+                factory.from_direct_relation(
+                    ShopCommands._view_id,
+                    ViewPropertyId(self._view_id, "commands"),
+                    has_container_fields=True,
+                )
+            )
+            builder.extend(
+                factory.from_direct_relation(
+                    ShopTimeResolution._view_id,
+                    ViewPropertyId(self._view_id, "timeResolution"),
+                    has_container_fields=True,
+                )
+            )
+        unpack_edges: Literal["skip", "identifier"] = "identifier" if retrieve_connections == "identifier" else "skip"
+        builder.execute_query(self._client, remove_not_connected=True if unpack_edges == "skip" else False)
+        return QueryUnpacker(builder, edges=unpack_edges).unpack()
+
 
     def list(
         self,
@@ -563,15 +636,19 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
             time_resolution: The time resolution to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shop scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of shop scenarios to return.
+                Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
                 This will override the sort_by and direction. This allowos you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
-            retrieve_connections: Whether to retrieve `model`, `commands`, `time_resolution`, `output_definition` and `attribute_mappings_override` for the shop scenarios. Defaults to 'skip'.
-                'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier of the connected items, and 'full' will retrieve the full connected items.
+            retrieve_connections: Whether to retrieve `model`, `commands`, `time_resolution`, `output_definition` and
+            `attribute_mappings_override` for the shop scenarios. Defaults to 'skip'.'skip' will not retrieve any
+            connections, 'identifier' will only retrieve the identifier of the connected items, and 'full' will retrieve
+            the full connected items.
 
         Returns:
             List of requested shop scenarios
@@ -598,110 +675,8 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
             space,
             filter,
         )
-
+        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
-            return self._list(
-                limit=limit,
-                filter=filter_,
-                sort_by=sort_by,  # type: ignore[arg-type]
-                direction=direction,
-                sort=sort,
-            )
-
-        builder = DataClassQueryBuilder(ShopScenarioList)
-        has_data = dm.filters.HasData(views=[self._view_id])
-        builder.append(
-            NodeQueryStep(
-                builder.create_name(None),
-                dm.query.NodeResultSetExpression(
-                    filter=dm.filters.And(filter_, has_data) if filter_ else has_data,
-                    sort=self._create_sort(sort_by, direction, sort),  # type: ignore[arg-type]
-                ),
-                ShopScenario,
-                max_retrieve_limit=limit,
-                raw_filter=filter_,
-            )
-        )
-        from_root = builder.get_from()
-        edge_output_definition = builder.create_name(from_root)
-        builder.append(
-            EdgeQueryStep(
-                edge_output_definition,
-                dm.query.EdgeResultSetExpression(
-                    from_=from_root,
-                    direction="outwards",
-                    chain_to="destination",
-                ),
-            )
-        )
-        edge_attribute_mappings_override = builder.create_name(from_root)
-        builder.append(
-            EdgeQueryStep(
-                edge_attribute_mappings_override,
-                dm.query.EdgeResultSetExpression(
-                    from_=from_root,
-                    direction="outwards",
-                    chain_to="destination",
-                ),
-            )
-        )
-        if retrieve_connections == "full":
-            builder.append(
-                NodeQueryStep(
-                    builder.create_name( edge_output_definition),
-                    dm.query.NodeResultSetExpression(
-                        from_= edge_output_definition,
-                        filter=dm.filters.HasData(views=[ShopOutputTimeSeriesDefinition._view_id]),
-                    ),
-                    ShopOutputTimeSeriesDefinition,
-                )
-            )
-            builder.append(
-                NodeQueryStep(
-                    builder.create_name( edge_attribute_mappings_override),
-                    dm.query.NodeResultSetExpression(
-                        from_= edge_attribute_mappings_override,
-                        filter=dm.filters.HasData(views=[ShopAttributeMapping._view_id]),
-                    ),
-                    ShopAttributeMapping,
-                )
-            )
-            builder.append(
-                NodeQueryStep(
-                    builder.create_name(from_root),
-                    dm.query.NodeResultSetExpression(
-                        from_=from_root,
-                        filter=dm.filters.HasData(views=[ShopModel._view_id]),
-                        direction="outwards",
-                        through=self._view_id.as_property_ref("model"),
-                    ),
-                    ShopModel,
-                )
-            )
-            builder.append(
-                NodeQueryStep(
-                    builder.create_name(from_root),
-                    dm.query.NodeResultSetExpression(
-                        from_=from_root,
-                        filter=dm.filters.HasData(views=[ShopCommands._view_id]),
-                        direction="outwards",
-                        through=self._view_id.as_property_ref("commands"),
-                    ),
-                    ShopCommands,
-                )
-            )
-            builder.append(
-                NodeQueryStep(
-                    builder.create_name(from_root),
-                    dm.query.NodeResultSetExpression(
-                        from_=from_root,
-                        filter=dm.filters.HasData(views=[ShopTimeResolution._view_id]),
-                        direction="outwards",
-                        through=self._view_id.as_property_ref("timeResolution"),
-                    ),
-                    ShopTimeResolution,
-                )
-            )
-        # We know that that all nodes are connected as it is not possible to filter on connections
-        builder.execute_query(self._client, remove_not_connected=False)
-        return builder.unpack()
+            return self._list(limit=limit,  filter=filter_, sort=sort_input)
+        values = self._query(filter_, limit, retrieve_connections, sort_input)
+        return self._class_list(instantiate_classes(self._class_type, values, "list"))

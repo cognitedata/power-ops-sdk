@@ -15,7 +15,11 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.110.0] - 2024-12-31
+## [0.110.1] - 2025-01-20
+### Changed
+* Rerun pygen version 0.99.60
+
+## [0.110.0] - 2025-01-20
 ### Added
 * Data model `product_CogShop`-data model now also as the view `ShopPenaltyReport`.
 

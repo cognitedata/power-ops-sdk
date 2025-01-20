@@ -1,22 +1,36 @@
 from __future__ import annotations
 
 import datetime
-from collections.abc import Sequence
-from typing import overload, Literal
 import warnings
+from collections.abc import Sequence
+from typing import Any, ClassVar, Literal, overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    instantiate_classes,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
-    NodeQueryStep,
-    EdgeQueryStep,
-    DataClassQueryBuilder,
+    QueryStepFactory,
+    QueryBuilder,
+    QueryUnpacker,
+    ViewPropertyId,
+)
+from cognite.powerops.client._generated.v1.data_classes._shop_penalty_report import (
+    ShopPenaltyReportQuery,
+    _SHOPPENALTYREPORT_PROPERTIES_BY_FIELD,
+    _create_shop_penalty_report_filter,
 )
 from cognite.powerops.client._generated.v1.data_classes import (
+    DomainModel,
     DomainModelCore,
     DomainModelWrite,
     ResourcesWriteResult,
@@ -27,23 +41,12 @@ from cognite.powerops.client._generated.v1.data_classes import (
     ShopPenaltyReportWriteList,
     ShopPenaltyReportTextFields,
 )
-from cognite.powerops.client._generated.v1.data_classes._shop_penalty_report import (
-    ShopPenaltyReportQuery,
-    _SHOPPENALTYREPORT_PROPERTIES_BY_FIELD,
-    _create_shop_penalty_report_filter,
-)
-from cognite.powerops.client._generated.v1._api._core import (
-    DEFAULT_LIMIT_READ,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-)
 from cognite.powerops.client._generated.v1._api.shop_penalty_report_query import ShopPenaltyReportQueryAPI
 
 
 class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, ShopPenaltyReportList, ShopPenaltyReportWriteList]):
     _view_id = dm.ViewId("power_ops_core", "ShopPenaltyReport", "1")
-    _properties_by_field = _SHOPPENALTYREPORT_PROPERTIES_BY_FIELD
+    _properties_by_field: ClassVar[dict[str, str]] = _SHOPPENALTYREPORT_PROPERTIES_BY_FIELD
     _class_type = ShopPenaltyReport
     _class_list = ShopPenaltyReportList
     _class_write_list = ShopPenaltyReportWriteList
@@ -74,7 +77,7 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
         space: str | list[str] | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
-    ) -> ShopPenaltyReportQueryAPI[ShopPenaltyReportList]:
+    ) -> ShopPenaltyReportQueryAPI[ShopPenaltyReport, ShopPenaltyReportList]:
         """Query starting at shop penalty reports.
 
         Args:
@@ -96,8 +99,10 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
             calculation_run_prefix: The prefix of the calculation run to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shop penalty reports to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of shop penalty reports to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
+                your own filtering which will be ANDed with the filter above.
 
         Returns:
             A query API for shop penalty reports.
@@ -132,8 +137,9 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = DataClassQueryBuilder(ShopPenaltyReportList)
-        return ShopPenaltyReportQueryAPI(self._client, builder, filter_, limit)
+        return ShopPenaltyReportQueryAPI(
+            self._client, QueryBuilder(), self._class_type, self._class_list, None, filter_, limit
+        )
 
     def apply(
         self,
@@ -144,10 +150,14 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
         """Add or update (upsert) shop penalty reports.
 
         Args:
-            shop_penalty_report: Shop penalty report or sequence of shop penalty reports to upsert.
-            replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
-                Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
-            write_none (bool): This method, will by default, skip properties that are set to None. However, if you want to set properties to None,
+            shop_penalty_report: Shop penalty report or
+                sequence of shop penalty reports to upsert.
+            replace (bool): How do we behave when a property value exists? Do we replace all matching and
+                existing values with the supplied values (true)?
+                Or should we merge in new values for properties together with the existing values (false)?
+                Note: This setting applies for all nodes or edges specified in the ingestion call.
+            write_none (bool): This method, will by default, skip properties that are set to None.
+                However, if you want to set properties to None,
                 you can set this parameter to True. Note this only applies to properties that are nullable.
         Returns:
             Created instance(s), i.e., nodes, edges, and time series.
@@ -159,7 +169,9 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> from cognite.powerops.client._generated.v1.data_classes import ShopPenaltyReportWrite
                 >>> client = PowerOpsModelsV1Client()
-                >>> shop_penalty_report = ShopPenaltyReportWrite(external_id="my_shop_penalty_report", ...)
+                >>> shop_penalty_report = ShopPenaltyReportWrite(
+                ...     external_id="my_shop_penalty_report", ...
+                ... )
                 >>> result = client.shop_penalty_report.apply(shop_penalty_report)
 
         """
@@ -205,14 +217,24 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> ShopPenaltyReport | None:
-        ...
+    def retrieve(
+        self,
+        external_id: str | dm.NodeId | tuple[str, str],
+        space: str = DEFAULT_INSTANCE_SPACE,
+    ) -> ShopPenaltyReport | None: ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> ShopPenaltyReportList:
-        ...
+    def retrieve(
+        self,
+        external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]],
+        space: str = DEFAULT_INSTANCE_SPACE,
+    ) -> ShopPenaltyReportList: ...
 
-    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> ShopPenaltyReport | ShopPenaltyReportList | None:
+    def retrieve(
+        self,
+        external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]],
+        space: str = DEFAULT_INSTANCE_SPACE,
+    ) -> ShopPenaltyReport | ShopPenaltyReportList | None:
         """Retrieve one or more shop penalty reports by id(s).
 
         Args:
@@ -228,10 +250,15 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> shop_penalty_report = client.shop_penalty_report.retrieve("my_shop_penalty_report")
+                >>> shop_penalty_report = client.shop_penalty_report.retrieve(
+                ...     "my_shop_penalty_report"
+                ... )
 
         """
-        return self._retrieve(external_id, space)
+        return self._retrieve(
+            external_id,
+            space,
+        )
 
     def search(
         self,
@@ -284,12 +311,14 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
             calculation_run_prefix: The prefix of the calculation run to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shop penalty reports to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of shop penalty reports to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
-                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                This will override the sort_by and direction. This allows you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
 
         Returns:
@@ -301,7 +330,9 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> shop_penalty_reports = client.shop_penalty_report.search('my_shop_penalty_report')
+                >>> shop_penalty_reports = client.shop_penalty_report.search(
+                ...     'my_shop_penalty_report'
+                ... )
 
         """
         filter_ = _create_shop_penalty_report_filter(
@@ -488,8 +519,10 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
             calculation_run_prefix: The prefix of the calculation run to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shop penalty reports to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of shop penalty reports to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
+                your own filtering which will be ANDed with the filter above.
 
         Returns:
             Aggregation results.
@@ -588,8 +621,10 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
             calculation_run_prefix: The prefix of the calculation run to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shop penalty reports to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of shop penalty reports to return.
+                Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             Bucketed histogram results.
@@ -626,15 +661,29 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
             filter_,
         )
 
-    def query(self) -> ShopPenaltyReportQuery:
-        """Start a query for shop penalty reports."""
-        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
-        return ShopPenaltyReportQuery(self._client)
-
     def select(self) -> ShopPenaltyReportQuery:
         """Start selecting from shop penalty reports."""
-        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
         return ShopPenaltyReportQuery(self._client)
+
+    def _query(
+        self,
+        filter_: dm.Filter | None,
+        limit: int,
+        retrieve_connections: Literal["skip", "identifier", "full"],
+        sort: list[InstanceSort] | None = None,
+    ) -> list[dict[str, Any]]:
+        builder = QueryBuilder()
+        factory = QueryStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
+        builder.append(factory.root(
+            filter=filter_,
+            sort=sort,
+            limit=limit,
+            has_container_fields=True,
+        ))
+        unpack_edges: Literal["skip", "identifier"] = "identifier" if retrieve_connections == "identifier" else "skip"
+        builder.execute_query(self._client, remove_not_connected=True if unpack_edges == "skip" else False)
+        return QueryUnpacker(builder, edges=unpack_edges).unpack()
+
 
     def list(
         self,
@@ -683,8 +732,10 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
             calculation_run_prefix: The prefix of the calculation run to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shop penalty reports to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of shop penalty reports to return.
+                Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
@@ -725,11 +776,5 @@ class ShopPenaltyReportAPI(NodeAPI[ShopPenaltyReport, ShopPenaltyReportWrite, Sh
             space,
             filter,
         )
-
-        return self._list(
-            limit=limit,
-            filter=filter_,
-            sort_by=sort_by,  # type: ignore[arg-type]
-            direction=direction,
-            sort=sort,
-        )
+        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        return self._list(limit=limit,  filter=filter_, sort=sort_input)

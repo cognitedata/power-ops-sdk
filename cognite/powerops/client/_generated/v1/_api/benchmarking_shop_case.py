@@ -1,22 +1,36 @@
 from __future__ import annotations
 
 import datetime
-from collections.abc import Sequence
-from typing import overload, Literal
 import warnings
+from collections.abc import Sequence
+from typing import Any, ClassVar, Literal, overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    instantiate_classes,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
-    NodeQueryStep,
-    EdgeQueryStep,
-    DataClassQueryBuilder,
+    QueryStepFactory,
+    QueryBuilder,
+    QueryUnpacker,
+    ViewPropertyId,
+)
+from cognite.powerops.client._generated.v1.data_classes._benchmarking_shop_case import (
+    BenchmarkingShopCaseQuery,
+    _BENCHMARKINGSHOPCASE_PROPERTIES_BY_FIELD,
+    _create_benchmarking_shop_case_filter,
 )
 from cognite.powerops.client._generated.v1.data_classes import (
+    DomainModel,
     DomainModelCore,
     DomainModelWrite,
     ResourcesWriteResult,
@@ -29,24 +43,13 @@ from cognite.powerops.client._generated.v1.data_classes import (
     ShopFile,
     ShopScenario,
 )
-from cognite.powerops.client._generated.v1.data_classes._benchmarking_shop_case import (
-    BenchmarkingShopCaseQuery,
-    _BENCHMARKINGSHOPCASE_PROPERTIES_BY_FIELD,
-    _create_benchmarking_shop_case_filter,
-)
-from cognite.powerops.client._generated.v1._api._core import (
-    DEFAULT_LIMIT_READ,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-)
 from cognite.powerops.client._generated.v1._api.benchmarking_shop_case_shop_files import BenchmarkingShopCaseShopFilesAPI
 from cognite.powerops.client._generated.v1._api.benchmarking_shop_case_query import BenchmarkingShopCaseQueryAPI
 
 
 class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCaseWrite, BenchmarkingShopCaseList, BenchmarkingShopCaseWriteList]):
     _view_id = dm.ViewId("power_ops_core", "BenchmarkingShopCase", "1")
-    _properties_by_field = _BENCHMARKINGSHOPCASE_PROPERTIES_BY_FIELD
+    _properties_by_field: ClassVar[dict[str, str]] = _BENCHMARKINGSHOPCASE_PROPERTIES_BY_FIELD
     _class_type = BenchmarkingShopCase
     _class_list = BenchmarkingShopCaseList
     _class_write_list = BenchmarkingShopCaseWriteList
@@ -72,7 +75,7 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         space: str | list[str] | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
-    ) -> BenchmarkingShopCaseQueryAPI[BenchmarkingShopCaseList]:
+    ) -> BenchmarkingShopCaseQueryAPI[BenchmarkingShopCase, BenchmarkingShopCaseList]:
         """Query starting at benchmarking shop cases.
 
         Args:
@@ -88,8 +91,10 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
             max_bid_generated: The maximum value of the bid generated to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of benchmarking shop cases to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of benchmarking shop cases to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
+                your own filtering which will be ANDed with the filter above.
 
         Returns:
             A query API for benchmarking shop cases.
@@ -118,8 +123,9 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = DataClassQueryBuilder(BenchmarkingShopCaseList)
-        return BenchmarkingShopCaseQueryAPI(self._client, builder, filter_, limit)
+        return BenchmarkingShopCaseQueryAPI(
+            self._client, QueryBuilder(), self._class_type, self._class_list, None, filter_, limit
+        )
 
     def apply(
         self,
@@ -129,15 +135,15 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
     ) -> ResourcesWriteResult:
         """Add or update (upsert) benchmarking shop cases.
 
-        Note: This method iterates through all nodes and timeseries linked to benchmarking_shop_case and creates them including the edges
-        between the nodes. For example, if any of `scenario` or `shop_files` are set, then these
-        nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
-
         Args:
-            benchmarking_shop_case: Benchmarking shop case or sequence of benchmarking shop cases to upsert.
-            replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
-                Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
-            write_none (bool): This method, will by default, skip properties that are set to None. However, if you want to set properties to None,
+            benchmarking_shop_case: Benchmarking shop case or
+                sequence of benchmarking shop cases to upsert.
+            replace (bool): How do we behave when a property value exists? Do we replace all matching and
+                existing values with the supplied values (true)?
+                Or should we merge in new values for properties together with the existing values (false)?
+                Note: This setting applies for all nodes or edges specified in the ingestion call.
+            write_none (bool): This method, will by default, skip properties that are set to None.
+                However, if you want to set properties to None,
                 you can set this parameter to True. Note this only applies to properties that are nullable.
         Returns:
             Created instance(s), i.e., nodes, edges, and time series.
@@ -149,7 +155,9 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> from cognite.powerops.client._generated.v1.data_classes import BenchmarkingShopCaseWrite
                 >>> client = PowerOpsModelsV1Client()
-                >>> benchmarking_shop_case = BenchmarkingShopCaseWrite(external_id="my_benchmarking_shop_case", ...)
+                >>> benchmarking_shop_case = BenchmarkingShopCaseWrite(
+                ...     external_id="my_benchmarking_shop_case", ...
+                ... )
                 >>> result = client.benchmarking_shop_case.apply(benchmarking_shop_case)
 
         """
@@ -195,19 +203,35 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingShopCase | None:
-        ...
+    def retrieve(
+        self,
+        external_id: str | dm.NodeId | tuple[str, str],
+        space: str = DEFAULT_INSTANCE_SPACE,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
+    ) -> BenchmarkingShopCase | None: ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingShopCaseList:
-        ...
+    def retrieve(
+        self,
+        external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]],
+        space: str = DEFAULT_INSTANCE_SPACE,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
+    ) -> BenchmarkingShopCaseList: ...
 
-    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE) -> BenchmarkingShopCase | BenchmarkingShopCaseList | None:
+    def retrieve(
+        self,
+        external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]],
+        space: str = DEFAULT_INSTANCE_SPACE,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
+    ) -> BenchmarkingShopCase | BenchmarkingShopCaseList | None:
         """Retrieve one or more benchmarking shop cases by id(s).
 
         Args:
             external_id: External id or list of external ids of the benchmarking shop cases.
             space: The space where all the benchmarking shop cases are located.
+            retrieve_connections: Whether to retrieve `scenario` and `shop_files` for the benchmarking shop cases.
+            Defaults to 'skip'.'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier
+            of the connected items, and 'full' will retrieve the full connected items.
 
         Returns:
             The requested benchmarking shop cases.
@@ -218,22 +242,15 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> benchmarking_shop_case = client.benchmarking_shop_case.retrieve("my_benchmarking_shop_case")
+                >>> benchmarking_shop_case = client.benchmarking_shop_case.retrieve(
+                ...     "my_benchmarking_shop_case"
+                ... )
 
         """
         return self._retrieve(
             external_id,
             space,
-            retrieve_edges=True,
-            edge_api_name_type_direction_view_id_penta=[
-                (
-                    self.shop_files_edge,
-                    "shop_files",
-                    dm.DirectRelationReference("power_ops_types", "ShopCase.shopFiles"),
-                    "outwards",
-                    dm.ViewId("power_ops_core", "ShopFile", "1"),
-                ),
-                                               ]
+            retrieve_connections=retrieve_connections,
         )
 
     def search(
@@ -275,12 +292,14 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
             max_bid_generated: The maximum value of the bid generated to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of benchmarking shop cases to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of benchmarking shop cases to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
-                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                This will override the sort_by and direction. This allows you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
 
         Returns:
@@ -292,7 +311,9 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> benchmarking_shop_cases = client.benchmarking_shop_case.search('my_benchmarking_shop_case')
+                >>> benchmarking_shop_cases = client.benchmarking_shop_case.search(
+                ...     'my_benchmarking_shop_case'
+                ... )
 
         """
         filter_ = _create_benchmarking_shop_case_filter(
@@ -433,8 +454,10 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
             max_bid_generated: The maximum value of the bid generated to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of benchmarking shop cases to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of benchmarking shop cases to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
+                your own filtering which will be ANDed with the filter above.
 
         Returns:
             Aggregation results.
@@ -511,8 +534,10 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
             max_bid_generated: The maximum value of the bid generated to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of benchmarking shop cases to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of benchmarking shop cases to return.
+                Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             Bucketed histogram results.
@@ -543,15 +568,46 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
             filter_,
         )
 
-    def query(self) -> BenchmarkingShopCaseQuery:
-        """Start a query for benchmarking shop cases."""
-        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
-        return BenchmarkingShopCaseQuery(self._client)
-
     def select(self) -> BenchmarkingShopCaseQuery:
         """Start selecting from benchmarking shop cases."""
-        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
         return BenchmarkingShopCaseQuery(self._client)
+
+    def _query(
+        self,
+        filter_: dm.Filter | None,
+        limit: int,
+        retrieve_connections: Literal["skip", "identifier", "full"],
+        sort: list[InstanceSort] | None = None,
+    ) -> list[dict[str, Any]]:
+        builder = QueryBuilder()
+        factory = QueryStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
+        builder.append(factory.root(
+            filter=filter_,
+            sort=sort,
+            limit=limit,
+            has_container_fields=True,
+        ))
+        builder.extend(
+            factory.from_edge(
+                ShopFile._view_id,
+                "outwards",
+                ViewPropertyId(self._view_id, "shopFiles"),
+                include_end_node=retrieve_connections == "full",
+                has_container_fields=True,
+            )
+        )
+        if retrieve_connections == "full":
+            builder.extend(
+                factory.from_direct_relation(
+                    ShopScenario._view_id,
+                    ViewPropertyId(self._view_id, "scenario"),
+                    has_container_fields=True,
+                )
+            )
+        unpack_edges: Literal["skip", "identifier"] = "identifier" if retrieve_connections == "identifier" else "skip"
+        builder.execute_query(self._client, remove_not_connected=True if unpack_edges == "skip" else False)
+        return QueryUnpacker(builder, edges=unpack_edges).unpack()
+
 
     def list(
         self,
@@ -589,15 +645,18 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
             max_bid_generated: The maximum value of the bid generated to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of benchmarking shop cases to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of benchmarking shop cases to return.
+                Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
                 This will override the sort_by and direction. This allowos you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
-            retrieve_connections: Whether to retrieve `scenario` and `shop_files` for the benchmarking shop cases. Defaults to 'skip'.
-                'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier of the connected items, and 'full' will retrieve the full connected items.
+            retrieve_connections: Whether to retrieve `scenario` and `shop_files` for the benchmarking shop cases.
+            Defaults to 'skip'.'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier
+            of the connected items, and 'full' will retrieve the full connected items.
 
         Returns:
             List of requested benchmarking shop cases
@@ -627,65 +686,8 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
             space,
             filter,
         )
-
+        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
-            return self._list(
-                limit=limit,
-                filter=filter_,
-                sort_by=sort_by,  # type: ignore[arg-type]
-                direction=direction,
-                sort=sort,
-            )
-
-        builder = DataClassQueryBuilder(BenchmarkingShopCaseList)
-        has_data = dm.filters.HasData(views=[self._view_id])
-        builder.append(
-            NodeQueryStep(
-                builder.create_name(None),
-                dm.query.NodeResultSetExpression(
-                    filter=dm.filters.And(filter_, has_data) if filter_ else has_data,
-                    sort=self._create_sort(sort_by, direction, sort),  # type: ignore[arg-type]
-                ),
-                BenchmarkingShopCase,
-                max_retrieve_limit=limit,
-                raw_filter=filter_,
-            )
-        )
-        from_root = builder.get_from()
-        edge_shop_files = builder.create_name(from_root)
-        builder.append(
-            EdgeQueryStep(
-                edge_shop_files,
-                dm.query.EdgeResultSetExpression(
-                    from_=from_root,
-                    direction="outwards",
-                    chain_to="destination",
-                ),
-            )
-        )
-        if retrieve_connections == "full":
-            builder.append(
-                NodeQueryStep(
-                    builder.create_name( edge_shop_files),
-                    dm.query.NodeResultSetExpression(
-                        from_= edge_shop_files,
-                        filter=dm.filters.HasData(views=[ShopFile._view_id]),
-                    ),
-                    ShopFile,
-                )
-            )
-            builder.append(
-                NodeQueryStep(
-                    builder.create_name(from_root),
-                    dm.query.NodeResultSetExpression(
-                        from_=from_root,
-                        filter=dm.filters.HasData(views=[ShopScenario._view_id]),
-                        direction="outwards",
-                        through=self._view_id.as_property_ref("scenario"),
-                    ),
-                    ShopScenario,
-                )
-            )
-        # We know that that all nodes are connected as it is not possible to filter on connections
-        builder.execute_query(self._client, remove_not_connected=False)
-        return builder.unpack()
+            return self._list(limit=limit,  filter=filter_, sort=sort_input)
+        values = self._query(filter_, limit, retrieve_connections, sort_input)
+        return self._class_list(instantiate_classes(self._class_type, values, "list"))

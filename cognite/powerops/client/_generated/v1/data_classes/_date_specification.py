@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import warnings
 from collections.abc import Sequence
-from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
+from typing import Any, ClassVar, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
-from pydantic import field_validator, model_validator
+from pydantic import field_validator, model_validator, ValidationInfo
 
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
@@ -23,16 +23,16 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     GraphQLCore,
     ResourcesWrite,
     T_DomainModelList,
-    as_direct_relation_reference,
-    as_instance_dict_id,
     as_node_id,
-    as_pygen_node_id,
-    are_nodes_equal,
+    as_read_args,
+    as_write_args,
     is_tuple_id,
-    select_best_node,
+    as_instance_dict_id,
+    parse_single_connection,
     QueryCore,
     NodeQueryCore,
     StringFilter,
+    ViewPropertyId,
 
 )
 
@@ -100,41 +100,13 @@ class DateSpecificationGraphQL(GraphQLCore):
 
 
 
-    # We do the ignore argument type as we let pydantic handle the type checking
-    @no_type_check
     def as_read(self) -> DateSpecification:
         """Convert this GraphQL format of date specification to the reading format."""
-        if self.data_record is None:
-            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
-        return DateSpecification(
-            space=self.space,
-            external_id=self.external_id,
-            data_record=DataRecord(
-                version=0,
-                last_updated_time=self.data_record.last_updated_time,
-                created_time=self.data_record.created_time,
-            ),
-            name=self.name,
-            processing_timezone=self.processing_timezone,
-            resulting_timezone=self.resulting_timezone,
-            floor_frame=self.floor_frame,
-            shift_definition=self.shift_definition,
-        )
+        return DateSpecification.model_validate(as_read_args(self))
 
-    # We do the ignore argument type as we let pydantic handle the type checking
-    @no_type_check
     def as_write(self) -> DateSpecificationWrite:
         """Convert this GraphQL format of date specification to the writing format."""
-        return DateSpecificationWrite(
-            space=self.space,
-            external_id=self.external_id,
-            data_record=DataRecordWrite(existing_version=0),
-            name=self.name,
-            processing_timezone=self.processing_timezone,
-            resulting_timezone=self.resulting_timezone,
-            floor_frame=self.floor_frame,
-            shift_definition=self.shift_definition,
-        )
+        return DateSpecificationWrite.model_validate(as_write_args(self))
 
 
 class DateSpecification(DomainModel):
@@ -163,20 +135,10 @@ class DateSpecification(DomainModel):
     floor_frame: Optional[str] = Field(None, alias="floorFrame")
     shift_definition: Optional[dict] = Field(None, alias="shiftDefinition")
 
-    # We do the ignore argument type as we let pydantic handle the type checking
-    @no_type_check
+
     def as_write(self) -> DateSpecificationWrite:
         """Convert this read version of date specification to the writing version."""
-        return DateSpecificationWrite(
-            space=self.space,
-            external_id=self.external_id,
-            data_record=DataRecordWrite(existing_version=self.data_record.version),
-            name=self.name,
-            processing_timezone=self.processing_timezone,
-            resulting_timezone=self.resulting_timezone,
-            floor_frame=self.floor_frame,
-            shift_definition=self.shift_definition,
-        )
+        return DateSpecificationWrite.model_validate(as_write_args(self))
 
     def as_apply(self) -> DateSpecificationWrite:
         """Convert this read version of date specification to the writing version."""
@@ -186,6 +148,7 @@ class DateSpecification(DomainModel):
             stacklevel=2,
         )
         return self.as_write()
+
 
 class DateSpecificationWrite(DomainModelWrite):
     """This represents the writing version of date specification.
@@ -202,6 +165,7 @@ class DateSpecificationWrite(DomainModelWrite):
         floor_frame: TODO description
         shift_definition: TODO description
     """
+    _container_fields: ClassVar[tuple[str, ...]] = ("floor_frame", "name", "processing_timezone", "resulting_timezone", "shift_definition",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "DateSpecification", "1")
 
@@ -214,55 +178,12 @@ class DateSpecificationWrite(DomainModelWrite):
     shift_definition: Optional[dict] = Field(None, alias="shiftDefinition")
 
 
-    def _to_instances_write(
-        self,
-        cache: set[tuple[str, str]],
-        write_none: bool = False,
-        allow_version_increase: bool = False,
-    ) -> ResourcesWrite:
-        resources = ResourcesWrite()
-        if self.as_tuple_id() in cache:
-            return resources
-
-        properties: dict[str, Any] = {}
-
-        if self.name is not None:
-            properties["name"] = self.name
-
-        if self.processing_timezone is not None or write_none:
-            properties["processingTimezone"] = self.processing_timezone
-
-        if self.resulting_timezone is not None or write_none:
-            properties["resultingTimezone"] = self.resulting_timezone
-
-        if self.floor_frame is not None or write_none:
-            properties["floorFrame"] = self.floor_frame
-
-        if self.shift_definition is not None or write_none:
-            properties["shiftDefinition"] = self.shift_definition
-
-        if properties:
-            this_node = dm.NodeApply(
-                space=self.space,
-                external_id=self.external_id,
-                existing_version=None if allow_version_increase else self.data_record.existing_version,
-                type=as_direct_relation_reference(self.node_type),
-                sources=[
-                    dm.NodeOrEdgeData(
-                        source=self._view_id,
-                        properties=properties,
-                )],
-            )
-            resources.nodes.append(this_node)
-            cache.add(self.as_tuple_id())
-
-        return resources
-
 
 class DateSpecificationApply(DateSpecificationWrite):
     def __new__(cls, *args, **kwargs) -> DateSpecificationApply:
         warnings.warn(
-            "DateSpecificationApply is deprecated and will be removed in v1.0. Use DateSpecificationWrite instead."
+            "DateSpecificationApply is deprecated and will be removed in v1.0. "
+            "Use DateSpecificationWrite instead. "
             "The motivation for this change is that Write is a more descriptive name for the writing version of the"
             "DateSpecification.",
             UserWarning,
@@ -359,6 +280,7 @@ class _DateSpecificationQuery(NodeQueryCore[T_DomainModelList, DateSpecification
         result_list_cls: type[T_DomainModelList],
         expression: dm.query.ResultSetExpression | None = None,
         connection_name: str | None = None,
+        connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
         reverse_expression: dm.query.ResultSetExpression | None = None,
     ):
@@ -371,6 +293,7 @@ class _DateSpecificationQuery(NodeQueryCore[T_DomainModelList, DateSpecification
             expression,
             dm.filters.HasData(views=[self._view_id]),
             connection_name,
+            connection_property,
             connection_type,
             reverse_expression,
         )

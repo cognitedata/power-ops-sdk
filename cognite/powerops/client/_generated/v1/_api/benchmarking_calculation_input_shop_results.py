@@ -28,8 +28,8 @@ class BenchmarkingCalculationInputShopResultsAPI(EdgeAPI):
             to_shop_result_space: Location of the shop results.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shop result edges to return. Defaults to 25. Set to -1, float("inf") or None
-                to return all items.
+            limit: Maximum number of shop result edges to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
 
         Returns:
             The requested shop result edges.
@@ -40,7 +40,9 @@ class BenchmarkingCalculationInputShopResultsAPI(EdgeAPI):
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> benchmarking_calculation_input = client.benchmarking_calculation_input.shop_results_edge.list("my_benchmarking_calculation_input", limit=5)
+                >>> benchmarking_calculation_input = client.benchmarking_calculation_input.shop_results_edge.list(
+                ...     "my_benchmarking_calculation_input", limit=5
+                ... )
 
         """
         filter_ = _create_edge_filter(

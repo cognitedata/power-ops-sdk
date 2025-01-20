@@ -1,21 +1,35 @@
 from __future__ import annotations
 
-from collections.abc import Sequence
-from typing import overload, Literal
 import warnings
+from collections.abc import Sequence
+from typing import Any, ClassVar, Literal, overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList, InstanceSort
 
+from cognite.powerops.client._generated.v1._api._core import (
+    DEFAULT_LIMIT_READ,
+    instantiate_classes,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+)
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
-    NodeQueryStep,
-    EdgeQueryStep,
-    DataClassQueryBuilder,
+    QueryStepFactory,
+    QueryBuilder,
+    QueryUnpacker,
+    ViewPropertyId,
+)
+from cognite.powerops.client._generated.v1.data_classes._power_asset import (
+    PowerAssetQuery,
+    _POWERASSET_PROPERTIES_BY_FIELD,
+    _create_power_asset_filter,
 )
 from cognite.powerops.client._generated.v1.data_classes import (
+    DomainModel,
     DomainModelCore,
     DomainModelWrite,
     ResourcesWriteResult,
@@ -30,24 +44,13 @@ from cognite.powerops.client._generated.v1.data_classes import (
     PriceArea,
     Watercourse,
 )
-from cognite.powerops.client._generated.v1.data_classes._power_asset import (
-    PowerAssetQuery,
-    _POWERASSET_PROPERTIES_BY_FIELD,
-    _create_power_asset_filter,
-)
-from cognite.powerops.client._generated.v1._api._core import (
-    DEFAULT_LIMIT_READ,
-    Aggregations,
-    NodeAPI,
-    SequenceNotStr,
-)
 from cognite.powerops.client._generated.v1._api.power_asset_query import PowerAssetQueryAPI
 
 
 class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList, PowerAssetWriteList]):
     _view_id = dm.ViewId("power_ops_core", "PowerAsset", "1")
-    _properties_by_field = _POWERASSET_PROPERTIES_BY_FIELD
-    _direct_children_by_external_id = {
+    _properties_by_field: ClassVar[dict[str, str]] = _POWERASSET_PROPERTIES_BY_FIELD
+    _direct_children_by_external_id: ClassVar[dict[str, type[DomainModel]]] = {
         "Generator": Generator,
         "Plant": Plant,
         "PriceArea": PriceArea,
@@ -75,7 +78,7 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList, PowerAs
         space: str | list[str] | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
-    ) -> PowerAssetQueryAPI[PowerAssetList]:
+    ) -> PowerAssetQueryAPI[PowerAsset, PowerAssetList]:
         """Query starting at power assets.
 
         Args:
@@ -89,8 +92,10 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList, PowerAs
             asset_type_prefix: The prefix of the asset type to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of power assets to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of power assets to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
+                your own filtering which will be ANDed with the filter above.
 
         Returns:
             A query API for power assets.
@@ -117,8 +122,9 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList, PowerAs
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = DataClassQueryBuilder(PowerAssetList)
-        return PowerAssetQueryAPI(self._client, builder, filter_, limit)
+        return PowerAssetQueryAPI(
+            self._client, QueryBuilder(), self._class_type, self._class_list, None, filter_, limit
+        )
 
     def apply(
         self,
@@ -129,10 +135,14 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList, PowerAs
         """Add or update (upsert) power assets.
 
         Args:
-            power_asset: Power asset or sequence of power assets to upsert.
-            replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
-                Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
-            write_none (bool): This method, will by default, skip properties that are set to None. However, if you want to set properties to None,
+            power_asset: Power asset or
+                sequence of power assets to upsert.
+            replace (bool): How do we behave when a property value exists? Do we replace all matching and
+                existing values with the supplied values (true)?
+                Or should we merge in new values for properties together with the existing values (false)?
+                Note: This setting applies for all nodes or edges specified in the ingestion call.
+            write_none (bool): This method, will by default, skip properties that are set to None.
+                However, if you want to set properties to None,
                 you can set this parameter to True. Note this only applies to properties that are nullable.
         Returns:
             Created instance(s), i.e., nodes, edges, and time series.
@@ -144,7 +154,9 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList, PowerAs
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> from cognite.powerops.client._generated.v1.data_classes import PowerAssetWrite
                 >>> client = PowerOpsModelsV1Client()
-                >>> power_asset = PowerAssetWrite(external_id="my_power_asset", ...)
+                >>> power_asset = PowerAssetWrite(
+                ...     external_id="my_power_asset", ...
+                ... )
                 >>> result = client.power_asset.apply(power_asset)
 
         """
@@ -190,14 +202,27 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList, PowerAs
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["Generator", "Plant", "PriceArea", "Watercourse"]] | None = None) -> PowerAsset | None:
-        ...
+    def retrieve(
+        self,
+        external_id: str | dm.NodeId | tuple[str, str],
+        space: str = DEFAULT_INSTANCE_SPACE,
+        as_child_class: SequenceNotStr[Literal["Generator", "Plant", "PriceArea", "Watercourse"]] | None = None,
+    ) -> PowerAsset | None: ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["Generator", "Plant", "PriceArea", "Watercourse"]] | None = None) -> PowerAssetList:
-        ...
+    def retrieve(
+        self,
+        external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]],
+        space: str = DEFAULT_INSTANCE_SPACE,
+        as_child_class: SequenceNotStr[Literal["Generator", "Plant", "PriceArea", "Watercourse"]] | None = None,
+    ) -> PowerAssetList: ...
 
-    def retrieve(self, external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]], space: str = DEFAULT_INSTANCE_SPACE, as_child_class: SequenceNotStr[Literal["Generator", "Plant", "PriceArea", "Watercourse"]] | None = None) -> PowerAsset | PowerAssetList | None:
+    def retrieve(
+        self,
+        external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]],
+        space: str = DEFAULT_INSTANCE_SPACE,
+        as_child_class: SequenceNotStr[Literal["Generator", "Plant", "PriceArea", "Watercourse"]] | None = None,
+    ) -> PowerAsset | PowerAssetList | None:
         """Retrieve one or more power assets by id(s).
 
         Args:
@@ -216,10 +241,16 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList, PowerAs
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> power_asset = client.power_asset.retrieve("my_power_asset")
+                >>> power_asset = client.power_asset.retrieve(
+                ...     "my_power_asset"
+                ... )
 
         """
-        return self._retrieve(external_id, space, as_child_class=as_child_class)
+        return self._retrieve(
+            external_id,
+            space,
+            as_child_class=as_child_class
+        )
 
     def search(
         self,
@@ -256,12 +287,14 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList, PowerAs
             asset_type_prefix: The prefix of the asset type to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of power assets to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of power assets to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
-                This will override the sort_by and direction. This allowos you to sort by multiple fields and
+                This will override the sort_by and direction. This allows you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
 
         Returns:
@@ -273,7 +306,9 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList, PowerAs
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> power_assets = client.power_asset.search('my_power_asset')
+                >>> power_assets = client.power_asset.search(
+                ...     'my_power_asset'
+                ... )
 
         """
         filter_ = _create_power_asset_filter(
@@ -412,8 +447,10 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList, PowerAs
             asset_type_prefix: The prefix of the asset type to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of power assets to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of power assets to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
+                your own filtering which will be ANDed with the filter above.
 
         Returns:
             Aggregation results.
@@ -488,8 +525,10 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList, PowerAs
             asset_type_prefix: The prefix of the asset type to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of power assets to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of power assets to return.
+                Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             Bucketed histogram results.
@@ -518,15 +557,29 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList, PowerAs
             filter_,
         )
 
-    def query(self) -> PowerAssetQuery:
-        """Start a query for power assets."""
-        warnings.warn("This method is renamed to .select", UserWarning, stacklevel=2)
-        return PowerAssetQuery(self._client)
-
     def select(self) -> PowerAssetQuery:
         """Start selecting from power assets."""
-        warnings.warn("The .select is in alpha and is subject to breaking changes without notice.", UserWarning, stacklevel=2)
         return PowerAssetQuery(self._client)
+
+    def _query(
+        self,
+        filter_: dm.Filter | None,
+        limit: int,
+        retrieve_connections: Literal["skip", "identifier", "full"],
+        sort: list[InstanceSort] | None = None,
+    ) -> list[dict[str, Any]]:
+        builder = QueryBuilder()
+        factory = QueryStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
+        builder.append(factory.root(
+            filter=filter_,
+            sort=sort,
+            limit=limit,
+            has_container_fields=True,
+        ))
+        unpack_edges: Literal["skip", "identifier"] = "identifier" if retrieve_connections == "identifier" else "skip"
+        builder.execute_query(self._client, remove_not_connected=True if unpack_edges == "skip" else False)
+        return QueryUnpacker(builder, edges=unpack_edges).unpack()
+
 
     def list(
         self,
@@ -559,8 +612,10 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList, PowerAs
             asset_type_prefix: The prefix of the asset type to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of power assets to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of power assets to return.
+                Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
             sort_by: The property to sort by.
             direction: The direction to sort by, either 'ascending' or 'descending'.
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
@@ -593,11 +648,5 @@ class PowerAssetAPI(NodeAPI[PowerAsset, PowerAssetWrite, PowerAssetList, PowerAs
             space,
             filter,
         )
-
-        return self._list(
-            limit=limit,
-            filter=filter_,
-            sort_by=sort_by,  # type: ignore[arg-type]
-            direction=direction,
-            sort=sort,
-        )
+        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        return self._list(limit=limit,  filter=filter_, sort=sort_input)

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import warnings
 from collections.abc import Sequence
-from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
+from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm, CogniteClient
 from cognite.client.data_classes import (
@@ -10,7 +10,7 @@ from cognite.client.data_classes import (
     TimeSeriesWrite as CogniteTimeSeriesWrite,
 )
 from pydantic import Field
-from pydantic import field_validator, model_validator
+from pydantic import field_validator, model_validator, ValidationInfo
 
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
@@ -34,16 +34,17 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     TimeSeriesGraphQL,
     TimeSeriesReferenceAPI,
     T_DomainModelList,
-    as_direct_relation_reference,
-    as_instance_dict_id,
     as_node_id,
-    as_pygen_node_id,
-    are_nodes_equal,
+    as_read_args,
+    as_write_args,
     is_tuple_id,
-    select_best_node,
+    as_instance_dict_id,
+    parse_single_connection,
     QueryCore,
     NodeQueryCore,
     StringFilter,
+    ViewPropertyId,
+    DirectRelationFilter,
     IntFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._price_area_afrr import PriceAreaAFRR, PriceAreaAFRRWrite
@@ -159,67 +160,13 @@ class PriceAreaInformationGraphQL(GraphQLCore):
             return value["items"]
         return value
 
-    # We do the ignore argument type as we let pydantic handle the type checking
-    @no_type_check
     def as_read(self) -> PriceAreaInformation:
         """Convert this GraphQL format of price area information to the reading format."""
-        if self.data_record is None:
-            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
-        return PriceAreaInformation(
-            space=self.space,
-            external_id=self.external_id,
-            data_record=DataRecord(
-                version=0,
-                last_updated_time=self.data_record.last_updated_time,
-                created_time=self.data_record.created_time,
-            ),
-            name=self.name,
-            display_name=self.display_name,
-            ordering=self.ordering,
-            asset_type=self.asset_type,
-            capacity_price_up=self.capacity_price_up.as_read() if self.capacity_price_up else None,
-            capacity_price_down=self.capacity_price_down.as_read() if self.capacity_price_down else None,
-            activation_price_up=self.activation_price_up.as_read() if self.activation_price_up else None,
-            activation_price_down=self.activation_price_down.as_read() if self.activation_price_down else None,
-            relative_activation=self.relative_activation.as_read() if self.relative_activation else None,
-            total_capacity_allocation_up=self.total_capacity_allocation_up.as_read() if self.total_capacity_allocation_up else None,
-            total_capacity_allocation_down=self.total_capacity_allocation_down.as_read() if self.total_capacity_allocation_down else None,
-            own_capacity_allocation_up=self.own_capacity_allocation_up.as_read() if self.own_capacity_allocation_up else None,
-            own_capacity_allocation_down=self.own_capacity_allocation_down.as_read() if self.own_capacity_allocation_down else None,
-            default_bid_configuration=self.default_bid_configuration.as_read()
-if isinstance(self.default_bid_configuration, GraphQLCore)
-else self.default_bid_configuration,
-            main_price_scenario=self.main_price_scenario.as_read() if self.main_price_scenario else None,
-            price_scenarios=[price_scenario.as_read() for price_scenario in self.price_scenarios or []] if self.price_scenarios is not None else None,
-        )
+        return PriceAreaInformation.model_validate(as_read_args(self))
 
-    # We do the ignore argument type as we let pydantic handle the type checking
-    @no_type_check
     def as_write(self) -> PriceAreaInformationWrite:
         """Convert this GraphQL format of price area information to the writing format."""
-        return PriceAreaInformationWrite(
-            space=self.space,
-            external_id=self.external_id,
-            data_record=DataRecordWrite(existing_version=0),
-            name=self.name,
-            display_name=self.display_name,
-            ordering=self.ordering,
-            asset_type=self.asset_type,
-            capacity_price_up=self.capacity_price_up.as_write() if self.capacity_price_up else None,
-            capacity_price_down=self.capacity_price_down.as_write() if self.capacity_price_down else None,
-            activation_price_up=self.activation_price_up.as_write() if self.activation_price_up else None,
-            activation_price_down=self.activation_price_down.as_write() if self.activation_price_down else None,
-            relative_activation=self.relative_activation.as_write() if self.relative_activation else None,
-            total_capacity_allocation_up=self.total_capacity_allocation_up.as_write() if self.total_capacity_allocation_up else None,
-            total_capacity_allocation_down=self.total_capacity_allocation_down.as_write() if self.total_capacity_allocation_down else None,
-            own_capacity_allocation_up=self.own_capacity_allocation_up.as_write() if self.own_capacity_allocation_up else None,
-            own_capacity_allocation_down=self.own_capacity_allocation_down.as_write() if self.own_capacity_allocation_down else None,
-            default_bid_configuration=self.default_bid_configuration.as_write()
-if isinstance(self.default_bid_configuration, GraphQLCore)
-else self.default_bid_configuration,
-            main_price_scenario=self.main_price_scenario.as_write() if self.main_price_scenario else None,
-            price_scenarios=[price_scenario.as_write() for price_scenario in self.price_scenarios or []] if self.price_scenarios is not None else None,
-        )
+        return PriceAreaInformationWrite.model_validate(as_write_args(self))
 
 
 class PriceAreaInformation(PriceAreaAFRR, PriceAreaDayAhead):
@@ -252,34 +199,15 @@ class PriceAreaInformation(PriceAreaAFRR, PriceAreaDayAhead):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceAreaInformation", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = None
+    @field_validator("default_bid_configuration", mode="before")
+    @classmethod
+    def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
+        return parse_single_connection(value, info.field_name)
 
-    # We do the ignore argument type as we let pydantic handle the type checking
-    @no_type_check
+
     def as_write(self) -> PriceAreaInformationWrite:
         """Convert this read version of price area information to the writing version."""
-        return PriceAreaInformationWrite(
-            space=self.space,
-            external_id=self.external_id,
-            data_record=DataRecordWrite(existing_version=self.data_record.version),
-            name=self.name,
-            display_name=self.display_name,
-            ordering=self.ordering,
-            asset_type=self.asset_type,
-            capacity_price_up=self.capacity_price_up.as_write() if isinstance(self.capacity_price_up, CogniteTimeSeries) else self.capacity_price_up,
-            capacity_price_down=self.capacity_price_down.as_write() if isinstance(self.capacity_price_down, CogniteTimeSeries) else self.capacity_price_down,
-            activation_price_up=self.activation_price_up.as_write() if isinstance(self.activation_price_up, CogniteTimeSeries) else self.activation_price_up,
-            activation_price_down=self.activation_price_down.as_write() if isinstance(self.activation_price_down, CogniteTimeSeries) else self.activation_price_down,
-            relative_activation=self.relative_activation.as_write() if isinstance(self.relative_activation, CogniteTimeSeries) else self.relative_activation,
-            total_capacity_allocation_up=self.total_capacity_allocation_up.as_write() if isinstance(self.total_capacity_allocation_up, CogniteTimeSeries) else self.total_capacity_allocation_up,
-            total_capacity_allocation_down=self.total_capacity_allocation_down.as_write() if isinstance(self.total_capacity_allocation_down, CogniteTimeSeries) else self.total_capacity_allocation_down,
-            own_capacity_allocation_up=self.own_capacity_allocation_up.as_write() if isinstance(self.own_capacity_allocation_up, CogniteTimeSeries) else self.own_capacity_allocation_up,
-            own_capacity_allocation_down=self.own_capacity_allocation_down.as_write() if isinstance(self.own_capacity_allocation_down, CogniteTimeSeries) else self.own_capacity_allocation_down,
-            default_bid_configuration=self.default_bid_configuration.as_write()
-if isinstance(self.default_bid_configuration, DomainModel)
-else self.default_bid_configuration,
-            main_price_scenario=self.main_price_scenario.as_write() if isinstance(self.main_price_scenario, CogniteTimeSeries) else self.main_price_scenario,
-            price_scenarios=[price_scenario.as_write() if isinstance(price_scenario, CogniteTimeSeries) else price_scenario for price_scenario in self.price_scenarios] if self.price_scenarios is not None else None,
-        )
+        return PriceAreaInformationWrite.model_validate(as_write_args(self))
 
     def as_apply(self) -> PriceAreaInformationWrite:
         """Convert this read version of price area information to the writing version."""
@@ -289,19 +217,6 @@ else self.default_bid_configuration,
             stacklevel=2,
         )
         return self.as_write()
-    @classmethod
-    def _update_connections(
-        cls,
-        instances: dict[dm.NodeId | str, PriceAreaInformation],  # type: ignore[override]
-        nodes_by_id: dict[dm.NodeId | str, DomainModel],
-        edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
-    ) -> None:
-        from ._bid_configuration_day_ahead import BidConfigurationDayAhead
-        for instance in instances.values():
-            if isinstance(instance.default_bid_configuration, (dm.NodeId, str)) and (default_bid_configuration := nodes_by_id.get(instance.default_bid_configuration)) and isinstance(
-                    default_bid_configuration, BidConfigurationDayAhead
-            ):
-                instance.default_bid_configuration = default_bid_configuration
 
 
 class PriceAreaInformationWrite(PriceAreaAFRRWrite, PriceAreaDayAheadWrite):
@@ -330,135 +245,20 @@ class PriceAreaInformationWrite(PriceAreaAFRRWrite, PriceAreaDayAheadWrite):
         main_price_scenario: TODO
         price_scenarios: TODO
     """
+    _container_fields: ClassVar[tuple[str, ...]] = ("activation_price_down", "activation_price_up", "asset_type", "capacity_price_down", "capacity_price_up", "default_bid_configuration", "display_name", "main_price_scenario", "name", "ordering", "own_capacity_allocation_down", "own_capacity_allocation_up", "price_scenarios", "relative_activation", "total_capacity_allocation_down", "total_capacity_allocation_up",)
+    _direct_relations: ClassVar[tuple[str, ...]] = ("default_bid_configuration",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceAreaInformation", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
 
 
-    def _to_instances_write(
-        self,
-        cache: set[tuple[str, str]],
-        write_none: bool = False,
-        allow_version_increase: bool = False,
-    ) -> ResourcesWrite:
-        resources = ResourcesWrite()
-        if self.as_tuple_id() in cache:
-            return resources
-
-        properties: dict[str, Any] = {}
-
-        if self.name is not None:
-            properties["name"] = self.name
-
-        if self.display_name is not None or write_none:
-            properties["displayName"] = self.display_name
-
-        if self.ordering is not None or write_none:
-            properties["ordering"] = self.ordering
-
-        if self.asset_type is not None or write_none:
-            properties["assetType"] = self.asset_type
-
-        if self.capacity_price_up is not None or write_none:
-            properties["capacityPriceUp"] = self.capacity_price_up if isinstance(self.capacity_price_up, str) or self.capacity_price_up is None else self.capacity_price_up.external_id
-
-        if self.capacity_price_down is not None or write_none:
-            properties["capacityPriceDown"] = self.capacity_price_down if isinstance(self.capacity_price_down, str) or self.capacity_price_down is None else self.capacity_price_down.external_id
-
-        if self.activation_price_up is not None or write_none:
-            properties["activationPriceUp"] = self.activation_price_up if isinstance(self.activation_price_up, str) or self.activation_price_up is None else self.activation_price_up.external_id
-
-        if self.activation_price_down is not None or write_none:
-            properties["activationPriceDown"] = self.activation_price_down if isinstance(self.activation_price_down, str) or self.activation_price_down is None else self.activation_price_down.external_id
-
-        if self.relative_activation is not None or write_none:
-            properties["relativeActivation"] = self.relative_activation if isinstance(self.relative_activation, str) or self.relative_activation is None else self.relative_activation.external_id
-
-        if self.total_capacity_allocation_up is not None or write_none:
-            properties["totalCapacityAllocationUp"] = self.total_capacity_allocation_up if isinstance(self.total_capacity_allocation_up, str) or self.total_capacity_allocation_up is None else self.total_capacity_allocation_up.external_id
-
-        if self.total_capacity_allocation_down is not None or write_none:
-            properties["totalCapacityAllocationDown"] = self.total_capacity_allocation_down if isinstance(self.total_capacity_allocation_down, str) or self.total_capacity_allocation_down is None else self.total_capacity_allocation_down.external_id
-
-        if self.own_capacity_allocation_up is not None or write_none:
-            properties["ownCapacityAllocationUp"] = self.own_capacity_allocation_up if isinstance(self.own_capacity_allocation_up, str) or self.own_capacity_allocation_up is None else self.own_capacity_allocation_up.external_id
-
-        if self.own_capacity_allocation_down is not None or write_none:
-            properties["ownCapacityAllocationDown"] = self.own_capacity_allocation_down if isinstance(self.own_capacity_allocation_down, str) or self.own_capacity_allocation_down is None else self.own_capacity_allocation_down.external_id
-
-        if self.default_bid_configuration is not None:
-            properties["defaultBidConfiguration"] = {
-                "space":  self.space if isinstance(self.default_bid_configuration, str) else self.default_bid_configuration.space,
-                "externalId": self.default_bid_configuration if isinstance(self.default_bid_configuration, str) else self.default_bid_configuration.external_id,
-            }
-
-        if self.main_price_scenario is not None or write_none:
-            properties["mainPriceScenario"] = self.main_price_scenario if isinstance(self.main_price_scenario, str) or self.main_price_scenario is None else self.main_price_scenario.external_id
-
-        if self.price_scenarios is not None or write_none:
-            properties["priceScenarios"] = [price_scenario if isinstance(price_scenario, str) else price_scenario.external_id for price_scenario in self.price_scenarios or []] if self.price_scenarios is not None else None
-
-        if properties:
-            this_node = dm.NodeApply(
-                space=self.space,
-                external_id=self.external_id,
-                existing_version=None if allow_version_increase else self.data_record.existing_version,
-                type=as_direct_relation_reference(self.node_type),
-                sources=[
-                    dm.NodeOrEdgeData(
-                        source=self._view_id,
-                        properties=properties,
-                )],
-            )
-            resources.nodes.append(this_node)
-            cache.add(self.as_tuple_id())
-
-        if isinstance(self.default_bid_configuration, DomainModelWrite):
-            other_resources = self.default_bid_configuration._to_instances_write(cache)
-            resources.extend(other_resources)
-
-        if isinstance(self.capacity_price_up, CogniteTimeSeriesWrite):
-            resources.time_series.append(self.capacity_price_up)
-
-        if isinstance(self.capacity_price_down, CogniteTimeSeriesWrite):
-            resources.time_series.append(self.capacity_price_down)
-
-        if isinstance(self.activation_price_up, CogniteTimeSeriesWrite):
-            resources.time_series.append(self.activation_price_up)
-
-        if isinstance(self.activation_price_down, CogniteTimeSeriesWrite):
-            resources.time_series.append(self.activation_price_down)
-
-        if isinstance(self.relative_activation, CogniteTimeSeriesWrite):
-            resources.time_series.append(self.relative_activation)
-
-        if isinstance(self.total_capacity_allocation_up, CogniteTimeSeriesWrite):
-            resources.time_series.append(self.total_capacity_allocation_up)
-
-        if isinstance(self.total_capacity_allocation_down, CogniteTimeSeriesWrite):
-            resources.time_series.append(self.total_capacity_allocation_down)
-
-        if isinstance(self.own_capacity_allocation_up, CogniteTimeSeriesWrite):
-            resources.time_series.append(self.own_capacity_allocation_up)
-
-        if isinstance(self.own_capacity_allocation_down, CogniteTimeSeriesWrite):
-            resources.time_series.append(self.own_capacity_allocation_down)
-
-        if isinstance(self.main_price_scenario, CogniteTimeSeriesWrite):
-            resources.time_series.append(self.main_price_scenario)
-
-        for price_scenario in self.price_scenarios or []:
-            if isinstance(price_scenario, CogniteTimeSeriesWrite):
-                resources.time_series.append(price_scenario)
-
-        return resources
-
 
 class PriceAreaInformationApply(PriceAreaInformationWrite):
     def __new__(cls, *args, **kwargs) -> PriceAreaInformationApply:
         warnings.warn(
-            "PriceAreaInformationApply is deprecated and will be removed in v1.0. Use PriceAreaInformationWrite instead."
+            "PriceAreaInformationApply is deprecated and will be removed in v1.0. "
+            "Use PriceAreaInformationWrite instead. "
             "The motivation for this change is that Write is a more descriptive name for the writing version of the"
             "PriceAreaInformation.",
             UserWarning,
@@ -564,6 +364,7 @@ class _PriceAreaInformationQuery(NodeQueryCore[T_DomainModelList, PriceAreaInfor
         result_list_cls: type[T_DomainModelList],
         expression: dm.query.ResultSetExpression | None = None,
         connection_name: str | None = None,
+        connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
         reverse_expression: dm.query.ResultSetExpression | None = None,
     ):
@@ -577,6 +378,7 @@ class _PriceAreaInformationQuery(NodeQueryCore[T_DomainModelList, PriceAreaInfor
             expression,
             dm.filters.HasData(views=[self._view_id]),
             connection_name,
+            connection_property,
             connection_type,
             reverse_expression,
         )
@@ -592,6 +394,7 @@ class _PriceAreaInformationQuery(NodeQueryCore[T_DomainModelList, PriceAreaInfor
                     direction="outwards",
                 ),
                 connection_name="default_bid_configuration",
+                connection_property=ViewPropertyId(self._view_id, "defaultBidConfiguration"),
             )
 
         self.space = StringFilter(self, ["node", "space"])
@@ -600,6 +403,7 @@ class _PriceAreaInformationQuery(NodeQueryCore[T_DomainModelList, PriceAreaInfor
         self.display_name = StringFilter(self, self._view_id.as_property_ref("displayName"))
         self.ordering = IntFilter(self, self._view_id.as_property_ref("ordering"))
         self.asset_type = StringFilter(self, self._view_id.as_property_ref("assetType"))
+        self.default_bid_configuration_filter = DirectRelationFilter(self, self._view_id.as_property_ref("defaultBidConfiguration"))
         self._filter_classes.extend([
             self.space,
             self.external_id,
@@ -607,6 +411,7 @@ class _PriceAreaInformationQuery(NodeQueryCore[T_DomainModelList, PriceAreaInfor
             self.display_name,
             self.ordering,
             self.asset_type,
+            self.default_bid_configuration_filter,
         ])
         self.capacity_price_up = TimeSeriesReferenceAPI(client,  lambda limit: [
             item.capacity_price_up if isinstance(item.capacity_price_up, str) else item.capacity_price_up.external_id #type: ignore[misc]

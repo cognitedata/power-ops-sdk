@@ -28,8 +28,8 @@ class ShopModelWithAssetsPowerAssetsAPI(EdgeAPI):
             to_power_asset_space: Location of the power assets.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of power asset edges to return. Defaults to 25. Set to -1, float("inf") or None
-                to return all items.
+            limit: Maximum number of power asset edges to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
 
         Returns:
             The requested power asset edges.
@@ -40,7 +40,9 @@ class ShopModelWithAssetsPowerAssetsAPI(EdgeAPI):
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> shop_model_with_asset = client.shop_model_with_assets.power_assets_edge.list("my_shop_model_with_asset", limit=5)
+                >>> shop_model_with_asset = client.shop_model_with_assets.power_assets_edge.list(
+                ...     "my_shop_model_with_asset", limit=5
+                ... )
 
         """
         filter_ = _create_edge_filter(

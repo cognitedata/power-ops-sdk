@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import warnings
 from collections.abc import Sequence
-from typing import Any, ClassVar, Literal, no_type_check, Optional, Union
+from typing import Any, ClassVar, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm, CogniteClient
 from cognite.client.data_classes import (
@@ -10,7 +10,7 @@ from cognite.client.data_classes import (
     TimeSeriesWrite as CogniteTimeSeriesWrite,
 )
 from pydantic import Field
-from pydantic import field_validator, model_validator
+from pydantic import field_validator, model_validator, ValidationInfo
 
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
@@ -34,16 +34,16 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     TimeSeriesGraphQL,
     TimeSeriesReferenceAPI,
     T_DomainModelList,
-    as_direct_relation_reference,
-    as_instance_dict_id,
     as_node_id,
-    as_pygen_node_id,
-    are_nodes_equal,
+    as_read_args,
+    as_write_args,
     is_tuple_id,
-    select_best_node,
+    as_instance_dict_id,
+    parse_single_connection,
     QueryCore,
     NodeQueryCore,
     StringFilter,
+    ViewPropertyId,
 
 )
 
@@ -102,35 +102,13 @@ class BenchmarkingProductionObligationDayAheadGraphQL(GraphQLCore):
 
 
 
-    # We do the ignore argument type as we let pydantic handle the type checking
-    @no_type_check
     def as_read(self) -> BenchmarkingProductionObligationDayAhead:
         """Convert this GraphQL format of benchmarking production obligation day ahead to the reading format."""
-        if self.data_record is None:
-            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
-        return BenchmarkingProductionObligationDayAhead(
-            space=self.space,
-            external_id=self.external_id,
-            data_record=DataRecord(
-                version=0,
-                last_updated_time=self.data_record.last_updated_time,
-                created_time=self.data_record.created_time,
-            ),
-            time_series=self.time_series.as_read() if self.time_series else None,
-            name=self.name,
-        )
+        return BenchmarkingProductionObligationDayAhead.model_validate(as_read_args(self))
 
-    # We do the ignore argument type as we let pydantic handle the type checking
-    @no_type_check
     def as_write(self) -> BenchmarkingProductionObligationDayAheadWrite:
         """Convert this GraphQL format of benchmarking production obligation day ahead to the writing format."""
-        return BenchmarkingProductionObligationDayAheadWrite(
-            space=self.space,
-            external_id=self.external_id,
-            data_record=DataRecordWrite(existing_version=0),
-            time_series=self.time_series.as_write() if self.time_series else None,
-            name=self.name,
-        )
+        return BenchmarkingProductionObligationDayAheadWrite.model_validate(as_write_args(self))
 
 
 class BenchmarkingProductionObligationDayAhead(DomainModel):
@@ -153,17 +131,10 @@ class BenchmarkingProductionObligationDayAhead(DomainModel):
     time_series: Union[TimeSeries, str, None] = Field(None, alias="timeSeries")
     name: Optional[str] = None
 
-    # We do the ignore argument type as we let pydantic handle the type checking
-    @no_type_check
+
     def as_write(self) -> BenchmarkingProductionObligationDayAheadWrite:
         """Convert this read version of benchmarking production obligation day ahead to the writing version."""
-        return BenchmarkingProductionObligationDayAheadWrite(
-            space=self.space,
-            external_id=self.external_id,
-            data_record=DataRecordWrite(existing_version=self.data_record.version),
-            time_series=self.time_series.as_write() if isinstance(self.time_series, CogniteTimeSeries) else self.time_series,
-            name=self.name,
-        )
+        return BenchmarkingProductionObligationDayAheadWrite.model_validate(as_write_args(self))
 
     def as_apply(self) -> BenchmarkingProductionObligationDayAheadWrite:
         """Convert this read version of benchmarking production obligation day ahead to the writing version."""
@@ -173,6 +144,7 @@ class BenchmarkingProductionObligationDayAhead(DomainModel):
             stacklevel=2,
         )
         return self.as_write()
+
 
 class BenchmarkingProductionObligationDayAheadWrite(DomainModelWrite):
     """This represents the writing version of benchmarking production obligation day ahead.
@@ -186,6 +158,7 @@ class BenchmarkingProductionObligationDayAheadWrite(DomainModelWrite):
         time_series: The time series of the day ahead production obligation for benchmarking
         name: The name of the day ahead production obligation for benchmarking
     """
+    _container_fields: ClassVar[tuple[str, ...]] = ("name", "time_series",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingProductionObligationDayAhead", "1")
 
@@ -195,49 +168,12 @@ class BenchmarkingProductionObligationDayAheadWrite(DomainModelWrite):
     name: Optional[str] = None
 
 
-    def _to_instances_write(
-        self,
-        cache: set[tuple[str, str]],
-        write_none: bool = False,
-        allow_version_increase: bool = False,
-    ) -> ResourcesWrite:
-        resources = ResourcesWrite()
-        if self.as_tuple_id() in cache:
-            return resources
-
-        properties: dict[str, Any] = {}
-
-        if self.time_series is not None or write_none:
-            properties["timeSeries"] = self.time_series if isinstance(self.time_series, str) or self.time_series is None else self.time_series.external_id
-
-        if self.name is not None or write_none:
-            properties["name"] = self.name
-
-        if properties:
-            this_node = dm.NodeApply(
-                space=self.space,
-                external_id=self.external_id,
-                existing_version=None if allow_version_increase else self.data_record.existing_version,
-                type=as_direct_relation_reference(self.node_type),
-                sources=[
-                    dm.NodeOrEdgeData(
-                        source=self._view_id,
-                        properties=properties,
-                )],
-            )
-            resources.nodes.append(this_node)
-            cache.add(self.as_tuple_id())
-
-        if isinstance(self.time_series, CogniteTimeSeriesWrite):
-            resources.time_series.append(self.time_series)
-
-        return resources
-
 
 class BenchmarkingProductionObligationDayAheadApply(BenchmarkingProductionObligationDayAheadWrite):
     def __new__(cls, *args, **kwargs) -> BenchmarkingProductionObligationDayAheadApply:
         warnings.warn(
-            "BenchmarkingProductionObligationDayAheadApply is deprecated and will be removed in v1.0. Use BenchmarkingProductionObligationDayAheadWrite instead."
+            "BenchmarkingProductionObligationDayAheadApply is deprecated and will be removed in v1.0. "
+            "Use BenchmarkingProductionObligationDayAheadWrite instead. "
             "The motivation for this change is that Write is a more descriptive name for the writing version of the"
             "BenchmarkingProductionObligationDayAhead.",
             UserWarning,
@@ -310,6 +246,7 @@ class _BenchmarkingProductionObligationDayAheadQuery(NodeQueryCore[T_DomainModel
         result_list_cls: type[T_DomainModelList],
         expression: dm.query.ResultSetExpression | None = None,
         connection_name: str | None = None,
+        connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
         reverse_expression: dm.query.ResultSetExpression | None = None,
     ):
@@ -322,6 +259,7 @@ class _BenchmarkingProductionObligationDayAheadQuery(NodeQueryCore[T_DomainModel
             expression,
             dm.filters.HasData(views=[self._view_id]),
             connection_name,
+            connection_property,
             connection_type,
             reverse_expression,
         )
