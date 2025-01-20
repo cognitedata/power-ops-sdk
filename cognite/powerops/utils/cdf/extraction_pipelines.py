@@ -167,7 +167,7 @@ class PipelineRun:
             for key, value in self.data.items():
                 if key in {self.log_file_id, self.log_file_external_id}:
                     continue
-                file_content.append(f"{'='*70}\n{key}\n{'='*70}\n{value}\n")
+                file_content.append(f"{'=' * 70}\n{key}\n{'=' * 70}\n{value}\n")
 
         return data, "\n\n".join(file_content)
 
