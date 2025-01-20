@@ -61,7 +61,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python3 -m pip install --upgrade pip poetry==1.*
+          python3 -m pip install --upgrade pip poetry==2.*
           poetry config virtualenvs.create false
           poetry install
       - name: Run resync plan

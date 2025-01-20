@@ -15,6 +15,11 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.110.0] - 2024-12-31
+### Added
+* Data model `product_CogShop`-data model now also as the view `ShopPenaltyReport`.
+
+
 ## [0.109.0] - 2024-12-31
 ### Fixed
 * Resync build handles direct relations that are none

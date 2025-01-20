@@ -1,6 +1,6 @@
 [project]
 name = "cognite-power-ops"
-version = "0.109.0"
+version = "0.110.0"
 description = "SDK for power markets operations on Cognite Data Fusion"
 readme = "README.md"
 authors = [
@@ -55,6 +55,8 @@ types-PyYAML = "^6"
 pytest = "^8.1.1"
 pytest-cov = "^5.0.0"
 twine = "^5.0.0"
+python-dotenv = "^1"
+
 
 [tool.ruff]
 line-length = 120
