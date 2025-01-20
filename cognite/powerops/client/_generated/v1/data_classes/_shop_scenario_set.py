@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import warnings
 from collections.abc import Sequence
-from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
+from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
-from pydantic import field_validator, model_validator
+from pydantic import field_validator, model_validator, ValidationInfo
 
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
@@ -23,17 +23,17 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     GraphQLCore,
     ResourcesWrite,
     T_DomainModelList,
-    as_direct_relation_reference,
-    as_instance_dict_id,
     as_node_id,
-    as_pygen_node_id,
-    are_nodes_equal,
+    as_read_args,
+    as_write_args,
     is_tuple_id,
-    select_best_node,
+    as_instance_dict_id,
+    parse_single_connection,
     QueryCore,
     NodeQueryCore,
     StringFilter,
-
+    ViewPropertyId,
+    DirectRelationFilter,
 )
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._date_specification import DateSpecification, DateSpecificationList, DateSpecificationGraphQL, DateSpecificationWrite, DateSpecificationWriteList
@@ -104,47 +104,13 @@ class ShopScenarioSetGraphQL(GraphQLCore):
             return value["items"]
         return value
 
-    # We do the ignore argument type as we let pydantic handle the type checking
-    @no_type_check
     def as_read(self) -> ShopScenarioSet:
         """Convert this GraphQL format of shop scenario set to the reading format."""
-        if self.data_record is None:
-            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
-        return ShopScenarioSet(
-            space=self.space,
-            external_id=self.external_id,
-            data_record=DataRecord(
-                version=0,
-                last_updated_time=self.data_record.last_updated_time,
-                created_time=self.data_record.created_time,
-            ),
-            name=self.name,
-            start_specification=self.start_specification.as_read()
-if isinstance(self.start_specification, GraphQLCore)
-else self.start_specification,
-            end_specification=self.end_specification.as_read()
-if isinstance(self.end_specification, GraphQLCore)
-else self.end_specification,
-            scenarios=[scenario.as_read() for scenario in self.scenarios] if self.scenarios is not None else None,
-        )
+        return ShopScenarioSet.model_validate(as_read_args(self))
 
-    # We do the ignore argument type as we let pydantic handle the type checking
-    @no_type_check
     def as_write(self) -> ShopScenarioSetWrite:
         """Convert this GraphQL format of shop scenario set to the writing format."""
-        return ShopScenarioSetWrite(
-            space=self.space,
-            external_id=self.external_id,
-            data_record=DataRecordWrite(existing_version=0),
-            name=self.name,
-            start_specification=self.start_specification.as_write()
-if isinstance(self.start_specification, GraphQLCore)
-else self.start_specification,
-            end_specification=self.end_specification.as_write()
-if isinstance(self.end_specification, GraphQLCore)
-else self.end_specification,
-            scenarios=[scenario.as_write() for scenario in self.scenarios] if self.scenarios is not None else None,
-        )
+        return ShopScenarioSetWrite.model_validate(as_write_args(self))
 
 
 class ShopScenarioSet(DomainModel):
@@ -170,24 +136,21 @@ class ShopScenarioSet(DomainModel):
     start_specification: Union[DateSpecification, str, dm.NodeId, None] = Field(default=None, repr=False, alias="startSpecification")
     end_specification: Union[DateSpecification, str, dm.NodeId, None] = Field(default=None, repr=False, alias="endSpecification")
     scenarios: Optional[list[Union[ShopScenario, str, dm.NodeId]]] = Field(default=None, repr=False)
+    @field_validator("start_specification", "end_specification", mode="before")
+    @classmethod
+    def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
+        return parse_single_connection(value, info.field_name)
 
-    # We do the ignore argument type as we let pydantic handle the type checking
-    @no_type_check
+    @field_validator("scenarios", mode="before")
+    @classmethod
+    def parse_list(cls, value: Any, info: ValidationInfo) -> Any:
+        if value is None:
+            return None
+        return [parse_single_connection(item, info.field_name) for item in value]
+
     def as_write(self) -> ShopScenarioSetWrite:
         """Convert this read version of shop scenario set to the writing version."""
-        return ShopScenarioSetWrite(
-            space=self.space,
-            external_id=self.external_id,
-            data_record=DataRecordWrite(existing_version=self.data_record.version),
-            name=self.name,
-            start_specification=self.start_specification.as_write()
-if isinstance(self.start_specification, DomainModel)
-else self.start_specification,
-            end_specification=self.end_specification.as_write()
-if isinstance(self.end_specification, DomainModel)
-else self.end_specification,
-            scenarios=[scenario.as_write() if isinstance(scenario, DomainModel) else scenario for scenario in self.scenarios] if self.scenarios is not None else None,
-        )
+        return ShopScenarioSetWrite.model_validate(as_write_args(self))
 
     def as_apply(self) -> ShopScenarioSetWrite:
         """Convert this read version of shop scenario set to the writing version."""
@@ -197,55 +160,6 @@ else self.end_specification,
             stacklevel=2,
         )
         return self.as_write()
-    @classmethod
-    def _update_connections(
-        cls,
-        instances: dict[dm.NodeId | str, ShopScenarioSet],  # type: ignore[override]
-        nodes_by_id: dict[dm.NodeId | str, DomainModel],
-        edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
-    ) -> None:
-        from ._date_specification import DateSpecification
-        from ._shop_scenario import ShopScenario
-        for instance in instances.values():
-            if isinstance(instance.start_specification, (dm.NodeId, str)) and (start_specification := nodes_by_id.get(instance.start_specification)) and isinstance(
-                    start_specification, DateSpecification
-            ):
-                instance.start_specification = start_specification
-            if isinstance(instance.end_specification, (dm.NodeId, str)) and (end_specification := nodes_by_id.get(instance.end_specification)) and isinstance(
-                    end_specification, DateSpecification
-            ):
-                instance.end_specification = end_specification
-            if edges := edges_by_source_node.get(instance.as_id()):
-                scenarios: list[ShopScenario | str | dm.NodeId] = []
-                for edge in edges:
-                    value: DomainModel | DomainRelation | str | dm.NodeId
-                    if isinstance(edge, DomainRelation):
-                        value = edge
-                    else:
-                        other_end: dm.DirectRelationReference = (
-                            edge.end_node
-                            if edge.start_node.space == instance.space
-                            and edge.start_node.external_id == instance.external_id
-                            else edge.start_node
-                        )
-                        destination: dm.NodeId | str = (
-                            as_node_id(other_end)
-                            if other_end.space != DEFAULT_INSTANCE_SPACE
-                            else other_end.external_id
-                        )
-                        if destination in nodes_by_id:
-                            value = nodes_by_id[destination]
-                        else:
-                            value = destination
-                    edge_type = edge.edge_type if isinstance(edge, DomainRelation) else edge.type
-
-                    if edge_type == dm.DirectRelationReference("power_ops_types", "ShopScenarioSet.scenarios") and isinstance(
-                        value, (ShopScenario, str, dm.NodeId)
-                    ):
-                        scenarios.append(value)
-
-                instance.scenarios = scenarios or None
-
 
 
 class ShopScenarioSetWrite(DomainModelWrite):
@@ -262,6 +176,9 @@ class ShopScenarioSetWrite(DomainModelWrite):
         end_specification: TODO description
         scenarios: Configuration of the partial bids that make up the total bid configuration
     """
+    _container_fields: ClassVar[tuple[str, ...]] = ("end_specification", "name", "start_specification",)
+    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("scenarios", dm.DirectRelationReference("power_ops_types", "ShopScenarioSet.scenarios")),)
+    _direct_relations: ClassVar[tuple[str, ...]] = ("end_specification", "start_specification",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopScenarioSet", "1")
 
@@ -282,75 +199,12 @@ class ShopScenarioSetWrite(DomainModelWrite):
             return [cls.as_node_id(item) for item in value]
         return value
 
-    def _to_instances_write(
-        self,
-        cache: set[tuple[str, str]],
-        write_none: bool = False,
-        allow_version_increase: bool = False,
-    ) -> ResourcesWrite:
-        resources = ResourcesWrite()
-        if self.as_tuple_id() in cache:
-            return resources
-
-        properties: dict[str, Any] = {}
-
-        if self.name is not None:
-            properties["name"] = self.name
-
-        if self.start_specification is not None:
-            properties["startSpecification"] = {
-                "space":  self.space if isinstance(self.start_specification, str) else self.start_specification.space,
-                "externalId": self.start_specification if isinstance(self.start_specification, str) else self.start_specification.external_id,
-            }
-
-        if self.end_specification is not None:
-            properties["endSpecification"] = {
-                "space":  self.space if isinstance(self.end_specification, str) else self.end_specification.space,
-                "externalId": self.end_specification if isinstance(self.end_specification, str) else self.end_specification.external_id,
-            }
-
-        if properties:
-            this_node = dm.NodeApply(
-                space=self.space,
-                external_id=self.external_id,
-                existing_version=None if allow_version_increase else self.data_record.existing_version,
-                type=as_direct_relation_reference(self.node_type),
-                sources=[
-                    dm.NodeOrEdgeData(
-                        source=self._view_id,
-                        properties=properties,
-                )],
-            )
-            resources.nodes.append(this_node)
-            cache.add(self.as_tuple_id())
-
-        edge_type = dm.DirectRelationReference("power_ops_types", "ShopScenarioSet.scenarios")
-        for scenario in self.scenarios or []:
-            other_resources = DomainRelationWrite.from_edge_to_resources(
-                cache,
-                start_node=self,
-                end_node=scenario,
-                edge_type=edge_type,
-                write_none=write_none,
-                allow_version_increase=allow_version_increase,
-            )
-            resources.extend(other_resources)
-
-        if isinstance(self.start_specification, DomainModelWrite):
-            other_resources = self.start_specification._to_instances_write(cache)
-            resources.extend(other_resources)
-
-        if isinstance(self.end_specification, DomainModelWrite):
-            other_resources = self.end_specification._to_instances_write(cache)
-            resources.extend(other_resources)
-
-        return resources
-
 
 class ShopScenarioSetApply(ShopScenarioSetWrite):
     def __new__(cls, *args, **kwargs) -> ShopScenarioSetApply:
         warnings.warn(
-            "ShopScenarioSetApply is deprecated and will be removed in v1.0. Use ShopScenarioSetWrite instead."
+            "ShopScenarioSetApply is deprecated and will be removed in v1.0. "
+            "Use ShopScenarioSetWrite instead. "
             "The motivation for this change is that Write is a more descriptive name for the writing version of the"
             "ShopScenarioSet.",
             UserWarning,
@@ -459,6 +313,7 @@ class _ShopScenarioSetQuery(NodeQueryCore[T_DomainModelList, ShopScenarioSetList
         result_list_cls: type[T_DomainModelList],
         expression: dm.query.ResultSetExpression | None = None,
         connection_name: str | None = None,
+        connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
         reverse_expression: dm.query.ResultSetExpression | None = None,
     ):
@@ -473,6 +328,7 @@ class _ShopScenarioSetQuery(NodeQueryCore[T_DomainModelList, ShopScenarioSetList
             expression,
             dm.filters.HasData(views=[self._view_id]),
             connection_name,
+            connection_property,
             connection_type,
             reverse_expression,
         )
@@ -488,6 +344,7 @@ class _ShopScenarioSetQuery(NodeQueryCore[T_DomainModelList, ShopScenarioSetList
                     direction="outwards",
                 ),
                 connection_name="start_specification",
+                connection_property=ViewPropertyId(self._view_id, "startSpecification"),
             )
 
         if _DateSpecificationQuery not in created_types:
@@ -501,6 +358,7 @@ class _ShopScenarioSetQuery(NodeQueryCore[T_DomainModelList, ShopScenarioSetList
                     direction="outwards",
                 ),
                 connection_name="end_specification",
+                connection_property=ViewPropertyId(self._view_id, "endSpecification"),
             )
 
         if _ShopScenarioQuery not in created_types:
@@ -514,15 +372,20 @@ class _ShopScenarioSetQuery(NodeQueryCore[T_DomainModelList, ShopScenarioSetList
                     chain_to="destination",
                 ),
                 connection_name="scenarios",
+                connection_property=ViewPropertyId(self._view_id, "scenarios"),
             )
 
         self.space = StringFilter(self, ["node", "space"])
         self.external_id = StringFilter(self, ["node", "externalId"])
         self.name = StringFilter(self, self._view_id.as_property_ref("name"))
+        self.start_specification_filter = DirectRelationFilter(self, self._view_id.as_property_ref("startSpecification"))
+        self.end_specification_filter = DirectRelationFilter(self, self._view_id.as_property_ref("endSpecification"))
         self._filter_classes.extend([
             self.space,
             self.external_id,
             self.name,
+            self.start_specification_filter,
+            self.end_specification_filter,
         ])
 
     def list_shop_scenario_set(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopScenarioSetList:

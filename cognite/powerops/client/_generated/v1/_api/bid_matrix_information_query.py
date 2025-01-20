@@ -10,21 +10,22 @@ from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     BidMatrixInformation,
 )
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_QUERY_LIMIT,
+    ViewPropertyId,
+    T_DomainModel,
+    T_DomainModelList,
+    QueryBuilder,
+    QueryStep,
+)
 from cognite.powerops.client._generated.v1.data_classes._alert import (
-    Alert,
     _create_alert_filter,
 )
 from cognite.powerops.client._generated.v1.data_classes._bid_matrix import (
-    BidMatrix,
     _create_bid_matrix_filter,
 )
 from cognite.powerops.client._generated.v1._api._core import (
-    DEFAULT_QUERY_LIMIT,
-    EdgeQueryStep,
-    NodeQueryStep,
-    DataClassQueryBuilder,
     QueryAPI,
-    T_DomainModelList,
     _create_edge_filter,
 )
 
@@ -33,27 +34,31 @@ if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1._api.bid_matrix_query import BidMatrixQueryAPI
 
 
-class BidMatrixInformationQueryAPI(QueryAPI[T_DomainModelList]):
+class BidMatrixInformationQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
     _view_id = dm.ViewId("power_ops_core", "BidMatrixInformation", "1")
 
     def __init__(
         self,
         client: CogniteClient,
-        builder: DataClassQueryBuilder[T_DomainModelList],
+        builder: QueryBuilder,
+        result_cls: type[T_DomainModel],
+        result_list_cls: type[T_DomainModelList],
+        connection_property: ViewPropertyId | None = None,
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
-        super().__init__(client, builder)
+        super().__init__(client, builder, result_cls, result_list_cls)
         from_ = self._builder.get_from()
         self._builder.append(
-            NodeQueryStep(
+            QueryStep(
                 name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
                     from_=from_,
                     filter=filter_,
                 ),
-                result_cls=BidMatrixInformation,
                 max_retrieve_limit=limit,
+                view_id=self._view_id,
+                connection_property=connection_property,
             )
         )
     def alerts(
@@ -80,33 +85,34 @@ class BidMatrixInformationQueryAPI(QueryAPI[T_DomainModelList]):
         space_edge: str | list[str] | None = None,
         filter: dm.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
-    ) -> AlertQueryAPI[T_DomainModelList]:
+    ) -> AlertQueryAPI[T_DomainModel, T_DomainModelList]:
         """Query along the alert edges of the bid matrix information.
 
         Args:
-            min_time: The minimum value of the time to filter on.
-            max_time: The maximum value of the time to filter on.
-            workflow_execution_id: The workflow execution id to filter on.
-            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
-            title: The title to filter on.
-            title_prefix: The prefix of the title to filter on.
-            description: The description to filter on.
-            description_prefix: The prefix of the description to filter on.
-            severity: The severity to filter on.
-            severity_prefix: The prefix of the severity to filter on.
-            alert_type: The alert type to filter on.
-            alert_type_prefix: The prefix of the alert type to filter on.
-            min_status_code: The minimum value of the status code to filter on.
-            max_status_code: The maximum value of the status code to filter on.
-            calculation_run: The calculation run to filter on.
-            calculation_run_prefix: The prefix of the calculation run to filter on.
-            external_id_prefix: The prefix of the external ID to filter on.
-            space: The space to filter on.
-            external_id_prefix_edge: The prefix of the external ID to filter on.
-            space_edge: The space to filter on.
-            filter: (Advanced) Filter applied to node. If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            limit: Maximum number of alert edges to return. Defaults to 3. Set to -1, float("inf") or None
-                to return all items.
+            min_time:
+            max_time:
+            workflow_execution_id:
+            workflow_execution_id_prefix:
+            title:
+            title_prefix:
+            description:
+            description_prefix:
+            severity:
+            severity_prefix:
+            alert_type:
+            alert_type_prefix:
+            min_status_code:
+            max_status_code:
+            calculation_run:
+            calculation_run_prefix:
+            external_id_prefix:
+            space:
+            external_id_prefix_edge:
+            space_edge:
+            filter: (Advanced) Filter applied to node. If the filtering available in the
+                above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of alert edges to return.
+                Defaults to 3. Set to -1, float("inf") or None to return all items.
 
         Returns:
             AlertQueryAPI: The query API for the alert.
@@ -121,7 +127,7 @@ class BidMatrixInformationQueryAPI(QueryAPI[T_DomainModelList]):
             space=space_edge,
         )
         self._builder.append(
-            EdgeQueryStep(
+            QueryStep(
                 name=self._builder.create_name(from_),
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
@@ -129,12 +135,13 @@ class BidMatrixInformationQueryAPI(QueryAPI[T_DomainModelList]):
                     direction="outwards",
                 ),
                 max_retrieve_limit=limit,
+                connection_property=ViewPropertyId(self._view_id, "alerts"),
             )
         )
 
         view_id = AlertQueryAPI._view_id
         has_data = dm.filters.HasData(views=[view_id])
-        node_filer = _create_alert_filter(
+        node_filter = _create_alert_filter(
             view_id,
             min_time,
             max_time,
@@ -156,7 +163,15 @@ class BidMatrixInformationQueryAPI(QueryAPI[T_DomainModelList]):
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        return AlertQueryAPI(self._client, self._builder, node_filer, limit)
+        return (AlertQueryAPI(
+            self._client,
+            self._builder,
+            self._result_cls,
+            self._result_list_cls,
+            ViewPropertyId(self._view_id, "end_node"),
+            node_filter,
+            limit,
+        ))
     def underlying_bid_matrices(
         self,
         state: str | list[str] | None = None,
@@ -167,19 +182,20 @@ class BidMatrixInformationQueryAPI(QueryAPI[T_DomainModelList]):
         space_edge: str | list[str] | None = None,
         filter: dm.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
-    ) -> BidMatrixQueryAPI[T_DomainModelList]:
+    ) -> BidMatrixQueryAPI[T_DomainModel, T_DomainModelList]:
         """Query along the underlying bid matrice edges of the bid matrix information.
 
         Args:
-            state: The state to filter on.
-            state_prefix: The prefix of the state to filter on.
-            external_id_prefix: The prefix of the external ID to filter on.
-            space: The space to filter on.
-            external_id_prefix_edge: The prefix of the external ID to filter on.
-            space_edge: The space to filter on.
-            filter: (Advanced) Filter applied to node. If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            limit: Maximum number of underlying bid matrice edges to return. Defaults to 3. Set to -1, float("inf") or None
-                to return all items.
+            state:
+            state_prefix:
+            external_id_prefix:
+            space:
+            external_id_prefix_edge:
+            space_edge:
+            filter: (Advanced) Filter applied to node. If the filtering available in the
+                above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of underlying bid matrice edges to return.
+                Defaults to 3. Set to -1, float("inf") or None to return all items.
 
         Returns:
             BidMatrixQueryAPI: The query API for the bid matrix.
@@ -194,7 +210,7 @@ class BidMatrixInformationQueryAPI(QueryAPI[T_DomainModelList]):
             space=space_edge,
         )
         self._builder.append(
-            EdgeQueryStep(
+            QueryStep(
                 name=self._builder.create_name(from_),
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
@@ -202,12 +218,13 @@ class BidMatrixInformationQueryAPI(QueryAPI[T_DomainModelList]):
                     direction="outwards",
                 ),
                 max_retrieve_limit=limit,
+                connection_property=ViewPropertyId(self._view_id, "underlyingBidMatrices"),
             )
         )
 
         view_id = BidMatrixQueryAPI._view_id
         has_data = dm.filters.HasData(views=[view_id])
-        node_filer = _create_bid_matrix_filter(
+        node_filter = _create_bid_matrix_filter(
             view_id,
             state,
             state_prefix,
@@ -215,7 +232,15 @@ class BidMatrixInformationQueryAPI(QueryAPI[T_DomainModelList]):
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        return BidMatrixQueryAPI(self._client, self._builder, node_filer, limit)
+        return (BidMatrixQueryAPI(
+            self._client,
+            self._builder,
+            self._result_cls,
+            self._result_list_cls,
+            ViewPropertyId(self._view_id, "end_node"),
+            node_filter,
+            limit,
+        ))
 
     def query(
         self,

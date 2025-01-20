@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import warnings
 from collections.abc import Sequence
-from typing import TYPE_CHECKING, Any, ClassVar, Literal,  no_type_check, Optional, Union
+from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm, CogniteClient
 from cognite.client.data_classes import (
@@ -10,7 +10,7 @@ from cognite.client.data_classes import (
     FileMetadataWrite as CogniteFileMetadataWrite,
 )
 from pydantic import Field
-from pydantic import field_validator, model_validator
+from pydantic import field_validator, model_validator, ValidationInfo
 
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
@@ -30,16 +30,17 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     FileMetadataWrite,
     FileMetadataGraphQL,
     T_DomainModelList,
-    as_direct_relation_reference,
-    as_instance_dict_id,
     as_node_id,
-    as_pygen_node_id,
-    are_nodes_equal,
+    as_read_args,
+    as_write_args,
     is_tuple_id,
-    select_best_node,
+    as_instance_dict_id,
+    parse_single_connection,
     QueryCore,
     NodeQueryCore,
     StringFilter,
+    ViewPropertyId,
+    DirectRelationFilter,
 )
 if TYPE_CHECKING:
     from cognite.powerops.client._generated.v1.data_classes._alert import Alert, AlertList, AlertGraphQL, AlertWrite, AlertWriteList
@@ -123,51 +124,13 @@ class ShopResultGraphQL(GraphQLCore):
             return value["items"]
         return value
 
-    # We do the ignore argument type as we let pydantic handle the type checking
-    @no_type_check
     def as_read(self) -> ShopResult:
         """Convert this GraphQL format of shop result to the reading format."""
-        if self.data_record is None:
-            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
-        return ShopResult(
-            space=self.space,
-            external_id=self.external_id,
-            data_record=DataRecord(
-                version=0,
-                last_updated_time=self.data_record.last_updated_time,
-                created_time=self.data_record.created_time,
-            ),
-            case=self.case.as_read()
-if isinstance(self.case, GraphQLCore)
-else self.case,
-            objective_value=self.objective_value,
-            pre_run=self.pre_run.as_read() if self.pre_run else None,
-            post_run=self.post_run.as_read() if self.post_run else None,
-            messages=self.messages.as_read() if self.messages else None,
-            cplex_logs=self.cplex_logs.as_read() if self.cplex_logs else None,
-            alerts=[alert.as_read() for alert in self.alerts] if self.alerts is not None else None,
-            output_time_series=[output_time_series.as_read() for output_time_series in self.output_time_series] if self.output_time_series is not None else None,
-        )
+        return ShopResult.model_validate(as_read_args(self))
 
-    # We do the ignore argument type as we let pydantic handle the type checking
-    @no_type_check
     def as_write(self) -> ShopResultWrite:
         """Convert this GraphQL format of shop result to the writing format."""
-        return ShopResultWrite(
-            space=self.space,
-            external_id=self.external_id,
-            data_record=DataRecordWrite(existing_version=0),
-            case=self.case.as_write()
-if isinstance(self.case, GraphQLCore)
-else self.case,
-            objective_value=self.objective_value,
-            pre_run=self.pre_run.as_write() if self.pre_run else None,
-            post_run=self.post_run.as_write() if self.post_run else None,
-            messages=self.messages.as_write() if self.messages else None,
-            cplex_logs=self.cplex_logs.as_write() if self.cplex_logs else None,
-            alerts=[alert.as_write() for alert in self.alerts] if self.alerts is not None else None,
-            output_time_series=[output_time_series.as_write() for output_time_series in self.output_time_series] if self.output_time_series is not None else None,
-        )
+        return ShopResultWrite.model_validate(as_write_args(self))
 
 
 class ShopResult(DomainModel):
@@ -201,26 +164,21 @@ class ShopResult(DomainModel):
     cplex_logs: Union[FileMetadata, str, None] = Field(None, alias="cplexLogs")
     alerts: Optional[list[Union[Alert, str, dm.NodeId]]] = Field(default=None, repr=False)
     output_time_series: Optional[list[Union[ShopTimeSeries, str, dm.NodeId]]] = Field(default=None, repr=False, alias="outputTimeSeries")
+    @field_validator("case", mode="before")
+    @classmethod
+    def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
+        return parse_single_connection(value, info.field_name)
 
-    # We do the ignore argument type as we let pydantic handle the type checking
-    @no_type_check
+    @field_validator("alerts", "output_time_series", mode="before")
+    @classmethod
+    def parse_list(cls, value: Any, info: ValidationInfo) -> Any:
+        if value is None:
+            return None
+        return [parse_single_connection(item, info.field_name) for item in value]
+
     def as_write(self) -> ShopResultWrite:
         """Convert this read version of shop result to the writing version."""
-        return ShopResultWrite(
-            space=self.space,
-            external_id=self.external_id,
-            data_record=DataRecordWrite(existing_version=self.data_record.version),
-            case=self.case.as_write()
-if isinstance(self.case, DomainModel)
-else self.case,
-            objective_value=self.objective_value,
-            pre_run=self.pre_run.as_write() if isinstance(self.pre_run, CogniteFileMetadata) else self.pre_run,
-            post_run=self.post_run.as_write() if isinstance(self.post_run, CogniteFileMetadata) else self.post_run,
-            messages=self.messages.as_write() if isinstance(self.messages, CogniteFileMetadata) else self.messages,
-            cplex_logs=self.cplex_logs.as_write() if isinstance(self.cplex_logs, CogniteFileMetadata) else self.cplex_logs,
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts] if self.alerts is not None else None,
-            output_time_series=[output_time_series.as_write() if isinstance(output_time_series, DomainModel) else output_time_series for output_time_series in self.output_time_series] if self.output_time_series is not None else None,
-        )
+        return ShopResultWrite.model_validate(as_write_args(self))
 
     def as_apply(self) -> ShopResultWrite:
         """Convert this read version of shop result to the writing version."""
@@ -230,58 +188,6 @@ else self.case,
             stacklevel=2,
         )
         return self.as_write()
-    @classmethod
-    def _update_connections(
-        cls,
-        instances: dict[dm.NodeId | str, ShopResult],  # type: ignore[override]
-        nodes_by_id: dict[dm.NodeId | str, DomainModel],
-        edges_by_source_node: dict[dm.NodeId, list[dm.Edge | DomainRelation]],
-    ) -> None:
-        from ._alert import Alert
-        from ._shop_case import ShopCase
-        from ._shop_time_series import ShopTimeSeries
-        for instance in instances.values():
-            if isinstance(instance.case, (dm.NodeId, str)) and (case := nodes_by_id.get(instance.case)) and isinstance(
-                    case, ShopCase
-            ):
-                instance.case = case
-            if edges := edges_by_source_node.get(instance.as_id()):
-                alerts: list[Alert | str | dm.NodeId] = []
-                output_time_series: list[ShopTimeSeries | str | dm.NodeId] = []
-                for edge in edges:
-                    value: DomainModel | DomainRelation | str | dm.NodeId
-                    if isinstance(edge, DomainRelation):
-                        value = edge
-                    else:
-                        other_end: dm.DirectRelationReference = (
-                            edge.end_node
-                            if edge.start_node.space == instance.space
-                            and edge.start_node.external_id == instance.external_id
-                            else edge.start_node
-                        )
-                        destination: dm.NodeId | str = (
-                            as_node_id(other_end)
-                            if other_end.space != DEFAULT_INSTANCE_SPACE
-                            else other_end.external_id
-                        )
-                        if destination in nodes_by_id:
-                            value = nodes_by_id[destination]
-                        else:
-                            value = destination
-                    edge_type = edge.edge_type if isinstance(edge, DomainRelation) else edge.type
-
-                    if edge_type == dm.DirectRelationReference("power_ops_types", "calculationIssue") and isinstance(
-                        value, (Alert, str, dm.NodeId)
-                    ):
-                        alerts.append(value)
-                    if edge_type == dm.DirectRelationReference("power_ops_types", "ShopResult.outputTimeSeries") and isinstance(
-                        value, (ShopTimeSeries, str, dm.NodeId)
-                    ):
-                        output_time_series.append(value)
-
-                instance.alerts = alerts or None
-                instance.output_time_series = output_time_series or None
-
 
 
 class ShopResultWrite(DomainModelWrite):
@@ -302,6 +208,9 @@ class ShopResultWrite(DomainModelWrite):
         alerts: An array of calculation level Alerts.
         output_time_series: TODO
     """
+    _container_fields: ClassVar[tuple[str, ...]] = ("case", "cplex_logs", "messages", "objective_value", "post_run", "pre_run",)
+    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")), ("output_time_series", dm.DirectRelationReference("power_ops_types", "ShopResult.outputTimeSeries")),)
+    _direct_relations: ClassVar[tuple[str, ...]] = ("case",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopResult", "1")
 
@@ -326,101 +235,12 @@ class ShopResultWrite(DomainModelWrite):
             return [cls.as_node_id(item) for item in value]
         return value
 
-    def _to_instances_write(
-        self,
-        cache: set[tuple[str, str]],
-        write_none: bool = False,
-        allow_version_increase: bool = False,
-    ) -> ResourcesWrite:
-        resources = ResourcesWrite()
-        if self.as_tuple_id() in cache:
-            return resources
-
-        properties: dict[str, Any] = {}
-
-        if self.case is not None:
-            properties["case"] = {
-                "space":  self.space if isinstance(self.case, str) else self.case.space,
-                "externalId": self.case if isinstance(self.case, str) else self.case.external_id,
-            }
-
-        if self.objective_value is not None or write_none:
-            properties["objectiveValue"] = self.objective_value
-
-        if self.pre_run is not None or write_none:
-            properties["preRun"] = self.pre_run if isinstance(self.pre_run, str) or self.pre_run is None else self.pre_run.external_id
-
-        if self.post_run is not None or write_none:
-            properties["postRun"] = self.post_run if isinstance(self.post_run, str) or self.post_run is None else self.post_run.external_id
-
-        if self.messages is not None or write_none:
-            properties["messages"] = self.messages if isinstance(self.messages, str) or self.messages is None else self.messages.external_id
-
-        if self.cplex_logs is not None or write_none:
-            properties["cplexLogs"] = self.cplex_logs if isinstance(self.cplex_logs, str) or self.cplex_logs is None else self.cplex_logs.external_id
-
-        if properties:
-            this_node = dm.NodeApply(
-                space=self.space,
-                external_id=self.external_id,
-                existing_version=None if allow_version_increase else self.data_record.existing_version,
-                type=as_direct_relation_reference(self.node_type),
-                sources=[
-                    dm.NodeOrEdgeData(
-                        source=self._view_id,
-                        properties=properties,
-                )],
-            )
-            resources.nodes.append(this_node)
-            cache.add(self.as_tuple_id())
-
-        edge_type = dm.DirectRelationReference("power_ops_types", "calculationIssue")
-        for alert in self.alerts or []:
-            other_resources = DomainRelationWrite.from_edge_to_resources(
-                cache,
-                start_node=self,
-                end_node=alert,
-                edge_type=edge_type,
-                write_none=write_none,
-                allow_version_increase=allow_version_increase,
-            )
-            resources.extend(other_resources)
-
-        edge_type = dm.DirectRelationReference("power_ops_types", "ShopResult.outputTimeSeries")
-        for output_time_series in self.output_time_series or []:
-            other_resources = DomainRelationWrite.from_edge_to_resources(
-                cache,
-                start_node=self,
-                end_node=output_time_series,
-                edge_type=edge_type,
-                write_none=write_none,
-                allow_version_increase=allow_version_increase,
-            )
-            resources.extend(other_resources)
-
-        if isinstance(self.case, DomainModelWrite):
-            other_resources = self.case._to_instances_write(cache)
-            resources.extend(other_resources)
-
-        if isinstance(self.pre_run, CogniteFileMetadataWrite):
-            resources.files.append(self.pre_run)
-
-        if isinstance(self.post_run, CogniteFileMetadataWrite):
-            resources.files.append(self.post_run)
-
-        if isinstance(self.messages, CogniteFileMetadataWrite):
-            resources.files.append(self.messages)
-
-        if isinstance(self.cplex_logs, CogniteFileMetadataWrite):
-            resources.files.append(self.cplex_logs)
-
-        return resources
-
 
 class ShopResultApply(ShopResultWrite):
     def __new__(cls, *args, **kwargs) -> ShopResultApply:
         warnings.warn(
-            "ShopResultApply is deprecated and will be removed in v1.0. Use ShopResultWrite instead."
+            "ShopResultApply is deprecated and will be removed in v1.0. "
+            "Use ShopResultWrite instead. "
             "The motivation for this change is that Write is a more descriptive name for the writing version of the"
             "ShopResult.",
             UserWarning,
@@ -518,6 +338,7 @@ class _ShopResultQuery(NodeQueryCore[T_DomainModelList, ShopResultList]):
         result_list_cls: type[T_DomainModelList],
         expression: dm.query.ResultSetExpression | None = None,
         connection_name: str | None = None,
+        connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
         reverse_expression: dm.query.ResultSetExpression | None = None,
     ):
@@ -533,6 +354,7 @@ class _ShopResultQuery(NodeQueryCore[T_DomainModelList, ShopResultList]):
             expression,
             dm.filters.HasData(views=[self._view_id]),
             connection_name,
+            connection_property,
             connection_type,
             reverse_expression,
         )
@@ -548,6 +370,7 @@ class _ShopResultQuery(NodeQueryCore[T_DomainModelList, ShopResultList]):
                     direction="outwards",
                 ),
                 connection_name="case",
+                connection_property=ViewPropertyId(self._view_id, "case"),
             )
 
         if _AlertQuery not in created_types:
@@ -561,6 +384,7 @@ class _ShopResultQuery(NodeQueryCore[T_DomainModelList, ShopResultList]):
                     chain_to="destination",
                 ),
                 connection_name="alerts",
+                connection_property=ViewPropertyId(self._view_id, "alerts"),
             )
 
         if _ShopTimeSeriesQuery not in created_types:
@@ -574,10 +398,17 @@ class _ShopResultQuery(NodeQueryCore[T_DomainModelList, ShopResultList]):
                     chain_to="destination",
                 ),
                 connection_name="output_time_series",
+                connection_property=ViewPropertyId(self._view_id, "outputTimeSeries"),
             )
 
         self.space = StringFilter(self, ["node", "space"])
         self.external_id = StringFilter(self, ["node", "externalId"])
+        self.case_filter = DirectRelationFilter(self, self._view_id.as_property_ref("case"))
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.case_filter,
+        ])
 
     def list_shop_result(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopResultList:
         return self._list(limit=limit)

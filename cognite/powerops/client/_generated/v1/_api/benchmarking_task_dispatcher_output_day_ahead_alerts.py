@@ -28,8 +28,8 @@ class BenchmarkingTaskDispatcherOutputDayAheadAlertsAPI(EdgeAPI):
             to_alert_space: Location of the alerts.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of alert edges to return. Defaults to 25. Set to -1, float("inf") or None
-                to return all items.
+            limit: Maximum number of alert edges to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
 
         Returns:
             The requested alert edges.
@@ -40,7 +40,9 @@ class BenchmarkingTaskDispatcherOutputDayAheadAlertsAPI(EdgeAPI):
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> benchmarking_task_dispatcher_output_day_ahead = client.benchmarking_task_dispatcher_output_day_ahead.alerts_edge.list("my_benchmarking_task_dispatcher_output_day_ahead", limit=5)
+                >>> benchmarking_task_dispatcher_output_day_ahead = client.benchmarking_task_dispatcher_output_day_ahead.alerts_edge.list(
+                ...     "my_benchmarking_task_dispatcher_output_day_ahead", limit=5
+                ... )
 
         """
         filter_ = _create_edge_filter(

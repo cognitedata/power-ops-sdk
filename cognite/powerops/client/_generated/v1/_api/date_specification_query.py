@@ -10,39 +10,46 @@ from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     DateSpecification,
 )
-from cognite.powerops.client._generated.v1._api._core import (
+from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_QUERY_LIMIT,
-    EdgeQueryStep,
-    NodeQueryStep,
-    DataClassQueryBuilder,
-    QueryAPI,
+    ViewPropertyId,
+    T_DomainModel,
     T_DomainModelList,
+    QueryBuilder,
+    QueryStep,
+)
+from cognite.powerops.client._generated.v1._api._core import (
+    QueryAPI,
     _create_edge_filter,
 )
 
 
 
-class DateSpecificationQueryAPI(QueryAPI[T_DomainModelList]):
+class DateSpecificationQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
     _view_id = dm.ViewId("power_ops_core", "DateSpecification", "1")
 
     def __init__(
         self,
         client: CogniteClient,
-        builder: DataClassQueryBuilder[T_DomainModelList],
+        builder: QueryBuilder,
+        result_cls: type[T_DomainModel],
+        result_list_cls: type[T_DomainModelList],
+        connection_property: ViewPropertyId | None = None,
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
-        super().__init__(client, builder)
+        super().__init__(client, builder, result_cls, result_list_cls)
         from_ = self._builder.get_from()
         self._builder.append(
-            NodeQueryStep(
+            QueryStep(
                 name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
                     from_=from_,
                     filter=filter_,
                 ),
-                result_cls=DateSpecification,
                 max_retrieve_limit=limit,
+                view_id=self._view_id,
+                connection_property=connection_property,
             )
         )
 

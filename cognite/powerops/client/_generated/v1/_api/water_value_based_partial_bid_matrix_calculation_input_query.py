@@ -12,39 +12,46 @@ from cognite.powerops.client._generated.v1.data_classes import (
     BidConfigurationDayAhead,
     WaterValueBasedPartialBidConfiguration,
 )
-from cognite.powerops.client._generated.v1._api._core import (
+from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_QUERY_LIMIT,
-    EdgeQueryStep,
-    NodeQueryStep,
-    DataClassQueryBuilder,
-    QueryAPI,
+    ViewPropertyId,
+    T_DomainModel,
     T_DomainModelList,
+    QueryBuilder,
+    QueryStep,
+)
+from cognite.powerops.client._generated.v1._api._core import (
+    QueryAPI,
     _create_edge_filter,
 )
 
 
 
-class WaterValueBasedPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
+class WaterValueBasedPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
     _view_id = dm.ViewId("power_ops_core", "WaterValueBasedPartialBidMatrixCalculationInput", "1")
 
     def __init__(
         self,
         client: CogniteClient,
-        builder: DataClassQueryBuilder[T_DomainModelList],
+        builder: QueryBuilder,
+        result_cls: type[T_DomainModel],
+        result_list_cls: type[T_DomainModelList],
+        connection_property: ViewPropertyId | None = None,
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
-        super().__init__(client, builder)
+        super().__init__(client, builder, result_cls, result_list_cls)
         from_ = self._builder.get_from()
         self._builder.append(
-            NodeQueryStep(
+            QueryStep(
                 name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
                     from_=from_,
                     filter=filter_,
                 ),
-                result_cls=WaterValueBasedPartialBidMatrixCalculationInput,
                 max_retrieve_limit=limit,
+                view_id=self._view_id,
+                connection_property=connection_property,
             )
         )
 
@@ -56,8 +63,12 @@ class WaterValueBasedPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainM
         """Execute query and return the result.
 
         Args:
-            retrieve_bid_configuration: Whether to retrieve the bid configuration for each water value based partial bid matrix calculation input or not.
-            retrieve_partial_bid_configuration: Whether to retrieve the partial bid configuration for each water value based partial bid matrix calculation input or not.
+            retrieve_bid_configuration: Whether to retrieve the
+                bid configuration for each
+                water value based partial bid matrix calculation input or not.
+            retrieve_partial_bid_configuration: Whether to retrieve the
+                partial bid configuration for each
+                water value based partial bid matrix calculation input or not.
 
         Returns:
             The list of the source nodes of the query.
@@ -72,7 +83,7 @@ class WaterValueBasedPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainM
 
     def _query_append_bid_configuration(self, from_: str) -> None:
         self._builder.append(
-            NodeQueryStep(
+            QueryStep(
                 name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
                     from_=from_,
@@ -80,12 +91,13 @@ class WaterValueBasedPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainM
                     direction="outwards",
                     filter=dm.filters.HasData(views=[BidConfigurationDayAhead._view_id]),
                 ),
-                result_cls=BidConfigurationDayAhead,
+                view_id=BidConfigurationDayAhead._view_id,
+                connection_property=ViewPropertyId(self._view_id, "bidConfiguration"),
             ),
         )
     def _query_append_partial_bid_configuration(self, from_: str) -> None:
         self._builder.append(
-            NodeQueryStep(
+            QueryStep(
                 name=self._builder.create_name(from_),
                 expression=dm.query.NodeResultSetExpression(
                     from_=from_,
@@ -93,6 +105,7 @@ class WaterValueBasedPartialBidMatrixCalculationInputQueryAPI(QueryAPI[T_DomainM
                     direction="outwards",
                     filter=dm.filters.HasData(views=[WaterValueBasedPartialBidConfiguration._view_id]),
                 ),
-                result_cls=WaterValueBasedPartialBidConfiguration,
+                view_id=WaterValueBasedPartialBidConfiguration._view_id,
+                connection_property=ViewPropertyId(self._view_id, "partialBidConfiguration"),
             ),
         )

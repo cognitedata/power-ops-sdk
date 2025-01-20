@@ -28,8 +28,8 @@ class BenchmarkingConfigurationDayAheadAssetsPerShopModelAPI(EdgeAPI):
             to_shop_model_with_asset_space: Location of the shop model with assets.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of assets per shop model edges to return. Defaults to 25. Set to -1, float("inf") or None
-                to return all items.
+            limit: Maximum number of assets per shop model edges to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
 
         Returns:
             The requested assets per shop model edges.
@@ -40,7 +40,9 @@ class BenchmarkingConfigurationDayAheadAssetsPerShopModelAPI(EdgeAPI):
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> benchmarking_configuration_day_ahead = client.benchmarking_configuration_day_ahead.assets_per_shop_model_edge.list("my_benchmarking_configuration_day_ahead", limit=5)
+                >>> benchmarking_configuration_day_ahead = client.benchmarking_configuration_day_ahead.assets_per_shop_model_edge.list(
+                ...     "my_benchmarking_configuration_day_ahead", limit=5
+                ... )
 
         """
         filter_ = _create_edge_filter(

@@ -28,8 +28,8 @@ class ShopModelBaseAttributeMappingsAPI(EdgeAPI):
             to_shop_attribute_mapping_space: Location of the shop attribute mappings.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of base attribute mapping edges to return. Defaults to 25. Set to -1, float("inf") or None
-                to return all items.
+            limit: Maximum number of base attribute mapping edges to return. Defaults to 25.
+                Set to -1, float("inf") or None to return all items.
 
         Returns:
             The requested base attribute mapping edges.
@@ -40,7 +40,9 @@ class ShopModelBaseAttributeMappingsAPI(EdgeAPI):
 
                 >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
                 >>> client = PowerOpsModelsV1Client()
-                >>> shop_model = client.shop_model.base_attribute_mappings_edge.list("my_shop_model", limit=5)
+                >>> shop_model = client.shop_model.base_attribute_mappings_edge.list(
+                ...     "my_shop_model", limit=5
+                ... )
 
         """
         filter_ = _create_edge_filter(
