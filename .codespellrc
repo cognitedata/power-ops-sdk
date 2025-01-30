@@ -1,3 +1,3 @@
 [codespell]
 skip = cognite/powerops/client/_generated/*,*.ascii,poetry.lock,*.ipynb
-ignore-words-list = EncodingT
+ignore-words-list = EncodingT, Lien
