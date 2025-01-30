@@ -232,20 +232,6 @@ class CogShopAPI:
             raise ValueError(f"Failed to fetch ShopCase instance with external_id: {case_external_id}.")
         return shop_case
 
-    def list_shop_results_graphql(self, case_external_id: str, limit: int) -> list[ShopResult]:
-        """Retrieve a shop result, based on a case external id using GraphQL.
-        This is provided as a fallback option for cases when `list_shop_results_for_case` does not perform well"""
-
-        graphql_response = self._po.shop_based_day_ahead_bid_process.graphql_query(
-            _shop_result_query(case_external_id, limit=limit)
-        )
-
-        if graphql_response is not None:
-            shop_results: list[ShopResult] = [item.as_read() for item in graphql_response]
-        else:
-            raise ValueError(f"Failed to fetch ShopResult referencing ShopCase with external_id: {case_external_id}.")
-        return shop_results
-
 
 # Helper function for rendering graphql queries
 
@@ -315,74 +301,3 @@ def _shop_case_query(external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> s
     }}
     """
     return query_template.format(space=space, external_id=external_id)
-
-
-def _shop_result_query(case_external_id: str, limit: int) -> str:
-    """Render a GraphQL query to fetch a ShopResult instance by case external id."""
-    query_template = """
-    query RetrieveShopResultByCaseExternalId {{
-        listShopResult(
-        filter: {{case: {{externalId: {{eq: "{case_external_id}"}} }} }}
-        first: {limit}
-    ) {{
-        items {{
-        __typename
-        space
-        createdTime
-        externalId
-        lastUpdatedTime
-        preRun {{
-            externalId
-            id
-            uploadedTime
-            name
-            metadata
-            labels
-        }}
-        postRun {{
-            externalId
-            id
-            labels
-            uploadedTime
-            name
-            metadata
-        }}
-        messages {{
-            externalId
-            id
-            labels
-            uploadedTime
-            name
-            metadata
-        }}
-        cplexLogs {{
-            externalId
-            id
-            labels
-            uploadedTime
-            name
-            metadata
-        }}
-        case {{
-            externalId
-            lastUpdatedTime
-            createdTime
-        }}
-        alerts {{
-            items {{
-            externalId
-            lastUpdatedTime
-            description
-            createdTime
-            alertType
-            title
-            time
-            statusCode
-            }}
-        }}
-
-        }}
-    }}
-    }}
-    """
-    return query_template.format(case_external_id=case_external_id, limit=limit)
