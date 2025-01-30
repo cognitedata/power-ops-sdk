@@ -15,6 +15,14 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.111.0] - 2025-01-30
+### Removed
+* Removed `list_shop_results_graphql` function from `cogshop` module
+
+### Improved
+* Ensured that tutorial notebooks are still valid
+
+
 ## [0.110.1] - 2025-01-20
 ### Changed
 * Rerun pygen version 0.99.60
