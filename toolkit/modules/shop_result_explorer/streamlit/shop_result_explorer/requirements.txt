@@ -1,5 +1,5 @@
 pyodide-http==0.2.1
 streamlit-aggrid==1.1.0
-plotly==5.24.1
+plotly==6.0.0
 pyyaml
 cognite-power-ops>=0.111.0, <0.112.0
