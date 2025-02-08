@@ -1,4 +1,4 @@
-pyodide-http==0.2.1
+pyodide-http==0.2.2
 streamlit-aggrid==1.1.0
 plotly==5.24.1
 pyyaml
