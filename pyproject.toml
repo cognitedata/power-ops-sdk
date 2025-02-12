@@ -42,7 +42,6 @@ cachelib = "^0.13.0"
 powerops = "cognite.powerops.cli:main"
 
 [tool.poetry.group.dev.dependencies]
-cognite-toolkit = "0.3.18"
 pre-commit = "^3.2.2"
 profilehooks = "^1.12.0"
 pytest-mock = "^3.10.0"
@@ -56,6 +55,7 @@ pytest = "^8.1.1"
 pytest-cov = "^5.0.0"
 twine = "^5.0.0"
 python-dotenv = "^1"
+cognite-toolkit = "^0.4.6"
 
 
 [tool.ruff]
