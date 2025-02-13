@@ -180,10 +180,10 @@ jobs:
           printf 'Toolkit dry run triggered: %s\n\n%s\n%s\n%s\n\n' \
             "$RUN_LINK" "$B_STATUS" "$DR_STATUS" "$RP_STATUS" > pr-comment-body.txt
 
-          printf '<details><summary>View Build Logs</summary>\n\n```\n%s\n```\n</details>\n\n' \
+          printf '<details><summary>View Toolkit Logs</summary>\n\n```\n%s\n```\n</details>\n\n' \
             "$MSG" >> pr-comment-body.txt
 
-          printf '<details><summary>View Purge Logs</summary>\n\n```\n%s\n```\n</details>\n' \
+          printf '<details><summary>View Resync Purge Logs</summary>\n\n\n%s\n\n</details>\n' \
             "$MSG_PURGE" >> pr-comment-body.txt
 
           gh pr comment $PR_NUMBER -F pr-comment-body.txt

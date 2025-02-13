@@ -15,6 +15,10 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.111.1] - 2025-02-13
+### Improved
+* PR-write back script
+
 ## [0.111.0] - 2025-01-30
 ### Removed
 * Removed `list_shop_results_graphql` function from `cogshop` module
