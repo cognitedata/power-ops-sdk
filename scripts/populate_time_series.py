@@ -1,28 +1,30 @@
+"""File is mostly outdated, but kept around in since it has an overview of the plants, generators and their respective time series.
+I believe that script was used to create time series in CDF, potentially populated them with random data.
+This script is not in use, but kept around for reference."""
+
 import os
 from pathlib import Path
-import time
 import pandas as pd
 import numpy as np
 from datetime import datetime
+from cognite.client import CogniteClient
 
-from cognite.client.data_classes import TimeSeriesWrite
-
-
-from cognite.powerops.utils.cdf import get_cognite_client
-
-
-from cognite.powerops.utils.serialization import chdir
+# from cognite.client.data_classes import TimeSeriesWrite
 
 REPO_ROOT = Path(__file__).parent.parent
 
 
 def main():
-    with chdir(REPO_ROOT):
-        os.environ["SETTINGS_FILES"] = "settings.toml;.secrets.toml"
-        client = get_cognite_client()
+    client = CogniteClient.default_oauth_client_credentials(
+        project=os.environ["CDF_PROJECT"],
+        cdf_cluster=os.environ["CDF_CLUSTER"],
+        client_id=os.environ["IDP_CLIENT_ID"],
+        client_secret=os.environ["IDP_CLIENT_SECRET"],
+        tenant_id=os.environ["IDP_TENANT_ID"],
+    )
 
     print(f"Connected to {client.config.project}")
-    data_set_id = client.data_sets.retrieve(external_id="uc:000:powerops").id
+    data_set_id = client.data_sets.retrieve(external_id="powerops:monitor").id
 
     plants_generators = {
         "Lund": ["Lund_G1"],
@@ -48,7 +50,7 @@ def main():
         "Strand_krv": [893, 908],
     }
 
-    start_date = "2022-01-01"
+    start_date = "2026-01-01"
     end_date = datetime.now().strftime("%Y-%m-%d")
 
     for plant, min_max in plants_inlet.items():

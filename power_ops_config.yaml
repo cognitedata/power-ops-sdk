@@ -21,6 +21,6 @@ global:
 
 # `power_ops` is a required section, and it contains the configuration for the PowerOps SDK.
 power_ops:
-  read_dataset: "uc:000:powerops"
-  write_dataset: "uc:000:powerops"
-  monitor_dataset: "uc:po:monitoring"
+  read_dataset: "powerops:process"
+  write_dataset: "powerops:process"
+  monitor_dataset: "powerops:monitor"
