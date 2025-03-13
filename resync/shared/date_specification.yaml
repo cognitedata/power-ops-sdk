@@ -36,3 +36,22 @@
   floor_frame: week
   shift_definition:
     weeks: 2
+- name: Unshifted Start
+  processing_timezone: Europe/Oslo
+  resulting_timezone: UTC
+  floor_frame: day
+  shift_definition:
+    days: 0
+- name: Unshifted BidDate
+  processing_timezone: Europe/Oslo
+  resulting_timezone: Europe/Oslo
+  floor_frame: hour # Not really needed to floor, but default is day, so we need to specify something finer
+  shift_definition:
+    days: 0
+- name: Unshifted End
+  processing_timezone: Europe/Oslo
+  resulting_timezone: UTC
+  floor_frame: week
+  shift_definition:
+    days: 0
+    weeks: 2

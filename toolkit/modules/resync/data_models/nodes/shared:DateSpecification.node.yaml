@@ -94,3 +94,61 @@
   type:
     externalId: DateSpecification
     space: power_ops_types
+- externalId: date_specification_unshifted_biddate
+  instanceType: node
+  sources:
+  - properties:
+      floorFrame: hour
+      name: Unshifted BidDate
+      processingTimezone: Europe/Oslo
+      resultingTimezone: Europe/Oslo
+      shiftDefinition:
+        days: 0
+    source:
+      externalId: DateSpecification
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: DateSpecification
+    space: power_ops_types
+- externalId: date_specification_unshifted_end
+  instanceType: node
+  sources:
+  - properties:
+      floorFrame: week
+      name: Unshifted End
+      processingTimezone: Europe/Oslo
+      resultingTimezone: UTC
+      shiftDefinition:
+        days: 0
+        weeks: 2
+    source:
+      externalId: DateSpecification
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: DateSpecification
+    space: power_ops_types
+- externalId: date_specification_unshifted_start
+  instanceType: node
+  sources:
+  - properties:
+      floorFrame: day
+      name: Unshifted Start
+      processingTimezone: Europe/Oslo
+      resultingTimezone: UTC
+      shiftDefinition:
+        days: 0
+    source:
+      externalId: DateSpecification
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: DateSpecification
+    space: power_ops_types
