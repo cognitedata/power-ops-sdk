@@ -7,7 +7,7 @@
       processingTimezone: Europe/Oslo
       resultingTimezone: Europe/Oslo
       shiftDefinition:
-        days: -400
+        days: 0
     source:
       externalId: DateSpecification
       space: power_ops_core
@@ -26,7 +26,7 @@
       processingTimezone: Europe/Oslo
       resultingTimezone: UTC
       shiftDefinition:
-        days: -400
+        days: 0
         weeks: 2
     source:
       externalId: DateSpecification
@@ -46,7 +46,7 @@
       processingTimezone: Europe/Oslo
       resultingTimezone: UTC
       shiftDefinition:
-        days: -400
+        days: 0
     source:
       externalId: DateSpecification
       space: power_ops_core
@@ -75,35 +75,16 @@
   type:
     externalId: DateSpecification
     space: power_ops_types
-- externalId: date_specification_start_of_tomorrow
-  instanceType: node
-  sources:
-  - properties:
-      floorFrame: day
-      name: Start of tomorrow
-      processingTimezone: Europe/Oslo
-      resultingTimezone: UTC
-      shiftDefinition:
-        days: 1
-    source:
-      externalId: DateSpecification
-      space: power_ops_core
-      type: view
-      version: '1'
-  space: power_ops_instances
-  type:
-    externalId: DateSpecification
-    space: power_ops_types
-- externalId: date_specification_unshifted_biddate
+- externalId: date_specification_shifted_biddate
   instanceType: node
   sources:
   - properties:
       floorFrame: hour
-      name: Unshifted BidDate
+      name: Shifted BidDate
       processingTimezone: Europe/Oslo
       resultingTimezone: Europe/Oslo
       shiftDefinition:
-        days: 0
+        days: -400
     source:
       externalId: DateSpecification
       space: power_ops_core
@@ -113,16 +94,16 @@
   type:
     externalId: DateSpecification
     space: power_ops_types
-- externalId: date_specification_unshifted_end
+- externalId: date_specification_shifted_end
   instanceType: node
   sources:
   - properties:
       floorFrame: week
-      name: Unshifted End
+      name: Shifted End
       processingTimezone: Europe/Oslo
       resultingTimezone: UTC
       shiftDefinition:
-        days: 0
+        days: -400
         weeks: 2
     source:
       externalId: DateSpecification
@@ -133,16 +114,35 @@
   type:
     externalId: DateSpecification
     space: power_ops_types
-- externalId: date_specification_unshifted_start
+- externalId: date_specification_shifted_start
   instanceType: node
   sources:
   - properties:
       floorFrame: day
-      name: Unshifted Start
+      name: Shifted Start
       processingTimezone: Europe/Oslo
       resultingTimezone: UTC
       shiftDefinition:
-        days: 0
+        days: -400
+    source:
+      externalId: DateSpecification
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: DateSpecification
+    space: power_ops_types
+- externalId: date_specification_start_of_tomorrow
+  instanceType: node
+  sources:
+  - properties:
+      floorFrame: day
+      name: Start of tomorrow
+      processingTimezone: Europe/Oslo
+      resultingTimezone: UTC
+      shiftDefinition:
+        days: 1
     source:
       externalId: DateSpecification
       space: power_ops_core
