@@ -7,7 +7,7 @@
       processingTimezone: Europe/Oslo
       resultingTimezone: Europe/Oslo
       shiftDefinition:
-        days: -400
+        days: 0
     source:
       externalId: DateSpecification
       space: power_ops_core
@@ -26,7 +26,7 @@
       processingTimezone: Europe/Oslo
       resultingTimezone: UTC
       shiftDefinition:
-        days: -400
+        days: 0
         weeks: 2
     source:
       externalId: DateSpecification
@@ -46,7 +46,7 @@
       processingTimezone: Europe/Oslo
       resultingTimezone: UTC
       shiftDefinition:
-        days: -400
+        days: 0
     source:
       externalId: DateSpecification
       space: power_ops_core
@@ -66,6 +66,64 @@
       resultingTimezone: UTC
       shiftDefinition:
         weeks: 2
+    source:
+      externalId: DateSpecification
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: DateSpecification
+    space: power_ops_types
+- externalId: date_specification_shifted_biddate
+  instanceType: node
+  sources:
+  - properties:
+      floorFrame: hour
+      name: Shifted BidDate
+      processingTimezone: Europe/Oslo
+      resultingTimezone: Europe/Oslo
+      shiftDefinition:
+        days: -400
+    source:
+      externalId: DateSpecification
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: DateSpecification
+    space: power_ops_types
+- externalId: date_specification_shifted_end
+  instanceType: node
+  sources:
+  - properties:
+      floorFrame: week
+      name: Shifted End
+      processingTimezone: Europe/Oslo
+      resultingTimezone: UTC
+      shiftDefinition:
+        days: -400
+        weeks: 2
+    source:
+      externalId: DateSpecification
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: DateSpecification
+    space: power_ops_types
+- externalId: date_specification_shifted_start
+  instanceType: node
+  sources:
+  - properties:
+      floorFrame: day
+      name: Shifted Start
+      processingTimezone: Europe/Oslo
+      resultingTimezone: UTC
+      shiftDefinition:
+        days: -400
     source:
       externalId: DateSpecification
       space: power_ops_core
