@@ -1,0 +1,51 @@
+- externalId: trigger_bid_process:bid_configuration_day_ahead_15_min_test_multi_scenario_3
+  triggerRule:
+    triggerType: schedule
+    cronExpression: "{{wf_day_ahead__15_min_bid_process_cron}}"
+  input:
+    bidConfiguration:
+      externalId: "bid_configuration_day_ahead_15_min_test_multi_scenario_3"
+  metadata:
+    config: "bid_configuration_day_ahead_15_min_test_multi_scenario_3"
+    market: "{{wf_day_ahead_15min_market}}"
+    method: "15 min Test Multi Scenario 3"
+    priceArea: "NO2"
+  workflowExternalId: "{{wf_day_ahead_bid_process_xid}}"
+  workflowVersion: "{{wf_day_ahead_bid_process_version}}"
+  authentication:
+    clientId: "{{wf_trigger_client_id}}"
+    clientSecret: "{{wf_trigger_client_secret}}"
+- externalId: trigger_bid_process:bid_configuration_day_ahead_15_min_test_water_value
+  triggerRule:
+    triggerType: schedule
+    cronExpression: "{{wf_day_ahead__15_min_bid_process_cron}}"
+  input:
+    bidConfiguration:
+      externalId: "bid_configuration_day_ahead_15_min_test_water_value"
+  metadata:
+    config: "bid_configuration_day_ahead_15_min_test_water_value"
+    market: "{{wf_day_ahead_15min_market}}"
+    method: "15 min Test Water Value"
+    priceArea: "NO2"
+  workflowExternalId: "{{wf_day_ahead_bid_process_xid}}"
+  workflowVersion: "{{wf_day_ahead_bid_process_version}}"
+  authentication:
+    clientId: "{{wf_trigger_client_id}}"
+    clientSecret: "{{wf_trigger_client_secret}}"
+- externalId: trigger_bid_process:bid_configuration_day_ahead_15_min_test_combination
+  triggerRule:
+    triggerType: schedule
+    cronExpression: "{{wf_day_ahead__15_min_bid_process_cron}}"
+  input:
+    bidConfiguration:
+      externalId: "bid_configuration_day_ahead_15_min_test_combination"
+  metadata:
+    config: "bid_configuration_day_ahead_15_min_test_combination"
+    market: "{{wf_day_ahead_15min_market}}"
+    method: "15 min Test Combination"
+    priceArea: "NO2"
+  workflowExternalId: "{{wf_day_ahead_bid_process_xid}}"
+  workflowVersion: "{{wf_day_ahead_bid_process_version}}"
+  authentication:
+    clientId: "{{wf_trigger_client_id}}"
+    clientSecret: "{{wf_trigger_client_secret}}"

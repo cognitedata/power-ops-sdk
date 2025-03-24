@@ -17,8 +17,10 @@ variables:
     power_ops_data_model_version: "1"
     # variables required for ONLY power_ops_template
     wf_day_ahead_market: "DAY_AHEAD"
+    wf_day_ahead_15min_market: "DAY_AHEAD_15_MIN"
     wf_day_ahead_bid_process_xid: "DayAheadBidProcess"
     wf_day_ahead_bid_process_version: "latest"
     wf_day_ahead_bid_process_cron: "30 9 * * *" # translates to 9:30 UTC / 11:30 CEST
+    wf_day_ahead__15_min_bid_process_cron: "30 7 * * *" # translates to 7:30 UTC / 9:30 CEST
     wf_trigger_client_id: "d985b4fe-275e-4df3-9e49-b6b18a77778a"
     wf_trigger_client_secret: ${WF_TRIGGER_SECRET}
