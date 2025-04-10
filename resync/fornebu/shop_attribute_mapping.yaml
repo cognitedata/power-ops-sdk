@@ -2837,17 +2837,3 @@
               offset_value: 10000.0
   retrieve: RANGE
   aggregation: MEAN
-- external_id: base_mapping_fornebu_market_dayahead_buy_price
-  object_type: market
-  object_name: Dayahead
-  attribute_name: buy_price
-  time_series: "[external_id]6694"
-  transformations:
-    - MultiplyConstant:
-        parameters:
-          constant: 1.0
-    - AddConstant:
-        parameters:
-          constant: 0.0
-  retrieve: RANGE
-  aggregation: mean

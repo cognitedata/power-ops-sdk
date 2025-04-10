@@ -12,7 +12,21 @@
 # Items below are the market object_types mapping from "script" mapping.ipynb #
 ###############################################################################
 
-- external_id: base_mapping_fornebu_market_dayahead_sale_price
+- external_id: base_mapping_dayahead_buy_price
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]6694"
+  transformations:
+    - MultiplyConstant:
+        parameters:
+          constant: 1.0
+    - AddConstant:
+        parameters:
+          constant: 0.0
+  retrieve: RANGE
+  aggregation: mean
+- external_id: base_mapping_dayahead_sale_price
   object_type: market
   object_name: Dayahead
   attribute_name: sale_price

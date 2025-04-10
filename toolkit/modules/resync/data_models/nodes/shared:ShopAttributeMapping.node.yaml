@@ -1,4 +1,30 @@
-- externalId: base_mapping_fornebu_market_dayahead_sale_price
+- externalId: base_mapping_dayahead_buy_price
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      attributeName: buy_price
+      objectName: Dayahead
+      objectType: market
+      retrieve: RANGE
+      timeSeries: '6694'
+      transformations:
+      - MultiplyConstant:
+          parameters:
+            constant: 1.0
+      - AddConstant:
+          parameters:
+            constant: 0.0
+    source:
+      externalId: ShopAttributeMapping
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- externalId: base_mapping_dayahead_sale_price
   instanceType: node
   sources:
   - properties:
