@@ -27,6 +27,8 @@
   outlet_level_time_series: "[external_id]907223"
   inlet_level_time_series: "[external_id]907230"
   # head_direct_time_series: "???"
+  generators:
+    - "[name]Lund_G1"
 
 - name: Dalby
   display_name: Dalby
@@ -39,6 +41,8 @@
   # outlet_level_time_series: "907223"
   inlet_level_time_series: "[external_id]inlet_level_Dalby"
   # head_direct_time_series: "???"
+  generators:
+    - "[name]Dalby_G1"
 
 - name: Holen
   display_name: Holen
@@ -51,6 +55,8 @@
   # outlet_level_time_series: "907223"
   inlet_level_time_series: "[external_id]inlet_level_Holen"
   # head_direct_time_series: "???"
+  generators:
+    - "[name]Holen_G1"
 
 - name: Landet
   display_name: Landet
@@ -63,6 +69,8 @@
   # outlet_level_time_series: "907223"
   inlet_level_time_series: "[external_id]inlet_level_Landet"
   # head_direct_time_series: "???"
+  generators:
+    - "[name]Landet_G1"
 
 - name: Lien_krv
   display_name: Lien krv
@@ -75,6 +83,8 @@
   # outlet_level_time_series: "907223"
   inlet_level_time_series: "[external_id]inlet_level_Lien_krv"
   # head_direct_time_series: "???"
+  generators:
+    - "[name]Lien_krv_G1"
 
 - name: Rull1
   display_name: Rull 1
@@ -87,6 +97,8 @@
   # outlet_level_time_series: "907223"
   inlet_level_time_series: "[external_id]inlet_level_Rull1"
   # head_direct_time_series: "???"
+  generators:
+    - "[name]Rull1_G1"
 
 - name: Rull2
   display_name: Rull 2
@@ -99,6 +111,9 @@
   # outlet_level_time_series: "907223"
   inlet_level_time_series: "[external_id]inlet_level_Rull2"
   # head_direct_time_series: "???"
+  generators:
+    - "[name]Rull2_G1"
+    - "[name]Rull2_G2"
 
 - name: Scott
   display_name: Scott
@@ -111,6 +126,8 @@
   # outlet_level_time_series: "907223"
   inlet_level_time_series: "[external_id]inlet_level_Scott"
   # head_direct_time_series: "???"
+  generators:
+    - "[name]Scott_G1"
 
 - name: Strand_krv
   display_name: Strand krv
@@ -123,3 +140,5 @@
   # outlet_level_time_series: "907223"
   inlet_level_time_series: "[external_id]inlet_level_Strand_krv"
   # head_direct_time_series: "???"
+  generators:
+    - "[name]Strand_krv_G1"

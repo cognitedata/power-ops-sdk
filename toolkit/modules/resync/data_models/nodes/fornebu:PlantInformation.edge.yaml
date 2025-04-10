@@ -11,18 +11,6 @@
     externalId: isSubAssetOf
     space: power_ops_types
 - endNode:
-    externalId: generator_dalby_g2
-    space: power_ops_instances
-  externalId: plant_information_dalby:generator_dalby_g2
-  instanceType: edge
-  space: power_ops_instances
-  startNode:
-    externalId: plant_information_dalby
-    space: power_ops_instances
-  type:
-    externalId: isSubAssetOf
-    space: power_ops_types
-- endNode:
     externalId: generator_holen_g1
     space: power_ops_instances
   externalId: plant_information_holen:generator_holen_g1
@@ -74,18 +62,6 @@
     externalId: generator_rull1_g1
     space: power_ops_instances
   externalId: plant_information_rull1:generator_rull1_g1
-  instanceType: edge
-  space: power_ops_instances
-  startNode:
-    externalId: plant_information_rull1
-    space: power_ops_instances
-  type:
-    externalId: isSubAssetOf
-    space: power_ops_types
-- endNode:
-    externalId: generator_rull1_g2
-    space: power_ops_instances
-  externalId: plant_information_rull1:generator_rull1_g2
   instanceType: edge
   space: power_ops_instances
   startNode:
