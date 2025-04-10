@@ -15,8 +15,12 @@
   display_name: Sola G1
   ordering: 1
   asset_type: generator
+  start_stop_cost_time_series: "[external_id]start_stop_cost_Lund_G1"
+  availability_time_series: "[external_id]is_available_Lund_G1"
 
 - name: Sola_G2
   display_name: Sola G2
-  ordering: 1
+  ordering: 2
   asset_type: generator
+  start_stop_cost_time_series: "[external_id]start_stop_cost_Lund_G1"
+  availability_time_series: "[external_id]is_available_Lund_G1"

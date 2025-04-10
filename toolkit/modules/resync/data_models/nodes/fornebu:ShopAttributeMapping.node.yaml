@@ -3516,6 +3516,104 @@
   type:
     externalId: ShopAttributeMapping
     space: power_ops_types
+- externalId: base_mapping_fornebu_market_dayahead_buy_price
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      attributeName: buy_price
+      objectName: Dayahead
+      objectType: market
+      retrieve: RANGE
+      timeSeries: '6694'
+      transformations:
+      - MultiplyConstant:
+          parameters:
+            constant: 1.0
+      - AddConstant:
+          parameters:
+            constant: 0.0
+    source:
+      externalId: ShopAttributeMapping
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- externalId: base_mapping_fornebu_market_dayahead_load
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: MEAN
+      attributeName: load
+      objectName: Dayahead
+      objectType: market
+      retrieve: RANGE
+      transformations:
+      - StaticValues:
+          parameters:
+            relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 0.0
+    source:
+      externalId: ShopAttributeMapping
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- externalId: base_mapping_fornebu_market_dayahead_max_buy
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: MEAN
+      attributeName: max_buy
+      objectName: Dayahead
+      objectType: market
+      retrieve: RANGE
+      transformations:
+      - StaticValues:
+          parameters:
+            relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 10000.0
+    source:
+      externalId: ShopAttributeMapping
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- externalId: base_mapping_fornebu_market_dayahead_max_sale
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: MEAN
+      attributeName: max_sale
+      objectName: Dayahead
+      objectType: market
+      retrieve: RANGE
+      transformations:
+      - StaticValues:
+          parameters:
+            relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 10000.0
+    source:
+      externalId: ShopAttributeMapping
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
 - externalId: base_mapping_fornebu_plant_dalby_max_q_constr
   instanceType: node
   sources:

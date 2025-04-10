@@ -2798,3 +2798,56 @@
           relative_datapoints:
             - offset_minute: 0.0
               offset_value: 0
+- external_id: base_mapping_fornebu_market_dayahead_load
+  object_type: market
+  object_name: Dayahead
+  attribute_name: load
+  time_series: null
+  transformations:
+    - StaticValues:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 0.0
+  retrieve: RANGE
+  aggregation: MEAN
+- external_id: base_mapping_fornebu_market_dayahead_max_buy
+  object_type: market
+  object_name: Dayahead
+  attribute_name: max_buy
+  time_series: null
+  transformations:
+    - StaticValues:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 10000.0
+  retrieve: RANGE
+  aggregation: MEAN
+- external_id: base_mapping_fornebu_market_dayahead_max_sale
+  object_type: market
+  object_name: Dayahead
+  attribute_name: max_sale
+  time_series: null
+  transformations:
+    - StaticValues:
+        parameters:
+          relative_datapoints:
+            - offset_minute: 0.0
+              offset_value: 10000.0
+  retrieve: RANGE
+  aggregation: MEAN
+- external_id: base_mapping_fornebu_market_dayahead_buy_price
+  object_type: market
+  object_name: Dayahead
+  attribute_name: buy_price
+  time_series: "[external_id]6694"
+  transformations:
+    - MultiplyConstant:
+        parameters:
+          constant: 1.0
+    - AddConstant:
+        parameters:
+          constant: 0.0
+  retrieve: RANGE
+  aggregation: mean

@@ -56,7 +56,8 @@ model:
             # As long as it does not cost anything to send through water, it will send through as much water as possible.
             # The max amount of water that will be sent through is determined by the efficiency curves and p_max and other constraints.
   market:
-    Dayahead: # The price for selling and buying might not be the same but often they are in practice.
+    # The price for selling and buying might not be the same but often they are in practice
+    Dayahead: # Here we have set the name to match that of Fornebu watercourse in order to use the same attribute mappings
       buy_price: # EUR/MWh
         2024-05-31 22:00:00: 20.1 # UTC: This will be June 1st in practice
         2024-06-01 05:00:00: 30.1
