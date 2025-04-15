@@ -1,4 +1,28 @@
 - endNode:
+    externalId: base_mapping_dayahead_buy_price
+    space: power_ops_instances
+  externalId: shop_model_stavanger:base_mapping_dayahead_buy_price
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: shop_model_stavanger
+    space: power_ops_instances
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_dayahead_sale_price
+    space: power_ops_instances
+  externalId: shop_model_stavanger:base_mapping_dayahead_sale_price
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: shop_model_stavanger
+    space: power_ops_instances
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
     externalId: base_mapping_stavanger_reservoir_dale_inflow
     space: power_ops_instances
   externalId: shop_model_stavanger:base_mapping_stavanger_reservoir_dale_inflow

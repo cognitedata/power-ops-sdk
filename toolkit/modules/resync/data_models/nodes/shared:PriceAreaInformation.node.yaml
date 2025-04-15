@@ -10,7 +10,7 @@
       displayName: "\xD8stlandet (NO1)"
       mainPriceScenario: ext_id_ts
       name: NO1
-      ordering: 1
+      ordering: 2
       ownCapacityAllocationDown: ext_id_ts
       ownCapacityAllocationUp: ext_id_ts
       priceScenarios:
@@ -42,7 +42,7 @@
       displayName: "S\xF8rlandet (NO2)"
       mainPriceScenario: '6694'
       name: NO2
-      ordering: 2
+      ordering: 1
       ownCapacityAllocationDown: ext_id_ts
       ownCapacityAllocationUp: ext_id_ts
       priceScenarios:
