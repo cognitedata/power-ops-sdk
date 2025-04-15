@@ -15,3 +15,5 @@
   model: "[external_id]SHOP_model_stavanger"
   base_attribute_mappings:
     - "[external_id]base_mapping_stavanger_reservoir_dale_inflow"
+    - "[external_id]base_mapping_dayahead_buy_price"
+    - "[external_id]base_mapping_dayahead_sale_price"

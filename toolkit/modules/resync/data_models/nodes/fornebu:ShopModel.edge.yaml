@@ -1,4 +1,28 @@
 - endNode:
+    externalId: base_mapping_dayahead_buy_price
+    space: power_ops_instances
+  externalId: shop_model_fornebu:base_mapping_dayahead_buy_price
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: shop_model_fornebu
+    space: power_ops_instances
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
+    externalId: base_mapping_dayahead_sale_price
+    space: power_ops_instances
+  externalId: shop_model_fornebu:base_mapping_dayahead_sale_price
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: shop_model_fornebu
+    space: power_ops_instances
+  type:
+    externalId: ShopModel.baseAttributeMappings
+    space: power_ops_types
+- endNode:
     externalId: base_mapping_fornebu_creek_intake_blakstad_inflow
     space: power_ops_instances
   externalId: shop_model_fornebu:base_mapping_fornebu_creek_intake_blakstad_inflow
@@ -1739,18 +1763,6 @@
     externalId: ShopModel.baseAttributeMappings
     space: power_ops_types
 - endNode:
-    externalId: base_mapping_fornebu_market_dayahead_buy_price
-    space: power_ops_instances
-  externalId: shop_model_fornebu:base_mapping_fornebu_market_dayahead_buy_price
-  instanceType: edge
-  space: power_ops_instances
-  startNode:
-    externalId: shop_model_fornebu
-    space: power_ops_instances
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
     externalId: base_mapping_fornebu_market_dayahead_load
     space: power_ops_instances
   externalId: shop_model_fornebu:base_mapping_fornebu_market_dayahead_load
@@ -1778,18 +1790,6 @@
     externalId: base_mapping_fornebu_market_dayahead_max_sale
     space: power_ops_instances
   externalId: shop_model_fornebu:base_mapping_fornebu_market_dayahead_max_sale
-  instanceType: edge
-  space: power_ops_instances
-  startNode:
-    externalId: shop_model_fornebu
-    space: power_ops_instances
-  type:
-    externalId: ShopModel.baseAttributeMappings
-    space: power_ops_types
-- endNode:
-    externalId: base_mapping_fornebu_market_dayahead_sale_price
-    space: power_ops_instances
-  externalId: shop_model_fornebu:base_mapping_fornebu_market_dayahead_sale_price
   instanceType: edge
   space: power_ops_instances
   startNode:

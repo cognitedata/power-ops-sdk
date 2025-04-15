@@ -5,7 +5,7 @@
       model: SHOP_Fornebu_model
       modelVersion: '1'
       name: Fornebu
-      penaltyLimit: 0
+      penaltyLimit: 3000
       shopVersion: 15.4.1.1
     source:
       externalId: ShopModel

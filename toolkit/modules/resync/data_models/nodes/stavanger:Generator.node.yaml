@@ -3,6 +3,7 @@
   sources:
   - properties:
       assetType: generator
+      availabilityTimeSeries: is_available_Lund_G1
       displayName: Sola G1
       generatorEfficiencyCurve:
         externalId: generator_efficiency_curve:6dac3bf7
@@ -12,6 +13,7 @@
       penstockNumber: 1
       productionMin: 0
       startStopCost: 0
+      startStopCostTimeSeries: start_stop_cost_Lund_G1
     source:
       externalId: Generator
       space: power_ops_core
@@ -26,15 +28,17 @@
   sources:
   - properties:
       assetType: generator
+      availabilityTimeSeries: is_available_Lund_G1
       displayName: Sola G2
       generatorEfficiencyCurve:
         externalId: generator_efficiency_curve:6dac3bf7
         space: power_ops_instances
       name: Sola_G2
-      ordering: 1
+      ordering: 2
       penstockNumber: 1
       productionMin: 0
       startStopCost: 0
+      startStopCostTimeSeries: start_stop_cost_Lund_G1
     source:
       externalId: Generator
       space: power_ops_core
