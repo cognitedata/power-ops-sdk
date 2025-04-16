@@ -15,7 +15,9 @@ from cognite.powerops.client._generated.v1.data_classes import (
     ShopResultList,
     ShopScenarioWrite,
 )
-from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.v1.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+)
 
 
 class CogShopAPI:
@@ -43,7 +45,7 @@ class CogShopAPI:
 
         return f"https://power-ops-api{environment}.{cluster}.cognite.ai/{project}/run-shop-as-service"
 
-    def trigger_shop_case(self, shop_case_external_id: str):
+    def trigger_shop_case(self, shop_case_external_id: str, write_classic_ts: bool = True) -> None:
         def auth(r: requests.PreparedRequest) -> requests.PreparedRequest:
             auth_header_name, auth_header_value = self._cdf._config.credentials.authorization_header()
             r.headers[auth_header_name] = auth_header_value
@@ -52,7 +54,12 @@ class CogShopAPI:
         shop_url = self._shop_url_cshaas()
         shop_body = {
             "mode": "fdm",
-            "runs": [{"case_external_id": shop_case_external_id}],
+            "runs": [
+                {
+                    "case_external_id": shop_case_external_id,
+                    "write_classic_ts": write_classic_ts,
+                }
+            ],
         }
 
         response = requests.post(
@@ -224,7 +231,8 @@ class CogShopAPI:
     def retrieve_shop_case_graphql(self, case_external_id: str) -> ShopCase:
         """Retrieve a shop case from CDF using GraphQL.
         Instead of the external of IDs of ShopScenario, ShopModel and ShopFiles, the actual instances are fetched.
-        This is provided as a fallback option for cases when `retrieve_shop_case` does not perform well."""
+        This is provided as a fallback option for cases when `retrieve_shop_case` does not perform well.
+        """
         graphql_response = self._po.shop_based_day_ahead_bid_process.graphql_query(_shop_case_query(case_external_id))
         if graphql_response:
             shop_case: ShopCase = graphql_response[0].as_read()
