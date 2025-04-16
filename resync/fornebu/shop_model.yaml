@@ -11,7 +11,7 @@
 - name: Fornebu
   model_version: "1"
   shop_version: "15.4.1.1"
-  penalty_limit: 0.0
+  penalty_limit: 3000
   model: "[external_id]SHOP_Fornebu_model"
   cog_shop_files_config:
     - "[name]water_value_cut_file_reservoir_mapping"
@@ -241,8 +241,6 @@
     - "[external_id]base_mapping_fornebu_reservoir_strand_tunnel_start_head"
     - "[external_id]base_mapping_fornebu_reservoir_livincovs_start_head"
     - "[external_id]base_mapping_fornebu_reservoir_livincovs_inflow"
-    - "[external_id]base_mapping_fornebu_market_dayahead_buy_price"
-    - "[external_id]base_mapping_fornebu_market_dayahead_sale_price"
     - "[external_id]base_mapping_fornebu_plant_strand_krv_production_schedule_flag"
     - "[external_id]base_mapping_fornebu_plant_rull2_production_schedule_flag"
     - "[external_id]base_mapping_fornebu_plant_rull1_production_schedule_flag"
@@ -252,3 +250,5 @@
     - "[external_id]base_mapping_fornebu_plant_landet_production_schedule_flag"
     - "[external_id]base_mapping_fornebu_plant_scott_production_schedule_flag"
     - "[external_id]base_mapping_fornebu_plant_lund_production_schedule_flag"
+    - "[external_id]base_mapping_dayahead_buy_price"
+    - "[external_id]base_mapping_dayahead_sale_price"
