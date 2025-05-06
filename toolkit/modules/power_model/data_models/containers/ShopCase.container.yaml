@@ -48,3 +48,30 @@ properties:
     nullable: true
     autoIncrement: false
     name: bidGenerated
+  status:
+    type:
+      type: enum
+      unknownValue: notSet
+      values:
+        - notSet:
+          name: "Not Set"
+          description: "No status set due to forward-compatibility"
+        - value1:
+          name: "Case Created??????"
+          description: "value2"
+        - value2:
+          name: "Case Triggered????"
+          description: "value2"
+        - value3:
+          name: "Execution Started????"
+          description: "value2"
+        - value4:
+          name: "Execution Finished????"
+          description: "value2"
+        - value5:
+          name: "Execution Failed????"
+          description: "value2"
+    nullable: true
+    defaultValue: value1
+    autoIncrement: false
+    name: status
