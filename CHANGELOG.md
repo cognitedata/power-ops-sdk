@@ -15,6 +15,11 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+
+## [0.111.2] - 2025-05-06
+### Added
+* Optional flag to omit writing classic time series in `trigger_shop_case`
+
 ## [0.111.1] - 2025-02-13
 ### Improved
 * PR-write back script
