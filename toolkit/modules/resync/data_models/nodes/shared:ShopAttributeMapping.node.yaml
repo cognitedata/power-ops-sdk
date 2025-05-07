@@ -2,7 +2,7 @@
   instanceType: node
   sources:
   - properties:
-      aggregation: mean
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
@@ -28,7 +28,7 @@
   instanceType: node
   sources:
   - properties:
-      aggregation: mean
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
@@ -47,9 +47,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -72,9 +74,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -97,9 +101,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -122,9 +128,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -147,9 +155,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -172,9 +182,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -197,9 +209,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -222,9 +236,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -247,9 +263,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -272,9 +290,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -297,9 +317,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -322,9 +344,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -347,9 +371,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -372,9 +398,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -397,9 +425,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -422,9 +452,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -447,9 +479,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -472,9 +506,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -504,9 +540,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -529,9 +567,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -554,9 +594,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -579,9 +621,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -604,9 +648,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -629,9 +675,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -654,9 +702,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -679,9 +729,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -704,9 +756,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -729,9 +783,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -754,9 +810,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -779,9 +837,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -804,9 +864,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -829,9 +891,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -854,9 +918,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -879,9 +945,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -904,9 +972,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: buy_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -929,9 +999,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -954,9 +1026,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -979,9 +1053,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1004,9 +1080,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1029,9 +1107,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1054,9 +1134,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1079,9 +1161,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1104,9 +1188,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1129,9 +1215,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1154,9 +1242,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1179,9 +1269,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1204,9 +1296,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1229,9 +1323,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1254,9 +1350,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1279,9 +1377,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1304,9 +1404,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1329,9 +1431,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1354,9 +1458,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - MultiplyFromOffset:
@@ -1379,9 +1485,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1404,9 +1512,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1429,9 +1539,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1454,9 +1566,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1479,9 +1593,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1504,9 +1620,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1529,9 +1647,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1554,9 +1674,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1579,9 +1701,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1604,9 +1728,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1629,9 +1755,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1654,9 +1782,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1679,9 +1809,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1704,9 +1836,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1729,9 +1863,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1754,9 +1890,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
@@ -1779,9 +1917,11 @@
   instanceType: node
   sources:
   - properties:
+      aggregation: MEAN
       attributeName: sale_price
       objectName: Dayahead
       objectType: market
+      retrieve: RANGE
       timeSeries: '907677'
       transformations:
       - AddFromOffset:
