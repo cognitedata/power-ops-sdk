@@ -2,7 +2,7 @@ environment:
   project: oe-dev
   # type is set to staging since this field is only used for raising error if project defined here
   # doesn't match the environment variables (valid options are dev, staging, prod)
-  type: staging
+  validation-type: staging
   selected:
     - modules/power_model
 

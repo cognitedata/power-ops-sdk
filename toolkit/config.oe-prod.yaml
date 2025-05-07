@@ -1,6 +1,6 @@
 environment:
   project: oe-prod
-  type: prod
+  validation-type: prod
   selected:
     - modules/power_model
 
