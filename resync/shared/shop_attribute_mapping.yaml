@@ -25,7 +25,7 @@
         parameters:
           constant: 0.0
   retrieve: RANGE
-  aggregation: mean
+  aggregation: MEAN
 - external_id: base_mapping_dayahead_sale_price
   object_type: market
   object_name: Dayahead
@@ -33,12 +33,14 @@
   time_series: "[external_id]6694"
   transformations: []
   retrieve: RANGE
-  aggregation: mean
+  aggregation: MEAN
 - external_id: no2_buy_price_minus_500_first_24h
   object_type: market
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -52,6 +54,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -65,6 +69,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -78,6 +84,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -91,6 +99,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -104,6 +114,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -117,6 +129,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -130,6 +144,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -143,6 +159,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -156,6 +174,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -169,6 +189,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -182,6 +204,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -195,6 +219,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -208,6 +234,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -221,6 +249,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -234,6 +264,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -247,6 +279,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -260,6 +294,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -273,6 +309,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -286,6 +324,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -299,6 +339,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -312,6 +354,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -325,6 +369,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -338,6 +384,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -351,6 +399,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -364,6 +414,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -377,6 +429,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -390,6 +444,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -403,6 +459,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -416,6 +474,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -429,6 +489,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -442,6 +504,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -455,6 +519,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -468,6 +534,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -481,6 +549,8 @@
   object_name: Dayahead
   attribute_name: buy_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -501,6 +571,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -514,6 +586,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -527,6 +601,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -540,6 +616,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -553,6 +631,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -566,6 +646,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -579,6 +661,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -592,6 +676,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -605,6 +691,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -618,6 +706,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -631,6 +721,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -644,6 +736,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -657,6 +751,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -670,6 +766,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -683,6 +781,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -696,6 +796,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -709,6 +811,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -722,6 +826,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -735,6 +841,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -748,6 +856,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -761,6 +871,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -774,6 +886,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -787,6 +901,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -800,6 +916,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -813,6 +931,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -826,6 +946,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -839,6 +961,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -852,6 +976,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -865,6 +991,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -878,6 +1006,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -891,6 +1021,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -904,6 +1036,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -917,6 +1051,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -930,6 +1066,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - AddFromOffset:
         parameters:
@@ -943,6 +1081,8 @@
   object_name: Dayahead
   attribute_name: sale_price
   time_series: "[external_id]907677"
+  retrieve: RANGE
+  aggregation: MEAN
   transformations:
     - MultiplyFromOffset:
         parameters:

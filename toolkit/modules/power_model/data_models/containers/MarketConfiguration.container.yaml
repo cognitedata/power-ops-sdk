@@ -48,7 +48,6 @@ properties:
   priceSteps:
     type:
       list: false
-      collation: ucs_basic
       type: int64
     nullable: false
     autoIncrement: false
@@ -57,7 +56,6 @@ properties:
   tickSize:
     type:
       list: false
-      collation: ucs_basic
       type: float64
     nullable: false
     autoIncrement: false
@@ -75,7 +73,6 @@ properties:
   tradeLot:
     type:
       list: false
-      collation: ucs_basic
       type: float64
     nullable: false
     autoIncrement: false

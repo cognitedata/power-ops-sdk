@@ -13,10 +13,7 @@ filter:
           - node
           - space
         value: "{{power_ops_instance_space}}"
-        # - exists:
-        #     property:
-        #       - input
-implements: []
+
 version: "{{power_ops_data_model_version}}"
 properties:
   workflowExecutionId:
