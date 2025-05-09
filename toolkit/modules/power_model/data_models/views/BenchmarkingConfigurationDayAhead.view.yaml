@@ -20,7 +20,7 @@ filter:
         value:
           space: "{{power_ops_type_space}}"
           externalId: BenchmarkingConfigurationDayAhead
-implements: []
+
 version: "{{power_ops_data_model_version}}"
 properties:
   name:

@@ -2,7 +2,7 @@ space: "{{power_ops_models_space}}"
 externalId: ShopCase
 name: ShopCase
 description: A case that links a Scenario and shop dates to run shop with
-implements: []
+
 version: "{{power_ops_data_model_version}}"
 properties:
   scenario:
