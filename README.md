@@ -12,7 +12,7 @@
 
 ## What is it?
 
-The PowerOps SDK is a domain-specific SDK for interacting with Cognite Data Fusion (CDF) for the power operations' domain.
+The PowerOps SDK is a domain-specific SDK for interacting with Cognite Data Fusion (CDF) for the power operations' domain. Requires PowerOps to be deployed and configured for CDF project before using, see [project setup instructions](./SETUP.md) for more details.
 
 ## Main Features
 
