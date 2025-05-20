@@ -34,6 +34,14 @@ properties:
     containerPropertyIdentifier: endTime
     name: endTime
     description: The end time of the case
+  status:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: ShopCase
+      type: container
+    containerPropertyIdentifier: status
+    name: status
+    description: The status of the ShopCase
   shopFiles:
     type:
       externalId: ShopCase.shopFiles
