@@ -911,6 +911,66 @@
     externalId: ShopOutputTimeSeriesDefinition
     space: power_ops_types
 - endNode:
+    externalId: no2_buy_price_plus_200_first_24h
+    space: power_ops_instances
+  externalId: shop_scenario_fornebu_price_plus_200_first_24h:no2_buy_price_plus_200_first_24h
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: shop_scenario_fornebu_price_plus_200_first_24h
+    space: power_ops_instances
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: no2_sale_price_plus_200_first_24h
+    space: power_ops_instances
+  externalId: shop_scenario_fornebu_price_plus_200_first_24h:no2_sale_price_plus_200_first_24h
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: shop_scenario_fornebu_price_plus_200_first_24h
+    space: power_ops_instances
+  type:
+    externalId: ShopAttributeMapping
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_market_price
+    space: power_ops_instances
+  externalId: shop_scenario_fornebu_price_plus_200_first_24h:shop_output_time_series_definition_market_price
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: shop_scenario_fornebu_price_plus_200_first_24h
+    space: power_ops_instances
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_consumption
+    space: power_ops_instances
+  externalId: shop_scenario_fornebu_price_plus_200_first_24h:shop_output_time_series_definition_plant_consumption
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: shop_scenario_fornebu_price_plus_200_first_24h
+    space: power_ops_instances
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
+    externalId: shop_output_time_series_definition_plant_production
+    space: power_ops_instances
+  externalId: shop_scenario_fornebu_price_plus_200_first_24h:shop_output_time_series_definition_plant_production
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: shop_scenario_fornebu_price_plus_200_first_24h
+    space: power_ops_instances
+  type:
+    externalId: ShopOutputTimeSeriesDefinition
+    space: power_ops_types
+- endNode:
     externalId: no2_buy_price_plus_20_first_24h
     space: power_ops_instances
   externalId: shop_scenario_fornebu_price_plus_20_first_24h:no2_buy_price_plus_20_first_24h
