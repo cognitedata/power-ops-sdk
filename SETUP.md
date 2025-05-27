@@ -14,13 +14,16 @@ Once you have admin credentials to the project proceed to the below steps.
 
 **Note:** The CI/CD pipeline in this repo is *only* responsible for deploying the PowerOps data model (ie. resources in the power_model module) so any other resources should be deployed using toolkit configured separately in a customer repo. Refer to the `power_ops_template` and `resync` modules as examples to be used in the customer repo.
 
-## CogShop
+## CogShop & PowerOps UI
 
-- Provide PowerOps team a set of credentials XXXXX
+- Provide PowerOps team a set of credentials with the follow information and access to read/write to the PowerOps data model:
+  - CDF cluster (ie. `az-power-no-northeurope`)
+  - CDF project name (ie. `power-ops-staging`)
+  - Tenant ID
+  - Client ID
+  - Client Secret
 
-## PowerOps UI
-
-- XXX
+**Note:** only the CogShop configuration uses the credentials
 
 ## Functions & Workflows
 
