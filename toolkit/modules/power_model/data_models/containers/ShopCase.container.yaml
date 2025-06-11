@@ -48,3 +48,18 @@ properties:
     nullable: true
     autoIncrement: false
     name: bidGenerated
+  status:
+    type:
+      type: enum
+      unknownValue: notSet
+      values:
+        notSet:
+          name: "Not Set"
+          description: "No status set due to forward-compatibility"
+        default:
+          name: "Shop Case Created"
+          description: "The case has been created but not yet triggered"
+    nullable: true
+    # defaultValue: default # TODO: Uncomment when enum defaults are supported
+    autoIncrement: false
+    name: status

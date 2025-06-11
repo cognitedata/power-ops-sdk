@@ -244,6 +244,10 @@ class _GeneratorEfficiencyCurveQuery(NodeQueryCore[T_DomainModelList, GeneratorE
 
         self.space = StringFilter(self, ["node", "space"])
         self.external_id = StringFilter(self, ["node", "externalId"])
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+        ])
 
     def list_generator_efficiency_curve(self, limit: int = DEFAULT_QUERY_LIMIT) -> GeneratorEfficiencyCurveList:
         return self._list(limit=limit)

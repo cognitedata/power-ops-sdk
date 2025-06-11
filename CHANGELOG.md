@@ -15,6 +15,9 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.112.0] - 2025-06-11
+### Added
+* Added `status` as enum to ShopCase
 
 ## [0.111.2] - 2025-05-06
 ### Added

@@ -68,8 +68,8 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
         function_call_id_prefix: str | None = None,
         cog_shop_tag: str | list[str] | None = None,
         cog_shop_tag_prefix: str | None = None,
-        preprocessor_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         case: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        preprocessor_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
@@ -88,8 +88,8 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
             function_call_id_prefix: The prefix of the function call id to filter on.
             cog_shop_tag: The cog shop tag to filter on.
             cog_shop_tag_prefix: The prefix of the cog shop tag to filter on.
-            preprocessor_input: The preprocessor input to filter on.
             case: The case to filter on.
+            preprocessor_input: The preprocessor input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop trigger inputs to return. Defaults to 25.
@@ -120,8 +120,8 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
             function_call_id_prefix,
             cog_shop_tag,
             cog_shop_tag_prefix,
-            preprocessor_input,
             case,
+            preprocessor_input,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -232,7 +232,7 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
         Args:
             external_id: External id or list of external ids of the shop trigger inputs.
             space: The space where all the shop trigger inputs are located.
-            retrieve_connections: Whether to retrieve `preprocessor_input` and `case` for the shop trigger inputs.
+            retrieve_connections: Whether to retrieve `case` and `preprocessor_input` for the shop trigger inputs.
             Defaults to 'skip'.'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier
             of the connected items, and 'full' will retrieve the full connected items.
 
@@ -270,8 +270,8 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
         function_call_id_prefix: str | None = None,
         cog_shop_tag: str | list[str] | None = None,
         cog_shop_tag_prefix: str | None = None,
-        preprocessor_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         case: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        preprocessor_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -295,8 +295,8 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
             function_call_id_prefix: The prefix of the function call id to filter on.
             cog_shop_tag: The cog shop tag to filter on.
             cog_shop_tag_prefix: The prefix of the cog shop tag to filter on.
-            preprocessor_input: The preprocessor input to filter on.
             case: The case to filter on.
+            preprocessor_input: The preprocessor input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop trigger inputs to return. Defaults to 25.
@@ -335,8 +335,8 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
             function_call_id_prefix,
             cog_shop_tag,
             cog_shop_tag_prefix,
-            preprocessor_input,
             case,
+            preprocessor_input,
             external_id_prefix,
             space,
             filter,
@@ -369,8 +369,8 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
         function_call_id_prefix: str | None = None,
         cog_shop_tag: str | list[str] | None = None,
         cog_shop_tag_prefix: str | None = None,
-        preprocessor_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         case: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        preprocessor_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -395,8 +395,8 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
         function_call_id_prefix: str | None = None,
         cog_shop_tag: str | list[str] | None = None,
         cog_shop_tag_prefix: str | None = None,
-        preprocessor_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         case: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        preprocessor_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -423,8 +423,8 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
         function_call_id_prefix: str | None = None,
         cog_shop_tag: str | list[str] | None = None,
         cog_shop_tag_prefix: str | None = None,
-        preprocessor_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         case: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        preprocessor_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -450,8 +450,8 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
         function_call_id_prefix: str | None = None,
         cog_shop_tag: str | list[str] | None = None,
         cog_shop_tag_prefix: str | None = None,
-        preprocessor_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         case: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        preprocessor_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -479,8 +479,8 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
             function_call_id_prefix: The prefix of the function call id to filter on.
             cog_shop_tag: The cog shop tag to filter on.
             cog_shop_tag_prefix: The prefix of the cog shop tag to filter on.
-            preprocessor_input: The preprocessor input to filter on.
             case: The case to filter on.
+            preprocessor_input: The preprocessor input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop trigger inputs to return. Defaults to 25.
@@ -513,8 +513,8 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
             function_call_id_prefix,
             cog_shop_tag,
             cog_shop_tag_prefix,
-            preprocessor_input,
             case,
+            preprocessor_input,
             external_id_prefix,
             space,
             filter,
@@ -545,8 +545,8 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
         function_call_id_prefix: str | None = None,
         cog_shop_tag: str | list[str] | None = None,
         cog_shop_tag_prefix: str | None = None,
-        preprocessor_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         case: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        preprocessor_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -569,8 +569,8 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
             function_call_id_prefix: The prefix of the function call id to filter on.
             cog_shop_tag: The cog shop tag to filter on.
             cog_shop_tag_prefix: The prefix of the cog shop tag to filter on.
-            preprocessor_input: The preprocessor input to filter on.
             case: The case to filter on.
+            preprocessor_input: The preprocessor input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop trigger inputs to return.
@@ -594,8 +594,8 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
             function_call_id_prefix,
             cog_shop_tag,
             cog_shop_tag_prefix,
-            preprocessor_input,
             case,
+            preprocessor_input,
             external_id_prefix,
             space,
             filter,
@@ -631,15 +631,15 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
         if retrieve_connections == "full":
             builder.extend(
                 factory.from_direct_relation(
-                    ShopPreprocessorInput._view_id,
-                    ViewPropertyId(self._view_id, "preprocessorInput"),
+                    ShopCase._view_id,
+                    ViewPropertyId(self._view_id, "case"),
                     has_container_fields=True,
                 )
             )
             builder.extend(
                 factory.from_direct_relation(
-                    ShopCase._view_id,
-                    ViewPropertyId(self._view_id, "case"),
+                    ShopPreprocessorInput._view_id,
+                    ViewPropertyId(self._view_id, "preprocessorInput"),
                     has_container_fields=True,
                 )
             )
@@ -660,8 +660,8 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
         function_call_id_prefix: str | None = None,
         cog_shop_tag: str | list[str] | None = None,
         cog_shop_tag_prefix: str | None = None,
-        preprocessor_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         case: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        preprocessor_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -684,8 +684,8 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
             function_call_id_prefix: The prefix of the function call id to filter on.
             cog_shop_tag: The cog shop tag to filter on.
             cog_shop_tag_prefix: The prefix of the cog shop tag to filter on.
-            preprocessor_input: The preprocessor input to filter on.
             case: The case to filter on.
+            preprocessor_input: The preprocessor input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop trigger inputs to return.
@@ -697,7 +697,7 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
             sort: (Advanced) If sort_by and direction are not sufficient, you can write your own sorting.
                 This will override the sort_by and direction. This allowos you to sort by multiple fields and
                 specify the direction for each field as well as how to handle null values.
-            retrieve_connections: Whether to retrieve `preprocessor_input` and `case` for the shop trigger inputs.
+            retrieve_connections: Whether to retrieve `case` and `preprocessor_input` for the shop trigger inputs.
             Defaults to 'skip'.'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier
             of the connected items, and 'full' will retrieve the full connected items.
 
@@ -725,8 +725,8 @@ class ShopTriggerInputAPI(NodeAPI[ShopTriggerInput, ShopTriggerInputWrite, ShopT
             function_call_id_prefix,
             cog_shop_tag,
             cog_shop_tag_prefix,
-            preprocessor_input,
             case,
+            preprocessor_input,
             external_id_prefix,
             space,
             filter,

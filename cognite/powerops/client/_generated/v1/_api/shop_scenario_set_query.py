@@ -65,9 +65,9 @@ class ShopScenarioSetQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
         name_prefix: str | None = None,
         model: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         commands: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        time_resolution: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         source: str | list[str] | None = None,
         source_prefix: str | None = None,
-        time_resolution: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         external_id_prefix_edge: str | None = None,
@@ -84,9 +84,9 @@ class ShopScenarioSetQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
             name_prefix:
             model:
             commands:
+            time_resolution:
             source:
             source_prefix:
-            time_resolution:
             external_id_prefix:
             space:
             external_id_prefix_edge:
@@ -133,9 +133,9 @@ class ShopScenarioSetQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
             name_prefix,
             model,
             commands,
+            time_resolution,
             source,
             source_prefix,
-            time_resolution,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
