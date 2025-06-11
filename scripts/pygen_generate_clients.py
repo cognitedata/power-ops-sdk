@@ -42,7 +42,7 @@ def main():
         output_dir=output_dir,
         logger=print,
         overwrite=True,
-        format_code=True,
+        format_code=False,
     )
     print("Done generating v1 client")
 
