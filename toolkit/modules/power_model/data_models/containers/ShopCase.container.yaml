@@ -60,6 +60,6 @@ properties:
           name: "Shop Case Created"
           description: "The case has been created but not yet triggered"
     nullable: true
-    # defaultValue: default
+    # defaultValue: default # TODO: Uncomment when enum defaults are supported
     autoIncrement: false
     name: status
