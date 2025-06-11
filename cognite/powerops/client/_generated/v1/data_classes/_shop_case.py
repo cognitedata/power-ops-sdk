@@ -55,12 +55,13 @@ __all__ = [
 
 
 ShopCaseTextFields = Literal["external_id", ]
-ShopCaseFields = Literal["external_id", "start_time", "end_time"]
+ShopCaseFields = Literal["external_id", "start_time", "end_time", "status"]
 
 _SHOPCASE_PROPERTIES_BY_FIELD = {
     "external_id": "externalId",
     "start_time": "startTime",
     "end_time": "endTime",
+    "status": "status",
 }
 
 
@@ -77,6 +78,7 @@ class ShopCaseGraphQL(GraphQLCore):
         scenario: The Shop scenario that was used to produce this result
         start_time: The start time of the case
         end_time: The end time of the case
+        status: The status of the ShopCase
         shop_files: The list of shop files that are used in a shop run. This encompasses all shop files such as case,
             module series, cut files etc.
     """
@@ -85,6 +87,7 @@ class ShopCaseGraphQL(GraphQLCore):
     scenario: Optional[ShopScenarioGraphQL] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
+    status: Optional[Literal["default", "notSet"]] = None
     shop_files: Optional[list[ShopFileGraphQL]] = Field(default=None, repr=False, alias="shopFiles")
 
     @model_validator(mode="before")
@@ -128,6 +131,7 @@ class ShopCase(DomainModel):
         scenario: The Shop scenario that was used to produce this result
         start_time: The start time of the case
         end_time: The end time of the case
+        status: The status of the ShopCase
         shop_files: The list of shop files that are used in a shop run. This encompasses all shop files such as case,
             module series, cut files etc.
     """
@@ -139,6 +143,7 @@ class ShopCase(DomainModel):
     scenario: Union[ShopScenario, str, dm.NodeId, None] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
+    status: Optional[Literal["default", "notSet"]] | str = None
     shop_files: Optional[list[Union[ShopFile, str, dm.NodeId]]] = Field(default=None, repr=False, alias="shopFiles")
     @field_validator("scenario", mode="before")
     @classmethod
@@ -178,10 +183,11 @@ class ShopCaseWrite(DomainModelWrite):
         scenario: The Shop scenario that was used to produce this result
         start_time: The start time of the case
         end_time: The end time of the case
+        status: The status of the ShopCase
         shop_files: The list of shop files that are used in a shop run. This encompasses all shop files such as case,
             module series, cut files etc.
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("end_time", "scenario", "start_time",)
+    _container_fields: ClassVar[tuple[str, ...]] = ("end_time", "scenario", "start_time", "status",)
     _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("shop_files", dm.DirectRelationReference("power_ops_types", "ShopCase.shopFiles")),)
     _direct_relations: ClassVar[tuple[str, ...]] = ("scenario",)
 
@@ -192,6 +198,7 @@ class ShopCaseWrite(DomainModelWrite):
     scenario: Union[ShopScenarioWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
+    status: Optional[Literal["default", "notSet"]] = None
     shop_files: Optional[list[Union[ShopFileWrite, str, dm.NodeId]]] = Field(default=None, repr=False, alias="shopFiles")
 
     @field_validator("scenario", "shop_files", mode="before")

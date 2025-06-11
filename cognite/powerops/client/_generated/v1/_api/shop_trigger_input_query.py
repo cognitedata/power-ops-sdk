@@ -9,8 +9,8 @@ from cognite.client import data_modeling as dm, CogniteClient
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     ShopTriggerInput,
-    ShopPreprocessorInput,
     ShopCase,
+    ShopPreprocessorInput,
 )
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_QUERY_LIMIT,
@@ -57,17 +57,17 @@ class ShopTriggerInputQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
 
     def query(
         self,
-        retrieve_preprocessor_input: bool = False,
         retrieve_case: bool = False,
+        retrieve_preprocessor_input: bool = False,
     ) -> T_DomainModelList:
         """Execute query and return the result.
 
         Args:
-            retrieve_preprocessor_input: Whether to retrieve the
-                preprocessor input for each
-                shop trigger input or not.
             retrieve_case: Whether to retrieve the
                 case for each
+                shop trigger input or not.
+            retrieve_preprocessor_input: Whether to retrieve the
+                preprocessor input for each
                 shop trigger input or not.
 
         Returns:
@@ -75,26 +75,12 @@ class ShopTriggerInputQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
 
         """
         from_ = self._builder[-1].name
-        if retrieve_preprocessor_input:
-            self._query_append_preprocessor_input(from_)
         if retrieve_case:
             self._query_append_case(from_)
+        if retrieve_preprocessor_input:
+            self._query_append_preprocessor_input(from_)
         return self._query()
 
-    def _query_append_preprocessor_input(self, from_: str) -> None:
-        self._builder.append(
-            QueryStep(
-                name=self._builder.create_name(from_),
-                expression=dm.query.NodeResultSetExpression(
-                    from_=from_,
-                    through=self._view_id.as_property_ref("preprocessorInput"),
-                    direction="outwards",
-                    filter=dm.filters.HasData(views=[ShopPreprocessorInput._view_id]),
-                ),
-                view_id=ShopPreprocessorInput._view_id,
-                connection_property=ViewPropertyId(self._view_id, "preprocessorInput"),
-            ),
-        )
     def _query_append_case(self, from_: str) -> None:
         self._builder.append(
             QueryStep(
@@ -107,5 +93,19 @@ class ShopTriggerInputQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
                 ),
                 view_id=ShopCase._view_id,
                 connection_property=ViewPropertyId(self._view_id, "case"),
+            ),
+        )
+    def _query_append_preprocessor_input(self, from_: str) -> None:
+        self._builder.append(
+            QueryStep(
+                name=self._builder.create_name(from_),
+                expression=dm.query.NodeResultSetExpression(
+                    from_=from_,
+                    through=self._view_id.as_property_ref("preprocessorInput"),
+                    direction="outwards",
+                    filter=dm.filters.HasData(views=[ShopPreprocessorInput._view_id]),
+                ),
+                view_id=ShopPreprocessorInput._view_id,
+                connection_property=ViewPropertyId(self._view_id, "preprocessorInput"),
             ),
         )

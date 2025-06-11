@@ -69,13 +69,13 @@ class PlantInformationQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
         asset_type_prefix: str | None = None,
         min_production_min: float | None = None,
         max_production_min: float | None = None,
+        min_production_max: float | None = None,
+        max_production_max: float | None = None,
         min_penstock_number: int | None = None,
         max_penstock_number: int | None = None,
         min_start_stop_cost: float | None = None,
         max_start_stop_cost: float | None = None,
         generator_efficiency_curve: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        min_production_max: float | None = None,
-        max_production_max: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         external_id_prefix_edge: str | None = None,
@@ -96,13 +96,13 @@ class PlantInformationQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
             asset_type_prefix:
             min_production_min:
             max_production_min:
+            min_production_max:
+            max_production_max:
             min_penstock_number:
             max_penstock_number:
             min_start_stop_cost:
             max_start_stop_cost:
             generator_efficiency_curve:
-            min_production_max:
-            max_production_max:
             external_id_prefix:
             space:
             external_id_prefix_edge:
@@ -151,13 +151,13 @@ class PlantInformationQueryAPI(QueryAPI[T_DomainModel, T_DomainModelList]):
             asset_type_prefix,
             min_production_min,
             max_production_min,
+            min_production_max,
+            max_production_max,
             min_penstock_number,
             max_penstock_number,
             min_start_stop_cost,
             max_start_stop_cost,
             generator_efficiency_curve,
-            min_production_max,
-            max_production_max,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
