@@ -56,22 +56,10 @@ properties:
         notSet:
           name: "Not Set"
           description: "No status set due to forward-compatibility"
-        value1:
-          name: "Case Created??????"
-          description: "value2"
-        value2:
-          name: "Case Triggered????"
-          description: "value2"
-        value3:
-          name: "Execution Started????"
-          description: "value2"
-        value4:
-          name: "Execution Finished????"
-          description: "value2"
-        value5:
-          name: "Execution Failed????"
-          description: "value2"
+        default:
+          name: "Shop Case Created"
+          description: "The case has been created but not yet triggered"
     nullable: true
-    defaultValue: value1
+    # defaultValue: default
     autoIncrement: false
     name: status
