@@ -94,7 +94,7 @@ class BenchmarkingShopCaseGraphQL(GraphQLCore):
     scenario: Optional[ShopScenarioGraphQL] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
-    status: Optional[Literal["default", "notSet"]] = None
+    status: Optional[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] = None
     shop_files: Optional[list[ShopFileGraphQL]] = Field(default=None, repr=False, alias="shopFiles")
     bid_source: Optional[dict] = Field(default=None, alias="bidSource")
     delivery_date: Optional[datetime.date] = Field(None, alias="deliveryDate")

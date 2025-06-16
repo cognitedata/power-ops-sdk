@@ -87,7 +87,7 @@ class ShopCaseGraphQL(GraphQLCore):
     scenario: Optional[ShopScenarioGraphQL] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
-    status: Optional[Literal["default", "notSet"]] = None
+    status: Optional[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] = None
     shop_files: Optional[list[ShopFileGraphQL]] = Field(default=None, repr=False, alias="shopFiles")
 
     @model_validator(mode="before")
@@ -143,7 +143,7 @@ class ShopCase(DomainModel):
     scenario: Union[ShopScenario, str, dm.NodeId, None] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
-    status: Optional[Literal["default", "notSet"]] | str = None
+    status: Optional[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | str = None
     shop_files: Optional[list[Union[ShopFile, str, dm.NodeId]]] = Field(default=None, repr=False, alias="shopFiles")
     @field_validator("scenario", mode="before")
     @classmethod
@@ -198,7 +198,7 @@ class ShopCaseWrite(DomainModelWrite):
     scenario: Union[ShopScenarioWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
-    status: Optional[Literal["default", "notSet"]] = None
+    status: Optional[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] = None
     shop_files: Optional[list[Union[ShopFileWrite, str, dm.NodeId]]] = Field(default=None, repr=False, alias="shopFiles")
 
     @field_validator("scenario", "shop_files", mode="before")
