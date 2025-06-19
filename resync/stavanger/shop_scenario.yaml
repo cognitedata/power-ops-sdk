@@ -233,6 +233,18 @@
     - "[name]market price"
     - "[name]plant production"
     - "[name]plant consumption"
+- name: "Stavanger price plus 200 first 24h"
+  model: "[name]Stavanger"
+  commands: "[name|type:ShopCommands]default"
+  time_resolution: "[name|type:ShopTimeResolution]default"
+  source: resync
+  attribute_mappings_override:
+    - "[external_id]no2_buy_price_plus_200_first_24h"
+    - "[external_id]no2_sale_price_plus_200_first_24h"
+  output_definition:
+    - "[name]market price"
+    - "[name]plant production"
+    - "[name]plant consumption"
 - name: "Stavanger price plus 2000 first 24h"
   model: "[name]Stavanger"
   commands: "[name|type:ShopCommands]default"

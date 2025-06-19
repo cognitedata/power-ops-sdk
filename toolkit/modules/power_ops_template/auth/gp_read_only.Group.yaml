@@ -1,0 +1,144 @@
+name: gp_read_only
+sourceId: "{{read_only_group_source_id}}"
+metadata:
+  origin: "cognite-toolkit"
+capabilities:
+  - groupsAcl:
+      actions:
+        - LIST
+        - READ
+      scope:
+        currentuserscope: {}
+  - datasetsAcl:
+      actions:
+        - READ
+      scope:
+        all: {}
+  - projectsAcl:
+      actions:
+        - LIST
+        - READ
+      scope:
+        all: {}
+  - assetsAcl:
+      actions:
+        - READ
+      scope:
+        all: {}
+  - eventsAcl:
+      actions:
+        - READ
+      scope:
+        all: {}
+  - filesAcl:
+      actions:
+        - READ
+      scope:
+        all: {}
+  - rawAcl:
+      actions:
+        - READ
+        - LIST
+      scope:
+        all: {}
+  - sequencesAcl:
+      actions:
+        - READ
+      scope:
+        all: {}
+  - timeSeriesAcl:
+      actions:
+        - READ
+      scope:
+        all: {}
+  - timeSeriesSubscriptionsAcl:
+      actions:
+        - READ
+      scope:
+        all: {}
+  - dataModelsAcl:
+      actions:
+        - READ
+      scope:
+        all: {}
+  - dataModelInstancesAcl:
+      actions:
+        - READ
+      scope:
+        all: {}
+  - securityCategoriesAcl:
+      actions:
+        - MEMBEROF
+        - LIST
+      scope:
+        all: {}
+  - sessionsAcl:
+      actions:
+        - LIST
+      scope:
+        all: {}
+  - extractionPipelinesAcl:
+      actions:
+        - READ
+      scope:
+        all: {}
+  - extractionRunsAcl:
+      actions:
+        - READ
+      scope:
+        all: {}
+  - extractionConfigsAcl:
+      actions:
+        - READ
+      scope:
+        all: {}
+  - functionsAcl:
+      actions:
+        - READ
+      scope:
+        all: {}
+  - transformationsAcl:
+      actions:
+        - READ
+      scope:
+        all: {}
+  - labelsAcl:
+      actions:
+        - READ
+      scope:
+        all: {}
+  - hostedExtractorsAcl:
+      actions:
+        - READ
+      scope:
+        all: {}
+  - postgresGatewayAcl:
+      actions:
+        - READ
+      scope:
+        all: {}
+  - monitoringTasksAcl:
+      actions:
+        - READ
+      scope:
+        all: {}
+  - scheduledCalculationsAcl:
+      actions:
+        - READ
+      scope:
+        all: {}
+  - notificationsAcl:
+      actions:
+        - READ
+      scope:
+        all: {}
+  - workflowOrchestrationAcl:
+      actions:
+        - READ
+      scope:
+        all: {}
+  - locationFiltersAcl:
+      actions:
+        - READ
+      scope:
+        all: {}
