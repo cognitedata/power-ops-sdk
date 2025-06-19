@@ -57,12 +57,13 @@ __all__ = [
 
 
 BenchmarkingShopCaseTextFields = Literal["external_id", ]
-BenchmarkingShopCaseFields = Literal["external_id", "start_time", "end_time", "delivery_date", "bid_generated"]
+BenchmarkingShopCaseFields = Literal["external_id", "start_time", "end_time", "status", "delivery_date", "bid_generated"]
 
 _BENCHMARKINGSHOPCASE_PROPERTIES_BY_FIELD = {
     "external_id": "externalId",
     "start_time": "startTime",
     "end_time": "endTime",
+    "status": "status",
     "delivery_date": "deliveryDate",
     "bid_generated": "bidGenerated",
 }
@@ -81,6 +82,7 @@ class BenchmarkingShopCaseGraphQL(GraphQLCore):
         scenario: The Shop scenario that was used to produce this result
         start_time: The start time of the case
         end_time: The end time of the case
+        status: The status of the ShopCase
         shop_files: The list of shop files that are used in a shop run. This encompasses all shop files such as case,
             module series, cut files etc.
         bid_source: The bid source field.
@@ -92,6 +94,7 @@ class BenchmarkingShopCaseGraphQL(GraphQLCore):
     scenario: Optional[ShopScenarioGraphQL] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
+    status: Optional[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] = None
     shop_files: Optional[list[ShopFileGraphQL]] = Field(default=None, repr=False, alias="shopFiles")
     bid_source: Optional[dict] = Field(default=None, alias="bidSource")
     delivery_date: Optional[datetime.date] = Field(None, alias="deliveryDate")
@@ -138,6 +141,7 @@ class BenchmarkingShopCase(ShopCase):
         scenario: The Shop scenario that was used to produce this result
         start_time: The start time of the case
         end_time: The end time of the case
+        status: The status of the ShopCase
         shop_files: The list of shop files that are used in a shop run. This encompasses all shop files such as case,
             module series, cut files etc.
         bid_source: The bid source field.
@@ -189,13 +193,14 @@ class BenchmarkingShopCaseWrite(ShopCaseWrite):
         scenario: The Shop scenario that was used to produce this result
         start_time: The start time of the case
         end_time: The end time of the case
+        status: The status of the ShopCase
         shop_files: The list of shop files that are used in a shop run. This encompasses all shop files such as case,
             module series, cut files etc.
         bid_source: The bid source field.
         delivery_date: The delivery date
         bid_generated: Timestamp of when the bid had been generated
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("bid_generated", "bid_source", "delivery_date", "end_time", "scenario", "start_time",)
+    _container_fields: ClassVar[tuple[str, ...]] = ("bid_generated", "bid_source", "delivery_date", "end_time", "scenario", "start_time", "status",)
     _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("shop_files", dm.DirectRelationReference("power_ops_types", "ShopCase.shopFiles")),)
     _direct_relations: ClassVar[tuple[str, ...]] = ("scenario",)
 

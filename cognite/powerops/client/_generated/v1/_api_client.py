@@ -414,9 +414,9 @@ class PowerOpsModelsV1Client:
     PowerOpsModelsV1Client
 
     Generated with:
-        pygen = 0.99.60
-        cognite-sdk = 7.71.3
-        pydantic = 2.10.5
+        pygen = 0.99.63
+        cognite-sdk = 7.74.5
+        pydantic = 2.11.4
 
     """
 
@@ -428,7 +428,7 @@ class PowerOpsModelsV1Client:
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
         # The client name is used for aggregated logging of Pygen Usage
-        client.config.client_name = "CognitePygen:0.99.60"
+        client.config.client_name = "CognitePygen:0.99.63"
 
         self.benchmarking_day_ahead = BenchmarkingDayAheadAPIs(client)
         self.shop_based_day_ahead_bid_process = ShopBasedDayAheadBidProcesAPIs(client)

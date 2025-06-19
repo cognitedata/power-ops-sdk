@@ -69,9 +69,9 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
         name_prefix: str | None = None,
         model: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         commands: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        time_resolution: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         source: str | list[str] | None = None,
         source_prefix: str | None = None,
-        time_resolution: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
@@ -84,9 +84,9 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
             name_prefix: The prefix of the name to filter on.
             model: The model to filter on.
             commands: The command to filter on.
+            time_resolution: The time resolution to filter on.
             source: The source to filter on.
             source_prefix: The prefix of the source to filter on.
-            time_resolution: The time resolution to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop scenarios to return. Defaults to 25.
@@ -111,9 +111,9 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
             name_prefix,
             model,
             commands,
+            time_resolution,
             source,
             source_prefix,
-            time_resolution,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -257,9 +257,9 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
         name_prefix: str | None = None,
         model: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         commands: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        time_resolution: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         source: str | list[str] | None = None,
         source_prefix: str | None = None,
-        time_resolution: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -277,9 +277,9 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
             name_prefix: The prefix of the name to filter on.
             model: The model to filter on.
             commands: The command to filter on.
+            time_resolution: The time resolution to filter on.
             source: The source to filter on.
             source_prefix: The prefix of the source to filter on.
-            time_resolution: The time resolution to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop scenarios to return. Defaults to 25.
@@ -312,9 +312,9 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
             name_prefix,
             model,
             commands,
+            time_resolution,
             source,
             source_prefix,
-            time_resolution,
             external_id_prefix,
             space,
             filter,
@@ -341,9 +341,9 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
         name_prefix: str | None = None,
         model: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         commands: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        time_resolution: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         source: str | list[str] | None = None,
         source_prefix: str | None = None,
-        time_resolution: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -362,9 +362,9 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
         name_prefix: str | None = None,
         model: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         commands: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        time_resolution: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         source: str | list[str] | None = None,
         source_prefix: str | None = None,
-        time_resolution: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -385,9 +385,9 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
         name_prefix: str | None = None,
         model: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         commands: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        time_resolution: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         source: str | list[str] | None = None,
         source_prefix: str | None = None,
-        time_resolution: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -407,9 +407,9 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
         name_prefix: str | None = None,
         model: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         commands: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        time_resolution: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         source: str | list[str] | None = None,
         source_prefix: str | None = None,
-        time_resolution: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -431,9 +431,9 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
             name_prefix: The prefix of the name to filter on.
             model: The model to filter on.
             commands: The command to filter on.
+            time_resolution: The time resolution to filter on.
             source: The source to filter on.
             source_prefix: The prefix of the source to filter on.
-            time_resolution: The time resolution to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop scenarios to return. Defaults to 25.
@@ -460,9 +460,9 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
             name_prefix,
             model,
             commands,
+            time_resolution,
             source,
             source_prefix,
-            time_resolution,
             external_id_prefix,
             space,
             filter,
@@ -487,9 +487,9 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
         name_prefix: str | None = None,
         model: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         commands: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        time_resolution: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         source: str | list[str] | None = None,
         source_prefix: str | None = None,
-        time_resolution: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -506,9 +506,9 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
             name_prefix: The prefix of the name to filter on.
             model: The model to filter on.
             commands: The command to filter on.
+            time_resolution: The time resolution to filter on.
             source: The source to filter on.
             source_prefix: The prefix of the source to filter on.
-            time_resolution: The time resolution to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop scenarios to return.
@@ -526,9 +526,9 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
             name_prefix,
             model,
             commands,
+            time_resolution,
             source,
             source_prefix,
-            time_resolution,
             external_id_prefix,
             space,
             filter,
@@ -612,9 +612,9 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
         name_prefix: str | None = None,
         model: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         commands: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        time_resolution: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         source: str | list[str] | None = None,
         source_prefix: str | None = None,
-        time_resolution: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -631,9 +631,9 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
             name_prefix: The prefix of the name to filter on.
             model: The model to filter on.
             commands: The command to filter on.
+            time_resolution: The time resolution to filter on.
             source: The source to filter on.
             source_prefix: The prefix of the source to filter on.
-            time_resolution: The time resolution to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop scenarios to return.
@@ -668,9 +668,9 @@ class ShopScenarioAPI(NodeAPI[ShopScenario, ShopScenarioWrite, ShopScenarioList,
             name_prefix,
             model,
             commands,
+            time_resolution,
             source,
             source_prefix,
-            time_resolution,
             external_id_prefix,
             space,
             filter,

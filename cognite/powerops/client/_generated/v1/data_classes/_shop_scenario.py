@@ -79,8 +79,8 @@ class ShopScenarioGraphQL(GraphQLCore, protected_namespaces=()):
         name: The name of the scenario to run
         model: The model template to use when running the scenario
         commands: The commands to run
-        source: The source of the scenario
         time_resolution: The time resolutions to use within SHOP.
+        source: The source of the scenario
         output_definition: An array of output definitions for the time series
         attribute_mappings_override: An array of base mappings to override in shop model file
     """
@@ -89,8 +89,8 @@ class ShopScenarioGraphQL(GraphQLCore, protected_namespaces=()):
     name: Optional[str] = None
     model: Optional[ShopModelGraphQL] = Field(default=None, repr=False)
     commands: Optional[ShopCommandsGraphQL] = Field(default=None, repr=False)
-    source: Optional[str] = None
     time_resolution: Optional[ShopTimeResolutionGraphQL] = Field(default=None, repr=False, alias="timeResolution")
+    source: Optional[str] = None
     output_definition: Optional[list[ShopOutputTimeSeriesDefinitionGraphQL]] = Field(default=None, repr=False, alias="outputDefinition")
     attribute_mappings_override: Optional[list[ShopAttributeMappingGraphQL]] = Field(default=None, repr=False, alias="attributeMappingsOverride")
 
@@ -135,8 +135,8 @@ class ShopScenario(DomainModel, protected_namespaces=()):
         name: The name of the scenario to run
         model: The model template to use when running the scenario
         commands: The commands to run
-        source: The source of the scenario
         time_resolution: The time resolutions to use within SHOP.
+        source: The source of the scenario
         output_definition: An array of output definitions for the time series
         attribute_mappings_override: An array of base mappings to override in shop model file
     """
@@ -148,8 +148,8 @@ class ShopScenario(DomainModel, protected_namespaces=()):
     name: str
     model: Union[ShopModel, str, dm.NodeId, None] = Field(default=None, repr=False)
     commands: Union[ShopCommands, str, dm.NodeId, None] = Field(default=None, repr=False)
-    source: Optional[str] = None
     time_resolution: Union[ShopTimeResolution, str, dm.NodeId, None] = Field(default=None, repr=False, alias="timeResolution")
+    source: Optional[str] = None
     output_definition: Optional[list[Union[ShopOutputTimeSeriesDefinition, str, dm.NodeId]]] = Field(default=None, repr=False, alias="outputDefinition")
     attribute_mappings_override: Optional[list[Union[ShopAttributeMapping, str, dm.NodeId]]] = Field(default=None, repr=False, alias="attributeMappingsOverride")
     @field_validator("model", "commands", "time_resolution", mode="before")
@@ -190,8 +190,8 @@ class ShopScenarioWrite(DomainModelWrite, protected_namespaces=()):
         name: The name of the scenario to run
         model: The model template to use when running the scenario
         commands: The commands to run
-        source: The source of the scenario
         time_resolution: The time resolutions to use within SHOP.
+        source: The source of the scenario
         output_definition: An array of output definitions for the time series
         attribute_mappings_override: An array of base mappings to override in shop model file
     """
@@ -206,8 +206,8 @@ class ShopScenarioWrite(DomainModelWrite, protected_namespaces=()):
     name: str
     model: Union[ShopModelWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
     commands: Union[ShopCommandsWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
-    source: Optional[str] = None
     time_resolution: Union[ShopTimeResolutionWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="timeResolution")
+    source: Optional[str] = None
     output_definition: Optional[list[Union[ShopOutputTimeSeriesDefinitionWrite, str, dm.NodeId]]] = Field(default=None, repr=False, alias="outputDefinition")
     attribute_mappings_override: Optional[list[Union[ShopAttributeMappingWrite, str, dm.NodeId]]] = Field(default=None, repr=False, alias="attributeMappingsOverride")
 
@@ -310,9 +310,9 @@ def _create_shop_scenario_filter(
     name_prefix: str | None = None,
     model: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
     commands: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+    time_resolution: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
     source: str | list[str] | None = None,
     source_prefix: str | None = None,
-    time_resolution: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -332,16 +332,16 @@ def _create_shop_scenario_filter(
         filters.append(dm.filters.Equals(view_id.as_property_ref("commands"), value=as_instance_dict_id(commands)))
     if commands and isinstance(commands, Sequence) and not isinstance(commands, str) and not is_tuple_id(commands):
         filters.append(dm.filters.In(view_id.as_property_ref("commands"), values=[as_instance_dict_id(item) for item in commands]))
+    if isinstance(time_resolution, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(time_resolution):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("timeResolution"), value=as_instance_dict_id(time_resolution)))
+    if time_resolution and isinstance(time_resolution, Sequence) and not isinstance(time_resolution, str) and not is_tuple_id(time_resolution):
+        filters.append(dm.filters.In(view_id.as_property_ref("timeResolution"), values=[as_instance_dict_id(item) for item in time_resolution]))
     if isinstance(source, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("source"), value=source))
     if source and isinstance(source, list):
         filters.append(dm.filters.In(view_id.as_property_ref("source"), values=source))
     if source_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("source"), value=source_prefix))
-    if isinstance(time_resolution, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(time_resolution):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("timeResolution"), value=as_instance_dict_id(time_resolution)))
-    if time_resolution and isinstance(time_resolution, Sequence) and not isinstance(time_resolution, str) and not is_tuple_id(time_resolution):
-        filters.append(dm.filters.In(view_id.as_property_ref("timeResolution"), values=[as_instance_dict_id(item) for item in time_resolution]))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
@@ -464,16 +464,16 @@ class _ShopScenarioQuery(NodeQueryCore[T_DomainModelList, ShopScenarioList]):
         self.name = StringFilter(self, self._view_id.as_property_ref("name"))
         self.model_filter = DirectRelationFilter(self, self._view_id.as_property_ref("model"))
         self.commands_filter = DirectRelationFilter(self, self._view_id.as_property_ref("commands"))
-        self.source = StringFilter(self, self._view_id.as_property_ref("source"))
         self.time_resolution_filter = DirectRelationFilter(self, self._view_id.as_property_ref("timeResolution"))
+        self.source = StringFilter(self, self._view_id.as_property_ref("source"))
         self._filter_classes.extend([
             self.space,
             self.external_id,
             self.name,
             self.model_filter,
             self.commands_filter,
-            self.source,
             self.time_resolution_filter,
+            self.source,
         ])
 
     def list_shop_scenario(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopScenarioList:

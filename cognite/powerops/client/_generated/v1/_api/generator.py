@@ -74,13 +74,13 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList, GeneratorWr
         asset_type_prefix: str | None = None,
         min_production_min: float | None = None,
         max_production_min: float | None = None,
+        min_production_max: float | None = None,
+        max_production_max: float | None = None,
         min_penstock_number: int | None = None,
         max_penstock_number: int | None = None,
         min_start_stop_cost: float | None = None,
         max_start_stop_cost: float | None = None,
         generator_efficiency_curve: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        min_production_max: float | None = None,
-        max_production_max: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
@@ -99,13 +99,13 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList, GeneratorWr
             asset_type_prefix: The prefix of the asset type to filter on.
             min_production_min: The minimum value of the production min to filter on.
             max_production_min: The maximum value of the production min to filter on.
+            min_production_max: The minimum value of the production max to filter on.
+            max_production_max: The maximum value of the production max to filter on.
             min_penstock_number: The minimum value of the penstock number to filter on.
             max_penstock_number: The maximum value of the penstock number to filter on.
             min_start_stop_cost: The minimum value of the start stop cost to filter on.
             max_start_stop_cost: The maximum value of the start stop cost to filter on.
             generator_efficiency_curve: The generator efficiency curve to filter on.
-            min_production_max: The minimum value of the production max to filter on.
-            max_production_max: The maximum value of the production max to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of generators to return. Defaults to 25.
@@ -136,13 +136,13 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList, GeneratorWr
             asset_type_prefix,
             min_production_min,
             max_production_min,
+            min_production_max,
+            max_production_max,
             min_penstock_number,
             max_penstock_number,
             min_start_stop_cost,
             max_start_stop_cost,
             generator_efficiency_curve,
-            min_production_max,
-            max_production_max,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -291,13 +291,13 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList, GeneratorWr
         asset_type_prefix: str | None = None,
         min_production_min: float | None = None,
         max_production_min: float | None = None,
+        min_production_max: float | None = None,
+        max_production_max: float | None = None,
         min_penstock_number: int | None = None,
         max_penstock_number: int | None = None,
         min_start_stop_cost: float | None = None,
         max_start_stop_cost: float | None = None,
         generator_efficiency_curve: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        min_production_max: float | None = None,
-        max_production_max: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -321,13 +321,13 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList, GeneratorWr
             asset_type_prefix: The prefix of the asset type to filter on.
             min_production_min: The minimum value of the production min to filter on.
             max_production_min: The maximum value of the production min to filter on.
+            min_production_max: The minimum value of the production max to filter on.
+            max_production_max: The maximum value of the production max to filter on.
             min_penstock_number: The minimum value of the penstock number to filter on.
             max_penstock_number: The maximum value of the penstock number to filter on.
             min_start_stop_cost: The minimum value of the start stop cost to filter on.
             max_start_stop_cost: The maximum value of the start stop cost to filter on.
             generator_efficiency_curve: The generator efficiency curve to filter on.
-            min_production_max: The minimum value of the production max to filter on.
-            max_production_max: The maximum value of the production max to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of generators to return. Defaults to 25.
@@ -366,13 +366,13 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList, GeneratorWr
             asset_type_prefix,
             min_production_min,
             max_production_min,
+            min_production_max,
+            max_production_max,
             min_penstock_number,
             max_penstock_number,
             min_start_stop_cost,
             max_start_stop_cost,
             generator_efficiency_curve,
-            min_production_max,
-            max_production_max,
             external_id_prefix,
             space,
             filter,
@@ -405,13 +405,13 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList, GeneratorWr
         asset_type_prefix: str | None = None,
         min_production_min: float | None = None,
         max_production_min: float | None = None,
+        min_production_max: float | None = None,
+        max_production_max: float | None = None,
         min_penstock_number: int | None = None,
         max_penstock_number: int | None = None,
         min_start_stop_cost: float | None = None,
         max_start_stop_cost: float | None = None,
         generator_efficiency_curve: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        min_production_max: float | None = None,
-        max_production_max: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -436,13 +436,13 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList, GeneratorWr
         asset_type_prefix: str | None = None,
         min_production_min: float | None = None,
         max_production_min: float | None = None,
+        min_production_max: float | None = None,
+        max_production_max: float | None = None,
         min_penstock_number: int | None = None,
         max_penstock_number: int | None = None,
         min_start_stop_cost: float | None = None,
         max_start_stop_cost: float | None = None,
         generator_efficiency_curve: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        min_production_max: float | None = None,
-        max_production_max: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -469,13 +469,13 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList, GeneratorWr
         asset_type_prefix: str | None = None,
         min_production_min: float | None = None,
         max_production_min: float | None = None,
+        min_production_max: float | None = None,
+        max_production_max: float | None = None,
         min_penstock_number: int | None = None,
         max_penstock_number: int | None = None,
         min_start_stop_cost: float | None = None,
         max_start_stop_cost: float | None = None,
         generator_efficiency_curve: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        min_production_max: float | None = None,
-        max_production_max: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -501,13 +501,13 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList, GeneratorWr
         asset_type_prefix: str | None = None,
         min_production_min: float | None = None,
         max_production_min: float | None = None,
+        min_production_max: float | None = None,
+        max_production_max: float | None = None,
         min_penstock_number: int | None = None,
         max_penstock_number: int | None = None,
         min_start_stop_cost: float | None = None,
         max_start_stop_cost: float | None = None,
         generator_efficiency_curve: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        min_production_max: float | None = None,
-        max_production_max: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -535,13 +535,13 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList, GeneratorWr
             asset_type_prefix: The prefix of the asset type to filter on.
             min_production_min: The minimum value of the production min to filter on.
             max_production_min: The maximum value of the production min to filter on.
+            min_production_max: The minimum value of the production max to filter on.
+            max_production_max: The maximum value of the production max to filter on.
             min_penstock_number: The minimum value of the penstock number to filter on.
             max_penstock_number: The maximum value of the penstock number to filter on.
             min_start_stop_cost: The minimum value of the start stop cost to filter on.
             max_start_stop_cost: The maximum value of the start stop cost to filter on.
             generator_efficiency_curve: The generator efficiency curve to filter on.
-            min_production_max: The minimum value of the production max to filter on.
-            max_production_max: The maximum value of the production max to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of generators to return. Defaults to 25.
@@ -574,13 +574,13 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList, GeneratorWr
             asset_type_prefix,
             min_production_min,
             max_production_min,
+            min_production_max,
+            max_production_max,
             min_penstock_number,
             max_penstock_number,
             min_start_stop_cost,
             max_start_stop_cost,
             generator_efficiency_curve,
-            min_production_max,
-            max_production_max,
             external_id_prefix,
             space,
             filter,
@@ -611,13 +611,13 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList, GeneratorWr
         asset_type_prefix: str | None = None,
         min_production_min: float | None = None,
         max_production_min: float | None = None,
+        min_production_max: float | None = None,
+        max_production_max: float | None = None,
         min_penstock_number: int | None = None,
         max_penstock_number: int | None = None,
         min_start_stop_cost: float | None = None,
         max_start_stop_cost: float | None = None,
         generator_efficiency_curve: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        min_production_max: float | None = None,
-        max_production_max: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -640,13 +640,13 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList, GeneratorWr
             asset_type_prefix: The prefix of the asset type to filter on.
             min_production_min: The minimum value of the production min to filter on.
             max_production_min: The maximum value of the production min to filter on.
+            min_production_max: The minimum value of the production max to filter on.
+            max_production_max: The maximum value of the production max to filter on.
             min_penstock_number: The minimum value of the penstock number to filter on.
             max_penstock_number: The maximum value of the penstock number to filter on.
             min_start_stop_cost: The minimum value of the start stop cost to filter on.
             max_start_stop_cost: The maximum value of the start stop cost to filter on.
             generator_efficiency_curve: The generator efficiency curve to filter on.
-            min_production_max: The minimum value of the production max to filter on.
-            max_production_max: The maximum value of the production max to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of generators to return.
@@ -670,13 +670,13 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList, GeneratorWr
             asset_type_prefix,
             min_production_min,
             max_production_min,
+            min_production_max,
+            max_production_max,
             min_penstock_number,
             max_penstock_number,
             min_start_stop_cost,
             max_start_stop_cost,
             generator_efficiency_curve,
-            min_production_max,
-            max_production_max,
             external_id_prefix,
             space,
             filter,
@@ -743,13 +743,13 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList, GeneratorWr
         asset_type_prefix: str | None = None,
         min_production_min: float | None = None,
         max_production_min: float | None = None,
+        min_production_max: float | None = None,
+        max_production_max: float | None = None,
         min_penstock_number: int | None = None,
         max_penstock_number: int | None = None,
         min_start_stop_cost: float | None = None,
         max_start_stop_cost: float | None = None,
         generator_efficiency_curve: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        min_production_max: float | None = None,
-        max_production_max: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -772,13 +772,13 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList, GeneratorWr
             asset_type_prefix: The prefix of the asset type to filter on.
             min_production_min: The minimum value of the production min to filter on.
             max_production_min: The maximum value of the production min to filter on.
+            min_production_max: The minimum value of the production max to filter on.
+            max_production_max: The maximum value of the production max to filter on.
             min_penstock_number: The minimum value of the penstock number to filter on.
             max_penstock_number: The maximum value of the penstock number to filter on.
             min_start_stop_cost: The minimum value of the start stop cost to filter on.
             max_start_stop_cost: The maximum value of the start stop cost to filter on.
             generator_efficiency_curve: The generator efficiency curve to filter on.
-            min_production_max: The minimum value of the production max to filter on.
-            max_production_max: The maximum value of the production max to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of generators to return.
@@ -818,13 +818,13 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList, GeneratorWr
             asset_type_prefix,
             min_production_min,
             max_production_min,
+            min_production_max,
+            max_production_max,
             min_penstock_number,
             max_penstock_number,
             min_start_stop_cost,
             max_start_stop_cost,
             generator_efficiency_curve,
-            min_production_max,
-            max_production_max,
             external_id_prefix,
             space,
             filter,
