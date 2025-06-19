@@ -1,6 +1,6 @@
 [project]
 name = "cognite-power-ops"
-version = "0.112.0"
+version = "0.112.1"
 description = "SDK for power markets operations on Cognite Data Fusion"
 readme = "README.md"
 authors = [
