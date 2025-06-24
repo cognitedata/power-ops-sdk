@@ -207,10 +207,21 @@ class CogShopAPI:
             case_external_id=case_external_id,
         )
 
-    def retrieve_shop_case(self, case_external_id: str) -> ShopCase:
-        """Retrieve a shop case from CDF"""
+    def retrieve_shop_case(
+        self, case_external_id: str, retrieve_connections: Literal["skip", "identifier", "full"] = "skip"
+    ) -> ShopCase:
+        """
+        Retrieve a shop case from CDF
+
+        Args:
+            case_external_id: External ID of the SHOP case
+            retrieve_connections: How to retrieve connections for the case.
+                - "skip": Do not retrieve connections
+                - "identifier": Retrieve only identifiers of connections
+                - "full": Retrieve full connection objects
+        """
         return self._po.shop_based_day_ahead_bid_process.shop_case.retrieve(
-            external_id=case_external_id, retrieve_connections="full"
+            external_id=case_external_id, retrieve_connections=retrieve_connections
         )
 
     def list_shop_results_for_case(self, case_external_id: str, limit: int = 3) -> ShopResultList:
