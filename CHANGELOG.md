@@ -15,6 +15,12 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.112.1] - 2025-06-19
+### Added
+* Set ShopCase status in `prepare_shop_case` to default
+* Set ShopCase status in `trigger_shop_case` to triggered
+* Add `retrieve_connections` arg to `retrieve_shop_case`
+
 ## [0.112.0] - 2025-06-11
 ### Added
 * Added `status` as enum to ShopCase
