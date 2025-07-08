@@ -15,6 +15,7 @@ from typing import (
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core.query.filter_classes import Filtering
 from cognite.powerops.client._generated.v1.data_classes._core.base import (
     DomainModelList,
@@ -28,7 +29,7 @@ from cognite.powerops.client._generated.v1.data_classes._core.base import (
 from cognite.powerops.client._generated.v1.data_classes._core.constants import DEFAULT_QUERY_LIMIT
 from cognite.powerops.client._generated.v1.data_classes._core.query.builder import QueryBuilder
 from cognite.powerops.client._generated.v1.data_classes._core.query.processing import QueryUnpacker
-from cognite.powerops.client._generated.v1.data_classes._core.query.step import QueryStep, ViewPropertyId
+from cognite.powerops.client._generated.v1.data_classes._core.query.step import QueryBuildStep, ViewPropertyId
 
 
 T_DomainListEnd = TypeVar("T_DomainListEnd", bound=Union[DomainModelList, DomainRelationList], covariant=True)
@@ -45,12 +46,12 @@ class QueryCore(Generic[T_DomainList, T_DomainListEnd]):
         creation_path: "list[QueryCore]",
         client: CogniteClient,
         result_list_cls: type[T_DomainList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         view_filter: dm.filters.Filter | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
         created_types.add(type(self))
         self._creation_path = creation_path[:] + [self]
@@ -78,6 +79,17 @@ class QueryCore(Generic[T_DomainList, T_DomainListEnd]):
             raise ValueError(f"Circular reference detected. Cannot query a circular reference: {nodes}")
         elif self._connection_type == "reverse-list":
             raise ValueError(f"Cannot query across a reverse-list connection.")
+        elif len(self._creation_path) >= global_config.max_select_depth:
+            hint = f"""You can increase the max_select_depth in the global config.
+```
+from cognite.powerops.client._generated.v1.config import global_config
+
+global_config.max_select_depth = {global_config.max_select_depth+1}
+```
+"""
+            raise ValueError(
+                f"Max select depth reached. Cannot query deeper than {global_config.max_select_depth}.\n{hint}"
+            )
         error_message = f"'{self.__class__.__name__}' object has no attribute '{item}'"
         attributes = [name for name in vars(self).keys() if not name.startswith("_")]
         if matches := difflib.get_close_matches(item, attributes):
@@ -160,8 +172,9 @@ class NodeQueryCore(QueryCore[T_DomainModelList, T_DomainListEnd]):
 
     def list_full(self, limit: int = DEFAULT_QUERY_LIMIT) -> T_DomainModelList:
         builder = self._create_query(limit, return_step="first", try_reverse=True)
-        builder.execute_query(self._client, remove_not_connected=True)
-        unpacked = QueryUnpacker(builder).unpack()
+        executor = builder.build()
+        results = executor.execute_query(self._client, remove_not_connected=True)
+        unpacked = QueryUnpacker(results).unpack()
         cls_ = self._creation_path[0]._result_cls
         return self._result_list_cls([cls_.model_validate(item) for item in unpacked])
 
@@ -169,12 +182,13 @@ class NodeQueryCore(QueryCore[T_DomainModelList, T_DomainListEnd]):
         builder = self._create_query(limit, return_step="last")
         for step in builder[:-1]:
             step.select = None
-        builder.execute_query(self._client, remove_not_connected=False)
-        unpacked = QueryUnpacker(builder[-1:]).unpack()
+        executor = builder.build()
+        results = executor.execute_query(self._client, remove_not_connected=True)
+        unpacked = QueryUnpacker(results[-1:]).unpack()
         return self._result_list_cls_end([self._result_cls.model_validate(item) for item in unpacked])  # type: ignore[return-value]
 
-    def _dump_yaml(self) -> str:
-        return self._create_query(DEFAULT_QUERY_LIMIT)._dump_yaml()
+    def _dump_yaml(self, return_step: Literal["first", "last"] = "first") -> str:
+        return self._create_query(DEFAULT_QUERY_LIMIT, return_step)._dump_yaml()
 
     def _create_query(
         self,
@@ -198,7 +212,7 @@ class NodeQueryCore(QueryCore[T_DomainModelList, T_DomainListEnd]):
             name = builder.create_name(from_)
             if isinstance(item, NodeQueryCore) and isinstance(item._expression, dm.query.NodeResultSetExpression):
                 # Root step or direct/reverse direct step
-                step = QueryStep(
+                step = QueryBuildStep(
                     name=name,
                     expression=item._expression,
                     max_retrieve_limit=max_retrieve_limit,
@@ -219,7 +233,7 @@ class NodeQueryCore(QueryCore[T_DomainModelList, T_DomainListEnd]):
                 if not item._connection_property:
                     raise ValueError("Bug in pygen. Connection name is missing when building a query")
                 connection_property = item._connection_property
-                step = QueryStep(
+                step = QueryBuildStep(
                     name=edge_name,
                     expression=item._expression,
                     max_retrieve_limit=max_retrieve_limit,
@@ -229,7 +243,7 @@ class NodeQueryCore(QueryCore[T_DomainModelList, T_DomainListEnd]):
                 builder.append(step)
 
                 name = builder.create_name(edge_name)
-                node_step = QueryStep(
+                node_step = QueryBuildStep(
                     name=name,
                     expression=dm.query.NodeResultSetExpression(
                         from_=edge_name,
@@ -242,7 +256,7 @@ class NodeQueryCore(QueryCore[T_DomainModelList, T_DomainListEnd]):
                 builder.append(node_step)
             elif isinstance(item, EdgeQueryCore):
                 # Edge with properties
-                step = QueryStep(
+                step = QueryBuildStep(
                     name=name,
                     expression=cast(dm.query.EdgeResultSetExpression, item._expression),
                     connection_property=item._connection_property,

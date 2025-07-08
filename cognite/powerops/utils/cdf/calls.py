@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from typing import Optional, Union, cast
+from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -136,9 +136,8 @@ def retrieve_latest(client: CogniteClient, external_ids: list[Optional[str]], be
         return {}
     external_ids = remove_duplicates(external_ids)
     logger.debug(f"Retrieving {external_ids} before '{ms_to_datetime(before)}'")
-    time_series = cast(
-        DatapointsList,
-        client.time_series.data.retrieve_latest(external_id=external_ids, before=before, ignore_unknown_ids=True),
+    time_series: DatapointsList = client.time_series.data.retrieve_latest(
+        external_id=external_ids, before=before, ignore_unknown_ids=True
     )
 
     # For (Cog)Datapoints in (Cog)DatapointsList

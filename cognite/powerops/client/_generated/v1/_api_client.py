@@ -25,6 +25,7 @@ class BenchmarkingDayAheadAPIs:
         version: 1
 
     """
+    _data_model_id = dm.DataModelId("power_ops_core", "compute_ShopBasedDayAhead", "1")
 
     def __init__(self, client: CogniteClient):
         self._client = client
@@ -82,6 +83,7 @@ class ShopBasedDayAheadBidProcesAPIs:
         version: 1
 
     """
+    _data_model_id = dm.DataModelId("power_ops_core", "compute_ShopBasedDayAhead", "1")
 
     def __init__(self, client: CogniteClient):
         self._client = client
@@ -141,6 +143,7 @@ class TotalBidMatrixCalculationAPIs:
         version: 1
 
     """
+    _data_model_id = dm.DataModelId("power_ops_core", "compute_ShopBasedDayAhead", "1")
 
     def __init__(self, client: CogniteClient):
         self._client = client
@@ -195,6 +198,7 @@ class WaterValueBasedDayAheadBidProcesAPIs:
         version: 1
 
     """
+    _data_model_id = dm.DataModelId("power_ops_core", "compute_ShopBasedDayAhead", "1")
 
     def __init__(self, client: CogniteClient):
         self._client = client
@@ -243,6 +247,7 @@ class DayAheadConfigurationAPIs:
         version: 1
 
     """
+    _data_model_id = dm.DataModelId("power_ops_core", "compute_ShopBasedDayAhead", "1")
 
     def __init__(self, client: CogniteClient):
         self._client = client
@@ -292,6 +297,7 @@ class AFRRBidAPIs:
         version: 1
 
     """
+    _data_model_id = dm.DataModelId("power_ops_core", "compute_ShopBasedDayAhead", "1")
 
     def __init__(self, client: CogniteClient):
         self._client = client
@@ -325,6 +331,7 @@ class PowerAssetAPIs:
         version: 1
 
     """
+    _data_model_id = dm.DataModelId("power_ops_core", "compute_ShopBasedDayAhead", "1")
 
     def __init__(self, client: CogniteClient):
         self._client = client
@@ -367,6 +374,7 @@ class DayAheadBidAPIs:
         version: 1
 
     """
+    _data_model_id = dm.DataModelId("power_ops_core", "compute_ShopBasedDayAhead", "1")
 
     def __init__(self, client: CogniteClient):
         self._client = client
@@ -414,9 +422,9 @@ class PowerOpsModelsV1Client:
     PowerOpsModelsV1Client
 
     Generated with:
-        pygen = 0.99.63
-        cognite-sdk = 7.74.5
-        pydantic = 2.11.4
+        pygen = 1.2.12
+        cognite-sdk = 7.76.0
+        pydantic = 2.11.7
 
     """
 
@@ -428,7 +436,8 @@ class PowerOpsModelsV1Client:
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
         # The client name is used for aggregated logging of Pygen Usage
-        client.config.client_name = "CognitePygen:0.99.63"
+        if not client.config.client_name.startswith("CognitePygen"):
+            client.config.client_name = f"CognitePygen:1.2.12:SDK:{client.config.client_name}"
 
         self.benchmarking_day_ahead = BenchmarkingDayAheadAPIs(client)
         self.shop_based_day_ahead_bid_process = ShopBasedDayAheadBidProcesAPIs(client)
@@ -446,7 +455,6 @@ class PowerOpsModelsV1Client:
         self,
         items: data_classes.DomainModelWrite | Sequence[data_classes.DomainModelWrite],
         replace: bool = False,
-        write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> data_classes.ResourcesWriteResult:
         """Add or update (upsert) items.
@@ -459,9 +467,6 @@ class PowerOpsModelsV1Client:
                 existing values with the supplied values (true)?
                 Or should we merge in new values for properties together with the existing values (false)?
                 Note: This setting applies for all nodes or edges specified in the ingestion call.
-            write_none (bool): This method will, by default, skip properties that are set to None. However,
-                if you want to set properties to None,
-                you can set this parameter to True. Note this only applies to properties that are nullable.
             allow_version_increase (bool): If set to true, the version of the instance will be increased
                 if the instance already exists.
                 If you get an error: 'A version conflict caused the ingest to fail', you can set this to true to allow
@@ -470,14 +475,6 @@ class PowerOpsModelsV1Client:
             Created instance(s), i.e., nodes, edges, and time series.
 
         """
-        if write_none is True:
-            warnings.warn(
-                "The write_none argument is deprecated and will be removed in v1.0. "
-                "Setting it has no effect. Instead, pygen will detect properties "
-                "that are explicitly set to None and write them.",
-                UserWarning,
-                stacklevel=2,
-            )
         instances = self._create_instances(items, allow_version_increase)
         result = self._client.data_modeling.instances.apply(
             nodes=instances.nodes,
@@ -507,7 +504,7 @@ class PowerOpsModelsV1Client:
         allow_version_increase: bool,
     ) -> data_classes.ResourcesWrite:
         if isinstance(items, data_classes.DomainModelWrite):
-            instances = items.to_instances_write(False, allow_version_increase)
+            instances = items.to_instances_write(allow_version_increase)
         else:
             instances = data_classes.ResourcesWrite()
             cache: set[tuple[str, str]] = set()
@@ -519,36 +516,6 @@ class PowerOpsModelsV1Client:
                     )
                 )
         return instances
-
-    def apply(
-        self,
-        items: data_classes.DomainModelWrite | Sequence[data_classes.DomainModelWrite],
-        replace: bool = False,
-        write_none: bool = False,
-    ) -> data_classes.ResourcesWriteResult:
-        """[DEPRECATED] Add or update (upsert) items.
-
-        Args:
-            items: One or more instances of the pygen generated data classes.
-            replace (bool): How do we behave when a property value exists? Do we replace all matching
-                and existing values with the supplied values (true)?
-                Or should we merge in new values for properties together with the existing values (false)?
-                Note: This setting applies for all nodes or edges specified in the ingestion call.
-            write_none (bool): This method will, by default, skip properties that are set to None. However,
-                if you want to set properties to None, you can set this parameter to True. Note this
-                only applies to properties that are nullable.
-        Returns:
-            Created instance(s), i.e., nodes, edges, and time series.
-
-        """
-        warnings.warn(
-            "The .apply method is deprecated and will be removed in v1.0. "
-            "Please use the .upsert method on the instead."
-            "The motivation is that .upsert is a more descriptive name for the operation.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.upsert(items, replace, write_none)
 
     def delete(
         self,

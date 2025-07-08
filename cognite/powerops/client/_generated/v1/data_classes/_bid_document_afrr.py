@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import datetime
-import warnings
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
@@ -9,6 +8,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -49,10 +49,8 @@ if TYPE_CHECKING:
 __all__ = [
     "BidDocumentAFRR",
     "BidDocumentAFRRWrite",
-    "BidDocumentAFRRApply",
     "BidDocumentAFRRList",
     "BidDocumentAFRRWriteList",
-    "BidDocumentAFRRApplyList",
     "BidDocumentAFRRFields",
     "BidDocumentAFRRTextFields",
     "BidDocumentAFRRGraphQL",
@@ -179,14 +177,6 @@ class BidDocumentAFRR(BidDocument):
         """Convert this read version of bid document afrr to the writing version."""
         return BidDocumentAFRRWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> BidDocumentAFRRWrite:
-        """Convert this read version of bid document afrr to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class BidDocumentAFRRWrite(BidDocumentWrite):
@@ -231,18 +221,6 @@ class BidDocumentAFRRWrite(BidDocumentWrite):
         return value
 
 
-class BidDocumentAFRRApply(BidDocumentAFRRWrite):
-    def __new__(cls, *args, **kwargs) -> BidDocumentAFRRApply:
-        warnings.warn(
-            "BidDocumentAFRRApply is deprecated and will be removed in v1.0. "
-            "Use BidDocumentAFRRWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "BidDocumentAFRR.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class BidDocumentAFRRList(DomainModelList[BidDocumentAFRR]):
     """List of bid document afrrs in the read version."""
 
@@ -251,14 +229,6 @@ class BidDocumentAFRRList(DomainModelList[BidDocumentAFRR]):
         """Convert these read versions of bid document afrr to the writing versions."""
         return BidDocumentAFRRWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> BidDocumentAFRRWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
     @property
     def alerts(self) -> AlertList:
@@ -293,8 +263,6 @@ class BidDocumentAFRRWriteList(DomainModelWriteList[BidDocumentAFRRWrite]):
         from ._bid_row import BidRowWrite, BidRowWriteList
         return BidRowWriteList([item for items in self.data for item in items.bids or [] if isinstance(item, BidRowWrite)])
 
-
-class BidDocumentAFRRApplyList(BidDocumentAFRRWriteList): ...
 
 
 def _create_bid_document_afrr_filter(
@@ -362,11 +330,11 @@ class _BidDocumentAFRRQuery(NodeQueryCore[T_DomainModelList, BidDocumentAFRRList
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
         from ._alert import _AlertQuery
         from ._bid_row import _BidRowQuery
@@ -385,7 +353,7 @@ class _BidDocumentAFRRQuery(NodeQueryCore[T_DomainModelList, BidDocumentAFRRList
             reverse_expression,
         )
 
-        if _AlertQuery not in created_types:
+        if _AlertQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.alerts = _AlertQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -399,7 +367,7 @@ class _BidDocumentAFRRQuery(NodeQueryCore[T_DomainModelList, BidDocumentAFRRList
                 connection_property=ViewPropertyId(self._view_id, "alerts"),
             )
 
-        if _PriceAreaAFRRQuery not in created_types:
+        if _PriceAreaAFRRQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.price_area = _PriceAreaAFRRQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -413,7 +381,7 @@ class _BidDocumentAFRRQuery(NodeQueryCore[T_DomainModelList, BidDocumentAFRRList
                 connection_property=ViewPropertyId(self._view_id, "priceArea"),
             )
 
-        if _BidRowQuery not in created_types:
+        if _BidRowQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.bids = _BidRowQuery(
                 created_types.copy(),
                 self._creation_path,

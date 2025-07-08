@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
 from typing import Any, ClassVar, Literal, Optional, Union
 
@@ -12,6 +11,7 @@ from cognite.client.data_classes import (
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -50,10 +50,8 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
 __all__ = [
     "BidMatrix",
     "BidMatrixWrite",
-    "BidMatrixApply",
     "BidMatrixList",
     "BidMatrixWriteList",
-    "BidMatrixApplyList",
     "BidMatrixFields",
     "BidMatrixTextFields",
     "BidMatrixGraphQL",
@@ -135,14 +133,6 @@ class BidMatrix(DomainModel):
         """Convert this read version of bid matrix to the writing version."""
         return BidMatrixWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> BidMatrixWrite:
-        """Convert this read version of bid matrix to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class BidMatrixWrite(DomainModelWrite):
@@ -168,18 +158,6 @@ class BidMatrixWrite(DomainModelWrite):
 
 
 
-class BidMatrixApply(BidMatrixWrite):
-    def __new__(cls, *args, **kwargs) -> BidMatrixApply:
-        warnings.warn(
-            "BidMatrixApply is deprecated and will be removed in v1.0. "
-            "Use BidMatrixWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "BidMatrix.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class BidMatrixList(DomainModelList[BidMatrix]):
     """List of bid matrixes in the read version."""
 
@@ -188,22 +166,12 @@ class BidMatrixList(DomainModelList[BidMatrix]):
         """Convert these read versions of bid matrix to the writing versions."""
         return BidMatrixWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> BidMatrixWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class BidMatrixWriteList(DomainModelWriteList[BidMatrixWrite]):
     """List of bid matrixes in the writing version."""
 
     _INSTANCE = BidMatrixWrite
-
-class BidMatrixApplyList(BidMatrixWriteList): ...
 
 
 def _create_bid_matrix_filter(
@@ -243,11 +211,11 @@ class _BidMatrixQuery(NodeQueryCore[T_DomainModelList, BidMatrixList]):
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
 
         super().__init__(

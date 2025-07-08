@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import datetime
-import warnings
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
@@ -9,6 +8,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -47,10 +47,8 @@ if TYPE_CHECKING:
 __all__ = [
     "TotalBidMatrixCalculationInput",
     "TotalBidMatrixCalculationInputWrite",
-    "TotalBidMatrixCalculationInputApply",
     "TotalBidMatrixCalculationInputList",
     "TotalBidMatrixCalculationInputWriteList",
-    "TotalBidMatrixCalculationInputApplyList",
     "TotalBidMatrixCalculationInputFields",
     "TotalBidMatrixCalculationInputTextFields",
     "TotalBidMatrixCalculationInputGraphQL",
@@ -167,14 +165,6 @@ class TotalBidMatrixCalculationInput(FunctionInput):
         """Convert this read version of total bid matrix calculation input to the writing version."""
         return TotalBidMatrixCalculationInputWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> TotalBidMatrixCalculationInputWrite:
-        """Convert this read version of total bid matrix calculation input to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class TotalBidMatrixCalculationInputWrite(FunctionInputWrite):
@@ -216,18 +206,6 @@ class TotalBidMatrixCalculationInputWrite(FunctionInputWrite):
         return value
 
 
-class TotalBidMatrixCalculationInputApply(TotalBidMatrixCalculationInputWrite):
-    def __new__(cls, *args, **kwargs) -> TotalBidMatrixCalculationInputApply:
-        warnings.warn(
-            "TotalBidMatrixCalculationInputApply is deprecated and will be removed in v1.0. "
-            "Use TotalBidMatrixCalculationInputWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "TotalBidMatrixCalculationInput.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class TotalBidMatrixCalculationInputList(DomainModelList[TotalBidMatrixCalculationInput]):
     """List of total bid matrix calculation inputs in the read version."""
 
@@ -236,14 +214,6 @@ class TotalBidMatrixCalculationInputList(DomainModelList[TotalBidMatrixCalculati
         """Convert these read versions of total bid matrix calculation input to the writing versions."""
         return TotalBidMatrixCalculationInputWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> TotalBidMatrixCalculationInputWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
     @property
     def bid_configuration(self) -> BidConfigurationDayAheadList:
@@ -268,8 +238,6 @@ class TotalBidMatrixCalculationInputWriteList(DomainModelWriteList[TotalBidMatri
         from ._bid_matrix import BidMatrixWrite, BidMatrixWriteList
         return BidMatrixWriteList([item for items in self.data for item in items.partial_bid_matrices or [] if isinstance(item, BidMatrixWrite)])
 
-
-class TotalBidMatrixCalculationInputApplyList(TotalBidMatrixCalculationInputWriteList): ...
 
 
 def _create_total_bid_matrix_calculation_input_filter(
@@ -338,11 +306,11 @@ class _TotalBidMatrixCalculationInputQuery(NodeQueryCore[T_DomainModelList, Tota
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
         from ._bid_configuration_day_ahead import _BidConfigurationDayAheadQuery
         from ._bid_matrix import _BidMatrixQuery
@@ -360,7 +328,7 @@ class _TotalBidMatrixCalculationInputQuery(NodeQueryCore[T_DomainModelList, Tota
             reverse_expression,
         )
 
-        if _BidConfigurationDayAheadQuery not in created_types:
+        if _BidConfigurationDayAheadQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.bid_configuration = _BidConfigurationDayAheadQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -374,7 +342,7 @@ class _TotalBidMatrixCalculationInputQuery(NodeQueryCore[T_DomainModelList, Tota
                 connection_property=ViewPropertyId(self._view_id, "bidConfiguration"),
             )
 
-        if _BidMatrixQuery not in created_types:
+        if _BidMatrixQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.partial_bid_matrices = _BidMatrixQuery(
                 created_types.copy(),
                 self._creation_path,

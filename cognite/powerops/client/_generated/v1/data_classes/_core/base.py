@@ -164,7 +164,7 @@ class GraphQLList(UserList):
         """
         df = pd.DataFrame(self.dump())
         if df.empty:
-            df = pd.DataFrame(columns=GraphQLCore.model_fields)
+            df = pd.DataFrame(columns=list(GraphQLCore.model_fields.keys()))
         # Reorder columns to have the most relevant first
         id_columns = ["space", "external_id"]
         end_columns = ["data_record"]
@@ -306,7 +306,7 @@ class _DataRecordListCore(UserList, Generic[T_DataRecord]):
         """
         df = pd.DataFrame([item.model_dump() for item in self])
         if df.empty:
-            df = pd.DataFrame(columns=self._INSTANCE.model_fields)
+            df = pd.DataFrame(columns=list(self._INSTANCE.model_fields.keys()))
         return df
 
     def _repr_html_(self) -> str:
@@ -335,18 +335,9 @@ class DomainModelWrite(DomainModelCore, extra="ignore", populate_by_name=True):
 
     def to_instances_write(
         self,
-        write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         return self._to_resources_write(set(), allow_version_increase)
-
-    def to_instances_apply(self, write_none: bool = False) -> ResourcesWrite:
-        warnings.warn(
-            "to_instances_apply is deprecated and will be removed in v1.0. Use to_instances_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.to_instances_write(write_none)
 
     def _to_resources_write(self, cache: set[tuple[str, str]], allow_version_increase: bool = False) -> ResourcesWrite:
         resources = ResourcesWrite()
@@ -415,7 +406,7 @@ class CoreList(UserList, Generic[T_Core]):
     _INSTANCE: type[T_Core]
     _PARENT_CLASS: type[Core]
 
-    def __init__(self, nodes: Collection[T_Core] | None = None):
+    def __init__(self, nodes: Collection[T_Core] | None = None) -> None:
         super().__init__(nodes or [])
 
     # The dunder implementations are to get proper type hints
@@ -452,7 +443,7 @@ class CoreList(UserList, Generic[T_Core]):
         """
         df = pd.DataFrame(self.dump())
         if df.empty:
-            df = pd.DataFrame(columns=self._INSTANCE.model_fields)
+            df = pd.DataFrame(columns=list(self._INSTANCE.model_fields.keys()))
         # Reorder columns to have the most relevant first
         id_columns = ["space", "external_id"]
         end_columns = ["node_type", "data_record"]
@@ -473,6 +464,12 @@ class CoreList(UserList, Generic[T_Core]):
 
 class DomainModelList(CoreList[T_DomainModel]):
     _PARENT_CLASS = DomainModel
+
+    def __init__(
+        self, nodes: Collection[T_DomainModel] | None = None, cursors: dict[str, str | None] | None = None
+    ) -> None:
+        super().__init__(nodes)
+        self.cursors = cursors
 
     @property
     def data_records(self) -> DataRecordList:
@@ -497,7 +494,6 @@ class DomainModelWriteList(CoreList[T_DomainModelWrite]):
 
     def to_instances_write(
         self,
-        write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         cache: set[tuple[str, str]] = set()
@@ -506,14 +502,6 @@ class DomainModelWriteList(CoreList[T_DomainModelWrite]):
             result = node._to_resources_write(cache, allow_version_increase)
             domains.extend(result)
         return domains
-
-    def to_instances_apply(self, write_none: bool = False) -> ResourcesWrite:
-        warnings.warn(
-            "to_instances_apply is deprecated and will be removed in v1.0. Use to_instances_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.to_instances_write(write_none)
 
 
 T_DomainModelWriteList = TypeVar("T_DomainModelWriteList", bound=DomainModelWriteList, covariant=True)
@@ -687,7 +675,6 @@ class DomainRelationWrite(Core, extra="forbid"):
         start_node: DomainModelWrite | str | dm.NodeId,
         end_node: DomainModelWrite | str | dm.NodeId,
         edge_type: dm.DirectRelationReference,
-        write_none: bool = False,
         allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
@@ -772,10 +759,11 @@ def unpack_properties(properties: Properties) -> Mapping[str, PropertyValue | dm
 
 def serialize_properties(model: DomainModelWrite | DomainRelationWrite, resources: ResourcesWrite) -> dict[str, Any]:
     properties: dict[str, Any] = {}
+    model_fields = type(model).model_fields
     for field_name in model._container_fields:
         if field_name in model.model_fields_set:
             value = getattr(model, field_name)
-            key = model.model_fields[field_name].alias or field_name
+            key = model_fields[field_name].alias or field_name
             if field_name in model._direct_relations:
                 properties[key] = serialize_relation(value, model.space)
             else:
@@ -823,7 +811,6 @@ def connection_resources(
                     start_node=model,  # type: ignore[arg-type]
                     end_node=item,  # type: ignore[arg-type]
                     edge_type=edge_type,
-                    write_none=False,
                     allow_version_increase=allow_version_increase,
                 )
             resources.extend(other_resources)
@@ -844,7 +831,6 @@ def connection_resources(
                     start_node=item,  # type: ignore[arg-type]
                     end_node=model,  # type: ignore[arg-type]
                     edge_type=edge_type,
-                    write_none=False,
                     allow_version_increase=allow_version_increase,
                 )
             resources.extend(other_resources)
@@ -882,9 +868,10 @@ T_DomainList = TypeVar("T_DomainList", bound=Union[DomainModelList, DomainRelati
 
 def as_read_args(model: GraphQLCore | GraphQLExternal) -> dict[str, Any]:
     output: dict[str, Any] = {}
+    model_fields = type(model).model_fields
     for field_name in model.model_fields_set:
         value = getattr(model, field_name)
-        key = model.model_fields[field_name].alias or field_name
+        key = model_fields[field_name].alias or field_name
         if field_name == "data_record" and isinstance(model, GraphQLCore):
             # Dict to postpone validation
             if model.data_record is None:
@@ -910,9 +897,15 @@ def as_read_value(value: Any) -> Any:
 
 def as_write_args(model: DomainModel | GraphQLCore | DomainRelation | GraphQLExternal) -> dict[str, Any]:
     output: dict[str, Any] = {}
+    model_fields = type(model).model_fields
     for field_name in model.model_fields_set:
+        if field_name not in model_fields:
+            # The field is an extra field. Typically, happens when a property has been added
+            # to the model after the SDK was generated. Extra fields are not allowed in the write
+            # format of the data class.
+            continue
         value = getattr(model, field_name)
-        key = model.model_fields[field_name].alias or field_name
+        key = model_fields[field_name].alias or field_name
         if field_name == "data_record" and isinstance(model, DomainModel | DomainRelation):
             output[field_name] = DataRecordWrite(existing_version=model.data_record.version)
         elif field_name == "data_record" and isinstance(model, GraphQLCore):
