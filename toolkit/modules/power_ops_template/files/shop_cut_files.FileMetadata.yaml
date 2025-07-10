@@ -1,0 +1,18 @@
+- externalId: "SHOP_Fornebu_water_value_cut_file"
+  name: "SHOP_Fornebu_water_value_cut_file.txt"
+  source: "Customer"
+  dataSetExternalId: "powerops:config"
+  directory: "/toolkit/modules/power_ops/files/"
+  mimeType: "text/plain"
+  metadata:
+    origin: "cognite-toolkit"
+    application: "CogShop-as-a-Service"
+- externalId: "SHOP_Fornebu_water_value_cut_file_reservoir_mapping"
+  name: "SHOP_Fornebu_water_value_cut_file_reservoir_mapping.txt"
+  source: "Customer"
+  dataSetExternalId: "powerops:config"
+  directory: "/toolkit/modules/power_ops/files/"
+  mimeType: "text/plain"
+  metadata:
+    origin: "cognite-toolkit"
+    application: "CogShop-as-a-Service"
