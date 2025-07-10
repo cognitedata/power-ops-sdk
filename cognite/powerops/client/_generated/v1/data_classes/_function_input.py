@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
 from typing import Any, ClassVar, Literal, Optional, Union
 
@@ -8,6 +7,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -40,10 +40,8 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
 __all__ = [
     "FunctionInput",
     "FunctionInputWrite",
-    "FunctionInputApply",
     "FunctionInputList",
     "FunctionInputWriteList",
-    "FunctionInputApplyList",
     "FunctionInputFields",
     "FunctionInputTextFields",
     "FunctionInputGraphQL",
@@ -135,14 +133,6 @@ class FunctionInput(DomainModel):
         """Convert this read version of function input to the writing version."""
         return FunctionInputWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> FunctionInputWrite:
-        """Convert this read version of function input to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class FunctionInputWrite(DomainModelWrite):
@@ -172,18 +162,6 @@ class FunctionInputWrite(DomainModelWrite):
 
 
 
-class FunctionInputApply(FunctionInputWrite):
-    def __new__(cls, *args, **kwargs) -> FunctionInputApply:
-        warnings.warn(
-            "FunctionInputApply is deprecated and will be removed in v1.0. "
-            "Use FunctionInputWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "FunctionInput.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class FunctionInputList(DomainModelList[FunctionInput]):
     """List of function inputs in the read version."""
 
@@ -192,22 +170,12 @@ class FunctionInputList(DomainModelList[FunctionInput]):
         """Convert these read versions of function input to the writing versions."""
         return FunctionInputWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> FunctionInputWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class FunctionInputWriteList(DomainModelWriteList[FunctionInputWrite]):
     """List of function inputs in the writing version."""
 
     _INSTANCE = FunctionInputWrite
-
-class FunctionInputApplyList(FunctionInputWriteList): ...
 
 
 def _create_function_input_filter(
@@ -267,11 +235,11 @@ class _FunctionInputQuery(NodeQueryCore[T_DomainModelList, FunctionInputList]):
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
 
         super().__init__(

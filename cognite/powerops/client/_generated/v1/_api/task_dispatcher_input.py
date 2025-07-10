@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 import warnings
-from collections.abc import Sequence
+from collections.abc import Iterator, Sequence
 from typing import Any, ClassVar, Literal, overload
 
 from cognite.client import CogniteClient
@@ -11,6 +11,7 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 
 from cognite.powerops.client._generated.v1._api._core import (
     DEFAULT_LIMIT_READ,
+    DEFAULT_CHUNK_SIZE,
     instantiate_classes,
     Aggregations,
     NodeAPI,
@@ -19,8 +20,9 @@ from cognite.powerops.client._generated.v1._api._core import (
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
-    QueryStepFactory,
+    QueryBuildStepFactory,
     QueryBuilder,
+    QueryExecutor,
     QueryUnpacker,
     ViewPropertyId,
 )
@@ -42,7 +44,6 @@ from cognite.powerops.client._generated.v1.data_classes import (
     TaskDispatcherInputTextFields,
     BidConfigurationDayAhead,
 )
-from cognite.powerops.client._generated.v1._api.task_dispatcher_input_query import TaskDispatcherInputQueryAPI
 
 
 class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWrite, TaskDispatcherInputList, TaskDispatcherInputWriteList]):
@@ -55,152 +56,6 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
     def __init__(self, client: CogniteClient):
         super().__init__(client=client)
 
-
-    def __call__(
-        self,
-        workflow_execution_id: str | list[str] | None = None,
-        workflow_execution_id_prefix: str | None = None,
-        min_workflow_step: int | None = None,
-        max_workflow_step: int | None = None,
-        function_name: str | list[str] | None = None,
-        function_name_prefix: str | None = None,
-        function_call_id: str | list[str] | None = None,
-        function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        min_bid_date: datetime.date | None = None,
-        max_bid_date: datetime.date | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
-    ) -> TaskDispatcherInputQueryAPI[TaskDispatcherInput, TaskDispatcherInputList]:
-        """Query starting at task dispatcher inputs.
-
-        Args:
-            workflow_execution_id: The workflow execution id to filter on.
-            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
-            min_workflow_step: The minimum value of the workflow step to filter on.
-            max_workflow_step: The maximum value of the workflow step to filter on.
-            function_name: The function name to filter on.
-            function_name_prefix: The prefix of the function name to filter on.
-            function_call_id: The function call id to filter on.
-            function_call_id_prefix: The prefix of the function call id to filter on.
-            bid_configuration: The bid configuration to filter on.
-            min_bid_date: The minimum value of the bid date to filter on.
-            max_bid_date: The maximum value of the bid date to filter on.
-            external_id_prefix: The prefix of the external ID to filter on.
-            space: The space to filter on.
-            limit: Maximum number of task dispatcher inputs to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
-                your own filtering which will be ANDed with the filter above.
-
-        Returns:
-            A query API for task dispatcher inputs.
-
-        """
-        warnings.warn(
-            "This method is deprecated and will soon be removed. "
-            "Use the .select() method instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        has_data = dm.filters.HasData(views=[self._view_id])
-        filter_ = _create_task_dispatcher_input_filter(
-            self._view_id,
-            workflow_execution_id,
-            workflow_execution_id_prefix,
-            min_workflow_step,
-            max_workflow_step,
-            function_name,
-            function_name_prefix,
-            function_call_id,
-            function_call_id_prefix,
-            bid_configuration,
-            min_bid_date,
-            max_bid_date,
-            external_id_prefix,
-            space,
-            (filter and dm.filters.And(filter, has_data)) or has_data,
-        )
-        return TaskDispatcherInputQueryAPI(
-            self._client, QueryBuilder(), self._class_type, self._class_list, None, filter_, limit
-        )
-
-    def apply(
-        self,
-        task_dispatcher_input: TaskDispatcherInputWrite | Sequence[TaskDispatcherInputWrite],
-        replace: bool = False,
-        write_none: bool = False,
-    ) -> ResourcesWriteResult:
-        """Add or update (upsert) task dispatcher inputs.
-
-        Args:
-            task_dispatcher_input: Task dispatcher input or
-                sequence of task dispatcher inputs to upsert.
-            replace (bool): How do we behave when a property value exists? Do we replace all matching and
-                existing values with the supplied values (true)?
-                Or should we merge in new values for properties together with the existing values (false)?
-                Note: This setting applies for all nodes or edges specified in the ingestion call.
-            write_none (bool): This method, will by default, skip properties that are set to None.
-                However, if you want to set properties to None,
-                you can set this parameter to True. Note this only applies to properties that are nullable.
-        Returns:
-            Created instance(s), i.e., nodes, edges, and time series.
-
-        Examples:
-
-            Create a new task_dispatcher_input:
-
-                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
-                >>> from cognite.powerops.client._generated.v1.data_classes import TaskDispatcherInputWrite
-                >>> client = PowerOpsModelsV1Client()
-                >>> task_dispatcher_input = TaskDispatcherInputWrite(
-                ...     external_id="my_task_dispatcher_input", ...
-                ... )
-                >>> result = client.task_dispatcher_input.apply(task_dispatcher_input)
-
-        """
-        warnings.warn(
-            "The .apply method is deprecated and will be removed in v1.0. "
-            "Please use the .upsert method on the client instead. This means instead of "
-            "`my_client.task_dispatcher_input.apply(my_items)` please use `my_client.upsert(my_items)`."
-            "The motivation is that all apply methods are the same, and having one apply method per API "
-            " class encourages users to create items in small batches, which is inefficient."
-            "In addition, .upsert method is more descriptive of what the method does.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self._apply(task_dispatcher_input, replace, write_none)
-
-    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
-        """Delete one or more task dispatcher input.
-
-        Args:
-            external_id: External id of the task dispatcher input to delete.
-            space: The space where all the task dispatcher input are located.
-
-        Returns:
-            The instance(s), i.e., nodes and edges which has been deleted. Empty list if nothing was deleted.
-
-        Examples:
-
-            Delete task_dispatcher_input by id:
-
-                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
-                >>> client = PowerOpsModelsV1Client()
-                >>> client.task_dispatcher_input.delete("my_task_dispatcher_input")
-        """
-        warnings.warn(
-            "The .delete method is deprecated and will be removed in v1.0. "
-            "Please use the .delete method on the client instead. This means instead of "
-            "`my_client.task_dispatcher_input.delete(my_ids)` please use `my_client.delete(my_ids)`."
-            "The motivation is that all delete methods are the same, and having one delete method per API "
-            " class encourages users to delete items in small batches, which is inefficient.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self._delete(external_id, space)
 
     @overload
     def retrieve(
@@ -598,19 +453,21 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         """Start selecting from task dispatcher inputs."""
         return TaskDispatcherInputQuery(self._client)
 
-    def _query(
+    def _build(
         self,
         filter_: dm.Filter | None,
-        limit: int,
+        limit: int | None,
         retrieve_connections: Literal["skip", "identifier", "full"],
         sort: list[InstanceSort] | None = None,
-    ) -> list[dict[str, Any]]:
+        chunk_size: int | None = None,
+    ) -> QueryExecutor:
         builder = QueryBuilder()
-        factory = QueryStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
+        factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
         builder.append(factory.root(
             filter=filter_,
             sort=sort,
             limit=limit,
+            max_retrieve_batch_limit=chunk_size,
             has_container_fields=True,
         ))
         if retrieve_connections == "full":
@@ -621,10 +478,117 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
                     has_container_fields=True,
                 )
             )
-        unpack_edges: Literal["skip", "identifier"] = "identifier" if retrieve_connections == "identifier" else "skip"
-        builder.execute_query(self._client, remove_not_connected=True if unpack_edges == "skip" else False)
-        return QueryUnpacker(builder, edges=unpack_edges).unpack()
+        return builder.build()
 
+    def iterate(
+        self,
+        chunk_size: int = DEFAULT_CHUNK_SIZE,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        min_workflow_step: int | None = None,
+        max_workflow_step: int | None = None,
+        function_name: str | list[str] | None = None,
+        function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
+        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        min_bid_date: datetime.date | None = None,
+        max_bid_date: datetime.date | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        filter: dm.Filter | None = None,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
+        limit: int | None = None,
+        cursors: dict[str, str | None] | None = None,
+    ) -> Iterator[TaskDispatcherInputList]:
+        """Iterate over task dispatcher inputs
+
+        Args:
+            chunk_size: The number of task dispatcher inputs to return in each iteration. Defaults to 100.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            min_workflow_step: The minimum value of the workflow step to filter on.
+            max_workflow_step: The maximum value of the workflow step to filter on.
+            function_name: The function name to filter on.
+            function_name_prefix: The prefix of the function name to filter on.
+            function_call_id: The function call id to filter on.
+            function_call_id_prefix: The prefix of the function call id to filter on.
+            bid_configuration: The bid configuration to filter on.
+            min_bid_date: The minimum value of the bid date to filter on.
+            max_bid_date: The maximum value of the bid date to filter on.
+            external_id_prefix: The prefix of the external ID to filter on.
+            space: The space to filter on.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
+            retrieve_connections: Whether to retrieve `bid_configuration` for the task dispatcher inputs. Defaults to
+            'skip'.'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier of the
+            connected items, and 'full' will retrieve the full connected items.
+            limit: Maximum number of task dispatcher inputs to return. Defaults to None, which will return all items.
+            cursors: (Advanced) Cursor to use for pagination. This can be used to resume an iteration from a
+                specific point. See example below for more details.
+
+        Returns:
+            Iteration of task dispatcher inputs
+
+        Examples:
+
+            Iterate task dispatcher inputs in chunks of 100 up to 2000 items:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for task_dispatcher_inputs in client.task_dispatcher_input.iterate(chunk_size=100, limit=2000):
+                ...     for task_dispatcher_input in task_dispatcher_inputs:
+                ...         print(task_dispatcher_input.external_id)
+
+            Iterate task dispatcher inputs in chunks of 100 sorted by external_id in descending order:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for task_dispatcher_inputs in client.task_dispatcher_input.iterate(
+                ...     chunk_size=100,
+                ...     sort_by="external_id",
+                ...     direction="descending",
+                ... ):
+                ...     for task_dispatcher_input in task_dispatcher_inputs:
+                ...         print(task_dispatcher_input.external_id)
+
+            Iterate task dispatcher inputs in chunks of 100 and use cursors to resume the iteration:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for first_iteration in client.task_dispatcher_input.iterate(chunk_size=100, limit=2000):
+                ...     print(first_iteration)
+                ...     break
+                >>> for task_dispatcher_inputs in client.task_dispatcher_input.iterate(
+                ...     chunk_size=100,
+                ...     limit=2000,
+                ...     cursors=first_iteration.cursors,
+                ... ):
+                ...     for task_dispatcher_input in task_dispatcher_inputs:
+                ...         print(task_dispatcher_input.external_id)
+
+        """
+        warnings.warn(
+            "The `iterate` method is in alpha and is subject to breaking changes without prior notice.", stacklevel=2
+        )
+        filter_ = _create_task_dispatcher_input_filter(
+            self._view_id,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            min_workflow_step,
+            max_workflow_step,
+            function_name,
+            function_name_prefix,
+            function_call_id,
+            function_call_id_prefix,
+            bid_configuration,
+            min_bid_date,
+            max_bid_date,
+            external_id_prefix,
+            space,
+            filter,
+        )
+        yield from self._iterate(chunk_size, filter_, limit, retrieve_connections, cursors=cursors)
 
     def list(
         self,
@@ -709,5 +673,4 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
             return self._list(limit=limit,  filter=filter_, sort=sort_input)
-        values = self._query(filter_, limit, retrieve_connections, sort_input)
-        return self._class_list(instantiate_classes(self._class_type, values, "list"))
+        return self._query(filter_, limit, retrieve_connections, sort_input, "list")

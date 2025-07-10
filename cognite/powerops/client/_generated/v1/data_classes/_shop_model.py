@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
@@ -12,6 +11,7 @@ from cognite.client.data_classes import (
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -50,10 +50,8 @@ if TYPE_CHECKING:
 __all__ = [
     "ShopModel",
     "ShopModelWrite",
-    "ShopModelApply",
     "ShopModelList",
     "ShopModelWriteList",
-    "ShopModelApplyList",
     "ShopModelFields",
     "ShopModelTextFields",
     "ShopModelGraphQL",
@@ -171,14 +169,6 @@ class ShopModel(DomainModel, protected_namespaces=()):
         """Convert this read version of shop model to the writing version."""
         return ShopModelWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> ShopModelWrite:
-        """Convert this read version of shop model to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class ShopModelWrite(DomainModelWrite, protected_namespaces=()):
@@ -224,18 +214,6 @@ class ShopModelWrite(DomainModelWrite, protected_namespaces=()):
         return value
 
 
-class ShopModelApply(ShopModelWrite):
-    def __new__(cls, *args, **kwargs) -> ShopModelApply:
-        warnings.warn(
-            "ShopModelApply is deprecated and will be removed in v1.0. "
-            "Use ShopModelWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "ShopModel.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class ShopModelList(DomainModelList[ShopModel]):
     """List of shop models in the read version."""
 
@@ -244,14 +222,6 @@ class ShopModelList(DomainModelList[ShopModel]):
         """Convert these read versions of shop model to the writing versions."""
         return ShopModelWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> ShopModelWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
     @property
     def cog_shop_files_config(self) -> ShopFileList:
@@ -278,8 +248,6 @@ class ShopModelWriteList(DomainModelWriteList[ShopModelWrite]):
         from ._shop_attribute_mapping import ShopAttributeMappingWrite, ShopAttributeMappingWriteList
         return ShopAttributeMappingWriteList([item for items in self.data for item in items.base_attribute_mappings or [] if isinstance(item, ShopAttributeMappingWrite)])
 
-
-class ShopModelApplyList(ShopModelWriteList): ...
 
 
 def _create_shop_model_filter(
@@ -339,11 +307,11 @@ class _ShopModelQuery(NodeQueryCore[T_DomainModelList, ShopModelList]):
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
         from ._shop_attribute_mapping import _ShopAttributeMappingQuery
         from ._shop_file import _ShopFileQuery
@@ -361,7 +329,7 @@ class _ShopModelQuery(NodeQueryCore[T_DomainModelList, ShopModelList]):
             reverse_expression,
         )
 
-        if _ShopFileQuery not in created_types:
+        if _ShopFileQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.cog_shop_files_config = _ShopFileQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -375,7 +343,7 @@ class _ShopModelQuery(NodeQueryCore[T_DomainModelList, ShopModelList]):
                 connection_property=ViewPropertyId(self._view_id, "cogShopFilesConfig"),
             )
 
-        if _ShopAttributeMappingQuery not in created_types:
+        if _ShopAttributeMappingQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.base_attribute_mappings = _ShopAttributeMappingQuery(
                 created_types.copy(),
                 self._creation_path,

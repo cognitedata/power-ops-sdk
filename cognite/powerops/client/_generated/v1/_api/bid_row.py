@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from collections.abc import Sequence
+from collections.abc import Iterator, Sequence
 from typing import Any, ClassVar, Literal, overload
 
 from cognite.client import CogniteClient
@@ -10,6 +10,7 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 
 from cognite.powerops.client._generated.v1._api._core import (
     DEFAULT_LIMIT_READ,
+    DEFAULT_CHUNK_SIZE,
     instantiate_classes,
     Aggregations,
     NodeAPI,
@@ -18,8 +19,9 @@ from cognite.powerops.client._generated.v1._api._core import (
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
-    QueryStepFactory,
+    QueryBuildStepFactory,
     QueryBuilder,
+    QueryExecutor,
     QueryUnpacker,
     ViewPropertyId,
 )
@@ -43,7 +45,6 @@ from cognite.powerops.client._generated.v1.data_classes import (
     PowerAsset,
 )
 from cognite.powerops.client._generated.v1._api.bid_row_alerts import BidRowAlertsAPI
-from cognite.powerops.client._generated.v1._api.bid_row_query import BidRowQueryAPI
 
 
 class BidRowAPI(NodeAPI[BidRow, BidRowWrite, BidRowList, BidRowWriteList]):
@@ -57,149 +58,6 @@ class BidRowAPI(NodeAPI[BidRow, BidRowWrite, BidRowList, BidRowWriteList]):
         super().__init__(client=client)
 
         self.alerts_edge = BidRowAlertsAPI(client)
-
-    def __call__(
-        self,
-        min_price: float | None = None,
-        max_price: float | None = None,
-        product: str | list[str] | None = None,
-        product_prefix: str | None = None,
-        is_divisible: bool | None = None,
-        is_block: bool | None = None,
-        exclusive_group_id: str | list[str] | None = None,
-        exclusive_group_id_prefix: str | None = None,
-        linked_bid: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
-    ) -> BidRowQueryAPI[BidRow, BidRowList]:
-        """Query starting at bid rows.
-
-        Args:
-            min_price: The minimum value of the price to filter on.
-            max_price: The maximum value of the price to filter on.
-            product: The product to filter on.
-            product_prefix: The prefix of the product to filter on.
-            is_divisible: The is divisible to filter on.
-            is_block: The is block to filter on.
-            exclusive_group_id: The exclusive group id to filter on.
-            exclusive_group_id_prefix: The prefix of the exclusive group id to filter on.
-            linked_bid: The linked bid to filter on.
-            power_asset: The power asset to filter on.
-            external_id_prefix: The prefix of the external ID to filter on.
-            space: The space to filter on.
-            limit: Maximum number of bid rows to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
-                your own filtering which will be ANDed with the filter above.
-
-        Returns:
-            A query API for bid rows.
-
-        """
-        warnings.warn(
-            "This method is deprecated and will soon be removed. "
-            "Use the .select() method instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        has_data = dm.filters.HasData(views=[self._view_id])
-        filter_ = _create_bid_row_filter(
-            self._view_id,
-            min_price,
-            max_price,
-            product,
-            product_prefix,
-            is_divisible,
-            is_block,
-            exclusive_group_id,
-            exclusive_group_id_prefix,
-            linked_bid,
-            power_asset,
-            external_id_prefix,
-            space,
-            (filter and dm.filters.And(filter, has_data)) or has_data,
-        )
-        return BidRowQueryAPI(
-            self._client, QueryBuilder(), self._class_type, self._class_list, None, filter_, limit
-        )
-
-    def apply(
-        self,
-        bid_row: BidRowWrite | Sequence[BidRowWrite],
-        replace: bool = False,
-        write_none: bool = False,
-    ) -> ResourcesWriteResult:
-        """Add or update (upsert) bid rows.
-
-        Args:
-            bid_row: Bid row or
-                sequence of bid rows to upsert.
-            replace (bool): How do we behave when a property value exists? Do we replace all matching and
-                existing values with the supplied values (true)?
-                Or should we merge in new values for properties together with the existing values (false)?
-                Note: This setting applies for all nodes or edges specified in the ingestion call.
-            write_none (bool): This method, will by default, skip properties that are set to None.
-                However, if you want to set properties to None,
-                you can set this parameter to True. Note this only applies to properties that are nullable.
-        Returns:
-            Created instance(s), i.e., nodes, edges, and time series.
-
-        Examples:
-
-            Create a new bid_row:
-
-                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
-                >>> from cognite.powerops.client._generated.v1.data_classes import BidRowWrite
-                >>> client = PowerOpsModelsV1Client()
-                >>> bid_row = BidRowWrite(
-                ...     external_id="my_bid_row", ...
-                ... )
-                >>> result = client.bid_row.apply(bid_row)
-
-        """
-        warnings.warn(
-            "The .apply method is deprecated and will be removed in v1.0. "
-            "Please use the .upsert method on the client instead. This means instead of "
-            "`my_client.bid_row.apply(my_items)` please use `my_client.upsert(my_items)`."
-            "The motivation is that all apply methods are the same, and having one apply method per API "
-            " class encourages users to create items in small batches, which is inefficient."
-            "In addition, .upsert method is more descriptive of what the method does.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self._apply(bid_row, replace, write_none)
-
-    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
-        """Delete one or more bid row.
-
-        Args:
-            external_id: External id of the bid row to delete.
-            space: The space where all the bid row are located.
-
-        Returns:
-            The instance(s), i.e., nodes and edges which has been deleted. Empty list if nothing was deleted.
-
-        Examples:
-
-            Delete bid_row by id:
-
-                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
-                >>> client = PowerOpsModelsV1Client()
-                >>> client.bid_row.delete("my_bid_row")
-        """
-        warnings.warn(
-            "The .delete method is deprecated and will be removed in v1.0. "
-            "Please use the .delete method on the client instead. This means instead of "
-            "`my_client.bid_row.delete(my_ids)` please use `my_client.delete(my_ids)`."
-            "The motivation is that all delete methods are the same, and having one delete method per API "
-            " class encourages users to delete items in small batches, which is inefficient.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self._delete(external_id, space)
 
     @overload
     def retrieve(
@@ -585,30 +443,33 @@ class BidRowAPI(NodeAPI[BidRow, BidRowWrite, BidRowList, BidRowWriteList]):
         """Start selecting from bid rows."""
         return BidRowQuery(self._client)
 
-    def _query(
+    def _build(
         self,
         filter_: dm.Filter | None,
-        limit: int,
+        limit: int | None,
         retrieve_connections: Literal["skip", "identifier", "full"],
         sort: list[InstanceSort] | None = None,
-    ) -> list[dict[str, Any]]:
+        chunk_size: int | None = None,
+    ) -> QueryExecutor:
         builder = QueryBuilder()
-        factory = QueryStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
+        factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
         builder.append(factory.root(
             filter=filter_,
             sort=sort,
             limit=limit,
+            max_retrieve_batch_limit=chunk_size,
             has_container_fields=True,
         ))
-        builder.extend(
-            factory.from_edge(
-                Alert._view_id,
-                "outwards",
-                ViewPropertyId(self._view_id, "alerts"),
-                include_end_node=retrieve_connections == "full",
-                has_container_fields=True,
+        if retrieve_connections == "identifier" or retrieve_connections == "full":
+            builder.extend(
+                factory.from_edge(
+                    Alert._view_id,
+                    "outwards",
+                    ViewPropertyId(self._view_id, "alerts"),
+                    include_end_node=retrieve_connections == "full",
+                    has_container_fields=True,
+                )
             )
-        )
         if retrieve_connections == "full":
             builder.extend(
                 factory.from_direct_relation(
@@ -624,10 +485,114 @@ class BidRowAPI(NodeAPI[BidRow, BidRowWrite, BidRowList, BidRowWriteList]):
                     has_container_fields=True,
                 )
             )
-        unpack_edges: Literal["skip", "identifier"] = "identifier" if retrieve_connections == "identifier" else "skip"
-        builder.execute_query(self._client, remove_not_connected=True if unpack_edges == "skip" else False)
-        return QueryUnpacker(builder, edges=unpack_edges).unpack()
+        return builder.build()
 
+    def iterate(
+        self,
+        chunk_size: int = DEFAULT_CHUNK_SIZE,
+        min_price: float | None = None,
+        max_price: float | None = None,
+        product: str | list[str] | None = None,
+        product_prefix: str | None = None,
+        is_divisible: bool | None = None,
+        is_block: bool | None = None,
+        exclusive_group_id: str | list[str] | None = None,
+        exclusive_group_id_prefix: str | None = None,
+        linked_bid: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        filter: dm.Filter | None = None,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
+        limit: int | None = None,
+        cursors: dict[str, str | None] | None = None,
+    ) -> Iterator[BidRowList]:
+        """Iterate over bid rows
+
+        Args:
+            chunk_size: The number of bid rows to return in each iteration. Defaults to 100.
+            min_price: The minimum value of the price to filter on.
+            max_price: The maximum value of the price to filter on.
+            product: The product to filter on.
+            product_prefix: The prefix of the product to filter on.
+            is_divisible: The is divisible to filter on.
+            is_block: The is block to filter on.
+            exclusive_group_id: The exclusive group id to filter on.
+            exclusive_group_id_prefix: The prefix of the exclusive group id to filter on.
+            linked_bid: The linked bid to filter on.
+            power_asset: The power asset to filter on.
+            external_id_prefix: The prefix of the external ID to filter on.
+            space: The space to filter on.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
+            retrieve_connections: Whether to retrieve `linked_bid`, `power_asset` and `alerts` for the bid rows.
+            Defaults to 'skip'.'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier
+            of the connected items, and 'full' will retrieve the full connected items.
+            limit: Maximum number of bid rows to return. Defaults to None, which will return all items.
+            cursors: (Advanced) Cursor to use for pagination. This can be used to resume an iteration from a
+                specific point. See example below for more details.
+
+        Returns:
+            Iteration of bid rows
+
+        Examples:
+
+            Iterate bid rows in chunks of 100 up to 2000 items:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for bid_rows in client.bid_row.iterate(chunk_size=100, limit=2000):
+                ...     for bid_row in bid_rows:
+                ...         print(bid_row.external_id)
+
+            Iterate bid rows in chunks of 100 sorted by external_id in descending order:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for bid_rows in client.bid_row.iterate(
+                ...     chunk_size=100,
+                ...     sort_by="external_id",
+                ...     direction="descending",
+                ... ):
+                ...     for bid_row in bid_rows:
+                ...         print(bid_row.external_id)
+
+            Iterate bid rows in chunks of 100 and use cursors to resume the iteration:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for first_iteration in client.bid_row.iterate(chunk_size=100, limit=2000):
+                ...     print(first_iteration)
+                ...     break
+                >>> for bid_rows in client.bid_row.iterate(
+                ...     chunk_size=100,
+                ...     limit=2000,
+                ...     cursors=first_iteration.cursors,
+                ... ):
+                ...     for bid_row in bid_rows:
+                ...         print(bid_row.external_id)
+
+        """
+        warnings.warn(
+            "The `iterate` method is in alpha and is subject to breaking changes without prior notice.", stacklevel=2
+        )
+        filter_ = _create_bid_row_filter(
+            self._view_id,
+            min_price,
+            max_price,
+            product,
+            product_prefix,
+            is_divisible,
+            is_block,
+            exclusive_group_id,
+            exclusive_group_id_prefix,
+            linked_bid,
+            power_asset,
+            external_id_prefix,
+            space,
+            filter,
+        )
+        yield from self._iterate(chunk_size, filter_, limit, retrieve_connections, cursors=cursors)
 
     def list(
         self,
@@ -709,5 +674,4 @@ class BidRowAPI(NodeAPI[BidRow, BidRowWrite, BidRowList, BidRowWriteList]):
         sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
             return self._list(limit=limit,  filter=filter_, sort=sort_input)
-        values = self._query(filter_, limit, retrieve_connections, sort_input)
-        return self._class_list(instantiate_classes(self._class_type, values, "list"))
+        return self._query(filter_, limit, retrieve_connections, sort_input, "list")

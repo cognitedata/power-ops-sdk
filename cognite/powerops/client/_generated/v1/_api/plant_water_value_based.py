@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from collections.abc import Sequence
+from collections.abc import Iterator, Sequence
 from typing import Any, ClassVar, Literal, overload
 
 from cognite.client import CogniteClient
@@ -10,6 +10,7 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 
 from cognite.powerops.client._generated.v1._api._core import (
     DEFAULT_LIMIT_READ,
+    DEFAULT_CHUNK_SIZE,
     instantiate_classes,
     Aggregations,
     NodeAPI,
@@ -18,8 +19,9 @@ from cognite.powerops.client._generated.v1._api._core import (
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
-    QueryStepFactory,
+    QueryBuildStepFactory,
     QueryBuilder,
+    QueryExecutor,
     QueryUnpacker,
     ViewPropertyId,
 )
@@ -43,14 +45,6 @@ from cognite.powerops.client._generated.v1.data_classes import (
     PlantInformation,
 )
 from cognite.powerops.client._generated.v1._api.plant_water_value_based_generators import PlantWaterValueBasedGeneratorsAPI
-from cognite.powerops.client._generated.v1._api.plant_water_value_based_production_max_time_series import PlantWaterValueBasedProductionMaxTimeSeriesAPI
-from cognite.powerops.client._generated.v1._api.plant_water_value_based_production_min_time_series import PlantWaterValueBasedProductionMinTimeSeriesAPI
-from cognite.powerops.client._generated.v1._api.plant_water_value_based_water_value_time_series import PlantWaterValueBasedWaterValueTimeSeriesAPI
-from cognite.powerops.client._generated.v1._api.plant_water_value_based_feeding_fee_time_series import PlantWaterValueBasedFeedingFeeTimeSeriesAPI
-from cognite.powerops.client._generated.v1._api.plant_water_value_based_outlet_level_time_series import PlantWaterValueBasedOutletLevelTimeSeriesAPI
-from cognite.powerops.client._generated.v1._api.plant_water_value_based_inlet_level_time_series import PlantWaterValueBasedInletLevelTimeSeriesAPI
-from cognite.powerops.client._generated.v1._api.plant_water_value_based_head_direct_time_series import PlantWaterValueBasedHeadDirectTimeSeriesAPI
-from cognite.powerops.client._generated.v1._api.plant_water_value_based_query import PlantWaterValueBasedQueryAPI
 
 
 class PlantWaterValueBasedAPI(NodeAPI[PlantWaterValueBased, PlantWaterValueBasedWrite, PlantWaterValueBasedList, PlantWaterValueBasedWriteList]):
@@ -67,180 +61,6 @@ class PlantWaterValueBasedAPI(NodeAPI[PlantWaterValueBased, PlantWaterValueBased
         super().__init__(client=client)
 
         self.generators_edge = PlantWaterValueBasedGeneratorsAPI(client)
-        self.production_max_time_series = PlantWaterValueBasedProductionMaxTimeSeriesAPI(client, self._view_id)
-        self.production_min_time_series = PlantWaterValueBasedProductionMinTimeSeriesAPI(client, self._view_id)
-        self.water_value_time_series = PlantWaterValueBasedWaterValueTimeSeriesAPI(client, self._view_id)
-        self.feeding_fee_time_series = PlantWaterValueBasedFeedingFeeTimeSeriesAPI(client, self._view_id)
-        self.outlet_level_time_series = PlantWaterValueBasedOutletLevelTimeSeriesAPI(client, self._view_id)
-        self.inlet_level_time_series = PlantWaterValueBasedInletLevelTimeSeriesAPI(client, self._view_id)
-        self.head_direct_time_series = PlantWaterValueBasedHeadDirectTimeSeriesAPI(client, self._view_id)
-
-    def __call__(
-        self,
-        name: str | list[str] | None = None,
-        name_prefix: str | None = None,
-        display_name: str | list[str] | None = None,
-        display_name_prefix: str | None = None,
-        min_ordering: int | None = None,
-        max_ordering: int | None = None,
-        asset_type: str | list[str] | None = None,
-        asset_type_prefix: str | None = None,
-        min_head_loss_factor: float | None = None,
-        max_head_loss_factor: float | None = None,
-        min_outlet_level: float | None = None,
-        max_outlet_level: float | None = None,
-        min_production_max: float | None = None,
-        max_production_max: float | None = None,
-        min_production_min: float | None = None,
-        max_production_min: float | None = None,
-        min_connection_losses: float | None = None,
-        max_connection_losses: float | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
-    ) -> PlantWaterValueBasedQueryAPI[PlantWaterValueBased, PlantWaterValueBasedList]:
-        """Query starting at plant water value baseds.
-
-        Args:
-            name: The name to filter on.
-            name_prefix: The prefix of the name to filter on.
-            display_name: The display name to filter on.
-            display_name_prefix: The prefix of the display name to filter on.
-            min_ordering: The minimum value of the ordering to filter on.
-            max_ordering: The maximum value of the ordering to filter on.
-            asset_type: The asset type to filter on.
-            asset_type_prefix: The prefix of the asset type to filter on.
-            min_head_loss_factor: The minimum value of the head loss factor to filter on.
-            max_head_loss_factor: The maximum value of the head loss factor to filter on.
-            min_outlet_level: The minimum value of the outlet level to filter on.
-            max_outlet_level: The maximum value of the outlet level to filter on.
-            min_production_max: The minimum value of the production max to filter on.
-            max_production_max: The maximum value of the production max to filter on.
-            min_production_min: The minimum value of the production min to filter on.
-            max_production_min: The maximum value of the production min to filter on.
-            min_connection_losses: The minimum value of the connection loss to filter on.
-            max_connection_losses: The maximum value of the connection loss to filter on.
-            external_id_prefix: The prefix of the external ID to filter on.
-            space: The space to filter on.
-            limit: Maximum number of plant water value baseds to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
-                your own filtering which will be ANDed with the filter above.
-
-        Returns:
-            A query API for plant water value baseds.
-
-        """
-        warnings.warn(
-            "This method is deprecated and will soon be removed. "
-            "Use the .select() method instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        has_data = dm.filters.HasData(views=[self._view_id])
-        filter_ = _create_plant_water_value_based_filter(
-            self._view_id,
-            name,
-            name_prefix,
-            display_name,
-            display_name_prefix,
-            min_ordering,
-            max_ordering,
-            asset_type,
-            asset_type_prefix,
-            min_head_loss_factor,
-            max_head_loss_factor,
-            min_outlet_level,
-            max_outlet_level,
-            min_production_max,
-            max_production_max,
-            min_production_min,
-            max_production_min,
-            min_connection_losses,
-            max_connection_losses,
-            external_id_prefix,
-            space,
-            (filter and dm.filters.And(filter, has_data)) or has_data,
-        )
-        return PlantWaterValueBasedQueryAPI(
-            self._client, QueryBuilder(), self._class_type, self._class_list, None, filter_, limit
-        )
-
-    def apply(
-        self,
-        plant_water_value_based: PlantWaterValueBasedWrite | Sequence[PlantWaterValueBasedWrite],
-        replace: bool = False,
-        write_none: bool = False,
-    ) -> ResourcesWriteResult:
-        """Add or update (upsert) plant water value baseds.
-
-        Args:
-            plant_water_value_based: Plant water value based or
-                sequence of plant water value baseds to upsert.
-            replace (bool): How do we behave when a property value exists? Do we replace all matching and
-                existing values with the supplied values (true)?
-                Or should we merge in new values for properties together with the existing values (false)?
-                Note: This setting applies for all nodes or edges specified in the ingestion call.
-            write_none (bool): This method, will by default, skip properties that are set to None.
-                However, if you want to set properties to None,
-                you can set this parameter to True. Note this only applies to properties that are nullable.
-        Returns:
-            Created instance(s), i.e., nodes, edges, and time series.
-
-        Examples:
-
-            Create a new plant_water_value_based:
-
-                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
-                >>> from cognite.powerops.client._generated.v1.data_classes import PlantWaterValueBasedWrite
-                >>> client = PowerOpsModelsV1Client()
-                >>> plant_water_value_based = PlantWaterValueBasedWrite(
-                ...     external_id="my_plant_water_value_based", ...
-                ... )
-                >>> result = client.plant_water_value_based.apply(plant_water_value_based)
-
-        """
-        warnings.warn(
-            "The .apply method is deprecated and will be removed in v1.0. "
-            "Please use the .upsert method on the client instead. This means instead of "
-            "`my_client.plant_water_value_based.apply(my_items)` please use `my_client.upsert(my_items)`."
-            "The motivation is that all apply methods are the same, and having one apply method per API "
-            " class encourages users to create items in small batches, which is inefficient."
-            "In addition, .upsert method is more descriptive of what the method does.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self._apply(plant_water_value_based, replace, write_none)
-
-    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
-        """Delete one or more plant water value based.
-
-        Args:
-            external_id: External id of the plant water value based to delete.
-            space: The space where all the plant water value based are located.
-
-        Returns:
-            The instance(s), i.e., nodes and edges which has been deleted. Empty list if nothing was deleted.
-
-        Examples:
-
-            Delete plant_water_value_based by id:
-
-                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
-                >>> client = PowerOpsModelsV1Client()
-                >>> client.plant_water_value_based.delete("my_plant_water_value_based")
-        """
-        warnings.warn(
-            "The .delete method is deprecated and will be removed in v1.0. "
-            "Please use the .delete method on the client instead. This means instead of "
-            "`my_client.plant_water_value_based.delete(my_ids)` please use `my_client.delete(my_ids)`."
-            "The motivation is that all delete methods are the same, and having one delete method per API "
-            " class encourages users to delete items in small batches, which is inefficient.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self._delete(external_id, space)
 
     @overload
     def retrieve(
@@ -729,34 +549,165 @@ class PlantWaterValueBasedAPI(NodeAPI[PlantWaterValueBased, PlantWaterValueBased
         """Start selecting from plant water value baseds."""
         return PlantWaterValueBasedQuery(self._client)
 
-    def _query(
+    def _build(
         self,
         filter_: dm.Filter | None,
-        limit: int,
+        limit: int | None,
         retrieve_connections: Literal["skip", "identifier", "full"],
         sort: list[InstanceSort] | None = None,
-    ) -> list[dict[str, Any]]:
+        chunk_size: int | None = None,
+    ) -> QueryExecutor:
         builder = QueryBuilder()
-        factory = QueryStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
+        factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
         builder.append(factory.root(
             filter=filter_,
             sort=sort,
             limit=limit,
+            max_retrieve_batch_limit=chunk_size,
             has_container_fields=True,
         ))
-        builder.extend(
-            factory.from_edge(
-                Generator._view_id,
-                "outwards",
-                ViewPropertyId(self._view_id, "generators"),
-                include_end_node=retrieve_connections == "full",
-                has_container_fields=True,
+        if retrieve_connections == "identifier" or retrieve_connections == "full":
+            builder.extend(
+                factory.from_edge(
+                    Generator._view_id,
+                    "outwards",
+                    ViewPropertyId(self._view_id, "generators"),
+                    include_end_node=retrieve_connections == "full",
+                    has_container_fields=True,
+                )
             )
-        )
-        unpack_edges: Literal["skip", "identifier"] = "identifier" if retrieve_connections == "identifier" else "skip"
-        builder.execute_query(self._client, remove_not_connected=True if unpack_edges == "skip" else False)
-        return QueryUnpacker(builder, edges=unpack_edges).unpack()
+        return builder.build()
 
+    def iterate(
+        self,
+        chunk_size: int = DEFAULT_CHUNK_SIZE,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
+        min_head_loss_factor: float | None = None,
+        max_head_loss_factor: float | None = None,
+        min_outlet_level: float | None = None,
+        max_outlet_level: float | None = None,
+        min_production_max: float | None = None,
+        max_production_max: float | None = None,
+        min_production_min: float | None = None,
+        max_production_min: float | None = None,
+        min_connection_losses: float | None = None,
+        max_connection_losses: float | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        filter: dm.Filter | None = None,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
+        limit: int | None = None,
+        cursors: dict[str, str | None] | None = None,
+    ) -> Iterator[PlantWaterValueBasedList]:
+        """Iterate over plant water value baseds
+
+        Args:
+            chunk_size: The number of plant water value baseds to return in each iteration. Defaults to 100.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
+            display_name: The display name to filter on.
+            display_name_prefix: The prefix of the display name to filter on.
+            min_ordering: The minimum value of the ordering to filter on.
+            max_ordering: The maximum value of the ordering to filter on.
+            asset_type: The asset type to filter on.
+            asset_type_prefix: The prefix of the asset type to filter on.
+            min_head_loss_factor: The minimum value of the head loss factor to filter on.
+            max_head_loss_factor: The maximum value of the head loss factor to filter on.
+            min_outlet_level: The minimum value of the outlet level to filter on.
+            max_outlet_level: The maximum value of the outlet level to filter on.
+            min_production_max: The minimum value of the production max to filter on.
+            max_production_max: The maximum value of the production max to filter on.
+            min_production_min: The minimum value of the production min to filter on.
+            max_production_min: The maximum value of the production min to filter on.
+            min_connection_losses: The minimum value of the connection loss to filter on.
+            max_connection_losses: The maximum value of the connection loss to filter on.
+            external_id_prefix: The prefix of the external ID to filter on.
+            space: The space to filter on.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
+            retrieve_connections: Whether to retrieve `generators` for the plant water value baseds. Defaults to
+            'skip'.'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier of the
+            connected items, and 'full' will retrieve the full connected items.
+            limit: Maximum number of plant water value baseds to return. Defaults to None, which will return all items.
+            cursors: (Advanced) Cursor to use for pagination. This can be used to resume an iteration from a
+                specific point. See example below for more details.
+
+        Returns:
+            Iteration of plant water value baseds
+
+        Examples:
+
+            Iterate plant water value baseds in chunks of 100 up to 2000 items:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for plant_water_value_baseds in client.plant_water_value_based.iterate(chunk_size=100, limit=2000):
+                ...     for plant_water_value_based in plant_water_value_baseds:
+                ...         print(plant_water_value_based.external_id)
+
+            Iterate plant water value baseds in chunks of 100 sorted by external_id in descending order:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for plant_water_value_baseds in client.plant_water_value_based.iterate(
+                ...     chunk_size=100,
+                ...     sort_by="external_id",
+                ...     direction="descending",
+                ... ):
+                ...     for plant_water_value_based in plant_water_value_baseds:
+                ...         print(plant_water_value_based.external_id)
+
+            Iterate plant water value baseds in chunks of 100 and use cursors to resume the iteration:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for first_iteration in client.plant_water_value_based.iterate(chunk_size=100, limit=2000):
+                ...     print(first_iteration)
+                ...     break
+                >>> for plant_water_value_baseds in client.plant_water_value_based.iterate(
+                ...     chunk_size=100,
+                ...     limit=2000,
+                ...     cursors=first_iteration.cursors,
+                ... ):
+                ...     for plant_water_value_based in plant_water_value_baseds:
+                ...         print(plant_water_value_based.external_id)
+
+        """
+        warnings.warn(
+            "The `iterate` method is in alpha and is subject to breaking changes without prior notice.", stacklevel=2
+        )
+        filter_ = _create_plant_water_value_based_filter(
+            self._view_id,
+            name,
+            name_prefix,
+            display_name,
+            display_name_prefix,
+            min_ordering,
+            max_ordering,
+            asset_type,
+            asset_type_prefix,
+            min_head_loss_factor,
+            max_head_loss_factor,
+            min_outlet_level,
+            max_outlet_level,
+            min_production_max,
+            max_production_max,
+            min_production_min,
+            max_production_min,
+            min_connection_losses,
+            max_connection_losses,
+            external_id_prefix,
+            space,
+            filter,
+        )
+        yield from self._iterate(chunk_size, filter_, limit, retrieve_connections, cursors=cursors)
 
     def list(
         self,
@@ -862,5 +813,4 @@ class PlantWaterValueBasedAPI(NodeAPI[PlantWaterValueBased, PlantWaterValueBased
         sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
             return self._list(limit=limit,  filter=filter_, sort=sort_input)
-        values = self._query(filter_, limit, retrieve_connections, sort_input)
-        return self._class_list(instantiate_classes(self._class_type, values, "list"))
+        return self._query(filter_, limit, retrieve_connections, sort_input, "list")

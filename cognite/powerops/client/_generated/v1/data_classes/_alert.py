@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import datetime
-import warnings
 from collections.abc import Sequence
 from typing import Any, ClassVar, Literal, Optional, Union
 
@@ -9,6 +8,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -42,10 +42,8 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
 __all__ = [
     "Alert",
     "AlertWrite",
-    "AlertApply",
     "AlertList",
     "AlertWriteList",
-    "AlertApplyList",
     "AlertFields",
     "AlertTextFields",
     "AlertGraphQL",
@@ -168,14 +166,6 @@ class Alert(DomainModel):
         """Convert this read version of alert to the writing version."""
         return AlertWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> AlertWrite:
-        """Convert this read version of alert to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class AlertWrite(DomainModelWrite):
@@ -218,18 +208,6 @@ class AlertWrite(DomainModelWrite):
 
 
 
-class AlertApply(AlertWrite):
-    def __new__(cls, *args, **kwargs) -> AlertApply:
-        warnings.warn(
-            "AlertApply is deprecated and will be removed in v1.0. "
-            "Use AlertWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "Alert.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class AlertList(DomainModelList[Alert]):
     """List of alerts in the read version."""
 
@@ -238,22 +216,12 @@ class AlertList(DomainModelList[Alert]):
         """Convert these read versions of alert to the writing versions."""
         return AlertWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> AlertWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class AlertWriteList(DomainModelWriteList[AlertWrite]):
     """List of alerts in the writing version."""
 
     _INSTANCE = AlertWrite
-
-class AlertApplyList(AlertWriteList): ...
 
 
 def _create_alert_filter(
@@ -341,11 +309,11 @@ class _AlertQuery(NodeQueryCore[T_DomainModelList, AlertList]):
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
 
         super().__init__(

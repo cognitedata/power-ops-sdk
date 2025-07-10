@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
@@ -14,6 +13,7 @@ from cognite.client.data_classes import (
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -64,10 +64,8 @@ if TYPE_CHECKING:
 __all__ = [
     "PartialBidMatrixInformationWithScenarios",
     "PartialBidMatrixInformationWithScenariosWrite",
-    "PartialBidMatrixInformationWithScenariosApply",
     "PartialBidMatrixInformationWithScenariosList",
     "PartialBidMatrixInformationWithScenariosWriteList",
-    "PartialBidMatrixInformationWithScenariosApplyList",
     "PartialBidMatrixInformationWithScenariosFields",
     "PartialBidMatrixInformationWithScenariosTextFields",
     "PartialBidMatrixInformationWithScenariosGraphQL",
@@ -192,14 +190,6 @@ class PartialBidMatrixInformationWithScenarios(PartialBidMatrixInformation):
         """Convert this read version of partial bid matrix information with scenario to the writing version."""
         return PartialBidMatrixInformationWithScenariosWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> PartialBidMatrixInformationWithScenariosWrite:
-        """Convert this read version of partial bid matrix information with scenario to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class PartialBidMatrixInformationWithScenariosWrite(PartialBidMatrixInformationWrite):
@@ -241,18 +231,6 @@ class PartialBidMatrixInformationWithScenariosWrite(PartialBidMatrixInformationW
         return value
 
 
-class PartialBidMatrixInformationWithScenariosApply(PartialBidMatrixInformationWithScenariosWrite):
-    def __new__(cls, *args, **kwargs) -> PartialBidMatrixInformationWithScenariosApply:
-        warnings.warn(
-            "PartialBidMatrixInformationWithScenariosApply is deprecated and will be removed in v1.0. "
-            "Use PartialBidMatrixInformationWithScenariosWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "PartialBidMatrixInformationWithScenarios.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class PartialBidMatrixInformationWithScenariosList(DomainModelList[PartialBidMatrixInformationWithScenarios]):
     """List of partial bid matrix information with scenarios in the read version."""
 
@@ -261,14 +239,6 @@ class PartialBidMatrixInformationWithScenariosList(DomainModelList[PartialBidMat
         """Convert these read versions of partial bid matrix information with scenario to the writing versions."""
         return PartialBidMatrixInformationWithScenariosWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> PartialBidMatrixInformationWithScenariosWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
     @property
     def alerts(self) -> AlertList:
@@ -322,8 +292,6 @@ class PartialBidMatrixInformationWithScenariosWriteList(DomainModelWriteList[Par
         return PriceProductionWriteList([item for items in self.data for item in items.multi_scenario_input or [] if isinstance(item, PriceProductionWrite)])
 
 
-class PartialBidMatrixInformationWithScenariosApplyList(PartialBidMatrixInformationWithScenariosWriteList): ...
-
 
 def _create_partial_bid_matrix_information_with_scenario_filter(
     view_id: dm.ViewId,
@@ -376,11 +344,11 @@ class _PartialBidMatrixInformationWithScenariosQuery(NodeQueryCore[T_DomainModel
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
         from ._alert import _AlertQuery
         from ._bid_matrix import _BidMatrixQuery
@@ -401,7 +369,7 @@ class _PartialBidMatrixInformationWithScenariosQuery(NodeQueryCore[T_DomainModel
             reverse_expression,
         )
 
-        if _AlertQuery not in created_types:
+        if _AlertQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.alerts = _AlertQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -415,7 +383,7 @@ class _PartialBidMatrixInformationWithScenariosQuery(NodeQueryCore[T_DomainModel
                 connection_property=ViewPropertyId(self._view_id, "alerts"),
             )
 
-        if _BidMatrixQuery not in created_types:
+        if _BidMatrixQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.underlying_bid_matrices = _BidMatrixQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -429,7 +397,7 @@ class _PartialBidMatrixInformationWithScenariosQuery(NodeQueryCore[T_DomainModel
                 connection_property=ViewPropertyId(self._view_id, "underlyingBidMatrices"),
             )
 
-        if _PowerAssetQuery not in created_types:
+        if _PowerAssetQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.power_asset = _PowerAssetQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -443,7 +411,7 @@ class _PartialBidMatrixInformationWithScenariosQuery(NodeQueryCore[T_DomainModel
                 connection_property=ViewPropertyId(self._view_id, "powerAsset"),
             )
 
-        if _PartialBidConfigurationQuery not in created_types:
+        if _PartialBidConfigurationQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.partial_bid_configuration = _PartialBidConfigurationQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -457,7 +425,7 @@ class _PartialBidMatrixInformationWithScenariosQuery(NodeQueryCore[T_DomainModel
                 connection_property=ViewPropertyId(self._view_id, "partialBidConfiguration"),
             )
 
-        if _PriceProductionQuery not in created_types:
+        if _PriceProductionQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.multi_scenario_input = _PriceProductionQuery(
                 created_types.copy(),
                 self._creation_path,

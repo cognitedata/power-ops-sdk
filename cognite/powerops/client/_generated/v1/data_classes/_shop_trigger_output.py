@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
@@ -8,6 +7,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -46,10 +46,8 @@ if TYPE_CHECKING:
 __all__ = [
     "ShopTriggerOutput",
     "ShopTriggerOutputWrite",
-    "ShopTriggerOutputApply",
     "ShopTriggerOutputList",
     "ShopTriggerOutputWriteList",
-    "ShopTriggerOutputApplyList",
     "ShopTriggerOutputFields",
     "ShopTriggerOutputTextFields",
     "ShopTriggerOutputGraphQL",
@@ -146,6 +144,7 @@ class ShopTriggerOutput(FunctionOutput):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopTriggerOutput", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopTriggerOutput")
+    function_input: Union[ShopTriggerInput, str, dm.NodeId, None] = Field(default=None, repr=False, alias="functionInput")
     shop_result: Union[ShopResult, str, dm.NodeId, None] = Field(default=None, repr=False, alias="shopResult")
     @field_validator("function_input", "shop_result", mode="before")
     @classmethod
@@ -163,14 +162,6 @@ class ShopTriggerOutput(FunctionOutput):
         """Convert this read version of shop trigger output to the writing version."""
         return ShopTriggerOutputWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> ShopTriggerOutputWrite:
-        """Convert this read version of shop trigger output to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class ShopTriggerOutputWrite(FunctionOutputWrite):
@@ -197,9 +188,10 @@ class ShopTriggerOutputWrite(FunctionOutputWrite):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopTriggerOutput", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "ShopTriggerOutput")
+    function_input: Union[ShopTriggerInputWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="functionInput")
     shop_result: Union[ShopResultWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="shopResult")
 
-    @field_validator("shop_result", mode="before")
+    @field_validator("function_input", "shop_result", mode="before")
     def as_node_id(cls, value: Any) -> Any:
         if isinstance(value, dm.DirectRelationReference):
             return dm.NodeId(value.space, value.external_id)
@@ -210,18 +202,6 @@ class ShopTriggerOutputWrite(FunctionOutputWrite):
         return value
 
 
-class ShopTriggerOutputApply(ShopTriggerOutputWrite):
-    def __new__(cls, *args, **kwargs) -> ShopTriggerOutputApply:
-        warnings.warn(
-            "ShopTriggerOutputApply is deprecated and will be removed in v1.0. "
-            "Use ShopTriggerOutputWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "ShopTriggerOutput.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class ShopTriggerOutputList(DomainModelList[ShopTriggerOutput]):
     """List of shop trigger outputs in the read version."""
 
@@ -230,14 +210,6 @@ class ShopTriggerOutputList(DomainModelList[ShopTriggerOutput]):
         """Convert these read versions of shop trigger output to the writing versions."""
         return ShopTriggerOutputWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> ShopTriggerOutputWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
     @property
     def function_input(self) -> ShopTriggerInputList:
@@ -270,8 +242,6 @@ class ShopTriggerOutputWriteList(DomainModelWriteList[ShopTriggerOutputWrite]):
     def shop_result(self) -> ShopResultWriteList:
         from ._shop_result import ShopResultWrite, ShopResultWriteList
         return ShopResultWriteList([item.shop_result for item in self.data if isinstance(item.shop_result, ShopResultWrite)])
-
-class ShopTriggerOutputApplyList(ShopTriggerOutputWriteList): ...
 
 
 def _create_shop_trigger_output_filter(
@@ -341,11 +311,11 @@ class _ShopTriggerOutputQuery(NodeQueryCore[T_DomainModelList, ShopTriggerOutput
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
         from ._alert import _AlertQuery
         from ._shop_result import _ShopResultQuery
@@ -364,7 +334,7 @@ class _ShopTriggerOutputQuery(NodeQueryCore[T_DomainModelList, ShopTriggerOutput
             reverse_expression,
         )
 
-        if _ShopTriggerInputQuery not in created_types:
+        if _ShopTriggerInputQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.function_input = _ShopTriggerInputQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -378,7 +348,7 @@ class _ShopTriggerOutputQuery(NodeQueryCore[T_DomainModelList, ShopTriggerOutput
                 connection_property=ViewPropertyId(self._view_id, "functionInput"),
             )
 
-        if _AlertQuery not in created_types:
+        if _AlertQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.alerts = _AlertQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -392,7 +362,7 @@ class _ShopTriggerOutputQuery(NodeQueryCore[T_DomainModelList, ShopTriggerOutput
                 connection_property=ViewPropertyId(self._view_id, "alerts"),
             )
 
-        if _ShopResultQuery not in created_types:
+        if _ShopResultQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.shop_result = _ShopResultQuery(
                 created_types.copy(),
                 self._creation_path,

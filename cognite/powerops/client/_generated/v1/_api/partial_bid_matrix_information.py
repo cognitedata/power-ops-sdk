@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from collections.abc import Sequence
+from collections.abc import Iterator, Sequence
 from typing import Any, ClassVar, Literal, overload
 
 from cognite.client import CogniteClient
@@ -10,6 +10,7 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 
 from cognite.powerops.client._generated.v1._api._core import (
     DEFAULT_LIMIT_READ,
+    DEFAULT_CHUNK_SIZE,
     instantiate_classes,
     Aggregations,
     NodeAPI,
@@ -18,8 +19,9 @@ from cognite.powerops.client._generated.v1._api._core import (
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
-    QueryStepFactory,
+    QueryBuildStepFactory,
     QueryBuilder,
+    QueryExecutor,
     QueryUnpacker,
     ViewPropertyId,
 )
@@ -47,8 +49,6 @@ from cognite.powerops.client._generated.v1.data_classes import (
 )
 from cognite.powerops.client._generated.v1._api.partial_bid_matrix_information_alerts import PartialBidMatrixInformationAlertsAPI
 from cognite.powerops.client._generated.v1._api.partial_bid_matrix_information_underlying_bid_matrices import PartialBidMatrixInformationUnderlyingBidMatricesAPI
-from cognite.powerops.client._generated.v1._api.partial_bid_matrix_information_linked_time_series import PartialBidMatrixInformationLinkedTimeSeriesAPI
-from cognite.powerops.client._generated.v1._api.partial_bid_matrix_information_query import PartialBidMatrixInformationQueryAPI
 
 
 class PartialBidMatrixInformationAPI(NodeAPI[PartialBidMatrixInformation, PartialBidMatrixInformationWrite, PartialBidMatrixInformationList, PartialBidMatrixInformationWriteList]):
@@ -66,138 +66,6 @@ class PartialBidMatrixInformationAPI(NodeAPI[PartialBidMatrixInformation, Partia
 
         self.alerts_edge = PartialBidMatrixInformationAlertsAPI(client)
         self.underlying_bid_matrices_edge = PartialBidMatrixInformationUnderlyingBidMatricesAPI(client)
-        self.linked_time_series = PartialBidMatrixInformationLinkedTimeSeriesAPI(client, self._view_id)
-
-    def __call__(
-        self,
-        state: str | list[str] | None = None,
-        state_prefix: str | None = None,
-        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        min_resource_cost: float | None = None,
-        max_resource_cost: float | None = None,
-        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
-    ) -> PartialBidMatrixInformationQueryAPI[PartialBidMatrixInformation, PartialBidMatrixInformationList]:
-        """Query starting at partial bid matrix information.
-
-        Args:
-            state: The state to filter on.
-            state_prefix: The prefix of the state to filter on.
-            power_asset: The power asset to filter on.
-            min_resource_cost: The minimum value of the resource cost to filter on.
-            max_resource_cost: The maximum value of the resource cost to filter on.
-            partial_bid_configuration: The partial bid configuration to filter on.
-            external_id_prefix: The prefix of the external ID to filter on.
-            space: The space to filter on.
-            limit: Maximum number of partial bid matrix information to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
-                your own filtering which will be ANDed with the filter above.
-
-        Returns:
-            A query API for partial bid matrix information.
-
-        """
-        warnings.warn(
-            "This method is deprecated and will soon be removed. "
-            "Use the .select() method instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        has_data = dm.filters.HasData(views=[self._view_id])
-        filter_ = _create_partial_bid_matrix_information_filter(
-            self._view_id,
-            state,
-            state_prefix,
-            power_asset,
-            min_resource_cost,
-            max_resource_cost,
-            partial_bid_configuration,
-            external_id_prefix,
-            space,
-            (filter and dm.filters.And(filter, has_data)) or has_data,
-        )
-        return PartialBidMatrixInformationQueryAPI(
-            self._client, QueryBuilder(), self._class_type, self._class_list, None, filter_, limit
-        )
-
-    def apply(
-        self,
-        partial_bid_matrix_information: PartialBidMatrixInformationWrite | Sequence[PartialBidMatrixInformationWrite],
-        replace: bool = False,
-        write_none: bool = False,
-    ) -> ResourcesWriteResult:
-        """Add or update (upsert) partial bid matrix information.
-
-        Args:
-            partial_bid_matrix_information: Partial bid matrix information or
-                sequence of partial bid matrix information to upsert.
-            replace (bool): How do we behave when a property value exists? Do we replace all matching and
-                existing values with the supplied values (true)?
-                Or should we merge in new values for properties together with the existing values (false)?
-                Note: This setting applies for all nodes or edges specified in the ingestion call.
-            write_none (bool): This method, will by default, skip properties that are set to None.
-                However, if you want to set properties to None,
-                you can set this parameter to True. Note this only applies to properties that are nullable.
-        Returns:
-            Created instance(s), i.e., nodes, edges, and time series.
-
-        Examples:
-
-            Create a new partial_bid_matrix_information:
-
-                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
-                >>> from cognite.powerops.client._generated.v1.data_classes import PartialBidMatrixInformationWrite
-                >>> client = PowerOpsModelsV1Client()
-                >>> partial_bid_matrix_information = PartialBidMatrixInformationWrite(
-                ...     external_id="my_partial_bid_matrix_information", ...
-                ... )
-                >>> result = client.partial_bid_matrix_information.apply(partial_bid_matrix_information)
-
-        """
-        warnings.warn(
-            "The .apply method is deprecated and will be removed in v1.0. "
-            "Please use the .upsert method on the client instead. This means instead of "
-            "`my_client.partial_bid_matrix_information.apply(my_items)` please use `my_client.upsert(my_items)`."
-            "The motivation is that all apply methods are the same, and having one apply method per API "
-            " class encourages users to create items in small batches, which is inefficient."
-            "In addition, .upsert method is more descriptive of what the method does.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self._apply(partial_bid_matrix_information, replace, write_none)
-
-    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
-        """Delete one or more partial bid matrix information.
-
-        Args:
-            external_id: External id of the partial bid matrix information to delete.
-            space: The space where all the partial bid matrix information are located.
-
-        Returns:
-            The instance(s), i.e., nodes and edges which has been deleted. Empty list if nothing was deleted.
-
-        Examples:
-
-            Delete partial_bid_matrix_information by id:
-
-                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
-                >>> client = PowerOpsModelsV1Client()
-                >>> client.partial_bid_matrix_information.delete("my_partial_bid_matrix_information")
-        """
-        warnings.warn(
-            "The .delete method is deprecated and will be removed in v1.0. "
-            "Please use the .delete method on the client instead. This means instead of "
-            "`my_client.partial_bid_matrix_information.delete(my_ids)` please use `my_client.delete(my_ids)`."
-            "The motivation is that all delete methods are the same, and having one delete method per API "
-            " class encourages users to delete items in small batches, which is inefficient.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self._delete(external_id, space)
 
     @overload
     def retrieve(
@@ -543,39 +411,42 @@ class PartialBidMatrixInformationAPI(NodeAPI[PartialBidMatrixInformation, Partia
         """Start selecting from partial bid matrix information."""
         return PartialBidMatrixInformationQuery(self._client)
 
-    def _query(
+    def _build(
         self,
         filter_: dm.Filter | None,
-        limit: int,
+        limit: int | None,
         retrieve_connections: Literal["skip", "identifier", "full"],
         sort: list[InstanceSort] | None = None,
-    ) -> list[dict[str, Any]]:
+        chunk_size: int | None = None,
+    ) -> QueryExecutor:
         builder = QueryBuilder()
-        factory = QueryStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
+        factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
         builder.append(factory.root(
             filter=filter_,
             sort=sort,
             limit=limit,
+            max_retrieve_batch_limit=chunk_size,
             has_container_fields=True,
         ))
-        builder.extend(
-            factory.from_edge(
-                Alert._view_id,
-                "outwards",
-                ViewPropertyId(self._view_id, "alerts"),
-                include_end_node=retrieve_connections == "full",
-                has_container_fields=True,
+        if retrieve_connections == "identifier" or retrieve_connections == "full":
+            builder.extend(
+                factory.from_edge(
+                    Alert._view_id,
+                    "outwards",
+                    ViewPropertyId(self._view_id, "alerts"),
+                    include_end_node=retrieve_connections == "full",
+                    has_container_fields=True,
+                )
             )
-        )
-        builder.extend(
-            factory.from_edge(
-                BidMatrix._view_id,
-                "outwards",
-                ViewPropertyId(self._view_id, "underlyingBidMatrices"),
-                include_end_node=retrieve_connections == "full",
-                has_container_fields=True,
+            builder.extend(
+                factory.from_edge(
+                    BidMatrix._view_id,
+                    "outwards",
+                    ViewPropertyId(self._view_id, "underlyingBidMatrices"),
+                    include_end_node=retrieve_connections == "full",
+                    has_container_fields=True,
+                )
             )
-        )
         if retrieve_connections == "full":
             builder.extend(
                 factory.from_direct_relation(
@@ -591,10 +462,103 @@ class PartialBidMatrixInformationAPI(NodeAPI[PartialBidMatrixInformation, Partia
                     has_container_fields=True,
                 )
             )
-        unpack_edges: Literal["skip", "identifier"] = "identifier" if retrieve_connections == "identifier" else "skip"
-        builder.execute_query(self._client, remove_not_connected=True if unpack_edges == "skip" else False)
-        return QueryUnpacker(builder, edges=unpack_edges).unpack()
+        return builder.build()
 
+    def iterate(
+        self,
+        chunk_size: int = DEFAULT_CHUNK_SIZE,
+        state: str | list[str] | None = None,
+        state_prefix: str | None = None,
+        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        min_resource_cost: float | None = None,
+        max_resource_cost: float | None = None,
+        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        filter: dm.Filter | None = None,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
+        limit: int | None = None,
+        cursors: dict[str, str | None] | None = None,
+    ) -> Iterator[PartialBidMatrixInformationList]:
+        """Iterate over partial bid matrix information
+
+        Args:
+            chunk_size: The number of partial bid matrix information to return in each iteration. Defaults to 100.
+            state: The state to filter on.
+            state_prefix: The prefix of the state to filter on.
+            power_asset: The power asset to filter on.
+            min_resource_cost: The minimum value of the resource cost to filter on.
+            max_resource_cost: The maximum value of the resource cost to filter on.
+            partial_bid_configuration: The partial bid configuration to filter on.
+            external_id_prefix: The prefix of the external ID to filter on.
+            space: The space to filter on.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
+            retrieve_connections: Whether to retrieve `alerts`, `underlying_bid_matrices`, `power_asset` and
+            `partial_bid_configuration` for the partial bid matrix information. Defaults to 'skip'.'skip' will not
+            retrieve any connections, 'identifier' will only retrieve the identifier of the connected items, and 'full'
+            will retrieve the full connected items.
+            limit: Maximum number of partial bid matrix information to return. Defaults to None, which will return all items.
+            cursors: (Advanced) Cursor to use for pagination. This can be used to resume an iteration from a
+                specific point. See example below for more details.
+
+        Returns:
+            Iteration of partial bid matrix information
+
+        Examples:
+
+            Iterate partial bid matrix information in chunks of 100 up to 2000 items:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for partial_bid_matrix_information_list in client.partial_bid_matrix_information.iterate(chunk_size=100, limit=2000):
+                ...     for partial_bid_matrix_information in partial_bid_matrix_information_list:
+                ...         print(partial_bid_matrix_information.external_id)
+
+            Iterate partial bid matrix information in chunks of 100 sorted by external_id in descending order:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for partial_bid_matrix_information_list in client.partial_bid_matrix_information.iterate(
+                ...     chunk_size=100,
+                ...     sort_by="external_id",
+                ...     direction="descending",
+                ... ):
+                ...     for partial_bid_matrix_information in partial_bid_matrix_information_list:
+                ...         print(partial_bid_matrix_information.external_id)
+
+            Iterate partial bid matrix information in chunks of 100 and use cursors to resume the iteration:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for first_iteration in client.partial_bid_matrix_information.iterate(chunk_size=100, limit=2000):
+                ...     print(first_iteration)
+                ...     break
+                >>> for partial_bid_matrix_information_list in client.partial_bid_matrix_information.iterate(
+                ...     chunk_size=100,
+                ...     limit=2000,
+                ...     cursors=first_iteration.cursors,
+                ... ):
+                ...     for partial_bid_matrix_information in partial_bid_matrix_information_list:
+                ...         print(partial_bid_matrix_information.external_id)
+
+        """
+        warnings.warn(
+            "The `iterate` method is in alpha and is subject to breaking changes without prior notice.", stacklevel=2
+        )
+        filter_ = _create_partial_bid_matrix_information_filter(
+            self._view_id,
+            state,
+            state_prefix,
+            power_asset,
+            min_resource_cost,
+            max_resource_cost,
+            partial_bid_configuration,
+            external_id_prefix,
+            space,
+            filter,
+        )
+        yield from self._iterate(chunk_size, filter_, limit, retrieve_connections, cursors=cursors)
 
     def list(
         self,
@@ -665,5 +629,4 @@ class PartialBidMatrixInformationAPI(NodeAPI[PartialBidMatrixInformation, Partia
         sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
             return self._list(limit=limit,  filter=filter_, sort=sort_input)
-        values = self._query(filter_, limit, retrieve_connections, sort_input)
-        return self._class_list(instantiate_classes(self._class_type, values, "list"))
+        return self._query(filter_, limit, retrieve_connections, sort_input, "list")
