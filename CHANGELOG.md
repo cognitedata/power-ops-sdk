@@ -17,7 +17,7 @@ Changes are grouped as follows:
 
 ## [0.113.0] - 2025-07-08
 ### Fixed
-* Regerate pygen portion of SDK to avoid unexpected retrieve behavior for classes using inheritance
+* Regenerate pygen portion of SDK to avoid unexpected retrieve behavior for classes using inheritance
 
 ## [0.112.1] - 2025-06-19
 ### Added
