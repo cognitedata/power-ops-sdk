@@ -78,12 +78,12 @@ def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, 
     start_dt = ms_to_datetime(start).replace(tzinfo=None)  # UTC implied
     end_dt = ms_to_datetime(end).replace(tzinfo=None)  # UTC implied
     logger.debug(f"Retrieving {external_ids} between '{start_dt}' and '{end_dt}'")
-    df_range = client.time_series.data.retrieve(  # type: ignore[union-attr]
+    df_range = client.time_series.data.retrieve(
         external_id=external_ids, start=start, end=end, ignore_unknown_ids=True
     ).to_pandas()
 
     # Retrieve latest datapoints before start
-    df_latest = client.time_series.data.retrieve_latest(  # type: ignore[union-attr]
+    df_latest = client.time_series.data.retrieve_latest(
         external_id=external_ids, before=start, ignore_unknown_ids=True
     ).to_pandas()
 

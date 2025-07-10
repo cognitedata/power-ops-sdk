@@ -363,8 +363,8 @@ class ResyncImporter:
 
             for edge_name, edge_info in edges.items():
                 if not isinstance(edge_info, list):
-                    edge_info = [edge_info]  # type: ignore[assignment]
-                for edge_end_external_id in edge_info:  # type: ignore[attr-defined]
+                    edge_info = [edge_info]
+                for edge_end_external_id in edge_info:
                     if edge_end_external_id:
                         edge_object = {
                             "instanceType": "edge",
