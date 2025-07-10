@@ -94,7 +94,7 @@ class TestBidConfiguration:
     def test_bid_configuration_retrieve(self, new_bid_configuration: BidConfigurationDayAhead):
         assert new_bid_configuration is not None
         assert isinstance(new_bid_configuration, BidConfigurationDayAhead)
-        assert new_bid_configuration.external_id == "pytest_bid_configuration"
+        assert new_bid_configuration.external_id.startswith("pytest_bid_configuration")
         assert new_bid_configuration.name == "Test Bid Configuration"
         assert new_bid_configuration.market_configuration is None
         assert new_bid_configuration.price_area is None

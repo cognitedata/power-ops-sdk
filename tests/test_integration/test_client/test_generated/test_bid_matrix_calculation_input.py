@@ -20,6 +20,7 @@ from cognite.powerops.client._generated.v1.data_classes import (
     WaterValueBasedPartialBidMatrixCalculationInputGraphQL,
     WaterValueBasedPartialBidMatrixCalculationInputWrite,
 )
+from tests.test_integration.test_client.test_generated.conftest import random_external_id
 
 
 def render_water_value_based_partial_bid_matrix_calc_input_query(
@@ -409,7 +410,7 @@ def new_multi_scenario_partial(
     new_bid_configuration: BidConfigurationDayAhead,
     new_partials_shop: ShopBasedPartialBidConfigurationList,
 ) -> MultiScenarioPartialBidMatrixCalculationInput:
-    external_id = "pytest_multi_scenario_partial"
+    external_id = random_external_id("pytest_multi_scenario_partial")
 
     multi_scenario_partial = MultiScenarioPartialBidMatrixCalculationInputWrite(
         external_id=external_id,
@@ -444,7 +445,7 @@ def new_water_value_based(
     new_bid_configuration: BidConfigurationDayAhead,
     new_partials_water: ShopBasedPartialBidConfigurationList,
 ) -> MultiScenarioPartialBidMatrixCalculationInput:
-    external_id = "pytest_water_value_based"
+    external_id = random_external_id("pytest_water_value_based")
 
     multi_scenario_partial = WaterValueBasedPartialBidMatrixCalculationInputWrite(
         external_id=external_id,

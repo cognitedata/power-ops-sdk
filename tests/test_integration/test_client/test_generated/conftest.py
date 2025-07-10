@@ -1,3 +1,5 @@
+import uuid
+
 import pytest
 
 from cognite.powerops.client import PowerOpsClient
@@ -19,9 +21,14 @@ from cognite.powerops.client._generated.v1.data_classes import (
 )
 
 
+def random_external_id(prefix: str) -> str:
+    """Generate a random external ID for testing purposes."""
+    return f"{prefix}_{uuid.uuid4().hex}"
+
+
 @pytest.fixture
 def new_bid_configuration(power_ops_client) -> BidConfigurationDayAhead:
-    external_id = "pytest_bid_configuration"
+    external_id = random_external_id("pytest_bid_configuration")
     bid_config = BidConfigurationDayAheadWrite(
         external_id=external_id,
         name="Test Bid Configuration",
@@ -42,7 +49,7 @@ def new_bid_configuration(power_ops_client) -> BidConfigurationDayAhead:
 
 @pytest.fixture
 def new_market_configuration(power_ops_client) -> MarketConfiguration:
-    external_id = "pytest_market_configuration"
+    external_id = random_external_id("pytest_market_configuration")
     market_config = MarketConfigurationWrite(
         external_id=external_id,
         name="Test Market Configuration",
@@ -64,7 +71,7 @@ def new_market_configuration(power_ops_client) -> MarketConfiguration:
 
 @pytest.fixture
 def new_price_area(power_ops_client) -> PriceAreaDayAhead:
-    external_id = "pytest_price_area"
+    external_id = random_external_id("pytest_price_area")
     price_area = PriceAreaDayAheadWrite(
         external_id=external_id,
         name="Test Price Area",
@@ -81,7 +88,7 @@ def new_price_area(power_ops_client) -> PriceAreaDayAhead:
 
 @pytest.fixture
 def new_date_specification(power_ops_client) -> DateSpecification:
-    external_id = "pytest_date_specification"
+    external_id = random_external_id("pytest_date_specification")
     date_specification = DateSpecificationWrite(
         external_id=external_id,
         name="Test Date Specification",
@@ -102,7 +109,7 @@ def new_date_specification(power_ops_client) -> DateSpecification:
 
 @pytest.fixture
 def new_partials_shop(power_ops_client) -> ShopBasedPartialBidConfigurationList:
-    external_id_prefix = "pytest_partial_shop"
+    external_id_prefix = random_external_id("pytest_partial_shop")
     partials = []
     external_ids = []
     scenarios = [
@@ -146,7 +153,7 @@ def new_partials_shop(power_ops_client) -> ShopBasedPartialBidConfigurationList:
 
 @pytest.fixture
 def new_partials_water(power_ops_client) -> WaterValueBasedPartialBidConfigurationList:
-    external_id_prefix = "pytest_partial_water"
+    external_id_prefix = random_external_id("pytest_partial_water")
     partials = []
     external_ids = []
 
