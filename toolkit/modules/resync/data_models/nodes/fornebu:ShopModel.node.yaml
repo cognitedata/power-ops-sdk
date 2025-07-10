@@ -2,7 +2,7 @@
   instanceType: node
   sources:
   - properties:
-      model: SHOP_Fornebu_model
+      model: SHOP_model_fornebu
       modelVersion: '1'
       name: Fornebu
       penaltyLimit: 3000
