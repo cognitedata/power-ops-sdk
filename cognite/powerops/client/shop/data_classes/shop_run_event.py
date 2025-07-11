@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 from functools import cached_property
-from typing import ClassVar, Optional
+from typing import ClassVar
 from uuid import uuid4
 
 from cognite.client.data_classes import Event
@@ -25,15 +25,15 @@ class SHOPRunEvent:
     watercourse: str
     starttime: str
     endtime: str
-    timeresolution: Optional[dict[str, int]] = None
-    dynamic_minute_offset: Optional[int] = None
-    dm_case: Optional[str] = None
-    dm_space: Optional[str] = None
+    timeresolution: dict[str, int] | None = None
+    dynamic_minute_offset: int | None = None
+    dm_case: str | None = None
+    dm_space: str | None = None
     manual_run: bool = False
 
-    event_start_time: Optional[int] = None
-    event_end_time: Optional[int] = None
-    source: Optional[str] = None
+    event_start_time: int | None = None
+    event_end_time: int | None = None
+    source: str | None = None
 
     def __post_init__(self):
         if self.starttime:

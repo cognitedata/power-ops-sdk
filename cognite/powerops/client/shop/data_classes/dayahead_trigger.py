@@ -1,4 +1,4 @@
-from typing import Literal, Optional
+from typing import Literal
 
 import arrow
 from cognite.client.data_classes import Event, FileMetadata
@@ -143,8 +143,8 @@ class Case(BaseModel):
 
     case_name: str  # e.g. Glomma
     pre_run_file_external_ids: list[str]
-    commands_file: Optional[str] = None
-    pre_runs_external_id_prefix: Optional[str] = None
+    commands_file: str | None = None
+    pre_runs_external_id_prefix: str | None = None
 
 
 class BidTimeFrame(BaseModel):
@@ -161,8 +161,8 @@ class BidTimeFrame(BaseModel):
     model_config = ConfigDict(frozen=True)
 
     shift_start_in_days: int
-    timezone: Optional[str] = "Europe/Oslo"
-    bid_period_in_days: Optional[int] = 14
+    timezone: str | None = "Europe/Oslo"
+    bid_period_in_days: int | None = 14
     _datetime_string_format: str = "YYYY-MM-DD HH:mm:ss"
     _date_string_format: str = "YYYY-MM-DD"
     _start_time_arrow: arrow.Arrow
@@ -218,14 +218,14 @@ class DayaheadTrigger(BaseModel):
 
     price_scenarios: list[str]
     main_scenario: str = ""
-    shop_version: Optional[str] = _SHOP_VERSION_FALLBACK
+    shop_version: str | None = _SHOP_VERSION_FALLBACK
     price_area: str
     method: Literal["multi_scenario", "price_independent"]
     bid_configuration_name: str
     cases: list[Case]
-    bid_time_frame: Optional[BidTimeFrame] = BidTimeFrame(shift_start_in_days=0)
-    plant_names_override: Optional[dict] = None
-    dayahead_configuration_external_id: Optional[str] = "market_configuration_nordpool_dayahead"
+    bid_time_frame: BidTimeFrame | None = BidTimeFrame(shift_start_in_days=0)
+    plant_names_override: dict | None = None
+    dayahead_configuration_external_id: str | None = "market_configuration_nordpool_dayahead"
 
 
 class DayaheadWorkflowRun(BaseModel):

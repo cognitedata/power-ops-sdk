@@ -1,12 +1,12 @@
 # TODO DRY up with power-ops-functions
 
-from typing import Any, Optional, TypeVar, overload
+from typing import Any, TypeVar, overload
 
 _T = TypeVar("_T")
 
 
 @overload
-def require(value: Optional[_T]) -> _T: ...
+def require(value: _T | None) -> _T: ...
 
 
 @overload
