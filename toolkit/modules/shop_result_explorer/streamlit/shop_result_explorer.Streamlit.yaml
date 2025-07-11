@@ -1,0 +1,8 @@
+externalId: shop_result_explorer
+name: Shop Result Explorer
+creator: PowerOps
+description: This is an app to explore Shop input and output files.
+published: true
+theme: Light
+dataSetExternalId: "powerops:misc"
+entrypoint: shop_results.py
