@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import datetime
-import warnings
 from collections.abc import Sequence
 from typing import Any, ClassVar, Literal, Optional, Union
 
@@ -9,6 +8,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -43,10 +43,8 @@ from cognite.powerops.client._generated.v1.data_classes._alert import Alert, Ale
 __all__ = [
     "ShopPenaltyReport",
     "ShopPenaltyReportWrite",
-    "ShopPenaltyReportApply",
     "ShopPenaltyReportList",
     "ShopPenaltyReportWriteList",
-    "ShopPenaltyReportApplyList",
     "ShopPenaltyReportFields",
     "ShopPenaltyReportTextFields",
     "ShopPenaltyReportGraphQL",
@@ -164,14 +162,6 @@ class ShopPenaltyReport(Alert):
         """Convert this read version of shop penalty report to the writing version."""
         return ShopPenaltyReportWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> ShopPenaltyReportWrite:
-        """Convert this read version of shop penalty report to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class ShopPenaltyReportWrite(AlertWrite):
@@ -206,18 +196,6 @@ class ShopPenaltyReportWrite(AlertWrite):
 
 
 
-class ShopPenaltyReportApply(ShopPenaltyReportWrite):
-    def __new__(cls, *args, **kwargs) -> ShopPenaltyReportApply:
-        warnings.warn(
-            "ShopPenaltyReportApply is deprecated and will be removed in v1.0. "
-            "Use ShopPenaltyReportWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "ShopPenaltyReport.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class ShopPenaltyReportList(DomainModelList[ShopPenaltyReport]):
     """List of shop penalty reports in the read version."""
 
@@ -226,22 +204,12 @@ class ShopPenaltyReportList(DomainModelList[ShopPenaltyReport]):
         """Convert these read versions of shop penalty report to the writing versions."""
         return ShopPenaltyReportWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> ShopPenaltyReportWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class ShopPenaltyReportWriteList(DomainModelWriteList[ShopPenaltyReportWrite]):
     """List of shop penalty reports in the writing version."""
 
     _INSTANCE = ShopPenaltyReportWrite
-
-class ShopPenaltyReportApplyList(ShopPenaltyReportWriteList): ...
 
 
 def _create_shop_penalty_report_filter(
@@ -329,11 +297,11 @@ class _ShopPenaltyReportQuery(NodeQueryCore[T_DomainModelList, ShopPenaltyReport
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
 
         super().__init__(

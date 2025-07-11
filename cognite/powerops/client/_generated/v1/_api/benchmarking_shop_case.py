@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 import warnings
-from collections.abc import Sequence
+from collections.abc import Iterator, Sequence
 from typing import Any, ClassVar, Literal, overload
 
 from cognite.client import CogniteClient
@@ -11,6 +11,7 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 
 from cognite.powerops.client._generated.v1._api._core import (
     DEFAULT_LIMIT_READ,
+    DEFAULT_CHUNK_SIZE,
     instantiate_classes,
     Aggregations,
     NodeAPI,
@@ -19,8 +20,9 @@ from cognite.powerops.client._generated.v1._api._core import (
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
-    QueryStepFactory,
+    QueryBuildStepFactory,
     QueryBuilder,
+    QueryExecutor,
     QueryUnpacker,
     ViewPropertyId,
 )
@@ -44,7 +46,6 @@ from cognite.powerops.client._generated.v1.data_classes import (
     ShopScenario,
 )
 from cognite.powerops.client._generated.v1._api.benchmarking_shop_case_shop_files import BenchmarkingShopCaseShopFilesAPI
-from cognite.powerops.client._generated.v1._api.benchmarking_shop_case_query import BenchmarkingShopCaseQueryAPI
 
 
 class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCaseWrite, BenchmarkingShopCaseList, BenchmarkingShopCaseWriteList]):
@@ -58,149 +59,6 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         super().__init__(client=client)
 
         self.shop_files_edge = BenchmarkingShopCaseShopFilesAPI(client)
-
-    def __call__(
-        self,
-        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        min_start_time: datetime.datetime | None = None,
-        max_start_time: datetime.datetime | None = None,
-        min_end_time: datetime.datetime | None = None,
-        max_end_time: datetime.datetime | None = None,
-        bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        min_delivery_date: datetime.date | None = None,
-        max_delivery_date: datetime.date | None = None,
-        min_bid_generated: datetime.datetime | None = None,
-        max_bid_generated: datetime.datetime | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
-    ) -> BenchmarkingShopCaseQueryAPI[BenchmarkingShopCase, BenchmarkingShopCaseList]:
-        """Query starting at benchmarking shop cases.
-
-        Args:
-            scenario: The scenario to filter on.
-            min_start_time: The minimum value of the start time to filter on.
-            max_start_time: The maximum value of the start time to filter on.
-            min_end_time: The minimum value of the end time to filter on.
-            max_end_time: The maximum value of the end time to filter on.
-            bid_source: The bid source to filter on.
-            min_delivery_date: The minimum value of the delivery date to filter on.
-            max_delivery_date: The maximum value of the delivery date to filter on.
-            min_bid_generated: The minimum value of the bid generated to filter on.
-            max_bid_generated: The maximum value of the bid generated to filter on.
-            external_id_prefix: The prefix of the external ID to filter on.
-            space: The space to filter on.
-            limit: Maximum number of benchmarking shop cases to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
-                your own filtering which will be ANDed with the filter above.
-
-        Returns:
-            A query API for benchmarking shop cases.
-
-        """
-        warnings.warn(
-            "This method is deprecated and will soon be removed. "
-            "Use the .select() method instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        has_data = dm.filters.HasData(views=[self._view_id])
-        filter_ = _create_benchmarking_shop_case_filter(
-            self._view_id,
-            scenario,
-            min_start_time,
-            max_start_time,
-            min_end_time,
-            max_end_time,
-            bid_source,
-            min_delivery_date,
-            max_delivery_date,
-            min_bid_generated,
-            max_bid_generated,
-            external_id_prefix,
-            space,
-            (filter and dm.filters.And(filter, has_data)) or has_data,
-        )
-        return BenchmarkingShopCaseQueryAPI(
-            self._client, QueryBuilder(), self._class_type, self._class_list, None, filter_, limit
-        )
-
-    def apply(
-        self,
-        benchmarking_shop_case: BenchmarkingShopCaseWrite | Sequence[BenchmarkingShopCaseWrite],
-        replace: bool = False,
-        write_none: bool = False,
-    ) -> ResourcesWriteResult:
-        """Add or update (upsert) benchmarking shop cases.
-
-        Args:
-            benchmarking_shop_case: Benchmarking shop case or
-                sequence of benchmarking shop cases to upsert.
-            replace (bool): How do we behave when a property value exists? Do we replace all matching and
-                existing values with the supplied values (true)?
-                Or should we merge in new values for properties together with the existing values (false)?
-                Note: This setting applies for all nodes or edges specified in the ingestion call.
-            write_none (bool): This method, will by default, skip properties that are set to None.
-                However, if you want to set properties to None,
-                you can set this parameter to True. Note this only applies to properties that are nullable.
-        Returns:
-            Created instance(s), i.e., nodes, edges, and time series.
-
-        Examples:
-
-            Create a new benchmarking_shop_case:
-
-                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
-                >>> from cognite.powerops.client._generated.v1.data_classes import BenchmarkingShopCaseWrite
-                >>> client = PowerOpsModelsV1Client()
-                >>> benchmarking_shop_case = BenchmarkingShopCaseWrite(
-                ...     external_id="my_benchmarking_shop_case", ...
-                ... )
-                >>> result = client.benchmarking_shop_case.apply(benchmarking_shop_case)
-
-        """
-        warnings.warn(
-            "The .apply method is deprecated and will be removed in v1.0. "
-            "Please use the .upsert method on the client instead. This means instead of "
-            "`my_client.benchmarking_shop_case.apply(my_items)` please use `my_client.upsert(my_items)`."
-            "The motivation is that all apply methods are the same, and having one apply method per API "
-            " class encourages users to create items in small batches, which is inefficient."
-            "In addition, .upsert method is more descriptive of what the method does.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self._apply(benchmarking_shop_case, replace, write_none)
-
-    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
-        """Delete one or more benchmarking shop case.
-
-        Args:
-            external_id: External id of the benchmarking shop case to delete.
-            space: The space where all the benchmarking shop case are located.
-
-        Returns:
-            The instance(s), i.e., nodes and edges which has been deleted. Empty list if nothing was deleted.
-
-        Examples:
-
-            Delete benchmarking_shop_case by id:
-
-                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
-                >>> client = PowerOpsModelsV1Client()
-                >>> client.benchmarking_shop_case.delete("my_benchmarking_shop_case")
-        """
-        warnings.warn(
-            "The .delete method is deprecated and will be removed in v1.0. "
-            "Please use the .delete method on the client instead. This means instead of "
-            "`my_client.benchmarking_shop_case.delete(my_ids)` please use `my_client.delete(my_ids)`."
-            "The motivation is that all delete methods are the same, and having one delete method per API "
-            " class encourages users to delete items in small batches, which is inefficient.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self._delete(external_id, space)
 
     @overload
     def retrieve(
@@ -262,6 +120,7 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
         max_end_time: datetime.datetime | None = None,
+        status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
         bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
@@ -285,6 +144,7 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
             max_start_time: The maximum value of the start time to filter on.
             min_end_time: The minimum value of the end time to filter on.
             max_end_time: The maximum value of the end time to filter on.
+            status: The status to filter on.
             bid_source: The bid source to filter on.
             min_delivery_date: The minimum value of the delivery date to filter on.
             max_delivery_date: The maximum value of the delivery date to filter on.
@@ -323,6 +183,7 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
             max_start_time,
             min_end_time,
             max_end_time,
+            status,
             bid_source,
             min_delivery_date,
             max_delivery_date,
@@ -353,6 +214,7 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
         max_end_time: datetime.datetime | None = None,
+        status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
         bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
@@ -375,6 +237,7 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
         max_end_time: datetime.datetime | None = None,
+        status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
         bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
@@ -399,6 +262,7 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
         max_end_time: datetime.datetime | None = None,
+        status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
         bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
@@ -422,6 +286,7 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
         max_end_time: datetime.datetime | None = None,
+        status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
         bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
@@ -447,6 +312,7 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
             max_start_time: The maximum value of the start time to filter on.
             min_end_time: The minimum value of the end time to filter on.
             max_end_time: The maximum value of the end time to filter on.
+            status: The status to filter on.
             bid_source: The bid source to filter on.
             min_delivery_date: The minimum value of the delivery date to filter on.
             max_delivery_date: The maximum value of the delivery date to filter on.
@@ -479,6 +345,7 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
             max_start_time,
             min_end_time,
             max_end_time,
+            status,
             bid_source,
             min_delivery_date,
             max_delivery_date,
@@ -507,6 +374,7 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
         max_end_time: datetime.datetime | None = None,
+        status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
         bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
@@ -527,6 +395,7 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
             max_start_time: The maximum value of the start time to filter on.
             min_end_time: The minimum value of the end time to filter on.
             max_end_time: The maximum value of the end time to filter on.
+            status: The status to filter on.
             bid_source: The bid source to filter on.
             min_delivery_date: The minimum value of the delivery date to filter on.
             max_delivery_date: The maximum value of the delivery date to filter on.
@@ -550,6 +419,7 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
             max_start_time,
             min_end_time,
             max_end_time,
+            status,
             bid_source,
             min_delivery_date,
             max_delivery_date,
@@ -572,30 +442,33 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         """Start selecting from benchmarking shop cases."""
         return BenchmarkingShopCaseQuery(self._client)
 
-    def _query(
+    def _build(
         self,
         filter_: dm.Filter | None,
-        limit: int,
+        limit: int | None,
         retrieve_connections: Literal["skip", "identifier", "full"],
         sort: list[InstanceSort] | None = None,
-    ) -> list[dict[str, Any]]:
+        chunk_size: int | None = None,
+    ) -> QueryExecutor:
         builder = QueryBuilder()
-        factory = QueryStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
+        factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
         builder.append(factory.root(
             filter=filter_,
             sort=sort,
             limit=limit,
+            max_retrieve_batch_limit=chunk_size,
             has_container_fields=True,
         ))
-        builder.extend(
-            factory.from_edge(
-                ShopFile._view_id,
-                "outwards",
-                ViewPropertyId(self._view_id, "shopFiles"),
-                include_end_node=retrieve_connections == "full",
-                has_container_fields=True,
+        if retrieve_connections == "identifier" or retrieve_connections == "full":
+            builder.extend(
+                factory.from_edge(
+                    ShopFile._view_id,
+                    "outwards",
+                    ViewPropertyId(self._view_id, "shopFiles"),
+                    include_end_node=retrieve_connections == "full",
+                    has_container_fields=True,
+                )
             )
-        )
         if retrieve_connections == "full":
             builder.extend(
                 factory.from_direct_relation(
@@ -604,10 +477,117 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
                     has_container_fields=True,
                 )
             )
-        unpack_edges: Literal["skip", "identifier"] = "identifier" if retrieve_connections == "identifier" else "skip"
-        builder.execute_query(self._client, remove_not_connected=True if unpack_edges == "skip" else False)
-        return QueryUnpacker(builder, edges=unpack_edges).unpack()
+        return builder.build()
 
+    def iterate(
+        self,
+        chunk_size: int = DEFAULT_CHUNK_SIZE,
+        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        min_start_time: datetime.datetime | None = None,
+        max_start_time: datetime.datetime | None = None,
+        min_end_time: datetime.datetime | None = None,
+        max_end_time: datetime.datetime | None = None,
+        status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
+        bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        min_delivery_date: datetime.date | None = None,
+        max_delivery_date: datetime.date | None = None,
+        min_bid_generated: datetime.datetime | None = None,
+        max_bid_generated: datetime.datetime | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        filter: dm.Filter | None = None,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
+        limit: int | None = None,
+        cursors: dict[str, str | None] | None = None,
+    ) -> Iterator[BenchmarkingShopCaseList]:
+        """Iterate over benchmarking shop cases
+
+        Args:
+            chunk_size: The number of benchmarking shop cases to return in each iteration. Defaults to 100.
+            scenario: The scenario to filter on.
+            min_start_time: The minimum value of the start time to filter on.
+            max_start_time: The maximum value of the start time to filter on.
+            min_end_time: The minimum value of the end time to filter on.
+            max_end_time: The maximum value of the end time to filter on.
+            status: The status to filter on.
+            bid_source: The bid source to filter on.
+            min_delivery_date: The minimum value of the delivery date to filter on.
+            max_delivery_date: The maximum value of the delivery date to filter on.
+            min_bid_generated: The minimum value of the bid generated to filter on.
+            max_bid_generated: The maximum value of the bid generated to filter on.
+            external_id_prefix: The prefix of the external ID to filter on.
+            space: The space to filter on.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
+            retrieve_connections: Whether to retrieve `scenario` and `shop_files` for the benchmarking shop cases.
+            Defaults to 'skip'.'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier
+            of the connected items, and 'full' will retrieve the full connected items.
+            limit: Maximum number of benchmarking shop cases to return. Defaults to None, which will return all items.
+            cursors: (Advanced) Cursor to use for pagination. This can be used to resume an iteration from a
+                specific point. See example below for more details.
+
+        Returns:
+            Iteration of benchmarking shop cases
+
+        Examples:
+
+            Iterate benchmarking shop cases in chunks of 100 up to 2000 items:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for benchmarking_shop_cases in client.benchmarking_shop_case.iterate(chunk_size=100, limit=2000):
+                ...     for benchmarking_shop_case in benchmarking_shop_cases:
+                ...         print(benchmarking_shop_case.external_id)
+
+            Iterate benchmarking shop cases in chunks of 100 sorted by external_id in descending order:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for benchmarking_shop_cases in client.benchmarking_shop_case.iterate(
+                ...     chunk_size=100,
+                ...     sort_by="external_id",
+                ...     direction="descending",
+                ... ):
+                ...     for benchmarking_shop_case in benchmarking_shop_cases:
+                ...         print(benchmarking_shop_case.external_id)
+
+            Iterate benchmarking shop cases in chunks of 100 and use cursors to resume the iteration:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for first_iteration in client.benchmarking_shop_case.iterate(chunk_size=100, limit=2000):
+                ...     print(first_iteration)
+                ...     break
+                >>> for benchmarking_shop_cases in client.benchmarking_shop_case.iterate(
+                ...     chunk_size=100,
+                ...     limit=2000,
+                ...     cursors=first_iteration.cursors,
+                ... ):
+                ...     for benchmarking_shop_case in benchmarking_shop_cases:
+                ...         print(benchmarking_shop_case.external_id)
+
+        """
+        warnings.warn(
+            "The `iterate` method is in alpha and is subject to breaking changes without prior notice.", stacklevel=2
+        )
+        filter_ = _create_benchmarking_shop_case_filter(
+            self._view_id,
+            scenario,
+            min_start_time,
+            max_start_time,
+            min_end_time,
+            max_end_time,
+            status,
+            bid_source,
+            min_delivery_date,
+            max_delivery_date,
+            min_bid_generated,
+            max_bid_generated,
+            external_id_prefix,
+            space,
+            filter,
+        )
+        yield from self._iterate(chunk_size, filter_, limit, retrieve_connections, cursors=cursors)
 
     def list(
         self,
@@ -616,6 +596,7 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
         max_end_time: datetime.datetime | None = None,
+        status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
         bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
@@ -638,6 +619,7 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
             max_start_time: The maximum value of the start time to filter on.
             min_end_time: The minimum value of the end time to filter on.
             max_end_time: The maximum value of the end time to filter on.
+            status: The status to filter on.
             bid_source: The bid source to filter on.
             min_delivery_date: The minimum value of the delivery date to filter on.
             max_delivery_date: The maximum value of the delivery date to filter on.
@@ -677,6 +659,7 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
             max_start_time,
             min_end_time,
             max_end_time,
+            status,
             bid_source,
             min_delivery_date,
             max_delivery_date,
@@ -689,5 +672,4 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
             return self._list(limit=limit,  filter=filter_, sort=sort_input)
-        values = self._query(filter_, limit, retrieve_connections, sort_input)
-        return self._class_list(instantiate_classes(self._class_type, values, "list"))
+        return self._query(filter_, limit, retrieve_connections, sort_input, "list")

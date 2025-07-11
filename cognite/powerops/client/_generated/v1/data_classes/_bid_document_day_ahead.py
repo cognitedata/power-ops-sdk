@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import datetime
-import warnings
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
@@ -9,6 +8,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -50,10 +50,8 @@ if TYPE_CHECKING:
 __all__ = [
     "BidDocumentDayAhead",
     "BidDocumentDayAheadWrite",
-    "BidDocumentDayAheadApply",
     "BidDocumentDayAheadList",
     "BidDocumentDayAheadWriteList",
-    "BidDocumentDayAheadApplyList",
     "BidDocumentDayAheadFields",
     "BidDocumentDayAheadTextFields",
     "BidDocumentDayAheadGraphQL",
@@ -184,14 +182,6 @@ class BidDocumentDayAhead(BidDocument):
         """Convert this read version of bid document day ahead to the writing version."""
         return BidDocumentDayAheadWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> BidDocumentDayAheadWrite:
-        """Convert this read version of bid document day ahead to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class BidDocumentDayAheadWrite(BidDocumentWrite):
@@ -238,18 +228,6 @@ class BidDocumentDayAheadWrite(BidDocumentWrite):
         return value
 
 
-class BidDocumentDayAheadApply(BidDocumentDayAheadWrite):
-    def __new__(cls, *args, **kwargs) -> BidDocumentDayAheadApply:
-        warnings.warn(
-            "BidDocumentDayAheadApply is deprecated and will be removed in v1.0. "
-            "Use BidDocumentDayAheadWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "BidDocumentDayAhead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class BidDocumentDayAheadList(DomainModelList[BidDocumentDayAhead]):
     """List of bid document day aheads in the read version."""
 
@@ -258,14 +236,6 @@ class BidDocumentDayAheadList(DomainModelList[BidDocumentDayAhead]):
         """Convert these read versions of bid document day ahead to the writing versions."""
         return BidDocumentDayAheadWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> BidDocumentDayAheadWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
     @property
     def alerts(self) -> AlertList:
@@ -308,8 +278,6 @@ class BidDocumentDayAheadWriteList(DomainModelWriteList[BidDocumentDayAheadWrite
         from ._partial_bid_matrix_information import PartialBidMatrixInformationWrite, PartialBidMatrixInformationWriteList
         return PartialBidMatrixInformationWriteList([item for items in self.data for item in items.partials or [] if isinstance(item, PartialBidMatrixInformationWrite)])
 
-
-class BidDocumentDayAheadApplyList(BidDocumentDayAheadWriteList): ...
 
 
 def _create_bid_document_day_ahead_filter(
@@ -382,11 +350,11 @@ class _BidDocumentDayAheadQuery(NodeQueryCore[T_DomainModelList, BidDocumentDayA
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
         from ._alert import _AlertQuery
         from ._bid_configuration_day_ahead import _BidConfigurationDayAheadQuery
@@ -406,7 +374,7 @@ class _BidDocumentDayAheadQuery(NodeQueryCore[T_DomainModelList, BidDocumentDayA
             reverse_expression,
         )
 
-        if _AlertQuery not in created_types:
+        if _AlertQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.alerts = _AlertQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -420,7 +388,7 @@ class _BidDocumentDayAheadQuery(NodeQueryCore[T_DomainModelList, BidDocumentDayA
                 connection_property=ViewPropertyId(self._view_id, "alerts"),
             )
 
-        if _BidConfigurationDayAheadQuery not in created_types:
+        if _BidConfigurationDayAheadQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.bid_configuration = _BidConfigurationDayAheadQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -434,7 +402,7 @@ class _BidDocumentDayAheadQuery(NodeQueryCore[T_DomainModelList, BidDocumentDayA
                 connection_property=ViewPropertyId(self._view_id, "bidConfiguration"),
             )
 
-        if _BidMatrixInformationQuery not in created_types:
+        if _BidMatrixInformationQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.total = _BidMatrixInformationQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -448,7 +416,7 @@ class _BidDocumentDayAheadQuery(NodeQueryCore[T_DomainModelList, BidDocumentDayA
                 connection_property=ViewPropertyId(self._view_id, "total"),
             )
 
-        if _PartialBidMatrixInformationQuery not in created_types:
+        if _PartialBidMatrixInformationQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.partials = _PartialBidMatrixInformationQuery(
                 created_types.copy(),
                 self._creation_path,

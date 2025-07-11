@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
 from typing import Any, ClassVar, Literal, Optional, Union
 
@@ -8,6 +7,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -40,10 +40,8 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
 __all__ = [
     "ShopOutputTimeSeriesDefinition",
     "ShopOutputTimeSeriesDefinitionWrite",
-    "ShopOutputTimeSeriesDefinitionApply",
     "ShopOutputTimeSeriesDefinitionList",
     "ShopOutputTimeSeriesDefinitionWriteList",
-    "ShopOutputTimeSeriesDefinitionApplyList",
     "ShopOutputTimeSeriesDefinitionFields",
     "ShopOutputTimeSeriesDefinitionTextFields",
     "ShopOutputTimeSeriesDefinitionGraphQL",
@@ -145,14 +143,6 @@ class ShopOutputTimeSeriesDefinition(DomainModel):
         """Convert this read version of shop output time series definition to the writing version."""
         return ShopOutputTimeSeriesDefinitionWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> ShopOutputTimeSeriesDefinitionWrite:
-        """Convert this read version of shop output time series definition to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class ShopOutputTimeSeriesDefinitionWrite(DomainModelWrite):
@@ -186,18 +176,6 @@ class ShopOutputTimeSeriesDefinitionWrite(DomainModelWrite):
 
 
 
-class ShopOutputTimeSeriesDefinitionApply(ShopOutputTimeSeriesDefinitionWrite):
-    def __new__(cls, *args, **kwargs) -> ShopOutputTimeSeriesDefinitionApply:
-        warnings.warn(
-            "ShopOutputTimeSeriesDefinitionApply is deprecated and will be removed in v1.0. "
-            "Use ShopOutputTimeSeriesDefinitionWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "ShopOutputTimeSeriesDefinition.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class ShopOutputTimeSeriesDefinitionList(DomainModelList[ShopOutputTimeSeriesDefinition]):
     """List of shop output time series definitions in the read version."""
 
@@ -206,22 +184,12 @@ class ShopOutputTimeSeriesDefinitionList(DomainModelList[ShopOutputTimeSeriesDef
         """Convert these read versions of shop output time series definition to the writing versions."""
         return ShopOutputTimeSeriesDefinitionWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> ShopOutputTimeSeriesDefinitionWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class ShopOutputTimeSeriesDefinitionWriteList(DomainModelWriteList[ShopOutputTimeSeriesDefinitionWrite]):
     """List of shop output time series definitions in the writing version."""
 
     _INSTANCE = ShopOutputTimeSeriesDefinitionWrite
-
-class ShopOutputTimeSeriesDefinitionApplyList(ShopOutputTimeSeriesDefinitionWriteList): ...
 
 
 def _create_shop_output_time_series_definition_filter(
@@ -296,11 +264,11 @@ class _ShopOutputTimeSeriesDefinitionQuery(NodeQueryCore[T_DomainModelList, Shop
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
 
         super().__init__(

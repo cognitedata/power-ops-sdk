@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
@@ -8,6 +7,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -45,10 +45,8 @@ if TYPE_CHECKING:
 __all__ = [
     "ShopBasedPartialBidConfiguration",
     "ShopBasedPartialBidConfigurationWrite",
-    "ShopBasedPartialBidConfigurationApply",
     "ShopBasedPartialBidConfigurationList",
     "ShopBasedPartialBidConfigurationWriteList",
-    "ShopBasedPartialBidConfigurationApplyList",
     "ShopBasedPartialBidConfigurationFields",
     "ShopBasedPartialBidConfigurationTextFields",
     "ShopBasedPartialBidConfigurationGraphQL",
@@ -149,14 +147,6 @@ class ShopBasedPartialBidConfiguration(PartialBidConfiguration):
         """Convert this read version of shop based partial bid configuration to the writing version."""
         return ShopBasedPartialBidConfigurationWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> ShopBasedPartialBidConfigurationWrite:
-        """Convert this read version of shop based partial bid configuration to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class ShopBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
@@ -193,18 +183,6 @@ class ShopBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
         return value
 
 
-class ShopBasedPartialBidConfigurationApply(ShopBasedPartialBidConfigurationWrite):
-    def __new__(cls, *args, **kwargs) -> ShopBasedPartialBidConfigurationApply:
-        warnings.warn(
-            "ShopBasedPartialBidConfigurationApply is deprecated and will be removed in v1.0. "
-            "Use ShopBasedPartialBidConfigurationWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "ShopBasedPartialBidConfiguration.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class ShopBasedPartialBidConfigurationList(DomainModelList[ShopBasedPartialBidConfiguration]):
     """List of shop based partial bid configurations in the read version."""
 
@@ -213,14 +191,6 @@ class ShopBasedPartialBidConfigurationList(DomainModelList[ShopBasedPartialBidCo
         """Convert these read versions of shop based partial bid configuration to the writing versions."""
         return ShopBasedPartialBidConfigurationWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> ShopBasedPartialBidConfigurationWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
     @property
     def power_asset(self) -> PowerAssetList:
@@ -243,8 +213,6 @@ class ShopBasedPartialBidConfigurationWriteList(DomainModelWriteList[ShopBasedPa
     def scenario_set(self) -> ShopScenarioSetWriteList:
         from ._shop_scenario_set import ShopScenarioSetWrite, ShopScenarioSetWriteList
         return ShopScenarioSetWriteList([item.scenario_set for item in self.data if isinstance(item.scenario_set, ShopScenarioSetWrite)])
-
-class ShopBasedPartialBidConfigurationApplyList(ShopBasedPartialBidConfigurationWriteList): ...
 
 
 def _create_shop_based_partial_bid_configuration_filter(
@@ -305,11 +273,11 @@ class _ShopBasedPartialBidConfigurationQuery(NodeQueryCore[T_DomainModelList, Sh
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
         from ._power_asset import _PowerAssetQuery
         from ._shop_scenario_set import _ShopScenarioSetQuery
@@ -327,7 +295,7 @@ class _ShopBasedPartialBidConfigurationQuery(NodeQueryCore[T_DomainModelList, Sh
             reverse_expression,
         )
 
-        if _PowerAssetQuery not in created_types:
+        if _PowerAssetQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.power_asset = _PowerAssetQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -341,7 +309,7 @@ class _ShopBasedPartialBidConfigurationQuery(NodeQueryCore[T_DomainModelList, Sh
                 connection_property=ViewPropertyId(self._view_id, "powerAsset"),
             )
 
-        if _ShopScenarioSetQuery not in created_types:
+        if _ShopScenarioSetQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.scenario_set = _ShopScenarioSetQuery(
                 created_types.copy(),
                 self._creation_path,

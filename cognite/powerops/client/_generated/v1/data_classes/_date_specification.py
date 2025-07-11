@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
 from typing import Any, ClassVar, Literal, Optional, Union
 
@@ -8,6 +7,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -40,10 +40,8 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
 __all__ = [
     "DateSpecification",
     "DateSpecificationWrite",
-    "DateSpecificationApply",
     "DateSpecificationList",
     "DateSpecificationWriteList",
-    "DateSpecificationApplyList",
     "DateSpecificationFields",
     "DateSpecificationTextFields",
     "DateSpecificationGraphQL",
@@ -140,14 +138,6 @@ class DateSpecification(DomainModel):
         """Convert this read version of date specification to the writing version."""
         return DateSpecificationWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> DateSpecificationWrite:
-        """Convert this read version of date specification to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class DateSpecificationWrite(DomainModelWrite):
@@ -179,18 +169,6 @@ class DateSpecificationWrite(DomainModelWrite):
 
 
 
-class DateSpecificationApply(DateSpecificationWrite):
-    def __new__(cls, *args, **kwargs) -> DateSpecificationApply:
-        warnings.warn(
-            "DateSpecificationApply is deprecated and will be removed in v1.0. "
-            "Use DateSpecificationWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "DateSpecification.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class DateSpecificationList(DomainModelList[DateSpecification]):
     """List of date specifications in the read version."""
 
@@ -199,22 +177,12 @@ class DateSpecificationList(DomainModelList[DateSpecification]):
         """Convert these read versions of date specification to the writing versions."""
         return DateSpecificationWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> DateSpecificationWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class DateSpecificationWriteList(DomainModelWriteList[DateSpecificationWrite]):
     """List of date specifications in the writing version."""
 
     _INSTANCE = DateSpecificationWrite
-
-class DateSpecificationApplyList(DateSpecificationWriteList): ...
 
 
 def _create_date_specification_filter(
@@ -278,11 +246,11 @@ class _DateSpecificationQuery(NodeQueryCore[T_DomainModelList, DateSpecification
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
 
         super().__init__(

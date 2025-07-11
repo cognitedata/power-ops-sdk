@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import datetime
-import warnings
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
@@ -9,6 +8,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -47,10 +47,8 @@ if TYPE_CHECKING:
 __all__ = [
     "BenchmarkingShopCase",
     "BenchmarkingShopCaseWrite",
-    "BenchmarkingShopCaseApply",
     "BenchmarkingShopCaseList",
     "BenchmarkingShopCaseWriteList",
-    "BenchmarkingShopCaseApplyList",
     "BenchmarkingShopCaseFields",
     "BenchmarkingShopCaseGraphQL",
 ]
@@ -171,14 +169,6 @@ class BenchmarkingShopCase(ShopCase):
         """Convert this read version of benchmarking shop case to the writing version."""
         return BenchmarkingShopCaseWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> BenchmarkingShopCaseWrite:
-        """Convert this read version of benchmarking shop case to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class BenchmarkingShopCaseWrite(ShopCaseWrite):
@@ -213,18 +203,6 @@ class BenchmarkingShopCaseWrite(ShopCaseWrite):
 
 
 
-class BenchmarkingShopCaseApply(BenchmarkingShopCaseWrite):
-    def __new__(cls, *args, **kwargs) -> BenchmarkingShopCaseApply:
-        warnings.warn(
-            "BenchmarkingShopCaseApply is deprecated and will be removed in v1.0. "
-            "Use BenchmarkingShopCaseWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "BenchmarkingShopCase.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class BenchmarkingShopCaseList(DomainModelList[BenchmarkingShopCase]):
     """List of benchmarking shop cases in the read version."""
 
@@ -233,14 +211,6 @@ class BenchmarkingShopCaseList(DomainModelList[BenchmarkingShopCase]):
         """Convert these read versions of benchmarking shop case to the writing versions."""
         return BenchmarkingShopCaseWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> BenchmarkingShopCaseWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
     @property
     def scenario(self) -> ShopScenarioList:
@@ -266,8 +236,6 @@ class BenchmarkingShopCaseWriteList(DomainModelWriteList[BenchmarkingShopCaseWri
         return ShopFileWriteList([item for items in self.data for item in items.shop_files or [] if isinstance(item, ShopFileWrite)])
 
 
-class BenchmarkingShopCaseApplyList(BenchmarkingShopCaseWriteList): ...
-
 
 def _create_benchmarking_shop_case_filter(
     view_id: dm.ViewId,
@@ -276,6 +244,7 @@ def _create_benchmarking_shop_case_filter(
     max_start_time: datetime.datetime | None = None,
     min_end_time: datetime.datetime | None = None,
     max_end_time: datetime.datetime | None = None,
+    status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
     bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
     min_delivery_date: datetime.date | None = None,
     max_delivery_date: datetime.date | None = None,
@@ -294,6 +263,10 @@ def _create_benchmarking_shop_case_filter(
         filters.append(dm.filters.Range(view_id.as_property_ref("startTime"), gte=min_start_time.isoformat(timespec="milliseconds") if min_start_time else None, lte=max_start_time.isoformat(timespec="milliseconds") if max_start_time else None))
     if min_end_time is not None or max_end_time is not None:
         filters.append(dm.filters.Range(view_id.as_property_ref("endTime"), gte=min_end_time.isoformat(timespec="milliseconds") if min_end_time else None, lte=max_end_time.isoformat(timespec="milliseconds") if max_end_time else None))
+    if isinstance(status, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("status"), value=status))
+    if status and isinstance(status, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("status"), values=status))
     if isinstance(bid_source, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(bid_source):
         filters.append(dm.filters.Equals(view_id.as_property_ref("bidSource"), value=as_instance_dict_id(bid_source)))
     if bid_source and isinstance(bid_source, Sequence) and not isinstance(bid_source, str) and not is_tuple_id(bid_source):
@@ -324,11 +297,11 @@ class _BenchmarkingShopCaseQuery(NodeQueryCore[T_DomainModelList, BenchmarkingSh
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
         from ._shop_file import _ShopFileQuery
         from ._shop_scenario import _ShopScenarioQuery
@@ -346,7 +319,7 @@ class _BenchmarkingShopCaseQuery(NodeQueryCore[T_DomainModelList, BenchmarkingSh
             reverse_expression,
         )
 
-        if _ShopScenarioQuery not in created_types:
+        if _ShopScenarioQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.scenario = _ShopScenarioQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -360,7 +333,7 @@ class _BenchmarkingShopCaseQuery(NodeQueryCore[T_DomainModelList, BenchmarkingSh
                 connection_property=ViewPropertyId(self._view_id, "scenario"),
             )
 
-        if _ShopFileQuery not in created_types:
+        if _ShopFileQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.shop_files = _ShopFileQuery(
                 created_types.copy(),
                 self._creation_path,

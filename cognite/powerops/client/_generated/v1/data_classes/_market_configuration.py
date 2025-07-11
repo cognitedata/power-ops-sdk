@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
 from typing import Any, ClassVar, Literal, Optional, Union
 
@@ -8,6 +7,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -41,10 +41,8 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
 __all__ = [
     "MarketConfiguration",
     "MarketConfigurationWrite",
-    "MarketConfigurationApply",
     "MarketConfigurationList",
     "MarketConfigurationWriteList",
-    "MarketConfigurationApplyList",
     "MarketConfigurationFields",
     "MarketConfigurationTextFields",
     "MarketConfigurationGraphQL",
@@ -165,14 +163,6 @@ class MarketConfiguration(DomainModel):
         """Convert this read version of market configuration to the writing version."""
         return MarketConfigurationWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> MarketConfigurationWrite:
-        """Convert this read version of market configuration to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class MarketConfigurationWrite(DomainModelWrite):
@@ -214,18 +204,6 @@ class MarketConfigurationWrite(DomainModelWrite):
 
 
 
-class MarketConfigurationApply(MarketConfigurationWrite):
-    def __new__(cls, *args, **kwargs) -> MarketConfigurationApply:
-        warnings.warn(
-            "MarketConfigurationApply is deprecated and will be removed in v1.0. "
-            "Use MarketConfigurationWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "MarketConfiguration.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class MarketConfigurationList(DomainModelList[MarketConfiguration]):
     """List of market configurations in the read version."""
 
@@ -234,22 +212,12 @@ class MarketConfigurationList(DomainModelList[MarketConfiguration]):
         """Convert these read versions of market configuration to the writing versions."""
         return MarketConfigurationWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> MarketConfigurationWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class MarketConfigurationWriteList(DomainModelWriteList[MarketConfigurationWrite]):
     """List of market configurations in the writing version."""
 
     _INSTANCE = MarketConfigurationWrite
-
-class MarketConfigurationApplyList(MarketConfigurationWriteList): ...
 
 
 def _create_market_configuration_filter(
@@ -333,11 +301,11 @@ class _MarketConfigurationQuery(NodeQueryCore[T_DomainModelList, MarketConfigura
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
 
         super().__init__(

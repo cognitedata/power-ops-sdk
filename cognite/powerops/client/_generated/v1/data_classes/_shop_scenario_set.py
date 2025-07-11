@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
@@ -8,6 +7,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -43,10 +43,8 @@ if TYPE_CHECKING:
 __all__ = [
     "ShopScenarioSet",
     "ShopScenarioSetWrite",
-    "ShopScenarioSetApply",
     "ShopScenarioSetList",
     "ShopScenarioSetWriteList",
-    "ShopScenarioSetApplyList",
     "ShopScenarioSetFields",
     "ShopScenarioSetTextFields",
     "ShopScenarioSetGraphQL",
@@ -152,14 +150,6 @@ class ShopScenarioSet(DomainModel):
         """Convert this read version of shop scenario set to the writing version."""
         return ShopScenarioSetWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> ShopScenarioSetWrite:
-        """Convert this read version of shop scenario set to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class ShopScenarioSetWrite(DomainModelWrite):
@@ -200,18 +190,6 @@ class ShopScenarioSetWrite(DomainModelWrite):
         return value
 
 
-class ShopScenarioSetApply(ShopScenarioSetWrite):
-    def __new__(cls, *args, **kwargs) -> ShopScenarioSetApply:
-        warnings.warn(
-            "ShopScenarioSetApply is deprecated and will be removed in v1.0. "
-            "Use ShopScenarioSetWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "ShopScenarioSet.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class ShopScenarioSetList(DomainModelList[ShopScenarioSet]):
     """List of shop scenario sets in the read version."""
 
@@ -220,14 +198,6 @@ class ShopScenarioSetList(DomainModelList[ShopScenarioSet]):
         """Convert these read versions of shop scenario set to the writing versions."""
         return ShopScenarioSetWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> ShopScenarioSetWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
     @property
     def start_specification(self) -> DateSpecificationList:
@@ -260,8 +230,6 @@ class ShopScenarioSetWriteList(DomainModelWriteList[ShopScenarioSetWrite]):
         from ._shop_scenario import ShopScenarioWrite, ShopScenarioWriteList
         return ShopScenarioWriteList([item for items in self.data for item in items.scenarios or [] if isinstance(item, ShopScenarioWrite)])
 
-
-class ShopScenarioSetApplyList(ShopScenarioSetWriteList): ...
 
 
 def _create_shop_scenario_set_filter(
@@ -311,11 +279,11 @@ class _ShopScenarioSetQuery(NodeQueryCore[T_DomainModelList, ShopScenarioSetList
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
         from ._date_specification import _DateSpecificationQuery
         from ._shop_scenario import _ShopScenarioQuery
@@ -333,7 +301,7 @@ class _ShopScenarioSetQuery(NodeQueryCore[T_DomainModelList, ShopScenarioSetList
             reverse_expression,
         )
 
-        if _DateSpecificationQuery not in created_types:
+        if _DateSpecificationQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.start_specification = _DateSpecificationQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -347,7 +315,7 @@ class _ShopScenarioSetQuery(NodeQueryCore[T_DomainModelList, ShopScenarioSetList
                 connection_property=ViewPropertyId(self._view_id, "startSpecification"),
             )
 
-        if _DateSpecificationQuery not in created_types:
+        if _DateSpecificationQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.end_specification = _DateSpecificationQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -361,7 +329,7 @@ class _ShopScenarioSetQuery(NodeQueryCore[T_DomainModelList, ShopScenarioSetList
                 connection_property=ViewPropertyId(self._view_id, "endSpecification"),
             )
 
-        if _ShopScenarioQuery not in created_types:
+        if _ShopScenarioQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.scenarios = _ShopScenarioQuery(
                 created_types.copy(),
                 self._creation_path,
