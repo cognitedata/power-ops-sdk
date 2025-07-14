@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
 from typing import Any, ClassVar, Literal, Optional, Union
 
@@ -12,6 +11,7 @@ from cognite.client.data_classes import (
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -51,10 +51,8 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
 __all__ = [
     "BenchmarkingProductionObligationDayAhead",
     "BenchmarkingProductionObligationDayAheadWrite",
-    "BenchmarkingProductionObligationDayAheadApply",
     "BenchmarkingProductionObligationDayAheadList",
     "BenchmarkingProductionObligationDayAheadWriteList",
-    "BenchmarkingProductionObligationDayAheadApplyList",
     "BenchmarkingProductionObligationDayAheadFields",
     "BenchmarkingProductionObligationDayAheadTextFields",
     "BenchmarkingProductionObligationDayAheadGraphQL",
@@ -136,14 +134,6 @@ class BenchmarkingProductionObligationDayAhead(DomainModel):
         """Convert this read version of benchmarking production obligation day ahead to the writing version."""
         return BenchmarkingProductionObligationDayAheadWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> BenchmarkingProductionObligationDayAheadWrite:
-        """Convert this read version of benchmarking production obligation day ahead to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class BenchmarkingProductionObligationDayAheadWrite(DomainModelWrite):
@@ -169,18 +159,6 @@ class BenchmarkingProductionObligationDayAheadWrite(DomainModelWrite):
 
 
 
-class BenchmarkingProductionObligationDayAheadApply(BenchmarkingProductionObligationDayAheadWrite):
-    def __new__(cls, *args, **kwargs) -> BenchmarkingProductionObligationDayAheadApply:
-        warnings.warn(
-            "BenchmarkingProductionObligationDayAheadApply is deprecated and will be removed in v1.0. "
-            "Use BenchmarkingProductionObligationDayAheadWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "BenchmarkingProductionObligationDayAhead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class BenchmarkingProductionObligationDayAheadList(DomainModelList[BenchmarkingProductionObligationDayAhead]):
     """List of benchmarking production obligation day aheads in the read version."""
 
@@ -189,22 +167,12 @@ class BenchmarkingProductionObligationDayAheadList(DomainModelList[BenchmarkingP
         """Convert these read versions of benchmarking production obligation day ahead to the writing versions."""
         return BenchmarkingProductionObligationDayAheadWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> BenchmarkingProductionObligationDayAheadWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class BenchmarkingProductionObligationDayAheadWriteList(DomainModelWriteList[BenchmarkingProductionObligationDayAheadWrite]):
     """List of benchmarking production obligation day aheads in the writing version."""
 
     _INSTANCE = BenchmarkingProductionObligationDayAheadWrite
-
-class BenchmarkingProductionObligationDayAheadApplyList(BenchmarkingProductionObligationDayAheadWriteList): ...
 
 
 def _create_benchmarking_production_obligation_day_ahead_filter(
@@ -244,11 +212,11 @@ class _BenchmarkingProductionObligationDayAheadQuery(NodeQueryCore[T_DomainModel
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
 
         super().__init__(

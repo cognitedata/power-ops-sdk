@@ -69,6 +69,12 @@ class CogShopAPI:
         )
         response.raise_for_status()
 
+        shop_case_update = ShopCaseWrite(
+            external_id=shop_case_external_id,
+            status="triggered",
+        )
+        self._po.upsert(shop_case_update)
+
     def _validate_shop_scenario_reference(
         self, shop_scenario_reference: str | ShopScenarioWrite
     ) -> str | ShopScenarioWrite:
@@ -134,6 +140,7 @@ class CogShopAPI:
             end_time=end_time,
             scenario=self._validate_shop_scenario_reference(shop_scenario_reference),
             shop_files=shop_files_write,
+            status="default",
             **({"external_id": case_external_id} if case_external_id else {}),
         )
         return case_write
@@ -200,9 +207,22 @@ class CogShopAPI:
             case_external_id=case_external_id,
         )
 
-    def retrieve_shop_case(self, case_external_id: str) -> ShopCase:
-        """Retrieve a shop case from CDF"""
-        return self._po.shop_based_day_ahead_bid_process.shop_case.retrieve(external_id=case_external_id)
+    def retrieve_shop_case(
+        self, case_external_id: str, retrieve_connections: Literal["skip", "identifier", "full"] = "skip"
+    ) -> ShopCase:
+        """
+        Retrieve a shop case from CDF
+
+        Args:
+            case_external_id: External ID of the SHOP case
+            retrieve_connections: How to retrieve connections for the case.
+                - "skip": Do not retrieve connections
+                - "identifier": Retrieve only identifiers of connections
+                - "full": Retrieve full connection objects
+        """
+        return self._po.shop_based_day_ahead_bid_process.shop_case.retrieve(
+            external_id=case_external_id, retrieve_connections=retrieve_connections
+        )
 
     def list_shop_results_for_case(self, case_external_id: str, limit: int = 3) -> ShopResultList:
         """
@@ -256,6 +276,7 @@ def _shop_case_query(external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> s
           lastUpdatedTime
           space
           startTime
+          status
           scenario {{
             createdTime
             externalId

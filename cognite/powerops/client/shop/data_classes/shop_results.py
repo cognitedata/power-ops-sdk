@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 from collections.abc import Callable
 from functools import cached_property
-from typing import TYPE_CHECKING, Optional, Union
+from typing import TYPE_CHECKING, Union
 
 import pandas as pd
 
@@ -31,7 +31,7 @@ class SHOPRunResult:
         self._post_run = post_run
 
     @cached_property
-    def files(self) -> dict[str, Optional[SHOPResultFile]]:
+    def files(self) -> dict[str, SHOPResultFile | None]:
         """
         Returns a dictionary of the files associated with the shop run.
 
@@ -68,7 +68,7 @@ class SHOPRunResult:
         return None
 
     @property
-    def post_run(self) -> Optional[SHOPYamlFile]:
+    def post_run(self) -> SHOPYamlFile | None:
         """
         Returns the post run yaml file of the shop run.
 
@@ -88,7 +88,7 @@ class SHOPRunResult:
         return self._cplex
 
     @property
-    def shop_messages(self) -> Optional[SHOPLogFile]:  # TODO rename to _logs?
+    def shop_messages(self) -> SHOPLogFile | None:  # TODO rename to _logs?
         """
         Returns the shop messages log file of the shop run.
 

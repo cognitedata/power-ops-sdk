@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import datetime
-import warnings
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
@@ -9,6 +8,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -46,10 +46,8 @@ if TYPE_CHECKING:
 __all__ = [
     "ShopPreprocessorInput",
     "ShopPreprocessorInputWrite",
-    "ShopPreprocessorInputApply",
     "ShopPreprocessorInputList",
     "ShopPreprocessorInputWriteList",
-    "ShopPreprocessorInputApplyList",
     "ShopPreprocessorInputFields",
     "ShopPreprocessorInputTextFields",
     "ShopPreprocessorInputGraphQL",
@@ -161,14 +159,6 @@ class ShopPreprocessorInput(FunctionInput):
         """Convert this read version of shop preprocessor input to the writing version."""
         return ShopPreprocessorInputWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> ShopPreprocessorInputWrite:
-        """Convert this read version of shop preprocessor input to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class ShopPreprocessorInputWrite(FunctionInputWrite):
@@ -209,18 +199,6 @@ class ShopPreprocessorInputWrite(FunctionInputWrite):
         return value
 
 
-class ShopPreprocessorInputApply(ShopPreprocessorInputWrite):
-    def __new__(cls, *args, **kwargs) -> ShopPreprocessorInputApply:
-        warnings.warn(
-            "ShopPreprocessorInputApply is deprecated and will be removed in v1.0. "
-            "Use ShopPreprocessorInputWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "ShopPreprocessorInput.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class ShopPreprocessorInputList(DomainModelList[ShopPreprocessorInput]):
     """List of shop preprocessor inputs in the read version."""
 
@@ -229,14 +207,6 @@ class ShopPreprocessorInputList(DomainModelList[ShopPreprocessorInput]):
         """Convert these read versions of shop preprocessor input to the writing versions."""
         return ShopPreprocessorInputWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> ShopPreprocessorInputWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
     @property
     def scenario(self) -> ShopScenarioList:
@@ -251,8 +221,6 @@ class ShopPreprocessorInputWriteList(DomainModelWriteList[ShopPreprocessorInputW
     def scenario(self) -> ShopScenarioWriteList:
         from ._shop_scenario import ShopScenarioWrite, ShopScenarioWriteList
         return ShopScenarioWriteList([item.scenario for item in self.data if isinstance(item.scenario, ShopScenarioWrite)])
-
-class ShopPreprocessorInputApplyList(ShopPreprocessorInputWriteList): ...
 
 
 def _create_shop_preprocessor_input_filter(
@@ -325,11 +293,11 @@ class _ShopPreprocessorInputQuery(NodeQueryCore[T_DomainModelList, ShopPreproces
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
         from ._shop_scenario import _ShopScenarioQuery
 
@@ -346,7 +314,7 @@ class _ShopPreprocessorInputQuery(NodeQueryCore[T_DomainModelList, ShopPreproces
             reverse_expression,
         )
 
-        if _ShopScenarioQuery not in created_types:
+        if _ShopScenarioQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.scenario = _ShopScenarioQuery(
                 created_types.copy(),
                 self._creation_path,

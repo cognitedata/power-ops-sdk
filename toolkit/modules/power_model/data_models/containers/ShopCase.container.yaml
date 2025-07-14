@@ -48,3 +48,39 @@ properties:
     nullable: true
     autoIncrement: false
     name: bidGenerated
+  status:
+    type:
+      type: enum
+      unknownValue: notSet
+      values:
+        notSet:
+          name: "Not Set"
+          description: "No status set due to forward-compatibility"
+        default:
+          name: "Shop Case Created"
+          description: "The case has been created but not yet triggered"
+        triggered:
+          name: "Triggered"
+          description: "The case has been triggered and is pending being queued"
+        queued:
+          name: "Queued"
+          description: "The case is queued for processing"
+        running:
+          name: "Running"
+          description: "The case is currently being processed"
+        completed:
+          name: "Completed"
+          description: "The case has been processed successfully"
+        stale:
+          name: "Stale"
+          description: "The case is stale and no longer relevant"
+        failed:
+          name: "Failed"
+          description: "The case has failed, check the logs for details"
+        timedOut:
+          name: "Timed Out"
+          description: "The case has timed out and is no longer relevant"
+    nullable: true
+    # defaultValue: default # TODO: Uncomment when enum defaults are supported
+    autoIncrement: false
+    name: status

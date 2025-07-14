@@ -15,6 +15,23 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.113.1] - 2025-07-11
+### Changed
+* Switch from using `Optional` to `| None` type annotations
+
+## [0.113.0] - 2025-07-08
+### Fixed
+* Regenerate pygen portion of SDK to avoid unexpected retrieve behavior for classes using inheritance
+
+## [0.112.1] - 2025-06-19
+### Added
+* Set ShopCase status in `prepare_shop_case` to default
+* Set ShopCase status in `trigger_shop_case` to triggered
+* Add `retrieve_connections` arg to `retrieve_shop_case`
+
+## [0.112.0] - 2025-06-11
+### Added
+* Added `status` as enum to ShopCase
 
 ## [0.111.2] - 2025-05-06
 ### Added

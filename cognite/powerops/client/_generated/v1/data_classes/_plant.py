@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
 from typing import Any, ClassVar, Literal, Optional, Union
 
@@ -8,6 +7,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -41,10 +41,8 @@ from cognite.powerops.client._generated.v1.data_classes._power_asset import Powe
 __all__ = [
     "Plant",
     "PlantWrite",
-    "PlantApply",
     "PlantList",
     "PlantWriteList",
-    "PlantApplyList",
     "PlantFields",
     "PlantTextFields",
     "PlantGraphQL",
@@ -131,14 +129,6 @@ class Plant(PowerAsset):
         """Convert this read version of plant to the writing version."""
         return PlantWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> PlantWrite:
-        """Convert this read version of plant to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class PlantWrite(PowerAssetWrite):
@@ -163,18 +153,6 @@ class PlantWrite(PowerAssetWrite):
 
 
 
-class PlantApply(PlantWrite):
-    def __new__(cls, *args, **kwargs) -> PlantApply:
-        warnings.warn(
-            "PlantApply is deprecated and will be removed in v1.0. "
-            "Use PlantWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "Plant.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class PlantList(DomainModelList[Plant]):
     """List of plants in the read version."""
 
@@ -183,22 +161,12 @@ class PlantList(DomainModelList[Plant]):
         """Convert these read versions of plant to the writing versions."""
         return PlantWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> PlantWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class PlantWriteList(DomainModelWriteList[PlantWrite]):
     """List of plants in the writing version."""
 
     _INSTANCE = PlantWrite
-
-class PlantApplyList(PlantWriteList): ...
 
 
 def _create_plant_filter(
@@ -258,11 +226,11 @@ class _PlantQuery(NodeQueryCore[T_DomainModelList, PlantList]):
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
 
         super().__init__(

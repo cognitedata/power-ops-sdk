@@ -7,7 +7,7 @@ import logging
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 from cognite.powerops.utils.serialization import load_yaml
 
@@ -29,22 +29,22 @@ class PropertyConfiguration:
     """
 
     property: str
-    source_file: Optional[Path]
-    extraction_path: Optional[list[str]]
-    default_value: Optional[Any]
+    source_file: Path | None
+    extraction_path: list[str] | None
+    default_value: Any | None
     is_subtype: bool
     is_list: bool
-    cast_type: Optional[str]
+    cast_type: str | None
 
     def __init__(
         self,
         property: str,
-        source_file: Optional[Path] = None,
-        extraction_path: Optional[str] = None,
-        default_value: Optional[Any] = None,
+        source_file: Path | None = None,
+        extraction_path: str | None = None,
+        default_value: Any | None = None,
         is_subtype: bool = False,
         is_list: bool = False,
-        cast_type: Optional[str] = None,
+        cast_type: str | None = None,
     ) -> None:
         """Initializes the PropertyConfiguration with the provided values and processes some of the values."""
 
@@ -180,8 +180,8 @@ class DataModelConfiguration:
         self,
         name: str,
         type_: type,
-        properties: Optional[dict[str, str]] = None,
-        property_configurations: Optional[list[PropertyConfiguration]] = None,
+        properties: dict[str, str] | None = None,
+        property_configurations: list[PropertyConfiguration] | None = None,
     ) -> None:
         """Initializes the DataModelConfiguration with the provided values."""
         if property_configurations is None:
@@ -200,7 +200,7 @@ class DataModelConfiguration:
 
     @classmethod
     def from_yaml(
-        cls, all_write_classes: dict[str, type], configuration_path: Optional[Path] = None
+        cls, all_write_classes: dict[str, type], configuration_path: Path | None = None
     ) -> dict[str, DataModelConfiguration]:
         """Generate a dictionary of DataModelConfiguration objects from a YAML file.
 

@@ -3,7 +3,7 @@ from __future__ import annotations
 import datetime
 from collections.abc import Callable, Sequence
 from concurrent.futures import ThreadPoolExecutor
-from typing import Literal, Optional, Union, overload
+from typing import Literal, Union, overload
 from urllib.parse import urlparse
 
 import arrow
@@ -232,7 +232,7 @@ class SHOPRunAPI:
 
     def _load_cdf_event_shop_runs(
         self,
-        extra_filters: Optional[list[filters.Filter]] = None,
+        extra_filters: list[filters.Filter] | None = None,
         limit: int = DEFAULT_READ_LIMIT,
         event_sort: EventSort = None,
     ) -> SHOPRunList:

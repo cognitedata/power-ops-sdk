@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import datetime
-import warnings
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
@@ -9,6 +8,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -47,10 +47,8 @@ if TYPE_CHECKING:
 __all__ = [
     "PartialBidMatrixCalculationInput",
     "PartialBidMatrixCalculationInputWrite",
-    "PartialBidMatrixCalculationInputApply",
     "PartialBidMatrixCalculationInputList",
     "PartialBidMatrixCalculationInputWriteList",
-    "PartialBidMatrixCalculationInputApplyList",
     "PartialBidMatrixCalculationInputFields",
     "PartialBidMatrixCalculationInputTextFields",
     "PartialBidMatrixCalculationInputGraphQL",
@@ -161,14 +159,6 @@ class PartialBidMatrixCalculationInput(FunctionInput):
         """Convert this read version of partial bid matrix calculation input to the writing version."""
         return PartialBidMatrixCalculationInputWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> PartialBidMatrixCalculationInputWrite:
-        """Convert this read version of partial bid matrix calculation input to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class PartialBidMatrixCalculationInputWrite(FunctionInputWrite):
@@ -209,18 +199,6 @@ class PartialBidMatrixCalculationInputWrite(FunctionInputWrite):
         return value
 
 
-class PartialBidMatrixCalculationInputApply(PartialBidMatrixCalculationInputWrite):
-    def __new__(cls, *args, **kwargs) -> PartialBidMatrixCalculationInputApply:
-        warnings.warn(
-            "PartialBidMatrixCalculationInputApply is deprecated and will be removed in v1.0. "
-            "Use PartialBidMatrixCalculationInputWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "PartialBidMatrixCalculationInput.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class PartialBidMatrixCalculationInputList(DomainModelList[PartialBidMatrixCalculationInput]):
     """List of partial bid matrix calculation inputs in the read version."""
 
@@ -229,14 +207,6 @@ class PartialBidMatrixCalculationInputList(DomainModelList[PartialBidMatrixCalcu
         """Convert these read versions of partial bid matrix calculation input to the writing versions."""
         return PartialBidMatrixCalculationInputWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> PartialBidMatrixCalculationInputWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
     @property
     def bid_configuration(self) -> BidConfigurationDayAheadList:
@@ -259,8 +229,6 @@ class PartialBidMatrixCalculationInputWriteList(DomainModelWriteList[PartialBidM
     def partial_bid_configuration(self) -> PartialBidConfigurationWriteList:
         from ._partial_bid_configuration import PartialBidConfigurationWrite, PartialBidConfigurationWriteList
         return PartialBidConfigurationWriteList([item.partial_bid_configuration for item in self.data if isinstance(item.partial_bid_configuration, PartialBidConfigurationWrite)])
-
-class PartialBidMatrixCalculationInputApplyList(PartialBidMatrixCalculationInputWriteList): ...
 
 
 def _create_partial_bid_matrix_calculation_input_filter(
@@ -334,11 +302,11 @@ class _PartialBidMatrixCalculationInputQuery(NodeQueryCore[T_DomainModelList, Pa
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
         from ._bid_configuration_day_ahead import _BidConfigurationDayAheadQuery
         from ._partial_bid_configuration import _PartialBidConfigurationQuery
@@ -356,7 +324,7 @@ class _PartialBidMatrixCalculationInputQuery(NodeQueryCore[T_DomainModelList, Pa
             reverse_expression,
         )
 
-        if _BidConfigurationDayAheadQuery not in created_types:
+        if _BidConfigurationDayAheadQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.bid_configuration = _BidConfigurationDayAheadQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -370,7 +338,7 @@ class _PartialBidMatrixCalculationInputQuery(NodeQueryCore[T_DomainModelList, Pa
                 connection_property=ViewPropertyId(self._view_id, "bidConfiguration"),
             )
 
-        if _PartialBidConfigurationQuery not in created_types:
+        if _PartialBidConfigurationQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.partial_bid_configuration = _PartialBidConfigurationQuery(
                 created_types.copy(),
                 self._creation_path,

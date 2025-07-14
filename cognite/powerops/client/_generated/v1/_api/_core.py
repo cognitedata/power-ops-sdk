@@ -42,10 +42,12 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     T_DomainRelationWrite,
     T_DomainRelationList,
     QueryBuilder,
+    QueryExecutor,
     QueryUnpacker,
 )
 
 DEFAULT_LIMIT_READ = 25
+DEFAULT_CHUNK_SIZE = 100
 DEFAULT_QUERY_LIMIT = 3
 IN_FILTER_LIMIT = 5_000
 INSTANCE_QUERY_LIMIT = 1_000
@@ -105,6 +107,7 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList], ABC):
 
     def __init__(self, client: CogniteClient):
         self._client = client
+        self._last_cursors: dict[str, str | None] | None = None
 
     def _delete(self, external_id: str | SequenceNotStr[str], space: str) -> dm.InstancesDeleteResult:
         if isinstance(external_id, str):
@@ -160,11 +163,7 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList], ABC):
                     filter_ = dm.filters.Equals(["node", "space"], space_key) & dm.filters.In(
                         ["node", "externalId"], ext_id_chunk
                     )
-                    items.extend(
-                        instantiate_classes(
-                            self._class_type, self._query(filter_, len(ext_id_chunk), retrieve_connections), "retrieve"
-                        )
-                    )
+                    items.extend(self._query(filter_, len(ext_id_chunk), retrieve_connections, None, "retrieve"))
 
         nodes = self._class_list(items)
 
@@ -175,14 +174,55 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList], ABC):
         else:
             return nodes[0]
 
+    def _build(
+        self,
+        filter_: dm.Filter | None,
+        limit: int | None,
+        retrieve_connections: Literal["skip", "identifier", "full"],
+        sort: list[InstanceSort] | None = None,
+        chunk_size: int | None = None,
+    ) -> QueryExecutor:
+        raise NotImplementedError
+
     def _query(
         self,
         filter_: dm.Filter | None,
         limit: int,
         retrieve_connections: Literal["skip", "identifier", "full"],
         sort: list[InstanceSort] | None = None,
-    ) -> list[dict[str, Any]]:
-        raise NotImplementedError
+        context: Literal["query", "list", "retrieve"] = "query",
+    ) -> T_DomainModelList:
+        executor = self._build(filter_, limit, retrieve_connections, sort)
+        results = executor.execute_query(self._client, remove_not_connected=False)
+        unpack_edges: Literal["skip", "identifier"] = "identifier" if retrieve_connections == "identifier" else "skip"
+        unpacked = QueryUnpacker(results, edges=unpack_edges).unpack()
+        item_list = instantiate_classes(self._class_type, unpacked, context)
+        return self._class_list(item_list)
+
+    def _iterate(
+        self,
+        chunk_size: int,
+        filter_: dm.Filter | None,
+        limit: int | None,
+        retrieve_connections: Literal["skip", "identifier", "full"],
+        sort: list[InstanceSort] | None = None,
+        cursors: dict[str, str | None] | None = None,
+    ) -> Iterator[T_DomainModelList]:
+        if cursors is not None and self._last_cursors is not None:
+            raise ValueError(
+                "Same cursors used twice. Please use a different set of cursors or start a new iteration. "
+                "This is to avoid accidental infinite loops."
+            )
+        self._last_cursors = cursors
+        executor = self._build(filter_, limit, retrieve_connections, sort, chunk_size)
+        for batch_results in executor.iterate(self._client, remove_not_connected=False, init_cursors=cursors):
+            unpack_edges: Literal["skip", "identifier"] = (
+                "identifier" if retrieve_connections == "identifier" else "skip"
+            )
+            unpacked = QueryUnpacker(batch_results, edges=unpack_edges).unpack()
+            yield self._class_list(
+                instantiate_classes(self._class_type, unpacked, "iterate"), cursors=batch_results._cursors
+            )
 
     def _search(
         self,
@@ -426,8 +466,9 @@ class QueryAPI(Generic[T_DomainModel, T_DomainModelList]):
         self._result_list_cls = result_list_cls
 
     def _query(self) -> T_DomainModelList:
-        self._builder.execute_query(self._client, remove_not_connected=True)
-        unpacked = QueryUnpacker(self._builder).unpack()
+        executor = self._builder.build()
+        results = executor.execute_query(self._client, remove_not_connected=True)
+        unpacked = QueryUnpacker(results).unpack()
         item_list = instantiate_classes(self._result_cls, unpacked, "query")
         return self._result_list_cls(item_list)
 
@@ -550,13 +591,13 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE: dict[dm.DataModelId, dict[str, type[G
         "ShopAttributeMapping": data_classes.ShopAttributeMappingGraphQL,
         "ShopModel": data_classes.ShopModelGraphQL,
         "ShopResult": data_classes.ShopResultGraphQL,
-        "ShopCase": data_classes.ShopCaseGraphQL,
         "Alert": data_classes.AlertGraphQL,
         "BidConfigurationDayAhead": data_classes.BidConfigurationDayAheadGraphQL,
         "PriceArea": data_classes.PriceAreaGraphQL,
         "PriceAreaDayAhead": data_classes.PriceAreaDayAheadGraphQL,
         "PriceProduction": data_classes.PriceProductionGraphQL,
         "ShopTimeSeries": data_classes.ShopTimeSeriesGraphQL,
+        "ShopTimeResolution": data_classes.ShopTimeResolutionGraphQL,
         "ShopCommands": data_classes.ShopCommandsGraphQL,
         "FunctionInput": data_classes.FunctionInputGraphQL,
         "FunctionOutput": data_classes.FunctionOutputGraphQL,
@@ -566,7 +607,7 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE: dict[dm.DataModelId, dict[str, type[G
         "ShopFile": data_classes.ShopFileGraphQL,
         "DateSpecification": data_classes.DateSpecificationGraphQL,
         "ShopOutputTimeSeriesDefinition": data_classes.ShopOutputTimeSeriesDefinitionGraphQL,
-        "ShopTimeResolution": data_classes.ShopTimeResolutionGraphQL,
+        "ShopCase": data_classes.ShopCaseGraphQL,
     },
     dm.DataModelId("power_ops_core", "compute_TotalBidMatrixCalculation", "1"): {
         "BidMatrix": data_classes.BidMatrixGraphQL,
@@ -584,8 +625,8 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE: dict[dm.DataModelId, dict[str, type[G
         "ShopModel": data_classes.ShopModelGraphQL,
         "ShopAttributeMapping": data_classes.ShopAttributeMappingGraphQL,
         "PriceProduction": data_classes.PriceProductionGraphQL,
-        "ShopCase": data_classes.ShopCaseGraphQL,
         "ShopTimeSeries": data_classes.ShopTimeSeriesGraphQL,
+        "ShopTimeResolution": data_classes.ShopTimeResolutionGraphQL,
         "ShopCommands": data_classes.ShopCommandsGraphQL,
         "FunctionInput": data_classes.FunctionInputGraphQL,
         "FunctionOutput": data_classes.FunctionOutputGraphQL,
@@ -596,7 +637,7 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE: dict[dm.DataModelId, dict[str, type[G
         "ShopFile": data_classes.ShopFileGraphQL,
         "DateSpecification": data_classes.DateSpecificationGraphQL,
         "ShopOutputTimeSeriesDefinition": data_classes.ShopOutputTimeSeriesDefinitionGraphQL,
-        "ShopTimeResolution": data_classes.ShopTimeResolutionGraphQL,
+        "ShopCase": data_classes.ShopCaseGraphQL,
     },
     dm.DataModelId("power_ops_core", "compute_WaterValueBasedDayAheadBid", "1"): {
         "TaskDispatcherInput": data_classes.TaskDispatcherInputGraphQL,
@@ -612,6 +653,8 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE: dict[dm.DataModelId, dict[str, type[G
         "PriceAreaDayAhead": data_classes.PriceAreaDayAheadGraphQL,
         "MarketConfiguration": data_classes.MarketConfigurationGraphQL,
         "Generator": data_classes.GeneratorGraphQL,
+        "GeneratorEfficiencyCurve": data_classes.GeneratorEfficiencyCurveGraphQL,
+        "TurbineEfficiencyCurve": data_classes.TurbineEfficiencyCurveGraphQL,
         "FunctionInput": data_classes.FunctionInputGraphQL,
         "FunctionOutput": data_classes.FunctionOutputGraphQL,
         "BidMatrix": data_classes.BidMatrixGraphQL,
@@ -619,8 +662,6 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE: dict[dm.DataModelId, dict[str, type[G
         "PartialBidConfiguration": data_classes.PartialBidConfigurationGraphQL,
         "WaterValueBasedPartialBidConfiguration": data_classes.WaterValueBasedPartialBidConfigurationGraphQL,
         "DateSpecification": data_classes.DateSpecificationGraphQL,
-        "GeneratorEfficiencyCurve": data_classes.GeneratorEfficiencyCurveGraphQL,
-        "TurbineEfficiencyCurve": data_classes.TurbineEfficiencyCurveGraphQL,
     },
     dm.DataModelId("power_ops_core", "config_DayAheadConfiguration", "1"): {
         "BidConfigurationDayAhead": data_classes.BidConfigurationDayAheadGraphQL,
@@ -635,6 +676,9 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE: dict[dm.DataModelId, dict[str, type[G
         "ShopAttributeMapping": data_classes.ShopAttributeMappingGraphQL,
         "ShopModel": data_classes.ShopModelGraphQL,
         "Generator": data_classes.GeneratorGraphQL,
+        "TurbineEfficiencyCurve": data_classes.TurbineEfficiencyCurveGraphQL,
+        "GeneratorEfficiencyCurve": data_classes.GeneratorEfficiencyCurveGraphQL,
+        "ShopTimeResolution": data_classes.ShopTimeResolutionGraphQL,
         "ShopCommands": data_classes.ShopCommandsGraphQL,
         "PowerAsset": data_classes.PowerAssetGraphQL,
         "Plant": data_classes.PlantGraphQL,
@@ -643,9 +687,6 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE: dict[dm.DataModelId, dict[str, type[G
         "DateSpecification": data_classes.DateSpecificationGraphQL,
         "ShopOutputTimeSeriesDefinition": data_classes.ShopOutputTimeSeriesDefinitionGraphQL,
         "ShopFile": data_classes.ShopFileGraphQL,
-        "TurbineEfficiencyCurve": data_classes.TurbineEfficiencyCurveGraphQL,
-        "GeneratorEfficiencyCurve": data_classes.GeneratorEfficiencyCurveGraphQL,
-        "ShopTimeResolution": data_classes.ShopTimeResolutionGraphQL,
     },
     dm.DataModelId("power_ops_core", "frontend_AFRRBid", "1"): {
         "BidDocumentAFRR": data_classes.BidDocumentAFRRGraphQL,
@@ -670,9 +711,9 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE: dict[dm.DataModelId, dict[str, type[G
         "PlantInformation": data_classes.PlantInformationGraphQL,
         "Watercourse": data_classes.WatercourseGraphQL,
         "Generator": data_classes.GeneratorGraphQL,
-        "DateSpecification": data_classes.DateSpecificationGraphQL,
         "TurbineEfficiencyCurve": data_classes.TurbineEfficiencyCurveGraphQL,
         "GeneratorEfficiencyCurve": data_classes.GeneratorEfficiencyCurveGraphQL,
+        "DateSpecification": data_classes.DateSpecificationGraphQL,
     },
     dm.DataModelId("power_ops_core", "frontend_DayAheadBid", "1"): {
         "BidDocumentDayAhead": data_classes.BidDocumentDayAheadGraphQL,
@@ -684,8 +725,8 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE: dict[dm.DataModelId, dict[str, type[G
         "ShopModel": data_classes.ShopModelGraphQL,
         "ShopAttributeMapping": data_classes.ShopAttributeMappingGraphQL,
         "PriceProduction": data_classes.PriceProductionGraphQL,
+        "ShopTimeResolution": data_classes.ShopTimeResolutionGraphQL,
         "ShopCommands": data_classes.ShopCommandsGraphQL,
-        "ShopCase": data_classes.ShopCaseGraphQL,
         "PowerAsset": data_classes.PowerAssetGraphQL,
         "BidConfigurationDayAhead": data_classes.BidConfigurationDayAheadGraphQL,
         "PartialBidConfiguration": data_classes.PartialBidConfigurationGraphQL,
@@ -700,7 +741,7 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE: dict[dm.DataModelId, dict[str, type[G
         "ShopPenaltyReport": data_classes.ShopPenaltyReportGraphQL,
         "DateSpecification": data_classes.DateSpecificationGraphQL,
         "ShopOutputTimeSeriesDefinition": data_classes.ShopOutputTimeSeriesDefinitionGraphQL,
-        "ShopTimeResolution": data_classes.ShopTimeResolutionGraphQL,
+        "ShopCase": data_classes.ShopCaseGraphQL,
     },
     dm.DataModelId("power_ops_core", "compute_BenchmarkingDayAhead", "1"): {
         "BenchmarkingConfigurationDayAhead": data_classes.BenchmarkingConfigurationDayAheadGraphQL,
@@ -709,7 +750,6 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE: dict[dm.DataModelId, dict[str, type[G
         "PriceAreaDayAhead": data_classes.PriceAreaDayAheadGraphQL,
         "BenchmarkingTaskDispatcherInputDayAhead": data_classes.BenchmarkingTaskDispatcherInputDayAheadGraphQL,
         "BenchmarkingTaskDispatcherOutputDayAhead": data_classes.BenchmarkingTaskDispatcherOutputDayAheadGraphQL,
-        "BenchmarkingShopCase": data_classes.BenchmarkingShopCaseGraphQL,
         "BenchmarkingResultDayAhead": data_classes.BenchmarkingResultDayAheadGraphQL,
         "BenchmarkingProductionObligationDayAhead": data_classes.BenchmarkingProductionObligationDayAheadGraphQL,
         "MarketConfiguration": data_classes.MarketConfigurationGraphQL,
@@ -721,19 +761,20 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE: dict[dm.DataModelId, dict[str, type[G
         "FunctionOutput": data_classes.FunctionOutputGraphQL,
         "PriceArea": data_classes.PriceAreaGraphQL,
         "ShopModel": data_classes.ShopModelGraphQL,
+        "ShopTimeResolution": data_classes.ShopTimeResolutionGraphQL,
         "ShopCommands": data_classes.ShopCommandsGraphQL,
         "ShopAttributeMapping": data_classes.ShopAttributeMappingGraphQL,
         "PowerAsset": data_classes.PowerAssetGraphQL,
         "PartialBidConfiguration": data_classes.PartialBidConfigurationGraphQL,
         "ShopOutputTimeSeriesDefinition": data_classes.ShopOutputTimeSeriesDefinitionGraphQL,
         "ShopFile": data_classes.ShopFileGraphQL,
-        "ShopCase": data_classes.ShopCaseGraphQL,
         "ShopResult": data_classes.ShopResultGraphQL,
         "DateSpecification": data_classes.DateSpecificationGraphQL,
         "ShopTimeSeries": data_classes.ShopTimeSeriesGraphQL,
         "ShopTriggerInput": data_classes.ShopTriggerInputGraphQL,
         "ShopPreprocessorInput": data_classes.ShopPreprocessorInputGraphQL,
-        "ShopTimeResolution": data_classes.ShopTimeResolutionGraphQL,
+        "BenchmarkingShopCase": data_classes.BenchmarkingShopCaseGraphQL,
+        "ShopCase": data_classes.ShopCaseGraphQL,
     },
 }
 

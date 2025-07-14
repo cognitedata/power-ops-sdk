@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
 from typing import Any, ClassVar, Literal, Optional, Union
 
@@ -12,6 +11,7 @@ from cognite.client.data_classes import (
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -51,10 +51,8 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
 __all__ = [
     "ShopAttributeMapping",
     "ShopAttributeMappingWrite",
-    "ShopAttributeMappingApply",
     "ShopAttributeMappingList",
     "ShopAttributeMappingWriteList",
-    "ShopAttributeMappingApplyList",
     "ShopAttributeMappingFields",
     "ShopAttributeMappingTextFields",
     "ShopAttributeMappingGraphQL",
@@ -161,14 +159,6 @@ class ShopAttributeMapping(DomainModel):
         """Convert this read version of shop attribute mapping to the writing version."""
         return ShopAttributeMappingWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> ShopAttributeMappingWrite:
-        """Convert this read version of shop attribute mapping to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class ShopAttributeMappingWrite(DomainModelWrite):
@@ -204,18 +194,6 @@ class ShopAttributeMappingWrite(DomainModelWrite):
 
 
 
-class ShopAttributeMappingApply(ShopAttributeMappingWrite):
-    def __new__(cls, *args, **kwargs) -> ShopAttributeMappingApply:
-        warnings.warn(
-            "ShopAttributeMappingApply is deprecated and will be removed in v1.0. "
-            "Use ShopAttributeMappingWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "ShopAttributeMapping.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class ShopAttributeMappingList(DomainModelList[ShopAttributeMapping]):
     """List of shop attribute mappings in the read version."""
 
@@ -224,22 +202,12 @@ class ShopAttributeMappingList(DomainModelList[ShopAttributeMapping]):
         """Convert these read versions of shop attribute mapping to the writing versions."""
         return ShopAttributeMappingWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> ShopAttributeMappingWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class ShopAttributeMappingWriteList(DomainModelWriteList[ShopAttributeMappingWrite]):
     """List of shop attribute mappings in the writing version."""
 
     _INSTANCE = ShopAttributeMappingWrite
-
-class ShopAttributeMappingApplyList(ShopAttributeMappingWriteList): ...
 
 
 def _create_shop_attribute_mapping_filter(
@@ -311,11 +279,11 @@ class _ShopAttributeMappingQuery(NodeQueryCore[T_DomainModelList, ShopAttributeM
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
 
         super().__init__(

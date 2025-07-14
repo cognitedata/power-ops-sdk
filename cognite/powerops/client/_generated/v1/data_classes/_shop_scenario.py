@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
@@ -8,6 +7,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -46,10 +46,8 @@ if TYPE_CHECKING:
 __all__ = [
     "ShopScenario",
     "ShopScenarioWrite",
-    "ShopScenarioApply",
     "ShopScenarioList",
     "ShopScenarioWriteList",
-    "ShopScenarioApplyList",
     "ShopScenarioFields",
     "ShopScenarioTextFields",
     "ShopScenarioGraphQL",
@@ -79,8 +77,8 @@ class ShopScenarioGraphQL(GraphQLCore, protected_namespaces=()):
         name: The name of the scenario to run
         model: The model template to use when running the scenario
         commands: The commands to run
-        source: The source of the scenario
         time_resolution: The time resolutions to use within SHOP.
+        source: The source of the scenario
         output_definition: An array of output definitions for the time series
         attribute_mappings_override: An array of base mappings to override in shop model file
     """
@@ -89,8 +87,8 @@ class ShopScenarioGraphQL(GraphQLCore, protected_namespaces=()):
     name: Optional[str] = None
     model: Optional[ShopModelGraphQL] = Field(default=None, repr=False)
     commands: Optional[ShopCommandsGraphQL] = Field(default=None, repr=False)
-    source: Optional[str] = None
     time_resolution: Optional[ShopTimeResolutionGraphQL] = Field(default=None, repr=False, alias="timeResolution")
+    source: Optional[str] = None
     output_definition: Optional[list[ShopOutputTimeSeriesDefinitionGraphQL]] = Field(default=None, repr=False, alias="outputDefinition")
     attribute_mappings_override: Optional[list[ShopAttributeMappingGraphQL]] = Field(default=None, repr=False, alias="attributeMappingsOverride")
 
@@ -135,8 +133,8 @@ class ShopScenario(DomainModel, protected_namespaces=()):
         name: The name of the scenario to run
         model: The model template to use when running the scenario
         commands: The commands to run
-        source: The source of the scenario
         time_resolution: The time resolutions to use within SHOP.
+        source: The source of the scenario
         output_definition: An array of output definitions for the time series
         attribute_mappings_override: An array of base mappings to override in shop model file
     """
@@ -148,8 +146,8 @@ class ShopScenario(DomainModel, protected_namespaces=()):
     name: str
     model: Union[ShopModel, str, dm.NodeId, None] = Field(default=None, repr=False)
     commands: Union[ShopCommands, str, dm.NodeId, None] = Field(default=None, repr=False)
-    source: Optional[str] = None
     time_resolution: Union[ShopTimeResolution, str, dm.NodeId, None] = Field(default=None, repr=False, alias="timeResolution")
+    source: Optional[str] = None
     output_definition: Optional[list[Union[ShopOutputTimeSeriesDefinition, str, dm.NodeId]]] = Field(default=None, repr=False, alias="outputDefinition")
     attribute_mappings_override: Optional[list[Union[ShopAttributeMapping, str, dm.NodeId]]] = Field(default=None, repr=False, alias="attributeMappingsOverride")
     @field_validator("model", "commands", "time_resolution", mode="before")
@@ -168,14 +166,6 @@ class ShopScenario(DomainModel, protected_namespaces=()):
         """Convert this read version of shop scenario to the writing version."""
         return ShopScenarioWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> ShopScenarioWrite:
-        """Convert this read version of shop scenario to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class ShopScenarioWrite(DomainModelWrite, protected_namespaces=()):
@@ -190,8 +180,8 @@ class ShopScenarioWrite(DomainModelWrite, protected_namespaces=()):
         name: The name of the scenario to run
         model: The model template to use when running the scenario
         commands: The commands to run
-        source: The source of the scenario
         time_resolution: The time resolutions to use within SHOP.
+        source: The source of the scenario
         output_definition: An array of output definitions for the time series
         attribute_mappings_override: An array of base mappings to override in shop model file
     """
@@ -206,8 +196,8 @@ class ShopScenarioWrite(DomainModelWrite, protected_namespaces=()):
     name: str
     model: Union[ShopModelWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
     commands: Union[ShopCommandsWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
-    source: Optional[str] = None
     time_resolution: Union[ShopTimeResolutionWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="timeResolution")
+    source: Optional[str] = None
     output_definition: Optional[list[Union[ShopOutputTimeSeriesDefinitionWrite, str, dm.NodeId]]] = Field(default=None, repr=False, alias="outputDefinition")
     attribute_mappings_override: Optional[list[Union[ShopAttributeMappingWrite, str, dm.NodeId]]] = Field(default=None, repr=False, alias="attributeMappingsOverride")
 
@@ -222,18 +212,6 @@ class ShopScenarioWrite(DomainModelWrite, protected_namespaces=()):
         return value
 
 
-class ShopScenarioApply(ShopScenarioWrite):
-    def __new__(cls, *args, **kwargs) -> ShopScenarioApply:
-        warnings.warn(
-            "ShopScenarioApply is deprecated and will be removed in v1.0. "
-            "Use ShopScenarioWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "ShopScenario.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class ShopScenarioList(DomainModelList[ShopScenario]):
     """List of shop scenarios in the read version."""
 
@@ -242,14 +220,6 @@ class ShopScenarioList(DomainModelList[ShopScenario]):
         """Convert these read versions of shop scenario to the writing versions."""
         return ShopScenarioWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> ShopScenarioWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
     @property
     def model(self) -> ShopModelList:
@@ -301,8 +271,6 @@ class ShopScenarioWriteList(DomainModelWriteList[ShopScenarioWrite]):
         return ShopAttributeMappingWriteList([item for items in self.data for item in items.attribute_mappings_override or [] if isinstance(item, ShopAttributeMappingWrite)])
 
 
-class ShopScenarioApplyList(ShopScenarioWriteList): ...
-
 
 def _create_shop_scenario_filter(
     view_id: dm.ViewId,
@@ -310,9 +278,9 @@ def _create_shop_scenario_filter(
     name_prefix: str | None = None,
     model: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
     commands: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+    time_resolution: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
     source: str | list[str] | None = None,
     source_prefix: str | None = None,
-    time_resolution: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -332,16 +300,16 @@ def _create_shop_scenario_filter(
         filters.append(dm.filters.Equals(view_id.as_property_ref("commands"), value=as_instance_dict_id(commands)))
     if commands and isinstance(commands, Sequence) and not isinstance(commands, str) and not is_tuple_id(commands):
         filters.append(dm.filters.In(view_id.as_property_ref("commands"), values=[as_instance_dict_id(item) for item in commands]))
+    if isinstance(time_resolution, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(time_resolution):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("timeResolution"), value=as_instance_dict_id(time_resolution)))
+    if time_resolution and isinstance(time_resolution, Sequence) and not isinstance(time_resolution, str) and not is_tuple_id(time_resolution):
+        filters.append(dm.filters.In(view_id.as_property_ref("timeResolution"), values=[as_instance_dict_id(item) for item in time_resolution]))
     if isinstance(source, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("source"), value=source))
     if source and isinstance(source, list):
         filters.append(dm.filters.In(view_id.as_property_ref("source"), values=source))
     if source_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("source"), value=source_prefix))
-    if isinstance(time_resolution, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(time_resolution):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("timeResolution"), value=as_instance_dict_id(time_resolution)))
-    if time_resolution and isinstance(time_resolution, Sequence) and not isinstance(time_resolution, str) and not is_tuple_id(time_resolution):
-        filters.append(dm.filters.In(view_id.as_property_ref("timeResolution"), values=[as_instance_dict_id(item) for item in time_resolution]))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
@@ -364,11 +332,11 @@ class _ShopScenarioQuery(NodeQueryCore[T_DomainModelList, ShopScenarioList]):
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
         from ._shop_attribute_mapping import _ShopAttributeMappingQuery
         from ._shop_commands import _ShopCommandsQuery
@@ -389,7 +357,7 @@ class _ShopScenarioQuery(NodeQueryCore[T_DomainModelList, ShopScenarioList]):
             reverse_expression,
         )
 
-        if _ShopModelQuery not in created_types:
+        if _ShopModelQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.model = _ShopModelQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -403,7 +371,7 @@ class _ShopScenarioQuery(NodeQueryCore[T_DomainModelList, ShopScenarioList]):
                 connection_property=ViewPropertyId(self._view_id, "model"),
             )
 
-        if _ShopCommandsQuery not in created_types:
+        if _ShopCommandsQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.commands = _ShopCommandsQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -417,7 +385,7 @@ class _ShopScenarioQuery(NodeQueryCore[T_DomainModelList, ShopScenarioList]):
                 connection_property=ViewPropertyId(self._view_id, "commands"),
             )
 
-        if _ShopTimeResolutionQuery not in created_types:
+        if _ShopTimeResolutionQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.time_resolution = _ShopTimeResolutionQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -431,7 +399,7 @@ class _ShopScenarioQuery(NodeQueryCore[T_DomainModelList, ShopScenarioList]):
                 connection_property=ViewPropertyId(self._view_id, "timeResolution"),
             )
 
-        if _ShopOutputTimeSeriesDefinitionQuery not in created_types:
+        if _ShopOutputTimeSeriesDefinitionQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.output_definition = _ShopOutputTimeSeriesDefinitionQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -445,7 +413,7 @@ class _ShopScenarioQuery(NodeQueryCore[T_DomainModelList, ShopScenarioList]):
                 connection_property=ViewPropertyId(self._view_id, "outputDefinition"),
             )
 
-        if _ShopAttributeMappingQuery not in created_types:
+        if _ShopAttributeMappingQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.attribute_mappings_override = _ShopAttributeMappingQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -464,16 +432,16 @@ class _ShopScenarioQuery(NodeQueryCore[T_DomainModelList, ShopScenarioList]):
         self.name = StringFilter(self, self._view_id.as_property_ref("name"))
         self.model_filter = DirectRelationFilter(self, self._view_id.as_property_ref("model"))
         self.commands_filter = DirectRelationFilter(self, self._view_id.as_property_ref("commands"))
-        self.source = StringFilter(self, self._view_id.as_property_ref("source"))
         self.time_resolution_filter = DirectRelationFilter(self, self._view_id.as_property_ref("timeResolution"))
+        self.source = StringFilter(self, self._view_id.as_property_ref("source"))
         self._filter_classes.extend([
             self.space,
             self.external_id,
             self.name,
             self.model_filter,
             self.commands_filter,
-            self.source,
             self.time_resolution_filter,
+            self.source,
         ])
 
     def list_shop_scenario(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopScenarioList:

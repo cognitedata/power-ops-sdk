@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
@@ -14,6 +13,7 @@ from cognite.client.data_classes import (
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -63,10 +63,8 @@ if TYPE_CHECKING:
 __all__ = [
     "PartialBidMatrixInformation",
     "PartialBidMatrixInformationWrite",
-    "PartialBidMatrixInformationApply",
     "PartialBidMatrixInformationList",
     "PartialBidMatrixInformationWriteList",
-    "PartialBidMatrixInformationApplyList",
     "PartialBidMatrixInformationFields",
     "PartialBidMatrixInformationTextFields",
     "PartialBidMatrixInformationGraphQL",
@@ -190,14 +188,6 @@ class PartialBidMatrixInformation(BidMatrixInformation):
         """Convert this read version of partial bid matrix information to the writing version."""
         return PartialBidMatrixInformationWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> PartialBidMatrixInformationWrite:
-        """Convert this read version of partial bid matrix information to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class PartialBidMatrixInformationWrite(BidMatrixInformationWrite):
@@ -240,18 +230,6 @@ class PartialBidMatrixInformationWrite(BidMatrixInformationWrite):
         return value
 
 
-class PartialBidMatrixInformationApply(PartialBidMatrixInformationWrite):
-    def __new__(cls, *args, **kwargs) -> PartialBidMatrixInformationApply:
-        warnings.warn(
-            "PartialBidMatrixInformationApply is deprecated and will be removed in v1.0. "
-            "Use PartialBidMatrixInformationWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "PartialBidMatrixInformation.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class PartialBidMatrixInformationList(DomainModelList[PartialBidMatrixInformation]):
     """List of partial bid matrix information in the read version."""
 
@@ -260,14 +238,6 @@ class PartialBidMatrixInformationList(DomainModelList[PartialBidMatrixInformatio
         """Convert these read versions of partial bid matrix information to the writing versions."""
         return PartialBidMatrixInformationWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> PartialBidMatrixInformationWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
     @property
     def alerts(self) -> AlertList:
@@ -310,8 +280,6 @@ class PartialBidMatrixInformationWriteList(DomainModelWriteList[PartialBidMatrix
     def partial_bid_configuration(self) -> PartialBidConfigurationWriteList:
         from ._partial_bid_configuration import PartialBidConfigurationWrite, PartialBidConfigurationWriteList
         return PartialBidConfigurationWriteList([item.partial_bid_configuration for item in self.data if isinstance(item.partial_bid_configuration, PartialBidConfigurationWrite)])
-
-class PartialBidMatrixInformationApplyList(PartialBidMatrixInformationWriteList): ...
 
 
 def _create_partial_bid_matrix_information_filter(
@@ -365,11 +333,11 @@ class _PartialBidMatrixInformationQuery(NodeQueryCore[T_DomainModelList, Partial
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
         from ._alert import _AlertQuery
         from ._bid_matrix import _BidMatrixQuery
@@ -389,7 +357,7 @@ class _PartialBidMatrixInformationQuery(NodeQueryCore[T_DomainModelList, Partial
             reverse_expression,
         )
 
-        if _AlertQuery not in created_types:
+        if _AlertQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.alerts = _AlertQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -403,7 +371,7 @@ class _PartialBidMatrixInformationQuery(NodeQueryCore[T_DomainModelList, Partial
                 connection_property=ViewPropertyId(self._view_id, "alerts"),
             )
 
-        if _BidMatrixQuery not in created_types:
+        if _BidMatrixQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.underlying_bid_matrices = _BidMatrixQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -417,7 +385,7 @@ class _PartialBidMatrixInformationQuery(NodeQueryCore[T_DomainModelList, Partial
                 connection_property=ViewPropertyId(self._view_id, "underlyingBidMatrices"),
             )
 
-        if _PowerAssetQuery not in created_types:
+        if _PowerAssetQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.power_asset = _PowerAssetQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -431,7 +399,7 @@ class _PartialBidMatrixInformationQuery(NodeQueryCore[T_DomainModelList, Partial
                 connection_property=ViewPropertyId(self._view_id, "powerAsset"),
             )
 
-        if _PartialBidConfigurationQuery not in created_types:
+        if _PartialBidConfigurationQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.partial_bid_configuration = _PartialBidConfigurationQuery(
                 created_types.copy(),
                 self._creation_path,

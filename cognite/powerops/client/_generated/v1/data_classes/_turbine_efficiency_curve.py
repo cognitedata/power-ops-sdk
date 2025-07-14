@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
 from typing import Any, ClassVar, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -39,10 +39,8 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
 __all__ = [
     "TurbineEfficiencyCurve",
     "TurbineEfficiencyCurveWrite",
-    "TurbineEfficiencyCurveApply",
     "TurbineEfficiencyCurveList",
     "TurbineEfficiencyCurveWriteList",
-    "TurbineEfficiencyCurveApplyList",
     "TurbineEfficiencyCurveFields",
     "TurbineEfficiencyCurveGraphQL",
 ]
@@ -128,14 +126,6 @@ class TurbineEfficiencyCurve(DomainModel):
         """Convert this read version of turbine efficiency curve to the writing version."""
         return TurbineEfficiencyCurveWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> TurbineEfficiencyCurveWrite:
-        """Convert this read version of turbine efficiency curve to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class TurbineEfficiencyCurveWrite(DomainModelWrite):
@@ -163,18 +153,6 @@ class TurbineEfficiencyCurveWrite(DomainModelWrite):
 
 
 
-class TurbineEfficiencyCurveApply(TurbineEfficiencyCurveWrite):
-    def __new__(cls, *args, **kwargs) -> TurbineEfficiencyCurveApply:
-        warnings.warn(
-            "TurbineEfficiencyCurveApply is deprecated and will be removed in v1.0. "
-            "Use TurbineEfficiencyCurveWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "TurbineEfficiencyCurve.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class TurbineEfficiencyCurveList(DomainModelList[TurbineEfficiencyCurve]):
     """List of turbine efficiency curves in the read version."""
 
@@ -183,22 +161,12 @@ class TurbineEfficiencyCurveList(DomainModelList[TurbineEfficiencyCurve]):
         """Convert these read versions of turbine efficiency curve to the writing versions."""
         return TurbineEfficiencyCurveWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> TurbineEfficiencyCurveWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class TurbineEfficiencyCurveWriteList(DomainModelWriteList[TurbineEfficiencyCurveWrite]):
     """List of turbine efficiency curves in the writing version."""
 
     _INSTANCE = TurbineEfficiencyCurveWrite
-
-class TurbineEfficiencyCurveApplyList(TurbineEfficiencyCurveWriteList): ...
 
 
 def _create_turbine_efficiency_curve_filter(
@@ -234,11 +202,11 @@ class _TurbineEfficiencyCurveQuery(NodeQueryCore[T_DomainModelList, TurbineEffic
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
 
         super().__init__(
