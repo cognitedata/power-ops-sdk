@@ -40,7 +40,7 @@ jobs:
         IDP_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
         IDP_TENANT_ID: ${{ vars.TENANT_ID }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.2
       - name: Build modules
         run: cdf build --env $TOOLKIT_ENV --build-dir cdf-tk-build
       - name: Deploy modules
@@ -53,9 +53,9 @@ jobs:
       name: CD
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.2
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5.6.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
