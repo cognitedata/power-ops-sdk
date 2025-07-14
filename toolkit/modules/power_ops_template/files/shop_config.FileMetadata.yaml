@@ -23,3 +23,17 @@
     original:name: "SHOP-16.0.3-linux-pyshop-python-all"
     included:files:0: "shop_cplex_interface.so"
     included:files:1: "shop_pybind.cpython-311-x86_64-linux-gnu.so"
+- externalId: "SHOP_15.4.1.1"
+  name: "SHOP-15.4.1.1-pyshop-python3.11-linux.zip"
+  source: "SINTEF"
+  dataSetExternalId: "powerops:config"
+  directory: "/toolkit/modules/power_ops/files/"
+  mimeType: "application/zip"
+  metadata:
+    origin: "cognite-toolkit"
+    application: "CogShop-as-a-Service"
+    shop:type: "shop-release" # Required field for CogShop-as-a-Service do not change
+    source: "https://shop.sintef.energy/download/shop15-4-1-1/"
+    original:name: "SHOP-15.4.1.1-linux-pyshop-python-all"
+    included:files:0: "shop_cplex_interface.so"
+    included:files:1: "shop_pybind.cpython-311-x86_64-linux-gnu.so"
