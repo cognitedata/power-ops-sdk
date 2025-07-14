@@ -1,5 +1,5 @@
 environment:
-  project: power-ops-staging
+  project: power-ops-sandbox
   # type is set to staging since this field is only used for raising error if project defined here
   # doesn't match the environment variables (valid options are dev, staging, prod)
   validation-type: staging
@@ -7,7 +7,6 @@ environment:
     - modules/power_model
     - modules/resync
     - modules/power_ops_template
-    - modules/shop_result_explorer
 
 variables:
   modules:

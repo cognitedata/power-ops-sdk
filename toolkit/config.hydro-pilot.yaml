@@ -1,0 +1,14 @@
+environment:
+  project: hydro-energi-pilot
+  # type is set to prod since this field is only used for raising error if project defined here
+  # doesn't match the environment variables (valid options are dev, staging, prod)
+  validation-type: prod
+  selected:
+    - modules/power_model
+
+variables:
+  modules:
+    power_ops_type_space: "power_ops_types"
+    power_ops_instance_space: "power_ops_instances"
+    power_ops_models_space: "power_ops_core"
+    power_ops_data_model_version: "1"
