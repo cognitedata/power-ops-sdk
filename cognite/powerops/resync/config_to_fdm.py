@@ -7,7 +7,7 @@ import logging
 import re
 from collections.abc import Mapping, Sequence
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 import yaml
 from cognite.client import CogniteClient
@@ -72,7 +72,7 @@ class ResyncImporter:
         working_directory: Path,
         toolkit_directory: Path,
         data_model_classes: dict[str, type],
-        data_model_configuration: Optional[dict[str, DataModelConfiguration]] = None,
+        data_model_configuration: dict[str, DataModelConfiguration] | None = None,
         ignore_nones: bool = True,
         instance_space: str = "power_ops_instances",
         models_space: str = "power_ops_core",
@@ -651,8 +651,8 @@ class ResyncImporter:
     def _get_property_value_from_source(
         self,
         property_configuration: PropertyConfiguration,
-        instance_data: Optional[dict] = None,
-        source_data: Optional[dict] = None,
+        instance_data: dict | None = None,
+        source_data: dict | None = None,
     ) -> Any:
         """Gets the property value based on the provided data and property configuration.
 
@@ -728,7 +728,7 @@ class ResyncImporter:
             return source_data
 
     def _get_subtype_from_dictionary(
-        self, property_configuration: PropertyConfiguration, instance_data: Optional[dict] = None
+        self, property_configuration: PropertyConfiguration, instance_data: dict | None = None
     ) -> Any:
         """Gets the subtype property value based on the provided data and property configuration.
 
@@ -773,7 +773,7 @@ class ResyncImporter:
             raise ValueError(f"Property configuration {property_configuration} requires a cast_type")
 
     def _get_subtype_list(
-        self, property_configuration: PropertyConfiguration, instance_data: Optional[dict] = None
+        self, property_configuration: PropertyConfiguration, instance_data: dict | None = None
     ) -> list[Any]:
         """Gets a list of subtype property values based on the provided data and property configuration.
 

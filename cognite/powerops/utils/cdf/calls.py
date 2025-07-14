@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from typing import Optional, Union
+from typing import Union
 
 import numpy as np
 import pandas as pd
@@ -45,7 +45,7 @@ def merge_dicts(*args: dict) -> dict:
 def retrieve_relationships_from_source_ext_id(
     client: CogniteClient,
     source_ext_id: str,
-    label_ext_id: Optional[Union[str, list[str]]],
+    label_ext_id: Union[str, list[str]] | None,
     target_types: SequenceNotStr[str] | None = None,
 ) -> RelationshipList:
     """
@@ -131,7 +131,7 @@ def retrieve_range(client: CogniteClient, external_ids: list[str], start: int, e
 
 # TODO: refactor
 # TODO: naming: time_series vs. datapoints
-def retrieve_latest(client: CogniteClient, external_ids: list[Optional[str]], before: int) -> dict[str, pd.Series]:
+def retrieve_latest(client: CogniteClient, external_ids: list[str | None], before: int) -> dict[str, pd.Series]:
     if not external_ids:
         return {}
     external_ids = remove_duplicates(external_ids)

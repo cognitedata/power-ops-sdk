@@ -7,7 +7,7 @@ import hashlib
 import json
 import logging
 import re
-from typing import Any, Optional
+from typing import Any
 
 from pydantic.alias_generators import to_snake
 
@@ -139,7 +139,7 @@ def get_external_id_from_field(
     value: str,
     all_domain_type_properties_types: dict[str, str],
     all_write_classes: dict[str, type],
-) -> Optional[str]:
+) -> str | None:
     """Get the external id for a field based on the input value being a reference.
 
     Given a key and value pair, this function checks if the value is a reference to another object and generates an
