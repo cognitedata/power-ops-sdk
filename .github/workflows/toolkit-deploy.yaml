@@ -39,6 +39,7 @@ jobs:
         IDP_CLIENT_ID: ${{ vars.CLIENT_ID }}
         IDP_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
         IDP_TENANT_ID: ${{ vars.TENANT_ID }}
+        WF_TRIGGER_SECRET: ${{ secrets.WF_TRIGGER_SECRET }}
     steps:
       - uses: actions/checkout@v4.2.2
       - name: Build modules
@@ -71,7 +72,6 @@ jobs:
           PROJECT: ${{ vars.PROJECT }}
           CLUSTER: ${{ vars.CLUSTER }}
           TENANT_ID: ${{ vars.TENANT_ID }}
-          WF_TRIGGER_SECRET: ${{ secrets.WF_TRIGGER_SECRET }}
         run: |
           echo Running resync plan in CDF environment $PROJECT
           powerops purge $CLIENT_CONFIG_FILE $CONFIGURATION_FILE
