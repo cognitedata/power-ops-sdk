@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
@@ -8,6 +7,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -45,10 +45,8 @@ if TYPE_CHECKING:
 __all__ = [
     "BidRow",
     "BidRowWrite",
-    "BidRowApply",
     "BidRowList",
     "BidRowWriteList",
-    "BidRowApplyList",
     "BidRowFields",
     "BidRowTextFields",
     "BidRowGraphQL",
@@ -192,14 +190,6 @@ class BidRow(DomainModel):
         """Convert this read version of bid row to the writing version."""
         return BidRowWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> BidRowWrite:
-        """Convert this read version of bid row to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class BidRowWrite(DomainModelWrite):
@@ -256,18 +246,6 @@ class BidRowWrite(DomainModelWrite):
         return value
 
 
-class BidRowApply(BidRowWrite):
-    def __new__(cls, *args, **kwargs) -> BidRowApply:
-        warnings.warn(
-            "BidRowApply is deprecated and will be removed in v1.0. "
-            "Use BidRowWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "BidRow.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class BidRowList(DomainModelList[BidRow]):
     """List of bid rows in the read version."""
 
@@ -276,14 +254,6 @@ class BidRowList(DomainModelList[BidRow]):
         """Convert these read versions of bid row to the writing versions."""
         return BidRowWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> BidRowWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
     @property
     def linked_bid(self) -> BidRowList:
@@ -314,8 +284,6 @@ class BidRowWriteList(DomainModelWriteList[BidRowWrite]):
         from ._alert import AlertWrite, AlertWriteList
         return AlertWriteList([item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)])
 
-
-class BidRowApplyList(BidRowWriteList): ...
 
 
 def _create_bid_row_filter(
@@ -383,11 +351,11 @@ class _BidRowQuery(NodeQueryCore[T_DomainModelList, BidRowList]):
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
         from ._alert import _AlertQuery
         from ._power_asset import _PowerAssetQuery
@@ -405,7 +373,7 @@ class _BidRowQuery(NodeQueryCore[T_DomainModelList, BidRowList]):
             reverse_expression,
         )
 
-        if _BidRowQuery not in created_types:
+        if _BidRowQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.linked_bid = _BidRowQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -419,7 +387,7 @@ class _BidRowQuery(NodeQueryCore[T_DomainModelList, BidRowList]):
                 connection_property=ViewPropertyId(self._view_id, "linkedBid"),
             )
 
-        if _PowerAssetQuery not in created_types:
+        if _PowerAssetQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.power_asset = _PowerAssetQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -433,7 +401,7 @@ class _BidRowQuery(NodeQueryCore[T_DomainModelList, BidRowList]):
                 connection_property=ViewPropertyId(self._view_id, "powerAsset"),
             )
 
-        if _AlertQuery not in created_types:
+        if _AlertQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.alerts = _AlertQuery(
                 created_types.copy(),
                 self._creation_path,

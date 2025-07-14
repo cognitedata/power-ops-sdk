@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import datetime
-import warnings
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
@@ -9,6 +8,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -46,10 +46,8 @@ if TYPE_CHECKING:
 __all__ = [
     "TaskDispatcherInput",
     "TaskDispatcherInputWrite",
-    "TaskDispatcherInputApply",
     "TaskDispatcherInputList",
     "TaskDispatcherInputWriteList",
-    "TaskDispatcherInputApplyList",
     "TaskDispatcherInputFields",
     "TaskDispatcherInputTextFields",
     "TaskDispatcherInputGraphQL",
@@ -156,14 +154,6 @@ class TaskDispatcherInput(FunctionInput):
         """Convert this read version of task dispatcher input to the writing version."""
         return TaskDispatcherInputWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> TaskDispatcherInputWrite:
-        """Convert this read version of task dispatcher input to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class TaskDispatcherInputWrite(FunctionInputWrite):
@@ -202,18 +192,6 @@ class TaskDispatcherInputWrite(FunctionInputWrite):
         return value
 
 
-class TaskDispatcherInputApply(TaskDispatcherInputWrite):
-    def __new__(cls, *args, **kwargs) -> TaskDispatcherInputApply:
-        warnings.warn(
-            "TaskDispatcherInputApply is deprecated and will be removed in v1.0. "
-            "Use TaskDispatcherInputWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "TaskDispatcherInput.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class TaskDispatcherInputList(DomainModelList[TaskDispatcherInput]):
     """List of task dispatcher inputs in the read version."""
 
@@ -222,14 +200,6 @@ class TaskDispatcherInputList(DomainModelList[TaskDispatcherInput]):
         """Convert these read versions of task dispatcher input to the writing versions."""
         return TaskDispatcherInputWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> TaskDispatcherInputWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
     @property
     def bid_configuration(self) -> BidConfigurationDayAheadList:
@@ -244,8 +214,6 @@ class TaskDispatcherInputWriteList(DomainModelWriteList[TaskDispatcherInputWrite
     def bid_configuration(self) -> BidConfigurationDayAheadWriteList:
         from ._bid_configuration_day_ahead import BidConfigurationDayAheadWrite, BidConfigurationDayAheadWriteList
         return BidConfigurationDayAheadWriteList([item.bid_configuration for item in self.data if isinstance(item.bid_configuration, BidConfigurationDayAheadWrite)])
-
-class TaskDispatcherInputApplyList(TaskDispatcherInputWriteList): ...
 
 
 def _create_task_dispatcher_input_filter(
@@ -314,11 +282,11 @@ class _TaskDispatcherInputQuery(NodeQueryCore[T_DomainModelList, TaskDispatcherI
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
         from ._bid_configuration_day_ahead import _BidConfigurationDayAheadQuery
 
@@ -335,7 +303,7 @@ class _TaskDispatcherInputQuery(NodeQueryCore[T_DomainModelList, TaskDispatcherI
             reverse_expression,
         )
 
-        if _BidConfigurationDayAheadQuery not in created_types:
+        if _BidConfigurationDayAheadQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.bid_configuration = _BidConfigurationDayAheadQuery(
                 created_types.copy(),
                 self._creation_path,

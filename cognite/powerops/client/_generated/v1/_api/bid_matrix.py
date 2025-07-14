@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from collections.abc import Sequence
+from collections.abc import Iterator, Sequence
 from typing import Any, ClassVar, Literal, overload
 
 from cognite.client import CogniteClient
@@ -10,6 +10,7 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 
 from cognite.powerops.client._generated.v1._api._core import (
     DEFAULT_LIMIT_READ,
+    DEFAULT_CHUNK_SIZE,
     instantiate_classes,
     Aggregations,
     NodeAPI,
@@ -18,8 +19,9 @@ from cognite.powerops.client._generated.v1._api._core import (
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
-    QueryStepFactory,
+    QueryBuildStepFactory,
     QueryBuilder,
+    QueryExecutor,
     QueryUnpacker,
     ViewPropertyId,
 )
@@ -41,7 +43,6 @@ from cognite.powerops.client._generated.v1.data_classes import (
     BidMatrixTextFields,
     BidMatrixInformation,
 )
-from cognite.powerops.client._generated.v1._api.bid_matrix_query import BidMatrixQueryAPI
 
 
 class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList, BidMatrixWriteList]):
@@ -57,125 +58,6 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList, BidMatrixWr
     def __init__(self, client: CogniteClient):
         super().__init__(client=client)
 
-
-    def __call__(
-        self,
-        state: str | list[str] | None = None,
-        state_prefix: str | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
-    ) -> BidMatrixQueryAPI[BidMatrix, BidMatrixList]:
-        """Query starting at bid matrixes.
-
-        Args:
-            state: The state to filter on.
-            state_prefix: The prefix of the state to filter on.
-            external_id_prefix: The prefix of the external ID to filter on.
-            space: The space to filter on.
-            limit: Maximum number of bid matrixes to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
-                your own filtering which will be ANDed with the filter above.
-
-        Returns:
-            A query API for bid matrixes.
-
-        """
-        warnings.warn(
-            "This method is deprecated and will soon be removed. "
-            "Use the .select() method instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        has_data = dm.filters.HasData(views=[self._view_id])
-        filter_ = _create_bid_matrix_filter(
-            self._view_id,
-            state,
-            state_prefix,
-            external_id_prefix,
-            space,
-            (filter and dm.filters.And(filter, has_data)) or has_data,
-        )
-        return BidMatrixQueryAPI(
-            self._client, QueryBuilder(), self._class_type, self._class_list, None, filter_, limit
-        )
-
-    def apply(
-        self,
-        bid_matrix: BidMatrixWrite | Sequence[BidMatrixWrite],
-        replace: bool = False,
-        write_none: bool = False,
-    ) -> ResourcesWriteResult:
-        """Add or update (upsert) bid matrixes.
-
-        Args:
-            bid_matrix: Bid matrix or
-                sequence of bid matrixes to upsert.
-            replace (bool): How do we behave when a property value exists? Do we replace all matching and
-                existing values with the supplied values (true)?
-                Or should we merge in new values for properties together with the existing values (false)?
-                Note: This setting applies for all nodes or edges specified in the ingestion call.
-            write_none (bool): This method, will by default, skip properties that are set to None.
-                However, if you want to set properties to None,
-                you can set this parameter to True. Note this only applies to properties that are nullable.
-        Returns:
-            Created instance(s), i.e., nodes, edges, and time series.
-
-        Examples:
-
-            Create a new bid_matrix:
-
-                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
-                >>> from cognite.powerops.client._generated.v1.data_classes import BidMatrixWrite
-                >>> client = PowerOpsModelsV1Client()
-                >>> bid_matrix = BidMatrixWrite(
-                ...     external_id="my_bid_matrix", ...
-                ... )
-                >>> result = client.bid_matrix.apply(bid_matrix)
-
-        """
-        warnings.warn(
-            "The .apply method is deprecated and will be removed in v1.0. "
-            "Please use the .upsert method on the client instead. This means instead of "
-            "`my_client.bid_matrix.apply(my_items)` please use `my_client.upsert(my_items)`."
-            "The motivation is that all apply methods are the same, and having one apply method per API "
-            " class encourages users to create items in small batches, which is inefficient."
-            "In addition, .upsert method is more descriptive of what the method does.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self._apply(bid_matrix, replace, write_none)
-
-    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
-        """Delete one or more bid matrix.
-
-        Args:
-            external_id: External id of the bid matrix to delete.
-            space: The space where all the bid matrix are located.
-
-        Returns:
-            The instance(s), i.e., nodes and edges which has been deleted. Empty list if nothing was deleted.
-
-        Examples:
-
-            Delete bid_matrix by id:
-
-                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
-                >>> client = PowerOpsModelsV1Client()
-                >>> client.bid_matrix.delete("my_bid_matrix")
-        """
-        warnings.warn(
-            "The .delete method is deprecated and will be removed in v1.0. "
-            "Please use the .delete method on the client instead. This means instead of "
-            "`my_client.bid_matrix.delete(my_ids)` please use `my_client.delete(my_ids)`."
-            "The motivation is that all delete methods are the same, and having one delete method per API "
-            " class encourages users to delete items in small batches, which is inefficient.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self._delete(external_id, space)
 
     @overload
     def retrieve(
@@ -465,25 +347,103 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList, BidMatrixWr
         """Start selecting from bid matrixes."""
         return BidMatrixQuery(self._client)
 
-    def _query(
+    def _build(
         self,
         filter_: dm.Filter | None,
-        limit: int,
+        limit: int | None,
         retrieve_connections: Literal["skip", "identifier", "full"],
         sort: list[InstanceSort] | None = None,
-    ) -> list[dict[str, Any]]:
+        chunk_size: int | None = None,
+    ) -> QueryExecutor:
         builder = QueryBuilder()
-        factory = QueryStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
+        factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
         builder.append(factory.root(
             filter=filter_,
             sort=sort,
             limit=limit,
+            max_retrieve_batch_limit=chunk_size,
             has_container_fields=True,
         ))
-        unpack_edges: Literal["skip", "identifier"] = "identifier" if retrieve_connections == "identifier" else "skip"
-        builder.execute_query(self._client, remove_not_connected=True if unpack_edges == "skip" else False)
-        return QueryUnpacker(builder, edges=unpack_edges).unpack()
+        return builder.build()
 
+    def iterate(
+        self,
+        chunk_size: int = DEFAULT_CHUNK_SIZE,
+        state: str | list[str] | None = None,
+        state_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        filter: dm.Filter | None = None,
+        limit: int | None = None,
+        cursors: dict[str, str | None] | None = None,
+    ) -> Iterator[BidMatrixList]:
+        """Iterate over bid matrixes
+
+        Args:
+            chunk_size: The number of bid matrixes to return in each iteration. Defaults to 100.
+            state: The state to filter on.
+            state_prefix: The prefix of the state to filter on.
+            external_id_prefix: The prefix of the external ID to filter on.
+            space: The space to filter on.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of bid matrixes to return. Defaults to None, which will return all items.
+            cursors: (Advanced) Cursor to use for pagination. This can be used to resume an iteration from a
+                specific point. See example below for more details.
+
+        Returns:
+            Iteration of bid matrixes
+
+        Examples:
+
+            Iterate bid matrixes in chunks of 100 up to 2000 items:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for bid_matrixes in client.bid_matrix.iterate(chunk_size=100, limit=2000):
+                ...     for bid_matrix in bid_matrixes:
+                ...         print(bid_matrix.external_id)
+
+            Iterate bid matrixes in chunks of 100 sorted by external_id in descending order:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for bid_matrixes in client.bid_matrix.iterate(
+                ...     chunk_size=100,
+                ...     sort_by="external_id",
+                ...     direction="descending",
+                ... ):
+                ...     for bid_matrix in bid_matrixes:
+                ...         print(bid_matrix.external_id)
+
+            Iterate bid matrixes in chunks of 100 and use cursors to resume the iteration:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for first_iteration in client.bid_matrix.iterate(chunk_size=100, limit=2000):
+                ...     print(first_iteration)
+                ...     break
+                >>> for bid_matrixes in client.bid_matrix.iterate(
+                ...     chunk_size=100,
+                ...     limit=2000,
+                ...     cursors=first_iteration.cursors,
+                ... ):
+                ...     for bid_matrix in bid_matrixes:
+                ...         print(bid_matrix.external_id)
+
+        """
+        warnings.warn(
+            "The `iterate` method is in alpha and is subject to breaking changes without prior notice.", stacklevel=2
+        )
+        filter_ = _create_bid_matrix_filter(
+            self._view_id,
+            state,
+            state_prefix,
+            external_id_prefix,
+            space,
+            filter,
+        )
+        yield from self._iterate(chunk_size, filter_, limit, "skip", cursors=cursors)
 
     def list(
         self,

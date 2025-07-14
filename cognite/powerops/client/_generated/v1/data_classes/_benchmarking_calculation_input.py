@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
@@ -8,6 +7,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -43,10 +43,8 @@ if TYPE_CHECKING:
 __all__ = [
     "BenchmarkingCalculationInput",
     "BenchmarkingCalculationInputWrite",
-    "BenchmarkingCalculationInputApply",
     "BenchmarkingCalculationInputList",
     "BenchmarkingCalculationInputWriteList",
-    "BenchmarkingCalculationInputApplyList",
     "BenchmarkingCalculationInputFields",
     "BenchmarkingCalculationInputTextFields",
     "BenchmarkingCalculationInputGraphQL",
@@ -150,14 +148,6 @@ class BenchmarkingCalculationInput(FunctionInput):
         """Convert this read version of benchmarking calculation input to the writing version."""
         return BenchmarkingCalculationInputWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> BenchmarkingCalculationInputWrite:
-        """Convert this read version of benchmarking calculation input to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class BenchmarkingCalculationInputWrite(FunctionInputWrite):
@@ -194,18 +184,6 @@ class BenchmarkingCalculationInputWrite(FunctionInputWrite):
         return value
 
 
-class BenchmarkingCalculationInputApply(BenchmarkingCalculationInputWrite):
-    def __new__(cls, *args, **kwargs) -> BenchmarkingCalculationInputApply:
-        warnings.warn(
-            "BenchmarkingCalculationInputApply is deprecated and will be removed in v1.0. "
-            "Use BenchmarkingCalculationInputWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "BenchmarkingCalculationInput.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class BenchmarkingCalculationInputList(DomainModelList[BenchmarkingCalculationInput]):
     """List of benchmarking calculation inputs in the read version."""
 
@@ -214,14 +192,6 @@ class BenchmarkingCalculationInputList(DomainModelList[BenchmarkingCalculationIn
         """Convert these read versions of benchmarking calculation input to the writing versions."""
         return BenchmarkingCalculationInputWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> BenchmarkingCalculationInputWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
     @property
     def shop_results(self) -> ShopResultList:
@@ -238,8 +208,6 @@ class BenchmarkingCalculationInputWriteList(DomainModelWriteList[BenchmarkingCal
         from ._shop_result import ShopResultWrite, ShopResultWriteList
         return ShopResultWriteList([item for items in self.data for item in items.shop_results or [] if isinstance(item, ShopResultWrite)])
 
-
-class BenchmarkingCalculationInputApplyList(BenchmarkingCalculationInputWriteList): ...
 
 
 def _create_benchmarking_calculation_input_filter(
@@ -299,11 +267,11 @@ class _BenchmarkingCalculationInputQuery(NodeQueryCore[T_DomainModelList, Benchm
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
         from ._shop_result import _ShopResultQuery
 
@@ -320,7 +288,7 @@ class _BenchmarkingCalculationInputQuery(NodeQueryCore[T_DomainModelList, Benchm
             reverse_expression,
         )
 
-        if _ShopResultQuery not in created_types:
+        if _ShopResultQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.shop_results = _ShopResultQuery(
                 created_types.copy(),
                 self._creation_path,

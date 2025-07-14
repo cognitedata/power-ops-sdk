@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from collections.abc import Sequence
+from collections.abc import Iterator, Sequence
 from typing import Any, ClassVar, Literal, overload
 
 from cognite.client import CogniteClient
@@ -10,6 +10,7 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 
 from cognite.powerops.client._generated.v1._api._core import (
     DEFAULT_LIMIT_READ,
+    DEFAULT_CHUNK_SIZE,
     instantiate_classes,
     Aggregations,
     NodeAPI,
@@ -18,8 +19,9 @@ from cognite.powerops.client._generated.v1._api._core import (
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
-    QueryStepFactory,
+    QueryBuildStepFactory,
     QueryBuilder,
+    QueryExecutor,
     QueryUnpacker,
     ViewPropertyId,
 )
@@ -41,16 +43,6 @@ from cognite.powerops.client._generated.v1.data_classes import (
     PriceAreaAFRRTextFields,
     PriceAreaInformation,
 )
-from cognite.powerops.client._generated.v1._api.price_area_afrr_capacity_price_up import PriceAreaAFRRCapacityPriceUpAPI
-from cognite.powerops.client._generated.v1._api.price_area_afrr_capacity_price_down import PriceAreaAFRRCapacityPriceDownAPI
-from cognite.powerops.client._generated.v1._api.price_area_afrr_activation_price_up import PriceAreaAFRRActivationPriceUpAPI
-from cognite.powerops.client._generated.v1._api.price_area_afrr_activation_price_down import PriceAreaAFRRActivationPriceDownAPI
-from cognite.powerops.client._generated.v1._api.price_area_afrr_relative_activation import PriceAreaAFRRRelativeActivationAPI
-from cognite.powerops.client._generated.v1._api.price_area_afrr_total_capacity_allocation_up import PriceAreaAFRRTotalCapacityAllocationUpAPI
-from cognite.powerops.client._generated.v1._api.price_area_afrr_total_capacity_allocation_down import PriceAreaAFRRTotalCapacityAllocationDownAPI
-from cognite.powerops.client._generated.v1._api.price_area_afrr_own_capacity_allocation_up import PriceAreaAFRROwnCapacityAllocationUpAPI
-from cognite.powerops.client._generated.v1._api.price_area_afrr_own_capacity_allocation_down import PriceAreaAFRROwnCapacityAllocationDownAPI
-from cognite.powerops.client._generated.v1._api.price_area_afrr_query import PriceAreaAFRRQueryAPI
 
 
 class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRList, PriceAreaAFRRWriteList]):
@@ -66,152 +58,6 @@ class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRL
     def __init__(self, client: CogniteClient):
         super().__init__(client=client)
 
-        self.capacity_price_up = PriceAreaAFRRCapacityPriceUpAPI(client, self._view_id)
-        self.capacity_price_down = PriceAreaAFRRCapacityPriceDownAPI(client, self._view_id)
-        self.activation_price_up = PriceAreaAFRRActivationPriceUpAPI(client, self._view_id)
-        self.activation_price_down = PriceAreaAFRRActivationPriceDownAPI(client, self._view_id)
-        self.relative_activation = PriceAreaAFRRRelativeActivationAPI(client, self._view_id)
-        self.total_capacity_allocation_up = PriceAreaAFRRTotalCapacityAllocationUpAPI(client, self._view_id)
-        self.total_capacity_allocation_down = PriceAreaAFRRTotalCapacityAllocationDownAPI(client, self._view_id)
-        self.own_capacity_allocation_up = PriceAreaAFRROwnCapacityAllocationUpAPI(client, self._view_id)
-        self.own_capacity_allocation_down = PriceAreaAFRROwnCapacityAllocationDownAPI(client, self._view_id)
-
-    def __call__(
-        self,
-        name: str | list[str] | None = None,
-        name_prefix: str | None = None,
-        display_name: str | list[str] | None = None,
-        display_name_prefix: str | None = None,
-        min_ordering: int | None = None,
-        max_ordering: int | None = None,
-        asset_type: str | list[str] | None = None,
-        asset_type_prefix: str | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
-    ) -> PriceAreaAFRRQueryAPI[PriceAreaAFRR, PriceAreaAFRRList]:
-        """Query starting at price area afrrs.
-
-        Args:
-            name: The name to filter on.
-            name_prefix: The prefix of the name to filter on.
-            display_name: The display name to filter on.
-            display_name_prefix: The prefix of the display name to filter on.
-            min_ordering: The minimum value of the ordering to filter on.
-            max_ordering: The maximum value of the ordering to filter on.
-            asset_type: The asset type to filter on.
-            asset_type_prefix: The prefix of the asset type to filter on.
-            external_id_prefix: The prefix of the external ID to filter on.
-            space: The space to filter on.
-            limit: Maximum number of price area afrrs to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
-                your own filtering which will be ANDed with the filter above.
-
-        Returns:
-            A query API for price area afrrs.
-
-        """
-        warnings.warn(
-            "This method is deprecated and will soon be removed. "
-            "Use the .select() method instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        has_data = dm.filters.HasData(views=[self._view_id])
-        filter_ = _create_price_area_afrr_filter(
-            self._view_id,
-            name,
-            name_prefix,
-            display_name,
-            display_name_prefix,
-            min_ordering,
-            max_ordering,
-            asset_type,
-            asset_type_prefix,
-            external_id_prefix,
-            space,
-            (filter and dm.filters.And(filter, has_data)) or has_data,
-        )
-        return PriceAreaAFRRQueryAPI(
-            self._client, QueryBuilder(), self._class_type, self._class_list, None, filter_, limit
-        )
-
-    def apply(
-        self,
-        price_area_afrr: PriceAreaAFRRWrite | Sequence[PriceAreaAFRRWrite],
-        replace: bool = False,
-        write_none: bool = False,
-    ) -> ResourcesWriteResult:
-        """Add or update (upsert) price area afrrs.
-
-        Args:
-            price_area_afrr: Price area afrr or
-                sequence of price area afrrs to upsert.
-            replace (bool): How do we behave when a property value exists? Do we replace all matching and
-                existing values with the supplied values (true)?
-                Or should we merge in new values for properties together with the existing values (false)?
-                Note: This setting applies for all nodes or edges specified in the ingestion call.
-            write_none (bool): This method, will by default, skip properties that are set to None.
-                However, if you want to set properties to None,
-                you can set this parameter to True. Note this only applies to properties that are nullable.
-        Returns:
-            Created instance(s), i.e., nodes, edges, and time series.
-
-        Examples:
-
-            Create a new price_area_afrr:
-
-                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
-                >>> from cognite.powerops.client._generated.v1.data_classes import PriceAreaAFRRWrite
-                >>> client = PowerOpsModelsV1Client()
-                >>> price_area_afrr = PriceAreaAFRRWrite(
-                ...     external_id="my_price_area_afrr", ...
-                ... )
-                >>> result = client.price_area_afrr.apply(price_area_afrr)
-
-        """
-        warnings.warn(
-            "The .apply method is deprecated and will be removed in v1.0. "
-            "Please use the .upsert method on the client instead. This means instead of "
-            "`my_client.price_area_afrr.apply(my_items)` please use `my_client.upsert(my_items)`."
-            "The motivation is that all apply methods are the same, and having one apply method per API "
-            " class encourages users to create items in small batches, which is inefficient."
-            "In addition, .upsert method is more descriptive of what the method does.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self._apply(price_area_afrr, replace, write_none)
-
-    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
-        """Delete one or more price area afrr.
-
-        Args:
-            external_id: External id of the price area afrr to delete.
-            space: The space where all the price area afrr are located.
-
-        Returns:
-            The instance(s), i.e., nodes and edges which has been deleted. Empty list if nothing was deleted.
-
-        Examples:
-
-            Delete price_area_afrr by id:
-
-                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
-                >>> client = PowerOpsModelsV1Client()
-                >>> client.price_area_afrr.delete("my_price_area_afrr")
-        """
-        warnings.warn(
-            "The .delete method is deprecated and will be removed in v1.0. "
-            "Please use the .delete method on the client instead. This means instead of "
-            "`my_client.price_area_afrr.delete(my_ids)` please use `my_client.delete(my_ids)`."
-            "The motivation is that all delete methods are the same, and having one delete method per API "
-            " class encourages users to delete items in small batches, which is inefficient.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self._delete(external_id, space)
 
     @overload
     def retrieve(
@@ -573,25 +419,121 @@ class PriceAreaAFRRAPI(NodeAPI[PriceAreaAFRR, PriceAreaAFRRWrite, PriceAreaAFRRL
         """Start selecting from price area afrrs."""
         return PriceAreaAFRRQuery(self._client)
 
-    def _query(
+    def _build(
         self,
         filter_: dm.Filter | None,
-        limit: int,
+        limit: int | None,
         retrieve_connections: Literal["skip", "identifier", "full"],
         sort: list[InstanceSort] | None = None,
-    ) -> list[dict[str, Any]]:
+        chunk_size: int | None = None,
+    ) -> QueryExecutor:
         builder = QueryBuilder()
-        factory = QueryStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
+        factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
         builder.append(factory.root(
             filter=filter_,
             sort=sort,
             limit=limit,
+            max_retrieve_batch_limit=chunk_size,
             has_container_fields=True,
         ))
-        unpack_edges: Literal["skip", "identifier"] = "identifier" if retrieve_connections == "identifier" else "skip"
-        builder.execute_query(self._client, remove_not_connected=True if unpack_edges == "skip" else False)
-        return QueryUnpacker(builder, edges=unpack_edges).unpack()
+        return builder.build()
 
+    def iterate(
+        self,
+        chunk_size: int = DEFAULT_CHUNK_SIZE,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        filter: dm.Filter | None = None,
+        limit: int | None = None,
+        cursors: dict[str, str | None] | None = None,
+    ) -> Iterator[PriceAreaAFRRList]:
+        """Iterate over price area afrrs
+
+        Args:
+            chunk_size: The number of price area afrrs to return in each iteration. Defaults to 100.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
+            display_name: The display name to filter on.
+            display_name_prefix: The prefix of the display name to filter on.
+            min_ordering: The minimum value of the ordering to filter on.
+            max_ordering: The maximum value of the ordering to filter on.
+            asset_type: The asset type to filter on.
+            asset_type_prefix: The prefix of the asset type to filter on.
+            external_id_prefix: The prefix of the external ID to filter on.
+            space: The space to filter on.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
+            limit: Maximum number of price area afrrs to return. Defaults to None, which will return all items.
+            cursors: (Advanced) Cursor to use for pagination. This can be used to resume an iteration from a
+                specific point. See example below for more details.
+
+        Returns:
+            Iteration of price area afrrs
+
+        Examples:
+
+            Iterate price area afrrs in chunks of 100 up to 2000 items:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for price_area_afrrs in client.price_area_afrr.iterate(chunk_size=100, limit=2000):
+                ...     for price_area_afrr in price_area_afrrs:
+                ...         print(price_area_afrr.external_id)
+
+            Iterate price area afrrs in chunks of 100 sorted by external_id in descending order:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for price_area_afrrs in client.price_area_afrr.iterate(
+                ...     chunk_size=100,
+                ...     sort_by="external_id",
+                ...     direction="descending",
+                ... ):
+                ...     for price_area_afrr in price_area_afrrs:
+                ...         print(price_area_afrr.external_id)
+
+            Iterate price area afrrs in chunks of 100 and use cursors to resume the iteration:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for first_iteration in client.price_area_afrr.iterate(chunk_size=100, limit=2000):
+                ...     print(first_iteration)
+                ...     break
+                >>> for price_area_afrrs in client.price_area_afrr.iterate(
+                ...     chunk_size=100,
+                ...     limit=2000,
+                ...     cursors=first_iteration.cursors,
+                ... ):
+                ...     for price_area_afrr in price_area_afrrs:
+                ...         print(price_area_afrr.external_id)
+
+        """
+        warnings.warn(
+            "The `iterate` method is in alpha and is subject to breaking changes without prior notice.", stacklevel=2
+        )
+        filter_ = _create_price_area_afrr_filter(
+            self._view_id,
+            name,
+            name_prefix,
+            display_name,
+            display_name_prefix,
+            min_ordering,
+            max_ordering,
+            asset_type,
+            asset_type_prefix,
+            external_id_prefix,
+            space,
+            filter,
+        )
+        yield from self._iterate(chunk_size, filter_, limit, "skip", cursors=cursors)
 
     def list(
         self,

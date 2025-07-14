@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 import warnings
-from collections.abc import Sequence
+from collections.abc import Iterator, Sequence
 from typing import Any, ClassVar, Literal, overload
 
 from cognite.client import CogniteClient
@@ -11,6 +11,7 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 
 from cognite.powerops.client._generated.v1._api._core import (
     DEFAULT_LIMIT_READ,
+    DEFAULT_CHUNK_SIZE,
     instantiate_classes,
     Aggregations,
     NodeAPI,
@@ -19,8 +20,9 @@ from cognite.powerops.client._generated.v1._api._core import (
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
-    QueryStepFactory,
+    QueryBuildStepFactory,
     QueryBuilder,
+    QueryExecutor,
     QueryUnpacker,
     ViewPropertyId,
 )
@@ -44,7 +46,6 @@ from cognite.powerops.client._generated.v1.data_classes import (
     ShopResult,
 )
 from cognite.powerops.client._generated.v1._api.benchmarking_result_day_ahead_alerts import BenchmarkingResultDayAheadAlertsAPI
-from cognite.powerops.client._generated.v1._api.benchmarking_result_day_ahead_query import BenchmarkingResultDayAheadQueryAPI
 
 
 class BenchmarkingResultDayAheadAPI(NodeAPI[BenchmarkingResultDayAhead, BenchmarkingResultDayAheadWrite, BenchmarkingResultDayAheadList, BenchmarkingResultDayAheadWriteList]):
@@ -58,158 +59,6 @@ class BenchmarkingResultDayAheadAPI(NodeAPI[BenchmarkingResultDayAhead, Benchmar
         super().__init__(client=client)
 
         self.alerts_edge = BenchmarkingResultDayAheadAlertsAPI(client)
-
-    def __call__(
-        self,
-        name: str | list[str] | None = None,
-        name_prefix: str | None = None,
-        workflow_execution_id: str | list[str] | None = None,
-        workflow_execution_id_prefix: str | None = None,
-        bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        min_delivery_date: datetime.date | None = None,
-        max_delivery_date: datetime.date | None = None,
-        min_bid_generated: datetime.datetime | None = None,
-        max_bid_generated: datetime.datetime | None = None,
-        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        is_selected: bool | None = None,
-        min_value: float | None = None,
-        max_value: float | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
-    ) -> BenchmarkingResultDayAheadQueryAPI[BenchmarkingResultDayAhead, BenchmarkingResultDayAheadList]:
-        """Query starting at benchmarking result day aheads.
-
-        Args:
-            name: The name to filter on.
-            name_prefix: The prefix of the name to filter on.
-            workflow_execution_id: The workflow execution id to filter on.
-            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
-            bid_source: The bid source to filter on.
-            min_delivery_date: The minimum value of the delivery date to filter on.
-            max_delivery_date: The maximum value of the delivery date to filter on.
-            min_bid_generated: The minimum value of the bid generated to filter on.
-            max_bid_generated: The maximum value of the bid generated to filter on.
-            shop_result: The shop result to filter on.
-            is_selected: The is selected to filter on.
-            min_value: The minimum value of the value to filter on.
-            max_value: The maximum value of the value to filter on.
-            external_id_prefix: The prefix of the external ID to filter on.
-            space: The space to filter on.
-            limit: Maximum number of benchmarking result day aheads to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
-                your own filtering which will be ANDed with the filter above.
-
-        Returns:
-            A query API for benchmarking result day aheads.
-
-        """
-        warnings.warn(
-            "This method is deprecated and will soon be removed. "
-            "Use the .select() method instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        has_data = dm.filters.HasData(views=[self._view_id])
-        filter_ = _create_benchmarking_result_day_ahead_filter(
-            self._view_id,
-            name,
-            name_prefix,
-            workflow_execution_id,
-            workflow_execution_id_prefix,
-            bid_source,
-            min_delivery_date,
-            max_delivery_date,
-            min_bid_generated,
-            max_bid_generated,
-            shop_result,
-            is_selected,
-            min_value,
-            max_value,
-            external_id_prefix,
-            space,
-            (filter and dm.filters.And(filter, has_data)) or has_data,
-        )
-        return BenchmarkingResultDayAheadQueryAPI(
-            self._client, QueryBuilder(), self._class_type, self._class_list, None, filter_, limit
-        )
-
-    def apply(
-        self,
-        benchmarking_result_day_ahead: BenchmarkingResultDayAheadWrite | Sequence[BenchmarkingResultDayAheadWrite],
-        replace: bool = False,
-        write_none: bool = False,
-    ) -> ResourcesWriteResult:
-        """Add or update (upsert) benchmarking result day aheads.
-
-        Args:
-            benchmarking_result_day_ahead: Benchmarking result day ahead or
-                sequence of benchmarking result day aheads to upsert.
-            replace (bool): How do we behave when a property value exists? Do we replace all matching and
-                existing values with the supplied values (true)?
-                Or should we merge in new values for properties together with the existing values (false)?
-                Note: This setting applies for all nodes or edges specified in the ingestion call.
-            write_none (bool): This method, will by default, skip properties that are set to None.
-                However, if you want to set properties to None,
-                you can set this parameter to True. Note this only applies to properties that are nullable.
-        Returns:
-            Created instance(s), i.e., nodes, edges, and time series.
-
-        Examples:
-
-            Create a new benchmarking_result_day_ahead:
-
-                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
-                >>> from cognite.powerops.client._generated.v1.data_classes import BenchmarkingResultDayAheadWrite
-                >>> client = PowerOpsModelsV1Client()
-                >>> benchmarking_result_day_ahead = BenchmarkingResultDayAheadWrite(
-                ...     external_id="my_benchmarking_result_day_ahead", ...
-                ... )
-                >>> result = client.benchmarking_result_day_ahead.apply(benchmarking_result_day_ahead)
-
-        """
-        warnings.warn(
-            "The .apply method is deprecated and will be removed in v1.0. "
-            "Please use the .upsert method on the client instead. This means instead of "
-            "`my_client.benchmarking_result_day_ahead.apply(my_items)` please use `my_client.upsert(my_items)`."
-            "The motivation is that all apply methods are the same, and having one apply method per API "
-            " class encourages users to create items in small batches, which is inefficient."
-            "In addition, .upsert method is more descriptive of what the method does.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self._apply(benchmarking_result_day_ahead, replace, write_none)
-
-    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
-        """Delete one or more benchmarking result day ahead.
-
-        Args:
-            external_id: External id of the benchmarking result day ahead to delete.
-            space: The space where all the benchmarking result day ahead are located.
-
-        Returns:
-            The instance(s), i.e., nodes and edges which has been deleted. Empty list if nothing was deleted.
-
-        Examples:
-
-            Delete benchmarking_result_day_ahead by id:
-
-                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
-                >>> client = PowerOpsModelsV1Client()
-                >>> client.benchmarking_result_day_ahead.delete("my_benchmarking_result_day_ahead")
-        """
-        warnings.warn(
-            "The .delete method is deprecated and will be removed in v1.0. "
-            "Please use the .delete method on the client instead. This means instead of "
-            "`my_client.benchmarking_result_day_ahead.delete(my_ids)` please use `my_client.delete(my_ids)`."
-            "The motivation is that all delete methods are the same, and having one delete method per API "
-            " class encourages users to delete items in small batches, which is inefficient.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self._delete(external_id, space)
 
     @overload
     def retrieve(
@@ -631,30 +480,33 @@ class BenchmarkingResultDayAheadAPI(NodeAPI[BenchmarkingResultDayAhead, Benchmar
         """Start selecting from benchmarking result day aheads."""
         return BenchmarkingResultDayAheadQuery(self._client)
 
-    def _query(
+    def _build(
         self,
         filter_: dm.Filter | None,
-        limit: int,
+        limit: int | None,
         retrieve_connections: Literal["skip", "identifier", "full"],
         sort: list[InstanceSort] | None = None,
-    ) -> list[dict[str, Any]]:
+        chunk_size: int | None = None,
+    ) -> QueryExecutor:
         builder = QueryBuilder()
-        factory = QueryStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
+        factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
         builder.append(factory.root(
             filter=filter_,
             sort=sort,
             limit=limit,
+            max_retrieve_batch_limit=chunk_size,
             has_container_fields=True,
         ))
-        builder.extend(
-            factory.from_edge(
-                Alert._view_id,
-                "outwards",
-                ViewPropertyId(self._view_id, "alerts"),
-                include_end_node=retrieve_connections == "full",
-                has_container_fields=True,
+        if retrieve_connections == "identifier" or retrieve_connections == "full":
+            builder.extend(
+                factory.from_edge(
+                    Alert._view_id,
+                    "outwards",
+                    ViewPropertyId(self._view_id, "alerts"),
+                    include_end_node=retrieve_connections == "full",
+                    has_container_fields=True,
+                )
             )
-        )
         if retrieve_connections == "full":
             builder.extend(
                 factory.from_direct_relation(
@@ -663,10 +515,123 @@ class BenchmarkingResultDayAheadAPI(NodeAPI[BenchmarkingResultDayAhead, Benchmar
                     has_container_fields=True,
                 )
             )
-        unpack_edges: Literal["skip", "identifier"] = "identifier" if retrieve_connections == "identifier" else "skip"
-        builder.execute_query(self._client, remove_not_connected=True if unpack_edges == "skip" else False)
-        return QueryUnpacker(builder, edges=unpack_edges).unpack()
+        return builder.build()
 
+    def iterate(
+        self,
+        chunk_size: int = DEFAULT_CHUNK_SIZE,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        workflow_execution_id: str | list[str] | None = None,
+        workflow_execution_id_prefix: str | None = None,
+        bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        min_delivery_date: datetime.date | None = None,
+        max_delivery_date: datetime.date | None = None,
+        min_bid_generated: datetime.datetime | None = None,
+        max_bid_generated: datetime.datetime | None = None,
+        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        is_selected: bool | None = None,
+        min_value: float | None = None,
+        max_value: float | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        filter: dm.Filter | None = None,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
+        limit: int | None = None,
+        cursors: dict[str, str | None] | None = None,
+    ) -> Iterator[BenchmarkingResultDayAheadList]:
+        """Iterate over benchmarking result day aheads
+
+        Args:
+            chunk_size: The number of benchmarking result day aheads to return in each iteration. Defaults to 100.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
+            workflow_execution_id: The workflow execution id to filter on.
+            workflow_execution_id_prefix: The prefix of the workflow execution id to filter on.
+            bid_source: The bid source to filter on.
+            min_delivery_date: The minimum value of the delivery date to filter on.
+            max_delivery_date: The maximum value of the delivery date to filter on.
+            min_bid_generated: The minimum value of the bid generated to filter on.
+            max_bid_generated: The maximum value of the bid generated to filter on.
+            shop_result: The shop result to filter on.
+            is_selected: The is selected to filter on.
+            min_value: The minimum value of the value to filter on.
+            max_value: The maximum value of the value to filter on.
+            external_id_prefix: The prefix of the external ID to filter on.
+            space: The space to filter on.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
+            retrieve_connections: Whether to retrieve `shop_result` and `alerts` for the benchmarking result day aheads.
+            Defaults to 'skip'.'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier
+            of the connected items, and 'full' will retrieve the full connected items.
+            limit: Maximum number of benchmarking result day aheads to return. Defaults to None, which will return all items.
+            cursors: (Advanced) Cursor to use for pagination. This can be used to resume an iteration from a
+                specific point. See example below for more details.
+
+        Returns:
+            Iteration of benchmarking result day aheads
+
+        Examples:
+
+            Iterate benchmarking result day aheads in chunks of 100 up to 2000 items:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for benchmarking_result_day_aheads in client.benchmarking_result_day_ahead.iterate(chunk_size=100, limit=2000):
+                ...     for benchmarking_result_day_ahead in benchmarking_result_day_aheads:
+                ...         print(benchmarking_result_day_ahead.external_id)
+
+            Iterate benchmarking result day aheads in chunks of 100 sorted by external_id in descending order:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for benchmarking_result_day_aheads in client.benchmarking_result_day_ahead.iterate(
+                ...     chunk_size=100,
+                ...     sort_by="external_id",
+                ...     direction="descending",
+                ... ):
+                ...     for benchmarking_result_day_ahead in benchmarking_result_day_aheads:
+                ...         print(benchmarking_result_day_ahead.external_id)
+
+            Iterate benchmarking result day aheads in chunks of 100 and use cursors to resume the iteration:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for first_iteration in client.benchmarking_result_day_ahead.iterate(chunk_size=100, limit=2000):
+                ...     print(first_iteration)
+                ...     break
+                >>> for benchmarking_result_day_aheads in client.benchmarking_result_day_ahead.iterate(
+                ...     chunk_size=100,
+                ...     limit=2000,
+                ...     cursors=first_iteration.cursors,
+                ... ):
+                ...     for benchmarking_result_day_ahead in benchmarking_result_day_aheads:
+                ...         print(benchmarking_result_day_ahead.external_id)
+
+        """
+        warnings.warn(
+            "The `iterate` method is in alpha and is subject to breaking changes without prior notice.", stacklevel=2
+        )
+        filter_ = _create_benchmarking_result_day_ahead_filter(
+            self._view_id,
+            name,
+            name_prefix,
+            workflow_execution_id,
+            workflow_execution_id_prefix,
+            bid_source,
+            min_delivery_date,
+            max_delivery_date,
+            min_bid_generated,
+            max_bid_generated,
+            shop_result,
+            is_selected,
+            min_value,
+            max_value,
+            external_id_prefix,
+            space,
+            filter,
+        )
+        yield from self._iterate(chunk_size, filter_, limit, retrieve_connections, cursors=cursors)
 
     def list(
         self,
@@ -757,5 +722,4 @@ class BenchmarkingResultDayAheadAPI(NodeAPI[BenchmarkingResultDayAhead, Benchmar
         sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
             return self._list(limit=limit,  filter=filter_, sort=sort_input)
-        values = self._query(filter_, limit, retrieve_connections, sort_input)
-        return self._class_list(instantiate_classes(self._class_type, values, "list"))
+        return self._query(filter_, limit, retrieve_connections, sort_input, "list")

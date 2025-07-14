@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
@@ -12,6 +11,7 @@ from cognite.client.data_classes import (
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -56,10 +56,8 @@ if TYPE_CHECKING:
 __all__ = [
     "PriceAreaInformation",
     "PriceAreaInformationWrite",
-    "PriceAreaInformationApply",
     "PriceAreaInformationList",
     "PriceAreaInformationWriteList",
-    "PriceAreaInformationApplyList",
     "PriceAreaInformationFields",
     "PriceAreaInformationTextFields",
     "PriceAreaInformationGraphQL",
@@ -209,14 +207,6 @@ class PriceAreaInformation(PriceAreaAFRR, PriceAreaDayAhead):
         """Convert this read version of price area information to the writing version."""
         return PriceAreaInformationWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> PriceAreaInformationWrite:
-        """Convert this read version of price area information to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class PriceAreaInformationWrite(PriceAreaAFRRWrite, PriceAreaDayAheadWrite):
@@ -254,18 +244,6 @@ class PriceAreaInformationWrite(PriceAreaAFRRWrite, PriceAreaDayAheadWrite):
 
 
 
-class PriceAreaInformationApply(PriceAreaInformationWrite):
-    def __new__(cls, *args, **kwargs) -> PriceAreaInformationApply:
-        warnings.warn(
-            "PriceAreaInformationApply is deprecated and will be removed in v1.0. "
-            "Use PriceAreaInformationWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "PriceAreaInformation.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class PriceAreaInformationList(DomainModelList[PriceAreaInformation]):
     """List of price area information in the read version."""
 
@@ -274,14 +252,6 @@ class PriceAreaInformationList(DomainModelList[PriceAreaInformation]):
         """Convert these read versions of price area information to the writing versions."""
         return PriceAreaInformationWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> PriceAreaInformationWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
     @property
     def default_bid_configuration(self) -> BidConfigurationDayAheadList:
@@ -296,8 +266,6 @@ class PriceAreaInformationWriteList(DomainModelWriteList[PriceAreaInformationWri
     def default_bid_configuration(self) -> BidConfigurationDayAheadWriteList:
         from ._bid_configuration_day_ahead import BidConfigurationDayAheadWrite, BidConfigurationDayAheadWriteList
         return BidConfigurationDayAheadWriteList([item.default_bid_configuration for item in self.data if isinstance(item.default_bid_configuration, BidConfigurationDayAheadWrite)])
-
-class PriceAreaInformationApplyList(PriceAreaInformationWriteList): ...
 
 
 def _create_price_area_information_filter(
@@ -362,11 +330,11 @@ class _PriceAreaInformationQuery(NodeQueryCore[T_DomainModelList, PriceAreaInfor
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
         from ._bid_configuration_day_ahead import _BidConfigurationDayAheadQuery
 
@@ -383,7 +351,7 @@ class _PriceAreaInformationQuery(NodeQueryCore[T_DomainModelList, PriceAreaInfor
             reverse_expression,
         )
 
-        if _BidConfigurationDayAheadQuery not in created_types:
+        if _BidConfigurationDayAheadQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.default_bid_configuration = _BidConfigurationDayAheadQuery(
                 created_types.copy(),
                 self._creation_path,

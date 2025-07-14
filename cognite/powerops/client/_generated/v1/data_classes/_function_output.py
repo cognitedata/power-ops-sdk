@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
@@ -8,6 +7,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -44,10 +44,8 @@ if TYPE_CHECKING:
 __all__ = [
     "FunctionOutput",
     "FunctionOutputWrite",
-    "FunctionOutputApply",
     "FunctionOutputList",
     "FunctionOutputWriteList",
-    "FunctionOutputApplyList",
     "FunctionOutputFields",
     "FunctionOutputTextFields",
     "FunctionOutputGraphQL",
@@ -164,14 +162,6 @@ class FunctionOutput(DomainModel):
         """Convert this read version of function output to the writing version."""
         return FunctionOutputWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> FunctionOutputWrite:
-        """Convert this read version of function output to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class FunctionOutputWrite(DomainModelWrite):
@@ -216,18 +206,6 @@ class FunctionOutputWrite(DomainModelWrite):
         return value
 
 
-class FunctionOutputApply(FunctionOutputWrite):
-    def __new__(cls, *args, **kwargs) -> FunctionOutputApply:
-        warnings.warn(
-            "FunctionOutputApply is deprecated and will be removed in v1.0. "
-            "Use FunctionOutputWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "FunctionOutput.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class FunctionOutputList(DomainModelList[FunctionOutput]):
     """List of function outputs in the read version."""
 
@@ -236,14 +214,6 @@ class FunctionOutputList(DomainModelList[FunctionOutput]):
         """Convert these read versions of function output to the writing versions."""
         return FunctionOutputWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> FunctionOutputWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
     @property
     def function_input(self) -> FunctionInputList:
@@ -268,8 +238,6 @@ class FunctionOutputWriteList(DomainModelWriteList[FunctionOutputWrite]):
         from ._alert import AlertWrite, AlertWriteList
         return AlertWriteList([item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)])
 
-
-class FunctionOutputApplyList(FunctionOutputWriteList): ...
 
 
 def _create_function_output_filter(
@@ -334,11 +302,11 @@ class _FunctionOutputQuery(NodeQueryCore[T_DomainModelList, FunctionOutputList])
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
         from ._alert import _AlertQuery
         from ._function_input import _FunctionInputQuery
@@ -356,7 +324,7 @@ class _FunctionOutputQuery(NodeQueryCore[T_DomainModelList, FunctionOutputList])
             reverse_expression,
         )
 
-        if _FunctionInputQuery not in created_types:
+        if _FunctionInputQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.function_input = _FunctionInputQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -370,7 +338,7 @@ class _FunctionOutputQuery(NodeQueryCore[T_DomainModelList, FunctionOutputList])
                 connection_property=ViewPropertyId(self._view_id, "functionInput"),
             )
 
-        if _AlertQuery not in created_types:
+        if _AlertQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.alerts = _AlertQuery(
                 created_types.copy(),
                 self._creation_path,

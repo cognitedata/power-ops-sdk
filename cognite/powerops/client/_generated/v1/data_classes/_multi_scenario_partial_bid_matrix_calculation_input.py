@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import datetime
-import warnings
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
@@ -9,6 +8,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -48,10 +48,8 @@ if TYPE_CHECKING:
 __all__ = [
     "MultiScenarioPartialBidMatrixCalculationInput",
     "MultiScenarioPartialBidMatrixCalculationInputWrite",
-    "MultiScenarioPartialBidMatrixCalculationInputApply",
     "MultiScenarioPartialBidMatrixCalculationInputList",
     "MultiScenarioPartialBidMatrixCalculationInputWriteList",
-    "MultiScenarioPartialBidMatrixCalculationInputApplyList",
     "MultiScenarioPartialBidMatrixCalculationInputFields",
     "MultiScenarioPartialBidMatrixCalculationInputTextFields",
     "MultiScenarioPartialBidMatrixCalculationInputGraphQL",
@@ -154,6 +152,7 @@ class MultiScenarioPartialBidMatrixCalculationInput(PartialBidMatrixCalculationI
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "MultiScenarioPartialBidMatrixCalculationInput", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "MultiScenarioPartialBidMatrixCalculationInput")
+    partial_bid_configuration: Union[ShopBasedPartialBidConfiguration, str, dm.NodeId, None] = Field(default=None, repr=False, alias="partialBidConfiguration")
     price_production: Optional[list[Union[PriceProduction, str, dm.NodeId]]] = Field(default=None, repr=False, alias="priceProduction")
     @field_validator("bid_configuration", "partial_bid_configuration", mode="before")
     @classmethod
@@ -171,14 +170,6 @@ class MultiScenarioPartialBidMatrixCalculationInput(PartialBidMatrixCalculationI
         """Convert this read version of multi scenario partial bid matrix calculation input to the writing version."""
         return MultiScenarioPartialBidMatrixCalculationInputWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> MultiScenarioPartialBidMatrixCalculationInputWrite:
-        """Convert this read version of multi scenario partial bid matrix calculation input to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class MultiScenarioPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalculationInputWrite):
@@ -207,9 +198,10 @@ class MultiScenarioPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalcula
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "MultiScenarioPartialBidMatrixCalculationInput", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "MultiScenarioPartialBidMatrixCalculationInput")
+    partial_bid_configuration: Union[ShopBasedPartialBidConfigurationWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="partialBidConfiguration")
     price_production: Optional[list[Union[PriceProductionWrite, str, dm.NodeId]]] = Field(default=None, repr=False, alias="priceProduction")
 
-    @field_validator("price_production", mode="before")
+    @field_validator("partial_bid_configuration", "price_production", mode="before")
     def as_node_id(cls, value: Any) -> Any:
         if isinstance(value, dm.DirectRelationReference):
             return dm.NodeId(value.space, value.external_id)
@@ -220,18 +212,6 @@ class MultiScenarioPartialBidMatrixCalculationInputWrite(PartialBidMatrixCalcula
         return value
 
 
-class MultiScenarioPartialBidMatrixCalculationInputApply(MultiScenarioPartialBidMatrixCalculationInputWrite):
-    def __new__(cls, *args, **kwargs) -> MultiScenarioPartialBidMatrixCalculationInputApply:
-        warnings.warn(
-            "MultiScenarioPartialBidMatrixCalculationInputApply is deprecated and will be removed in v1.0. "
-            "Use MultiScenarioPartialBidMatrixCalculationInputWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "MultiScenarioPartialBidMatrixCalculationInput.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class MultiScenarioPartialBidMatrixCalculationInputList(DomainModelList[MultiScenarioPartialBidMatrixCalculationInput]):
     """List of multi scenario partial bid matrix calculation inputs in the read version."""
 
@@ -240,14 +220,6 @@ class MultiScenarioPartialBidMatrixCalculationInputList(DomainModelList[MultiSce
         """Convert these read versions of multi scenario partial bid matrix calculation input to the writing versions."""
         return MultiScenarioPartialBidMatrixCalculationInputWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> MultiScenarioPartialBidMatrixCalculationInputWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
     @property
     def bid_configuration(self) -> BidConfigurationDayAheadList:
@@ -280,8 +252,6 @@ class MultiScenarioPartialBidMatrixCalculationInputWriteList(DomainModelWriteLis
         from ._price_production import PriceProductionWrite, PriceProductionWriteList
         return PriceProductionWriteList([item for items in self.data for item in items.price_production or [] if isinstance(item, PriceProductionWrite)])
 
-
-class MultiScenarioPartialBidMatrixCalculationInputApplyList(MultiScenarioPartialBidMatrixCalculationInputWriteList): ...
 
 
 def _create_multi_scenario_partial_bid_matrix_calculation_input_filter(
@@ -355,11 +325,11 @@ class _MultiScenarioPartialBidMatrixCalculationInputQuery(NodeQueryCore[T_Domain
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
         from ._bid_configuration_day_ahead import _BidConfigurationDayAheadQuery
         from ._price_production import _PriceProductionQuery
@@ -378,7 +348,7 @@ class _MultiScenarioPartialBidMatrixCalculationInputQuery(NodeQueryCore[T_Domain
             reverse_expression,
         )
 
-        if _BidConfigurationDayAheadQuery not in created_types:
+        if _BidConfigurationDayAheadQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.bid_configuration = _BidConfigurationDayAheadQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -392,7 +362,7 @@ class _MultiScenarioPartialBidMatrixCalculationInputQuery(NodeQueryCore[T_Domain
                 connection_property=ViewPropertyId(self._view_id, "bidConfiguration"),
             )
 
-        if _ShopBasedPartialBidConfigurationQuery not in created_types:
+        if _ShopBasedPartialBidConfigurationQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.partial_bid_configuration = _ShopBasedPartialBidConfigurationQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -406,7 +376,7 @@ class _MultiScenarioPartialBidMatrixCalculationInputQuery(NodeQueryCore[T_Domain
                 connection_property=ViewPropertyId(self._view_id, "partialBidConfiguration"),
             )
 
-        if _PriceProductionQuery not in created_types:
+        if _PriceProductionQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.price_production = _PriceProductionQuery(
                 created_types.copy(),
                 self._creation_path,

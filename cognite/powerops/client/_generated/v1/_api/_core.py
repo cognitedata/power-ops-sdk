@@ -42,10 +42,12 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     T_DomainRelationWrite,
     T_DomainRelationList,
     QueryBuilder,
+    QueryExecutor,
     QueryUnpacker,
 )
 
 DEFAULT_LIMIT_READ = 25
+DEFAULT_CHUNK_SIZE = 100
 DEFAULT_QUERY_LIMIT = 3
 IN_FILTER_LIMIT = 5_000
 INSTANCE_QUERY_LIMIT = 1_000
@@ -105,6 +107,7 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList], ABC):
 
     def __init__(self, client: CogniteClient):
         self._client = client
+        self._last_cursors: dict[str, str | None] | None = None
 
     def _delete(self, external_id: str | SequenceNotStr[str], space: str) -> dm.InstancesDeleteResult:
         if isinstance(external_id, str):
@@ -160,11 +163,7 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList], ABC):
                     filter_ = dm.filters.Equals(["node", "space"], space_key) & dm.filters.In(
                         ["node", "externalId"], ext_id_chunk
                     )
-                    items.extend(
-                        instantiate_classes(
-                            self._class_type, self._query(filter_, len(ext_id_chunk), retrieve_connections), "retrieve"
-                        )
-                    )
+                    items.extend(self._query(filter_, len(ext_id_chunk), retrieve_connections, None, "retrieve"))
 
         nodes = self._class_list(items)
 
@@ -175,14 +174,55 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList], ABC):
         else:
             return nodes[0]
 
+    def _build(
+        self,
+        filter_: dm.Filter | None,
+        limit: int | None,
+        retrieve_connections: Literal["skip", "identifier", "full"],
+        sort: list[InstanceSort] | None = None,
+        chunk_size: int | None = None,
+    ) -> QueryExecutor:
+        raise NotImplementedError
+
     def _query(
         self,
         filter_: dm.Filter | None,
         limit: int,
         retrieve_connections: Literal["skip", "identifier", "full"],
         sort: list[InstanceSort] | None = None,
-    ) -> list[dict[str, Any]]:
-        raise NotImplementedError
+        context: Literal["query", "list", "retrieve"] = "query",
+    ) -> T_DomainModelList:
+        executor = self._build(filter_, limit, retrieve_connections, sort)
+        results = executor.execute_query(self._client, remove_not_connected=False)
+        unpack_edges: Literal["skip", "identifier"] = "identifier" if retrieve_connections == "identifier" else "skip"
+        unpacked = QueryUnpacker(results, edges=unpack_edges).unpack()
+        item_list = instantiate_classes(self._class_type, unpacked, context)
+        return self._class_list(item_list)
+
+    def _iterate(
+        self,
+        chunk_size: int,
+        filter_: dm.Filter | None,
+        limit: int | None,
+        retrieve_connections: Literal["skip", "identifier", "full"],
+        sort: list[InstanceSort] | None = None,
+        cursors: dict[str, str | None] | None = None,
+    ) -> Iterator[T_DomainModelList]:
+        if cursors is not None and self._last_cursors is not None:
+            raise ValueError(
+                "Same cursors used twice. Please use a different set of cursors or start a new iteration. "
+                "This is to avoid accidental infinite loops."
+            )
+        self._last_cursors = cursors
+        executor = self._build(filter_, limit, retrieve_connections, sort, chunk_size)
+        for batch_results in executor.iterate(self._client, remove_not_connected=False, init_cursors=cursors):
+            unpack_edges: Literal["skip", "identifier"] = (
+                "identifier" if retrieve_connections == "identifier" else "skip"
+            )
+            unpacked = QueryUnpacker(batch_results, edges=unpack_edges).unpack()
+            yield self._class_list(
+                instantiate_classes(self._class_type, unpacked, "iterate"), cursors=batch_results._cursors
+            )
 
     def _search(
         self,
@@ -426,8 +466,9 @@ class QueryAPI(Generic[T_DomainModel, T_DomainModelList]):
         self._result_list_cls = result_list_cls
 
     def _query(self) -> T_DomainModelList:
-        self._builder.execute_query(self._client, remove_not_connected=True)
-        unpacked = QueryUnpacker(self._builder).unpack()
+        executor = self._builder.build()
+        results = executor.execute_query(self._client, remove_not_connected=True)
+        unpacked = QueryUnpacker(results).unpack()
         item_list = instantiate_classes(self._result_cls, unpacked, "query")
         return self._result_list_cls(item_list)
 

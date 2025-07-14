@@ -7,7 +7,7 @@ from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, ClassVar, Optional
+from typing import Any, ClassVar
 
 from cognite.client import CogniteClient
 from cognite.client._constants import MAX_VALID_INTERNAL_ID
@@ -211,15 +211,15 @@ class ExtractionPipelineCreate:
         data_set_external_id: str,
         description: str | None = None,
         dump_truncated_to_file: bool = True,
-        message_keys_skip: Optional[list[str]] = None,
-        truncate_keys_first: Optional[list[str]] = None,
-        reverse_truncate_keys: Optional[list[str]] = None,
+        message_keys_skip: list[str] | None = None,
+        truncate_keys_first: list[str] | None = None,
+        reverse_truncate_keys: list[str] | None = None,
         log_file_prefix: str | None = None,
     ) -> None:
         self.external_id = external_id
         self.dataset_external_id = data_set_external_id
         self.description = description
-        self._data_set_id: Optional[int] = None
+        self._data_set_id: int | None = None
 
         self.config = _Config(
             dump_truncated_to_file=dump_truncated_to_file,
@@ -244,7 +244,7 @@ class ExtractionPipelineCreate:
         return self
 
     def create_pipeline_run(
-        self, client: CogniteClient, is_dry_run: bool = False, error_logger: Optional[Callable[[str], None]] = None
+        self, client: CogniteClient, is_dry_run: bool = False, error_logger: Callable[[str], None] | None = None
     ) -> PipelineRun:
         """
 

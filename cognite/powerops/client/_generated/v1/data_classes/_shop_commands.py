@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
 from typing import Any, ClassVar, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -39,10 +39,8 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
 __all__ = [
     "ShopCommands",
     "ShopCommandsWrite",
-    "ShopCommandsApply",
     "ShopCommandsList",
     "ShopCommandsWriteList",
-    "ShopCommandsApplyList",
     "ShopCommandsFields",
     "ShopCommandsTextFields",
     "ShopCommandsGraphQL",
@@ -124,14 +122,6 @@ class ShopCommands(DomainModel):
         """Convert this read version of shop command to the writing version."""
         return ShopCommandsWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> ShopCommandsWrite:
-        """Convert this read version of shop command to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class ShopCommandsWrite(DomainModelWrite):
@@ -157,18 +147,6 @@ class ShopCommandsWrite(DomainModelWrite):
 
 
 
-class ShopCommandsApply(ShopCommandsWrite):
-    def __new__(cls, *args, **kwargs) -> ShopCommandsApply:
-        warnings.warn(
-            "ShopCommandsApply is deprecated and will be removed in v1.0. "
-            "Use ShopCommandsWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "ShopCommands.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class ShopCommandsList(DomainModelList[ShopCommands]):
     """List of shop commands in the read version."""
 
@@ -177,22 +155,12 @@ class ShopCommandsList(DomainModelList[ShopCommands]):
         """Convert these read versions of shop command to the writing versions."""
         return ShopCommandsWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> ShopCommandsWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class ShopCommandsWriteList(DomainModelWriteList[ShopCommandsWrite]):
     """List of shop commands in the writing version."""
 
     _INSTANCE = ShopCommandsWrite
-
-class ShopCommandsApplyList(ShopCommandsWriteList): ...
 
 
 def _create_shop_command_filter(
@@ -232,11 +200,11 @@ class _ShopCommandsQuery(NodeQueryCore[T_DomainModelList, ShopCommandsList]):
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
 
         super().__init__(

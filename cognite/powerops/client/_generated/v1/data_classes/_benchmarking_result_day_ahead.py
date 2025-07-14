@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import datetime
-import warnings
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
@@ -9,6 +8,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -48,10 +48,8 @@ if TYPE_CHECKING:
 __all__ = [
     "BenchmarkingResultDayAhead",
     "BenchmarkingResultDayAheadWrite",
-    "BenchmarkingResultDayAheadApply",
     "BenchmarkingResultDayAheadList",
     "BenchmarkingResultDayAheadWriteList",
-    "BenchmarkingResultDayAheadApplyList",
     "BenchmarkingResultDayAheadFields",
     "BenchmarkingResultDayAheadTextFields",
     "BenchmarkingResultDayAheadGraphQL",
@@ -188,14 +186,6 @@ class BenchmarkingResultDayAhead(DomainModel):
         """Convert this read version of benchmarking result day ahead to the writing version."""
         return BenchmarkingResultDayAheadWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> BenchmarkingResultDayAheadWrite:
-        """Convert this read version of benchmarking result day ahead to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class BenchmarkingResultDayAheadWrite(DomainModelWrite):
@@ -249,18 +239,6 @@ class BenchmarkingResultDayAheadWrite(DomainModelWrite):
         return value
 
 
-class BenchmarkingResultDayAheadApply(BenchmarkingResultDayAheadWrite):
-    def __new__(cls, *args, **kwargs) -> BenchmarkingResultDayAheadApply:
-        warnings.warn(
-            "BenchmarkingResultDayAheadApply is deprecated and will be removed in v1.0. "
-            "Use BenchmarkingResultDayAheadWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "BenchmarkingResultDayAhead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class BenchmarkingResultDayAheadList(DomainModelList[BenchmarkingResultDayAhead]):
     """List of benchmarking result day aheads in the read version."""
 
@@ -269,14 +247,6 @@ class BenchmarkingResultDayAheadList(DomainModelList[BenchmarkingResultDayAhead]
         """Convert these read versions of benchmarking result day ahead to the writing versions."""
         return BenchmarkingResultDayAheadWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> BenchmarkingResultDayAheadWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
     @property
     def shop_result(self) -> ShopResultList:
@@ -301,8 +271,6 @@ class BenchmarkingResultDayAheadWriteList(DomainModelWriteList[BenchmarkingResul
         from ._alert import AlertWrite, AlertWriteList
         return AlertWriteList([item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)])
 
-
-class BenchmarkingResultDayAheadApplyList(BenchmarkingResultDayAheadWriteList): ...
 
 
 def _create_benchmarking_result_day_ahead_filter(
@@ -375,11 +343,11 @@ class _BenchmarkingResultDayAheadQuery(NodeQueryCore[T_DomainModelList, Benchmar
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
         from ._alert import _AlertQuery
         from ._shop_result import _ShopResultQuery
@@ -398,7 +366,7 @@ class _BenchmarkingResultDayAheadQuery(NodeQueryCore[T_DomainModelList, Benchmar
         )
 
 
-        if _ShopResultQuery not in created_types:
+        if _ShopResultQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.shop_result = _ShopResultQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -412,7 +380,7 @@ class _BenchmarkingResultDayAheadQuery(NodeQueryCore[T_DomainModelList, Benchmar
                 connection_property=ViewPropertyId(self._view_id, "shopResult"),
             )
 
-        if _AlertQuery not in created_types:
+        if _AlertQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.alerts = _AlertQuery(
                 created_types.copy(),
                 self._creation_path,

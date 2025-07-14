@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
@@ -8,6 +7,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -46,10 +46,8 @@ if TYPE_CHECKING:
 __all__ = [
     "ShopPreprocessorOutput",
     "ShopPreprocessorOutputWrite",
-    "ShopPreprocessorOutputApply",
     "ShopPreprocessorOutputList",
     "ShopPreprocessorOutputWriteList",
-    "ShopPreprocessorOutputApplyList",
     "ShopPreprocessorOutputFields",
     "ShopPreprocessorOutputTextFields",
     "ShopPreprocessorOutputGraphQL",
@@ -146,6 +144,7 @@ class ShopPreprocessorOutput(FunctionOutput):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopPreprocessorOutput", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopPreprocessorOutput")
+    function_input: Union[ShopPreprocessorInput, str, dm.NodeId, None] = Field(default=None, repr=False, alias="functionInput")
     case: Union[ShopCase, str, dm.NodeId, None] = Field(default=None, repr=False)
     @field_validator("function_input", "case", mode="before")
     @classmethod
@@ -163,14 +162,6 @@ class ShopPreprocessorOutput(FunctionOutput):
         """Convert this read version of shop preprocessor output to the writing version."""
         return ShopPreprocessorOutputWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> ShopPreprocessorOutputWrite:
-        """Convert this read version of shop preprocessor output to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class ShopPreprocessorOutputWrite(FunctionOutputWrite):
@@ -197,9 +188,10 @@ class ShopPreprocessorOutputWrite(FunctionOutputWrite):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopPreprocessorOutput", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "ShopPreprocessorOutput")
+    function_input: Union[ShopPreprocessorInputWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="functionInput")
     case: Union[ShopCaseWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
 
-    @field_validator("case", mode="before")
+    @field_validator("function_input", "case", mode="before")
     def as_node_id(cls, value: Any) -> Any:
         if isinstance(value, dm.DirectRelationReference):
             return dm.NodeId(value.space, value.external_id)
@@ -210,18 +202,6 @@ class ShopPreprocessorOutputWrite(FunctionOutputWrite):
         return value
 
 
-class ShopPreprocessorOutputApply(ShopPreprocessorOutputWrite):
-    def __new__(cls, *args, **kwargs) -> ShopPreprocessorOutputApply:
-        warnings.warn(
-            "ShopPreprocessorOutputApply is deprecated and will be removed in v1.0. "
-            "Use ShopPreprocessorOutputWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "ShopPreprocessorOutput.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class ShopPreprocessorOutputList(DomainModelList[ShopPreprocessorOutput]):
     """List of shop preprocessor outputs in the read version."""
 
@@ -230,14 +210,6 @@ class ShopPreprocessorOutputList(DomainModelList[ShopPreprocessorOutput]):
         """Convert these read versions of shop preprocessor output to the writing versions."""
         return ShopPreprocessorOutputWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> ShopPreprocessorOutputWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
     @property
     def function_input(self) -> ShopPreprocessorInputList:
@@ -270,8 +242,6 @@ class ShopPreprocessorOutputWriteList(DomainModelWriteList[ShopPreprocessorOutpu
     def case(self) -> ShopCaseWriteList:
         from ._shop_case import ShopCaseWrite, ShopCaseWriteList
         return ShopCaseWriteList([item.case for item in self.data if isinstance(item.case, ShopCaseWrite)])
-
-class ShopPreprocessorOutputApplyList(ShopPreprocessorOutputWriteList): ...
 
 
 def _create_shop_preprocessor_output_filter(
@@ -341,11 +311,11 @@ class _ShopPreprocessorOutputQuery(NodeQueryCore[T_DomainModelList, ShopPreproce
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
         from ._alert import _AlertQuery
         from ._shop_case import _ShopCaseQuery
@@ -364,7 +334,7 @@ class _ShopPreprocessorOutputQuery(NodeQueryCore[T_DomainModelList, ShopPreproce
             reverse_expression,
         )
 
-        if _ShopPreprocessorInputQuery not in created_types:
+        if _ShopPreprocessorInputQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.function_input = _ShopPreprocessorInputQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -378,7 +348,7 @@ class _ShopPreprocessorOutputQuery(NodeQueryCore[T_DomainModelList, ShopPreproce
                 connection_property=ViewPropertyId(self._view_id, "functionInput"),
             )
 
-        if _AlertQuery not in created_types:
+        if _AlertQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.alerts = _AlertQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -392,7 +362,7 @@ class _ShopPreprocessorOutputQuery(NodeQueryCore[T_DomainModelList, ShopPreproce
                 connection_property=ViewPropertyId(self._view_id, "alerts"),
             )
 
-        if _ShopCaseQuery not in created_types:
+        if _ShopCaseQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.case = _ShopCaseQuery(
                 created_types.copy(),
                 self._creation_path,

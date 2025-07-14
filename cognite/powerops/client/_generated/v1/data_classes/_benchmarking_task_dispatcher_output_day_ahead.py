@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
@@ -8,6 +7,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -46,10 +46,8 @@ if TYPE_CHECKING:
 __all__ = [
     "BenchmarkingTaskDispatcherOutputDayAhead",
     "BenchmarkingTaskDispatcherOutputDayAheadWrite",
-    "BenchmarkingTaskDispatcherOutputDayAheadApply",
     "BenchmarkingTaskDispatcherOutputDayAheadList",
     "BenchmarkingTaskDispatcherOutputDayAheadWriteList",
-    "BenchmarkingTaskDispatcherOutputDayAheadApplyList",
     "BenchmarkingTaskDispatcherOutputDayAheadFields",
     "BenchmarkingTaskDispatcherOutputDayAheadTextFields",
     "BenchmarkingTaskDispatcherOutputDayAheadGraphQL",
@@ -146,6 +144,7 @@ class BenchmarkingTaskDispatcherOutputDayAhead(FunctionOutput):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingTaskDispatcherOutputDayAhead", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingTaskDispatcherOutputDayAhead")
+    function_input: Union[BenchmarkingTaskDispatcherInputDayAhead, str, dm.NodeId, None] = Field(default=None, repr=False, alias="functionInput")
     benchmarking_sub_tasks: Optional[list[Union[FunctionInput, str, dm.NodeId]]] = Field(default=None, repr=False, alias="benchmarkingSubTasks")
     @field_validator("function_input", mode="before")
     @classmethod
@@ -163,14 +162,6 @@ class BenchmarkingTaskDispatcherOutputDayAhead(FunctionOutput):
         """Convert this read version of benchmarking task dispatcher output day ahead to the writing version."""
         return BenchmarkingTaskDispatcherOutputDayAheadWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> BenchmarkingTaskDispatcherOutputDayAheadWrite:
-        """Convert this read version of benchmarking task dispatcher output day ahead to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class BenchmarkingTaskDispatcherOutputDayAheadWrite(FunctionOutputWrite):
@@ -197,9 +188,10 @@ class BenchmarkingTaskDispatcherOutputDayAheadWrite(FunctionOutputWrite):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingTaskDispatcherOutputDayAhead", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingTaskDispatcherOutputDayAhead")
+    function_input: Union[BenchmarkingTaskDispatcherInputDayAheadWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="functionInput")
     benchmarking_sub_tasks: Optional[list[Union[FunctionInputWrite, str, dm.NodeId]]] = Field(default=None, repr=False, alias="benchmarkingSubTasks")
 
-    @field_validator("benchmarking_sub_tasks", mode="before")
+    @field_validator("function_input", "benchmarking_sub_tasks", mode="before")
     def as_node_id(cls, value: Any) -> Any:
         if isinstance(value, dm.DirectRelationReference):
             return dm.NodeId(value.space, value.external_id)
@@ -210,18 +202,6 @@ class BenchmarkingTaskDispatcherOutputDayAheadWrite(FunctionOutputWrite):
         return value
 
 
-class BenchmarkingTaskDispatcherOutputDayAheadApply(BenchmarkingTaskDispatcherOutputDayAheadWrite):
-    def __new__(cls, *args, **kwargs) -> BenchmarkingTaskDispatcherOutputDayAheadApply:
-        warnings.warn(
-            "BenchmarkingTaskDispatcherOutputDayAheadApply is deprecated and will be removed in v1.0. "
-            "Use BenchmarkingTaskDispatcherOutputDayAheadWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "BenchmarkingTaskDispatcherOutputDayAhead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
-
 class BenchmarkingTaskDispatcherOutputDayAheadList(DomainModelList[BenchmarkingTaskDispatcherOutputDayAhead]):
     """List of benchmarking task dispatcher output day aheads in the read version."""
 
@@ -230,14 +210,6 @@ class BenchmarkingTaskDispatcherOutputDayAheadList(DomainModelList[BenchmarkingT
         """Convert these read versions of benchmarking task dispatcher output day ahead to the writing versions."""
         return BenchmarkingTaskDispatcherOutputDayAheadWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> BenchmarkingTaskDispatcherOutputDayAheadWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
     @property
     def function_input(self) -> BenchmarkingTaskDispatcherInputDayAheadList:
@@ -272,8 +244,6 @@ class BenchmarkingTaskDispatcherOutputDayAheadWriteList(DomainModelWriteList[Ben
         from ._function_input import FunctionInputWrite, FunctionInputWriteList
         return FunctionInputWriteList([item for items in self.data for item in items.benchmarking_sub_tasks or [] if isinstance(item, FunctionInputWrite)])
 
-
-class BenchmarkingTaskDispatcherOutputDayAheadApplyList(BenchmarkingTaskDispatcherOutputDayAheadWriteList): ...
 
 
 def _create_benchmarking_task_dispatcher_output_day_ahead_filter(
@@ -338,11 +308,11 @@ class _BenchmarkingTaskDispatcherOutputDayAheadQuery(NodeQueryCore[T_DomainModel
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
         from ._alert import _AlertQuery
         from ._benchmarking_task_dispatcher_input_day_ahead import _BenchmarkingTaskDispatcherInputDayAheadQuery
@@ -361,7 +331,7 @@ class _BenchmarkingTaskDispatcherOutputDayAheadQuery(NodeQueryCore[T_DomainModel
             reverse_expression,
         )
 
-        if _BenchmarkingTaskDispatcherInputDayAheadQuery not in created_types:
+        if _BenchmarkingTaskDispatcherInputDayAheadQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.function_input = _BenchmarkingTaskDispatcherInputDayAheadQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -375,7 +345,7 @@ class _BenchmarkingTaskDispatcherOutputDayAheadQuery(NodeQueryCore[T_DomainModel
                 connection_property=ViewPropertyId(self._view_id, "functionInput"),
             )
 
-        if _AlertQuery not in created_types:
+        if _AlertQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.alerts = _AlertQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -389,7 +359,7 @@ class _BenchmarkingTaskDispatcherOutputDayAheadQuery(NodeQueryCore[T_DomainModel
                 connection_property=ViewPropertyId(self._view_id, "alerts"),
             )
 
-        if _FunctionInputQuery not in created_types:
+        if _FunctionInputQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.benchmarking_sub_tasks = _FunctionInputQuery(
                 created_types.copy(),
                 self._creation_path,

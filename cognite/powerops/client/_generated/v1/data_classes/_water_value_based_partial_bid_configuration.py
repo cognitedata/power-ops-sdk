@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import warnings
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, Optional, Union
 
@@ -8,6 +7,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from pydantic import Field
 from pydantic import field_validator, model_validator, ValidationInfo
 
+from cognite.powerops.client._generated.v1.config import global_config
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
@@ -44,10 +44,8 @@ if TYPE_CHECKING:
 __all__ = [
     "WaterValueBasedPartialBidConfiguration",
     "WaterValueBasedPartialBidConfigurationWrite",
-    "WaterValueBasedPartialBidConfigurationApply",
     "WaterValueBasedPartialBidConfigurationList",
     "WaterValueBasedPartialBidConfigurationWriteList",
-    "WaterValueBasedPartialBidConfigurationApplyList",
     "WaterValueBasedPartialBidConfigurationFields",
     "WaterValueBasedPartialBidConfigurationTextFields",
     "WaterValueBasedPartialBidConfigurationGraphQL",
@@ -134,6 +132,7 @@ class WaterValueBasedPartialBidConfiguration(PartialBidConfiguration):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "WaterValueBasedPartialBidConfiguration", "1")
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "WaterValueBasedPartialBidConfiguration")
+    power_asset: Union[PlantWaterValueBased, str, dm.NodeId, None] = Field(default=None, repr=False, alias="powerAsset")
     @field_validator("power_asset", mode="before")
     @classmethod
     def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
@@ -144,14 +143,6 @@ class WaterValueBasedPartialBidConfiguration(PartialBidConfiguration):
         """Convert this read version of water value based partial bid configuration to the writing version."""
         return WaterValueBasedPartialBidConfigurationWrite.model_validate(as_write_args(self))
 
-    def as_apply(self) -> WaterValueBasedPartialBidConfigurationWrite:
-        """Convert this read version of water value based partial bid configuration to the writing version."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
 
 class WaterValueBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
@@ -174,20 +165,18 @@ class WaterValueBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "WaterValueBasedPartialBidConfiguration", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "WaterValueBasedPartialBidConfiguration")
+    power_asset: Union[PlantWaterValueBasedWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="powerAsset")
 
+    @field_validator("power_asset", mode="before")
+    def as_node_id(cls, value: Any) -> Any:
+        if isinstance(value, dm.DirectRelationReference):
+            return dm.NodeId(value.space, value.external_id)
+        elif isinstance(value, tuple) and len(value) == 2 and all(isinstance(item, str) for item in value):
+            return dm.NodeId(value[0], value[1])
+        elif isinstance(value, list):
+            return [cls.as_node_id(item) for item in value]
+        return value
 
-
-class WaterValueBasedPartialBidConfigurationApply(WaterValueBasedPartialBidConfigurationWrite):
-    def __new__(cls, *args, **kwargs) -> WaterValueBasedPartialBidConfigurationApply:
-        warnings.warn(
-            "WaterValueBasedPartialBidConfigurationApply is deprecated and will be removed in v1.0. "
-            "Use WaterValueBasedPartialBidConfigurationWrite instead. "
-            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
-            "WaterValueBasedPartialBidConfiguration.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return super().__new__(cls)
 
 class WaterValueBasedPartialBidConfigurationList(DomainModelList[WaterValueBasedPartialBidConfiguration]):
     """List of water value based partial bid configurations in the read version."""
@@ -197,14 +186,6 @@ class WaterValueBasedPartialBidConfigurationList(DomainModelList[WaterValueBased
         """Convert these read versions of water value based partial bid configuration to the writing versions."""
         return WaterValueBasedPartialBidConfigurationWriteList([node.as_write() for node in self.data])
 
-    def as_apply(self) -> WaterValueBasedPartialBidConfigurationWriteList:
-        """Convert these read versions of primitive nullable to the writing versions."""
-        warnings.warn(
-            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self.as_write()
 
     @property
     def power_asset(self) -> PlantWaterValueBasedList:
@@ -219,8 +200,6 @@ class WaterValueBasedPartialBidConfigurationWriteList(DomainModelWriteList[Water
     def power_asset(self) -> PlantWaterValueBasedWriteList:
         from ._plant_water_value_based import PlantWaterValueBasedWrite, PlantWaterValueBasedWriteList
         return PlantWaterValueBasedWriteList([item.power_asset for item in self.data if isinstance(item.power_asset, PlantWaterValueBasedWrite)])
-
-class WaterValueBasedPartialBidConfigurationApplyList(WaterValueBasedPartialBidConfigurationWriteList): ...
 
 
 def _create_water_value_based_partial_bid_configuration_filter(
@@ -276,11 +255,11 @@ class _WaterValueBasedPartialBidConfigurationQuery(NodeQueryCore[T_DomainModelLi
         creation_path: list[QueryCore],
         client: CogniteClient,
         result_list_cls: type[T_DomainModelList],
-        expression: dm.query.ResultSetExpression | None = None,
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
         connection_name: str | None = None,
         connection_property: ViewPropertyId | None = None,
         connection_type: Literal["reverse-list"] | None = None,
-        reverse_expression: dm.query.ResultSetExpression | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
     ):
         from ._plant_water_value_based import _PlantWaterValueBasedQuery
 
@@ -297,7 +276,7 @@ class _WaterValueBasedPartialBidConfigurationQuery(NodeQueryCore[T_DomainModelLi
             reverse_expression,
         )
 
-        if _PlantWaterValueBasedQuery not in created_types:
+        if _PlantWaterValueBasedQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.power_asset = _PlantWaterValueBasedQuery(
                 created_types.copy(),
                 self._creation_path,

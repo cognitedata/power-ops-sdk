@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from collections.abc import Sequence
+from collections.abc import Iterator, Sequence
 from typing import Any, ClassVar, Literal, overload
 
 from cognite.client import CogniteClient
@@ -10,6 +10,7 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 
 from cognite.powerops.client._generated.v1._api._core import (
     DEFAULT_LIMIT_READ,
+    DEFAULT_CHUNK_SIZE,
     instantiate_classes,
     Aggregations,
     NodeAPI,
@@ -18,8 +19,9 @@ from cognite.powerops.client._generated.v1._api._core import (
 from cognite.powerops.client._generated.v1.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DEFAULT_QUERY_LIMIT,
-    QueryStepFactory,
+    QueryBuildStepFactory,
     QueryBuilder,
+    QueryExecutor,
     QueryUnpacker,
     ViewPropertyId,
 )
@@ -41,18 +43,6 @@ from cognite.powerops.client._generated.v1.data_classes import (
     PriceAreaInformationTextFields,
     BidConfigurationDayAhead,
 )
-from cognite.powerops.client._generated.v1._api.price_area_information_capacity_price_up import PriceAreaInformationCapacityPriceUpAPI
-from cognite.powerops.client._generated.v1._api.price_area_information_capacity_price_down import PriceAreaInformationCapacityPriceDownAPI
-from cognite.powerops.client._generated.v1._api.price_area_information_activation_price_up import PriceAreaInformationActivationPriceUpAPI
-from cognite.powerops.client._generated.v1._api.price_area_information_activation_price_down import PriceAreaInformationActivationPriceDownAPI
-from cognite.powerops.client._generated.v1._api.price_area_information_relative_activation import PriceAreaInformationRelativeActivationAPI
-from cognite.powerops.client._generated.v1._api.price_area_information_total_capacity_allocation_up import PriceAreaInformationTotalCapacityAllocationUpAPI
-from cognite.powerops.client._generated.v1._api.price_area_information_total_capacity_allocation_down import PriceAreaInformationTotalCapacityAllocationDownAPI
-from cognite.powerops.client._generated.v1._api.price_area_information_own_capacity_allocation_up import PriceAreaInformationOwnCapacityAllocationUpAPI
-from cognite.powerops.client._generated.v1._api.price_area_information_own_capacity_allocation_down import PriceAreaInformationOwnCapacityAllocationDownAPI
-from cognite.powerops.client._generated.v1._api.price_area_information_main_price_scenario import PriceAreaInformationMainPriceScenarioAPI
-from cognite.powerops.client._generated.v1._api.price_area_information_price_scenarios import PriceAreaInformationPriceScenariosAPI
-from cognite.powerops.client._generated.v1._api.price_area_information_query import PriceAreaInformationQueryAPI
 
 
 class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformationWrite, PriceAreaInformationList, PriceAreaInformationWriteList]):
@@ -65,157 +55,6 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
     def __init__(self, client: CogniteClient):
         super().__init__(client=client)
 
-        self.capacity_price_up = PriceAreaInformationCapacityPriceUpAPI(client, self._view_id)
-        self.capacity_price_down = PriceAreaInformationCapacityPriceDownAPI(client, self._view_id)
-        self.activation_price_up = PriceAreaInformationActivationPriceUpAPI(client, self._view_id)
-        self.activation_price_down = PriceAreaInformationActivationPriceDownAPI(client, self._view_id)
-        self.relative_activation = PriceAreaInformationRelativeActivationAPI(client, self._view_id)
-        self.total_capacity_allocation_up = PriceAreaInformationTotalCapacityAllocationUpAPI(client, self._view_id)
-        self.total_capacity_allocation_down = PriceAreaInformationTotalCapacityAllocationDownAPI(client, self._view_id)
-        self.own_capacity_allocation_up = PriceAreaInformationOwnCapacityAllocationUpAPI(client, self._view_id)
-        self.own_capacity_allocation_down = PriceAreaInformationOwnCapacityAllocationDownAPI(client, self._view_id)
-        self.main_price_scenario = PriceAreaInformationMainPriceScenarioAPI(client, self._view_id)
-        self.price_scenarios = PriceAreaInformationPriceScenariosAPI(client, self._view_id)
-
-    def __call__(
-        self,
-        name: str | list[str] | None = None,
-        name_prefix: str | None = None,
-        display_name: str | list[str] | None = None,
-        display_name_prefix: str | None = None,
-        min_ordering: int | None = None,
-        max_ordering: int | None = None,
-        asset_type: str | list[str] | None = None,
-        asset_type_prefix: str | None = None,
-        default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int = DEFAULT_QUERY_LIMIT,
-        filter: dm.Filter | None = None,
-    ) -> PriceAreaInformationQueryAPI[PriceAreaInformation, PriceAreaInformationList]:
-        """Query starting at price area information.
-
-        Args:
-            name: The name to filter on.
-            name_prefix: The prefix of the name to filter on.
-            display_name: The display name to filter on.
-            display_name_prefix: The prefix of the display name to filter on.
-            min_ordering: The minimum value of the ordering to filter on.
-            max_ordering: The maximum value of the ordering to filter on.
-            asset_type: The asset type to filter on.
-            asset_type_prefix: The prefix of the asset type to filter on.
-            default_bid_configuration: The default bid configuration to filter on.
-            external_id_prefix: The prefix of the external ID to filter on.
-            space: The space to filter on.
-            limit: Maximum number of price area information to return. Defaults to 25.
-                Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write
-                your own filtering which will be ANDed with the filter above.
-
-        Returns:
-            A query API for price area information.
-
-        """
-        warnings.warn(
-            "This method is deprecated and will soon be removed. "
-            "Use the .select() method instead.",
-            UserWarning,
-            stacklevel=2,
-        )
-        has_data = dm.filters.HasData(views=[self._view_id])
-        filter_ = _create_price_area_information_filter(
-            self._view_id,
-            name,
-            name_prefix,
-            display_name,
-            display_name_prefix,
-            min_ordering,
-            max_ordering,
-            asset_type,
-            asset_type_prefix,
-            default_bid_configuration,
-            external_id_prefix,
-            space,
-            (filter and dm.filters.And(filter, has_data)) or has_data,
-        )
-        return PriceAreaInformationQueryAPI(
-            self._client, QueryBuilder(), self._class_type, self._class_list, None, filter_, limit
-        )
-
-    def apply(
-        self,
-        price_area_information: PriceAreaInformationWrite | Sequence[PriceAreaInformationWrite],
-        replace: bool = False,
-        write_none: bool = False,
-    ) -> ResourcesWriteResult:
-        """Add or update (upsert) price area information.
-
-        Args:
-            price_area_information: Price area information or
-                sequence of price area information to upsert.
-            replace (bool): How do we behave when a property value exists? Do we replace all matching and
-                existing values with the supplied values (true)?
-                Or should we merge in new values for properties together with the existing values (false)?
-                Note: This setting applies for all nodes or edges specified in the ingestion call.
-            write_none (bool): This method, will by default, skip properties that are set to None.
-                However, if you want to set properties to None,
-                you can set this parameter to True. Note this only applies to properties that are nullable.
-        Returns:
-            Created instance(s), i.e., nodes, edges, and time series.
-
-        Examples:
-
-            Create a new price_area_information:
-
-                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
-                >>> from cognite.powerops.client._generated.v1.data_classes import PriceAreaInformationWrite
-                >>> client = PowerOpsModelsV1Client()
-                >>> price_area_information = PriceAreaInformationWrite(
-                ...     external_id="my_price_area_information", ...
-                ... )
-                >>> result = client.price_area_information.apply(price_area_information)
-
-        """
-        warnings.warn(
-            "The .apply method is deprecated and will be removed in v1.0. "
-            "Please use the .upsert method on the client instead. This means instead of "
-            "`my_client.price_area_information.apply(my_items)` please use `my_client.upsert(my_items)`."
-            "The motivation is that all apply methods are the same, and having one apply method per API "
-            " class encourages users to create items in small batches, which is inefficient."
-            "In addition, .upsert method is more descriptive of what the method does.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self._apply(price_area_information, replace, write_none)
-
-    def delete(self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> dm.InstancesDeleteResult:
-        """Delete one or more price area information.
-
-        Args:
-            external_id: External id of the price area information to delete.
-            space: The space where all the price area information are located.
-
-        Returns:
-            The instance(s), i.e., nodes and edges which has been deleted. Empty list if nothing was deleted.
-
-        Examples:
-
-            Delete price_area_information by id:
-
-                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
-                >>> client = PowerOpsModelsV1Client()
-                >>> client.price_area_information.delete("my_price_area_information")
-        """
-        warnings.warn(
-            "The .delete method is deprecated and will be removed in v1.0. "
-            "Please use the .delete method on the client instead. This means instead of "
-            "`my_client.price_area_information.delete(my_ids)` please use `my_client.delete(my_ids)`."
-            "The motivation is that all delete methods are the same, and having one delete method per API "
-            " class encourages users to delete items in small batches, which is inefficient.",
-            UserWarning,
-            stacklevel=2,
-        )
-        return self._delete(external_id, space)
 
     @overload
     def retrieve(
@@ -589,19 +428,21 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
         """Start selecting from price area information."""
         return PriceAreaInformationQuery(self._client)
 
-    def _query(
+    def _build(
         self,
         filter_: dm.Filter | None,
-        limit: int,
+        limit: int | None,
         retrieve_connections: Literal["skip", "identifier", "full"],
         sort: list[InstanceSort] | None = None,
-    ) -> list[dict[str, Any]]:
+        chunk_size: int | None = None,
+    ) -> QueryExecutor:
         builder = QueryBuilder()
-        factory = QueryStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
+        factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
         builder.append(factory.root(
             filter=filter_,
             sort=sort,
             limit=limit,
+            max_retrieve_batch_limit=chunk_size,
             has_container_fields=True,
         ))
         if retrieve_connections == "full":
@@ -612,10 +453,111 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
                     has_container_fields=True,
                 )
             )
-        unpack_edges: Literal["skip", "identifier"] = "identifier" if retrieve_connections == "identifier" else "skip"
-        builder.execute_query(self._client, remove_not_connected=True if unpack_edges == "skip" else False)
-        return QueryUnpacker(builder, edges=unpack_edges).unpack()
+        return builder.build()
 
+    def iterate(
+        self,
+        chunk_size: int = DEFAULT_CHUNK_SIZE,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
+        default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        filter: dm.Filter | None = None,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
+        limit: int | None = None,
+        cursors: dict[str, str | None] | None = None,
+    ) -> Iterator[PriceAreaInformationList]:
+        """Iterate over price area information
+
+        Args:
+            chunk_size: The number of price area information to return in each iteration. Defaults to 100.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
+            display_name: The display name to filter on.
+            display_name_prefix: The prefix of the display name to filter on.
+            min_ordering: The minimum value of the ordering to filter on.
+            max_ordering: The maximum value of the ordering to filter on.
+            asset_type: The asset type to filter on.
+            asset_type_prefix: The prefix of the asset type to filter on.
+            default_bid_configuration: The default bid configuration to filter on.
+            external_id_prefix: The prefix of the external ID to filter on.
+            space: The space to filter on.
+            filter: (Advanced) If the filtering available in the above is not sufficient,
+                you can write your own filtering which will be ANDed with the filter above.
+            retrieve_connections: Whether to retrieve `default_bid_configuration` for the price area information.
+            Defaults to 'skip'.'skip' will not retrieve any connections, 'identifier' will only retrieve the identifier
+            of the connected items, and 'full' will retrieve the full connected items.
+            limit: Maximum number of price area information to return. Defaults to None, which will return all items.
+            cursors: (Advanced) Cursor to use for pagination. This can be used to resume an iteration from a
+                specific point. See example below for more details.
+
+        Returns:
+            Iteration of price area information
+
+        Examples:
+
+            Iterate price area information in chunks of 100 up to 2000 items:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for price_area_information_list in client.price_area_information.iterate(chunk_size=100, limit=2000):
+                ...     for price_area_information in price_area_information_list:
+                ...         print(price_area_information.external_id)
+
+            Iterate price area information in chunks of 100 sorted by external_id in descending order:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for price_area_information_list in client.price_area_information.iterate(
+                ...     chunk_size=100,
+                ...     sort_by="external_id",
+                ...     direction="descending",
+                ... ):
+                ...     for price_area_information in price_area_information_list:
+                ...         print(price_area_information.external_id)
+
+            Iterate price area information in chunks of 100 and use cursors to resume the iteration:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> for first_iteration in client.price_area_information.iterate(chunk_size=100, limit=2000):
+                ...     print(first_iteration)
+                ...     break
+                >>> for price_area_information_list in client.price_area_information.iterate(
+                ...     chunk_size=100,
+                ...     limit=2000,
+                ...     cursors=first_iteration.cursors,
+                ... ):
+                ...     for price_area_information in price_area_information_list:
+                ...         print(price_area_information.external_id)
+
+        """
+        warnings.warn(
+            "The `iterate` method is in alpha and is subject to breaking changes without prior notice.", stacklevel=2
+        )
+        filter_ = _create_price_area_information_filter(
+            self._view_id,
+            name,
+            name_prefix,
+            display_name,
+            display_name_prefix,
+            min_ordering,
+            max_ordering,
+            asset_type,
+            asset_type_prefix,
+            default_bid_configuration,
+            external_id_prefix,
+            space,
+            filter,
+        )
+        yield from self._iterate(chunk_size, filter_, limit, retrieve_connections, cursors=cursors)
 
     def list(
         self,
@@ -694,5 +636,4 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
         sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
             return self._list(limit=limit,  filter=filter_, sort=sort_input)
-        values = self._query(filter_, limit, retrieve_connections, sort_input)
-        return self._class_list(instantiate_classes(self._class_type, values, "list"))
+        return self._query(filter_, limit, retrieve_connections, sort_input, "list")
