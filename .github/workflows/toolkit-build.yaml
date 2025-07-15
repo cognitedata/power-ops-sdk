@@ -45,7 +45,7 @@ jobs:
       build-status: ${{ steps.build.outcome }}
       deploy-status: ${{ steps.deploy.outcome }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.2
       - name: Create a folder for logs
         run: |
           if [ ! -d "cdf-tk-logs" ]; then
@@ -86,7 +86,7 @@ jobs:
     outputs:
       purge-status: ${{ steps.purge.outcome }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.2
 
       - name: Create a folder for logs
         run: |
@@ -94,7 +94,7 @@ jobs:
             mkdir resync-logs
           fi
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5.6.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -134,7 +134,7 @@ jobs:
       run:
         shell: bash
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.2
       - name: Download toolkit log files
         id: download-tk-logs
         uses: actions/download-artifact@v4
