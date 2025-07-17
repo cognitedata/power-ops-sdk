@@ -1,3 +1,1389 @@
+- externalId: shop_based_partial_bid_configuration_15_min_dalby_1
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: price independent
+      name: 15 min Dalby 1
+      powerAsset:
+        externalId: plant_information_dalby
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_1_scenario
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_dalby_2
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 2
+      name: 15 min Dalby 2
+      powerAsset:
+        externalId: plant_information_dalby
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_2_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_dalby_20
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 20
+      name: 15 min Dalby 20
+      powerAsset:
+        externalId: plant_information_dalby
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_20_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_dalby_20_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 20
+      name: 15 min Dalby 20 step
+      powerAsset:
+        externalId: plant_information_dalby
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_20_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_dalby_2_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 2
+      name: 15 min Dalby 2 step
+      powerAsset:
+        externalId: plant_information_dalby
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_2_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_dalby_3
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 3
+      name: 15 min Dalby 3
+      powerAsset:
+        externalId: plant_information_dalby
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_3_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_dalby_3_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 3
+      name: 15 min Dalby 3 step
+      powerAsset:
+        externalId: plant_information_dalby
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_3_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_holen_1
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: price independent
+      name: 15 min Holen 1
+      powerAsset:
+        externalId: plant_information_holen
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_1_scenario
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_holen_2
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 2
+      name: 15 min Holen 2
+      powerAsset:
+        externalId: plant_information_holen
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_2_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_holen_20
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 20
+      name: 15 min Holen 20
+      powerAsset:
+        externalId: plant_information_holen
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_20_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_holen_20_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 20
+      name: 15 min Holen 20 step
+      powerAsset:
+        externalId: plant_information_holen
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_20_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_holen_2_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 2
+      name: 15 min Holen 2 step
+      powerAsset:
+        externalId: plant_information_holen
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_2_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_holen_3
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 3
+      name: 15 min Holen 3
+      powerAsset:
+        externalId: plant_information_holen
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_3_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_holen_3_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 3
+      name: 15 min Holen 3 step
+      powerAsset:
+        externalId: plant_information_holen
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_3_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_landet_1
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: price independent
+      name: 15 min Landet 1
+      powerAsset:
+        externalId: plant_information_landet
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_1_scenario
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_landet_2
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 2
+      name: 15 min Landet 2
+      powerAsset:
+        externalId: plant_information_landet
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_2_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_landet_20
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 20
+      name: 15 min Landet 20
+      powerAsset:
+        externalId: plant_information_landet
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_20_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_landet_20_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 20
+      name: 15 min Landet 20 step
+      powerAsset:
+        externalId: plant_information_landet
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_20_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_landet_2_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 2
+      name: 15 min Landet 2 step
+      powerAsset:
+        externalId: plant_information_landet
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_2_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_landet_3
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 3
+      name: 15 min Landet 3
+      powerAsset:
+        externalId: plant_information_landet
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_3_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_landet_3_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 3
+      name: 15 min Landet 3 step
+      powerAsset:
+        externalId: plant_information_landet
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_3_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_lien_krv_1
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: price independent
+      name: 15 min Lien_krv 1
+      powerAsset:
+        externalId: plant_information_lien_krv
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_1_scenario
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_lien_krv_2
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 2
+      name: 15 min Lien_krv 2
+      powerAsset:
+        externalId: plant_information_lien_krv
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_2_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_lien_krv_20
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 20
+      name: 15 min Lien_krv 20
+      powerAsset:
+        externalId: plant_information_lien_krv
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_20_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_lien_krv_20_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 20
+      name: 15 min Lien_krv 20 step
+      powerAsset:
+        externalId: plant_information_lien_krv
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_20_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_lien_krv_2_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 2
+      name: 15 min Lien_krv 2 step
+      powerAsset:
+        externalId: plant_information_lien_krv
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_2_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_lien_krv_3
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 3
+      name: 15 min Lien_krv 3
+      powerAsset:
+        externalId: plant_information_lien_krv
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_3_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_lien_krv_3_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 3
+      name: 15 min Lien_krv 3 step
+      powerAsset:
+        externalId: plant_information_lien_krv
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_3_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_lund_1
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: price independent
+      name: 15 min Lund 1
+      powerAsset:
+        externalId: plant_information_lund
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_1_scenario
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_lund_2
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 2
+      name: 15 min Lund 2
+      powerAsset:
+        externalId: plant_information_lund
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_2_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_lund_20
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 20
+      name: 15 min Lund 20
+      powerAsset:
+        externalId: plant_information_lund
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_20_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_lund_20_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 20
+      name: 15 min Lund 20 step
+      powerAsset:
+        externalId: plant_information_lund
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_20_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_lund_2_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 2
+      name: 15 min Lund 2 step
+      powerAsset:
+        externalId: plant_information_lund
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_2_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_lund_3
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 3
+      name: 15 min Lund 3
+      powerAsset:
+        externalId: plant_information_lund
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_3_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_lund_3_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 3
+      name: 15 min Lund 3 step
+      powerAsset:
+        externalId: plant_information_lund
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_3_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_rull1_1
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: price independent
+      name: 15 min Rull1 1
+      powerAsset:
+        externalId: plant_information_rull1
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_1_scenario
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_rull1_2
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 2
+      name: 15 min Rull1 2
+      powerAsset:
+        externalId: plant_information_rull1
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_2_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_rull1_20
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 20
+      name: 15 min Rull1 20
+      powerAsset:
+        externalId: plant_information_rull1
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_20_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_rull1_20_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 20
+      name: 15 min Rull1 20 step
+      powerAsset:
+        externalId: plant_information_rull1
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_20_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_rull1_2_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 2
+      name: 15 min Rull1 2 step
+      powerAsset:
+        externalId: plant_information_rull1
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_2_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_rull1_3
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 3
+      name: 15 min Rull1 3
+      powerAsset:
+        externalId: plant_information_rull1
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_3_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_rull1_3_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 3
+      name: 15 min Rull1 3 step
+      powerAsset:
+        externalId: plant_information_rull1
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_3_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_rull2_1
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: price independent
+      name: 15 min Rull2 1
+      powerAsset:
+        externalId: plant_information_rull2
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_1_scenario
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_rull2_2
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 2
+      name: 15 min Rull2 2
+      powerAsset:
+        externalId: plant_information_rull2
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_2_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_rull2_20
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 20
+      name: 15 min Rull2 20
+      powerAsset:
+        externalId: plant_information_rull2
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_20_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_rull2_20_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 20
+      name: 15 min Rull2 20 step
+      powerAsset:
+        externalId: plant_information_rull2
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_20_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_rull2_2_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 2
+      name: 15 min Rull2 2 step
+      powerAsset:
+        externalId: plant_information_rull2
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_2_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_rull2_3
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 3
+      name: 15 min Rull2 3
+      powerAsset:
+        externalId: plant_information_rull2
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_3_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_rull2_3_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 3
+      name: 15 min Rull2 3 step
+      powerAsset:
+        externalId: plant_information_rull2
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_3_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_scott_1
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: price independent
+      name: 15 min Scott 1
+      powerAsset:
+        externalId: plant_information_scott
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_1_scenario
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_scott_2
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 2
+      name: 15 min Scott 2
+      powerAsset:
+        externalId: plant_information_scott
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_2_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_scott_20
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 20
+      name: 15 min Scott 20
+      powerAsset:
+        externalId: plant_information_scott
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_20_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_scott_20_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 20
+      name: 15 min Scott 20 step
+      powerAsset:
+        externalId: plant_information_scott
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_20_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_scott_2_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 2
+      name: 15 min Scott 2 step
+      powerAsset:
+        externalId: plant_information_scott
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_2_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_scott_3
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 3
+      name: 15 min Scott 3
+      powerAsset:
+        externalId: plant_information_scott
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_3_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_scott_3_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 3
+      name: 15 min Scott 3 step
+      powerAsset:
+        externalId: plant_information_scott
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_3_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_strand_krv_1
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: price independent
+      name: 15 min Strand_krv 1
+      powerAsset:
+        externalId: plant_information_strand_krv
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_1_scenario
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_strand_krv_2
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 2
+      name: 15 min Strand_krv 2
+      powerAsset:
+        externalId: plant_information_strand_krv
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_2_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_strand_krv_20
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 20
+      name: 15 min Strand_krv 20
+      powerAsset:
+        externalId: plant_information_strand_krv
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_20_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_strand_krv_20_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 20
+      name: 15 min Strand_krv 20 step
+      powerAsset:
+        externalId: plant_information_strand_krv
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_20_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_strand_krv_2_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 2
+      name: 15 min Strand_krv 2 step
+      powerAsset:
+        externalId: plant_information_strand_krv
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_2_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_strand_krv_3
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: false
+      method: multi scenario 3
+      name: 15 min Strand_krv 3
+      powerAsset:
+        externalId: plant_information_strand_krv
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_3_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
+- externalId: shop_based_partial_bid_configuration_15_min_strand_krv_3_step
+  instanceType: node
+  sources:
+  - properties:
+      addSteps: true
+      method: multi scenario 3
+      name: 15 min Strand_krv 3 step
+      powerAsset:
+        externalId: plant_information_strand_krv
+        space: power_ops_instances
+      scenarioSet:
+        externalId: shop_scenario_set_15_min_fornebu_3_scenarios
+        space: power_ops_instances
+    source:
+      externalId: ShopBasedPartialBidConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopBasedPartialBidConfiguration
+    space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_dalby_1
   instanceType: node
   sources:
