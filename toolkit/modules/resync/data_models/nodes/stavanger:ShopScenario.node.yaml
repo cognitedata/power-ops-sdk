@@ -382,6 +382,30 @@
   type:
     externalId: ShopScenario
     space: power_ops_types
+- externalId: shop_scenario_stavanger_price_plus_200_first_24h
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: power_ops_instances
+      model:
+        externalId: shop_model_stavanger
+        space: power_ops_instances
+      name: Stavanger price plus 200 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_default
+        space: power_ops_instances
+    source:
+      externalId: ShopScenario
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenario
+    space: power_ops_types
 - externalId: shop_scenario_stavanger_price_plus_20_first_24h
   instanceType: node
   sources:

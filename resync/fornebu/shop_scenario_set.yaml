@@ -46,8 +46,47 @@
     - "[name]Fornebu price plus 70 first 24h"
     - "[name]Fornebu price plus 100 first 24h"
     - "[name]Fornebu price plus 2000 first 24h"
-- name: Fornebu 1 scenario 15 min test
+
+# 15 min test cases
+- name: 15 min Fornebu 1 scenario
   start_specification: "[name]Default Start"
   end_specification: "[name]Default End"
   scenarios:
-    - "[name]Fornebu base 15 min test"
+    - "[name]15 min Fornebu base"
+- name: 15 min Fornebu 2 scenarios
+  start_specification: "[name]Default Start"
+  end_specification: "[name]Default End"
+  scenarios:
+    - "[name]15 min Fornebu base"
+    - "[name]15 min Fornebu price plus 200 first 24h"
+- name: 15 min Fornebu 3 scenarios
+  start_specification: "[name]Default Start"
+  end_specification: "[name]Default End"
+  scenarios:
+    - "[name|type:ShopScenario]15 min Fornebu price minus 200 first 24h"
+    - "[name]15 min Fornebu base"
+    - "[name]15 min Fornebu price plus 200 first 24h"
+- name: 15 min Fornebu 20 scenarios
+  start_specification: "[name]Default Start"
+  end_specification: "[name]Default End"
+  scenarios:
+    - "[name]15 min Fornebu price minus 500 first 24h"
+    - "[name]15 min Fornebu price multiply 0 first 24h"
+    - "[name]15 min Fornebu price minus 50 first 24h"
+    - "[name]15 min Fornebu price minus 40 first 24h"
+    - "[name]15 min Fornebu price minus 30 first 24h"
+    - "[name]15 min Fornebu price minus 20 first 24h"
+    - "[name]15 min Fornebu price minus 15 first 24h"
+    - "[name]15 min Fornebu price minus 10 first 24h"
+    - "[name]15 min Fornebu price minus 5 first 24h"
+    - "[name]15 min Fornebu base"
+    - "[name]15 min Fornebu price plus 5 first 24h"
+    - "[name]15 min Fornebu price plus 10 first 24h"
+    - "[name]15 min Fornebu price plus 15 first 24h"
+    - "[name]15 min Fornebu price plus 20 first 24h"
+    - "[name]15 min Fornebu price plus 30 first 24h"
+    - "[name]15 min Fornebu price plus 40 first 24h"
+    - "[name]15 min Fornebu price plus 50 first 24h"
+    - "[name]15 min Fornebu price plus 70 first 24h"
+    - "[name]15 min Fornebu price plus 100 first 24h"
+    - "[name]15 min Fornebu price plus 2000 first 24h"

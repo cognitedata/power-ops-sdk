@@ -1,7 +1,7 @@
 - endNode:
-    externalId: shop_based_partial_bid_configuration_landet_2
+    externalId: shop_based_partial_bid_configuration_15_min_landet_2
     space: power_ops_instances
-  externalId: bid_configuration_day_ahead_15_min_test_combination:shop_based_partial_bid_configuration_landet_2
+  externalId: bid_configuration_day_ahead_15_min_test_combination:shop_based_partial_bid_configuration_15_min_landet_2
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -11,9 +11,9 @@
     externalId: BidConfiguration.partials
     space: power_ops_types
 - endNode:
-    externalId: shop_based_partial_bid_configuration_lien_krv_3
+    externalId: shop_based_partial_bid_configuration_15_min_lien_krv_3
     space: power_ops_instances
-  externalId: bid_configuration_day_ahead_15_min_test_combination:shop_based_partial_bid_configuration_lien_krv_3
+  externalId: bid_configuration_day_ahead_15_min_test_combination:shop_based_partial_bid_configuration_15_min_lien_krv_3
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -23,9 +23,9 @@
     externalId: BidConfiguration.partials
     space: power_ops_types
 - endNode:
-    externalId: shop_based_partial_bid_configuration_lund_3_step
+    externalId: shop_based_partial_bid_configuration_15_min_lund_3_step
     space: power_ops_instances
-  externalId: bid_configuration_day_ahead_15_min_test_combination:shop_based_partial_bid_configuration_lund_3_step
+  externalId: bid_configuration_day_ahead_15_min_test_combination:shop_based_partial_bid_configuration_15_min_lund_3_step
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -47,9 +47,9 @@
     externalId: BidConfiguration.partials
     space: power_ops_types
 - endNode:
-    externalId: shop_based_partial_bid_configuration_landet_3
+    externalId: shop_based_partial_bid_configuration_15_min_landet_3
     space: power_ops_instances
-  externalId: bid_configuration_day_ahead_15_min_test_multi_scenario_3:shop_based_partial_bid_configuration_landet_3
+  externalId: bid_configuration_day_ahead_15_min_test_multi_scenario_3:shop_based_partial_bid_configuration_15_min_landet_3
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -59,9 +59,9 @@
     externalId: BidConfiguration.partials
     space: power_ops_types
 - endNode:
-    externalId: shop_based_partial_bid_configuration_lund_3
+    externalId: shop_based_partial_bid_configuration_15_min_lund_3
     space: power_ops_instances
-  externalId: bid_configuration_day_ahead_15_min_test_multi_scenario_3:shop_based_partial_bid_configuration_lund_3
+  externalId: bid_configuration_day_ahead_15_min_test_multi_scenario_3:shop_based_partial_bid_configuration_15_min_lund_3
   instanceType: edge
   space: power_ops_instances
   startNode:
