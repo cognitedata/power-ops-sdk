@@ -1,3 +1,531 @@
+- externalId: shop_scenario_15_min_fornebu_base
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: power_ops_instances
+      model:
+        externalId: shop_model_fornebu
+        space: power_ops_instances
+      name: 15 min Fornebu base
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_15_min_test
+        space: power_ops_instances
+    source:
+      externalId: ShopScenario
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenario
+    space: power_ops_types
+- externalId: shop_scenario_15_min_fornebu_price_minus_10_first_24h
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: power_ops_instances
+      model:
+        externalId: shop_model_fornebu
+        space: power_ops_instances
+      name: 15 min Fornebu price minus 10 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_15_min_test
+        space: power_ops_instances
+    source:
+      externalId: ShopScenario
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenario
+    space: power_ops_types
+- externalId: shop_scenario_15_min_fornebu_price_minus_15_first_24h
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: power_ops_instances
+      model:
+        externalId: shop_model_fornebu
+        space: power_ops_instances
+      name: 15 min Fornebu price minus 15 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_15_min_test
+        space: power_ops_instances
+    source:
+      externalId: ShopScenario
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenario
+    space: power_ops_types
+- externalId: shop_scenario_15_min_fornebu_price_minus_200_first_24h
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: power_ops_instances
+      model:
+        externalId: shop_model_fornebu
+        space: power_ops_instances
+      name: 15 min Fornebu price minus 200 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_15_min_test
+        space: power_ops_instances
+    source:
+      externalId: ShopScenario
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenario
+    space: power_ops_types
+- externalId: shop_scenario_15_min_fornebu_price_minus_20_first_24h
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: power_ops_instances
+      model:
+        externalId: shop_model_fornebu
+        space: power_ops_instances
+      name: 15 min Fornebu price minus 20 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_15_min_test
+        space: power_ops_instances
+    source:
+      externalId: ShopScenario
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenario
+    space: power_ops_types
+- externalId: shop_scenario_15_min_fornebu_price_minus_30_first_24h
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: power_ops_instances
+      model:
+        externalId: shop_model_fornebu
+        space: power_ops_instances
+      name: 15 min Fornebu price minus 30 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_15_min_test
+        space: power_ops_instances
+    source:
+      externalId: ShopScenario
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenario
+    space: power_ops_types
+- externalId: shop_scenario_15_min_fornebu_price_minus_40_first_24h
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: power_ops_instances
+      model:
+        externalId: shop_model_fornebu
+        space: power_ops_instances
+      name: 15 min Fornebu price minus 40 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_15_min_test
+        space: power_ops_instances
+    source:
+      externalId: ShopScenario
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenario
+    space: power_ops_types
+- externalId: shop_scenario_15_min_fornebu_price_minus_500_first_24h
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: power_ops_instances
+      model:
+        externalId: shop_model_fornebu
+        space: power_ops_instances
+      name: 15 min Fornebu price minus 500 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_15_min_test
+        space: power_ops_instances
+    source:
+      externalId: ShopScenario
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenario
+    space: power_ops_types
+- externalId: shop_scenario_15_min_fornebu_price_minus_50_first_24h
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: power_ops_instances
+      model:
+        externalId: shop_model_fornebu
+        space: power_ops_instances
+      name: 15 min Fornebu price minus 50 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_15_min_test
+        space: power_ops_instances
+    source:
+      externalId: ShopScenario
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenario
+    space: power_ops_types
+- externalId: shop_scenario_15_min_fornebu_price_minus_5_first_24h
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: power_ops_instances
+      model:
+        externalId: shop_model_fornebu
+        space: power_ops_instances
+      name: 15 min Fornebu price minus 5 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_15_min_test
+        space: power_ops_instances
+    source:
+      externalId: ShopScenario
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenario
+    space: power_ops_types
+- externalId: shop_scenario_15_min_fornebu_price_multiply_0_first_24h
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: power_ops_instances
+      model:
+        externalId: shop_model_fornebu
+        space: power_ops_instances
+      name: 15 min Fornebu price multiply 0 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_15_min_test
+        space: power_ops_instances
+    source:
+      externalId: ShopScenario
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenario
+    space: power_ops_types
+- externalId: shop_scenario_15_min_fornebu_price_plus_100_first_24h
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: power_ops_instances
+      model:
+        externalId: shop_model_fornebu
+        space: power_ops_instances
+      name: 15 min Fornebu price plus 100 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_15_min_test
+        space: power_ops_instances
+    source:
+      externalId: ShopScenario
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenario
+    space: power_ops_types
+- externalId: shop_scenario_15_min_fornebu_price_plus_10_first_24h
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: power_ops_instances
+      model:
+        externalId: shop_model_fornebu
+        space: power_ops_instances
+      name: 15 min Fornebu price plus 10 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_15_min_test
+        space: power_ops_instances
+    source:
+      externalId: ShopScenario
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenario
+    space: power_ops_types
+- externalId: shop_scenario_15_min_fornebu_price_plus_15_first_24h
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: power_ops_instances
+      model:
+        externalId: shop_model_fornebu
+        space: power_ops_instances
+      name: 15 min Fornebu price plus 15 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_15_min_test
+        space: power_ops_instances
+    source:
+      externalId: ShopScenario
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenario
+    space: power_ops_types
+- externalId: shop_scenario_15_min_fornebu_price_plus_2000_first_24h
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: power_ops_instances
+      model:
+        externalId: shop_model_fornebu
+        space: power_ops_instances
+      name: 15 min Fornebu price plus 2000 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_15_min_test
+        space: power_ops_instances
+    source:
+      externalId: ShopScenario
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenario
+    space: power_ops_types
+- externalId: shop_scenario_15_min_fornebu_price_plus_200_first_24h
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: power_ops_instances
+      model:
+        externalId: shop_model_fornebu
+        space: power_ops_instances
+      name: 15 min Fornebu price plus 200 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_15_min_test
+        space: power_ops_instances
+    source:
+      externalId: ShopScenario
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenario
+    space: power_ops_types
+- externalId: shop_scenario_15_min_fornebu_price_plus_20_first_24h
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: power_ops_instances
+      model:
+        externalId: shop_model_fornebu
+        space: power_ops_instances
+      name: 15 min Fornebu price plus 20 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_15_min_test
+        space: power_ops_instances
+    source:
+      externalId: ShopScenario
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenario
+    space: power_ops_types
+- externalId: shop_scenario_15_min_fornebu_price_plus_30_first_24h
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: power_ops_instances
+      model:
+        externalId: shop_model_fornebu
+        space: power_ops_instances
+      name: 15 min Fornebu price plus 30 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_15_min_test
+        space: power_ops_instances
+    source:
+      externalId: ShopScenario
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenario
+    space: power_ops_types
+- externalId: shop_scenario_15_min_fornebu_price_plus_40_first_24h
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: power_ops_instances
+      model:
+        externalId: shop_model_fornebu
+        space: power_ops_instances
+      name: 15 min Fornebu price plus 40 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_15_min_test
+        space: power_ops_instances
+    source:
+      externalId: ShopScenario
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenario
+    space: power_ops_types
+- externalId: shop_scenario_15_min_fornebu_price_plus_50_first_24h
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: power_ops_instances
+      model:
+        externalId: shop_model_fornebu
+        space: power_ops_instances
+      name: 15 min Fornebu price plus 50 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_15_min_test
+        space: power_ops_instances
+    source:
+      externalId: ShopScenario
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenario
+    space: power_ops_types
+- externalId: shop_scenario_15_min_fornebu_price_plus_5_first_24h
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: power_ops_instances
+      model:
+        externalId: shop_model_fornebu
+        space: power_ops_instances
+      name: 15 min Fornebu price plus 5 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_15_min_test
+        space: power_ops_instances
+    source:
+      externalId: ShopScenario
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenario
+    space: power_ops_types
+- externalId: shop_scenario_15_min_fornebu_price_plus_70_first_24h
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: shop_commands_default
+        space: power_ops_instances
+      model:
+        externalId: shop_model_fornebu
+        space: power_ops_instances
+      name: 15 min Fornebu price plus 70 first 24h
+      source: resync
+      timeResolution:
+        externalId: shop_time_resolution_15_min_test
+        space: power_ops_instances
+    source:
+      externalId: ShopScenario
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenario
+    space: power_ops_types
 - externalId: shop_scenario_fornebu_base
   instanceType: node
   sources:
@@ -12,30 +540,6 @@
       source: resync
       timeResolution:
         externalId: shop_time_resolution_default
-        space: power_ops_instances
-    source:
-      externalId: ShopScenario
-      space: power_ops_core
-      type: view
-      version: '1'
-  space: power_ops_instances
-  type:
-    externalId: ShopScenario
-    space: power_ops_types
-- externalId: shop_scenario_fornebu_base_15_min_test
-  instanceType: node
-  sources:
-  - properties:
-      commands:
-        externalId: shop_commands_default
-        space: power_ops_instances
-      model:
-        externalId: shop_model_fornebu
-        space: power_ops_instances
-      name: Fornebu base 15 min test
-      source: resync
-      timeResolution:
-        externalId: shop_time_resolution_15_min_test
         space: power_ops_instances
     source:
       externalId: ShopScenario
