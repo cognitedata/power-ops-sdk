@@ -1,4 +1,616 @@
 - endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_dalby_20_step
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_20_no2:shop_based_partial_bid_configuration_15_min_dalby_20_step
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_20_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_holen_20_step
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_20_no2:shop_based_partial_bid_configuration_15_min_holen_20_step
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_20_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_landet_20_step
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_20_no2:shop_based_partial_bid_configuration_15_min_landet_20_step
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_20_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_lien_krv_20_step
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_20_no2:shop_based_partial_bid_configuration_15_min_lien_krv_20_step
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_20_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_lund_20_step
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_20_no2:shop_based_partial_bid_configuration_15_min_lund_20_step
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_20_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_rull1_20_step
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_20_no2:shop_based_partial_bid_configuration_15_min_rull1_20_step
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_20_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_rull2_20_step
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_20_no2:shop_based_partial_bid_configuration_15_min_rull2_20_step
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_20_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_scott_20_step
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_20_no2:shop_based_partial_bid_configuration_15_min_scott_20_step
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_20_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_sola_20
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_20_no2:shop_based_partial_bid_configuration_15_min_sola_20
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_20_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_strand_krv_20_step
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_20_no2:shop_based_partial_bid_configuration_15_min_strand_krv_20_step
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_20_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_dalby_2
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_2_no2:shop_based_partial_bid_configuration_15_min_dalby_2
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_2_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_holen_2
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_2_no2:shop_based_partial_bid_configuration_15_min_holen_2
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_2_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_landet_2
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_2_no2:shop_based_partial_bid_configuration_15_min_landet_2
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_2_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_lien_krv_2
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_2_no2:shop_based_partial_bid_configuration_15_min_lien_krv_2
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_2_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_lund_2
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_2_no2:shop_based_partial_bid_configuration_15_min_lund_2
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_2_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_rull1_2
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_2_no2:shop_based_partial_bid_configuration_15_min_rull1_2
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_2_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_rull2_2
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_2_no2:shop_based_partial_bid_configuration_15_min_rull2_2
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_2_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_scott_2
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_2_no2:shop_based_partial_bid_configuration_15_min_scott_2
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_2_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_sola_2
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_2_no2:shop_based_partial_bid_configuration_15_min_sola_2
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_2_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_strand_krv_2
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_2_no2:shop_based_partial_bid_configuration_15_min_strand_krv_2
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_2_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_dalby_3
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_3_no2:shop_based_partial_bid_configuration_15_min_dalby_3
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_3_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_holen_3
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_3_no2:shop_based_partial_bid_configuration_15_min_holen_3
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_3_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_landet_3
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_3_no2:shop_based_partial_bid_configuration_15_min_landet_3
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_3_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_lien_krv_3
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_3_no2:shop_based_partial_bid_configuration_15_min_lien_krv_3
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_3_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_lund_3
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_3_no2:shop_based_partial_bid_configuration_15_min_lund_3
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_3_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_rull1_3
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_3_no2:shop_based_partial_bid_configuration_15_min_rull1_3
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_3_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_rull2_3
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_3_no2:shop_based_partial_bid_configuration_15_min_rull2_3
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_3_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_scott_3
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_3_no2:shop_based_partial_bid_configuration_15_min_scott_3
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_3_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_sola_3
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_3_no2:shop_based_partial_bid_configuration_15_min_sola_3
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_3_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_strand_krv_3
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_3_no2:shop_based_partial_bid_configuration_15_min_strand_krv_3
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_3_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_sola_3
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_multi_scenario_3_sola:shop_based_partial_bid_configuration_15_min_sola_3
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_multi_scenario_3_sola
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_dalby_2_step
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_no2_combination:shop_based_partial_bid_configuration_15_min_dalby_2_step
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_no2_combination
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_holen_3
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_no2_combination:shop_based_partial_bid_configuration_15_min_holen_3
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_no2_combination
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_landet_2
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_no2_combination:shop_based_partial_bid_configuration_15_min_landet_2
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_no2_combination
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_lien_krv_3
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_no2_combination:shop_based_partial_bid_configuration_15_min_lien_krv_3
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_no2_combination
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_lund_3_step
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_no2_combination:shop_based_partial_bid_configuration_15_min_lund_3_step
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_no2_combination
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: water_value_based_partial_bid_configuration_plant_rull1_step
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_no2_combination:water_value_based_partial_bid_configuration_plant_rull1_step
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_no2_combination
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: water_value_based_partial_bid_configuration_plant_rull2
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_no2_combination:water_value_based_partial_bid_configuration_plant_rull2
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_no2_combination
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: water_value_based_partial_bid_configuration_plant_scott_step
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_no2_combination:water_value_based_partial_bid_configuration_plant_scott_step
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_no2_combination
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: water_value_based_partial_bid_configuration_plant_sola
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_no2_combination:water_value_based_partial_bid_configuration_plant_sola
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_no2_combination
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: water_value_based_partial_bid_configuration_plant_strand_krv
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_no2_combination:water_value_based_partial_bid_configuration_plant_strand_krv
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_no2_combination
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_dalby_1
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_price_independent_no2:shop_based_partial_bid_configuration_15_min_dalby_1
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_price_independent_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_holen_1
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_price_independent_no2:shop_based_partial_bid_configuration_15_min_holen_1
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_price_independent_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_landet_1
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_price_independent_no2:shop_based_partial_bid_configuration_15_min_landet_1
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_price_independent_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_lien_krv_1
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_price_independent_no2:shop_based_partial_bid_configuration_15_min_lien_krv_1
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_price_independent_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_lund_1
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_price_independent_no2:shop_based_partial_bid_configuration_15_min_lund_1
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_price_independent_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_rull1_1
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_price_independent_no2:shop_based_partial_bid_configuration_15_min_rull1_1
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_price_independent_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_rull2_1
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_price_independent_no2:shop_based_partial_bid_configuration_15_min_rull2_1
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_price_independent_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_scott_1
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_price_independent_no2:shop_based_partial_bid_configuration_15_min_scott_1
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_price_independent_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_sola_1
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_price_independent_no2:shop_based_partial_bid_configuration_15_min_sola_1
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_price_independent_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: shop_based_partial_bid_configuration_15_min_strand_krv_1
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_price_independent_no2:shop_based_partial_bid_configuration_15_min_strand_krv_1
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_price_independent_no2
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
     externalId: shop_based_partial_bid_configuration_15_min_landet_2
     space: power_ops_instances
   externalId: bid_configuration_day_ahead_15_min_test_combination:shop_based_partial_bid_configuration_15_min_landet_2
@@ -90,6 +702,174 @@
   space: power_ops_instances
   startNode:
     externalId: bid_configuration_day_ahead_15_min_test_water_value
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: water_value_based_partial_bid_configuration_plant_dalby_step
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_water_value_no2_full:water_value_based_partial_bid_configuration_plant_dalby_step
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_water_value_no2_full
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: water_value_based_partial_bid_configuration_plant_holen
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_water_value_no2_full:water_value_based_partial_bid_configuration_plant_holen
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_water_value_no2_full
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: water_value_based_partial_bid_configuration_plant_landet_step
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_water_value_no2_full:water_value_based_partial_bid_configuration_plant_landet_step
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_water_value_no2_full
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: water_value_based_partial_bid_configuration_plant_lien_krv
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_water_value_no2_full:water_value_based_partial_bid_configuration_plant_lien_krv
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_water_value_no2_full
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: water_value_based_partial_bid_configuration_plant_lund_step
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_water_value_no2_full:water_value_based_partial_bid_configuration_plant_lund_step
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_water_value_no2_full
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: water_value_based_partial_bid_configuration_plant_rull1_step
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_water_value_no2_full:water_value_based_partial_bid_configuration_plant_rull1_step
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_water_value_no2_full
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: water_value_based_partial_bid_configuration_plant_rull2
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_water_value_no2_full:water_value_based_partial_bid_configuration_plant_rull2
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_water_value_no2_full
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: water_value_based_partial_bid_configuration_plant_scott_step
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_water_value_no2_full:water_value_based_partial_bid_configuration_plant_scott_step
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_water_value_no2_full
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: water_value_based_partial_bid_configuration_plant_sola
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_water_value_no2_full:water_value_based_partial_bid_configuration_plant_sola
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_water_value_no2_full
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: water_value_based_partial_bid_configuration_plant_strand_krv
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_water_value_no2_full:water_value_based_partial_bid_configuration_plant_strand_krv
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_water_value_no2_full
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: water_value_based_partial_bid_configuration_plant_lund
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_water_value_no2_lund:water_value_based_partial_bid_configuration_plant_lund
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_water_value_no2_lund
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: water_value_based_partial_bid_configuration_plant_lund
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_water_value_no2_lund_step:water_value_based_partial_bid_configuration_plant_lund
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_water_value_no2_lund_step
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: water_value_based_partial_bid_configuration_plant_sola
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_water_value_no2_sola:water_value_based_partial_bid_configuration_plant_sola
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_water_value_no2_sola
+    space: power_ops_instances
+  type:
+    externalId: BidConfiguration.partials
+    space: power_ops_types
+- endNode:
+    externalId: water_value_based_partial_bid_configuration_plant_sola_step
+    space: power_ops_instances
+  externalId: bid_configuration_day_ahead_15_min_water_value_no2_sola_step:water_value_based_partial_bid_configuration_plant_sola_step
+  instanceType: edge
+  space: power_ops_instances
+  startNode:
+    externalId: bid_configuration_day_ahead_15_min_water_value_no2_sola_step
     space: power_ops_instances
   type:
     externalId: BidConfiguration.partials

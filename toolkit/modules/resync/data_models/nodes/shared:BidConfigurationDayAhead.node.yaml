@@ -1,3 +1,141 @@
+- externalId: bid_configuration_day_ahead_15_min_multi_scenario_20_no2
+  instanceType: node
+  sources:
+  - properties:
+      bidDateSpecification:
+        externalId: date_specification_default_biddate
+        space: power_ops_instances
+      marketConfiguration:
+        externalId: market_configuration_nord_pool_day_ahead_15_min
+        space: power_ops_instances
+      name: 15 min Multi scenario 20 NO2
+      priceArea:
+        externalId: price_area_information_no2
+        space: power_ops_instances
+    source:
+      externalId: BidConfigurationDayAhead
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: BidConfigurationDayAhead
+    space: power_ops_types
+- externalId: bid_configuration_day_ahead_15_min_multi_scenario_2_no2
+  instanceType: node
+  sources:
+  - properties:
+      bidDateSpecification:
+        externalId: date_specification_default_biddate
+        space: power_ops_instances
+      marketConfiguration:
+        externalId: market_configuration_nord_pool_day_ahead_15_min
+        space: power_ops_instances
+      name: 15 min Multi Scenario 2 NO2
+      priceArea:
+        externalId: price_area_information_no2
+        space: power_ops_instances
+    source:
+      externalId: BidConfigurationDayAhead
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: BidConfigurationDayAhead
+    space: power_ops_types
+- externalId: bid_configuration_day_ahead_15_min_multi_scenario_3_no2
+  instanceType: node
+  sources:
+  - properties:
+      bidDateSpecification:
+        externalId: date_specification_default_biddate
+        space: power_ops_instances
+      marketConfiguration:
+        externalId: market_configuration_nord_pool_day_ahead_15_min
+        space: power_ops_instances
+      name: 15 min Multi Scenario 3 NO2
+      priceArea:
+        externalId: price_area_information_no2
+        space: power_ops_instances
+    source:
+      externalId: BidConfigurationDayAhead
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: BidConfigurationDayAhead
+    space: power_ops_types
+- externalId: bid_configuration_day_ahead_15_min_multi_scenario_3_sola
+  instanceType: node
+  sources:
+  - properties:
+      bidDateSpecification:
+        externalId: date_specification_default_biddate
+        space: power_ops_instances
+      marketConfiguration:
+        externalId: market_configuration_nord_pool_day_ahead_15_min
+        space: power_ops_instances
+      name: 15 min Multi Scenario 3 Sola
+      priceArea:
+        externalId: price_area_information_no2
+        space: power_ops_instances
+    source:
+      externalId: BidConfigurationDayAhead
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: BidConfigurationDayAhead
+    space: power_ops_types
+- externalId: bid_configuration_day_ahead_15_min_no2_combination
+  instanceType: node
+  sources:
+  - properties:
+      bidDateSpecification:
+        externalId: date_specification_default_biddate
+        space: power_ops_instances
+      marketConfiguration:
+        externalId: market_configuration_nord_pool_day_ahead_15_min
+        space: power_ops_instances
+      name: 15 min NO2 Combination
+      priceArea:
+        externalId: price_area_information_no2
+        space: power_ops_instances
+    source:
+      externalId: BidConfigurationDayAhead
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: BidConfigurationDayAhead
+    space: power_ops_types
+- externalId: bid_configuration_day_ahead_15_min_price_independent_no2
+  instanceType: node
+  sources:
+  - properties:
+      bidDateSpecification:
+        externalId: date_specification_default_biddate
+        space: power_ops_instances
+      marketConfiguration:
+        externalId: market_configuration_nord_pool_day_ahead_15_min
+        space: power_ops_instances
+      name: 15 min Price Independent NO2
+      priceArea:
+        externalId: price_area_information_no2
+        space: power_ops_instances
+    source:
+      externalId: BidConfigurationDayAhead
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: BidConfigurationDayAhead
+    space: power_ops_types
 - externalId: bid_configuration_day_ahead_15_min_test_combination
   instanceType: node
   sources:
@@ -55,6 +193,121 @@
         externalId: market_configuration_nord_pool_day_ahead_15_min
         space: power_ops_instances
       name: 15 min Test Water Value
+      priceArea:
+        externalId: price_area_information_no2
+        space: power_ops_instances
+    source:
+      externalId: BidConfigurationDayAhead
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: BidConfigurationDayAhead
+    space: power_ops_types
+- externalId: bid_configuration_day_ahead_15_min_water_value_no2_full
+  instanceType: node
+  sources:
+  - properties:
+      bidDateSpecification:
+        externalId: date_specification_default_biddate
+        space: power_ops_instances
+      marketConfiguration:
+        externalId: market_configuration_nord_pool_day_ahead_15_min
+        space: power_ops_instances
+      name: 15 min Water Value NO2 Full
+      priceArea:
+        externalId: price_area_information_no2
+        space: power_ops_instances
+    source:
+      externalId: BidConfigurationDayAhead
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: BidConfigurationDayAhead
+    space: power_ops_types
+- externalId: bid_configuration_day_ahead_15_min_water_value_no2_lund
+  instanceType: node
+  sources:
+  - properties:
+      bidDateSpecification:
+        externalId: date_specification_default_biddate
+        space: power_ops_instances
+      marketConfiguration:
+        externalId: market_configuration_nord_pool_day_ahead_15_min
+        space: power_ops_instances
+      name: 15 min Water Value NO2 Lund
+      priceArea:
+        externalId: price_area_information_no2
+        space: power_ops_instances
+    source:
+      externalId: BidConfigurationDayAhead
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: BidConfigurationDayAhead
+    space: power_ops_types
+- externalId: bid_configuration_day_ahead_15_min_water_value_no2_lund_step
+  instanceType: node
+  sources:
+  - properties:
+      bidDateSpecification:
+        externalId: date_specification_default_biddate
+        space: power_ops_instances
+      marketConfiguration:
+        externalId: market_configuration_nord_pool_day_ahead_15_min
+        space: power_ops_instances
+      name: 15 min Water Value NO2 Lund Step
+      priceArea:
+        externalId: price_area_information_no2
+        space: power_ops_instances
+    source:
+      externalId: BidConfigurationDayAhead
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: BidConfigurationDayAhead
+    space: power_ops_types
+- externalId: bid_configuration_day_ahead_15_min_water_value_no2_sola
+  instanceType: node
+  sources:
+  - properties:
+      bidDateSpecification:
+        externalId: date_specification_default_biddate
+        space: power_ops_instances
+      marketConfiguration:
+        externalId: market_configuration_nord_pool_day_ahead_15_min
+        space: power_ops_instances
+      name: 15 min Water Value NO2 Sola
+      priceArea:
+        externalId: price_area_information_no2
+        space: power_ops_instances
+    source:
+      externalId: BidConfigurationDayAhead
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: BidConfigurationDayAhead
+    space: power_ops_types
+- externalId: bid_configuration_day_ahead_15_min_water_value_no2_sola_step
+  instanceType: node
+  sources:
+  - properties:
+      bidDateSpecification:
+        externalId: date_specification_default_biddate
+        space: power_ops_instances
+      marketConfiguration:
+        externalId: market_configuration_nord_pool_day_ahead_15_min
+        space: power_ops_instances
+      name: 15 min Water Value NO2 Sola Step
       priceArea:
         externalId: price_area_information_no2
         space: power_ops_instances
