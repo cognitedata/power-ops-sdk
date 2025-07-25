@@ -1,3 +1,103 @@
+- externalId: shop_scenario_set_15_min_stavanger_1_scenario
+  instanceType: node
+  sources:
+  - properties:
+      endSpecification:
+        externalId: date_specification_default_end
+        space: power_ops_instances
+      name: 15 min Stavanger 1 scenario
+      startSpecification:
+        externalId: date_specification_default_start
+        space: power_ops_instances
+    source:
+      externalId: ShopScenarioSet
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenarioSet
+    space: power_ops_types
+- externalId: shop_scenario_set_15_min_stavanger_1_scenario_15_min_test
+  instanceType: node
+  sources:
+  - properties:
+      endSpecification:
+        externalId: date_specification_default_end
+        space: power_ops_instances
+      name: 15 min Stavanger 1 scenario 15 min test
+      startSpecification:
+        externalId: date_specification_default_start
+        space: power_ops_instances
+    source:
+      externalId: ShopScenarioSet
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenarioSet
+    space: power_ops_types
+- externalId: shop_scenario_set_15_min_stavanger_20_scenarios
+  instanceType: node
+  sources:
+  - properties:
+      endSpecification:
+        externalId: date_specification_default_end
+        space: power_ops_instances
+      name: 15 min Stavanger 20 scenarios
+      startSpecification:
+        externalId: date_specification_default_start
+        space: power_ops_instances
+    source:
+      externalId: ShopScenarioSet
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenarioSet
+    space: power_ops_types
+- externalId: shop_scenario_set_15_min_stavanger_2_scenarios
+  instanceType: node
+  sources:
+  - properties:
+      endSpecification:
+        externalId: date_specification_default_end
+        space: power_ops_instances
+      name: 15 min Stavanger 2 scenarios
+      startSpecification:
+        externalId: date_specification_default_start
+        space: power_ops_instances
+    source:
+      externalId: ShopScenarioSet
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenarioSet
+    space: power_ops_types
+- externalId: shop_scenario_set_15_min_stavanger_3_scenarios
+  instanceType: node
+  sources:
+  - properties:
+      endSpecification:
+        externalId: date_specification_default_end
+        space: power_ops_instances
+      name: 15 min Stavanger 3 scenarios
+      startSpecification:
+        externalId: date_specification_default_start
+        space: power_ops_instances
+    source:
+      externalId: ShopScenarioSet
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: ShopScenarioSet
+    space: power_ops_types
 - externalId: shop_scenario_set_stavanger_1_scenario
   instanceType: node
   sources:
