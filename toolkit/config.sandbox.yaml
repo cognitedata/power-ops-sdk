@@ -19,7 +19,7 @@ variables:
     wf_day_ahead_market: "DAY_AHEAD"
     wf_day_ahead_bid_process_xid: "DayAheadBidProcess"
     wf_day_ahead_bid_process_version: "latest"
-    wf_day_ahead_bid_process_cron: "30 9 * * *" # translates to 9:30 UTC / 11:30 CEST
-    wf_day_ahead_bid_process_cron_15_min: "30 8 * * *" # translates to 9:30 UTC / 11:30 CEST
+    wf_day_ahead_bid_process_cron: "30 7 * * *" # translates to 9:30 UTC / 11:30 CEST
+    wf_day_ahead_bid_process_cron_15_min: "30 6 * * *" # translates to 9:30 UTC / 11:30 CEST
     wf_trigger_client_id: "d985b4fe-275e-4df3-9e49-b6b18a77778a"
     wf_trigger_client_secret: ${WF_TRIGGER_SECRET}
