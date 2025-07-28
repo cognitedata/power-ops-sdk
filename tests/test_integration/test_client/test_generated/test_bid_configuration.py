@@ -161,11 +161,6 @@ class TestBidConfiguration:
         assert new_bid_configuration_shop is not None
         assert isinstance(new_bid_configuration_shop, BidConfigurationDayAhead)
 
-        # NOTE: Hack to get the objects to be the same
-        new_market_configuration.instanceType = "node"
-        new_price_area.instanceType = "node"
-        new_date_specification.instanceType = "node"
-
         assert new_bid_configuration_shop.market_configuration == new_market_configuration
         assert new_bid_configuration_shop.price_area == new_price_area
         assert new_bid_configuration_shop.bid_date_specification == new_date_specification
