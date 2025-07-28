@@ -15,6 +15,10 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.113.2] - 2025-07-28
+### Fixed
+* Regenerate pygen portion of SDK to get bug fixes
+
 ## [0.113.1] - 2025-07-11
 ### Changed
 * Switch from using `Optional` to `| None` type annotations
