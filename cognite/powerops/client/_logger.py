@@ -20,6 +20,8 @@ from typing import Union
 
 from loguru import logger
 
+from cognite.powerops.utils.deprecation import deprecated, deprecated_class
+
 __all__ = [
     "configure_debug_logging",
 ]
@@ -29,6 +31,7 @@ LoggingLevelT = Union[int, str]
 
 
 # https://github.com/Delgan/loguru#entirely-compatible-with-standard-logging
+@deprecated_class
 class InterceptHandler(logging.Handler):
     def emit(self, record):
         # Get corresponding Loguru level if it exists.
@@ -46,5 +49,6 @@ class InterceptHandler(logging.Handler):
         logger.opt(depth=depth, exception=record.exc_info).log(level, record.getMessage())
 
 
+@deprecated
 def configure_debug_logging(level: LoggingLevelT) -> None:
     logging.basicConfig(handlers=[InterceptHandler()], level=level, force=True)
