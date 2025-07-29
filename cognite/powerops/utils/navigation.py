@@ -3,9 +3,12 @@ import inspect
 from collections.abc import Iterable, Sequence
 from typing import TypeVar
 
+from cognite.powerops.utils.deprecation import deprecated
+
 T_Type = TypeVar("T_Type", bound=type)
 
 
+@deprecated
 def all_subclasses(base: T_Type) -> list[T_Type]:
     """Returns a list (without duplicates) of all subclasses of a given class, sorted on import-path-name.
     Ignores classes not part of the main library, e.g. subclasses part of tests.
@@ -19,6 +22,7 @@ def all_subclasses(base: T_Type) -> list[T_Type]:
     )
 
 
+@deprecated
 def all_concrete_subclasses(base: T_Type) -> list[T_Type]:
     return [
         sub
@@ -27,6 +31,7 @@ def all_concrete_subclasses(base: T_Type) -> list[T_Type]:
     ]
 
 
+@deprecated
 def chunks(sequence: Sequence[T_Type], chunk_size: int) -> Iterable[Sequence[T_Type]]:
     """Yield successive n-sized chunks from lst."""
     for i in range(0, len(sequence), chunk_size):
