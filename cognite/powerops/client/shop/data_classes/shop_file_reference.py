@@ -6,6 +6,7 @@ from typing import Any
 from cognite.client.data_classes import FileMetadata
 from typing_extensions import Self
 
+from cognite.powerops.utils.deprecation import deprecated_class
 from cognite.powerops.utils.identifiers import external_id_to_name
 
 try:
@@ -14,11 +15,13 @@ except ImportError:
     from strenum import StrEnum
 
 
+@deprecated_class
 class SHOPFileType(StrEnum):
     ASCII = "ascii"
     YAML = "yaml"
 
 
+@deprecated_class
 @dataclass
 class SHOPFileReference:
     external_id: str

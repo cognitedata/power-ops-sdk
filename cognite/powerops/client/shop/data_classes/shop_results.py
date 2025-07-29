@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Union
 import pandas as pd
 
 from cognite.powerops.client.shop.data_classes.shop_result_files import SHOPLogFile, SHOPResultFile, SHOPYamlFile
+from cognite.powerops.utils.deprecation import deprecated_class
 
 if TYPE_CHECKING:
     from cognite.powerops.client.shop.data_classes import SHOPRun
@@ -15,6 +16,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
+@deprecated_class
 class SHOPRunResult:
     def __init__(
         self,
@@ -101,6 +103,7 @@ class SHOPRunResult:
         return f"<SHOPRunResult status={self._shop_run.status}>"
 
 
+@deprecated_class
 class ObjectiveFunction:
     def __init__(
         self,

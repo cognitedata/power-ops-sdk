@@ -7,10 +7,12 @@ from pathlib import Path
 import yaml
 
 from cognite.powerops.client.shop.data_classes.shop_file_reference import SHOPFileReference, SHOPFileType
+from cognite.powerops.utils.deprecation import deprecated_class
 
 logger = logging.getLogger(__name__)
 
 
+@deprecated_class
 class SHOPCase:
     r"""
     Wrapper around YAML file for SHOP, describing a case.
