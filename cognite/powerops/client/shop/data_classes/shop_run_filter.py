@@ -7,6 +7,7 @@ from cognite.client.data_classes import filters
 from cognite.client.utils._time import datetime_to_ms
 
 from cognite.powerops.client.shop.data_classes.shop_run import SHOPRunEvent
+from cognite.powerops.utils.deprecation import deprecated_class
 
 
 def _custom_contains_any(
@@ -53,6 +54,7 @@ def _get_time_range_filter(
     return filters.Range(property=property, **_range)
 
 
+@deprecated_class
 class SHOPRunFilter:
     def __init__(
         self,

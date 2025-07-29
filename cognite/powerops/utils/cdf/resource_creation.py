@@ -4,9 +4,12 @@ from typing import Union
 
 from cognite.client.data_classes import Asset, Event, FileMetadata, Relationship, Sequence, TimeSeries
 
+from cognite.powerops.utils.deprecation import deprecated_class
+
 CDF_Resource = Union[Asset, TimeSeries, FileMetadata, Sequence, Event]
 
 
+@deprecated_class  # type: ignore[arg-type]
 def simple_relationship(
     source: CDF_Resource,
     target: CDF_Resource,

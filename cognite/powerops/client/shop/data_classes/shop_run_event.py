@@ -8,9 +8,11 @@ from uuid import uuid4
 
 from cognite.client.data_classes import Event
 
+from cognite.powerops.utils.deprecation import deprecated_class
 from cognite.powerops.utils.helpers import str_datetime_to_ms
 
 
+@deprecated_class
 @dataclass
 class SHOPRunEvent:
     """

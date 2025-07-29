@@ -1,10 +1,8 @@
 import warnings
-from typing import TypeVar
-
-T = TypeVar("T")
+from typing import Any
 
 
-def deprecated_class(cls: type[T]) -> type[T]:
+def deprecated_class(cls: Any) -> Any:
     """Decorator to mark a class as deprecated, showing a message only once."""
 
     def new_getattribute(self, name):  # type: ignore[no-untyped-def]
