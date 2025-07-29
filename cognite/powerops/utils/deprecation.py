@@ -13,6 +13,6 @@ def deprecated_class(cls: Any) -> Any:
         )
         return super(cls, self).__getattribute__(name)
 
-    cls.__getattribute__ = new_getattribute  # type: ignore[method-assign]
+    cls.__getattribute__ = new_getattribute
 
     return cls

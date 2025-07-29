@@ -9,7 +9,7 @@ from cognite.powerops.utils.deprecation import deprecated_class
 CDF_Resource = Union[Asset, TimeSeries, FileMetadata, Sequence, Event]
 
 
-@deprecated_class  # type: ignore[arg-type]
+@deprecated_class
 def simple_relationship(
     source: CDF_Resource,
     target: CDF_Resource,
