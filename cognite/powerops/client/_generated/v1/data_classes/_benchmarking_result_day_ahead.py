@@ -212,7 +212,7 @@ class BenchmarkingResultDayAheadWrite(DomainModelWrite):
     """
     _container_fields: ClassVar[tuple[str, ...]] = ("bid_generated", "bid_source", "delivery_date", "is_selected", "name", "shop_result", "value", "workflow_execution_id",)
     _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")),)
-    _direct_relations: ClassVar[tuple[str, ...]] = ("shop_result",)
+    _direct_relations: ClassVar[tuple[str, ...]] = ("bid_source", "shop_result",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingResultDayAhead", "1")
 
