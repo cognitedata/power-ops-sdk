@@ -5,8 +5,7 @@ from functools import reduce
 from typing import Any, Union
 
 from cognite.client.utils._time import datetime_to_ms
-
-from cognite.powerops.utils.deprecation import deprecated
+from deprecated import deprecated
 
 
 @deprecated

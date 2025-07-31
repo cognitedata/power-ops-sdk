@@ -12,11 +12,11 @@ from cognite.client import CogniteClient
 from cognite.client.data_classes import LabelFilter
 from cognite.client.data_classes.events import Event
 from cognite.client.utils import datetime_to_ms, ms_to_datetime
+from deprecated import deprecated
 from typing_extensions import Self
 
 from cognite.powerops.client.shop.data_classes.shop_case import SHOPCase
 from cognite.powerops.client.shop.data_classes.shop_file_reference import SHOPFileReference
-from cognite.powerops.utils.deprecation import deprecated_class
 
 try:
     from enum import StrEnum
@@ -24,21 +24,21 @@ except ImportError:
     from strenum import StrEnum
 
 
-@deprecated_class
+@deprecated
 class SHOPRunStatus(StrEnum):
     SUCCESS = "success"
     FAILED = "failed"
     IN_PROGRESS = "in_progress"
 
 
-@deprecated_class
+@deprecated
 class SHOPProcessEvents:
     finished: str = "POWEROPS_PROCESS_FINISHED"
     failed: str = "POWEROPS_PROCESS_FAILED"
     started: str = "POWEROPS_PROCESS_STARTED"
 
 
-@deprecated_class
+@deprecated
 class SHOPRunEvent:
     event_type: str = "POWEROPS_SHOP_RUN"
     watercourse: str = "shop:watercourse"
@@ -55,7 +55,7 @@ class SHOPRunEvent:
     user_id: str = "user:identifier"
 
 
-@deprecated_class
+@deprecated
 @dataclass
 class SHOPRun:
     """
@@ -317,7 +317,7 @@ class SHOPRun:
         return json.dumps(self.dump(), indent=4, default=str)
 
 
-@deprecated_class
+@deprecated
 class SHOPRunList(UserList):
     """
     This represents a list of SHOP runs.

@@ -18,9 +18,8 @@ import logging
 import sys
 from typing import Union
 
+from deprecated import deprecated
 from loguru import logger
-
-from cognite.powerops.utils.deprecation import deprecated, deprecated_class
 
 __all__ = [
     "configure_debug_logging",
@@ -31,7 +30,7 @@ LoggingLevelT = Union[int, str]
 
 
 # https://github.com/Delgan/loguru#entirely-compatible-with-standard-logging
-@deprecated_class
+@deprecated
 class InterceptHandler(logging.Handler):
     def emit(self, record):
         # Get corresponding Loguru level if it exists.

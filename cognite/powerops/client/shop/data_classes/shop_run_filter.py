@@ -5,9 +5,9 @@ import datetime
 import arrow
 from cognite.client.data_classes import filters
 from cognite.client.utils._time import datetime_to_ms
+from deprecated import deprecated
 
 from cognite.powerops.client.shop.data_classes.shop_run import SHOPRunEvent
-from cognite.powerops.utils.deprecation import deprecated, deprecated_class
 
 
 @deprecated
@@ -57,7 +57,7 @@ def _get_time_range_filter(
     return filters.Range(property=property, **_range)
 
 
-@deprecated_class
+@deprecated
 class SHOPRunFilter:
     def __init__(
         self,

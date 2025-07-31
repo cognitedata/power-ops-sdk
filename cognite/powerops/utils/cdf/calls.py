@@ -10,8 +10,8 @@ from cognite.client.data_classes import DatapointsList, Event, LabelFilter, Rela
 from cognite.client.exceptions import CogniteDuplicatedError
 from cognite.client.utils import ms_to_datetime
 from cognite.client.utils.useful_types import SequenceNotStr
+from deprecated import deprecated
 
-from cognite.powerops.utils.deprecation import deprecated
 from cognite.powerops.utils.require import require
 
 logger = logging.getLogger(__name__)

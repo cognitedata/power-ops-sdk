@@ -9,8 +9,8 @@ from typing import Generic, TypeVar, Union
 
 import yaml
 from cognite.client.data_classes import FileMetadata
+from deprecated import deprecated
 
-from cognite.powerops.utils.deprecation import deprecated_class
 from cognite.powerops.utils.helpers import get_dict_dot_keys, is_time_series_dict
 
 logger = logging.getLogger(__name__)
@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 FileContentTypeT = TypeVar("FileContentTypeT", bound=Union[str, dict])
 
 
-@deprecated_class
+@deprecated
 class SHOPResultFile(abc.ABC, Generic[FileContentTypeT]):
     """Base class for handling a results file from SHOP."""
 
@@ -79,7 +79,7 @@ class SHOPResultFile(abc.ABC, Generic[FileContentTypeT]):
         raise NotImplementedError()
 
 
-@deprecated_class
+@deprecated
 class SHOPLogFile(SHOPResultFile[str]):
     """
     Plain text result file (for SHOP messages and CPlex logs).
@@ -93,7 +93,7 @@ class SHOPLogFile(SHOPResultFile[str]):
         return self.data
 
 
-@deprecated_class
+@deprecated
 class SHOPYamlFile(SHOPResultFile[dict]):
     """
     Yaml-formatted results file (for post_run.yaml file created by SHOP).

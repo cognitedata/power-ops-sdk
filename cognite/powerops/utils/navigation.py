@@ -3,7 +3,7 @@ import inspect
 from collections.abc import Iterable, Sequence
 from typing import TypeVar
 
-from cognite.powerops.utils.deprecation import deprecated
+from deprecated import deprecated
 
 T_Type = TypeVar("T_Type", bound=type)
 

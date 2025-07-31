@@ -1,4 +1,4 @@
-from cognite.powerops.utils.deprecation import deprecated
+from deprecated import deprecated
 
 
 @deprecated
