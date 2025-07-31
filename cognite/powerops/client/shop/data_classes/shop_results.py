@@ -6,6 +6,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Union
 
 import pandas as pd
+from deprecated import deprecated
 
 from cognite.powerops.client.shop.data_classes.shop_result_files import SHOPLogFile, SHOPResultFile, SHOPYamlFile
 
@@ -15,6 +16,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
+@deprecated
 class SHOPRunResult:
     def __init__(
         self,
@@ -101,6 +103,7 @@ class SHOPRunResult:
         return f"<SHOPRunResult status={self._shop_run.status}>"
 
 
+@deprecated
 class ObjectiveFunction:
     def __init__(
         self,

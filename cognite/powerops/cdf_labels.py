@@ -1,4 +1,5 @@
 from cognite.client.data_classes import LabelDefinition
+from deprecated import deprecated
 
 try:
     from enum import StrEnum
@@ -6,6 +7,7 @@ except ImportError:
     from strenum import StrEnum
 
 
+@deprecated
 class CDFLabel(StrEnum):
     @classmethod
     def as_label_definitions(cls) -> list[LabelDefinition]:
@@ -18,6 +20,7 @@ class CDFLabel(StrEnum):
         ]
 
 
+@deprecated
 class AssetLabel(CDFLabel):
     BENCHMARKING_CONFIGURATION = "benchmarking_configuration"
     BID_PROCESS_CONFIGURATION = "bid_process_configuration"
@@ -45,6 +48,7 @@ class AssetLabel(CDFLabel):
     WATERCOURSE = "watercourse"
 
 
+@deprecated
 class RelationshipLabel(CDFLabel):
     BID_MATRIX_GENERATOR_CONFIG_SEQUENCE = "relationship_to.bid_matrix_generator_config_sequence"
     BID_MATRIX_SEQUENCE = "relationship_to.bid_matrix_sequence"

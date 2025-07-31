@@ -5,8 +5,10 @@ from functools import reduce
 from typing import Any, Union
 
 from cognite.client.utils._time import datetime_to_ms
+from deprecated import deprecated
 
 
+@deprecated
 def format_deep_diff_path(path: str) -> str:
     """
     Formats from deepdiff path to dot separated path
@@ -19,6 +21,7 @@ def format_deep_diff_path(path: str) -> str:
     return re.sub(r"['\[\]]", "", path.replace("][", ".").replace("root", ""))
 
 
+@deprecated
 def get_dict_dot_keys(data_dict: dict, dot_keys: str) -> Union[int, str, datetime.datetime, Any]:
     """
     Get for arbitrarily nested keys that are dot separated.
@@ -47,6 +50,7 @@ def get_dict_dot_keys(data_dict: dict, dot_keys: str) -> Union[int, str, datetim
     return reduce(operator.getitem, keys, data_dict)
 
 
+@deprecated
 def get_data_from_nested_dict(data_dict: dict, deep_diff_path: str) -> Union[int, str, datetime.datetime, Any]:
     dot_keys = format_deep_diff_path(deep_diff_path)
     return get_dict_dot_keys(data_dict, dot_keys)
