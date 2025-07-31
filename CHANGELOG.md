@@ -15,6 +15,10 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.114.0] - 2025-07-31
+### Changed
+* Adding DataSetConfiguration Container and View
+
 ## [0.113.3] - 2025-07-29
 ### Deprecated
 * Marked all old functionality related to Asset/Event/Relationship solution as deprecated

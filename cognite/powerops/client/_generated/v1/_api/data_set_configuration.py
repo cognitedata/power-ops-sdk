@@ -557,4 +557,3 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
         )
         sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         return self._list(limit=limit,  filter=filter_, sort=sort_input)
-

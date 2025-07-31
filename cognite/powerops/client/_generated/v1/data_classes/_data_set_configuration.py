@@ -33,7 +33,7 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     NodeQueryCore,
     StringFilter,
     ViewPropertyId,
-    
+
 )
 
 

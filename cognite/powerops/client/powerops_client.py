@@ -24,7 +24,7 @@ _MAX_DOMAIN_LENGTH = 233
 logger = logging.getLogger(__name__)
 
 
-class PowerOpsClient:  # entry point to sdk
+class PowerOpsClient:
     def __init__(
         self,
         client: CogniteClient,

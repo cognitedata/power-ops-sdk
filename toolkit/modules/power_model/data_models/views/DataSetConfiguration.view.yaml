@@ -3,7 +3,7 @@ externalId: DataSetConfiguration
 name: DataSetConfiguration
 description: Data Set configuration
 filter:
-  and: # default configuration, every single view in powerops for filter, if the view references to container, then you have to have two has data.
+  and:
     - hasData:
         - type: container
           space: "{{power_ops_models_space}}"
@@ -30,7 +30,7 @@ properties:
       type: container
     containerPropertyIdentifier: readDataSet
     name: readDataSet
-    description: The name of the market
+    description: The data set to read data from into the solution
   writeDataSet:
     container:
       space: "{{power_ops_models_space}}"
@@ -38,7 +38,7 @@ properties:
       type: container
     containerPropertyIdentifier: writeDataSet
     name: writeDataSet
-    description: The highest price allowed
+    description: The data set to write solution data to
   monitorDataSet:
     container:
       space: "{{power_ops_models_space}}"
@@ -46,4 +46,4 @@ properties:
       type: container
     containerPropertyIdentifier: monitorDataSet
     name: monitorDataSet
-    description: The lowest price allowed
+    description: The data set to write monitoring data to, like logs from the solution

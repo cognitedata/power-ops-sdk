@@ -423,13 +423,8 @@ class PowerOpsModelsV1Client:
     PowerOpsModelsV1Client
 
     Generated with:
-<<<<<<< HEAD
         pygen = 1.2.21
-        cognite-sdk = 7.77.1
-=======
-        pygen = 1.2.13
-        cognite-sdk = 7.76.0
->>>>>>> 0ac9e5b (feat: generating client files)
+        cognite-sdk = 7.78.0
         pydantic = 2.11.7
 
     """
