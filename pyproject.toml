@@ -36,6 +36,7 @@ tomli-w = "^1.0.0"
 tabulate = "^0.9"
 toml = ">=0.10"
 cachelib = "^0.13.0"
+deprecated = "^1.2.18"
 
 
 [project.scripts]
