@@ -24,13 +24,13 @@ _MAX_DOMAIN_LENGTH = 233
 logger = logging.getLogger(__name__)
 
 
-class PowerOpsClient:
+class PowerOpsClient:  # entry point to sdk
     def __init__(
         self,
         client: CogniteClient,
-        read_dataset: str,
-        write_dataset: str,
-        monitor_dataset: str | None = None,
+        read_dataset: str,  # TODO: not required anymore
+        write_dataset: str,  # TODO: not required anymore
+        monitor_dataset: str | None = None,  # TODO: not required anymore
         cog_shop_service: Literal["prod", "staging"] | None = None,
     ):
         self.cdf = client

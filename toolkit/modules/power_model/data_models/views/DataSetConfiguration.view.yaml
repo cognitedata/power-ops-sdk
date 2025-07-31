@@ -1,0 +1,49 @@
+space: "{{power_ops_models_space}}"
+externalId: DataSetConfiguration
+name: DataSetConfiguration
+description: Data Set configuration
+filter:
+  and: # default configuration, every single view in powerops for filter, if the view references to container, then you have to have two has data.
+    - hasData:
+        - type: container
+          space: "{{power_ops_models_space}}"
+          externalId: DataSetConfiguration
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{power_ops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: DataSetConfiguration
+          space: "{{power_ops_type_space}}"
+
+version: "{{power_ops_data_model_version}}"
+properties:
+  readDataSet:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: DataSetConfiguration
+      type: container
+    containerPropertyIdentifier: readDataSet
+    name: readDataSet
+    description: The name of the market
+  writeDataSet:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: DataSetConfiguration
+      type: container
+    containerPropertyIdentifier: writeDataSet
+    name: writeDataSet
+    description: The highest price allowed
+  monitorDataSet:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: DataSetConfiguration
+      type: container
+    containerPropertyIdentifier: monitorDataSet
+    name: monitorDataSet
+    description: The lowest price allowed

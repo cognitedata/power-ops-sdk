@@ -5,8 +5,6 @@ environment:
   validation-type: staging
   selected:
     - modules/power_model
-    - modules/resync
-    - modules/power_ops_template
 
 variables:
   modules:

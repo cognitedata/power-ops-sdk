@@ -11,7 +11,7 @@ from cognite.client.credentials import OAuthClientCredentials
 from cognite.client.data_classes import FileMetadataList, SequenceList, TimeSeriesList
 
 from cognite.powerops.client._generated.v1 import data_classes
-from cognite.powerops.client._generated.v1._api import (    AlertAPI,    BenchmarkingCalculationInputAPI,    BenchmarkingCalculationOutputAPI,    BenchmarkingConfigurationDayAheadAPI,    BenchmarkingProductionObligationDayAheadAPI,    BenchmarkingResultDayAheadAPI,    BenchmarkingShopCaseAPI,    BenchmarkingTaskDispatcherInputDayAheadAPI,    BenchmarkingTaskDispatcherOutputDayAheadAPI,    BidConfigurationDayAheadAPI,    BidDocumentAPI,    BidDocumentAFRRAPI,    BidDocumentDayAheadAPI,    BidMatrixAPI,    BidMatrixInformationAPI,    BidRowAPI,    DateSpecificationAPI,    FunctionInputAPI,    FunctionOutputAPI,    GeneratorAPI,    GeneratorEfficiencyCurveAPI,    MarketConfigurationAPI,    MultiScenarioPartialBidMatrixCalculationInputAPI,    PartialBidConfigurationAPI,    PartialBidMatrixCalculationInputAPI,    PartialBidMatrixCalculationOutputAPI,    PartialBidMatrixInformationAPI,    PartialBidMatrixInformationWithScenariosAPI,    PlantAPI,    PlantInformationAPI,    PlantWaterValueBasedAPI,    PowerAssetAPI,    PriceAreaAPI,    PriceAreaAFRRAPI,    PriceAreaDayAheadAPI,    PriceAreaInformationAPI,    PriceProductionAPI,    ShopAttributeMappingAPI,    ShopBasedPartialBidConfigurationAPI,    ShopCaseAPI,    ShopCommandsAPI,    ShopFileAPI,    ShopModelAPI,    ShopModelWithAssetsAPI,    ShopOutputTimeSeriesDefinitionAPI,    ShopPenaltyReportAPI,    ShopPreprocessorInputAPI,    ShopPreprocessorOutputAPI,    ShopResultAPI,    ShopScenarioAPI,    ShopScenarioSetAPI,    ShopTimeResolutionAPI,    ShopTimeSeriesAPI,    ShopTriggerInputAPI,    ShopTriggerOutputAPI,    TaskDispatcherInputAPI,    TaskDispatcherOutputAPI,    TotalBidMatrixCalculationInputAPI,    TotalBidMatrixCalculationOutputAPI,    TurbineEfficiencyCurveAPI,    WaterValueBasedPartialBidConfigurationAPI,    WaterValueBasedPartialBidMatrixCalculationInputAPI,    WatercourseAPI,)
+from cognite.powerops.client._generated.v1._api import (    AlertAPI,    BenchmarkingCalculationInputAPI,    BenchmarkingCalculationOutputAPI,    BenchmarkingConfigurationDayAheadAPI,    BenchmarkingProductionObligationDayAheadAPI,    BenchmarkingResultDayAheadAPI,    BenchmarkingShopCaseAPI,    BenchmarkingTaskDispatcherInputDayAheadAPI,    BenchmarkingTaskDispatcherOutputDayAheadAPI,    BidConfigurationDayAheadAPI,    BidDocumentAPI,    BidDocumentAFRRAPI,    BidDocumentDayAheadAPI,    BidMatrixAPI,    BidMatrixInformationAPI,    BidRowAPI,    DataSetConfigurationAPI,    DateSpecificationAPI,    FunctionInputAPI,    FunctionOutputAPI,    GeneratorAPI,    GeneratorEfficiencyCurveAPI,    MarketConfigurationAPI,    MultiScenarioPartialBidMatrixCalculationInputAPI,    PartialBidConfigurationAPI,    PartialBidMatrixCalculationInputAPI,    PartialBidMatrixCalculationOutputAPI,    PartialBidMatrixInformationAPI,    PartialBidMatrixInformationWithScenariosAPI,    PlantAPI,    PlantInformationAPI,    PlantWaterValueBasedAPI,    PowerAssetAPI,    PriceAreaAPI,    PriceAreaAFRRAPI,    PriceAreaDayAheadAPI,    PriceAreaInformationAPI,    PriceProductionAPI,    ShopAttributeMappingAPI,    ShopBasedPartialBidConfigurationAPI,    ShopCaseAPI,    ShopCommandsAPI,    ShopFileAPI,    ShopModelAPI,    ShopModelWithAssetsAPI,    ShopOutputTimeSeriesDefinitionAPI,    ShopPenaltyReportAPI,    ShopPreprocessorInputAPI,    ShopPreprocessorOutputAPI,    ShopResultAPI,    ShopScenarioAPI,    ShopScenarioSetAPI,    ShopTimeResolutionAPI,    ShopTimeSeriesAPI,    ShopTriggerInputAPI,    ShopTriggerOutputAPI,    TaskDispatcherInputAPI,    TaskDispatcherOutputAPI,    TotalBidMatrixCalculationInputAPI,    TotalBidMatrixCalculationOutputAPI,    TurbineEfficiencyCurveAPI,    WaterValueBasedPartialBidConfigurationAPI,    WaterValueBasedPartialBidMatrixCalculationInputAPI,    WatercourseAPI,)
 from cognite.powerops.client._generated.v1._api._core import GraphQLQueryResponse, SequenceNotStr
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE, GraphQLList
 
@@ -253,6 +253,7 @@ class DayAheadConfigurationAPIs:
         self._client = client
 
         self.bid_configuration_day_ahead = BidConfigurationDayAheadAPI(client)
+        self.data_set_configuration = DataSetConfigurationAPI(client)
         self.date_specification = DateSpecificationAPI(client)
         self.generator = GeneratorAPI(client)
         self.generator_efficiency_curve = GeneratorEfficiencyCurveAPI(client)
@@ -422,8 +423,13 @@ class PowerOpsModelsV1Client:
     PowerOpsModelsV1Client
 
     Generated with:
+<<<<<<< HEAD
         pygen = 1.2.21
         cognite-sdk = 7.77.1
+=======
+        pygen = 1.2.13
+        cognite-sdk = 7.76.0
+>>>>>>> 0ac9e5b (feat: generating client files)
         pydantic = 2.11.7
 
     """
