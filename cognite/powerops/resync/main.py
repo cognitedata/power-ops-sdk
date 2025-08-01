@@ -21,7 +21,7 @@ def pre_build(client_configuration: Path, configuration: Path) -> None:
         client_configuration: Path to the CDF client configuration file.
         configuration: Path to the resync configuration file.
     """
-    client = PowerOpsClient.from_config(client_configuration)
+    client = PowerOpsClient.from_config(client_configuration)  # TODO: remove from configuration the datasets
 
     data_model_classes = get_data_model_write_classes(client.v1)
 
@@ -43,7 +43,7 @@ def purge(client_configuration: Path, configuration: Path, dry_run: bool = False
         verbose: Print out detailed information about nodes & edges to delete.
     """
 
-    client = PowerOpsClient.from_config(client_configuration)
+    client = PowerOpsClient.from_config(client_configuration)  # TODO: remove from configration the dataset.
 
     resync_purge = ResyncPurge.from_yaml(configuration, client.cdf, dry_run, verbose)
     resync_purge.purge()

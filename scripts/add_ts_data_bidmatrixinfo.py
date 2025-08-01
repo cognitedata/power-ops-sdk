@@ -180,7 +180,7 @@ def main():
     cleans existing data points, inserts new data points, and links the time series to bid matrix information objects using upsert.
     """
 
-    power_client = PowerOpsClient.from_settings()
+    power_client = PowerOpsClient.from_settings() # TODO: should also be removed from settings?
     cdf_client = power_client.cdf
 
     ts_list = create_time_series_objects()
