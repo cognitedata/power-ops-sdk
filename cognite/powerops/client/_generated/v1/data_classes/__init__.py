@@ -33,6 +33,7 @@ from ._bid_document_day_ahead import BidDocumentDayAhead, BidDocumentDayAheadFie
 from ._bid_matrix import BidMatrix, BidMatrixFields, BidMatrixGraphQL, BidMatrixList, BidMatrixTextFields, BidMatrixWrite, BidMatrixWriteList
 from ._bid_matrix_information import BidMatrixInformation, BidMatrixInformationFields, BidMatrixInformationGraphQL, BidMatrixInformationList, BidMatrixInformationTextFields, BidMatrixInformationWrite, BidMatrixInformationWriteList
 from ._bid_row import BidRow, BidRowFields, BidRowGraphQL, BidRowList, BidRowTextFields, BidRowWrite, BidRowWriteList
+from ._data_set_configuration import DataSetConfiguration, DataSetConfigurationFields, DataSetConfigurationGraphQL, DataSetConfigurationList, DataSetConfigurationTextFields, DataSetConfigurationWrite, DataSetConfigurationWriteList
 from ._date_specification import DateSpecification, DateSpecificationFields, DateSpecificationGraphQL, DateSpecificationList, DateSpecificationTextFields, DateSpecificationWrite, DateSpecificationWriteList
 from ._function_input import FunctionInput, FunctionInputFields, FunctionInputGraphQL, FunctionInputList, FunctionInputTextFields, FunctionInputWrite, FunctionInputWriteList
 from ._function_output import FunctionOutput, FunctionOutputFields, FunctionOutputGraphQL, FunctionOutputList, FunctionOutputTextFields, FunctionOutputWrite, FunctionOutputWriteList
@@ -353,6 +354,13 @@ __all__ = [
     "BidRowWriteList",
     "BidRowFields",
     "BidRowTextFields",
+    "DataSetConfiguration",
+    "DataSetConfigurationGraphQL",
+    "DataSetConfigurationWrite",
+    "DataSetConfigurationList",
+    "DataSetConfigurationWriteList",
+    "DataSetConfigurationFields",
+    "DataSetConfigurationTextFields",
     "DateSpecification",
     "DateSpecificationGraphQL",
     "DateSpecificationWrite",
