@@ -189,7 +189,7 @@ def clean_spaces(client: CogniteClient, dry_run: bool):
 if __name__ == "__main__":
     dry_run = True
 
-    client = PowerOpsClient.from_config("power_ops_config.yaml").cdf
+    client = PowerOpsClient.from_config("power_ops_config.yaml").cdf # TODO: remove from yaml configuration datasets
 
     clean_instances(client, dry_run)
     clean_containers_views_data_models(client, dry_run)
