@@ -1,7 +1,7 @@
 - endNode:
-    externalId: shop_scenario_stavanger_base
+    externalId: shop_scenario_15_min_stavanger_base
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_1_scenario:shop_scenario_stavanger_base
+  externalId: shop_scenario_set_15_min_stavanger_1_scenario:shop_scenario_15_min_stavanger_base
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -11,9 +11,9 @@
     externalId: ShopScenarioSet.scenarios
     space: power_ops_types
 - endNode:
-    externalId: shop_scenario_stavanger_base_15_min_test
+    externalId: shop_scenario_15_min_stavanger_base
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_1_scenario_15_min_test:shop_scenario_stavanger_base_15_min_test
+  externalId: shop_scenario_set_15_min_stavanger_1_scenario_15_min_test:shop_scenario_15_min_stavanger_base
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -23,9 +23,9 @@
     externalId: ShopScenarioSet.scenarios
     space: power_ops_types
 - endNode:
-    externalId: shop_scenario_stavanger_base
+    externalId: shop_scenario_15_min_stavanger_base
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_stavanger_base
+  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_15_min_stavanger_base
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -35,9 +35,9 @@
     externalId: ShopScenarioSet.scenarios
     space: power_ops_types
 - endNode:
-    externalId: shop_scenario_stavanger_price_minus_10_first_24h
+    externalId: shop_scenario_15_min_stavanger_price_minus_10_first_24h
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_stavanger_price_minus_10_first_24h
+  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_15_min_stavanger_price_minus_10_first_24h
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -47,9 +47,9 @@
     externalId: ShopScenarioSet.scenarios
     space: power_ops_types
 - endNode:
-    externalId: shop_scenario_stavanger_price_minus_15_first_24h
+    externalId: shop_scenario_15_min_stavanger_price_minus_15_first_24h
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_stavanger_price_minus_15_first_24h
+  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_15_min_stavanger_price_minus_15_first_24h
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -59,9 +59,9 @@
     externalId: ShopScenarioSet.scenarios
     space: power_ops_types
 - endNode:
-    externalId: shop_scenario_stavanger_price_minus_20_first_24h
+    externalId: shop_scenario_15_min_stavanger_price_minus_20_first_24h
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_stavanger_price_minus_20_first_24h
+  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_15_min_stavanger_price_minus_20_first_24h
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -71,9 +71,9 @@
     externalId: ShopScenarioSet.scenarios
     space: power_ops_types
 - endNode:
-    externalId: shop_scenario_stavanger_price_minus_30_first_24h
+    externalId: shop_scenario_15_min_stavanger_price_minus_30_first_24h
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_stavanger_price_minus_30_first_24h
+  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_15_min_stavanger_price_minus_30_first_24h
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -83,9 +83,9 @@
     externalId: ShopScenarioSet.scenarios
     space: power_ops_types
 - endNode:
-    externalId: shop_scenario_stavanger_price_minus_40_first_24h
+    externalId: shop_scenario_15_min_stavanger_price_minus_40_first_24h
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_stavanger_price_minus_40_first_24h
+  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_15_min_stavanger_price_minus_40_first_24h
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -95,9 +95,9 @@
     externalId: ShopScenarioSet.scenarios
     space: power_ops_types
 - endNode:
-    externalId: shop_scenario_stavanger_price_minus_500_first_24h
+    externalId: shop_scenario_15_min_stavanger_price_minus_500_first_24h
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_stavanger_price_minus_500_first_24h
+  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_15_min_stavanger_price_minus_500_first_24h
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -107,9 +107,9 @@
     externalId: ShopScenarioSet.scenarios
     space: power_ops_types
 - endNode:
-    externalId: shop_scenario_stavanger_price_minus_50_first_24h
+    externalId: shop_scenario_15_min_stavanger_price_minus_50_first_24h
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_stavanger_price_minus_50_first_24h
+  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_15_min_stavanger_price_minus_50_first_24h
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -119,9 +119,9 @@
     externalId: ShopScenarioSet.scenarios
     space: power_ops_types
 - endNode:
-    externalId: shop_scenario_stavanger_price_minus_5_first_24h
+    externalId: shop_scenario_15_min_stavanger_price_minus_5_first_24h
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_stavanger_price_minus_5_first_24h
+  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_15_min_stavanger_price_minus_5_first_24h
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -131,9 +131,9 @@
     externalId: ShopScenarioSet.scenarios
     space: power_ops_types
 - endNode:
-    externalId: shop_scenario_stavanger_price_multiply_0_first_24h
+    externalId: shop_scenario_15_min_stavanger_price_multiply_0_first_24h
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_stavanger_price_multiply_0_first_24h
+  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_15_min_stavanger_price_multiply_0_first_24h
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -143,9 +143,9 @@
     externalId: ShopScenarioSet.scenarios
     space: power_ops_types
 - endNode:
-    externalId: shop_scenario_stavanger_price_plus_100_first_24h
+    externalId: shop_scenario_15_min_stavanger_price_plus_100_first_24h
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_stavanger_price_plus_100_first_24h
+  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_15_min_stavanger_price_plus_100_first_24h
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -155,9 +155,9 @@
     externalId: ShopScenarioSet.scenarios
     space: power_ops_types
 - endNode:
-    externalId: shop_scenario_stavanger_price_plus_10_first_24h
+    externalId: shop_scenario_15_min_stavanger_price_plus_10_first_24h
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_stavanger_price_plus_10_first_24h
+  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_15_min_stavanger_price_plus_10_first_24h
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -167,9 +167,9 @@
     externalId: ShopScenarioSet.scenarios
     space: power_ops_types
 - endNode:
-    externalId: shop_scenario_stavanger_price_plus_15_first_24h
+    externalId: shop_scenario_15_min_stavanger_price_plus_15_first_24h
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_stavanger_price_plus_15_first_24h
+  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_15_min_stavanger_price_plus_15_first_24h
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -179,9 +179,9 @@
     externalId: ShopScenarioSet.scenarios
     space: power_ops_types
 - endNode:
-    externalId: shop_scenario_stavanger_price_plus_2000_first_24h
+    externalId: shop_scenario_15_min_stavanger_price_plus_2000_first_24h
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_stavanger_price_plus_2000_first_24h
+  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_15_min_stavanger_price_plus_2000_first_24h
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -191,9 +191,9 @@
     externalId: ShopScenarioSet.scenarios
     space: power_ops_types
 - endNode:
-    externalId: shop_scenario_stavanger_price_plus_20_first_24h
+    externalId: shop_scenario_15_min_stavanger_price_plus_20_first_24h
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_stavanger_price_plus_20_first_24h
+  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_15_min_stavanger_price_plus_20_first_24h
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -203,9 +203,9 @@
     externalId: ShopScenarioSet.scenarios
     space: power_ops_types
 - endNode:
-    externalId: shop_scenario_stavanger_price_plus_30_first_24h
+    externalId: shop_scenario_15_min_stavanger_price_plus_30_first_24h
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_stavanger_price_plus_30_first_24h
+  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_15_min_stavanger_price_plus_30_first_24h
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -215,9 +215,9 @@
     externalId: ShopScenarioSet.scenarios
     space: power_ops_types
 - endNode:
-    externalId: shop_scenario_stavanger_price_plus_40_first_24h
+    externalId: shop_scenario_15_min_stavanger_price_plus_40_first_24h
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_stavanger_price_plus_40_first_24h
+  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_15_min_stavanger_price_plus_40_first_24h
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -227,9 +227,9 @@
     externalId: ShopScenarioSet.scenarios
     space: power_ops_types
 - endNode:
-    externalId: shop_scenario_stavanger_price_plus_50_first_24h
+    externalId: shop_scenario_15_min_stavanger_price_plus_50_first_24h
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_stavanger_price_plus_50_first_24h
+  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_15_min_stavanger_price_plus_50_first_24h
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -239,9 +239,9 @@
     externalId: ShopScenarioSet.scenarios
     space: power_ops_types
 - endNode:
-    externalId: shop_scenario_stavanger_price_plus_5_first_24h
+    externalId: shop_scenario_15_min_stavanger_price_plus_5_first_24h
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_stavanger_price_plus_5_first_24h
+  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_15_min_stavanger_price_plus_5_first_24h
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -251,9 +251,9 @@
     externalId: ShopScenarioSet.scenarios
     space: power_ops_types
 - endNode:
-    externalId: shop_scenario_stavanger_price_plus_70_first_24h
+    externalId: shop_scenario_15_min_stavanger_price_plus_70_first_24h
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_stavanger_price_plus_70_first_24h
+  externalId: shop_scenario_set_15_min_stavanger_20_scenarios:shop_scenario_15_min_stavanger_price_plus_70_first_24h
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -263,9 +263,9 @@
     externalId: ShopScenarioSet.scenarios
     space: power_ops_types
 - endNode:
-    externalId: shop_scenario_stavanger_base
+    externalId: shop_scenario_15_min_stavanger_base
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_2_scenarios:shop_scenario_stavanger_base
+  externalId: shop_scenario_set_15_min_stavanger_2_scenarios:shop_scenario_15_min_stavanger_base
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -275,9 +275,9 @@
     externalId: ShopScenarioSet.scenarios
     space: power_ops_types
 - endNode:
-    externalId: shop_scenario_stavanger_price_plus_200_first_24h
+    externalId: shop_scenario_15_min_stavanger_price_plus_200_first_24h
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_2_scenarios:shop_scenario_stavanger_price_plus_200_first_24h
+  externalId: shop_scenario_set_15_min_stavanger_2_scenarios:shop_scenario_15_min_stavanger_price_plus_200_first_24h
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -287,9 +287,9 @@
     externalId: ShopScenarioSet.scenarios
     space: power_ops_types
 - endNode:
-    externalId: shop_scenario_stavanger_base
+    externalId: shop_scenario_15_min_stavanger_base
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_3_scenarios:shop_scenario_stavanger_base
+  externalId: shop_scenario_set_15_min_stavanger_3_scenarios:shop_scenario_15_min_stavanger_base
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -299,9 +299,9 @@
     externalId: ShopScenarioSet.scenarios
     space: power_ops_types
 - endNode:
-    externalId: shop_scenario_stavanger_price_minus_200_first_24h
+    externalId: shop_scenario_15_min_stavanger_price_minus_200_first_24h
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_3_scenarios:shop_scenario_stavanger_price_minus_200_first_24h
+  externalId: shop_scenario_set_15_min_stavanger_3_scenarios:shop_scenario_15_min_stavanger_price_minus_200_first_24h
   instanceType: edge
   space: power_ops_instances
   startNode:
@@ -311,9 +311,9 @@
     externalId: ShopScenarioSet.scenarios
     space: power_ops_types
 - endNode:
-    externalId: shop_scenario_stavanger_price_plus_200_first_24h
+    externalId: shop_scenario_15_min_stavanger_price_plus_200_first_24h
     space: power_ops_instances
-  externalId: shop_scenario_set_15_min_stavanger_3_scenarios:shop_scenario_stavanger_price_plus_200_first_24h
+  externalId: shop_scenario_set_15_min_stavanger_3_scenarios:shop_scenario_15_min_stavanger_price_plus_200_first_24h
   instanceType: edge
   space: power_ops_instances
   startNode:
