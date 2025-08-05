@@ -34,7 +34,7 @@ class PowerOpsClient:
         cog_shop_service: Literal["prod", "staging"] | None = None,
     ):
         self.cdf = client
-        self.datasets = DataSetsAPI(self.cdf, read_dataset, write_dataset, monitor_dataset)
+        self.datasets = DataSetsAPI(self.cdf, read_dataset, write_dataset, monitor_dataset) # TODO: should we also remove from here
         self.shop = SHOPRunAPI(self.cdf, self.datasets.write_dataset_id)
         self.v1 = PowerOpsModelsV1Client(self.cdf)
         self.cogshop = CogShopAPI(self.cdf, self.v1, cog_shop_service)
