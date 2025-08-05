@@ -12,7 +12,7 @@ REPO_ROOT = Path(__file__).parent.parent
 
 
 def main():
-    client = PowerOpsClient.from_config("power_ops_config.yaml").cdf
+    client = PowerOpsClient.from_config("power_ops_config.yaml").cdf # TODO: remove from configuration the datasets
 
     top_level = "cognite.powerops.client._generated.v1"
     output_dir = REPO_ROOT / "cognite" / "powerops" / "client" / "_generated" / "v1"

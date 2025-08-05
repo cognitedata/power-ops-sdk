@@ -16,7 +16,7 @@ def initialize_clients():
     Returns:
         tuple: A tuple containing the PowerOps client and the CDF client.
     """
-    power_client = PowerOpsClient.from_settings()
+    power_client = PowerOpsClient.from_settings() # TODO: should also be removed from settings?
     cdf_client = power_client.cdf
     return power_client, cdf_client
 

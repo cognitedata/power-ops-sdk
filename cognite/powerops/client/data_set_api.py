@@ -6,23 +6,23 @@ from typing import Union
 from cognite.client import CogniteClient
 
 
-class DataSetsAPI:
-    def __init__(self, client: CogniteClient, read: str, write: str, monitor: str | None):
+class DataSetsAPI: # should also be removed?
+    def __init__(self, client: CogniteClient, read: str, write: str, monitor: str | None): # TODO: should we remove the parameters from here?
         self.cdf = client
         self.read_dataset = read
         self.write_dataset = write
         self.monitor_dataset = monitor
 
     @cached_property
-    def read_dataset_id(self) -> int:
+    def read_dataset_id(self) -> int: # TODO: should also this be removed ?
         return self._retrieve_with_raise_if_none(self.read_dataset).id
 
     @cached_property
-    def write_dataset_id(self) -> int:
+    def write_dataset_id(self) -> int: # TODO: should also this be removed ?
         return self._retrieve_with_raise_if_none(self.read_dataset).id
 
     @cached_property
-    def monitor_dataset_id(self) -> int:
+    def monitor_dataset_id(self) -> int: # TODO: should also this be removed ?
         if self.monitor_dataset is None:
             raise ValueError("No monitor_dataset configured in settings")
         return self._retrieve_with_raise_if_none(self.monitor_dataset).id
