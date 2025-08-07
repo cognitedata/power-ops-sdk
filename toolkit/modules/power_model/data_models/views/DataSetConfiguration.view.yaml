@@ -47,11 +47,11 @@ properties:
     containerPropertyIdentifier: monitorDataSet
     name: monitorDataSet
     description: The data set to write monitoring data to, like logs from the solution
-  processDataset:
+  processDataSet:
     container:
       space: "{{power_ops_models_space}}"
       externalId: DataSetConfiguration
       type: container
-    containerPropertyIdentifier: processDataset
-    name: processDataset
+    containerPropertyIdentifier: processDataSet
+    name: processDataSet
     description: The data set to process data from into the solution
