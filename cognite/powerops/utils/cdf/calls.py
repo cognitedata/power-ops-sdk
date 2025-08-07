@@ -5,31 +5,9 @@ import logging
 import numpy as np
 import pandas as pd
 from cognite.client import CogniteClient
-from cognite.client.data_classes import DatapointsList
 from cognite.client.utils import ms_to_datetime
 
-from cognite.powerops.utils.require import require
-
 logger = logging.getLogger(__name__)
-
-
-def remove_duplicates(lst: list) -> list:
-    return list(set(lst))
-
-
-def _overlapping_keys(dict_: dict, other: dict) -> list[str]:
-    return list(set(dict_.keys()).intersection(other.keys()))
-
-
-def merge_dicts(*args: dict) -> dict:
-    merged: dict = {}
-    for dict_ in args:
-        assert isinstance(dict_, dict), f"Expected dict, got {type(dict_)}!"
-        overlap = _overlapping_keys(dict_, merged)
-        if overlap:
-            raise Exception(f"Key collision on '{overlap}' when merging dictionaries!")
-        merged = {**merged, **dict_}
-    return merged
 
 
 def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, end: int) -> pd.DataFrame:
@@ -40,7 +18,7 @@ def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, 
     # And maybe we need to parametrise the "minimum resolution"
     # (seems to assume 1 hour, but we should support sub-hourly resolution)
     # Retrieve raw datapoints
-    external_ids = remove_duplicates(external_ids)
+    external_ids = list(set(external_ids))
     if not external_ids:
         return pd.DataFrame()
 
@@ -96,58 +74,3 @@ def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, 
 def retrieve_range(client: CogniteClient, external_ids: list[str], start: int, end: int) -> dict[str, pd.Series]:
     retrieved_range_df = _retrieve_range(client=client, external_ids=external_ids, start=start, end=end)
     return {col: retrieved_range_df[col].dropna() for col in retrieved_range_df.columns}
-
-
-# TODO: refactor
-# TODO: naming: time_series vs. datapoints
-def retrieve_latest(client: CogniteClient, external_ids: list[str | None], before: int) -> dict[str, pd.Series]:
-    if not external_ids:
-        return {}
-    external_ids = remove_duplicates(external_ids)
-    logger.debug(f"Retrieving {external_ids} before '{ms_to_datetime(before)}'")
-    time_series: DatapointsList = client.time_series.data.retrieve_latest(
-        external_id=external_ids, before=before, ignore_unknown_ids=True
-    )
-
-    # For (Cog)Datapoints in (Cog)DatapointsList
-    for datapoints in time_series:
-        if len(datapoints) > 0:  # TODO: what to do about ts with no datapoints?
-            datapoints.timestamp[0] = before
-
-    res = {
-        require(datapoints.external_id): datapoints.to_pandas().iloc[:, 0]  # iloc to convert DataFrame to Series
-        for datapoints in time_series
-        if len(datapoints) > 0
-    }
-    if missing := set(external_ids).difference(res):
-        logger.warning(f"Missing: {', '.join(map(str, missing))}")
-    return res
-
-
-def retrieve_time_series_datapoints(  # type: ignore[no-untyped-def]
-    client: CogniteClient, mappings, start: int, end: int
-) -> dict[str, pd.Series]:
-    time_series_start = retrieve_latest(
-        client=client,
-        external_ids=[mapping.cdf_time_series for mapping in mappings if mapping.retrieve == "START"],
-        before=start,
-    )
-    time_series_end = retrieve_latest(
-        client=client,
-        external_ids=[mapping.cdf_time_series for mapping in mappings if mapping.retrieve == "END"],
-        before=end,
-    )
-    time_series_range = retrieve_range(
-        client=client,
-        external_ids=[mapping.cdf_time_series for mapping in mappings if mapping.retrieve == "RANGE"],
-        start=start,
-        end=end,
-    )
-    _time_series_none = [
-        ".".join(filter(None, [mapping.shop_object_type, mapping.shop_object_name, mapping.shop_attribute_name]))
-        for mapping in mappings
-        if not mapping.retrieve
-    ]
-    logger.debug(f"Not retrieving datapoints for {_time_series_none}")
-
-    return merge_dicts(time_series_start, time_series_end, time_series_range)
