@@ -27,3 +27,11 @@ properties:
     nullable: true
     autoIncrement: false
     name: monitorDataSet
+  processDataset:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: processDataset
