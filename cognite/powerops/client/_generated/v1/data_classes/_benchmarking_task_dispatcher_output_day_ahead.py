@@ -37,10 +37,29 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     IntFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._function_output import FunctionOutput, FunctionOutputWrite
+
 if TYPE_CHECKING:
-    from cognite.powerops.client._generated.v1.data_classes._alert import Alert, AlertList, AlertGraphQL, AlertWrite, AlertWriteList
-    from cognite.powerops.client._generated.v1.data_classes._benchmarking_task_dispatcher_input_day_ahead import BenchmarkingTaskDispatcherInputDayAhead, BenchmarkingTaskDispatcherInputDayAheadList, BenchmarkingTaskDispatcherInputDayAheadGraphQL, BenchmarkingTaskDispatcherInputDayAheadWrite, BenchmarkingTaskDispatcherInputDayAheadWriteList
-    from cognite.powerops.client._generated.v1.data_classes._function_input import FunctionInput, FunctionInputList, FunctionInputGraphQL, FunctionInputWrite, FunctionInputWriteList
+    from cognite.powerops.client._generated.v1.data_classes._alert import (
+        Alert,
+        AlertList,
+        AlertGraphQL,
+        AlertWrite,
+        AlertWriteList,
+    )
+    from cognite.powerops.client._generated.v1.data_classes._benchmarking_task_dispatcher_input_day_ahead import (
+        BenchmarkingTaskDispatcherInputDayAhead,
+        BenchmarkingTaskDispatcherInputDayAheadList,
+        BenchmarkingTaskDispatcherInputDayAheadGraphQL,
+        BenchmarkingTaskDispatcherInputDayAheadWrite,
+        BenchmarkingTaskDispatcherInputDayAheadWriteList,
+    )
+    from cognite.powerops.client._generated.v1.data_classes._function_input import (
+        FunctionInput,
+        FunctionInputList,
+        FunctionInputGraphQL,
+        FunctionInputWrite,
+        FunctionInputWriteList,
+    )
 
 
 __all__ = [
@@ -54,8 +73,12 @@ __all__ = [
 ]
 
 
-BenchmarkingTaskDispatcherOutputDayAheadTextFields = Literal["external_id", "workflow_execution_id", "function_name", "function_call_id"]
-BenchmarkingTaskDispatcherOutputDayAheadFields = Literal["external_id", "workflow_execution_id", "workflow_step", "function_name", "function_call_id"]
+BenchmarkingTaskDispatcherOutputDayAheadTextFields = Literal[
+    "external_id", "workflow_execution_id", "function_name", "function_call_id"
+]
+BenchmarkingTaskDispatcherOutputDayAheadFields = Literal[
+    "external_id", "workflow_execution_id", "workflow_step", "function_name", "function_call_id"
+]
 
 _BENCHMARKINGTASKDISPATCHEROUTPUTDAYAHEAD_PROPERTIES_BY_FIELD = {
     "external_id": "externalId",
@@ -90,9 +113,13 @@ class BenchmarkingTaskDispatcherOutputDayAheadGraphQL(GraphQLCore):
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
     function_call_id: Optional[str] = Field(None, alias="functionCallId")
-    function_input: Optional[BenchmarkingTaskDispatcherInputDayAheadGraphQL] = Field(default=None, repr=False, alias="functionInput")
+    function_input: Optional[BenchmarkingTaskDispatcherInputDayAheadGraphQL] = Field(
+        default=None, repr=False, alias="functionInput"
+    )
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
-    benchmarking_sub_tasks: Optional[list[FunctionInputGraphQL]] = Field(default=None, repr=False, alias="benchmarkingSubTasks")
+    benchmarking_sub_tasks: Optional[list[FunctionInputGraphQL]] = Field(
+        default=None, repr=False, alias="benchmarkingSubTasks"
+    )
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -104,7 +131,6 @@ class BenchmarkingTaskDispatcherOutputDayAheadGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
-
 
     @field_validator("function_input", "alerts", "benchmarking_sub_tasks", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
@@ -143,9 +169,16 @@ class BenchmarkingTaskDispatcherOutputDayAhead(FunctionOutput):
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingTaskDispatcherOutputDayAhead", "1")
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingTaskDispatcherOutputDayAhead")
-    function_input: Union[BenchmarkingTaskDispatcherInputDayAhead, str, dm.NodeId, None] = Field(default=None, repr=False, alias="functionInput")
-    benchmarking_sub_tasks: Optional[list[Union[FunctionInput, str, dm.NodeId]]] = Field(default=None, repr=False, alias="benchmarkingSubTasks")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
+        "power_ops_types", "BenchmarkingTaskDispatcherOutputDayAhead"
+    )
+    function_input: Union[BenchmarkingTaskDispatcherInputDayAhead, str, dm.NodeId, None] = Field(
+        default=None, repr=False, alias="functionInput"
+    )
+    benchmarking_sub_tasks: Optional[list[Union[FunctionInput, str, dm.NodeId]]] = Field(
+        default=None, repr=False, alias="benchmarkingSubTasks"
+    )
+
     @field_validator("function_input", mode="before")
     @classmethod
     def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
@@ -161,7 +194,6 @@ class BenchmarkingTaskDispatcherOutputDayAhead(FunctionOutput):
     def as_write(self) -> BenchmarkingTaskDispatcherOutputDayAheadWrite:
         """Convert this read version of benchmarking task dispatcher output day ahead to the writing version."""
         return BenchmarkingTaskDispatcherOutputDayAheadWrite.model_validate(as_write_args(self))
-
 
 
 class BenchmarkingTaskDispatcherOutputDayAheadWrite(FunctionOutputWrite):
@@ -181,15 +213,31 @@ class BenchmarkingTaskDispatcherOutputDayAheadWrite(FunctionOutputWrite):
         alerts: An array of calculation level Alerts.
         benchmarking_sub_tasks: An array of input for benchmarking subtasks used for benchmarking value calculations.
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("function_call_id", "function_input", "function_name", "workflow_execution_id", "workflow_step",)
-    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")), ("benchmarking_sub_tasks", dm.DirectRelationReference("power_ops_types", "benchmarkingSubTasks")),)
+
+    _container_fields: ClassVar[tuple[str, ...]] = (
+        "function_call_id",
+        "function_input",
+        "function_name",
+        "workflow_execution_id",
+        "workflow_step",
+    )
+    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (
+        ("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")),
+        ("benchmarking_sub_tasks", dm.DirectRelationReference("power_ops_types", "benchmarkingSubTasks")),
+    )
     _direct_relations: ClassVar[tuple[str, ...]] = ("function_input",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingTaskDispatcherOutputDayAhead", "1")
 
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingTaskDispatcherOutputDayAhead")
-    function_input: Union[BenchmarkingTaskDispatcherInputDayAheadWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="functionInput")
-    benchmarking_sub_tasks: Optional[list[Union[FunctionInputWrite, str, dm.NodeId]]] = Field(default=None, repr=False, alias="benchmarkingSubTasks")
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
+        "power_ops_types", "BenchmarkingTaskDispatcherOutputDayAhead"
+    )
+    function_input: Union[BenchmarkingTaskDispatcherInputDayAheadWrite, str, dm.NodeId, None] = Field(
+        default=None, repr=False, alias="functionInput"
+    )
+    benchmarking_sub_tasks: Optional[list[Union[FunctionInputWrite, str, dm.NodeId]]] = Field(
+        default=None, repr=False, alias="benchmarkingSubTasks"
+    )
 
     @field_validator("function_input", "benchmarking_sub_tasks", mode="before")
     def as_node_id(cls, value: Any) -> Any:
@@ -206,44 +254,88 @@ class BenchmarkingTaskDispatcherOutputDayAheadList(DomainModelList[BenchmarkingT
     """List of benchmarking task dispatcher output day aheads in the read version."""
 
     _INSTANCE = BenchmarkingTaskDispatcherOutputDayAhead
+
     def as_write(self) -> BenchmarkingTaskDispatcherOutputDayAheadWriteList:
         """Convert these read versions of benchmarking task dispatcher output day ahead to the writing versions."""
         return BenchmarkingTaskDispatcherOutputDayAheadWriteList([node.as_write() for node in self.data])
 
-
     @property
     def function_input(self) -> BenchmarkingTaskDispatcherInputDayAheadList:
-        from ._benchmarking_task_dispatcher_input_day_ahead import BenchmarkingTaskDispatcherInputDayAhead, BenchmarkingTaskDispatcherInputDayAheadList
-        return BenchmarkingTaskDispatcherInputDayAheadList([item.function_input for item in self.data if isinstance(item.function_input, BenchmarkingTaskDispatcherInputDayAhead)])
+        from ._benchmarking_task_dispatcher_input_day_ahead import (
+            BenchmarkingTaskDispatcherInputDayAhead,
+            BenchmarkingTaskDispatcherInputDayAheadList,
+        )
+
+        return BenchmarkingTaskDispatcherInputDayAheadList(
+            [
+                item.function_input
+                for item in self.data
+                if isinstance(item.function_input, BenchmarkingTaskDispatcherInputDayAhead)
+            ]
+        )
+
     @property
     def alerts(self) -> AlertList:
         from ._alert import Alert, AlertList
+
         return AlertList([item for items in self.data for item in items.alerts or [] if isinstance(item, Alert)])
 
     @property
     def benchmarking_sub_tasks(self) -> FunctionInputList:
         from ._function_input import FunctionInput, FunctionInputList
-        return FunctionInputList([item for items in self.data for item in items.benchmarking_sub_tasks or [] if isinstance(item, FunctionInput)])
+
+        return FunctionInputList(
+            [
+                item
+                for items in self.data
+                for item in items.benchmarking_sub_tasks or []
+                if isinstance(item, FunctionInput)
+            ]
+        )
 
 
-class BenchmarkingTaskDispatcherOutputDayAheadWriteList(DomainModelWriteList[BenchmarkingTaskDispatcherOutputDayAheadWrite]):
+class BenchmarkingTaskDispatcherOutputDayAheadWriteList(
+    DomainModelWriteList[BenchmarkingTaskDispatcherOutputDayAheadWrite]
+):
     """List of benchmarking task dispatcher output day aheads in the writing version."""
 
     _INSTANCE = BenchmarkingTaskDispatcherOutputDayAheadWrite
+
     @property
     def function_input(self) -> BenchmarkingTaskDispatcherInputDayAheadWriteList:
-        from ._benchmarking_task_dispatcher_input_day_ahead import BenchmarkingTaskDispatcherInputDayAheadWrite, BenchmarkingTaskDispatcherInputDayAheadWriteList
-        return BenchmarkingTaskDispatcherInputDayAheadWriteList([item.function_input for item in self.data if isinstance(item.function_input, BenchmarkingTaskDispatcherInputDayAheadWrite)])
+        from ._benchmarking_task_dispatcher_input_day_ahead import (
+            BenchmarkingTaskDispatcherInputDayAheadWrite,
+            BenchmarkingTaskDispatcherInputDayAheadWriteList,
+        )
+
+        return BenchmarkingTaskDispatcherInputDayAheadWriteList(
+            [
+                item.function_input
+                for item in self.data
+                if isinstance(item.function_input, BenchmarkingTaskDispatcherInputDayAheadWrite)
+            ]
+        )
+
     @property
     def alerts(self) -> AlertWriteList:
         from ._alert import AlertWrite, AlertWriteList
-        return AlertWriteList([item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)])
+
+        return AlertWriteList(
+            [item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)]
+        )
 
     @property
     def benchmarking_sub_tasks(self) -> FunctionInputWriteList:
         from ._function_input import FunctionInputWrite, FunctionInputWriteList
-        return FunctionInputWriteList([item for items in self.data for item in items.benchmarking_sub_tasks or [] if isinstance(item, FunctionInputWrite)])
 
+        return FunctionInputWriteList(
+            [
+                item
+                for items in self.data
+                for item in items.benchmarking_sub_tasks or []
+                if isinstance(item, FunctionInputWrite)
+            ]
+        )
 
 
 def _create_benchmarking_task_dispatcher_output_day_ahead_filter(
@@ -256,7 +348,14 @@ def _create_benchmarking_task_dispatcher_output_day_ahead_filter(
     function_name_prefix: str | None = None,
     function_call_id: str | list[str] | None = None,
     function_call_id_prefix: str | None = None,
-    function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+    function_input: (
+        str
+        | tuple[str, str]
+        | dm.NodeId
+        | dm.DirectRelationReference
+        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+        | None
+    ) = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -267,9 +366,13 @@ def _create_benchmarking_task_dispatcher_output_day_ahead_filter(
     if workflow_execution_id and isinstance(workflow_execution_id, list):
         filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
     if workflow_execution_id_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix))
+        filters.append(
+            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
+        )
     if min_workflow_step is not None or max_workflow_step is not None:
-        filters.append(dm.filters.Range(view_id.as_property_ref("workflowStep"), gte=min_workflow_step, lte=max_workflow_step))
+        filters.append(
+            dm.filters.Range(view_id.as_property_ref("workflowStep"), gte=min_workflow_step, lte=max_workflow_step)
+        )
     if isinstance(function_name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("functionName"), value=function_name))
     if function_name and isinstance(function_name, list):
@@ -283,9 +386,20 @@ def _create_benchmarking_task_dispatcher_output_day_ahead_filter(
     if function_call_id_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("functionCallId"), value=function_call_id_prefix))
     if isinstance(function_input, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(function_input):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("functionInput"), value=as_instance_dict_id(function_input)))
-    if function_input and isinstance(function_input, Sequence) and not isinstance(function_input, str) and not is_tuple_id(function_input):
-        filters.append(dm.filters.In(view_id.as_property_ref("functionInput"), values=[as_instance_dict_id(item) for item in function_input]))
+        filters.append(
+            dm.filters.Equals(view_id.as_property_ref("functionInput"), value=as_instance_dict_id(function_input))
+        )
+    if (
+        function_input
+        and isinstance(function_input, Sequence)
+        and not isinstance(function_input, str)
+        and not is_tuple_id(function_input)
+    ):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("functionInput"), values=[as_instance_dict_id(item) for item in function_input]
+            )
+        )
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
@@ -297,7 +411,9 @@ def _create_benchmarking_task_dispatcher_output_day_ahead_filter(
     return dm.filters.And(*filters) if filters else None
 
 
-class _BenchmarkingTaskDispatcherOutputDayAheadQuery(NodeQueryCore[T_DomainModelList, BenchmarkingTaskDispatcherOutputDayAheadList]):
+class _BenchmarkingTaskDispatcherOutputDayAheadQuery(
+    NodeQueryCore[T_DomainModelList, BenchmarkingTaskDispatcherOutputDayAheadList]
+):
     _view_id = BenchmarkingTaskDispatcherOutputDayAhead._view_id
     _result_cls = BenchmarkingTaskDispatcherOutputDayAhead
     _result_list_cls_end = BenchmarkingTaskDispatcherOutputDayAheadList
@@ -331,7 +447,10 @@ class _BenchmarkingTaskDispatcherOutputDayAheadQuery(NodeQueryCore[T_DomainModel
             reverse_expression,
         )
 
-        if _BenchmarkingTaskDispatcherInputDayAheadQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
+        if (
+            _BenchmarkingTaskDispatcherInputDayAheadQuery not in created_types
+            and len(creation_path) + 1 < global_config.max_select_depth
+        ):
             self.function_input = _BenchmarkingTaskDispatcherInputDayAheadQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -380,20 +499,26 @@ class _BenchmarkingTaskDispatcherOutputDayAheadQuery(NodeQueryCore[T_DomainModel
         self.function_name = StringFilter(self, self._view_id.as_property_ref("functionName"))
         self.function_call_id = StringFilter(self, self._view_id.as_property_ref("functionCallId"))
         self.function_input_filter = DirectRelationFilter(self, self._view_id.as_property_ref("functionInput"))
-        self._filter_classes.extend([
-            self.space,
-            self.external_id,
-            self.workflow_execution_id,
-            self.workflow_step,
-            self.function_name,
-            self.function_call_id,
-            self.function_input_filter,
-        ])
+        self._filter_classes.extend(
+            [
+                self.space,
+                self.external_id,
+                self.workflow_execution_id,
+                self.workflow_step,
+                self.function_name,
+                self.function_call_id,
+                self.function_input_filter,
+            ]
+        )
 
-    def list_benchmarking_task_dispatcher_output_day_ahead(self, limit: int = DEFAULT_QUERY_LIMIT) -> BenchmarkingTaskDispatcherOutputDayAheadList:
+    def list_benchmarking_task_dispatcher_output_day_ahead(
+        self, limit: int = DEFAULT_QUERY_LIMIT
+    ) -> BenchmarkingTaskDispatcherOutputDayAheadList:
         return self._list(limit=limit)
 
 
-class BenchmarkingTaskDispatcherOutputDayAheadQuery(_BenchmarkingTaskDispatcherOutputDayAheadQuery[BenchmarkingTaskDispatcherOutputDayAheadList]):
+class BenchmarkingTaskDispatcherOutputDayAheadQuery(
+    _BenchmarkingTaskDispatcherOutputDayAheadQuery[BenchmarkingTaskDispatcherOutputDayAheadList]
+):
     def __init__(self, client: CogniteClient):
         super().__init__(set(), [], client, BenchmarkingTaskDispatcherOutputDayAheadList)

@@ -37,9 +37,22 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     DirectRelationFilter,
     TimestampFilter,
 )
+
 if TYPE_CHECKING:
-    from cognite.powerops.client._generated.v1.data_classes._shop_file import ShopFile, ShopFileList, ShopFileGraphQL, ShopFileWrite, ShopFileWriteList
-    from cognite.powerops.client._generated.v1.data_classes._shop_scenario import ShopScenario, ShopScenarioList, ShopScenarioGraphQL, ShopScenarioWrite, ShopScenarioWriteList
+    from cognite.powerops.client._generated.v1.data_classes._shop_file import (
+        ShopFile,
+        ShopFileList,
+        ShopFileGraphQL,
+        ShopFileWrite,
+        ShopFileWriteList,
+    )
+    from cognite.powerops.client._generated.v1.data_classes._shop_scenario import (
+        ShopScenario,
+        ShopScenarioList,
+        ShopScenarioGraphQL,
+        ShopScenarioWrite,
+        ShopScenarioWriteList,
+    )
 
 
 __all__ = [
@@ -52,7 +65,7 @@ __all__ = [
 ]
 
 
-ShopCaseTextFields = Literal["external_id", ]
+ShopCaseTextFields = Literal["external_id",]
 ShopCaseFields = Literal["external_id", "start_time", "end_time", "status"]
 
 _SHOPCASE_PROPERTIES_BY_FIELD = {
@@ -85,7 +98,9 @@ class ShopCaseGraphQL(GraphQLCore):
     scenario: Optional[ShopScenarioGraphQL] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
-    status: Optional[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] = None
+    status: Optional[
+        Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]
+    ] = None
     shop_files: Optional[list[ShopFileGraphQL]] = Field(default=None, repr=False, alias="shopFiles")
 
     @model_validator(mode="before")
@@ -98,7 +113,6 @@ class ShopCaseGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
-
 
     @field_validator("scenario", "shop_files", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
@@ -141,8 +155,14 @@ class ShopCase(DomainModel):
     scenario: Union[ShopScenario, str, dm.NodeId, None] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
-    status: Optional[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | str = None
+    status: (
+        Optional[
+            Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]
+        ]
+        | str
+    ) = None
     shop_files: Optional[list[Union[ShopFile, str, dm.NodeId]]] = Field(default=None, repr=False, alias="shopFiles")
+
     @field_validator("scenario", mode="before")
     @classmethod
     def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
@@ -158,7 +178,6 @@ class ShopCase(DomainModel):
     def as_write(self) -> ShopCaseWrite:
         """Convert this read version of shop case to the writing version."""
         return ShopCaseWrite.model_validate(as_write_args(self))
-
 
 
 class ShopCaseWrite(DomainModelWrite):
@@ -177,8 +196,16 @@ class ShopCaseWrite(DomainModelWrite):
         shop_files: The list of shop files that are used in a shop run. This encompasses all shop files such as case,
             module series, cut files etc.
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("end_time", "scenario", "start_time", "status",)
-    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("shop_files", dm.DirectRelationReference("power_ops_types", "ShopCase.shopFiles")),)
+
+    _container_fields: ClassVar[tuple[str, ...]] = (
+        "end_time",
+        "scenario",
+        "start_time",
+        "status",
+    )
+    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (
+        ("shop_files", dm.DirectRelationReference("power_ops_types", "ShopCase.shopFiles")),
+    )
     _direct_relations: ClassVar[tuple[str, ...]] = ("scenario",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopCase", "1")
@@ -188,8 +215,12 @@ class ShopCaseWrite(DomainModelWrite):
     scenario: Union[ShopScenarioWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
-    status: Optional[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] = None
-    shop_files: Optional[list[Union[ShopFileWrite, str, dm.NodeId]]] = Field(default=None, repr=False, alias="shopFiles")
+    status: Optional[
+        Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]
+    ] = None
+    shop_files: Optional[list[Union[ShopFileWrite, str, dm.NodeId]]] = Field(
+        default=None, repr=False, alias="shopFiles"
+    )
 
     @field_validator("scenario", "shop_files", mode="before")
     def as_node_id(cls, value: Any) -> Any:
@@ -206,44 +237,69 @@ class ShopCaseList(DomainModelList[ShopCase]):
     """List of shop cases in the read version."""
 
     _INSTANCE = ShopCase
+
     def as_write(self) -> ShopCaseWriteList:
         """Convert these read versions of shop case to the writing versions."""
         return ShopCaseWriteList([node.as_write() for node in self.data])
 
-
     @property
     def scenario(self) -> ShopScenarioList:
         from ._shop_scenario import ShopScenario, ShopScenarioList
+
         return ShopScenarioList([item.scenario for item in self.data if isinstance(item.scenario, ShopScenario)])
+
     @property
     def shop_files(self) -> ShopFileList:
         from ._shop_file import ShopFile, ShopFileList
-        return ShopFileList([item for items in self.data for item in items.shop_files or [] if isinstance(item, ShopFile)])
+
+        return ShopFileList(
+            [item for items in self.data for item in items.shop_files or [] if isinstance(item, ShopFile)]
+        )
 
 
 class ShopCaseWriteList(DomainModelWriteList[ShopCaseWrite]):
     """List of shop cases in the writing version."""
 
     _INSTANCE = ShopCaseWrite
+
     @property
     def scenario(self) -> ShopScenarioWriteList:
         from ._shop_scenario import ShopScenarioWrite, ShopScenarioWriteList
-        return ShopScenarioWriteList([item.scenario for item in self.data if isinstance(item.scenario, ShopScenarioWrite)])
+
+        return ShopScenarioWriteList(
+            [item.scenario for item in self.data if isinstance(item.scenario, ShopScenarioWrite)]
+        )
+
     @property
     def shop_files(self) -> ShopFileWriteList:
         from ._shop_file import ShopFileWrite, ShopFileWriteList
-        return ShopFileWriteList([item for items in self.data for item in items.shop_files or [] if isinstance(item, ShopFileWrite)])
 
+        return ShopFileWriteList(
+            [item for items in self.data for item in items.shop_files or [] if isinstance(item, ShopFileWrite)]
+        )
 
 
 def _create_shop_case_filter(
     view_id: dm.ViewId,
-    scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+    scenario: (
+        str
+        | tuple[str, str]
+        | dm.NodeId
+        | dm.DirectRelationReference
+        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+        | None
+    ) = None,
     min_start_time: datetime.datetime | None = None,
     max_start_time: datetime.datetime | None = None,
     min_end_time: datetime.datetime | None = None,
     max_end_time: datetime.datetime | None = None,
-    status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
+    status: (
+        Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]
+        | list[
+            Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]
+        ]
+        | None
+    ) = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -252,11 +308,25 @@ def _create_shop_case_filter(
     if isinstance(scenario, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(scenario):
         filters.append(dm.filters.Equals(view_id.as_property_ref("scenario"), value=as_instance_dict_id(scenario)))
     if scenario and isinstance(scenario, Sequence) and not isinstance(scenario, str) and not is_tuple_id(scenario):
-        filters.append(dm.filters.In(view_id.as_property_ref("scenario"), values=[as_instance_dict_id(item) for item in scenario]))
+        filters.append(
+            dm.filters.In(view_id.as_property_ref("scenario"), values=[as_instance_dict_id(item) for item in scenario])
+        )
     if min_start_time is not None or max_start_time is not None:
-        filters.append(dm.filters.Range(view_id.as_property_ref("startTime"), gte=min_start_time.isoformat(timespec="milliseconds") if min_start_time else None, lte=max_start_time.isoformat(timespec="milliseconds") if max_start_time else None))
+        filters.append(
+            dm.filters.Range(
+                view_id.as_property_ref("startTime"),
+                gte=min_start_time.isoformat(timespec="milliseconds") if min_start_time else None,
+                lte=max_start_time.isoformat(timespec="milliseconds") if max_start_time else None,
+            )
+        )
     if min_end_time is not None or max_end_time is not None:
-        filters.append(dm.filters.Range(view_id.as_property_ref("endTime"), gte=min_end_time.isoformat(timespec="milliseconds") if min_end_time else None, lte=max_end_time.isoformat(timespec="milliseconds") if max_end_time else None))
+        filters.append(
+            dm.filters.Range(
+                view_id.as_property_ref("endTime"),
+                gte=min_end_time.isoformat(timespec="milliseconds") if min_end_time else None,
+                lte=max_end_time.isoformat(timespec="milliseconds") if max_end_time else None,
+            )
+        )
     if isinstance(status, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("status"), value=status))
     if status and isinstance(status, list):
@@ -338,13 +408,15 @@ class _ShopCaseQuery(NodeQueryCore[T_DomainModelList, ShopCaseList]):
         self.scenario_filter = DirectRelationFilter(self, self._view_id.as_property_ref("scenario"))
         self.start_time = TimestampFilter(self, self._view_id.as_property_ref("startTime"))
         self.end_time = TimestampFilter(self, self._view_id.as_property_ref("endTime"))
-        self._filter_classes.extend([
-            self.space,
-            self.external_id,
-            self.scenario_filter,
-            self.start_time,
-            self.end_time,
-        ])
+        self._filter_classes.extend(
+            [
+                self.space,
+                self.external_id,
+                self.scenario_filter,
+                self.start_time,
+                self.end_time,
+            ]
+        )
 
     def list_shop_case(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopCaseList:
         return self._list(limit=limit)

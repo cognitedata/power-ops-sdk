@@ -44,7 +44,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     NodeQueryCore,
     StringFilter,
     ViewPropertyId,
-
 )
 
 
@@ -98,8 +97,6 @@ class BenchmarkingProductionObligationDayAheadGraphQL(GraphQLCore):
             )
         return values
 
-
-
     def as_read(self) -> BenchmarkingProductionObligationDayAhead:
         """Convert this GraphQL format of benchmarking production obligation day ahead to the reading format."""
         return BenchmarkingProductionObligationDayAhead.model_validate(as_read_args(self))
@@ -125,15 +122,15 @@ class BenchmarkingProductionObligationDayAhead(DomainModel):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingProductionObligationDayAhead", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingProductionObligationDayAhead")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
+        "power_ops_types", "BenchmarkingProductionObligationDayAhead"
+    )
     time_series: Union[TimeSeries, str, None] = Field(None, alias="timeSeries")
     name: Optional[str] = None
-
 
     def as_write(self) -> BenchmarkingProductionObligationDayAheadWrite:
         """Convert this read version of benchmarking production obligation day ahead to the writing version."""
         return BenchmarkingProductionObligationDayAheadWrite.model_validate(as_write_args(self))
-
 
 
 class BenchmarkingProductionObligationDayAheadWrite(DomainModelWrite):
@@ -148,28 +145,35 @@ class BenchmarkingProductionObligationDayAheadWrite(DomainModelWrite):
         time_series: The time series of the day ahead production obligation for benchmarking
         name: The name of the day ahead production obligation for benchmarking
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("name", "time_series",)
+
+    _container_fields: ClassVar[tuple[str, ...]] = (
+        "name",
+        "time_series",
+    )
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingProductionObligationDayAhead", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingProductionObligationDayAhead")
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
+        "power_ops_types", "BenchmarkingProductionObligationDayAhead"
+    )
     time_series: Union[TimeSeriesWrite, str, None] = Field(None, alias="timeSeries")
     name: Optional[str] = None
-
 
 
 class BenchmarkingProductionObligationDayAheadList(DomainModelList[BenchmarkingProductionObligationDayAhead]):
     """List of benchmarking production obligation day aheads in the read version."""
 
     _INSTANCE = BenchmarkingProductionObligationDayAhead
+
     def as_write(self) -> BenchmarkingProductionObligationDayAheadWriteList:
         """Convert these read versions of benchmarking production obligation day ahead to the writing versions."""
         return BenchmarkingProductionObligationDayAheadWriteList([node.as_write() for node in self.data])
 
 
-
-class BenchmarkingProductionObligationDayAheadWriteList(DomainModelWriteList[BenchmarkingProductionObligationDayAheadWrite]):
+class BenchmarkingProductionObligationDayAheadWriteList(
+    DomainModelWriteList[BenchmarkingProductionObligationDayAheadWrite]
+):
     """List of benchmarking production obligation day aheads in the writing version."""
 
     _INSTANCE = BenchmarkingProductionObligationDayAheadWrite
@@ -201,7 +205,9 @@ def _create_benchmarking_production_obligation_day_ahead_filter(
     return dm.filters.And(*filters) if filters else None
 
 
-class _BenchmarkingProductionObligationDayAheadQuery(NodeQueryCore[T_DomainModelList, BenchmarkingProductionObligationDayAheadList]):
+class _BenchmarkingProductionObligationDayAheadQuery(
+    NodeQueryCore[T_DomainModelList, BenchmarkingProductionObligationDayAheadList]
+):
     _view_id = BenchmarkingProductionObligationDayAhead._view_id
     _result_cls = BenchmarkingProductionObligationDayAhead
     _result_list_cls_end = BenchmarkingProductionObligationDayAheadList
@@ -235,22 +241,31 @@ class _BenchmarkingProductionObligationDayAheadQuery(NodeQueryCore[T_DomainModel
         self.space = StringFilter(self, ["node", "space"])
         self.external_id = StringFilter(self, ["node", "externalId"])
         self.name = StringFilter(self, self._view_id.as_property_ref("name"))
-        self._filter_classes.extend([
-            self.space,
-            self.external_id,
-            self.name,
-        ])
-        self.time_series = TimeSeriesReferenceAPI(client,  lambda limit: [
-            item.time_series if isinstance(item.time_series, str) else item.time_series.external_id #type: ignore[misc]
-            for item in self._list(limit=limit)
-            if item.time_series is not None and
-               (isinstance(item.time_series, str) or item.time_series.external_id is not None)
-        ])
+        self._filter_classes.extend(
+            [
+                self.space,
+                self.external_id,
+                self.name,
+            ]
+        )
+        self.time_series = TimeSeriesReferenceAPI(
+            client,
+            lambda limit: [
+                item.time_series if isinstance(item.time_series, str) else item.time_series.external_id  # type: ignore[misc]
+                for item in self._list(limit=limit)
+                if item.time_series is not None
+                and (isinstance(item.time_series, str) or item.time_series.external_id is not None)
+            ],
+        )
 
-    def list_benchmarking_production_obligation_day_ahead(self, limit: int = DEFAULT_QUERY_LIMIT) -> BenchmarkingProductionObligationDayAheadList:
+    def list_benchmarking_production_obligation_day_ahead(
+        self, limit: int = DEFAULT_QUERY_LIMIT
+    ) -> BenchmarkingProductionObligationDayAheadList:
         return self._list(limit=limit)
 
 
-class BenchmarkingProductionObligationDayAheadQuery(_BenchmarkingProductionObligationDayAheadQuery[BenchmarkingProductionObligationDayAheadList]):
+class BenchmarkingProductionObligationDayAheadQuery(
+    _BenchmarkingProductionObligationDayAheadQuery[BenchmarkingProductionObligationDayAheadList]
+):
     def __init__(self, client: CogniteClient):
         super().__init__(set(), [], client, BenchmarkingProductionObligationDayAheadList)

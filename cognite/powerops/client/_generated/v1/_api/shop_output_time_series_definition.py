@@ -44,7 +44,14 @@ from cognite.powerops.client._generated.v1.data_classes import (
 )
 
 
-class ShopOutputTimeSeriesDefinitionAPI(NodeAPI[ShopOutputTimeSeriesDefinition, ShopOutputTimeSeriesDefinitionWrite, ShopOutputTimeSeriesDefinitionList, ShopOutputTimeSeriesDefinitionWriteList]):
+class ShopOutputTimeSeriesDefinitionAPI(
+    NodeAPI[
+        ShopOutputTimeSeriesDefinition,
+        ShopOutputTimeSeriesDefinitionWrite,
+        ShopOutputTimeSeriesDefinitionList,
+        ShopOutputTimeSeriesDefinitionWriteList,
+    ]
+):
     _view_id = dm.ViewId("power_ops_core", "ShopOutputTimeSeriesDefinition", "1")
     _properties_by_field: ClassVar[dict[str, str]] = _SHOPOUTPUTTIMESERIESDEFINITION_PROPERTIES_BY_FIELD
     _class_type = ShopOutputTimeSeriesDefinition
@@ -53,7 +60,6 @@ class ShopOutputTimeSeriesDefinitionAPI(NodeAPI[ShopOutputTimeSeriesDefinition, 
 
     def __init__(self, client: CogniteClient):
         super().__init__(client=client)
-
 
     @overload
     def retrieve(
@@ -102,7 +108,9 @@ class ShopOutputTimeSeriesDefinitionAPI(NodeAPI[ShopOutputTimeSeriesDefinition, 
     def search(
         self,
         query: str,
-        properties: ShopOutputTimeSeriesDefinitionTextFields | SequenceNotStr[ShopOutputTimeSeriesDefinitionTextFields] | None = None,
+        properties: (
+            ShopOutputTimeSeriesDefinitionTextFields | SequenceNotStr[ShopOutputTimeSeriesDefinitionTextFields] | None
+        ) = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         object_type: str | list[str] | None = None,
@@ -118,7 +126,9 @@ class ShopOutputTimeSeriesDefinitionAPI(NodeAPI[ShopOutputTimeSeriesDefinition, 
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-        sort_by: ShopOutputTimeSeriesDefinitionFields | SequenceNotStr[ShopOutputTimeSeriesDefinitionFields] | None = None,
+        sort_by: (
+            ShopOutputTimeSeriesDefinitionFields | SequenceNotStr[ShopOutputTimeSeriesDefinitionFields] | None
+        ) = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> ShopOutputTimeSeriesDefinitionList:
@@ -196,9 +206,13 @@ class ShopOutputTimeSeriesDefinitionAPI(NodeAPI[ShopOutputTimeSeriesDefinition, 
         self,
         aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
-        property: ShopOutputTimeSeriesDefinitionFields | SequenceNotStr[ShopOutputTimeSeriesDefinitionFields] | None = None,
+        property: (
+            ShopOutputTimeSeriesDefinitionFields | SequenceNotStr[ShopOutputTimeSeriesDefinitionFields] | None
+        ) = None,
         query: str | None = None,
-        search_property: ShopOutputTimeSeriesDefinitionTextFields | SequenceNotStr[ShopOutputTimeSeriesDefinitionTextFields] | None = None,
+        search_property: (
+            ShopOutputTimeSeriesDefinitionTextFields | SequenceNotStr[ShopOutputTimeSeriesDefinitionTextFields] | None
+        ) = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         object_type: str | list[str] | None = None,
@@ -221,9 +235,13 @@ class ShopOutputTimeSeriesDefinitionAPI(NodeAPI[ShopOutputTimeSeriesDefinition, 
         self,
         aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: None = None,
-        property: ShopOutputTimeSeriesDefinitionFields | SequenceNotStr[ShopOutputTimeSeriesDefinitionFields] | None = None,
+        property: (
+            ShopOutputTimeSeriesDefinitionFields | SequenceNotStr[ShopOutputTimeSeriesDefinitionFields] | None
+        ) = None,
         query: str | None = None,
-        search_property: ShopOutputTimeSeriesDefinitionTextFields | SequenceNotStr[ShopOutputTimeSeriesDefinitionTextFields] | None = None,
+        search_property: (
+            ShopOutputTimeSeriesDefinitionTextFields | SequenceNotStr[ShopOutputTimeSeriesDefinitionTextFields] | None
+        ) = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         object_type: str | list[str] | None = None,
@@ -244,13 +262,19 @@ class ShopOutputTimeSeriesDefinitionAPI(NodeAPI[ShopOutputTimeSeriesDefinition, 
     @overload
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
         group_by: ShopOutputTimeSeriesDefinitionFields | SequenceNotStr[ShopOutputTimeSeriesDefinitionFields],
-        property: ShopOutputTimeSeriesDefinitionFields | SequenceNotStr[ShopOutputTimeSeriesDefinitionFields] | None = None,
+        property: (
+            ShopOutputTimeSeriesDefinitionFields | SequenceNotStr[ShopOutputTimeSeriesDefinitionFields] | None
+        ) = None,
         query: str | None = None,
-        search_property: ShopOutputTimeSeriesDefinitionTextFields | SequenceNotStr[ShopOutputTimeSeriesDefinitionTextFields] | None = None,
+        search_property: (
+            ShopOutputTimeSeriesDefinitionTextFields | SequenceNotStr[ShopOutputTimeSeriesDefinitionTextFields] | None
+        ) = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         object_type: str | list[str] | None = None,
@@ -270,13 +294,21 @@ class ShopOutputTimeSeriesDefinitionAPI(NodeAPI[ShopOutputTimeSeriesDefinition, 
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
-        group_by: ShopOutputTimeSeriesDefinitionFields | SequenceNotStr[ShopOutputTimeSeriesDefinitionFields] | None = None,
-        property: ShopOutputTimeSeriesDefinitionFields | SequenceNotStr[ShopOutputTimeSeriesDefinitionFields] | None = None,
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
+        group_by: (
+            ShopOutputTimeSeriesDefinitionFields | SequenceNotStr[ShopOutputTimeSeriesDefinitionFields] | None
+        ) = None,
+        property: (
+            ShopOutputTimeSeriesDefinitionFields | SequenceNotStr[ShopOutputTimeSeriesDefinitionFields] | None
+        ) = None,
         query: str | None = None,
-        search_property: ShopOutputTimeSeriesDefinitionTextFields | SequenceNotStr[ShopOutputTimeSeriesDefinitionTextFields] | None = None,
+        search_property: (
+            ShopOutputTimeSeriesDefinitionTextFields | SequenceNotStr[ShopOutputTimeSeriesDefinitionTextFields] | None
+        ) = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         object_type: str | list[str] | None = None,
@@ -368,7 +400,9 @@ class ShopOutputTimeSeriesDefinitionAPI(NodeAPI[ShopOutputTimeSeriesDefinition, 
         property: ShopOutputTimeSeriesDefinitionFields,
         interval: float,
         query: str | None = None,
-        search_property: ShopOutputTimeSeriesDefinitionTextFields | SequenceNotStr[ShopOutputTimeSeriesDefinitionTextFields] | None = None,
+        search_property: (
+            ShopOutputTimeSeriesDefinitionTextFields | SequenceNotStr[ShopOutputTimeSeriesDefinitionTextFields] | None
+        ) = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         object_type: str | list[str] | None = None,
@@ -454,13 +488,15 @@ class ShopOutputTimeSeriesDefinitionAPI(NodeAPI[ShopOutputTimeSeriesDefinition, 
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(factory.root(
-            filter=filter_,
-            sort=sort,
-            limit=limit,
-            max_retrieve_batch_limit=chunk_size,
-            has_container_fields=True,
-        ))
+        builder.append(
+            factory.root(
+                filter=filter_,
+                sort=sort,
+                limit=limit,
+                max_retrieve_batch_limit=chunk_size,
+                has_container_fields=True,
+            )
+        )
         return builder.build()
 
     def iterate(
@@ -645,5 +681,5 @@ class ShopOutputTimeSeriesDefinitionAPI(NodeAPI[ShopOutputTimeSeriesDefinition, 
             space,
             filter,
         )
-        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
-        return self._list(limit=limit,  filter=filter_, sort=sort_input)
+        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        return self._list(limit=limit, filter=filter_, sort=sort_input)

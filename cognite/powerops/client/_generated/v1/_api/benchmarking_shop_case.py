@@ -45,10 +45,14 @@ from cognite.powerops.client._generated.v1.data_classes import (
     ShopFile,
     ShopScenario,
 )
-from cognite.powerops.client._generated.v1._api.benchmarking_shop_case_shop_files import BenchmarkingShopCaseShopFilesAPI
+from cognite.powerops.client._generated.v1._api.benchmarking_shop_case_shop_files import (
+    BenchmarkingShopCaseShopFilesAPI,
+)
 
 
-class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCaseWrite, BenchmarkingShopCaseList, BenchmarkingShopCaseWriteList]):
+class BenchmarkingShopCaseAPI(
+    NodeAPI[BenchmarkingShopCase, BenchmarkingShopCaseWrite, BenchmarkingShopCaseList, BenchmarkingShopCaseWriteList]
+):
     _view_id = dm.ViewId("power_ops_core", "BenchmarkingShopCase", "1")
     _properties_by_field: ClassVar[dict[str, str]] = _BENCHMARKINGSHOPCASE_PROPERTIES_BY_FIELD
     _class_type = BenchmarkingShopCase
@@ -115,13 +119,35 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         self,
         query: str,
         properties: BenchmarkingShopCaseTextFields | SequenceNotStr[BenchmarkingShopCaseTextFields] | None = None,
-        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        scenario: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
         max_end_time: datetime.datetime | None = None,
-        status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
-        bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        status: (
+            Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]
+            | list[
+                Literal[
+                    "completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"
+                ]
+            ]
+            | None
+        ) = None,
+        bid_source: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_bid_generated: datetime.datetime | None = None,
@@ -209,13 +235,35 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
         property: BenchmarkingShopCaseFields | SequenceNotStr[BenchmarkingShopCaseFields] | None = None,
-        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        scenario: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
         max_end_time: datetime.datetime | None = None,
-        status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
-        bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        status: (
+            Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]
+            | list[
+                Literal[
+                    "completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"
+                ]
+            ]
+            | None
+        ) = None,
+        bid_source: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_bid_generated: datetime.datetime | None = None,
@@ -232,13 +280,35 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: None = None,
         property: BenchmarkingShopCaseFields | SequenceNotStr[BenchmarkingShopCaseFields] | None = None,
-        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        scenario: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
         max_end_time: datetime.datetime | None = None,
-        status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
-        bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        status: (
+            Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]
+            | list[
+                Literal[
+                    "completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"
+                ]
+            ]
+            | None
+        ) = None,
+        bid_source: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_bid_generated: datetime.datetime | None = None,
@@ -252,18 +322,42 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
     @overload
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
         group_by: BenchmarkingShopCaseFields | SequenceNotStr[BenchmarkingShopCaseFields],
         property: BenchmarkingShopCaseFields | SequenceNotStr[BenchmarkingShopCaseFields] | None = None,
-        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        scenario: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
         max_end_time: datetime.datetime | None = None,
-        status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
-        bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        status: (
+            Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]
+            | list[
+                Literal[
+                    "completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"
+                ]
+            ]
+            | None
+        ) = None,
+        bid_source: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_bid_generated: datetime.datetime | None = None,
@@ -276,18 +370,42 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
         group_by: BenchmarkingShopCaseFields | SequenceNotStr[BenchmarkingShopCaseFields] | None = None,
         property: BenchmarkingShopCaseFields | SequenceNotStr[BenchmarkingShopCaseFields] | None = None,
-        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        scenario: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
         max_end_time: datetime.datetime | None = None,
-        status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
-        bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        status: (
+            Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]
+            | list[
+                Literal[
+                    "completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"
+                ]
+            ]
+            | None
+        ) = None,
+        bid_source: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_bid_generated: datetime.datetime | None = None,
@@ -369,13 +487,35 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
         self,
         property: BenchmarkingShopCaseFields,
         interval: float,
-        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        scenario: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
         max_end_time: datetime.datetime | None = None,
-        status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
-        bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        status: (
+            Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]
+            | list[
+                Literal[
+                    "completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"
+                ]
+            ]
+            | None
+        ) = None,
+        bid_source: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_bid_generated: datetime.datetime | None = None,
@@ -452,13 +592,15 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(factory.root(
-            filter=filter_,
-            sort=sort,
-            limit=limit,
-            max_retrieve_batch_limit=chunk_size,
-            has_container_fields=True,
-        ))
+        builder.append(
+            factory.root(
+                filter=filter_,
+                sort=sort,
+                limit=limit,
+                max_retrieve_batch_limit=chunk_size,
+                has_container_fields=True,
+            )
+        )
         if retrieve_connections == "identifier" or retrieve_connections == "full":
             builder.extend(
                 factory.from_edge(
@@ -482,13 +624,35 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
     def iterate(
         self,
         chunk_size: int = DEFAULT_CHUNK_SIZE,
-        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        scenario: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
         max_end_time: datetime.datetime | None = None,
-        status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
-        bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        status: (
+            Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]
+            | list[
+                Literal[
+                    "completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"
+                ]
+            ]
+            | None
+        ) = None,
+        bid_source: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_bid_generated: datetime.datetime | None = None,
@@ -591,13 +755,35 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
 
     def list(
         self,
-        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        scenario: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
         max_end_time: datetime.datetime | None = None,
-        status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
-        bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        status: (
+            Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]
+            | list[
+                Literal[
+                    "completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"
+                ]
+            ]
+            | None
+        ) = None,
+        bid_source: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_bid_generated: datetime.datetime | None = None,
@@ -669,7 +855,7 @@ class BenchmarkingShopCaseAPI(NodeAPI[BenchmarkingShopCase, BenchmarkingShopCase
             space,
             filter,
         )
-        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
-            return self._list(limit=limit,  filter=filter_, sort=sort_input)
+            return self._list(limit=limit, filter=filter_, sort=sort_input)
         return self._query(filter_, limit, retrieve_connections, sort_input, "list")

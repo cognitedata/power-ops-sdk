@@ -45,10 +45,19 @@ from cognite.powerops.client._generated.v1.data_classes import (
     Alert,
     ShopResult,
 )
-from cognite.powerops.client._generated.v1._api.benchmarking_result_day_ahead_alerts import BenchmarkingResultDayAheadAlertsAPI
+from cognite.powerops.client._generated.v1._api.benchmarking_result_day_ahead_alerts import (
+    BenchmarkingResultDayAheadAlertsAPI,
+)
 
 
-class BenchmarkingResultDayAheadAPI(NodeAPI[BenchmarkingResultDayAhead, BenchmarkingResultDayAheadWrite, BenchmarkingResultDayAheadList, BenchmarkingResultDayAheadWriteList]):
+class BenchmarkingResultDayAheadAPI(
+    NodeAPI[
+        BenchmarkingResultDayAhead,
+        BenchmarkingResultDayAheadWrite,
+        BenchmarkingResultDayAheadList,
+        BenchmarkingResultDayAheadWriteList,
+    ]
+):
     _view_id = dm.ViewId("power_ops_core", "BenchmarkingResultDayAhead", "1")
     _properties_by_field: ClassVar[dict[str, str]] = _BENCHMARKINGRESULTDAYAHEAD_PROPERTIES_BY_FIELD
     _class_type = BenchmarkingResultDayAhead
@@ -114,17 +123,33 @@ class BenchmarkingResultDayAheadAPI(NodeAPI[BenchmarkingResultDayAhead, Benchmar
     def search(
         self,
         query: str,
-        properties: BenchmarkingResultDayAheadTextFields | SequenceNotStr[BenchmarkingResultDayAheadTextFields] | None = None,
+        properties: (
+            BenchmarkingResultDayAheadTextFields | SequenceNotStr[BenchmarkingResultDayAheadTextFields] | None
+        ) = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
-        bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_source: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_bid_generated: datetime.datetime | None = None,
         max_bid_generated: datetime.datetime | None = None,
-        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_result: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         is_selected: bool | None = None,
         min_value: float | None = None,
         max_value: float | None = None,
@@ -216,17 +241,33 @@ class BenchmarkingResultDayAheadAPI(NodeAPI[BenchmarkingResultDayAhead, Benchmar
         group_by: None = None,
         property: BenchmarkingResultDayAheadFields | SequenceNotStr[BenchmarkingResultDayAheadFields] | None = None,
         query: str | None = None,
-        search_property: BenchmarkingResultDayAheadTextFields | SequenceNotStr[BenchmarkingResultDayAheadTextFields] | None = None,
+        search_property: (
+            BenchmarkingResultDayAheadTextFields | SequenceNotStr[BenchmarkingResultDayAheadTextFields] | None
+        ) = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
-        bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_source: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_bid_generated: datetime.datetime | None = None,
         max_bid_generated: datetime.datetime | None = None,
-        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_result: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         is_selected: bool | None = None,
         min_value: float | None = None,
         max_value: float | None = None,
@@ -243,17 +284,33 @@ class BenchmarkingResultDayAheadAPI(NodeAPI[BenchmarkingResultDayAhead, Benchmar
         group_by: None = None,
         property: BenchmarkingResultDayAheadFields | SequenceNotStr[BenchmarkingResultDayAheadFields] | None = None,
         query: str | None = None,
-        search_property: BenchmarkingResultDayAheadTextFields | SequenceNotStr[BenchmarkingResultDayAheadTextFields] | None = None,
+        search_property: (
+            BenchmarkingResultDayAheadTextFields | SequenceNotStr[BenchmarkingResultDayAheadTextFields] | None
+        ) = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
-        bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_source: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_bid_generated: datetime.datetime | None = None,
         max_bid_generated: datetime.datetime | None = None,
-        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_result: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         is_selected: bool | None = None,
         min_value: float | None = None,
         max_value: float | None = None,
@@ -266,23 +323,41 @@ class BenchmarkingResultDayAheadAPI(NodeAPI[BenchmarkingResultDayAhead, Benchmar
     @overload
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
         group_by: BenchmarkingResultDayAheadFields | SequenceNotStr[BenchmarkingResultDayAheadFields],
         property: BenchmarkingResultDayAheadFields | SequenceNotStr[BenchmarkingResultDayAheadFields] | None = None,
         query: str | None = None,
-        search_property: BenchmarkingResultDayAheadTextFields | SequenceNotStr[BenchmarkingResultDayAheadTextFields] | None = None,
+        search_property: (
+            BenchmarkingResultDayAheadTextFields | SequenceNotStr[BenchmarkingResultDayAheadTextFields] | None
+        ) = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
-        bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_source: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_bid_generated: datetime.datetime | None = None,
         max_bid_generated: datetime.datetime | None = None,
-        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_result: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         is_selected: bool | None = None,
         min_value: float | None = None,
         max_value: float | None = None,
@@ -294,23 +369,41 @@ class BenchmarkingResultDayAheadAPI(NodeAPI[BenchmarkingResultDayAhead, Benchmar
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
         group_by: BenchmarkingResultDayAheadFields | SequenceNotStr[BenchmarkingResultDayAheadFields] | None = None,
         property: BenchmarkingResultDayAheadFields | SequenceNotStr[BenchmarkingResultDayAheadFields] | None = None,
         query: str | None = None,
-        search_property: BenchmarkingResultDayAheadTextFields | SequenceNotStr[BenchmarkingResultDayAheadTextFields] | None = None,
+        search_property: (
+            BenchmarkingResultDayAheadTextFields | SequenceNotStr[BenchmarkingResultDayAheadTextFields] | None
+        ) = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
-        bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_source: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_bid_generated: datetime.datetime | None = None,
         max_bid_generated: datetime.datetime | None = None,
-        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_result: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         is_selected: bool | None = None,
         min_value: float | None = None,
         max_value: float | None = None,
@@ -398,17 +491,33 @@ class BenchmarkingResultDayAheadAPI(NodeAPI[BenchmarkingResultDayAhead, Benchmar
         property: BenchmarkingResultDayAheadFields,
         interval: float,
         query: str | None = None,
-        search_property: BenchmarkingResultDayAheadTextFields | SequenceNotStr[BenchmarkingResultDayAheadTextFields] | None = None,
+        search_property: (
+            BenchmarkingResultDayAheadTextFields | SequenceNotStr[BenchmarkingResultDayAheadTextFields] | None
+        ) = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
-        bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_source: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_bid_generated: datetime.datetime | None = None,
         max_bid_generated: datetime.datetime | None = None,
-        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_result: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         is_selected: bool | None = None,
         min_value: float | None = None,
         max_value: float | None = None,
@@ -490,13 +599,15 @@ class BenchmarkingResultDayAheadAPI(NodeAPI[BenchmarkingResultDayAhead, Benchmar
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(factory.root(
-            filter=filter_,
-            sort=sort,
-            limit=limit,
-            max_retrieve_batch_limit=chunk_size,
-            has_container_fields=True,
-        ))
+        builder.append(
+            factory.root(
+                filter=filter_,
+                sort=sort,
+                limit=limit,
+                max_retrieve_batch_limit=chunk_size,
+                has_container_fields=True,
+            )
+        )
         if retrieve_connections == "identifier" or retrieve_connections == "full":
             builder.extend(
                 factory.from_edge(
@@ -524,12 +635,26 @@ class BenchmarkingResultDayAheadAPI(NodeAPI[BenchmarkingResultDayAhead, Benchmar
         name_prefix: str | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
-        bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_source: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_bid_generated: datetime.datetime | None = None,
         max_bid_generated: datetime.datetime | None = None,
-        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_result: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         is_selected: bool | None = None,
         min_value: float | None = None,
         max_value: float | None = None,
@@ -639,12 +764,26 @@ class BenchmarkingResultDayAheadAPI(NodeAPI[BenchmarkingResultDayAhead, Benchmar
         name_prefix: str | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
-        bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_source: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_delivery_date: datetime.date | None = None,
         max_delivery_date: datetime.date | None = None,
         min_bid_generated: datetime.datetime | None = None,
         max_bid_generated: datetime.datetime | None = None,
-        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_result: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         is_selected: bool | None = None,
         min_value: float | None = None,
         max_value: float | None = None,
@@ -719,7 +858,7 @@ class BenchmarkingResultDayAheadAPI(NodeAPI[BenchmarkingResultDayAhead, Benchmar
             space,
             filter,
         )
-        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
-            return self._list(limit=limit,  filter=filter_, sort=sort_input)
+            return self._list(limit=limit, filter=filter_, sort=sort_input)
         return self._query(filter_, limit, retrieve_connections, sort_input, "list")

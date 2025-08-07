@@ -45,7 +45,9 @@ from cognite.powerops.client._generated.v1.data_classes import (
 )
 
 
-class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformationWrite, PriceAreaInformationList, PriceAreaInformationWriteList]):
+class PriceAreaInformationAPI(
+    NodeAPI[PriceAreaInformation, PriceAreaInformationWrite, PriceAreaInformationList, PriceAreaInformationWriteList]
+):
     _view_id = dm.ViewId("power_ops_core", "PriceAreaInformation", "1")
     _properties_by_field: ClassVar[dict[str, str]] = _PRICEAREAINFORMATION_PROPERTIES_BY_FIELD
     _class_type = PriceAreaInformation
@@ -54,7 +56,6 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
 
     def __init__(self, client: CogniteClient):
         super().__init__(client=client)
-
 
     @overload
     def retrieve(
@@ -119,7 +120,14 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        default_bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -209,7 +217,14 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        default_bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -232,7 +247,14 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        default_bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -242,9 +264,11 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
     @overload
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
         group_by: PriceAreaInformationFields | SequenceNotStr[PriceAreaInformationFields],
         property: PriceAreaInformationFields | SequenceNotStr[PriceAreaInformationFields] | None = None,
         query: str | None = None,
@@ -257,7 +281,14 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        default_bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -266,9 +297,11 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
         group_by: PriceAreaInformationFields | SequenceNotStr[PriceAreaInformationFields] | None = None,
         property: PriceAreaInformationFields | SequenceNotStr[PriceAreaInformationFields] | None = None,
         query: str | None = None,
@@ -281,7 +314,14 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        default_bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -367,7 +407,14 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        default_bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -438,13 +485,15 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(factory.root(
-            filter=filter_,
-            sort=sort,
-            limit=limit,
-            max_retrieve_batch_limit=chunk_size,
-            has_container_fields=True,
-        ))
+        builder.append(
+            factory.root(
+                filter=filter_,
+                sort=sort,
+                limit=limit,
+                max_retrieve_batch_limit=chunk_size,
+                has_container_fields=True,
+            )
+        )
         if retrieve_connections == "full":
             builder.extend(
                 factory.from_direct_relation(
@@ -466,7 +515,14 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        default_bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         filter: dm.Filter | None = None,
@@ -569,7 +625,14 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
         max_ordering: int | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
-        default_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        default_bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -633,7 +696,7 @@ class PriceAreaInformationAPI(NodeAPI[PriceAreaInformation, PriceAreaInformation
             space,
             filter,
         )
-        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
-            return self._list(limit=limit,  filter=filter_, sort=sort_input)
+            return self._list(limit=limit, filter=filter_, sort=sort_input)
         return self._query(filter_, limit, retrieve_connections, sort_input, "list")

@@ -49,7 +49,14 @@ from cognite.powerops.client._generated.v1.data_classes import (
 )
 
 
-class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInput, PartialBidMatrixCalculationInputWrite, PartialBidMatrixCalculationInputList, PartialBidMatrixCalculationInputWriteList]):
+class PartialBidMatrixCalculationInputAPI(
+    NodeAPI[
+        PartialBidMatrixCalculationInput,
+        PartialBidMatrixCalculationInputWrite,
+        PartialBidMatrixCalculationInputList,
+        PartialBidMatrixCalculationInputWriteList,
+    ]
+):
     _view_id = dm.ViewId("power_ops_core", "PartialBidMatrixCalculationInput", "1")
     _properties_by_field: ClassVar[dict[str, str]] = _PARTIALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD
     _direct_children_by_external_id: ClassVar[dict[str, type[DomainModel]]] = {
@@ -63,13 +70,19 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
     def __init__(self, client: CogniteClient):
         super().__init__(client=client)
 
-
     @overload
     def retrieve(
         self,
         external_id: str | dm.NodeId | tuple[str, str],
         space: str = DEFAULT_INSTANCE_SPACE,
-        as_child_class: SequenceNotStr[Literal["MultiScenarioPartialBidMatrixCalculationInput", "WaterValueBasedPartialBidMatrixCalculationInput"]] | None = None,
+        as_child_class: (
+            SequenceNotStr[
+                Literal[
+                    "MultiScenarioPartialBidMatrixCalculationInput", "WaterValueBasedPartialBidMatrixCalculationInput"
+                ]
+            ]
+            | None
+        ) = None,
         retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> PartialBidMatrixCalculationInput | None: ...
 
@@ -78,7 +91,14 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
         self,
         external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]],
         space: str = DEFAULT_INSTANCE_SPACE,
-        as_child_class: SequenceNotStr[Literal["MultiScenarioPartialBidMatrixCalculationInput", "WaterValueBasedPartialBidMatrixCalculationInput"]] | None = None,
+        as_child_class: (
+            SequenceNotStr[
+                Literal[
+                    "MultiScenarioPartialBidMatrixCalculationInput", "WaterValueBasedPartialBidMatrixCalculationInput"
+                ]
+            ]
+            | None
+        ) = None,
         retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> PartialBidMatrixCalculationInputList: ...
 
@@ -86,7 +106,14 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
         self,
         external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]],
         space: str = DEFAULT_INSTANCE_SPACE,
-        as_child_class: SequenceNotStr[Literal["MultiScenarioPartialBidMatrixCalculationInput", "WaterValueBasedPartialBidMatrixCalculationInput"]] | None = None,
+        as_child_class: (
+            SequenceNotStr[
+                Literal[
+                    "MultiScenarioPartialBidMatrixCalculationInput", "WaterValueBasedPartialBidMatrixCalculationInput"
+                ]
+            ]
+            | None
+        ) = None,
         retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> PartialBidMatrixCalculationInput | PartialBidMatrixCalculationInputList | None:
         """Retrieve one or more partial bid matrix calculation inputs by id(s).
@@ -117,16 +144,17 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
 
         """
         return self._retrieve(
-            external_id,
-            space,
-            retrieve_connections=retrieve_connections,
-            as_child_class=as_child_class
+            external_id, space, retrieve_connections=retrieve_connections, as_child_class=as_child_class
         )
 
     def search(
         self,
         query: str,
-        properties: PartialBidMatrixCalculationInputTextFields | SequenceNotStr[PartialBidMatrixCalculationInputTextFields] | None = None,
+        properties: (
+            PartialBidMatrixCalculationInputTextFields
+            | SequenceNotStr[PartialBidMatrixCalculationInputTextFields]
+            | None
+        ) = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -137,13 +165,29 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
         function_call_id_prefix: str | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
-        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        partial_bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-        sort_by: PartialBidMatrixCalculationInputFields | SequenceNotStr[PartialBidMatrixCalculationInputFields] | None = None,
+        sort_by: (
+            PartialBidMatrixCalculationInputFields | SequenceNotStr[PartialBidMatrixCalculationInputFields] | None
+        ) = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> PartialBidMatrixCalculationInputList:
@@ -223,9 +267,15 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
         self,
         aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
-        property: PartialBidMatrixCalculationInputFields | SequenceNotStr[PartialBidMatrixCalculationInputFields] | None = None,
+        property: (
+            PartialBidMatrixCalculationInputFields | SequenceNotStr[PartialBidMatrixCalculationInputFields] | None
+        ) = None,
         query: str | None = None,
-        search_property: PartialBidMatrixCalculationInputTextFields | SequenceNotStr[PartialBidMatrixCalculationInputTextFields] | None = None,
+        search_property: (
+            PartialBidMatrixCalculationInputTextFields
+            | SequenceNotStr[PartialBidMatrixCalculationInputTextFields]
+            | None
+        ) = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -236,8 +286,22 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
         function_call_id_prefix: str | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
-        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        partial_bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -249,9 +313,15 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
         self,
         aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: None = None,
-        property: PartialBidMatrixCalculationInputFields | SequenceNotStr[PartialBidMatrixCalculationInputFields] | None = None,
+        property: (
+            PartialBidMatrixCalculationInputFields | SequenceNotStr[PartialBidMatrixCalculationInputFields] | None
+        ) = None,
         query: str | None = None,
-        search_property: PartialBidMatrixCalculationInputTextFields | SequenceNotStr[PartialBidMatrixCalculationInputTextFields] | None = None,
+        search_property: (
+            PartialBidMatrixCalculationInputTextFields
+            | SequenceNotStr[PartialBidMatrixCalculationInputTextFields]
+            | None
+        ) = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -262,8 +332,22 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
         function_call_id_prefix: str | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
-        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        partial_bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -273,13 +357,21 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
     @overload
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
         group_by: PartialBidMatrixCalculationInputFields | SequenceNotStr[PartialBidMatrixCalculationInputFields],
-        property: PartialBidMatrixCalculationInputFields | SequenceNotStr[PartialBidMatrixCalculationInputFields] | None = None,
+        property: (
+            PartialBidMatrixCalculationInputFields | SequenceNotStr[PartialBidMatrixCalculationInputFields] | None
+        ) = None,
         query: str | None = None,
-        search_property: PartialBidMatrixCalculationInputTextFields | SequenceNotStr[PartialBidMatrixCalculationInputTextFields] | None = None,
+        search_property: (
+            PartialBidMatrixCalculationInputTextFields
+            | SequenceNotStr[PartialBidMatrixCalculationInputTextFields]
+            | None
+        ) = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -290,8 +382,22 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
         function_call_id_prefix: str | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
-        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        partial_bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -300,13 +406,23 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
-        group_by: PartialBidMatrixCalculationInputFields | SequenceNotStr[PartialBidMatrixCalculationInputFields] | None = None,
-        property: PartialBidMatrixCalculationInputFields | SequenceNotStr[PartialBidMatrixCalculationInputFields] | None = None,
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
+        group_by: (
+            PartialBidMatrixCalculationInputFields | SequenceNotStr[PartialBidMatrixCalculationInputFields] | None
+        ) = None,
+        property: (
+            PartialBidMatrixCalculationInputFields | SequenceNotStr[PartialBidMatrixCalculationInputFields] | None
+        ) = None,
         query: str | None = None,
-        search_property: PartialBidMatrixCalculationInputTextFields | SequenceNotStr[PartialBidMatrixCalculationInputTextFields] | None = None,
+        search_property: (
+            PartialBidMatrixCalculationInputTextFields
+            | SequenceNotStr[PartialBidMatrixCalculationInputTextFields]
+            | None
+        ) = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -317,8 +433,22 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
         function_call_id_prefix: str | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
-        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        partial_bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -401,7 +531,11 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
         property: PartialBidMatrixCalculationInputFields,
         interval: float,
         query: str | None = None,
-        search_property: PartialBidMatrixCalculationInputTextFields | SequenceNotStr[PartialBidMatrixCalculationInputTextFields] | None = None,
+        search_property: (
+            PartialBidMatrixCalculationInputTextFields
+            | SequenceNotStr[PartialBidMatrixCalculationInputTextFields]
+            | None
+        ) = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -412,8 +546,22 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
         function_call_id_prefix: str | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
-        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        partial_bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -490,13 +638,15 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(factory.root(
-            filter=filter_,
-            sort=sort,
-            limit=limit,
-            max_retrieve_batch_limit=chunk_size,
-            has_container_fields=True,
-        ))
+        builder.append(
+            factory.root(
+                filter=filter_,
+                sort=sort,
+                limit=limit,
+                max_retrieve_batch_limit=chunk_size,
+                has_container_fields=True,
+            )
+        )
         if retrieve_connections == "full":
             builder.extend(
                 factory.from_direct_relation(
@@ -527,8 +677,22 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
         function_call_id_prefix: str | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
-        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        partial_bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         filter: dm.Filter | None = None,
@@ -640,13 +804,29 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
         function_call_id_prefix: str | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
-        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        partial_bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-        sort_by: PartialBidMatrixCalculationInputFields | Sequence[PartialBidMatrixCalculationInputFields] | None = None,
+        sort_by: (
+            PartialBidMatrixCalculationInputFields | Sequence[PartialBidMatrixCalculationInputFields] | None
+        ) = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
         retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
@@ -712,7 +892,7 @@ class PartialBidMatrixCalculationInputAPI(NodeAPI[PartialBidMatrixCalculationInp
             space,
             filter,
         )
-        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
-            return self._list(limit=limit,  filter=filter_, sort=sort_input)
+            return self._list(limit=limit, filter=filter_, sort=sort_input)
         return self._query(filter_, limit, retrieve_connections, sort_input, "list")

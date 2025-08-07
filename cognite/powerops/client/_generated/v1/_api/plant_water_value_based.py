@@ -44,10 +44,14 @@ from cognite.powerops.client._generated.v1.data_classes import (
     Generator,
     PlantInformation,
 )
-from cognite.powerops.client._generated.v1._api.plant_water_value_based_generators import PlantWaterValueBasedGeneratorsAPI
+from cognite.powerops.client._generated.v1._api.plant_water_value_based_generators import (
+    PlantWaterValueBasedGeneratorsAPI,
+)
 
 
-class PlantWaterValueBasedAPI(NodeAPI[PlantWaterValueBased, PlantWaterValueBasedWrite, PlantWaterValueBasedList, PlantWaterValueBasedWriteList]):
+class PlantWaterValueBasedAPI(
+    NodeAPI[PlantWaterValueBased, PlantWaterValueBasedWrite, PlantWaterValueBasedList, PlantWaterValueBasedWriteList]
+):
     _view_id = dm.ViewId("power_ops_core", "PlantWaterValueBased", "1")
     _properties_by_field: ClassVar[dict[str, str]] = _PLANTWATERVALUEBASED_PROPERTIES_BY_FIELD
     _direct_children_by_external_id: ClassVar[dict[str, type[DomainModel]]] = {
@@ -114,10 +118,7 @@ class PlantWaterValueBasedAPI(NodeAPI[PlantWaterValueBased, PlantWaterValueBased
 
         """
         return self._retrieve(
-            external_id,
-            space,
-            retrieve_connections=retrieve_connections,
-            as_child_class=as_child_class
+            external_id, space, retrieve_connections=retrieve_connections, as_child_class=as_child_class
         )
 
     def search(
@@ -300,9 +301,11 @@ class PlantWaterValueBasedAPI(NodeAPI[PlantWaterValueBased, PlantWaterValueBased
     @overload
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
         group_by: PlantWaterValueBasedFields | SequenceNotStr[PlantWaterValueBasedFields],
         property: PlantWaterValueBasedFields | SequenceNotStr[PlantWaterValueBasedFields] | None = None,
         query: str | None = None,
@@ -333,9 +336,11 @@ class PlantWaterValueBasedAPI(NodeAPI[PlantWaterValueBased, PlantWaterValueBased
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
         group_by: PlantWaterValueBasedFields | SequenceNotStr[PlantWaterValueBasedFields] | None = None,
         property: PlantWaterValueBasedFields | SequenceNotStr[PlantWaterValueBasedFields] | None = None,
         query: str | None = None,
@@ -559,13 +564,15 @@ class PlantWaterValueBasedAPI(NodeAPI[PlantWaterValueBased, PlantWaterValueBased
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(factory.root(
-            filter=filter_,
-            sort=sort,
-            limit=limit,
-            max_retrieve_batch_limit=chunk_size,
-            has_container_fields=True,
-        ))
+        builder.append(
+            factory.root(
+                filter=filter_,
+                sort=sort,
+                limit=limit,
+                max_retrieve_batch_limit=chunk_size,
+                has_container_fields=True,
+            )
+        )
         if retrieve_connections == "identifier" or retrieve_connections == "full":
             builder.extend(
                 factory.from_edge(
@@ -810,7 +817,7 @@ class PlantWaterValueBasedAPI(NodeAPI[PlantWaterValueBased, PlantWaterValueBased
             space,
             filter,
         )
-        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
-            return self._list(limit=limit,  filter=filter_, sort=sort_input)
+            return self._list(limit=limit, filter=filter_, sort=sort_input)
         return self._query(filter_, limit, retrieve_connections, sort_input, "list")

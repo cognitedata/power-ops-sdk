@@ -36,10 +36,26 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     BooleanFilter,
     DirectRelationFilter,
 )
-from cognite.powerops.client._generated.v1.data_classes._partial_bid_configuration import PartialBidConfiguration, PartialBidConfigurationWrite
+from cognite.powerops.client._generated.v1.data_classes._partial_bid_configuration import (
+    PartialBidConfiguration,
+    PartialBidConfigurationWrite,
+)
+
 if TYPE_CHECKING:
-    from cognite.powerops.client._generated.v1.data_classes._power_asset import PowerAsset, PowerAssetList, PowerAssetGraphQL, PowerAssetWrite, PowerAssetWriteList
-    from cognite.powerops.client._generated.v1.data_classes._shop_scenario_set import ShopScenarioSet, ShopScenarioSetList, ShopScenarioSetGraphQL, ShopScenarioSetWrite, ShopScenarioSetWriteList
+    from cognite.powerops.client._generated.v1.data_classes._power_asset import (
+        PowerAsset,
+        PowerAssetList,
+        PowerAssetGraphQL,
+        PowerAssetWrite,
+        PowerAssetWriteList,
+    )
+    from cognite.powerops.client._generated.v1.data_classes._shop_scenario_set import (
+        ShopScenarioSet,
+        ShopScenarioSetList,
+        ShopScenarioSetGraphQL,
+        ShopScenarioSetWrite,
+        ShopScenarioSetWriteList,
+    )
 
 
 __all__ = [
@@ -99,7 +115,6 @@ class ShopBasedPartialBidConfigurationGraphQL(GraphQLCore):
             )
         return values
 
-
     @field_validator("power_asset", "scenario_set", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -135,18 +150,19 @@ class ShopBasedPartialBidConfiguration(PartialBidConfiguration):
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopBasedPartialBidConfiguration", "1")
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopBasedPartialBidConfiguration")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
+        "power_ops_types", "ShopBasedPartialBidConfiguration"
+    )
     scenario_set: Union[ShopScenarioSet, str, dm.NodeId, None] = Field(default=None, repr=False, alias="scenarioSet")
+
     @field_validator("power_asset", "scenario_set", mode="before")
     @classmethod
     def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
         return parse_single_connection(value, info.field_name)
 
-
     def as_write(self) -> ShopBasedPartialBidConfigurationWrite:
         """Convert this read version of shop based partial bid configuration to the writing version."""
         return ShopBasedPartialBidConfigurationWrite.model_validate(as_write_args(self))
-
 
 
 class ShopBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
@@ -164,13 +180,27 @@ class ShopBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
         add_steps: TODO definition
         scenario_set: The scenario set field.
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("add_steps", "method", "name", "power_asset", "scenario_set",)
-    _direct_relations: ClassVar[tuple[str, ...]] = ("power_asset", "scenario_set",)
+
+    _container_fields: ClassVar[tuple[str, ...]] = (
+        "add_steps",
+        "method",
+        "name",
+        "power_asset",
+        "scenario_set",
+    )
+    _direct_relations: ClassVar[tuple[str, ...]] = (
+        "power_asset",
+        "scenario_set",
+    )
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopBasedPartialBidConfiguration", "1")
 
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "ShopBasedPartialBidConfiguration")
-    scenario_set: Union[ShopScenarioSetWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="scenarioSet")
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
+        "power_ops_types", "ShopBasedPartialBidConfiguration"
+    )
+    scenario_set: Union[ShopScenarioSetWrite, str, dm.NodeId, None] = Field(
+        default=None, repr=False, alias="scenarioSet"
+    )
 
     @field_validator("scenario_set", mode="before")
     def as_node_id(cls, value: Any) -> Any:
@@ -187,32 +217,46 @@ class ShopBasedPartialBidConfigurationList(DomainModelList[ShopBasedPartialBidCo
     """List of shop based partial bid configurations in the read version."""
 
     _INSTANCE = ShopBasedPartialBidConfiguration
+
     def as_write(self) -> ShopBasedPartialBidConfigurationWriteList:
         """Convert these read versions of shop based partial bid configuration to the writing versions."""
         return ShopBasedPartialBidConfigurationWriteList([node.as_write() for node in self.data])
 
-
     @property
     def power_asset(self) -> PowerAssetList:
         from ._power_asset import PowerAsset, PowerAssetList
+
         return PowerAssetList([item.power_asset for item in self.data if isinstance(item.power_asset, PowerAsset)])
+
     @property
     def scenario_set(self) -> ShopScenarioSetList:
         from ._shop_scenario_set import ShopScenarioSet, ShopScenarioSetList
-        return ShopScenarioSetList([item.scenario_set for item in self.data if isinstance(item.scenario_set, ShopScenarioSet)])
+
+        return ShopScenarioSetList(
+            [item.scenario_set for item in self.data if isinstance(item.scenario_set, ShopScenarioSet)]
+        )
+
 
 class ShopBasedPartialBidConfigurationWriteList(DomainModelWriteList[ShopBasedPartialBidConfigurationWrite]):
     """List of shop based partial bid configurations in the writing version."""
 
     _INSTANCE = ShopBasedPartialBidConfigurationWrite
+
     @property
     def power_asset(self) -> PowerAssetWriteList:
         from ._power_asset import PowerAssetWrite, PowerAssetWriteList
-        return PowerAssetWriteList([item.power_asset for item in self.data if isinstance(item.power_asset, PowerAssetWrite)])
+
+        return PowerAssetWriteList(
+            [item.power_asset for item in self.data if isinstance(item.power_asset, PowerAssetWrite)]
+        )
+
     @property
     def scenario_set(self) -> ShopScenarioSetWriteList:
         from ._shop_scenario_set import ShopScenarioSetWrite, ShopScenarioSetWriteList
-        return ShopScenarioSetWriteList([item.scenario_set for item in self.data if isinstance(item.scenario_set, ShopScenarioSetWrite)])
+
+        return ShopScenarioSetWriteList(
+            [item.scenario_set for item in self.data if isinstance(item.scenario_set, ShopScenarioSetWrite)]
+        )
 
 
 def _create_shop_based_partial_bid_configuration_filter(
@@ -221,9 +265,23 @@ def _create_shop_based_partial_bid_configuration_filter(
     name_prefix: str | None = None,
     method: str | list[str] | None = None,
     method_prefix: str | None = None,
-    power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+    power_asset: (
+        str
+        | tuple[str, str]
+        | dm.NodeId
+        | dm.DirectRelationReference
+        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+        | None
+    ) = None,
     add_steps: bool | None = None,
-    scenario_set: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+    scenario_set: (
+        str
+        | tuple[str, str]
+        | dm.NodeId
+        | dm.DirectRelationReference
+        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+        | None
+    ) = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -243,14 +301,34 @@ def _create_shop_based_partial_bid_configuration_filter(
         filters.append(dm.filters.Prefix(view_id.as_property_ref("method"), value=method_prefix))
     if isinstance(power_asset, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(power_asset):
         filters.append(dm.filters.Equals(view_id.as_property_ref("powerAsset"), value=as_instance_dict_id(power_asset)))
-    if power_asset and isinstance(power_asset, Sequence) and not isinstance(power_asset, str) and not is_tuple_id(power_asset):
-        filters.append(dm.filters.In(view_id.as_property_ref("powerAsset"), values=[as_instance_dict_id(item) for item in power_asset]))
+    if (
+        power_asset
+        and isinstance(power_asset, Sequence)
+        and not isinstance(power_asset, str)
+        and not is_tuple_id(power_asset)
+    ):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("powerAsset"), values=[as_instance_dict_id(item) for item in power_asset]
+            )
+        )
     if isinstance(add_steps, bool):
         filters.append(dm.filters.Equals(view_id.as_property_ref("addSteps"), value=add_steps))
     if isinstance(scenario_set, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(scenario_set):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("scenarioSet"), value=as_instance_dict_id(scenario_set)))
-    if scenario_set and isinstance(scenario_set, Sequence) and not isinstance(scenario_set, str) and not is_tuple_id(scenario_set):
-        filters.append(dm.filters.In(view_id.as_property_ref("scenarioSet"), values=[as_instance_dict_id(item) for item in scenario_set]))
+        filters.append(
+            dm.filters.Equals(view_id.as_property_ref("scenarioSet"), value=as_instance_dict_id(scenario_set))
+        )
+    if (
+        scenario_set
+        and isinstance(scenario_set, Sequence)
+        and not isinstance(scenario_set, str)
+        and not is_tuple_id(scenario_set)
+    ):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("scenarioSet"), values=[as_instance_dict_id(item) for item in scenario_set]
+            )
+        )
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
@@ -330,20 +408,26 @@ class _ShopBasedPartialBidConfigurationQuery(NodeQueryCore[T_DomainModelList, Sh
         self.power_asset_filter = DirectRelationFilter(self, self._view_id.as_property_ref("powerAsset"))
         self.add_steps = BooleanFilter(self, self._view_id.as_property_ref("addSteps"))
         self.scenario_set_filter = DirectRelationFilter(self, self._view_id.as_property_ref("scenarioSet"))
-        self._filter_classes.extend([
-            self.space,
-            self.external_id,
-            self.name,
-            self.method,
-            self.power_asset_filter,
-            self.add_steps,
-            self.scenario_set_filter,
-        ])
+        self._filter_classes.extend(
+            [
+                self.space,
+                self.external_id,
+                self.name,
+                self.method,
+                self.power_asset_filter,
+                self.add_steps,
+                self.scenario_set_filter,
+            ]
+        )
 
-    def list_shop_based_partial_bid_configuration(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopBasedPartialBidConfigurationList:
+    def list_shop_based_partial_bid_configuration(
+        self, limit: int = DEFAULT_QUERY_LIMIT
+    ) -> ShopBasedPartialBidConfigurationList:
         return self._list(limit=limit)
 
 
-class ShopBasedPartialBidConfigurationQuery(_ShopBasedPartialBidConfigurationQuery[ShopBasedPartialBidConfigurationList]):
+class ShopBasedPartialBidConfigurationQuery(
+    _ShopBasedPartialBidConfigurationQuery[ShopBasedPartialBidConfigurationList]
+):
     def __init__(self, client: CogniteClient):
         super().__init__(set(), [], client, ShopBasedPartialBidConfigurationList)

@@ -45,11 +45,22 @@ from cognite.powerops.client._generated.v1.data_classes import (
     BenchmarkingTaskDispatcherInputDayAhead,
     FunctionInput,
 )
-from cognite.powerops.client._generated.v1._api.benchmarking_task_dispatcher_output_day_ahead_alerts import BenchmarkingTaskDispatcherOutputDayAheadAlertsAPI
-from cognite.powerops.client._generated.v1._api.benchmarking_task_dispatcher_output_day_ahead_benchmarking_sub_tasks import BenchmarkingTaskDispatcherOutputDayAheadBenchmarkingSubTasksAPI
+from cognite.powerops.client._generated.v1._api.benchmarking_task_dispatcher_output_day_ahead_alerts import (
+    BenchmarkingTaskDispatcherOutputDayAheadAlertsAPI,
+)
+from cognite.powerops.client._generated.v1._api.benchmarking_task_dispatcher_output_day_ahead_benchmarking_sub_tasks import (
+    BenchmarkingTaskDispatcherOutputDayAheadBenchmarkingSubTasksAPI,
+)
 
 
-class BenchmarkingTaskDispatcherOutputDayAheadAPI(NodeAPI[BenchmarkingTaskDispatcherOutputDayAhead, BenchmarkingTaskDispatcherOutputDayAheadWrite, BenchmarkingTaskDispatcherOutputDayAheadList, BenchmarkingTaskDispatcherOutputDayAheadWriteList]):
+class BenchmarkingTaskDispatcherOutputDayAheadAPI(
+    NodeAPI[
+        BenchmarkingTaskDispatcherOutputDayAhead,
+        BenchmarkingTaskDispatcherOutputDayAheadWrite,
+        BenchmarkingTaskDispatcherOutputDayAheadList,
+        BenchmarkingTaskDispatcherOutputDayAheadWriteList,
+    ]
+):
     _view_id = dm.ViewId("power_ops_core", "BenchmarkingTaskDispatcherOutputDayAhead", "1")
     _properties_by_field: ClassVar[dict[str, str]] = _BENCHMARKINGTASKDISPATCHEROUTPUTDAYAHEAD_PROPERTIES_BY_FIELD
     _class_type = BenchmarkingTaskDispatcherOutputDayAhead
@@ -117,7 +128,11 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(NodeAPI[BenchmarkingTaskDispat
     def search(
         self,
         query: str,
-        properties: BenchmarkingTaskDispatcherOutputDayAheadTextFields | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadTextFields] | None = None,
+        properties: (
+            BenchmarkingTaskDispatcherOutputDayAheadTextFields
+            | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadTextFields]
+            | None
+        ) = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -126,12 +141,23 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(NodeAPI[BenchmarkingTaskDispat
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        function_input: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-        sort_by: BenchmarkingTaskDispatcherOutputDayAheadFields | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadFields] | None = None,
+        sort_by: (
+            BenchmarkingTaskDispatcherOutputDayAheadFields
+            | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadFields]
+            | None
+        ) = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> BenchmarkingTaskDispatcherOutputDayAheadList:
@@ -205,9 +231,17 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(NodeAPI[BenchmarkingTaskDispat
         self,
         aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
-        property: BenchmarkingTaskDispatcherOutputDayAheadFields | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadFields] | None = None,
+        property: (
+            BenchmarkingTaskDispatcherOutputDayAheadFields
+            | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadFields]
+            | None
+        ) = None,
         query: str | None = None,
-        search_property: BenchmarkingTaskDispatcherOutputDayAheadTextFields | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadTextFields] | None = None,
+        search_property: (
+            BenchmarkingTaskDispatcherOutputDayAheadTextFields
+            | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadTextFields]
+            | None
+        ) = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -216,7 +250,14 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(NodeAPI[BenchmarkingTaskDispat
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        function_input: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -228,9 +269,17 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(NodeAPI[BenchmarkingTaskDispat
         self,
         aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: None = None,
-        property: BenchmarkingTaskDispatcherOutputDayAheadFields | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadFields] | None = None,
+        property: (
+            BenchmarkingTaskDispatcherOutputDayAheadFields
+            | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadFields]
+            | None
+        ) = None,
         query: str | None = None,
-        search_property: BenchmarkingTaskDispatcherOutputDayAheadTextFields | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadTextFields] | None = None,
+        search_property: (
+            BenchmarkingTaskDispatcherOutputDayAheadTextFields
+            | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadTextFields]
+            | None
+        ) = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -239,7 +288,14 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(NodeAPI[BenchmarkingTaskDispat
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        function_input: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -249,13 +305,26 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(NodeAPI[BenchmarkingTaskDispat
     @overload
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
-        group_by: BenchmarkingTaskDispatcherOutputDayAheadFields | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadFields],
-        property: BenchmarkingTaskDispatcherOutputDayAheadFields | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadFields] | None = None,
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
+        group_by: (
+            BenchmarkingTaskDispatcherOutputDayAheadFields
+            | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadFields]
+        ),
+        property: (
+            BenchmarkingTaskDispatcherOutputDayAheadFields
+            | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadFields]
+            | None
+        ) = None,
         query: str | None = None,
-        search_property: BenchmarkingTaskDispatcherOutputDayAheadTextFields | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadTextFields] | None = None,
+        search_property: (
+            BenchmarkingTaskDispatcherOutputDayAheadTextFields
+            | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadTextFields]
+            | None
+        ) = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -264,7 +333,14 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(NodeAPI[BenchmarkingTaskDispat
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        function_input: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -273,13 +349,27 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(NodeAPI[BenchmarkingTaskDispat
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
-        group_by: BenchmarkingTaskDispatcherOutputDayAheadFields | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadFields] | None = None,
-        property: BenchmarkingTaskDispatcherOutputDayAheadFields | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadFields] | None = None,
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
+        group_by: (
+            BenchmarkingTaskDispatcherOutputDayAheadFields
+            | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadFields]
+            | None
+        ) = None,
+        property: (
+            BenchmarkingTaskDispatcherOutputDayAheadFields
+            | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadFields]
+            | None
+        ) = None,
         query: str | None = None,
-        search_property: BenchmarkingTaskDispatcherOutputDayAheadTextFields | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadTextFields] | None = None,
+        search_property: (
+            BenchmarkingTaskDispatcherOutputDayAheadTextFields
+            | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadTextFields]
+            | None
+        ) = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -288,7 +378,14 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(NodeAPI[BenchmarkingTaskDispat
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        function_input: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -365,7 +462,11 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(NodeAPI[BenchmarkingTaskDispat
         property: BenchmarkingTaskDispatcherOutputDayAheadFields,
         interval: float,
         query: str | None = None,
-        search_property: BenchmarkingTaskDispatcherOutputDayAheadTextFields | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadTextFields] | None = None,
+        search_property: (
+            BenchmarkingTaskDispatcherOutputDayAheadTextFields
+            | SequenceNotStr[BenchmarkingTaskDispatcherOutputDayAheadTextFields]
+            | None
+        ) = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -374,7 +475,14 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(NodeAPI[BenchmarkingTaskDispat
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        function_input: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -445,13 +553,15 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(NodeAPI[BenchmarkingTaskDispat
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(factory.root(
-            filter=filter_,
-            sort=sort,
-            limit=limit,
-            max_retrieve_batch_limit=chunk_size,
-            has_container_fields=True,
-        ))
+        builder.append(
+            factory.root(
+                filter=filter_,
+                sort=sort,
+                limit=limit,
+                max_retrieve_batch_limit=chunk_size,
+                has_container_fields=True,
+            )
+        )
         if retrieve_connections == "identifier" or retrieve_connections == "full":
             builder.extend(
                 factory.from_edge(
@@ -492,7 +602,14 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(NodeAPI[BenchmarkingTaskDispat
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        function_input: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         filter: dm.Filter | None = None,
@@ -596,12 +713,23 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(NodeAPI[BenchmarkingTaskDispat
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        function_input: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-        sort_by: BenchmarkingTaskDispatcherOutputDayAheadFields | Sequence[BenchmarkingTaskDispatcherOutputDayAheadFields] | None = None,
+        sort_by: (
+            BenchmarkingTaskDispatcherOutputDayAheadFields
+            | Sequence[BenchmarkingTaskDispatcherOutputDayAheadFields]
+            | None
+        ) = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
         retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
@@ -661,7 +789,7 @@ class BenchmarkingTaskDispatcherOutputDayAheadAPI(NodeAPI[BenchmarkingTaskDispat
             space,
             filter,
         )
-        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
-            return self._list(limit=limit,  filter=filter_, sort=sort_input)
+            return self._list(limit=limit, filter=filter_, sort=sort_input)
         return self._query(filter_, limit, retrieve_connections, sort_input, "list")

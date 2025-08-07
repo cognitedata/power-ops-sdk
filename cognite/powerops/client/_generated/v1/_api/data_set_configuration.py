@@ -44,7 +44,9 @@ from cognite.powerops.client._generated.v1.data_classes import (
 )
 
 
-class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfigurationWrite, DataSetConfigurationList, DataSetConfigurationWriteList]):
+class DataSetConfigurationAPI(
+    NodeAPI[DataSetConfiguration, DataSetConfigurationWrite, DataSetConfigurationList, DataSetConfigurationWriteList]
+):
     _view_id = dm.ViewId("power_ops_core", "DataSetConfiguration", "1")
     _properties_by_field: ClassVar[dict[str, str]] = _DATASETCONFIGURATION_PROPERTIES_BY_FIELD
     _class_type = DataSetConfiguration
@@ -53,7 +55,6 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
 
     def __init__(self, client: CogniteClient):
         super().__init__(client=client)
-
 
     @overload
     def retrieve(
@@ -239,9 +240,11 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
     @overload
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
         group_by: DataSetConfigurationFields | SequenceNotStr[DataSetConfigurationFields],
         property: DataSetConfigurationFields | SequenceNotStr[DataSetConfigurationFields] | None = None,
         query: str | None = None,
@@ -264,9 +267,11 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
         group_by: DataSetConfigurationFields | SequenceNotStr[DataSetConfigurationFields] | None = None,
         property: DataSetConfigurationFields | SequenceNotStr[DataSetConfigurationFields] | None = None,
         query: str | None = None,
@@ -390,8 +395,13 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
             write_data_set_prefix: The prefix of the write data set to filter on.
             monitor_data_set: The monitor data set to filter on.
             monitor_data_set_prefix: The prefix of the monitor data set to filter on.
+<<<<<<< HEAD
             process_data_set: The process data set to filter on.
             process_data_set_prefix: The prefix of the process data set to filter on.
+=======
+            process_dataset: The process dataset to filter on.
+            process_dataset_prefix: The prefix of the process dataset to filter on.
+>>>>>>> d7cb9f6 (feat: add process dataset to both view and container)
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of data set configurations to return.
@@ -442,13 +452,15 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(factory.root(
-            filter=filter_,
-            sort=sort,
-            limit=limit,
-            max_retrieve_batch_limit=chunk_size,
-            has_container_fields=True,
-        ))
+        builder.append(
+            factory.root(
+                filter=filter_,
+                sort=sort,
+                limit=limit,
+                max_retrieve_batch_limit=chunk_size,
+                has_container_fields=True,
+            )
+        )
         return builder.build()
 
     def iterate(
@@ -585,8 +597,13 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
             write_data_set_prefix: The prefix of the write data set to filter on.
             monitor_data_set: The monitor data set to filter on.
             monitor_data_set_prefix: The prefix of the monitor data set to filter on.
+<<<<<<< HEAD
             process_data_set: The process data set to filter on.
             process_data_set_prefix: The prefix of the process data set to filter on.
+=======
+            process_dataset: The process dataset to filter on.
+            process_dataset_prefix: The prefix of the process dataset to filter on.
+>>>>>>> d7cb9f6 (feat: add process dataset to both view and container)
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of data set configurations to return.
@@ -627,5 +644,5 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
             space,
             filter,
         )
-        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
-        return self._list(limit=limit,  filter=filter_, sort=sort_input)
+        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        return self._list(limit=limit, filter=filter_, sort=sort_input)
