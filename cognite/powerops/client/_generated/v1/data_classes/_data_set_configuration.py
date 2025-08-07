@@ -130,7 +130,6 @@ class DataSetConfiguration(DomainModel):
     monitor_data_set: Optional[str] = Field(None, alias="monitorDataSet")
     process_data_set: Optional[str] = Field(None, alias="processDataSet")
 
-
     def as_write(self) -> DataSetConfigurationWrite:
         """Convert this read version of data set configuration to the writing version."""
         return DataSetConfigurationWrite.model_validate(as_write_args(self))
@@ -162,7 +161,6 @@ class DataSetConfigurationWrite(DomainModelWrite):
     write_data_set: str = Field(alias="writeDataSet")
     monitor_data_set: Optional[str] = Field(None, alias="monitorDataSet")
     process_data_set: Optional[str] = Field(None, alias="processDataSet")
-
 
 
 class DataSetConfigurationList(DomainModelList[DataSetConfiguration]):

@@ -396,12 +396,17 @@ class DataSetConfigurationAPI(
             monitor_data_set: The monitor data set to filter on.
             monitor_data_set_prefix: The prefix of the monitor data set to filter on.
 <<<<<<< HEAD
+<<<<<<< HEAD
             process_data_set: The process data set to filter on.
             process_data_set_prefix: The prefix of the process data set to filter on.
 =======
             process_dataset: The process dataset to filter on.
             process_dataset_prefix: The prefix of the process dataset to filter on.
 >>>>>>> d7cb9f6 (feat: add process dataset to both view and container)
+=======
+            process_data_set: The process data set to filter on.
+            process_data_set_prefix: The prefix of the process data set to filter on.
+>>>>>>> f5d850f (feat: apply correct changes)
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of data set configurations to return.
@@ -598,12 +603,17 @@ class DataSetConfigurationAPI(
             monitor_data_set: The monitor data set to filter on.
             monitor_data_set_prefix: The prefix of the monitor data set to filter on.
 <<<<<<< HEAD
+<<<<<<< HEAD
             process_data_set: The process data set to filter on.
             process_data_set_prefix: The prefix of the process data set to filter on.
 =======
             process_dataset: The process dataset to filter on.
             process_dataset_prefix: The prefix of the process dataset to filter on.
 >>>>>>> d7cb9f6 (feat: add process dataset to both view and container)
+=======
+            process_data_set: The process data set to filter on.
+            process_data_set_prefix: The prefix of the process data set to filter on.
+>>>>>>> f5d850f (feat: apply correct changes)
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of data set configurations to return.
