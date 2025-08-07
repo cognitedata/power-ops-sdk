@@ -11,9 +11,75 @@ from cognite.client.credentials import OAuthClientCredentials
 from cognite.client.data_classes import FileMetadataList, SequenceList, TimeSeriesList
 
 from cognite.powerops.client._generated.v1 import data_classes
-from cognite.powerops.client._generated.v1._api import (    AlertAPI,    BenchmarkingCalculationInputAPI,    BenchmarkingCalculationOutputAPI,    BenchmarkingConfigurationDayAheadAPI,    BenchmarkingProductionObligationDayAheadAPI,    BenchmarkingResultDayAheadAPI,    BenchmarkingShopCaseAPI,    BenchmarkingTaskDispatcherInputDayAheadAPI,    BenchmarkingTaskDispatcherOutputDayAheadAPI,    BidConfigurationDayAheadAPI,    BidDocumentAPI,    BidDocumentAFRRAPI,    BidDocumentDayAheadAPI,    BidMatrixAPI,    BidMatrixInformationAPI,    BidRowAPI,    DataSetConfigurationAPI,    DateSpecificationAPI,    FunctionInputAPI,    FunctionOutputAPI,    GeneratorAPI,    GeneratorEfficiencyCurveAPI,    MarketConfigurationAPI,    MultiScenarioPartialBidMatrixCalculationInputAPI,    PartialBidConfigurationAPI,    PartialBidMatrixCalculationInputAPI,    PartialBidMatrixCalculationOutputAPI,    PartialBidMatrixInformationAPI,    PartialBidMatrixInformationWithScenariosAPI,    PlantAPI,    PlantInformationAPI,    PlantWaterValueBasedAPI,    PowerAssetAPI,    PriceAreaAPI,    PriceAreaAFRRAPI,    PriceAreaDayAheadAPI,    PriceAreaInformationAPI,    PriceProductionAPI,    ShopAttributeMappingAPI,    ShopBasedPartialBidConfigurationAPI,    ShopCaseAPI,    ShopCommandsAPI,    ShopFileAPI,    ShopModelAPI,    ShopModelWithAssetsAPI,    ShopOutputTimeSeriesDefinitionAPI,    ShopPenaltyReportAPI,    ShopPreprocessorInputAPI,    ShopPreprocessorOutputAPI,    ShopResultAPI,    ShopScenarioAPI,    ShopScenarioSetAPI,    ShopTimeResolutionAPI,    ShopTimeSeriesAPI,    ShopTriggerInputAPI,    ShopTriggerOutputAPI,    TaskDispatcherInputAPI,    TaskDispatcherOutputAPI,    TotalBidMatrixCalculationInputAPI,    TotalBidMatrixCalculationOutputAPI,    TurbineEfficiencyCurveAPI,    WaterValueBasedPartialBidConfigurationAPI,    WaterValueBasedPartialBidMatrixCalculationInputAPI,    WatercourseAPI,)
+from cognite.powerops.client._generated.v1._api import (
+    AlertAPI,
+    BenchmarkingCalculationInputAPI,
+    BenchmarkingCalculationOutputAPI,
+    BenchmarkingConfigurationDayAheadAPI,
+    BenchmarkingProductionObligationDayAheadAPI,
+    BenchmarkingResultDayAheadAPI,
+    BenchmarkingShopCaseAPI,
+    BenchmarkingTaskDispatcherInputDayAheadAPI,
+    BenchmarkingTaskDispatcherOutputDayAheadAPI,
+    BidConfigurationDayAheadAPI,
+    BidDocumentAPI,
+    BidDocumentAFRRAPI,
+    BidDocumentDayAheadAPI,
+    BidMatrixAPI,
+    BidMatrixInformationAPI,
+    BidRowAPI,
+    DataSetConfigurationAPI,
+    DateSpecificationAPI,
+    FunctionInputAPI,
+    FunctionOutputAPI,
+    GeneratorAPI,
+    GeneratorEfficiencyCurveAPI,
+    MarketConfigurationAPI,
+    MultiScenarioPartialBidMatrixCalculationInputAPI,
+    PartialBidConfigurationAPI,
+    PartialBidMatrixCalculationInputAPI,
+    PartialBidMatrixCalculationOutputAPI,
+    PartialBidMatrixInformationAPI,
+    PartialBidMatrixInformationWithScenariosAPI,
+    PlantAPI,
+    PlantInformationAPI,
+    PlantWaterValueBasedAPI,
+    PowerAssetAPI,
+    PriceAreaAPI,
+    PriceAreaAFRRAPI,
+    PriceAreaDayAheadAPI,
+    PriceAreaInformationAPI,
+    PriceProductionAPI,
+    ShopAttributeMappingAPI,
+    ShopBasedPartialBidConfigurationAPI,
+    ShopCaseAPI,
+    ShopCommandsAPI,
+    ShopFileAPI,
+    ShopModelAPI,
+    ShopModelWithAssetsAPI,
+    ShopOutputTimeSeriesDefinitionAPI,
+    ShopPenaltyReportAPI,
+    ShopPreprocessorInputAPI,
+    ShopPreprocessorOutputAPI,
+    ShopResultAPI,
+    ShopScenarioAPI,
+    ShopScenarioSetAPI,
+    ShopTimeResolutionAPI,
+    ShopTimeSeriesAPI,
+    ShopTriggerInputAPI,
+    ShopTriggerOutputAPI,
+    TaskDispatcherInputAPI,
+    TaskDispatcherOutputAPI,
+    TotalBidMatrixCalculationInputAPI,
+    TotalBidMatrixCalculationOutputAPI,
+    TurbineEfficiencyCurveAPI,
+    WaterValueBasedPartialBidConfigurationAPI,
+    WaterValueBasedPartialBidMatrixCalculationInputAPI,
+    WatercourseAPI,
+)
 from cognite.powerops.client._generated.v1._api._core import GraphQLQueryResponse, SequenceNotStr
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE, GraphQLList
+
 
 class BenchmarkingDayAheadAPIs:
     """
@@ -25,6 +91,7 @@ class BenchmarkingDayAheadAPIs:
         version: 1
 
     """
+
     _data_model_id = dm.DataModelId("power_ops_core", "compute_ShopBasedDayAhead", "1")
 
     def __init__(self, client: CogniteClient):
@@ -65,13 +132,14 @@ class BenchmarkingDayAheadAPIs:
     def graphql_query(self, query: str, variables: dict[str, Any] | None = None) -> GraphQLList:
         """Execute a GraphQl query against the compute_BenchmarkingDayAhead data model.
 
-            Args:
-                query (str): The GraphQL query to issue.
-                variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
+        Args:
+            query (str): The GraphQL query to issue.
+            variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
         """
         data_model_id = dm.DataModelId("power_ops_core", "compute_BenchmarkingDayAhead", "1")
         result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
         return GraphQLQueryResponse(data_model_id).parse(result)
+
 
 class ShopBasedDayAheadBidProcesAPIs:
     """
@@ -83,6 +151,7 @@ class ShopBasedDayAheadBidProcesAPIs:
         version: 1
 
     """
+
     _data_model_id = dm.DataModelId("power_ops_core", "compute_ShopBasedDayAhead", "1")
 
     def __init__(self, client: CogniteClient):
@@ -95,7 +164,9 @@ class ShopBasedDayAheadBidProcesAPIs:
         self.function_input = FunctionInputAPI(client)
         self.function_output = FunctionOutputAPI(client)
         self.market_configuration = MarketConfigurationAPI(client)
-        self.multi_scenario_partial_bid_matrix_calculation_input = MultiScenarioPartialBidMatrixCalculationInputAPI(client)
+        self.multi_scenario_partial_bid_matrix_calculation_input = MultiScenarioPartialBidMatrixCalculationInputAPI(
+            client
+        )
         self.partial_bid_configuration = PartialBidConfigurationAPI(client)
         self.partial_bid_matrix_calculation_input = PartialBidMatrixCalculationInputAPI(client)
         self.partial_bid_matrix_calculation_output = PartialBidMatrixCalculationOutputAPI(client)
@@ -125,13 +196,14 @@ class ShopBasedDayAheadBidProcesAPIs:
     def graphql_query(self, query: str, variables: dict[str, Any] | None = None) -> GraphQLList:
         """Execute a GraphQl query against the compute_ShopBasedDayAhead data model.
 
-            Args:
-                query (str): The GraphQL query to issue.
-                variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
+        Args:
+            query (str): The GraphQL query to issue.
+            variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
         """
         data_model_id = dm.DataModelId("power_ops_core", "compute_ShopBasedDayAhead", "1")
         result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
         return GraphQLQueryResponse(data_model_id).parse(result)
+
 
 class TotalBidMatrixCalculationAPIs:
     """
@@ -143,6 +215,7 @@ class TotalBidMatrixCalculationAPIs:
         version: 1
 
     """
+
     _data_model_id = dm.DataModelId("power_ops_core", "compute_ShopBasedDayAhead", "1")
 
     def __init__(self, client: CogniteClient):
@@ -180,13 +253,14 @@ class TotalBidMatrixCalculationAPIs:
     def graphql_query(self, query: str, variables: dict[str, Any] | None = None) -> GraphQLList:
         """Execute a GraphQl query against the compute_TotalBidMatrixCalculation data model.
 
-            Args:
-                query (str): The GraphQL query to issue.
-                variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
+        Args:
+            query (str): The GraphQL query to issue.
+            variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
         """
         data_model_id = dm.DataModelId("power_ops_core", "compute_TotalBidMatrixCalculation", "1")
         result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
         return GraphQLQueryResponse(data_model_id).parse(result)
+
 
 class WaterValueBasedDayAheadBidProcesAPIs:
     """
@@ -198,6 +272,7 @@ class WaterValueBasedDayAheadBidProcesAPIs:
         version: 1
 
     """
+
     _data_model_id = dm.DataModelId("power_ops_core", "compute_ShopBasedDayAhead", "1")
 
     def __init__(self, client: CogniteClient):
@@ -224,18 +299,21 @@ class WaterValueBasedDayAheadBidProcesAPIs:
         self.task_dispatcher_output = TaskDispatcherOutputAPI(client)
         self.turbine_efficiency_curve = TurbineEfficiencyCurveAPI(client)
         self.water_value_based_partial_bid_configuration = WaterValueBasedPartialBidConfigurationAPI(client)
-        self.water_value_based_partial_bid_matrix_calculation_input = WaterValueBasedPartialBidMatrixCalculationInputAPI(client)
+        self.water_value_based_partial_bid_matrix_calculation_input = (
+            WaterValueBasedPartialBidMatrixCalculationInputAPI(client)
+        )
 
     def graphql_query(self, query: str, variables: dict[str, Any] | None = None) -> GraphQLList:
         """Execute a GraphQl query against the compute_WaterValueBasedDayAheadBid data model.
 
-            Args:
-                query (str): The GraphQL query to issue.
-                variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
+        Args:
+            query (str): The GraphQL query to issue.
+            variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
         """
         data_model_id = dm.DataModelId("power_ops_core", "compute_WaterValueBasedDayAheadBid", "1")
         result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
         return GraphQLQueryResponse(data_model_id).parse(result)
+
 
 class DayAheadConfigurationAPIs:
     """
@@ -247,6 +325,7 @@ class DayAheadConfigurationAPIs:
         version: 1
 
     """
+
     _data_model_id = dm.DataModelId("power_ops_core", "compute_ShopBasedDayAhead", "1")
 
     def __init__(self, client: CogniteClient):
@@ -280,13 +359,14 @@ class DayAheadConfigurationAPIs:
     def graphql_query(self, query: str, variables: dict[str, Any] | None = None) -> GraphQLList:
         """Execute a GraphQl query against the config_DayAheadConfiguration data model.
 
-            Args:
-                query (str): The GraphQL query to issue.
-                variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
+        Args:
+            query (str): The GraphQL query to issue.
+            variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
         """
         data_model_id = dm.DataModelId("power_ops_core", "config_DayAheadConfiguration", "1")
         result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
         return GraphQLQueryResponse(data_model_id).parse(result)
+
 
 class AFRRBidAPIs:
     """
@@ -298,6 +378,7 @@ class AFRRBidAPIs:
         version: 1
 
     """
+
     _data_model_id = dm.DataModelId("power_ops_core", "compute_ShopBasedDayAhead", "1")
 
     def __init__(self, client: CogniteClient):
@@ -314,13 +395,14 @@ class AFRRBidAPIs:
     def graphql_query(self, query: str, variables: dict[str, Any] | None = None) -> GraphQLList:
         """Execute a GraphQl query against the frontend_AFRRBid data model.
 
-            Args:
-                query (str): The GraphQL query to issue.
-                variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
+        Args:
+            query (str): The GraphQL query to issue.
+            variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
         """
         data_model_id = dm.DataModelId("power_ops_core", "frontend_AFRRBid", "1")
         result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
         return GraphQLQueryResponse(data_model_id).parse(result)
+
 
 class PowerAssetAPIs:
     """
@@ -332,6 +414,7 @@ class PowerAssetAPIs:
         version: 1
 
     """
+
     _data_model_id = dm.DataModelId("power_ops_core", "compute_ShopBasedDayAhead", "1")
 
     def __init__(self, client: CogniteClient):
@@ -357,13 +440,14 @@ class PowerAssetAPIs:
     def graphql_query(self, query: str, variables: dict[str, Any] | None = None) -> GraphQLList:
         """Execute a GraphQl query against the frontend_Asset data model.
 
-            Args:
-                query (str): The GraphQL query to issue.
-                variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
+        Args:
+            query (str): The GraphQL query to issue.
+            variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
         """
         data_model_id = dm.DataModelId("power_ops_core", "frontend_Asset", "1")
         result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
         return GraphQLQueryResponse(data_model_id).parse(result)
+
 
 class DayAheadBidAPIs:
     """
@@ -375,6 +459,7 @@ class DayAheadBidAPIs:
         version: 1
 
     """
+
     _data_model_id = dm.DataModelId("power_ops_core", "compute_ShopBasedDayAhead", "1")
 
     def __init__(self, client: CogniteClient):
@@ -410,13 +495,14 @@ class DayAheadBidAPIs:
     def graphql_query(self, query: str, variables: dict[str, Any] | None = None) -> GraphQLList:
         """Execute a GraphQl query against the frontend_DayAheadBid data model.
 
-            Args:
-                query (str): The GraphQL query to issue.
-                variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
+        Args:
+            query (str): The GraphQL query to issue.
+            variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
         """
         data_model_id = dm.DataModelId("power_ops_core", "frontend_DayAheadBid", "1")
         result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
         return GraphQLQueryResponse(data_model_id).parse(result)
+
 
 class PowerOpsModelsV1Client:
     """
@@ -450,7 +536,6 @@ class PowerOpsModelsV1Client:
         self.day_ahead_bid = DayAheadBidAPIs(client)
 
         self._client = client
-
 
     def upsert(
         self,
@@ -521,7 +606,10 @@ class PowerOpsModelsV1Client:
     def delete(
         self,
         external_id: (
-            str | dm.NodeId | data_classes.DomainModelWrite | SequenceNotStr[str | dm.NodeId | data_classes.DomainModelWrite]
+            str
+            | dm.NodeId
+            | data_classes.DomainModelWrite
+            | SequenceNotStr[str | dm.NodeId | data_classes.DomainModelWrite]
         ),
         space: str = DEFAULT_INSTANCE_SPACE,
     ) -> dm.InstancesDeleteResult:

@@ -43,7 +43,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     NodeQueryCore,
     StringFilter,
     ViewPropertyId,
-
 )
 
 
@@ -97,8 +96,6 @@ class BidMatrixGraphQL(GraphQLCore):
             )
         return values
 
-
-
     def as_read(self) -> BidMatrix:
         """Convert this GraphQL format of bid matrix to the reading format."""
         return BidMatrix.model_validate(as_read_args(self))
@@ -128,11 +125,9 @@ class BidMatrix(DomainModel):
     state: str
     bid_matrix: Union[SequenceRead, str, None] = Field(None, alias="bidMatrix")
 
-
     def as_write(self) -> BidMatrixWrite:
         """Convert this read version of bid matrix to the writing version."""
         return BidMatrixWrite.model_validate(as_write_args(self))
-
 
 
 class BidMatrixWrite(DomainModelWrite):
@@ -147,7 +142,11 @@ class BidMatrixWrite(DomainModelWrite):
         state: The state field.
         bid_matrix: The bid matrix field.
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("bid_matrix", "state",)
+
+    _container_fields: ClassVar[tuple[str, ...]] = (
+        "bid_matrix",
+        "state",
+    )
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidMatrix", "1")
 
@@ -157,15 +156,14 @@ class BidMatrixWrite(DomainModelWrite):
     bid_matrix: Union[SequenceWrite, str, None] = Field(None, alias="bidMatrix")
 
 
-
 class BidMatrixList(DomainModelList[BidMatrix]):
     """List of bid matrixes in the read version."""
 
     _INSTANCE = BidMatrix
+
     def as_write(self) -> BidMatrixWriteList:
         """Convert these read versions of bid matrix to the writing versions."""
         return BidMatrixWriteList([node.as_write() for node in self.data])
-
 
 
 class BidMatrixWriteList(DomainModelWriteList[BidMatrixWrite]):
@@ -234,11 +232,13 @@ class _BidMatrixQuery(NodeQueryCore[T_DomainModelList, BidMatrixList]):
         self.space = StringFilter(self, ["node", "space"])
         self.external_id = StringFilter(self, ["node", "externalId"])
         self.state = StringFilter(self, self._view_id.as_property_ref("state"))
-        self._filter_classes.extend([
-            self.space,
-            self.external_id,
-            self.state,
-        ])
+        self._filter_classes.extend(
+            [
+                self.space,
+                self.external_id,
+                self.state,
+            ]
+        )
 
     def list_bid_matrix(self, limit: int = DEFAULT_QUERY_LIMIT) -> BidMatrixList:
         return self._list(limit=limit)

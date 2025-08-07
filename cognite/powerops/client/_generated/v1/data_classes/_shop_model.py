@@ -42,9 +42,22 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     ViewPropertyId,
     FloatFilter,
 )
+
 if TYPE_CHECKING:
-    from cognite.powerops.client._generated.v1.data_classes._shop_attribute_mapping import ShopAttributeMapping, ShopAttributeMappingList, ShopAttributeMappingGraphQL, ShopAttributeMappingWrite, ShopAttributeMappingWriteList
-    from cognite.powerops.client._generated.v1.data_classes._shop_file import ShopFile, ShopFileList, ShopFileGraphQL, ShopFileWrite, ShopFileWriteList
+    from cognite.powerops.client._generated.v1.data_classes._shop_attribute_mapping import (
+        ShopAttributeMapping,
+        ShopAttributeMappingList,
+        ShopAttributeMappingGraphQL,
+        ShopAttributeMappingWrite,
+        ShopAttributeMappingWriteList,
+    )
+    from cognite.powerops.client._generated.v1.data_classes._shop_file import (
+        ShopFile,
+        ShopFileList,
+        ShopFileGraphQL,
+        ShopFileWrite,
+        ShopFileWriteList,
+    )
 
 
 __all__ = [
@@ -97,7 +110,9 @@ class ShopModelGraphQL(GraphQLCore, protected_namespaces=()):
     penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
     model: Optional[FileMetadataGraphQL] = None
     cog_shop_files_config: Optional[list[ShopFileGraphQL]] = Field(default=None, repr=False, alias="cogShopFilesConfig")
-    base_attribute_mappings: Optional[list[ShopAttributeMappingGraphQL]] = Field(default=None, repr=False, alias="baseAttributeMappings")
+    base_attribute_mappings: Optional[list[ShopAttributeMappingGraphQL]] = Field(
+        default=None, repr=False, alias="baseAttributeMappings"
+    )
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -109,7 +124,6 @@ class ShopModelGraphQL(GraphQLCore, protected_namespaces=()):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
-
 
     @field_validator("cog_shop_files_config", "base_attribute_mappings", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
@@ -155,8 +169,12 @@ class ShopModel(DomainModel, protected_namespaces=()):
     shop_version: str = Field(alias="shopVersion")
     penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
     model: Union[FileMetadata, str, None] = None
-    cog_shop_files_config: Optional[list[Union[ShopFile, str, dm.NodeId]]] = Field(default=None, repr=False, alias="cogShopFilesConfig")
-    base_attribute_mappings: Optional[list[Union[ShopAttributeMapping, str, dm.NodeId]]] = Field(default=None, repr=False, alias="baseAttributeMappings")
+    cog_shop_files_config: Optional[list[Union[ShopFile, str, dm.NodeId]]] = Field(
+        default=None, repr=False, alias="cogShopFilesConfig"
+    )
+    base_attribute_mappings: Optional[list[Union[ShopAttributeMapping, str, dm.NodeId]]] = Field(
+        default=None, repr=False, alias="baseAttributeMappings"
+    )
 
     @field_validator("cog_shop_files_config", "base_attribute_mappings", mode="before")
     @classmethod
@@ -168,7 +186,6 @@ class ShopModel(DomainModel, protected_namespaces=()):
     def as_write(self) -> ShopModelWrite:
         """Convert this read version of shop model to the writing version."""
         return ShopModelWrite.model_validate(as_write_args(self))
-
 
 
 class ShopModelWrite(DomainModelWrite, protected_namespaces=()):
@@ -188,20 +205,36 @@ class ShopModelWrite(DomainModelWrite, protected_namespaces=()):
         cog_shop_files_config: Configuration for in what order to load the various files into pyshop
         base_attribute_mappings: The base mappings for the model
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("model", "model_version", "name", "penalty_limit", "shop_version",)
-    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("base_attribute_mappings", dm.DirectRelationReference("power_ops_types", "ShopModel.baseAttributeMappings")), ("cog_shop_files_config", dm.DirectRelationReference("power_ops_types", "ShopModel.cogShopFilesConfig")),)
+
+    _container_fields: ClassVar[tuple[str, ...]] = (
+        "model",
+        "model_version",
+        "name",
+        "penalty_limit",
+        "shop_version",
+    )
+    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (
+        ("base_attribute_mappings", dm.DirectRelationReference("power_ops_types", "ShopModel.baseAttributeMappings")),
+        ("cog_shop_files_config", dm.DirectRelationReference("power_ops_types", "ShopModel.cogShopFilesConfig")),
+    )
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopModel", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "ShopModel")
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
+        "power_ops_types", "ShopModel"
+    )
     name: str
     model_version: Optional[str] = Field(None, alias="modelVersion")
     shop_version: str = Field(alias="shopVersion")
     penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
     model: Union[FileMetadataWrite, str, None] = None
-    cog_shop_files_config: Optional[list[Union[ShopFileWrite, str, dm.NodeId]]] = Field(default=None, repr=False, alias="cogShopFilesConfig")
-    base_attribute_mappings: Optional[list[Union[ShopAttributeMappingWrite, str, dm.NodeId]]] = Field(default=None, repr=False, alias="baseAttributeMappings")
+    cog_shop_files_config: Optional[list[Union[ShopFileWrite, str, dm.NodeId]]] = Field(
+        default=None, repr=False, alias="cogShopFilesConfig"
+    )
+    base_attribute_mappings: Optional[list[Union[ShopAttributeMappingWrite, str, dm.NodeId]]] = Field(
+        default=None, repr=False, alias="baseAttributeMappings"
+    )
 
     @field_validator("cog_shop_files_config", "base_attribute_mappings", mode="before")
     def as_node_id(cls, value: Any) -> Any:
@@ -218,36 +251,63 @@ class ShopModelList(DomainModelList[ShopModel]):
     """List of shop models in the read version."""
 
     _INSTANCE = ShopModel
+
     def as_write(self) -> ShopModelWriteList:
         """Convert these read versions of shop model to the writing versions."""
         return ShopModelWriteList([node.as_write() for node in self.data])
 
-
     @property
     def cog_shop_files_config(self) -> ShopFileList:
         from ._shop_file import ShopFile, ShopFileList
-        return ShopFileList([item for items in self.data for item in items.cog_shop_files_config or [] if isinstance(item, ShopFile)])
+
+        return ShopFileList(
+            [item for items in self.data for item in items.cog_shop_files_config or [] if isinstance(item, ShopFile)]
+        )
 
     @property
     def base_attribute_mappings(self) -> ShopAttributeMappingList:
         from ._shop_attribute_mapping import ShopAttributeMapping, ShopAttributeMappingList
-        return ShopAttributeMappingList([item for items in self.data for item in items.base_attribute_mappings or [] if isinstance(item, ShopAttributeMapping)])
+
+        return ShopAttributeMappingList(
+            [
+                item
+                for items in self.data
+                for item in items.base_attribute_mappings or []
+                if isinstance(item, ShopAttributeMapping)
+            ]
+        )
 
 
 class ShopModelWriteList(DomainModelWriteList[ShopModelWrite]):
     """List of shop models in the writing version."""
 
     _INSTANCE = ShopModelWrite
+
     @property
     def cog_shop_files_config(self) -> ShopFileWriteList:
         from ._shop_file import ShopFileWrite, ShopFileWriteList
-        return ShopFileWriteList([item for items in self.data for item in items.cog_shop_files_config or [] if isinstance(item, ShopFileWrite)])
+
+        return ShopFileWriteList(
+            [
+                item
+                for items in self.data
+                for item in items.cog_shop_files_config or []
+                if isinstance(item, ShopFileWrite)
+            ]
+        )
 
     @property
     def base_attribute_mappings(self) -> ShopAttributeMappingWriteList:
         from ._shop_attribute_mapping import ShopAttributeMappingWrite, ShopAttributeMappingWriteList
-        return ShopAttributeMappingWriteList([item for items in self.data for item in items.base_attribute_mappings or [] if isinstance(item, ShopAttributeMappingWrite)])
 
+        return ShopAttributeMappingWriteList(
+            [
+                item
+                for items in self.data
+                for item in items.base_attribute_mappings or []
+                if isinstance(item, ShopAttributeMappingWrite)
+            ]
+        )
 
 
 def _create_shop_model_filter(
@@ -284,7 +344,9 @@ def _create_shop_model_filter(
     if shop_version_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("shopVersion"), value=shop_version_prefix))
     if min_penalty_limit is not None or max_penalty_limit is not None:
-        filters.append(dm.filters.Range(view_id.as_property_ref("penaltyLimit"), gte=min_penalty_limit, lte=max_penalty_limit))
+        filters.append(
+            dm.filters.Range(view_id.as_property_ref("penaltyLimit"), gte=min_penalty_limit, lte=max_penalty_limit)
+        )
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
@@ -363,14 +425,16 @@ class _ShopModelQuery(NodeQueryCore[T_DomainModelList, ShopModelList]):
         self.model_version = StringFilter(self, self._view_id.as_property_ref("modelVersion"))
         self.shop_version = StringFilter(self, self._view_id.as_property_ref("shopVersion"))
         self.penalty_limit = FloatFilter(self, self._view_id.as_property_ref("penaltyLimit"))
-        self._filter_classes.extend([
-            self.space,
-            self.external_id,
-            self.name,
-            self.model_version,
-            self.shop_version,
-            self.penalty_limit,
-        ])
+        self._filter_classes.extend(
+            [
+                self.space,
+                self.external_id,
+                self.name,
+                self.model_version,
+                self.shop_version,
+                self.penalty_limit,
+            ]
+        )
 
     def list_shop_model(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopModelList:
         return self._list(limit=limit)

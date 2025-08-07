@@ -50,8 +50,21 @@ __all__ = [
 ]
 
 
-AlertTextFields = Literal["external_id", "workflow_execution_id", "title", "description", "severity", "alert_type", "calculation_run"]
-AlertFields = Literal["external_id", "time", "workflow_execution_id", "title", "description", "severity", "alert_type", "status_code", "event_ids", "calculation_run"]
+AlertTextFields = Literal[
+    "external_id", "workflow_execution_id", "title", "description", "severity", "alert_type", "calculation_run"
+]
+AlertFields = Literal[
+    "external_id",
+    "time",
+    "workflow_execution_id",
+    "title",
+    "description",
+    "severity",
+    "alert_type",
+    "status_code",
+    "event_ids",
+    "calculation_run",
+]
 
 _ALERT_PROPERTIES_BY_FIELD = {
     "external_id": "externalId",
@@ -113,8 +126,6 @@ class AlertGraphQL(GraphQLCore):
             )
         return values
 
-
-
     def as_read(self) -> Alert:
         """Convert this GraphQL format of alert to the reading format."""
         return Alert.model_validate(as_read_args(self))
@@ -161,11 +172,9 @@ class Alert(DomainModel):
     event_ids: Optional[list[int]] = Field(None, alias="eventIds")
     calculation_run: Optional[str] = Field(None, alias="calculationRun")
 
-
     def as_write(self) -> AlertWrite:
         """Convert this read version of alert to the writing version."""
         return AlertWrite.model_validate(as_write_args(self))
-
 
 
 class AlertWrite(DomainModelWrite):
@@ -190,7 +199,18 @@ class AlertWrite(DomainModelWrite):
         calculation_run: The identifier of the parent Bid Calculation (required so that alerts can be created before
             the BidDocument)
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("alert_type", "calculation_run", "description", "event_ids", "severity", "status_code", "time", "title", "workflow_execution_id",)
+
+    _container_fields: ClassVar[tuple[str, ...]] = (
+        "alert_type",
+        "calculation_run",
+        "description",
+        "event_ids",
+        "severity",
+        "status_code",
+        "time",
+        "title",
+        "workflow_execution_id",
+    )
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "Alert", "1")
 
@@ -207,15 +227,14 @@ class AlertWrite(DomainModelWrite):
     calculation_run: Optional[str] = Field(None, alias="calculationRun")
 
 
-
 class AlertList(DomainModelList[Alert]):
     """List of alerts in the read version."""
 
     _INSTANCE = Alert
+
     def as_write(self) -> AlertWriteList:
         """Convert these read versions of alert to the writing versions."""
         return AlertWriteList([node.as_write() for node in self.data])
-
 
 
 class AlertWriteList(DomainModelWriteList[AlertWrite]):
@@ -248,13 +267,21 @@ def _create_alert_filter(
 ) -> dm.Filter | None:
     filters: list[dm.Filter] = []
     if min_time is not None or max_time is not None:
-        filters.append(dm.filters.Range(view_id.as_property_ref("time"), gte=min_time.isoformat(timespec="milliseconds") if min_time else None, lte=max_time.isoformat(timespec="milliseconds") if max_time else None))
+        filters.append(
+            dm.filters.Range(
+                view_id.as_property_ref("time"),
+                gte=min_time.isoformat(timespec="milliseconds") if min_time else None,
+                lte=max_time.isoformat(timespec="milliseconds") if max_time else None,
+            )
+        )
     if isinstance(workflow_execution_id, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id))
     if workflow_execution_id and isinstance(workflow_execution_id, list):
         filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
     if workflow_execution_id_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix))
+        filters.append(
+            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
+        )
     if isinstance(title, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("title"), value=title))
     if title and isinstance(title, list):
@@ -280,7 +307,9 @@ def _create_alert_filter(
     if alert_type_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("alertType"), value=alert_type_prefix))
     if min_status_code is not None or max_status_code is not None:
-        filters.append(dm.filters.Range(view_id.as_property_ref("statusCode"), gte=min_status_code, lte=max_status_code))
+        filters.append(
+            dm.filters.Range(view_id.as_property_ref("statusCode"), gte=min_status_code, lte=max_status_code)
+        )
     if isinstance(calculation_run, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("calculationRun"), value=calculation_run))
     if calculation_run and isinstance(calculation_run, list):
@@ -339,18 +368,20 @@ class _AlertQuery(NodeQueryCore[T_DomainModelList, AlertList]):
         self.alert_type = StringFilter(self, self._view_id.as_property_ref("alertType"))
         self.status_code = IntFilter(self, self._view_id.as_property_ref("statusCode"))
         self.calculation_run = StringFilter(self, self._view_id.as_property_ref("calculationRun"))
-        self._filter_classes.extend([
-            self.space,
-            self.external_id,
-            self.time,
-            self.workflow_execution_id,
-            self.title,
-            self.description,
-            self.severity,
-            self.alert_type,
-            self.status_code,
-            self.calculation_run,
-        ])
+        self._filter_classes.extend(
+            [
+                self.space,
+                self.external_id,
+                self.time,
+                self.workflow_execution_id,
+                self.title,
+                self.description,
+                self.severity,
+                self.alert_type,
+                self.status_code,
+                self.calculation_run,
+            ]
+        )
 
     def list_alert(self, limit: int = DEFAULT_QUERY_LIMIT) -> AlertList:
         return self._list(limit=limit)

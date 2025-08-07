@@ -38,8 +38,15 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     DateFilter,
     TimestampFilter,
 )
+
 if TYPE_CHECKING:
-    from cognite.powerops.client._generated.v1.data_classes._alert import Alert, AlertList, AlertGraphQL, AlertWrite, AlertWriteList
+    from cognite.powerops.client._generated.v1.data_classes._alert import (
+        Alert,
+        AlertList,
+        AlertGraphQL,
+        AlertWrite,
+        AlertWriteList,
+    )
 
 
 __all__ = [
@@ -54,7 +61,15 @@ __all__ = [
 
 
 BidDocumentTextFields = Literal["external_id", "name", "workflow_execution_id"]
-BidDocumentFields = Literal["external_id", "name", "workflow_execution_id", "delivery_date", "start_calculation", "end_calculation", "is_complete"]
+BidDocumentFields = Literal[
+    "external_id",
+    "name",
+    "workflow_execution_id",
+    "delivery_date",
+    "start_calculation",
+    "end_calculation",
+    "is_complete",
+]
 
 _BIDDOCUMENT_PROPERTIES_BY_FIELD = {
     "external_id": "externalId",
@@ -107,7 +122,6 @@ class BidDocumentGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
-
 
     @field_validator("alerts", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
@@ -170,7 +184,6 @@ class BidDocument(DomainModel):
         return BidDocumentWrite.model_validate(as_write_args(self))
 
 
-
 class BidDocumentWrite(DomainModelWrite):
     """This represents the writing version of bid document.
 
@@ -190,8 +203,18 @@ class BidDocumentWrite(DomainModelWrite):
             succeeded).
         alerts: An array of calculation level Alerts.
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("delivery_date", "end_calculation", "is_complete", "name", "start_calculation", "workflow_execution_id",)
-    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")),)
+
+    _container_fields: ClassVar[tuple[str, ...]] = (
+        "delivery_date",
+        "end_calculation",
+        "is_complete",
+        "name",
+        "start_calculation",
+        "workflow_execution_id",
+    )
+    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (
+        ("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")),
+    )
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidDocument", "1")
 
@@ -220,14 +243,15 @@ class BidDocumentList(DomainModelList[BidDocument]):
     """List of bid documents in the read version."""
 
     _INSTANCE = BidDocument
+
     def as_write(self) -> BidDocumentWriteList:
         """Convert these read versions of bid document to the writing versions."""
         return BidDocumentWriteList([node.as_write() for node in self.data])
 
-
     @property
     def alerts(self) -> AlertList:
         from ._alert import Alert, AlertList
+
         return AlertList([item for items in self.data for item in items.alerts or [] if isinstance(item, Alert)])
 
 
@@ -235,11 +259,14 @@ class BidDocumentWriteList(DomainModelWriteList[BidDocumentWrite]):
     """List of bid documents in the writing version."""
 
     _INSTANCE = BidDocumentWrite
+
     @property
     def alerts(self) -> AlertWriteList:
         from ._alert import AlertWrite, AlertWriteList
-        return AlertWriteList([item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)])
 
+        return AlertWriteList(
+            [item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)]
+        )
 
 
 def _create_bid_document_filter(
@@ -271,13 +298,33 @@ def _create_bid_document_filter(
     if workflow_execution_id and isinstance(workflow_execution_id, list):
         filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
     if workflow_execution_id_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix))
+        filters.append(
+            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
+        )
     if min_delivery_date is not None or max_delivery_date is not None:
-        filters.append(dm.filters.Range(view_id.as_property_ref("deliveryDate"), gte=min_delivery_date.isoformat() if min_delivery_date else None, lte=max_delivery_date.isoformat() if max_delivery_date else None))
+        filters.append(
+            dm.filters.Range(
+                view_id.as_property_ref("deliveryDate"),
+                gte=min_delivery_date.isoformat() if min_delivery_date else None,
+                lte=max_delivery_date.isoformat() if max_delivery_date else None,
+            )
+        )
     if min_start_calculation is not None or max_start_calculation is not None:
-        filters.append(dm.filters.Range(view_id.as_property_ref("startCalculation"), gte=min_start_calculation.isoformat(timespec="milliseconds") if min_start_calculation else None, lte=max_start_calculation.isoformat(timespec="milliseconds") if max_start_calculation else None))
+        filters.append(
+            dm.filters.Range(
+                view_id.as_property_ref("startCalculation"),
+                gte=min_start_calculation.isoformat(timespec="milliseconds") if min_start_calculation else None,
+                lte=max_start_calculation.isoformat(timespec="milliseconds") if max_start_calculation else None,
+            )
+        )
     if min_end_calculation is not None or max_end_calculation is not None:
-        filters.append(dm.filters.Range(view_id.as_property_ref("endCalculation"), gte=min_end_calculation.isoformat(timespec="milliseconds") if min_end_calculation else None, lte=max_end_calculation.isoformat(timespec="milliseconds") if max_end_calculation else None))
+        filters.append(
+            dm.filters.Range(
+                view_id.as_property_ref("endCalculation"),
+                gte=min_end_calculation.isoformat(timespec="milliseconds") if min_end_calculation else None,
+                lte=max_end_calculation.isoformat(timespec="milliseconds") if max_end_calculation else None,
+            )
+        )
     if isinstance(is_complete, bool):
         filters.append(dm.filters.Equals(view_id.as_property_ref("isComplete"), value=is_complete))
     if external_id_prefix is not None:
@@ -345,16 +392,18 @@ class _BidDocumentQuery(NodeQueryCore[T_DomainModelList, BidDocumentList]):
         self.start_calculation = TimestampFilter(self, self._view_id.as_property_ref("startCalculation"))
         self.end_calculation = TimestampFilter(self, self._view_id.as_property_ref("endCalculation"))
         self.is_complete = BooleanFilter(self, self._view_id.as_property_ref("isComplete"))
-        self._filter_classes.extend([
-            self.space,
-            self.external_id,
-            self.name,
-            self.workflow_execution_id,
-            self.delivery_date,
-            self.start_calculation,
-            self.end_calculation,
-            self.is_complete,
-        ])
+        self._filter_classes.extend(
+            [
+                self.space,
+                self.external_id,
+                self.name,
+                self.workflow_execution_id,
+                self.delivery_date,
+                self.start_calculation,
+                self.end_calculation,
+                self.is_complete,
+            ]
+        )
 
     def list_bid_document(self, limit: int = DEFAULT_QUERY_LIMIT) -> BidDocumentList:
         return self._list(limit=limit)

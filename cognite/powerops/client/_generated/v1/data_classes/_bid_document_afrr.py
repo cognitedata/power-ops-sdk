@@ -40,10 +40,29 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     TimestampFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._bid_document import BidDocument, BidDocumentWrite
+
 if TYPE_CHECKING:
-    from cognite.powerops.client._generated.v1.data_classes._alert import Alert, AlertList, AlertGraphQL, AlertWrite, AlertWriteList
-    from cognite.powerops.client._generated.v1.data_classes._bid_row import BidRow, BidRowList, BidRowGraphQL, BidRowWrite, BidRowWriteList
-    from cognite.powerops.client._generated.v1.data_classes._price_area_afrr import PriceAreaAFRR, PriceAreaAFRRList, PriceAreaAFRRGraphQL, PriceAreaAFRRWrite, PriceAreaAFRRWriteList
+    from cognite.powerops.client._generated.v1.data_classes._alert import (
+        Alert,
+        AlertList,
+        AlertGraphQL,
+        AlertWrite,
+        AlertWriteList,
+    )
+    from cognite.powerops.client._generated.v1.data_classes._bid_row import (
+        BidRow,
+        BidRowList,
+        BidRowGraphQL,
+        BidRowWrite,
+        BidRowWriteList,
+    )
+    from cognite.powerops.client._generated.v1.data_classes._price_area_afrr import (
+        PriceAreaAFRR,
+        PriceAreaAFRRList,
+        PriceAreaAFRRGraphQL,
+        PriceAreaAFRRWrite,
+        PriceAreaAFRRWriteList,
+    )
 
 
 __all__ = [
@@ -58,7 +77,15 @@ __all__ = [
 
 
 BidDocumentAFRRTextFields = Literal["external_id", "name", "workflow_execution_id"]
-BidDocumentAFRRFields = Literal["external_id", "name", "workflow_execution_id", "delivery_date", "start_calculation", "end_calculation", "is_complete"]
+BidDocumentAFRRFields = Literal[
+    "external_id",
+    "name",
+    "workflow_execution_id",
+    "delivery_date",
+    "start_calculation",
+    "end_calculation",
+    "is_complete",
+]
 
 _BIDDOCUMENTAFRR_PROPERTIES_BY_FIELD = {
     "external_id": "externalId",
@@ -116,7 +143,6 @@ class BidDocumentAFRRGraphQL(GraphQLCore):
             )
         return values
 
-
     @field_validator("alerts", "price_area", "bids", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -158,9 +184,12 @@ class BidDocumentAFRR(BidDocument):
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidDocumentAFRR", "1")
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "AFRRBidDocument")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
+        "power_ops_types", "AFRRBidDocument"
+    )
     price_area: Union[PriceAreaAFRR, str, dm.NodeId, None] = Field(default=None, repr=False, alias="priceArea")
     bids: Optional[list[Union[BidRow, str, dm.NodeId]]] = Field(default=None, repr=False)
+
     @field_validator("price_area", mode="before")
     @classmethod
     def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
@@ -176,7 +205,6 @@ class BidDocumentAFRR(BidDocument):
     def as_write(self) -> BidDocumentAFRRWrite:
         """Convert this read version of bid document afrr to the writing version."""
         return BidDocumentAFRRWrite.model_validate(as_write_args(self))
-
 
 
 class BidDocumentAFRRWrite(BidDocumentWrite):
@@ -200,13 +228,27 @@ class BidDocumentAFRRWrite(BidDocumentWrite):
         price_area: The price area field.
         bids: An array of BidRows containing the Bid data.
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("delivery_date", "end_calculation", "is_complete", "name", "price_area", "start_calculation", "workflow_execution_id",)
-    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")), ("bids", dm.DirectRelationReference("power_ops_types", "partialBid")),)
+
+    _container_fields: ClassVar[tuple[str, ...]] = (
+        "delivery_date",
+        "end_calculation",
+        "is_complete",
+        "name",
+        "price_area",
+        "start_calculation",
+        "workflow_execution_id",
+    )
+    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (
+        ("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")),
+        ("bids", dm.DirectRelationReference("power_ops_types", "partialBid")),
+    )
     _direct_relations: ClassVar[tuple[str, ...]] = ("price_area",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidDocumentAFRR", "1")
 
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "AFRRBidDocument")
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
+        "power_ops_types", "AFRRBidDocument"
+    )
     price_area: Union[PriceAreaAFRRWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="priceArea")
     bids: Optional[list[Union[BidRowWrite, str, dm.NodeId]]] = Field(default=None, repr=False)
 
@@ -225,23 +267,27 @@ class BidDocumentAFRRList(DomainModelList[BidDocumentAFRR]):
     """List of bid document afrrs in the read version."""
 
     _INSTANCE = BidDocumentAFRR
+
     def as_write(self) -> BidDocumentAFRRWriteList:
         """Convert these read versions of bid document afrr to the writing versions."""
         return BidDocumentAFRRWriteList([node.as_write() for node in self.data])
 
-
     @property
     def alerts(self) -> AlertList:
         from ._alert import Alert, AlertList
+
         return AlertList([item for items in self.data for item in items.alerts or [] if isinstance(item, Alert)])
 
     @property
     def price_area(self) -> PriceAreaAFRRList:
         from ._price_area_afrr import PriceAreaAFRR, PriceAreaAFRRList
+
         return PriceAreaAFRRList([item.price_area for item in self.data if isinstance(item.price_area, PriceAreaAFRR)])
+
     @property
     def bids(self) -> BidRowList:
         from ._bid_row import BidRow, BidRowList
+
         return BidRowList([item for items in self.data for item in items.bids or [] if isinstance(item, BidRow)])
 
 
@@ -249,20 +295,30 @@ class BidDocumentAFRRWriteList(DomainModelWriteList[BidDocumentAFRRWrite]):
     """List of bid document afrrs in the writing version."""
 
     _INSTANCE = BidDocumentAFRRWrite
+
     @property
     def alerts(self) -> AlertWriteList:
         from ._alert import AlertWrite, AlertWriteList
-        return AlertWriteList([item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)])
+
+        return AlertWriteList(
+            [item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)]
+        )
 
     @property
     def price_area(self) -> PriceAreaAFRRWriteList:
         from ._price_area_afrr import PriceAreaAFRRWrite, PriceAreaAFRRWriteList
-        return PriceAreaAFRRWriteList([item.price_area for item in self.data if isinstance(item.price_area, PriceAreaAFRRWrite)])
+
+        return PriceAreaAFRRWriteList(
+            [item.price_area for item in self.data if isinstance(item.price_area, PriceAreaAFRRWrite)]
+        )
+
     @property
     def bids(self) -> BidRowWriteList:
         from ._bid_row import BidRowWrite, BidRowWriteList
-        return BidRowWriteList([item for items in self.data for item in items.bids or [] if isinstance(item, BidRowWrite)])
 
+        return BidRowWriteList(
+            [item for items in self.data for item in items.bids or [] if isinstance(item, BidRowWrite)]
+        )
 
 
 def _create_bid_document_afrr_filter(
@@ -278,7 +334,14 @@ def _create_bid_document_afrr_filter(
     min_end_calculation: datetime.datetime | None = None,
     max_end_calculation: datetime.datetime | None = None,
     is_complete: bool | None = None,
-    price_area: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+    price_area: (
+        str
+        | tuple[str, str]
+        | dm.NodeId
+        | dm.DirectRelationReference
+        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+        | None
+    ) = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -295,19 +358,48 @@ def _create_bid_document_afrr_filter(
     if workflow_execution_id and isinstance(workflow_execution_id, list):
         filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
     if workflow_execution_id_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix))
+        filters.append(
+            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
+        )
     if min_delivery_date is not None or max_delivery_date is not None:
-        filters.append(dm.filters.Range(view_id.as_property_ref("deliveryDate"), gte=min_delivery_date.isoformat() if min_delivery_date else None, lte=max_delivery_date.isoformat() if max_delivery_date else None))
+        filters.append(
+            dm.filters.Range(
+                view_id.as_property_ref("deliveryDate"),
+                gte=min_delivery_date.isoformat() if min_delivery_date else None,
+                lte=max_delivery_date.isoformat() if max_delivery_date else None,
+            )
+        )
     if min_start_calculation is not None or max_start_calculation is not None:
-        filters.append(dm.filters.Range(view_id.as_property_ref("startCalculation"), gte=min_start_calculation.isoformat(timespec="milliseconds") if min_start_calculation else None, lte=max_start_calculation.isoformat(timespec="milliseconds") if max_start_calculation else None))
+        filters.append(
+            dm.filters.Range(
+                view_id.as_property_ref("startCalculation"),
+                gte=min_start_calculation.isoformat(timespec="milliseconds") if min_start_calculation else None,
+                lte=max_start_calculation.isoformat(timespec="milliseconds") if max_start_calculation else None,
+            )
+        )
     if min_end_calculation is not None or max_end_calculation is not None:
-        filters.append(dm.filters.Range(view_id.as_property_ref("endCalculation"), gte=min_end_calculation.isoformat(timespec="milliseconds") if min_end_calculation else None, lte=max_end_calculation.isoformat(timespec="milliseconds") if max_end_calculation else None))
+        filters.append(
+            dm.filters.Range(
+                view_id.as_property_ref("endCalculation"),
+                gte=min_end_calculation.isoformat(timespec="milliseconds") if min_end_calculation else None,
+                lte=max_end_calculation.isoformat(timespec="milliseconds") if max_end_calculation else None,
+            )
+        )
     if isinstance(is_complete, bool):
         filters.append(dm.filters.Equals(view_id.as_property_ref("isComplete"), value=is_complete))
     if isinstance(price_area, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(price_area):
         filters.append(dm.filters.Equals(view_id.as_property_ref("priceArea"), value=as_instance_dict_id(price_area)))
-    if price_area and isinstance(price_area, Sequence) and not isinstance(price_area, str) and not is_tuple_id(price_area):
-        filters.append(dm.filters.In(view_id.as_property_ref("priceArea"), values=[as_instance_dict_id(item) for item in price_area]))
+    if (
+        price_area
+        and isinstance(price_area, Sequence)
+        and not isinstance(price_area, str)
+        and not is_tuple_id(price_area)
+    ):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("priceArea"), values=[as_instance_dict_id(item) for item in price_area]
+            )
+        )
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
@@ -404,17 +496,19 @@ class _BidDocumentAFRRQuery(NodeQueryCore[T_DomainModelList, BidDocumentAFRRList
         self.end_calculation = TimestampFilter(self, self._view_id.as_property_ref("endCalculation"))
         self.is_complete = BooleanFilter(self, self._view_id.as_property_ref("isComplete"))
         self.price_area_filter = DirectRelationFilter(self, self._view_id.as_property_ref("priceArea"))
-        self._filter_classes.extend([
-            self.space,
-            self.external_id,
-            self.name,
-            self.workflow_execution_id,
-            self.delivery_date,
-            self.start_calculation,
-            self.end_calculation,
-            self.is_complete,
-            self.price_area_filter,
-        ])
+        self._filter_classes.extend(
+            [
+                self.space,
+                self.external_id,
+                self.name,
+                self.workflow_execution_id,
+                self.delivery_date,
+                self.start_calculation,
+                self.end_calculation,
+                self.is_complete,
+                self.price_area_filter,
+            ]
+        )
 
     def list_bid_document_afrr(self, limit: int = DEFAULT_QUERY_LIMIT) -> BidDocumentAFRRList:
         return self._list(limit=limit)

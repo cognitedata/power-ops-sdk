@@ -49,9 +49,22 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     IntFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._power_asset import PowerAsset, PowerAssetWrite
+
 if TYPE_CHECKING:
-    from cognite.powerops.client._generated.v1.data_classes._generator_efficiency_curve import GeneratorEfficiencyCurve, GeneratorEfficiencyCurveList, GeneratorEfficiencyCurveGraphQL, GeneratorEfficiencyCurveWrite, GeneratorEfficiencyCurveWriteList
-    from cognite.powerops.client._generated.v1.data_classes._turbine_efficiency_curve import TurbineEfficiencyCurve, TurbineEfficiencyCurveList, TurbineEfficiencyCurveGraphQL, TurbineEfficiencyCurveWrite, TurbineEfficiencyCurveWriteList
+    from cognite.powerops.client._generated.v1.data_classes._generator_efficiency_curve import (
+        GeneratorEfficiencyCurve,
+        GeneratorEfficiencyCurveList,
+        GeneratorEfficiencyCurveGraphQL,
+        GeneratorEfficiencyCurveWrite,
+        GeneratorEfficiencyCurveWriteList,
+    )
+    from cognite.powerops.client._generated.v1.data_classes._turbine_efficiency_curve import (
+        TurbineEfficiencyCurve,
+        TurbineEfficiencyCurveList,
+        TurbineEfficiencyCurveGraphQL,
+        TurbineEfficiencyCurveWrite,
+        TurbineEfficiencyCurveWriteList,
+    )
 
 
 __all__ = [
@@ -65,8 +78,22 @@ __all__ = [
 ]
 
 
-GeneratorTextFields = Literal["external_id", "name", "display_name", "asset_type", "start_stop_cost_time_series", "availability_time_series"]
-GeneratorFields = Literal["external_id", "name", "display_name", "ordering", "asset_type", "production_min", "production_max", "penstock_number", "start_stop_cost", "start_stop_cost_time_series", "availability_time_series"]
+GeneratorTextFields = Literal[
+    "external_id", "name", "display_name", "asset_type", "start_stop_cost_time_series", "availability_time_series"
+]
+GeneratorFields = Literal[
+    "external_id",
+    "name",
+    "display_name",
+    "ordering",
+    "asset_type",
+    "production_min",
+    "production_max",
+    "penstock_number",
+    "start_stop_cost",
+    "start_stop_cost_time_series",
+    "availability_time_series",
+]
 
 _GENERATOR_PROPERTIES_BY_FIELD = {
     "external_id": "externalId",
@@ -118,8 +145,12 @@ class GeneratorGraphQL(GraphQLCore):
     start_stop_cost: Optional[float] = Field(None, alias="startStopCost")
     start_stop_cost_time_series: Optional[TimeSeriesGraphQL] = Field(None, alias="startStopCostTimeSeries")
     availability_time_series: Optional[TimeSeriesGraphQL] = Field(None, alias="availabilityTimeSeries")
-    generator_efficiency_curve: Optional[GeneratorEfficiencyCurveGraphQL] = Field(default=None, repr=False, alias="generatorEfficiencyCurve")
-    turbine_efficiency_curves: Optional[list[TurbineEfficiencyCurveGraphQL]] = Field(default=None, repr=False, alias="turbineEfficiencyCurves")
+    generator_efficiency_curve: Optional[GeneratorEfficiencyCurveGraphQL] = Field(
+        default=None, repr=False, alias="generatorEfficiencyCurve"
+    )
+    turbine_efficiency_curves: Optional[list[TurbineEfficiencyCurveGraphQL]] = Field(
+        default=None, repr=False, alias="turbineEfficiencyCurves"
+    )
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -131,7 +162,6 @@ class GeneratorGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
-
 
     @field_validator("generator_efficiency_curve", "turbine_efficiency_curves", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
@@ -182,8 +212,13 @@ class Generator(PowerAsset):
     start_stop_cost: float = Field(alias="startStopCost")
     start_stop_cost_time_series: Union[TimeSeries, str, None] = Field(None, alias="startStopCostTimeSeries")
     availability_time_series: Union[TimeSeries, str, None] = Field(None, alias="availabilityTimeSeries")
-    generator_efficiency_curve: Union[GeneratorEfficiencyCurve, str, dm.NodeId, None] = Field(default=None, repr=False, alias="generatorEfficiencyCurve")
-    turbine_efficiency_curves: Optional[list[Union[TurbineEfficiencyCurve, str, dm.NodeId]]] = Field(default=None, repr=False, alias="turbineEfficiencyCurves")
+    generator_efficiency_curve: Union[GeneratorEfficiencyCurve, str, dm.NodeId, None] = Field(
+        default=None, repr=False, alias="generatorEfficiencyCurve"
+    )
+    turbine_efficiency_curves: Optional[list[Union[TurbineEfficiencyCurve, str, dm.NodeId]]] = Field(
+        default=None, repr=False, alias="turbineEfficiencyCurves"
+    )
+
     @field_validator("generator_efficiency_curve", mode="before")
     @classmethod
     def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
@@ -199,7 +234,6 @@ class Generator(PowerAsset):
     def as_write(self) -> GeneratorWrite:
         """Convert this read version of generator to the writing version."""
         return GeneratorWrite.model_validate(as_write_args(self))
-
 
 
 class GeneratorWrite(PowerAssetWrite):
@@ -224,21 +258,42 @@ class GeneratorWrite(PowerAssetWrite):
         generator_efficiency_curve: The generator efficiency curve field.
         turbine_efficiency_curves: TODO description
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("asset_type", "availability_time_series", "display_name", "generator_efficiency_curve", "name", "ordering", "penstock_number", "production_max", "production_min", "start_stop_cost", "start_stop_cost_time_series",)
-    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("turbine_efficiency_curves", dm.DirectRelationReference("power_ops_types", "isSubAssetOf")),)
+
+    _container_fields: ClassVar[tuple[str, ...]] = (
+        "asset_type",
+        "availability_time_series",
+        "display_name",
+        "generator_efficiency_curve",
+        "name",
+        "ordering",
+        "penstock_number",
+        "production_max",
+        "production_min",
+        "start_stop_cost",
+        "start_stop_cost_time_series",
+    )
+    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (
+        ("turbine_efficiency_curves", dm.DirectRelationReference("power_ops_types", "isSubAssetOf")),
+    )
     _direct_relations: ClassVar[tuple[str, ...]] = ("generator_efficiency_curve",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "Generator", "1")
 
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "Generator")
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
+        "power_ops_types", "Generator"
+    )
     production_min: float = Field(alias="productionMin")
     production_max: Optional[float] = Field(None, alias="productionMax")
     penstock_number: int = Field(alias="penstockNumber")
     start_stop_cost: float = Field(alias="startStopCost")
     start_stop_cost_time_series: Union[TimeSeriesWrite, str, None] = Field(None, alias="startStopCostTimeSeries")
     availability_time_series: Union[TimeSeriesWrite, str, None] = Field(None, alias="availabilityTimeSeries")
-    generator_efficiency_curve: Union[GeneratorEfficiencyCurveWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="generatorEfficiencyCurve")
-    turbine_efficiency_curves: Optional[list[Union[TurbineEfficiencyCurveWrite, str, dm.NodeId]]] = Field(default=None, repr=False, alias="turbineEfficiencyCurves")
+    generator_efficiency_curve: Union[GeneratorEfficiencyCurveWrite, str, dm.NodeId, None] = Field(
+        default=None, repr=False, alias="generatorEfficiencyCurve"
+    )
+    turbine_efficiency_curves: Optional[list[Union[TurbineEfficiencyCurveWrite, str, dm.NodeId]]] = Field(
+        default=None, repr=False, alias="turbineEfficiencyCurves"
+    )
 
     @field_validator("generator_efficiency_curve", "turbine_efficiency_curves", mode="before")
     def as_node_id(cls, value: Any) -> Any:
@@ -255,34 +310,66 @@ class GeneratorList(DomainModelList[Generator]):
     """List of generators in the read version."""
 
     _INSTANCE = Generator
+
     def as_write(self) -> GeneratorWriteList:
         """Convert these read versions of generator to the writing versions."""
         return GeneratorWriteList([node.as_write() for node in self.data])
 
-
     @property
     def generator_efficiency_curve(self) -> GeneratorEfficiencyCurveList:
         from ._generator_efficiency_curve import GeneratorEfficiencyCurve, GeneratorEfficiencyCurveList
-        return GeneratorEfficiencyCurveList([item.generator_efficiency_curve for item in self.data if isinstance(item.generator_efficiency_curve, GeneratorEfficiencyCurve)])
+
+        return GeneratorEfficiencyCurveList(
+            [
+                item.generator_efficiency_curve
+                for item in self.data
+                if isinstance(item.generator_efficiency_curve, GeneratorEfficiencyCurve)
+            ]
+        )
+
     @property
     def turbine_efficiency_curves(self) -> TurbineEfficiencyCurveList:
         from ._turbine_efficiency_curve import TurbineEfficiencyCurve, TurbineEfficiencyCurveList
-        return TurbineEfficiencyCurveList([item for items in self.data for item in items.turbine_efficiency_curves or [] if isinstance(item, TurbineEfficiencyCurve)])
+
+        return TurbineEfficiencyCurveList(
+            [
+                item
+                for items in self.data
+                for item in items.turbine_efficiency_curves or []
+                if isinstance(item, TurbineEfficiencyCurve)
+            ]
+        )
 
 
 class GeneratorWriteList(DomainModelWriteList[GeneratorWrite]):
     """List of generators in the writing version."""
 
     _INSTANCE = GeneratorWrite
+
     @property
     def generator_efficiency_curve(self) -> GeneratorEfficiencyCurveWriteList:
         from ._generator_efficiency_curve import GeneratorEfficiencyCurveWrite, GeneratorEfficiencyCurveWriteList
-        return GeneratorEfficiencyCurveWriteList([item.generator_efficiency_curve for item in self.data if isinstance(item.generator_efficiency_curve, GeneratorEfficiencyCurveWrite)])
+
+        return GeneratorEfficiencyCurveWriteList(
+            [
+                item.generator_efficiency_curve
+                for item in self.data
+                if isinstance(item.generator_efficiency_curve, GeneratorEfficiencyCurveWrite)
+            ]
+        )
+
     @property
     def turbine_efficiency_curves(self) -> TurbineEfficiencyCurveWriteList:
         from ._turbine_efficiency_curve import TurbineEfficiencyCurveWrite, TurbineEfficiencyCurveWriteList
-        return TurbineEfficiencyCurveWriteList([item for items in self.data for item in items.turbine_efficiency_curves or [] if isinstance(item, TurbineEfficiencyCurveWrite)])
 
+        return TurbineEfficiencyCurveWriteList(
+            [
+                item
+                for items in self.data
+                for item in items.turbine_efficiency_curves or []
+                if isinstance(item, TurbineEfficiencyCurveWrite)
+            ]
+        )
 
 
 def _create_generator_filter(
@@ -303,7 +390,14 @@ def _create_generator_filter(
     max_penstock_number: int | None = None,
     min_start_stop_cost: float | None = None,
     max_start_stop_cost: float | None = None,
-    generator_efficiency_curve: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+    generator_efficiency_curve: (
+        str
+        | tuple[str, str]
+        | dm.NodeId
+        | dm.DirectRelationReference
+        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+        | None
+    ) = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -330,17 +424,44 @@ def _create_generator_filter(
     if asset_type_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("assetType"), value=asset_type_prefix))
     if min_production_min is not None or max_production_min is not None:
-        filters.append(dm.filters.Range(view_id.as_property_ref("productionMin"), gte=min_production_min, lte=max_production_min))
+        filters.append(
+            dm.filters.Range(view_id.as_property_ref("productionMin"), gte=min_production_min, lte=max_production_min)
+        )
     if min_production_max is not None or max_production_max is not None:
-        filters.append(dm.filters.Range(view_id.as_property_ref("productionMax"), gte=min_production_max, lte=max_production_max))
+        filters.append(
+            dm.filters.Range(view_id.as_property_ref("productionMax"), gte=min_production_max, lte=max_production_max)
+        )
     if min_penstock_number is not None or max_penstock_number is not None:
-        filters.append(dm.filters.Range(view_id.as_property_ref("penstockNumber"), gte=min_penstock_number, lte=max_penstock_number))
+        filters.append(
+            dm.filters.Range(
+                view_id.as_property_ref("penstockNumber"), gte=min_penstock_number, lte=max_penstock_number
+            )
+        )
     if min_start_stop_cost is not None or max_start_stop_cost is not None:
-        filters.append(dm.filters.Range(view_id.as_property_ref("startStopCost"), gte=min_start_stop_cost, lte=max_start_stop_cost))
-    if isinstance(generator_efficiency_curve, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(generator_efficiency_curve):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("generatorEfficiencyCurve"), value=as_instance_dict_id(generator_efficiency_curve)))
-    if generator_efficiency_curve and isinstance(generator_efficiency_curve, Sequence) and not isinstance(generator_efficiency_curve, str) and not is_tuple_id(generator_efficiency_curve):
-        filters.append(dm.filters.In(view_id.as_property_ref("generatorEfficiencyCurve"), values=[as_instance_dict_id(item) for item in generator_efficiency_curve]))
+        filters.append(
+            dm.filters.Range(view_id.as_property_ref("startStopCost"), gte=min_start_stop_cost, lte=max_start_stop_cost)
+        )
+    if isinstance(generator_efficiency_curve, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(
+        generator_efficiency_curve
+    ):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("generatorEfficiencyCurve"),
+                value=as_instance_dict_id(generator_efficiency_curve),
+            )
+        )
+    if (
+        generator_efficiency_curve
+        and isinstance(generator_efficiency_curve, Sequence)
+        and not isinstance(generator_efficiency_curve, str)
+        and not is_tuple_id(generator_efficiency_curve)
+    ):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("generatorEfficiencyCurve"),
+                values=[as_instance_dict_id(item) for item in generator_efficiency_curve],
+            )
+        )
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
@@ -385,7 +506,10 @@ class _GeneratorQuery(NodeQueryCore[T_DomainModelList, GeneratorList]):
             reverse_expression,
         )
 
-        if _GeneratorEfficiencyCurveQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
+        if (
+            _GeneratorEfficiencyCurveQuery not in created_types
+            and len(creation_path) + 1 < global_config.max_select_depth
+        ):
             self.generator_efficiency_curve = _GeneratorEfficiencyCurveQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -399,7 +523,10 @@ class _GeneratorQuery(NodeQueryCore[T_DomainModelList, GeneratorList]):
                 connection_property=ViewPropertyId(self._view_id, "generatorEfficiencyCurve"),
             )
 
-        if _TurbineEfficiencyCurveQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
+        if (
+            _TurbineEfficiencyCurveQuery not in created_types
+            and len(creation_path) + 1 < global_config.max_select_depth
+        ):
             self.turbine_efficiency_curves = _TurbineEfficiencyCurveQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -423,32 +550,48 @@ class _GeneratorQuery(NodeQueryCore[T_DomainModelList, GeneratorList]):
         self.production_max = FloatFilter(self, self._view_id.as_property_ref("productionMax"))
         self.penstock_number = IntFilter(self, self._view_id.as_property_ref("penstockNumber"))
         self.start_stop_cost = FloatFilter(self, self._view_id.as_property_ref("startStopCost"))
-        self.generator_efficiency_curve_filter = DirectRelationFilter(self, self._view_id.as_property_ref("generatorEfficiencyCurve"))
-        self._filter_classes.extend([
-            self.space,
-            self.external_id,
-            self.name,
-            self.display_name,
-            self.ordering,
-            self.asset_type,
-            self.production_min,
-            self.production_max,
-            self.penstock_number,
-            self.start_stop_cost,
-            self.generator_efficiency_curve_filter,
-        ])
-        self.start_stop_cost_time_series = TimeSeriesReferenceAPI(client,  lambda limit: [
-            item.start_stop_cost_time_series if isinstance(item.start_stop_cost_time_series, str) else item.start_stop_cost_time_series.external_id #type: ignore[misc]
-            for item in self._list(limit=limit)
-            if item.start_stop_cost_time_series is not None and
-               (isinstance(item.start_stop_cost_time_series, str) or item.start_stop_cost_time_series.external_id is not None)
-        ])
-        self.availability_time_series = TimeSeriesReferenceAPI(client,  lambda limit: [
-            item.availability_time_series if isinstance(item.availability_time_series, str) else item.availability_time_series.external_id #type: ignore[misc]
-            for item in self._list(limit=limit)
-            if item.availability_time_series is not None and
-               (isinstance(item.availability_time_series, str) or item.availability_time_series.external_id is not None)
-        ])
+        self.generator_efficiency_curve_filter = DirectRelationFilter(
+            self, self._view_id.as_property_ref("generatorEfficiencyCurve")
+        )
+        self._filter_classes.extend(
+            [
+                self.space,
+                self.external_id,
+                self.name,
+                self.display_name,
+                self.ordering,
+                self.asset_type,
+                self.production_min,
+                self.production_max,
+                self.penstock_number,
+                self.start_stop_cost,
+                self.generator_efficiency_curve_filter,
+            ]
+        )
+        self.start_stop_cost_time_series = TimeSeriesReferenceAPI(
+            client,
+            lambda limit: [
+                item.start_stop_cost_time_series if isinstance(item.start_stop_cost_time_series, str) else item.start_stop_cost_time_series.external_id  # type: ignore[misc]
+                for item in self._list(limit=limit)
+                if item.start_stop_cost_time_series is not None
+                and (
+                    isinstance(item.start_stop_cost_time_series, str)
+                    or item.start_stop_cost_time_series.external_id is not None
+                )
+            ],
+        )
+        self.availability_time_series = TimeSeriesReferenceAPI(
+            client,
+            lambda limit: [
+                item.availability_time_series if isinstance(item.availability_time_series, str) else item.availability_time_series.external_id  # type: ignore[misc]
+                for item in self._list(limit=limit)
+                if item.availability_time_series is not None
+                and (
+                    isinstance(item.availability_time_series, str)
+                    or item.availability_time_series.external_id is not None
+                )
+            ],
+        )
 
     def list_generator(self, limit: int = DEFAULT_QUERY_LIMIT) -> GeneratorList:
         return self._list(limit=limit)

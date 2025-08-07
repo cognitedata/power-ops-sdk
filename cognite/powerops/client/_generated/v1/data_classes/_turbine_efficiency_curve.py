@@ -46,7 +46,7 @@ __all__ = [
 ]
 
 
-TurbineEfficiencyCurveTextFields = Literal["external_id", ]
+TurbineEfficiencyCurveTextFields = Literal["external_id",]
 TurbineEfficiencyCurveFields = Literal["external_id", "head", "flow", "efficiency"]
 
 _TURBINEEFFICIENCYCURVE_PROPERTIES_BY_FIELD = {
@@ -88,8 +88,6 @@ class TurbineEfficiencyCurveGraphQL(GraphQLCore):
             )
         return values
 
-
-
     def as_read(self) -> TurbineEfficiencyCurve:
         """Convert this GraphQL format of turbine efficiency curve to the reading format."""
         return TurbineEfficiencyCurve.model_validate(as_read_args(self))
@@ -116,16 +114,16 @@ class TurbineEfficiencyCurve(DomainModel):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "TurbineEfficiencyCurve", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "TurbineEfficiencyCurve")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
+        "power_ops_types", "TurbineEfficiencyCurve"
+    )
     head: Optional[float] = None
     flow: list[float]
     efficiency: list[float]
 
-
     def as_write(self) -> TurbineEfficiencyCurveWrite:
         """Convert this read version of turbine efficiency curve to the writing version."""
         return TurbineEfficiencyCurveWrite.model_validate(as_write_args(self))
-
 
 
 class TurbineEfficiencyCurveWrite(DomainModelWrite):
@@ -141,26 +139,32 @@ class TurbineEfficiencyCurveWrite(DomainModelWrite):
         flow: The flow values
         efficiency: The turbine efficiency values
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("efficiency", "flow", "head",)
+
+    _container_fields: ClassVar[tuple[str, ...]] = (
+        "efficiency",
+        "flow",
+        "head",
+    )
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "TurbineEfficiencyCurve", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "TurbineEfficiencyCurve")
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
+        "power_ops_types", "TurbineEfficiencyCurve"
+    )
     head: Optional[float] = None
     flow: list[float]
     efficiency: list[float]
-
 
 
 class TurbineEfficiencyCurveList(DomainModelList[TurbineEfficiencyCurve]):
     """List of turbine efficiency curves in the read version."""
 
     _INSTANCE = TurbineEfficiencyCurve
+
     def as_write(self) -> TurbineEfficiencyCurveWriteList:
         """Convert these read versions of turbine efficiency curve to the writing versions."""
         return TurbineEfficiencyCurveWriteList([node.as_write() for node in self.data])
-
 
 
 class TurbineEfficiencyCurveWriteList(DomainModelWriteList[TurbineEfficiencyCurveWrite]):
@@ -225,11 +229,13 @@ class _TurbineEfficiencyCurveQuery(NodeQueryCore[T_DomainModelList, TurbineEffic
         self.space = StringFilter(self, ["node", "space"])
         self.external_id = StringFilter(self, ["node", "externalId"])
         self.head = FloatFilter(self, self._view_id.as_property_ref("head"))
-        self._filter_classes.extend([
-            self.space,
-            self.external_id,
-            self.head,
-        ])
+        self._filter_classes.extend(
+            [
+                self.space,
+                self.external_id,
+                self.head,
+            ]
+        )
 
     def list_turbine_efficiency_curve(self, limit: int = DEFAULT_QUERY_LIMIT) -> TurbineEfficiencyCurveList:
         return self._list(limit=limit)
