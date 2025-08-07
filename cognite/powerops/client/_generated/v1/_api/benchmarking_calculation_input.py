@@ -43,19 +43,10 @@ from cognite.powerops.client._generated.v1.data_classes import (
     BenchmarkingCalculationInputTextFields,
     ShopResult,
 )
-from cognite.powerops.client._generated.v1._api.benchmarking_calculation_input_shop_results import (
-    BenchmarkingCalculationInputShopResultsAPI,
-)
+from cognite.powerops.client._generated.v1._api.benchmarking_calculation_input_shop_results import BenchmarkingCalculationInputShopResultsAPI
 
 
-class BenchmarkingCalculationInputAPI(
-    NodeAPI[
-        BenchmarkingCalculationInput,
-        BenchmarkingCalculationInputWrite,
-        BenchmarkingCalculationInputList,
-        BenchmarkingCalculationInputWriteList,
-    ]
-):
+class BenchmarkingCalculationInputAPI(NodeAPI[BenchmarkingCalculationInput, BenchmarkingCalculationInputWrite, BenchmarkingCalculationInputList, BenchmarkingCalculationInputWriteList]):
     _view_id = dm.ViewId("power_ops_core", "BenchmarkingCalculationInput", "1")
     _properties_by_field: ClassVar[dict[str, str]] = _BENCHMARKINGCALCULATIONINPUT_PROPERTIES_BY_FIELD
     _class_type = BenchmarkingCalculationInput
@@ -121,9 +112,7 @@ class BenchmarkingCalculationInputAPI(
     def search(
         self,
         query: str,
-        properties: (
-            BenchmarkingCalculationInputTextFields | SequenceNotStr[BenchmarkingCalculationInputTextFields] | None
-        ) = None,
+        properties: BenchmarkingCalculationInputTextFields | SequenceNotStr[BenchmarkingCalculationInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -210,9 +199,7 @@ class BenchmarkingCalculationInputAPI(
         group_by: None = None,
         property: BenchmarkingCalculationInputFields | SequenceNotStr[BenchmarkingCalculationInputFields] | None = None,
         query: str | None = None,
-        search_property: (
-            BenchmarkingCalculationInputTextFields | SequenceNotStr[BenchmarkingCalculationInputTextFields] | None
-        ) = None,
+        search_property: BenchmarkingCalculationInputTextFields | SequenceNotStr[BenchmarkingCalculationInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -234,9 +221,7 @@ class BenchmarkingCalculationInputAPI(
         group_by: None = None,
         property: BenchmarkingCalculationInputFields | SequenceNotStr[BenchmarkingCalculationInputFields] | None = None,
         query: str | None = None,
-        search_property: (
-            BenchmarkingCalculationInputTextFields | SequenceNotStr[BenchmarkingCalculationInputTextFields] | None
-        ) = None,
+        search_property: BenchmarkingCalculationInputTextFields | SequenceNotStr[BenchmarkingCalculationInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -254,17 +239,13 @@ class BenchmarkingCalculationInputAPI(
     @overload
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: BenchmarkingCalculationInputFields | SequenceNotStr[BenchmarkingCalculationInputFields],
         property: BenchmarkingCalculationInputFields | SequenceNotStr[BenchmarkingCalculationInputFields] | None = None,
         query: str | None = None,
-        search_property: (
-            BenchmarkingCalculationInputTextFields | SequenceNotStr[BenchmarkingCalculationInputTextFields] | None
-        ) = None,
+        search_property: BenchmarkingCalculationInputTextFields | SequenceNotStr[BenchmarkingCalculationInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -281,17 +262,13 @@ class BenchmarkingCalculationInputAPI(
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: BenchmarkingCalculationInputFields | SequenceNotStr[BenchmarkingCalculationInputFields] | None = None,
         property: BenchmarkingCalculationInputFields | SequenceNotStr[BenchmarkingCalculationInputFields] | None = None,
         query: str | None = None,
-        search_property: (
-            BenchmarkingCalculationInputTextFields | SequenceNotStr[BenchmarkingCalculationInputTextFields] | None
-        ) = None,
+        search_property: BenchmarkingCalculationInputTextFields | SequenceNotStr[BenchmarkingCalculationInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -374,9 +351,7 @@ class BenchmarkingCalculationInputAPI(
         property: BenchmarkingCalculationInputFields,
         interval: float,
         query: str | None = None,
-        search_property: (
-            BenchmarkingCalculationInputTextFields | SequenceNotStr[BenchmarkingCalculationInputTextFields] | None
-        ) = None,
+        search_property: BenchmarkingCalculationInputTextFields | SequenceNotStr[BenchmarkingCalculationInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -453,15 +428,13 @@ class BenchmarkingCalculationInputAPI(
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(
-            factory.root(
-                filter=filter_,
-                sort=sort,
-                limit=limit,
-                max_retrieve_batch_limit=chunk_size,
-                has_container_fields=True,
-            )
-        )
+        builder.append(factory.root(
+            filter=filter_,
+            sort=sort,
+            limit=limit,
+            max_retrieve_batch_limit=chunk_size,
+            has_container_fields=True,
+        ))
         if retrieve_connections == "identifier" or retrieve_connections == "full":
             builder.extend(
                 factory.from_edge(
@@ -646,7 +619,7 @@ class BenchmarkingCalculationInputAPI(
             space,
             filter,
         )
-        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
-            return self._list(limit=limit, filter=filter_, sort=sort_input)
+            return self._list(limit=limit,  filter=filter_, sort=sort_input)
         return self._query(filter_, limit, retrieve_connections, sort_input, "list")

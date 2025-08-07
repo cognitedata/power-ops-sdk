@@ -37,29 +37,10 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     IntFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._function_output import FunctionOutput, FunctionOutputWrite
-
 if TYPE_CHECKING:
-    from cognite.powerops.client._generated.v1.data_classes._alert import (
-        Alert,
-        AlertList,
-        AlertGraphQL,
-        AlertWrite,
-        AlertWriteList,
-    )
-    from cognite.powerops.client._generated.v1.data_classes._function_input import (
-        FunctionInput,
-        FunctionInputList,
-        FunctionInputGraphQL,
-        FunctionInputWrite,
-        FunctionInputWriteList,
-    )
-    from cognite.powerops.client._generated.v1.data_classes._task_dispatcher_input import (
-        TaskDispatcherInput,
-        TaskDispatcherInputList,
-        TaskDispatcherInputGraphQL,
-        TaskDispatcherInputWrite,
-        TaskDispatcherInputWriteList,
-    )
+    from cognite.powerops.client._generated.v1.data_classes._alert import Alert, AlertList, AlertGraphQL, AlertWrite, AlertWriteList
+    from cognite.powerops.client._generated.v1.data_classes._function_input import FunctionInput, FunctionInputList, FunctionInputGraphQL, FunctionInputWrite, FunctionInputWriteList
+    from cognite.powerops.client._generated.v1.data_classes._task_dispatcher_input import TaskDispatcherInput, TaskDispatcherInputList, TaskDispatcherInputGraphQL, TaskDispatcherInputWrite, TaskDispatcherInputWriteList
 
 
 __all__ = [
@@ -74,9 +55,7 @@ __all__ = [
 
 
 TaskDispatcherOutputTextFields = Literal["external_id", "workflow_execution_id", "function_name", "function_call_id"]
-TaskDispatcherOutputFields = Literal[
-    "external_id", "workflow_execution_id", "workflow_step", "function_name", "function_call_id"
-]
+TaskDispatcherOutputFields = Literal["external_id", "workflow_execution_id", "workflow_step", "function_name", "function_call_id"]
 
 _TASKDISPATCHEROUTPUT_PROPERTIES_BY_FIELD = {
     "external_id": "externalId",
@@ -126,6 +105,7 @@ class TaskDispatcherOutputGraphQL(GraphQLCore):
             )
         return values
 
+
     @field_validator("function_input", "alerts", "process_sub_tasks", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -163,16 +143,9 @@ class TaskDispatcherOutput(FunctionOutput):
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "TaskDispatcherOutput", "1")
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "TaskDispatcherOutput"
-    )
-    function_input: Union[TaskDispatcherInput, str, dm.NodeId, None] = Field(
-        default=None, repr=False, alias="functionInput"
-    )
-    process_sub_tasks: Optional[list[Union[FunctionInput, str, dm.NodeId]]] = Field(
-        default=None, repr=False, alias="processSubTasks"
-    )
-
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "TaskDispatcherOutput")
+    function_input: Union[TaskDispatcherInput, str, dm.NodeId, None] = Field(default=None, repr=False, alias="functionInput")
+    process_sub_tasks: Optional[list[Union[FunctionInput, str, dm.NodeId]]] = Field(default=None, repr=False, alias="processSubTasks")
     @field_validator("function_input", mode="before")
     @classmethod
     def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
@@ -188,6 +161,7 @@ class TaskDispatcherOutput(FunctionOutput):
     def as_write(self) -> TaskDispatcherOutputWrite:
         """Convert this read version of task dispatcher output to the writing version."""
         return TaskDispatcherOutputWrite.model_validate(as_write_args(self))
+
 
 
 class TaskDispatcherOutputWrite(FunctionOutputWrite):
@@ -207,31 +181,15 @@ class TaskDispatcherOutputWrite(FunctionOutputWrite):
         alerts: An array of calculation level Alerts.
         process_sub_tasks: An array of input for process subtasks used for partial bid calculations.
     """
-
-    _container_fields: ClassVar[tuple[str, ...]] = (
-        "function_call_id",
-        "function_input",
-        "function_name",
-        "workflow_execution_id",
-        "workflow_step",
-    )
-    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (
-        ("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")),
-        ("process_sub_tasks", dm.DirectRelationReference("power_ops_types", "processSubTasks")),
-    )
+    _container_fields: ClassVar[tuple[str, ...]] = ("function_call_id", "function_input", "function_name", "workflow_execution_id", "workflow_step",)
+    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")), ("process_sub_tasks", dm.DirectRelationReference("power_ops_types", "processSubTasks")),)
     _direct_relations: ClassVar[tuple[str, ...]] = ("function_input",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "TaskDispatcherOutput", "1")
 
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
-        "power_ops_types", "TaskDispatcherOutput"
-    )
-    function_input: Union[TaskDispatcherInputWrite, str, dm.NodeId, None] = Field(
-        default=None, repr=False, alias="functionInput"
-    )
-    process_sub_tasks: Optional[list[Union[FunctionInputWrite, str, dm.NodeId]]] = Field(
-        default=None, repr=False, alias="processSubTasks"
-    )
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "TaskDispatcherOutput")
+    function_input: Union[TaskDispatcherInputWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="functionInput")
+    process_sub_tasks: Optional[list[Union[FunctionInputWrite, str, dm.NodeId]]] = Field(default=None, repr=False, alias="processSubTasks")
 
     @field_validator("function_input", "process_sub_tasks", mode="before")
     def as_node_id(cls, value: Any) -> Any:
@@ -248,67 +206,44 @@ class TaskDispatcherOutputList(DomainModelList[TaskDispatcherOutput]):
     """List of task dispatcher outputs in the read version."""
 
     _INSTANCE = TaskDispatcherOutput
-
     def as_write(self) -> TaskDispatcherOutputWriteList:
         """Convert these read versions of task dispatcher output to the writing versions."""
         return TaskDispatcherOutputWriteList([node.as_write() for node in self.data])
 
+
     @property
     def function_input(self) -> TaskDispatcherInputList:
         from ._task_dispatcher_input import TaskDispatcherInput, TaskDispatcherInputList
-
-        return TaskDispatcherInputList(
-            [item.function_input for item in self.data if isinstance(item.function_input, TaskDispatcherInput)]
-        )
-
+        return TaskDispatcherInputList([item.function_input for item in self.data if isinstance(item.function_input, TaskDispatcherInput)])
     @property
     def alerts(self) -> AlertList:
         from ._alert import Alert, AlertList
-
         return AlertList([item for items in self.data for item in items.alerts or [] if isinstance(item, Alert)])
 
     @property
     def process_sub_tasks(self) -> FunctionInputList:
         from ._function_input import FunctionInput, FunctionInputList
-
-        return FunctionInputList(
-            [item for items in self.data for item in items.process_sub_tasks or [] if isinstance(item, FunctionInput)]
-        )
+        return FunctionInputList([item for items in self.data for item in items.process_sub_tasks or [] if isinstance(item, FunctionInput)])
 
 
 class TaskDispatcherOutputWriteList(DomainModelWriteList[TaskDispatcherOutputWrite]):
     """List of task dispatcher outputs in the writing version."""
 
     _INSTANCE = TaskDispatcherOutputWrite
-
     @property
     def function_input(self) -> TaskDispatcherInputWriteList:
         from ._task_dispatcher_input import TaskDispatcherInputWrite, TaskDispatcherInputWriteList
-
-        return TaskDispatcherInputWriteList(
-            [item.function_input for item in self.data if isinstance(item.function_input, TaskDispatcherInputWrite)]
-        )
-
+        return TaskDispatcherInputWriteList([item.function_input for item in self.data if isinstance(item.function_input, TaskDispatcherInputWrite)])
     @property
     def alerts(self) -> AlertWriteList:
         from ._alert import AlertWrite, AlertWriteList
-
-        return AlertWriteList(
-            [item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)]
-        )
+        return AlertWriteList([item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)])
 
     @property
     def process_sub_tasks(self) -> FunctionInputWriteList:
         from ._function_input import FunctionInputWrite, FunctionInputWriteList
+        return FunctionInputWriteList([item for items in self.data for item in items.process_sub_tasks or [] if isinstance(item, FunctionInputWrite)])
 
-        return FunctionInputWriteList(
-            [
-                item
-                for items in self.data
-                for item in items.process_sub_tasks or []
-                if isinstance(item, FunctionInputWrite)
-            ]
-        )
 
 
 def _create_task_dispatcher_output_filter(
@@ -321,14 +256,7 @@ def _create_task_dispatcher_output_filter(
     function_name_prefix: str | None = None,
     function_call_id: str | list[str] | None = None,
     function_call_id_prefix: str | None = None,
-    function_input: (
-        str
-        | tuple[str, str]
-        | dm.NodeId
-        | dm.DirectRelationReference
-        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-        | None
-    ) = None,
+    function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -339,13 +267,9 @@ def _create_task_dispatcher_output_filter(
     if workflow_execution_id and isinstance(workflow_execution_id, list):
         filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
     if workflow_execution_id_prefix is not None:
-        filters.append(
-            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
-        )
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix))
     if min_workflow_step is not None or max_workflow_step is not None:
-        filters.append(
-            dm.filters.Range(view_id.as_property_ref("workflowStep"), gte=min_workflow_step, lte=max_workflow_step)
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("workflowStep"), gte=min_workflow_step, lte=max_workflow_step))
     if isinstance(function_name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("functionName"), value=function_name))
     if function_name and isinstance(function_name, list):
@@ -359,20 +283,9 @@ def _create_task_dispatcher_output_filter(
     if function_call_id_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("functionCallId"), value=function_call_id_prefix))
     if isinstance(function_input, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(function_input):
-        filters.append(
-            dm.filters.Equals(view_id.as_property_ref("functionInput"), value=as_instance_dict_id(function_input))
-        )
-    if (
-        function_input
-        and isinstance(function_input, Sequence)
-        and not isinstance(function_input, str)
-        and not is_tuple_id(function_input)
-    ):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("functionInput"), values=[as_instance_dict_id(item) for item in function_input]
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("functionInput"), value=as_instance_dict_id(function_input)))
+    if function_input and isinstance(function_input, Sequence) and not isinstance(function_input, str) and not is_tuple_id(function_input):
+        filters.append(dm.filters.In(view_id.as_property_ref("functionInput"), values=[as_instance_dict_id(item) for item in function_input]))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
@@ -467,17 +380,15 @@ class _TaskDispatcherOutputQuery(NodeQueryCore[T_DomainModelList, TaskDispatcher
         self.function_name = StringFilter(self, self._view_id.as_property_ref("functionName"))
         self.function_call_id = StringFilter(self, self._view_id.as_property_ref("functionCallId"))
         self.function_input_filter = DirectRelationFilter(self, self._view_id.as_property_ref("functionInput"))
-        self._filter_classes.extend(
-            [
-                self.space,
-                self.external_id,
-                self.workflow_execution_id,
-                self.workflow_step,
-                self.function_name,
-                self.function_call_id,
-                self.function_input_filter,
-            ]
-        )
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.workflow_execution_id,
+            self.workflow_step,
+            self.function_name,
+            self.function_call_id,
+            self.function_input_filter,
+        ])
 
     def list_task_dispatcher_output(self, limit: int = DEFAULT_QUERY_LIMIT) -> TaskDispatcherOutputList:
         return self._list(limit=limit)

@@ -44,11 +44,7 @@ from cognite.powerops.client._generated.v1.data_classes import (
 )
 
 
-class TurbineEfficiencyCurveAPI(
-    NodeAPI[
-        TurbineEfficiencyCurve, TurbineEfficiencyCurveWrite, TurbineEfficiencyCurveList, TurbineEfficiencyCurveWriteList
-    ]
-):
+class TurbineEfficiencyCurveAPI(NodeAPI[TurbineEfficiencyCurve, TurbineEfficiencyCurveWrite, TurbineEfficiencyCurveList, TurbineEfficiencyCurveWriteList]):
     _view_id = dm.ViewId("power_ops_core", "TurbineEfficiencyCurve", "1")
     _properties_by_field: ClassVar[dict[str, str]] = _TURBINEEFFICIENCYCURVE_PROPERTIES_BY_FIELD
     _class_type = TurbineEfficiencyCurve
@@ -57,6 +53,7 @@ class TurbineEfficiencyCurveAPI(
 
     def __init__(self, client: CogniteClient):
         super().__init__(client=client)
+
 
     @overload
     def retrieve(
@@ -198,11 +195,9 @@ class TurbineEfficiencyCurveAPI(
     @overload
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: TurbineEfficiencyCurveFields | SequenceNotStr[TurbineEfficiencyCurveFields],
         property: TurbineEfficiencyCurveFields | SequenceNotStr[TurbineEfficiencyCurveFields] | None = None,
         min_head: float | None = None,
@@ -215,11 +210,9 @@ class TurbineEfficiencyCurveAPI(
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: TurbineEfficiencyCurveFields | SequenceNotStr[TurbineEfficiencyCurveFields] | None = None,
         property: TurbineEfficiencyCurveFields | SequenceNotStr[TurbineEfficiencyCurveFields] | None = None,
         min_head: float | None = None,
@@ -339,15 +332,13 @@ class TurbineEfficiencyCurveAPI(
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(
-            factory.root(
-                filter=filter_,
-                sort=sort,
-                limit=limit,
-                max_retrieve_batch_limit=chunk_size,
-                has_container_fields=True,
-            )
-        )
+        builder.append(factory.root(
+            filter=filter_,
+            sort=sort,
+            limit=limit,
+            max_retrieve_batch_limit=chunk_size,
+            has_container_fields=True,
+        ))
         return builder.build()
 
     def iterate(
@@ -478,5 +469,5 @@ class TurbineEfficiencyCurveAPI(
             space,
             filter,
         )
-        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
-        return self._list(limit=limit, filter=filter_, sort=sort_input)
+        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        return self._list(limit=limit,  filter=filter_, sort=sort_input)

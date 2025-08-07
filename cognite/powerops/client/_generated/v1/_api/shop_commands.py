@@ -54,6 +54,7 @@ class ShopCommandsAPI(NodeAPI[ShopCommands, ShopCommandsWrite, ShopCommandsList,
     def __init__(self, client: CogniteClient):
         super().__init__(client=client)
 
+
     @overload
     def retrieve(
         self,
@@ -198,11 +199,9 @@ class ShopCommandsAPI(NodeAPI[ShopCommands, ShopCommandsWrite, ShopCommandsList,
     @overload
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: ShopCommandsFields | SequenceNotStr[ShopCommandsFields],
         property: ShopCommandsFields | SequenceNotStr[ShopCommandsFields] | None = None,
         query: str | None = None,
@@ -217,11 +216,9 @@ class ShopCommandsAPI(NodeAPI[ShopCommands, ShopCommandsWrite, ShopCommandsList,
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: ShopCommandsFields | SequenceNotStr[ShopCommandsFields] | None = None,
         property: ShopCommandsFields | SequenceNotStr[ShopCommandsFields] | None = None,
         query: str | None = None,
@@ -349,15 +346,13 @@ class ShopCommandsAPI(NodeAPI[ShopCommands, ShopCommandsWrite, ShopCommandsList,
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(
-            factory.root(
-                filter=filter_,
-                sort=sort,
-                limit=limit,
-                max_retrieve_batch_limit=chunk_size,
-                has_container_fields=True,
-            )
-        )
+        builder.append(factory.root(
+            filter=filter_,
+            sort=sort,
+            limit=limit,
+            max_retrieve_batch_limit=chunk_size,
+            has_container_fields=True,
+        ))
         return builder.build()
 
     def iterate(
@@ -488,5 +483,5 @@ class ShopCommandsAPI(NodeAPI[ShopCommands, ShopCommandsWrite, ShopCommandsList,
             space,
             filter,
         )
-        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
-        return self._list(limit=limit, filter=filter_, sort=sort_input)
+        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        return self._list(limit=limit,  filter=filter_, sort=sort_input)

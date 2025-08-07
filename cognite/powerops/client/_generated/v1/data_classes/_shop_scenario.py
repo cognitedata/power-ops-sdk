@@ -35,43 +35,12 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     ViewPropertyId,
     DirectRelationFilter,
 )
-
 if TYPE_CHECKING:
-    from cognite.powerops.client._generated.v1.data_classes._shop_attribute_mapping import (
-        ShopAttributeMapping,
-        ShopAttributeMappingList,
-        ShopAttributeMappingGraphQL,
-        ShopAttributeMappingWrite,
-        ShopAttributeMappingWriteList,
-    )
-    from cognite.powerops.client._generated.v1.data_classes._shop_commands import (
-        ShopCommands,
-        ShopCommandsList,
-        ShopCommandsGraphQL,
-        ShopCommandsWrite,
-        ShopCommandsWriteList,
-    )
-    from cognite.powerops.client._generated.v1.data_classes._shop_model import (
-        ShopModel,
-        ShopModelList,
-        ShopModelGraphQL,
-        ShopModelWrite,
-        ShopModelWriteList,
-    )
-    from cognite.powerops.client._generated.v1.data_classes._shop_output_time_series_definition import (
-        ShopOutputTimeSeriesDefinition,
-        ShopOutputTimeSeriesDefinitionList,
-        ShopOutputTimeSeriesDefinitionGraphQL,
-        ShopOutputTimeSeriesDefinitionWrite,
-        ShopOutputTimeSeriesDefinitionWriteList,
-    )
-    from cognite.powerops.client._generated.v1.data_classes._shop_time_resolution import (
-        ShopTimeResolution,
-        ShopTimeResolutionList,
-        ShopTimeResolutionGraphQL,
-        ShopTimeResolutionWrite,
-        ShopTimeResolutionWriteList,
-    )
+    from cognite.powerops.client._generated.v1.data_classes._shop_attribute_mapping import ShopAttributeMapping, ShopAttributeMappingList, ShopAttributeMappingGraphQL, ShopAttributeMappingWrite, ShopAttributeMappingWriteList
+    from cognite.powerops.client._generated.v1.data_classes._shop_commands import ShopCommands, ShopCommandsList, ShopCommandsGraphQL, ShopCommandsWrite, ShopCommandsWriteList
+    from cognite.powerops.client._generated.v1.data_classes._shop_model import ShopModel, ShopModelList, ShopModelGraphQL, ShopModelWrite, ShopModelWriteList
+    from cognite.powerops.client._generated.v1.data_classes._shop_output_time_series_definition import ShopOutputTimeSeriesDefinition, ShopOutputTimeSeriesDefinitionList, ShopOutputTimeSeriesDefinitionGraphQL, ShopOutputTimeSeriesDefinitionWrite, ShopOutputTimeSeriesDefinitionWriteList
+    from cognite.powerops.client._generated.v1.data_classes._shop_time_resolution import ShopTimeResolution, ShopTimeResolutionList, ShopTimeResolutionGraphQL, ShopTimeResolutionWrite, ShopTimeResolutionWriteList
 
 
 __all__ = [
@@ -120,12 +89,8 @@ class ShopScenarioGraphQL(GraphQLCore, protected_namespaces=()):
     commands: Optional[ShopCommandsGraphQL] = Field(default=None, repr=False)
     time_resolution: Optional[ShopTimeResolutionGraphQL] = Field(default=None, repr=False, alias="timeResolution")
     source: Optional[str] = None
-    output_definition: Optional[list[ShopOutputTimeSeriesDefinitionGraphQL]] = Field(
-        default=None, repr=False, alias="outputDefinition"
-    )
-    attribute_mappings_override: Optional[list[ShopAttributeMappingGraphQL]] = Field(
-        default=None, repr=False, alias="attributeMappingsOverride"
-    )
+    output_definition: Optional[list[ShopOutputTimeSeriesDefinitionGraphQL]] = Field(default=None, repr=False, alias="outputDefinition")
+    attribute_mappings_override: Optional[list[ShopAttributeMappingGraphQL]] = Field(default=None, repr=False, alias="attributeMappingsOverride")
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -138,9 +103,8 @@ class ShopScenarioGraphQL(GraphQLCore, protected_namespaces=()):
             )
         return values
 
-    @field_validator(
-        "model", "commands", "time_resolution", "output_definition", "attribute_mappings_override", mode="before"
-    )
+
+    @field_validator("model", "commands", "time_resolution", "output_definition", "attribute_mappings_override", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
             return value
@@ -182,17 +146,10 @@ class ShopScenario(DomainModel, protected_namespaces=()):
     name: str
     model: Union[ShopModel, str, dm.NodeId, None] = Field(default=None, repr=False)
     commands: Union[ShopCommands, str, dm.NodeId, None] = Field(default=None, repr=False)
-    time_resolution: Union[ShopTimeResolution, str, dm.NodeId, None] = Field(
-        default=None, repr=False, alias="timeResolution"
-    )
+    time_resolution: Union[ShopTimeResolution, str, dm.NodeId, None] = Field(default=None, repr=False, alias="timeResolution")
     source: Optional[str] = None
-    output_definition: Optional[list[Union[ShopOutputTimeSeriesDefinition, str, dm.NodeId]]] = Field(
-        default=None, repr=False, alias="outputDefinition"
-    )
-    attribute_mappings_override: Optional[list[Union[ShopAttributeMapping, str, dm.NodeId]]] = Field(
-        default=None, repr=False, alias="attributeMappingsOverride"
-    )
-
+    output_definition: Optional[list[Union[ShopOutputTimeSeriesDefinition, str, dm.NodeId]]] = Field(default=None, repr=False, alias="outputDefinition")
+    attribute_mappings_override: Optional[list[Union[ShopAttributeMapping, str, dm.NodeId]]] = Field(default=None, repr=False, alias="attributeMappingsOverride")
     @field_validator("model", "commands", "time_resolution", mode="before")
     @classmethod
     def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
@@ -208,6 +165,7 @@ class ShopScenario(DomainModel, protected_namespaces=()):
     def as_write(self) -> ShopScenarioWrite:
         """Convert this read version of shop scenario to the writing version."""
         return ShopScenarioWrite.model_validate(as_write_args(self))
+
 
 
 class ShopScenarioWrite(DomainModelWrite, protected_namespaces=()):
@@ -227,23 +185,9 @@ class ShopScenarioWrite(DomainModelWrite, protected_namespaces=()):
         output_definition: An array of output definitions for the time series
         attribute_mappings_override: An array of base mappings to override in shop model file
     """
-
-    _container_fields: ClassVar[tuple[str, ...]] = (
-        "commands",
-        "model",
-        "name",
-        "source",
-        "time_resolution",
-    )
-    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (
-        ("attribute_mappings_override", dm.DirectRelationReference("power_ops_types", "ShopAttributeMapping")),
-        ("output_definition", dm.DirectRelationReference("power_ops_types", "ShopOutputTimeSeriesDefinition")),
-    )
-    _direct_relations: ClassVar[tuple[str, ...]] = (
-        "commands",
-        "model",
-        "time_resolution",
-    )
+    _container_fields: ClassVar[tuple[str, ...]] = ("commands", "model", "name", "source", "time_resolution",)
+    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("attribute_mappings_override", dm.DirectRelationReference("power_ops_types", "ShopAttributeMapping")), ("output_definition", dm.DirectRelationReference("power_ops_types", "ShopOutputTimeSeriesDefinition")),)
+    _direct_relations: ClassVar[tuple[str, ...]] = ("commands", "model", "time_resolution",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopScenario", "1")
 
@@ -252,20 +196,12 @@ class ShopScenarioWrite(DomainModelWrite, protected_namespaces=()):
     name: str
     model: Union[ShopModelWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
     commands: Union[ShopCommandsWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
-    time_resolution: Union[ShopTimeResolutionWrite, str, dm.NodeId, None] = Field(
-        default=None, repr=False, alias="timeResolution"
-    )
+    time_resolution: Union[ShopTimeResolutionWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="timeResolution")
     source: Optional[str] = None
-    output_definition: Optional[list[Union[ShopOutputTimeSeriesDefinitionWrite, str, dm.NodeId]]] = Field(
-        default=None, repr=False, alias="outputDefinition"
-    )
-    attribute_mappings_override: Optional[list[Union[ShopAttributeMappingWrite, str, dm.NodeId]]] = Field(
-        default=None, repr=False, alias="attributeMappingsOverride"
-    )
+    output_definition: Optional[list[Union[ShopOutputTimeSeriesDefinitionWrite, str, dm.NodeId]]] = Field(default=None, repr=False, alias="outputDefinition")
+    attribute_mappings_override: Optional[list[Union[ShopAttributeMappingWrite, str, dm.NodeId]]] = Field(default=None, repr=False, alias="attributeMappingsOverride")
 
-    @field_validator(
-        "model", "commands", "time_resolution", "output_definition", "attribute_mappings_override", mode="before"
-    )
+    @field_validator("model", "commands", "time_resolution", "output_definition", "attribute_mappings_override", mode="before")
     def as_node_id(cls, value: Any) -> Any:
         if isinstance(value, dm.DirectRelationReference):
             return dm.NodeId(value.space, value.external_id)
@@ -280,146 +216,69 @@ class ShopScenarioList(DomainModelList[ShopScenario]):
     """List of shop scenarios in the read version."""
 
     _INSTANCE = ShopScenario
-
     def as_write(self) -> ShopScenarioWriteList:
         """Convert these read versions of shop scenario to the writing versions."""
         return ShopScenarioWriteList([node.as_write() for node in self.data])
 
+
     @property
     def model(self) -> ShopModelList:
         from ._shop_model import ShopModel, ShopModelList
-
         return ShopModelList([item.model for item in self.data if isinstance(item.model, ShopModel)])
-
     @property
     def commands(self) -> ShopCommandsList:
         from ._shop_commands import ShopCommands, ShopCommandsList
-
         return ShopCommandsList([item.commands for item in self.data if isinstance(item.commands, ShopCommands)])
-
     @property
     def time_resolution(self) -> ShopTimeResolutionList:
         from ._shop_time_resolution import ShopTimeResolution, ShopTimeResolutionList
-
-        return ShopTimeResolutionList(
-            [item.time_resolution for item in self.data if isinstance(item.time_resolution, ShopTimeResolution)]
-        )
-
+        return ShopTimeResolutionList([item.time_resolution for item in self.data if isinstance(item.time_resolution, ShopTimeResolution)])
     @property
     def output_definition(self) -> ShopOutputTimeSeriesDefinitionList:
-        from ._shop_output_time_series_definition import (
-            ShopOutputTimeSeriesDefinition,
-            ShopOutputTimeSeriesDefinitionList,
-        )
-
-        return ShopOutputTimeSeriesDefinitionList(
-            [
-                item
-                for items in self.data
-                for item in items.output_definition or []
-                if isinstance(item, ShopOutputTimeSeriesDefinition)
-            ]
-        )
+        from ._shop_output_time_series_definition import ShopOutputTimeSeriesDefinition, ShopOutputTimeSeriesDefinitionList
+        return ShopOutputTimeSeriesDefinitionList([item for items in self.data for item in items.output_definition or [] if isinstance(item, ShopOutputTimeSeriesDefinition)])
 
     @property
     def attribute_mappings_override(self) -> ShopAttributeMappingList:
         from ._shop_attribute_mapping import ShopAttributeMapping, ShopAttributeMappingList
-
-        return ShopAttributeMappingList(
-            [
-                item
-                for items in self.data
-                for item in items.attribute_mappings_override or []
-                if isinstance(item, ShopAttributeMapping)
-            ]
-        )
+        return ShopAttributeMappingList([item for items in self.data for item in items.attribute_mappings_override or [] if isinstance(item, ShopAttributeMapping)])
 
 
 class ShopScenarioWriteList(DomainModelWriteList[ShopScenarioWrite]):
     """List of shop scenarios in the writing version."""
 
     _INSTANCE = ShopScenarioWrite
-
     @property
     def model(self) -> ShopModelWriteList:
         from ._shop_model import ShopModelWrite, ShopModelWriteList
-
         return ShopModelWriteList([item.model for item in self.data if isinstance(item.model, ShopModelWrite)])
-
     @property
     def commands(self) -> ShopCommandsWriteList:
         from ._shop_commands import ShopCommandsWrite, ShopCommandsWriteList
-
-        return ShopCommandsWriteList(
-            [item.commands for item in self.data if isinstance(item.commands, ShopCommandsWrite)]
-        )
-
+        return ShopCommandsWriteList([item.commands for item in self.data if isinstance(item.commands, ShopCommandsWrite)])
     @property
     def time_resolution(self) -> ShopTimeResolutionWriteList:
         from ._shop_time_resolution import ShopTimeResolutionWrite, ShopTimeResolutionWriteList
-
-        return ShopTimeResolutionWriteList(
-            [item.time_resolution for item in self.data if isinstance(item.time_resolution, ShopTimeResolutionWrite)]
-        )
-
+        return ShopTimeResolutionWriteList([item.time_resolution for item in self.data if isinstance(item.time_resolution, ShopTimeResolutionWrite)])
     @property
     def output_definition(self) -> ShopOutputTimeSeriesDefinitionWriteList:
-        from ._shop_output_time_series_definition import (
-            ShopOutputTimeSeriesDefinitionWrite,
-            ShopOutputTimeSeriesDefinitionWriteList,
-        )
-
-        return ShopOutputTimeSeriesDefinitionWriteList(
-            [
-                item
-                for items in self.data
-                for item in items.output_definition or []
-                if isinstance(item, ShopOutputTimeSeriesDefinitionWrite)
-            ]
-        )
+        from ._shop_output_time_series_definition import ShopOutputTimeSeriesDefinitionWrite, ShopOutputTimeSeriesDefinitionWriteList
+        return ShopOutputTimeSeriesDefinitionWriteList([item for items in self.data for item in items.output_definition or [] if isinstance(item, ShopOutputTimeSeriesDefinitionWrite)])
 
     @property
     def attribute_mappings_override(self) -> ShopAttributeMappingWriteList:
         from ._shop_attribute_mapping import ShopAttributeMappingWrite, ShopAttributeMappingWriteList
+        return ShopAttributeMappingWriteList([item for items in self.data for item in items.attribute_mappings_override or [] if isinstance(item, ShopAttributeMappingWrite)])
 
-        return ShopAttributeMappingWriteList(
-            [
-                item
-                for items in self.data
-                for item in items.attribute_mappings_override or []
-                if isinstance(item, ShopAttributeMappingWrite)
-            ]
-        )
 
 
 def _create_shop_scenario_filter(
     view_id: dm.ViewId,
     name: str | list[str] | None = None,
     name_prefix: str | None = None,
-    model: (
-        str
-        | tuple[str, str]
-        | dm.NodeId
-        | dm.DirectRelationReference
-        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-        | None
-    ) = None,
-    commands: (
-        str
-        | tuple[str, str]
-        | dm.NodeId
-        | dm.DirectRelationReference
-        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-        | None
-    ) = None,
-    time_resolution: (
-        str
-        | tuple[str, str]
-        | dm.NodeId
-        | dm.DirectRelationReference
-        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-        | None
-    ) = None,
+    model: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+    commands: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+    time_resolution: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
     source: str | list[str] | None = None,
     source_prefix: str | None = None,
     external_id_prefix: str | None = None,
@@ -436,31 +295,15 @@ def _create_shop_scenario_filter(
     if isinstance(model, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(model):
         filters.append(dm.filters.Equals(view_id.as_property_ref("model"), value=as_instance_dict_id(model)))
     if model and isinstance(model, Sequence) and not isinstance(model, str) and not is_tuple_id(model):
-        filters.append(
-            dm.filters.In(view_id.as_property_ref("model"), values=[as_instance_dict_id(item) for item in model])
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("model"), values=[as_instance_dict_id(item) for item in model]))
     if isinstance(commands, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(commands):
         filters.append(dm.filters.Equals(view_id.as_property_ref("commands"), value=as_instance_dict_id(commands)))
     if commands and isinstance(commands, Sequence) and not isinstance(commands, str) and not is_tuple_id(commands):
-        filters.append(
-            dm.filters.In(view_id.as_property_ref("commands"), values=[as_instance_dict_id(item) for item in commands])
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("commands"), values=[as_instance_dict_id(item) for item in commands]))
     if isinstance(time_resolution, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(time_resolution):
-        filters.append(
-            dm.filters.Equals(view_id.as_property_ref("timeResolution"), value=as_instance_dict_id(time_resolution))
-        )
-    if (
-        time_resolution
-        and isinstance(time_resolution, Sequence)
-        and not isinstance(time_resolution, str)
-        and not is_tuple_id(time_resolution)
-    ):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("timeResolution"),
-                values=[as_instance_dict_id(item) for item in time_resolution],
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("timeResolution"), value=as_instance_dict_id(time_resolution)))
+    if time_resolution and isinstance(time_resolution, Sequence) and not isinstance(time_resolution, str) and not is_tuple_id(time_resolution):
+        filters.append(dm.filters.In(view_id.as_property_ref("timeResolution"), values=[as_instance_dict_id(item) for item in time_resolution]))
     if isinstance(source, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("source"), value=source))
     if source and isinstance(source, list):
@@ -556,10 +399,7 @@ class _ShopScenarioQuery(NodeQueryCore[T_DomainModelList, ShopScenarioList]):
                 connection_property=ViewPropertyId(self._view_id, "timeResolution"),
             )
 
-        if (
-            _ShopOutputTimeSeriesDefinitionQuery not in created_types
-            and len(creation_path) + 1 < global_config.max_select_depth
-        ):
+        if _ShopOutputTimeSeriesDefinitionQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.output_definition = _ShopOutputTimeSeriesDefinitionQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -594,17 +434,15 @@ class _ShopScenarioQuery(NodeQueryCore[T_DomainModelList, ShopScenarioList]):
         self.commands_filter = DirectRelationFilter(self, self._view_id.as_property_ref("commands"))
         self.time_resolution_filter = DirectRelationFilter(self, self._view_id.as_property_ref("timeResolution"))
         self.source = StringFilter(self, self._view_id.as_property_ref("source"))
-        self._filter_classes.extend(
-            [
-                self.space,
-                self.external_id,
-                self.name,
-                self.model_filter,
-                self.commands_filter,
-                self.time_resolution_filter,
-                self.source,
-            ]
-        )
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.name,
+            self.model_filter,
+            self.commands_filter,
+            self.time_resolution_filter,
+            self.source,
+        ])
 
     def list_shop_scenario(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopScenarioList:
         return self._list(limit=limit)

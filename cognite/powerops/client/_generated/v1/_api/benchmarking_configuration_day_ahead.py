@@ -46,22 +46,11 @@ from cognite.powerops.client._generated.v1.data_classes import (
     PriceAreaDayAhead,
     ShopModelWithAssets,
 )
-from cognite.powerops.client._generated.v1._api.benchmarking_configuration_day_ahead_bid_configurations import (
-    BenchmarkingConfigurationDayAheadBidConfigurationsAPI,
-)
-from cognite.powerops.client._generated.v1._api.benchmarking_configuration_day_ahead_assets_per_shop_model import (
-    BenchmarkingConfigurationDayAheadAssetsPerShopModelAPI,
-)
+from cognite.powerops.client._generated.v1._api.benchmarking_configuration_day_ahead_bid_configurations import BenchmarkingConfigurationDayAheadBidConfigurationsAPI
+from cognite.powerops.client._generated.v1._api.benchmarking_configuration_day_ahead_assets_per_shop_model import BenchmarkingConfigurationDayAheadAssetsPerShopModelAPI
 
 
-class BenchmarkingConfigurationDayAheadAPI(
-    NodeAPI[
-        BenchmarkingConfigurationDayAhead,
-        BenchmarkingConfigurationDayAheadWrite,
-        BenchmarkingConfigurationDayAheadList,
-        BenchmarkingConfigurationDayAheadWriteList,
-    ]
-):
+class BenchmarkingConfigurationDayAheadAPI(NodeAPI[BenchmarkingConfigurationDayAhead, BenchmarkingConfigurationDayAheadWrite, BenchmarkingConfigurationDayAheadList, BenchmarkingConfigurationDayAheadWriteList]):
     _view_id = dm.ViewId("power_ops_core", "BenchmarkingConfigurationDayAhead", "1")
     _properties_by_field: ClassVar[dict[str, str]] = _BENCHMARKINGCONFIGURATIONDAYAHEAD_PROPERTIES_BY_FIELD
     _class_type = BenchmarkingConfigurationDayAhead
@@ -129,44 +118,17 @@ class BenchmarkingConfigurationDayAheadAPI(
     def search(
         self,
         query: str,
-        properties: (
-            BenchmarkingConfigurationDayAheadTextFields
-            | SequenceNotStr[BenchmarkingConfigurationDayAheadTextFields]
-            | None
-        ) = None,
+        properties: BenchmarkingConfigurationDayAheadTextFields | SequenceNotStr[BenchmarkingConfigurationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        price_area: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        shop_start_specification: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        shop_end_specification: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        price_area: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_start_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_end_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-        sort_by: (
-            BenchmarkingConfigurationDayAheadFields | SequenceNotStr[BenchmarkingConfigurationDayAheadFields] | None
-        ) = None,
+        sort_by: BenchmarkingConfigurationDayAheadFields | SequenceNotStr[BenchmarkingConfigurationDayAheadFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> BenchmarkingConfigurationDayAheadList:
@@ -232,41 +194,14 @@ class BenchmarkingConfigurationDayAheadAPI(
         self,
         aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
-        property: (
-            BenchmarkingConfigurationDayAheadFields | SequenceNotStr[BenchmarkingConfigurationDayAheadFields] | None
-        ) = None,
+        property: BenchmarkingConfigurationDayAheadFields | SequenceNotStr[BenchmarkingConfigurationDayAheadFields] | None = None,
         query: str | None = None,
-        search_property: (
-            BenchmarkingConfigurationDayAheadTextFields
-            | SequenceNotStr[BenchmarkingConfigurationDayAheadTextFields]
-            | None
-        ) = None,
+        search_property: BenchmarkingConfigurationDayAheadTextFields | SequenceNotStr[BenchmarkingConfigurationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        price_area: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        shop_start_specification: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        shop_end_specification: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        price_area: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_start_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_end_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -278,41 +213,14 @@ class BenchmarkingConfigurationDayAheadAPI(
         self,
         aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: None = None,
-        property: (
-            BenchmarkingConfigurationDayAheadFields | SequenceNotStr[BenchmarkingConfigurationDayAheadFields] | None
-        ) = None,
+        property: BenchmarkingConfigurationDayAheadFields | SequenceNotStr[BenchmarkingConfigurationDayAheadFields] | None = None,
         query: str | None = None,
-        search_property: (
-            BenchmarkingConfigurationDayAheadTextFields
-            | SequenceNotStr[BenchmarkingConfigurationDayAheadTextFields]
-            | None
-        ) = None,
+        search_property: BenchmarkingConfigurationDayAheadTextFields | SequenceNotStr[BenchmarkingConfigurationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        price_area: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        shop_start_specification: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        shop_end_specification: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        price_area: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_start_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_end_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -322,47 +230,18 @@ class BenchmarkingConfigurationDayAheadAPI(
     @overload
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: BenchmarkingConfigurationDayAheadFields | SequenceNotStr[BenchmarkingConfigurationDayAheadFields],
-        property: (
-            BenchmarkingConfigurationDayAheadFields | SequenceNotStr[BenchmarkingConfigurationDayAheadFields] | None
-        ) = None,
+        property: BenchmarkingConfigurationDayAheadFields | SequenceNotStr[BenchmarkingConfigurationDayAheadFields] | None = None,
         query: str | None = None,
-        search_property: (
-            BenchmarkingConfigurationDayAheadTextFields
-            | SequenceNotStr[BenchmarkingConfigurationDayAheadTextFields]
-            | None
-        ) = None,
+        search_property: BenchmarkingConfigurationDayAheadTextFields | SequenceNotStr[BenchmarkingConfigurationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        price_area: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        shop_start_specification: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        shop_end_specification: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        price_area: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_start_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_end_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -371,49 +250,18 @@ class BenchmarkingConfigurationDayAheadAPI(
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
-        group_by: (
-            BenchmarkingConfigurationDayAheadFields | SequenceNotStr[BenchmarkingConfigurationDayAheadFields] | None
-        ) = None,
-        property: (
-            BenchmarkingConfigurationDayAheadFields | SequenceNotStr[BenchmarkingConfigurationDayAheadFields] | None
-        ) = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: BenchmarkingConfigurationDayAheadFields | SequenceNotStr[BenchmarkingConfigurationDayAheadFields] | None = None,
+        property: BenchmarkingConfigurationDayAheadFields | SequenceNotStr[BenchmarkingConfigurationDayAheadFields] | None = None,
         query: str | None = None,
-        search_property: (
-            BenchmarkingConfigurationDayAheadTextFields
-            | SequenceNotStr[BenchmarkingConfigurationDayAheadTextFields]
-            | None
-        ) = None,
+        search_property: BenchmarkingConfigurationDayAheadTextFields | SequenceNotStr[BenchmarkingConfigurationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        price_area: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        shop_start_specification: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        shop_end_specification: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        price_area: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_start_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_end_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -482,37 +330,12 @@ class BenchmarkingConfigurationDayAheadAPI(
         property: BenchmarkingConfigurationDayAheadFields,
         interval: float,
         query: str | None = None,
-        search_property: (
-            BenchmarkingConfigurationDayAheadTextFields
-            | SequenceNotStr[BenchmarkingConfigurationDayAheadTextFields]
-            | None
-        ) = None,
+        search_property: BenchmarkingConfigurationDayAheadTextFields | SequenceNotStr[BenchmarkingConfigurationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        price_area: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        shop_start_specification: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        shop_end_specification: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        price_area: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_start_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_end_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -575,15 +398,13 @@ class BenchmarkingConfigurationDayAheadAPI(
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(
-            factory.root(
-                filter=filter_,
-                sort=sort,
-                limit=limit,
-                max_retrieve_batch_limit=chunk_size,
-                has_container_fields=True,
-            )
-        )
+        builder.append(factory.root(
+            filter=filter_,
+            sort=sort,
+            limit=limit,
+            max_retrieve_batch_limit=chunk_size,
+            has_container_fields=True,
+        ))
         if retrieve_connections == "identifier" or retrieve_connections == "full":
             builder.extend(
                 factory.from_edge(
@@ -632,30 +453,9 @@ class BenchmarkingConfigurationDayAheadAPI(
         chunk_size: int = DEFAULT_CHUNK_SIZE,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        price_area: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        shop_start_specification: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        shop_end_specification: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        price_area: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_start_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_end_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         filter: dm.Filter | None = None,
@@ -745,37 +545,14 @@ class BenchmarkingConfigurationDayAheadAPI(
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        price_area: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        shop_start_specification: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        shop_end_specification: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        price_area: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_start_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_end_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-        sort_by: (
-            BenchmarkingConfigurationDayAheadFields | Sequence[BenchmarkingConfigurationDayAheadFields] | None
-        ) = None,
+        sort_by: BenchmarkingConfigurationDayAheadFields | Sequence[BenchmarkingConfigurationDayAheadFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
         retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
@@ -827,7 +604,7 @@ class BenchmarkingConfigurationDayAheadAPI(
             space,
             filter,
         )
-        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
-            return self._list(limit=limit, filter=filter_, sort=sort_input)
+            return self._list(limit=limit,  filter=filter_, sort=sort_input)
         return self._query(filter_, limit, retrieve_connections, sort_input, "list")

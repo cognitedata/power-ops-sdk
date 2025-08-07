@@ -116,34 +116,22 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList, ShopCaseWriteLi
 
         """
         return self._retrieve(
-            external_id, space, retrieve_connections=retrieve_connections, as_child_class=as_child_class
+            external_id,
+            space,
+            retrieve_connections=retrieve_connections,
+            as_child_class=as_child_class
         )
 
     def search(
         self,
         query: str,
         properties: ShopCaseTextFields | SequenceNotStr[ShopCaseTextFields] | None = None,
-        scenario: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
         max_end_time: datetime.datetime | None = None,
-        status: (
-            Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]
-            | list[
-                Literal[
-                    "completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"
-                ]
-            ]
-            | None
-        ) = None,
+        status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -217,27 +205,12 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList, ShopCaseWriteLi
         aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
         property: ShopCaseFields | SequenceNotStr[ShopCaseFields] | None = None,
-        scenario: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
         max_end_time: datetime.datetime | None = None,
-        status: (
-            Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]
-            | list[
-                Literal[
-                    "completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"
-                ]
-            ]
-            | None
-        ) = None,
+        status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -250,27 +223,12 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList, ShopCaseWriteLi
         aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: None = None,
         property: ShopCaseFields | SequenceNotStr[ShopCaseFields] | None = None,
-        scenario: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
         max_end_time: datetime.datetime | None = None,
-        status: (
-            Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]
-            | list[
-                Literal[
-                    "completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"
-                ]
-            ]
-            | None
-        ) = None,
+        status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -280,34 +238,17 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList, ShopCaseWriteLi
     @overload
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: ShopCaseFields | SequenceNotStr[ShopCaseFields],
         property: ShopCaseFields | SequenceNotStr[ShopCaseFields] | None = None,
-        scenario: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
         max_end_time: datetime.datetime | None = None,
-        status: (
-            Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]
-            | list[
-                Literal[
-                    "completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"
-                ]
-            ]
-            | None
-        ) = None,
+        status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -316,34 +257,17 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList, ShopCaseWriteLi
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: ShopCaseFields | SequenceNotStr[ShopCaseFields] | None = None,
         property: ShopCaseFields | SequenceNotStr[ShopCaseFields] | None = None,
-        scenario: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
         max_end_time: datetime.datetime | None = None,
-        status: (
-            Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]
-            | list[
-                Literal[
-                    "completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"
-                ]
-            ]
-            | None
-        ) = None,
+        status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -411,27 +335,12 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList, ShopCaseWriteLi
         self,
         property: ShopCaseFields,
         interval: float,
-        scenario: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
         max_end_time: datetime.datetime | None = None,
-        status: (
-            Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]
-            | list[
-                Literal[
-                    "completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"
-                ]
-            ]
-            | None
-        ) = None,
+        status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -494,15 +403,13 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList, ShopCaseWriteLi
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(
-            factory.root(
-                filter=filter_,
-                sort=sort,
-                limit=limit,
-                max_retrieve_batch_limit=chunk_size,
-                has_container_fields=True,
-            )
-        )
+        builder.append(factory.root(
+            filter=filter_,
+            sort=sort,
+            limit=limit,
+            max_retrieve_batch_limit=chunk_size,
+            has_container_fields=True,
+        ))
         if retrieve_connections == "identifier" or retrieve_connections == "full":
             builder.extend(
                 factory.from_edge(
@@ -526,27 +433,12 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList, ShopCaseWriteLi
     def iterate(
         self,
         chunk_size: int = DEFAULT_CHUNK_SIZE,
-        scenario: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
         max_end_time: datetime.datetime | None = None,
-        status: (
-            Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]
-            | list[
-                Literal[
-                    "completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"
-                ]
-            ]
-            | None
-        ) = None,
+        status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         filter: dm.Filter | None = None,
@@ -635,27 +527,12 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList, ShopCaseWriteLi
 
     def list(
         self,
-        scenario: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
         max_end_time: datetime.datetime | None = None,
-        status: (
-            Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]
-            | list[
-                Literal[
-                    "completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"
-                ]
-            ]
-            | None
-        ) = None,
+        status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -713,7 +590,7 @@ class ShopCaseAPI(NodeAPI[ShopCase, ShopCaseWrite, ShopCaseList, ShopCaseWriteLi
             space,
             filter,
         )
-        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
-            return self._list(limit=limit, filter=filter_, sort=sort_input)
+            return self._list(limit=limit,  filter=filter_, sort=sort_input)
         return self._query(filter_, limit, retrieve_connections, sort_input, "list")

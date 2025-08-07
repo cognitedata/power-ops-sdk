@@ -46,15 +46,8 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     ViewPropertyId,
     DirectRelationFilter,
 )
-
 if TYPE_CHECKING:
-    from cognite.powerops.client._generated.v1.data_classes._shop_result import (
-        ShopResult,
-        ShopResultList,
-        ShopResultGraphQL,
-        ShopResultWrite,
-        ShopResultWriteList,
-    )
+    from cognite.powerops.client._generated.v1.data_classes._shop_result import ShopResult, ShopResultList, ShopResultGraphQL, ShopResultWrite, ShopResultWriteList
 
 
 __all__ = [
@@ -112,6 +105,7 @@ class PriceProductionGraphQL(GraphQLCore):
             )
         return values
 
+
     @field_validator("shop_result", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -147,22 +141,21 @@ class PriceProduction(DomainModel):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceProduction", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "PriceProduction"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "PriceProduction")
     name: str
     price: Union[TimeSeries, str, None] = None
     production: Union[TimeSeries, str, None] = None
     shop_result: Union[ShopResult, str, dm.NodeId, None] = Field(default=None, repr=False, alias="shopResult")
-
     @field_validator("shop_result", mode="before")
     @classmethod
     def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
         return parse_single_connection(value, info.field_name)
 
+
     def as_write(self) -> PriceProductionWrite:
         """Convert this read version of price production to the writing version."""
         return PriceProductionWrite.model_validate(as_write_args(self))
+
 
 
 class PriceProductionWrite(DomainModelWrite):
@@ -179,21 +172,13 @@ class PriceProductionWrite(DomainModelWrite):
         production: The production field.
         shop_result: The shop result field.
     """
-
-    _container_fields: ClassVar[tuple[str, ...]] = (
-        "name",
-        "price",
-        "production",
-        "shop_result",
-    )
+    _container_fields: ClassVar[tuple[str, ...]] = ("name", "price", "production", "shop_result",)
     _direct_relations: ClassVar[tuple[str, ...]] = ("shop_result",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceProduction", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
-        "power_ops_types", "PriceProduction"
-    )
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "PriceProduction")
     name: str
     price: Union[TimeSeriesWrite, str, None] = None
     production: Union[TimeSeriesWrite, str, None] = None
@@ -214,44 +199,31 @@ class PriceProductionList(DomainModelList[PriceProduction]):
     """List of price productions in the read version."""
 
     _INSTANCE = PriceProduction
-
     def as_write(self) -> PriceProductionWriteList:
         """Convert these read versions of price production to the writing versions."""
         return PriceProductionWriteList([node.as_write() for node in self.data])
 
+
     @property
     def shop_result(self) -> ShopResultList:
         from ._shop_result import ShopResult, ShopResultList
-
         return ShopResultList([item.shop_result for item in self.data if isinstance(item.shop_result, ShopResult)])
-
 
 class PriceProductionWriteList(DomainModelWriteList[PriceProductionWrite]):
     """List of price productions in the writing version."""
 
     _INSTANCE = PriceProductionWrite
-
     @property
     def shop_result(self) -> ShopResultWriteList:
         from ._shop_result import ShopResultWrite, ShopResultWriteList
-
-        return ShopResultWriteList(
-            [item.shop_result for item in self.data if isinstance(item.shop_result, ShopResultWrite)]
-        )
+        return ShopResultWriteList([item.shop_result for item in self.data if isinstance(item.shop_result, ShopResultWrite)])
 
 
 def _create_price_production_filter(
     view_id: dm.ViewId,
     name: str | list[str] | None = None,
     name_prefix: str | None = None,
-    shop_result: (
-        str
-        | tuple[str, str]
-        | dm.NodeId
-        | dm.DirectRelationReference
-        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-        | None
-    ) = None,
+    shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -265,17 +237,8 @@ def _create_price_production_filter(
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
     if isinstance(shop_result, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(shop_result):
         filters.append(dm.filters.Equals(view_id.as_property_ref("shopResult"), value=as_instance_dict_id(shop_result)))
-    if (
-        shop_result
-        and isinstance(shop_result, Sequence)
-        and not isinstance(shop_result, str)
-        and not is_tuple_id(shop_result)
-    ):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("shopResult"), values=[as_instance_dict_id(item) for item in shop_result]
-            )
-        )
+    if shop_result and isinstance(shop_result, Sequence) and not isinstance(shop_result, str) and not is_tuple_id(shop_result):
+        filters.append(dm.filters.In(view_id.as_property_ref("shopResult"), values=[as_instance_dict_id(item) for item in shop_result]))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
@@ -337,31 +300,24 @@ class _PriceProductionQuery(NodeQueryCore[T_DomainModelList, PriceProductionList
         self.external_id = StringFilter(self, ["node", "externalId"])
         self.name = StringFilter(self, self._view_id.as_property_ref("name"))
         self.shop_result_filter = DirectRelationFilter(self, self._view_id.as_property_ref("shopResult"))
-        self._filter_classes.extend(
-            [
-                self.space,
-                self.external_id,
-                self.name,
-                self.shop_result_filter,
-            ]
-        )
-        self.price = TimeSeriesReferenceAPI(
-            client,
-            lambda limit: [
-                item.price if isinstance(item.price, str) else item.price.external_id  # type: ignore[misc]
-                for item in self._list(limit=limit)
-                if item.price is not None and (isinstance(item.price, str) or item.price.external_id is not None)
-            ],
-        )
-        self.production = TimeSeriesReferenceAPI(
-            client,
-            lambda limit: [
-                item.production if isinstance(item.production, str) else item.production.external_id  # type: ignore[misc]
-                for item in self._list(limit=limit)
-                if item.production is not None
-                and (isinstance(item.production, str) or item.production.external_id is not None)
-            ],
-        )
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.name,
+            self.shop_result_filter,
+        ])
+        self.price = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.price if isinstance(item.price, str) else item.price.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.price is not None and
+               (isinstance(item.price, str) or item.price.external_id is not None)
+        ])
+        self.production = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.production if isinstance(item.production, str) else item.production.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.production is not None and
+               (isinstance(item.production, str) or item.production.external_id is not None)
+        ])
 
     def list_price_production(self, limit: int = DEFAULT_QUERY_LIMIT) -> PriceProductionList:
         return self._list(limit=limit)

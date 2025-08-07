@@ -48,12 +48,8 @@ __all__ = [
 ]
 
 
-ShopOutputTimeSeriesDefinitionTextFields = Literal[
-    "external_id", "name", "object_type", "object_name", "attribute_name", "unit"
-]
-ShopOutputTimeSeriesDefinitionFields = Literal[
-    "external_id", "name", "object_type", "object_name", "attribute_name", "unit", "is_step"
-]
+ShopOutputTimeSeriesDefinitionTextFields = Literal["external_id", "name", "object_type", "object_name", "attribute_name", "unit"]
+ShopOutputTimeSeriesDefinitionFields = Literal["external_id", "name", "object_type", "object_name", "attribute_name", "unit", "is_step"]
 
 _SHOPOUTPUTTIMESERIESDEFINITION_PROPERTIES_BY_FIELD = {
     "external_id": "externalId",
@@ -103,6 +99,8 @@ class ShopOutputTimeSeriesDefinitionGraphQL(GraphQLCore):
             )
         return values
 
+
+
     def as_read(self) -> ShopOutputTimeSeriesDefinition:
         """Convert this GraphQL format of shop output time series definition to the reading format."""
         return ShopOutputTimeSeriesDefinition.model_validate(as_read_args(self))
@@ -132,9 +130,7 @@ class ShopOutputTimeSeriesDefinition(DomainModel):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopOutputTimeSeriesDefinition", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "ShopOutputTimeSeriesDefinition"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopOutputTimeSeriesDefinition")
     name: str
     object_type: str = Field(alias="objectType")
     object_name: str = Field(alias="objectName")
@@ -142,9 +138,11 @@ class ShopOutputTimeSeriesDefinition(DomainModel):
     unit: str
     is_step: Optional[bool] = Field(None, alias="isStep")
 
+
     def as_write(self) -> ShopOutputTimeSeriesDefinitionWrite:
         """Convert this read version of shop output time series definition to the writing version."""
         return ShopOutputTimeSeriesDefinitionWrite.model_validate(as_write_args(self))
+
 
 
 class ShopOutputTimeSeriesDefinitionWrite(DomainModelWrite):
@@ -163,22 +161,12 @@ class ShopOutputTimeSeriesDefinitionWrite(DomainModelWrite):
         unit: The unit of the object
         is_step: The name of the attribute
     """
-
-    _container_fields: ClassVar[tuple[str, ...]] = (
-        "attribute_name",
-        "is_step",
-        "name",
-        "object_name",
-        "object_type",
-        "unit",
-    )
+    _container_fields: ClassVar[tuple[str, ...]] = ("attribute_name", "is_step", "name", "object_name", "object_type", "unit",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopOutputTimeSeriesDefinition", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
-        "power_ops_types", "ShopOutputTimeSeriesDefinition"
-    )
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "ShopOutputTimeSeriesDefinition")
     name: str
     object_type: str = Field(alias="objectType")
     object_name: str = Field(alias="objectName")
@@ -187,14 +175,15 @@ class ShopOutputTimeSeriesDefinitionWrite(DomainModelWrite):
     is_step: Optional[bool] = Field(True, alias="isStep")
 
 
+
 class ShopOutputTimeSeriesDefinitionList(DomainModelList[ShopOutputTimeSeriesDefinition]):
     """List of shop output time series definitions in the read version."""
 
     _INSTANCE = ShopOutputTimeSeriesDefinition
-
     def as_write(self) -> ShopOutputTimeSeriesDefinitionWriteList:
         """Convert these read versions of shop output time series definition to the writing versions."""
         return ShopOutputTimeSeriesDefinitionWriteList([node.as_write() for node in self.data])
+
 
 
 class ShopOutputTimeSeriesDefinitionWriteList(DomainModelWriteList[ShopOutputTimeSeriesDefinitionWrite]):
@@ -303,22 +292,18 @@ class _ShopOutputTimeSeriesDefinitionQuery(NodeQueryCore[T_DomainModelList, Shop
         self.attribute_name = StringFilter(self, self._view_id.as_property_ref("attributeName"))
         self.unit = StringFilter(self, self._view_id.as_property_ref("unit"))
         self.is_step = BooleanFilter(self, self._view_id.as_property_ref("isStep"))
-        self._filter_classes.extend(
-            [
-                self.space,
-                self.external_id,
-                self.name,
-                self.object_type,
-                self.object_name,
-                self.attribute_name,
-                self.unit,
-                self.is_step,
-            ]
-        )
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.name,
+            self.object_type,
+            self.object_name,
+            self.attribute_name,
+            self.unit,
+            self.is_step,
+        ])
 
-    def list_shop_output_time_series_definition(
-        self, limit: int = DEFAULT_QUERY_LIMIT
-    ) -> ShopOutputTimeSeriesDefinitionList:
+    def list_shop_output_time_series_definition(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopOutputTimeSeriesDefinitionList:
         return self._list(limit=limit)
 
 

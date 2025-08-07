@@ -45,7 +45,7 @@ __all__ = [
 ]
 
 
-GeneratorEfficiencyCurveTextFields = Literal["external_id",]
+GeneratorEfficiencyCurveTextFields = Literal["external_id", ]
 GeneratorEfficiencyCurveFields = Literal["external_id", "power", "efficiency"]
 
 _GENERATOREFFICIENCYCURVE_PROPERTIES_BY_FIELD = {
@@ -84,6 +84,8 @@ class GeneratorEfficiencyCurveGraphQL(GraphQLCore):
             )
         return values
 
+
+
     def as_read(self) -> GeneratorEfficiencyCurve:
         """Convert this GraphQL format of generator efficiency curve to the reading format."""
         return GeneratorEfficiencyCurve.model_validate(as_read_args(self))
@@ -109,15 +111,15 @@ class GeneratorEfficiencyCurve(DomainModel):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "GeneratorEfficiencyCurve", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "GeneratorEfficiencyCurve"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "GeneratorEfficiencyCurve")
     power: list[float]
     efficiency: list[float]
+
 
     def as_write(self) -> GeneratorEfficiencyCurveWrite:
         """Convert this read version of generator efficiency curve to the writing version."""
         return GeneratorEfficiencyCurveWrite.model_validate(as_write_args(self))
+
 
 
 class GeneratorEfficiencyCurveWrite(DomainModelWrite):
@@ -132,30 +134,25 @@ class GeneratorEfficiencyCurveWrite(DomainModelWrite):
         power: The generator power values
         efficiency: The generator efficiency values
     """
-
-    _container_fields: ClassVar[tuple[str, ...]] = (
-        "efficiency",
-        "power",
-    )
+    _container_fields: ClassVar[tuple[str, ...]] = ("efficiency", "power",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "GeneratorEfficiencyCurve", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
-        "power_ops_types", "GeneratorEfficiencyCurve"
-    )
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "GeneratorEfficiencyCurve")
     power: list[float]
     efficiency: list[float]
+
 
 
 class GeneratorEfficiencyCurveList(DomainModelList[GeneratorEfficiencyCurve]):
     """List of generator efficiency curves in the read version."""
 
     _INSTANCE = GeneratorEfficiencyCurve
-
     def as_write(self) -> GeneratorEfficiencyCurveWriteList:
         """Convert these read versions of generator efficiency curve to the writing versions."""
         return GeneratorEfficiencyCurveWriteList([node.as_write() for node in self.data])
+
 
 
 class GeneratorEfficiencyCurveWriteList(DomainModelWriteList[GeneratorEfficiencyCurveWrite]):
@@ -215,12 +212,10 @@ class _GeneratorEfficiencyCurveQuery(NodeQueryCore[T_DomainModelList, GeneratorE
 
         self.space = StringFilter(self, ["node", "space"])
         self.external_id = StringFilter(self, ["node", "externalId"])
-        self._filter_classes.extend(
-            [
-                self.space,
-                self.external_id,
-            ]
-        )
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+        ])
 
     def list_generator_efficiency_curve(self, limit: int = DEFAULT_QUERY_LIMIT) -> GeneratorEfficiencyCurveList:
         return self._list(limit=limit)

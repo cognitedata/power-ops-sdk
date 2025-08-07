@@ -32,6 +32,7 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     NodeQueryCore,
     StringFilter,
     ViewPropertyId,
+
 )
 
 
@@ -85,6 +86,8 @@ class ShopCommandsGraphQL(GraphQLCore):
             )
         return values
 
+
+
     def as_read(self) -> ShopCommands:
         """Convert this GraphQL format of shop command to the reading format."""
         return ShopCommands.model_validate(as_read_args(self))
@@ -114,9 +117,11 @@ class ShopCommands(DomainModel):
     name: str
     commands: list[str]
 
+
     def as_write(self) -> ShopCommandsWrite:
         """Convert this read version of shop command to the writing version."""
         return ShopCommandsWrite.model_validate(as_write_args(self))
+
 
 
 class ShopCommandsWrite(DomainModelWrite):
@@ -131,30 +136,25 @@ class ShopCommandsWrite(DomainModelWrite):
         name: Name for the ShopCommands
         commands: The commands used in the shop model file
     """
-
-    _container_fields: ClassVar[tuple[str, ...]] = (
-        "commands",
-        "name",
-    )
+    _container_fields: ClassVar[tuple[str, ...]] = ("commands", "name",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopCommands", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
-        "power_ops_types", "ShopCommands"
-    )
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "ShopCommands")
     name: str
     commands: list[str]
+
 
 
 class ShopCommandsList(DomainModelList[ShopCommands]):
     """List of shop commands in the read version."""
 
     _INSTANCE = ShopCommands
-
     def as_write(self) -> ShopCommandsWriteList:
         """Convert these read versions of shop command to the writing versions."""
         return ShopCommandsWriteList([node.as_write() for node in self.data])
+
 
 
 class ShopCommandsWriteList(DomainModelWriteList[ShopCommandsWrite]):
@@ -223,13 +223,11 @@ class _ShopCommandsQuery(NodeQueryCore[T_DomainModelList, ShopCommandsList]):
         self.space = StringFilter(self, ["node", "space"])
         self.external_id = StringFilter(self, ["node", "externalId"])
         self.name = StringFilter(self, self._view_id.as_property_ref("name"))
-        self._filter_classes.extend(
-            [
-                self.space,
-                self.external_id,
-                self.name,
-            ]
-        )
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.name,
+        ])
 
     def list_shop_command(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopCommandsList:
         return self._list(limit=limit)

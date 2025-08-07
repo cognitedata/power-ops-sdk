@@ -94,6 +94,8 @@ class PriceAreaGraphQL(GraphQLCore):
             )
         return values
 
+
+
     def as_read(self) -> PriceArea:
         """Convert this GraphQL format of price area to the reading format."""
         return PriceArea.model_validate(as_read_args(self))
@@ -122,9 +124,11 @@ class PriceArea(PowerAsset):
 
     node_type: Union[dm.DirectRelationReference, None] = None
 
+
     def as_write(self) -> PriceAreaWrite:
         """Convert this read version of price area to the writing version."""
         return PriceAreaWrite.model_validate(as_write_args(self))
+
 
 
 class PriceAreaWrite(PowerAssetWrite):
@@ -141,27 +145,22 @@ class PriceAreaWrite(PowerAssetWrite):
         ordering: The ordering of the asset
         asset_type: The type of the asset
     """
-
-    _container_fields: ClassVar[tuple[str, ...]] = (
-        "asset_type",
-        "display_name",
-        "name",
-        "ordering",
-    )
+    _container_fields: ClassVar[tuple[str, ...]] = ("asset_type", "display_name", "name", "ordering",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceArea", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
 
 
+
 class PriceAreaList(DomainModelList[PriceArea]):
     """List of price areas in the read version."""
 
     _INSTANCE = PriceArea
-
     def as_write(self) -> PriceAreaWriteList:
         """Convert these read versions of price area to the writing versions."""
         return PriceAreaWriteList([node.as_write() for node in self.data])
+
 
 
 class PriceAreaWriteList(DomainModelWriteList[PriceAreaWrite]):
@@ -253,16 +252,14 @@ class _PriceAreaQuery(NodeQueryCore[T_DomainModelList, PriceAreaList]):
         self.display_name = StringFilter(self, self._view_id.as_property_ref("displayName"))
         self.ordering = IntFilter(self, self._view_id.as_property_ref("ordering"))
         self.asset_type = StringFilter(self, self._view_id.as_property_ref("assetType"))
-        self._filter_classes.extend(
-            [
-                self.space,
-                self.external_id,
-                self.name,
-                self.display_name,
-                self.ordering,
-                self.asset_type,
-            ]
-        )
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.name,
+            self.display_name,
+            self.ordering,
+            self.asset_type,
+        ])
 
     def list_price_area(self, limit: int = DEFAULT_QUERY_LIMIT) -> PriceAreaList:
         return self._list(limit=limit)

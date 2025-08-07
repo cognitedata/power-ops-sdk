@@ -46,19 +46,10 @@ from cognite.powerops.client._generated.v1.data_classes import (
     PartialBidConfiguration,
     PriceAreaDayAhead,
 )
-from cognite.powerops.client._generated.v1._api.bid_configuration_day_ahead_partials import (
-    BidConfigurationDayAheadPartialsAPI,
-)
+from cognite.powerops.client._generated.v1._api.bid_configuration_day_ahead_partials import BidConfigurationDayAheadPartialsAPI
 
 
-class BidConfigurationDayAheadAPI(
-    NodeAPI[
-        BidConfigurationDayAhead,
-        BidConfigurationDayAheadWrite,
-        BidConfigurationDayAheadList,
-        BidConfigurationDayAheadWriteList,
-    ]
-):
+class BidConfigurationDayAheadAPI(NodeAPI[BidConfigurationDayAhead, BidConfigurationDayAheadWrite, BidConfigurationDayAheadList, BidConfigurationDayAheadWriteList]):
     _view_id = dm.ViewId("power_ops_core", "BidConfigurationDayAhead", "1")
     _properties_by_field: ClassVar[dict[str, str]] = _BIDCONFIGURATIONDAYAHEAD_PROPERTIES_BY_FIELD
     _class_type = BidConfigurationDayAhead
@@ -125,35 +116,12 @@ class BidConfigurationDayAheadAPI(
     def search(
         self,
         query: str,
-        properties: (
-            BidConfigurationDayAheadTextFields | SequenceNotStr[BidConfigurationDayAheadTextFields] | None
-        ) = None,
+        properties: BidConfigurationDayAheadTextFields | SequenceNotStr[BidConfigurationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        market_configuration: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        price_area: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        bid_date_specification: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        market_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        price_area: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_date_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -226,35 +194,12 @@ class BidConfigurationDayAheadAPI(
         group_by: None = None,
         property: BidConfigurationDayAheadFields | SequenceNotStr[BidConfigurationDayAheadFields] | None = None,
         query: str | None = None,
-        search_property: (
-            BidConfigurationDayAheadTextFields | SequenceNotStr[BidConfigurationDayAheadTextFields] | None
-        ) = None,
+        search_property: BidConfigurationDayAheadTextFields | SequenceNotStr[BidConfigurationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        market_configuration: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        price_area: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        bid_date_specification: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        market_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        price_area: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_date_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -268,35 +213,12 @@ class BidConfigurationDayAheadAPI(
         group_by: None = None,
         property: BidConfigurationDayAheadFields | SequenceNotStr[BidConfigurationDayAheadFields] | None = None,
         query: str | None = None,
-        search_property: (
-            BidConfigurationDayAheadTextFields | SequenceNotStr[BidConfigurationDayAheadTextFields] | None
-        ) = None,
+        search_property: BidConfigurationDayAheadTextFields | SequenceNotStr[BidConfigurationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        market_configuration: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        price_area: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        bid_date_specification: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        market_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        price_area: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_date_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -306,43 +228,18 @@ class BidConfigurationDayAheadAPI(
     @overload
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: BidConfigurationDayAheadFields | SequenceNotStr[BidConfigurationDayAheadFields],
         property: BidConfigurationDayAheadFields | SequenceNotStr[BidConfigurationDayAheadFields] | None = None,
         query: str | None = None,
-        search_property: (
-            BidConfigurationDayAheadTextFields | SequenceNotStr[BidConfigurationDayAheadTextFields] | None
-        ) = None,
+        search_property: BidConfigurationDayAheadTextFields | SequenceNotStr[BidConfigurationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        market_configuration: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        price_area: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        bid_date_specification: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        market_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        price_area: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_date_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -351,43 +248,18 @@ class BidConfigurationDayAheadAPI(
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: BidConfigurationDayAheadFields | SequenceNotStr[BidConfigurationDayAheadFields] | None = None,
         property: BidConfigurationDayAheadFields | SequenceNotStr[BidConfigurationDayAheadFields] | None = None,
         query: str | None = None,
-        search_property: (
-            BidConfigurationDayAheadTextFields | SequenceNotStr[BidConfigurationDayAheadTextFields] | None
-        ) = None,
+        search_property: BidConfigurationDayAheadTextFields | SequenceNotStr[BidConfigurationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        market_configuration: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        price_area: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        bid_date_specification: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        market_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        price_area: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_date_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -456,35 +328,12 @@ class BidConfigurationDayAheadAPI(
         property: BidConfigurationDayAheadFields,
         interval: float,
         query: str | None = None,
-        search_property: (
-            BidConfigurationDayAheadTextFields | SequenceNotStr[BidConfigurationDayAheadTextFields] | None
-        ) = None,
+        search_property: BidConfigurationDayAheadTextFields | SequenceNotStr[BidConfigurationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        market_configuration: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        price_area: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        bid_date_specification: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        market_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        price_area: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_date_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -547,15 +396,13 @@ class BidConfigurationDayAheadAPI(
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(
-            factory.root(
-                filter=filter_,
-                sort=sort,
-                limit=limit,
-                max_retrieve_batch_limit=chunk_size,
-                has_container_fields=True,
-            )
-        )
+        builder.append(factory.root(
+            filter=filter_,
+            sort=sort,
+            limit=limit,
+            max_retrieve_batch_limit=chunk_size,
+            has_container_fields=True,
+        ))
         if retrieve_connections == "identifier" or retrieve_connections == "full":
             builder.extend(
                 factory.from_edge(
@@ -595,30 +442,9 @@ class BidConfigurationDayAheadAPI(
         chunk_size: int = DEFAULT_CHUNK_SIZE,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        market_configuration: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        price_area: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        bid_date_specification: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        market_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        price_area: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_date_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         filter: dm.Filter | None = None,
@@ -708,30 +534,9 @@ class BidConfigurationDayAheadAPI(
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        market_configuration: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        price_area: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
-        bid_date_specification: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        market_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        price_area: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_date_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -788,7 +593,7 @@ class BidConfigurationDayAheadAPI(
             space,
             filter,
         )
-        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
-            return self._list(limit=limit, filter=filter_, sort=sort_input)
+            return self._list(limit=limit,  filter=filter_, sort=sort_input)
         return self._query(filter_, limit, retrieve_connections, sort_input, "list")

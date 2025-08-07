@@ -44,6 +44,7 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     NodeQueryCore,
     StringFilter,
     ViewPropertyId,
+
 )
 
 
@@ -103,6 +104,8 @@ class ShopTimeSeriesGraphQL(GraphQLCore):
             )
         return values
 
+
+
     def as_read(self) -> ShopTimeSeries:
         """Convert this GraphQL format of shop time series to the reading format."""
         return ShopTimeSeries.model_validate(as_read_args(self))
@@ -136,9 +139,11 @@ class ShopTimeSeries(DomainModel):
     attribute_name: Optional[str] = Field(None, alias="attributeName")
     time_series: Union[TimeSeries, str, None] = Field(None, alias="timeSeries")
 
+
     def as_write(self) -> ShopTimeSeriesWrite:
         """Convert this read version of shop time series to the writing version."""
         return ShopTimeSeriesWrite.model_validate(as_write_args(self))
+
 
 
 class ShopTimeSeriesWrite(DomainModelWrite):
@@ -155,34 +160,27 @@ class ShopTimeSeriesWrite(DomainModelWrite):
         attribute_name: The name of the attribute
         time_series: Time series object from output of SHOP stored as a time series in cdf
     """
-
-    _container_fields: ClassVar[tuple[str, ...]] = (
-        "attribute_name",
-        "object_name",
-        "object_type",
-        "time_series",
-    )
+    _container_fields: ClassVar[tuple[str, ...]] = ("attribute_name", "object_name", "object_type", "time_series",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopTimeSeries", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
-        "power_ops_types", "ShopTimeSeries"
-    )
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "ShopTimeSeries")
     object_type: Optional[str] = Field(None, alias="objectType")
     object_name: Optional[str] = Field(None, alias="objectName")
     attribute_name: Optional[str] = Field(None, alias="attributeName")
     time_series: Union[TimeSeriesWrite, str, None] = Field(None, alias="timeSeries")
 
 
+
 class ShopTimeSeriesList(DomainModelList[ShopTimeSeries]):
     """List of shop time series in the read version."""
 
     _INSTANCE = ShopTimeSeries
-
     def as_write(self) -> ShopTimeSeriesWriteList:
         """Convert these read versions of shop time series to the writing versions."""
         return ShopTimeSeriesWriteList([node.as_write() for node in self.data])
+
 
 
 class ShopTimeSeriesWriteList(DomainModelWriteList[ShopTimeSeriesWrite]):
@@ -269,24 +267,19 @@ class _ShopTimeSeriesQuery(NodeQueryCore[T_DomainModelList, ShopTimeSeriesList])
         self.object_type = StringFilter(self, self._view_id.as_property_ref("objectType"))
         self.object_name = StringFilter(self, self._view_id.as_property_ref("objectName"))
         self.attribute_name = StringFilter(self, self._view_id.as_property_ref("attributeName"))
-        self._filter_classes.extend(
-            [
-                self.space,
-                self.external_id,
-                self.object_type,
-                self.object_name,
-                self.attribute_name,
-            ]
-        )
-        self.time_series = TimeSeriesReferenceAPI(
-            client,
-            lambda limit: [
-                item.time_series if isinstance(item.time_series, str) else item.time_series.external_id  # type: ignore[misc]
-                for item in self._list(limit=limit)
-                if item.time_series is not None
-                and (isinstance(item.time_series, str) or item.time_series.external_id is not None)
-            ],
-        )
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.object_type,
+            self.object_name,
+            self.attribute_name,
+        ])
+        self.time_series = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.time_series if isinstance(item.time_series, str) else item.time_series.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.time_series is not None and
+               (isinstance(item.time_series, str) or item.time_series.external_id is not None)
+        ])
 
     def list_shop_time_series(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopTimeSeriesList:
         return self._list(limit=limit)

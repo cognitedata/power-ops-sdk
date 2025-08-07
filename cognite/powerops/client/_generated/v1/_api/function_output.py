@@ -80,20 +80,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         self,
         external_id: str | dm.NodeId | tuple[str, str],
         space: str = DEFAULT_INSTANCE_SPACE,
-        as_child_class: (
-            SequenceNotStr[
-                Literal[
-                    "BenchmarkingCalculationOutput",
-                    "BenchmarkingTaskDispatcherOutputDayAhead",
-                    "PartialBidMatrixCalculationOutput",
-                    "ShopPreprocessorOutput",
-                    "ShopTriggerOutput",
-                    "TaskDispatcherOutput",
-                    "TotalBidMatrixCalculationOutput",
-                ]
-            ]
-            | None
-        ) = None,
+        as_child_class: SequenceNotStr[Literal["BenchmarkingCalculationOutput", "BenchmarkingTaskDispatcherOutputDayAhead", "PartialBidMatrixCalculationOutput", "ShopPreprocessorOutput", "ShopTriggerOutput", "TaskDispatcherOutput", "TotalBidMatrixCalculationOutput"]] | None = None,
         retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> FunctionOutput | None: ...
 
@@ -102,20 +89,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         self,
         external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]],
         space: str = DEFAULT_INSTANCE_SPACE,
-        as_child_class: (
-            SequenceNotStr[
-                Literal[
-                    "BenchmarkingCalculationOutput",
-                    "BenchmarkingTaskDispatcherOutputDayAhead",
-                    "PartialBidMatrixCalculationOutput",
-                    "ShopPreprocessorOutput",
-                    "ShopTriggerOutput",
-                    "TaskDispatcherOutput",
-                    "TotalBidMatrixCalculationOutput",
-                ]
-            ]
-            | None
-        ) = None,
+        as_child_class: SequenceNotStr[Literal["BenchmarkingCalculationOutput", "BenchmarkingTaskDispatcherOutputDayAhead", "PartialBidMatrixCalculationOutput", "ShopPreprocessorOutput", "ShopTriggerOutput", "TaskDispatcherOutput", "TotalBidMatrixCalculationOutput"]] | None = None,
         retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> FunctionOutputList: ...
 
@@ -123,20 +97,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         self,
         external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]],
         space: str = DEFAULT_INSTANCE_SPACE,
-        as_child_class: (
-            SequenceNotStr[
-                Literal[
-                    "BenchmarkingCalculationOutput",
-                    "BenchmarkingTaskDispatcherOutputDayAhead",
-                    "PartialBidMatrixCalculationOutput",
-                    "ShopPreprocessorOutput",
-                    "ShopTriggerOutput",
-                    "TaskDispatcherOutput",
-                    "TotalBidMatrixCalculationOutput",
-                ]
-            ]
-            | None
-        ) = None,
+        as_child_class: SequenceNotStr[Literal["BenchmarkingCalculationOutput", "BenchmarkingTaskDispatcherOutputDayAhead", "PartialBidMatrixCalculationOutput", "ShopPreprocessorOutput", "ShopTriggerOutput", "TaskDispatcherOutput", "TotalBidMatrixCalculationOutput"]] | None = None,
         retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> FunctionOutput | FunctionOutputList | None:
         """Retrieve one or more function outputs by id(s).
@@ -166,7 +127,10 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
 
         """
         return self._retrieve(
-            external_id, space, retrieve_connections=retrieve_connections, as_child_class=as_child_class
+            external_id,
+            space,
+            retrieve_connections=retrieve_connections,
+            as_child_class=as_child_class
         )
 
     def search(
@@ -181,14 +145,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        function_input: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -278,14 +235,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        function_input: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -308,14 +258,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        function_input: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -325,11 +268,9 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
     @overload
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: FunctionOutputFields | SequenceNotStr[FunctionOutputFields],
         property: FunctionOutputFields | SequenceNotStr[FunctionOutputFields] | None = None,
         query: str | None = None,
@@ -342,14 +283,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        function_input: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -358,11 +292,9 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: FunctionOutputFields | SequenceNotStr[FunctionOutputFields] | None = None,
         property: FunctionOutputFields | SequenceNotStr[FunctionOutputFields] | None = None,
         query: str | None = None,
@@ -375,14 +307,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        function_input: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -468,14 +393,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        function_input: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -546,15 +464,13 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(
-            factory.root(
-                filter=filter_,
-                sort=sort,
-                limit=limit,
-                max_retrieve_batch_limit=chunk_size,
-                has_container_fields=True,
-            )
-        )
+        builder.append(factory.root(
+            filter=filter_,
+            sort=sort,
+            limit=limit,
+            max_retrieve_batch_limit=chunk_size,
+            has_container_fields=True,
+        ))
         if retrieve_connections == "identifier" or retrieve_connections == "full":
             builder.extend(
                 factory.from_edge(
@@ -586,14 +502,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        function_input: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         filter: dm.Filter | None = None,
@@ -696,14 +605,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        function_input: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -767,7 +669,7 @@ class FunctionOutputAPI(NodeAPI[FunctionOutput, FunctionOutputWrite, FunctionOut
             space,
             filter,
         )
-        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
-            return self._list(limit=limit, filter=filter_, sort=sort_input)
+            return self._list(limit=limit,  filter=filter_, sort=sort_input)
         return self._query(filter_, limit, retrieve_connections, sort_input, "list")

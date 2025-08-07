@@ -107,6 +107,8 @@ class ShopFileGraphQL(GraphQLCore):
             )
         return values
 
+
+
     def as_read(self) -> ShopFile:
         """Convert this GraphQL format of shop file to the reading format."""
         return ShopFile.model_validate(as_read_args(self))
@@ -144,9 +146,11 @@ class ShopFile(DomainModel):
     order: int
     is_ascii: bool = Field(alias="isAscii")
 
+
     def as_write(self) -> ShopFileWrite:
         """Convert this read version of shop file to the writing version."""
         return ShopFileWrite.model_validate(as_write_args(self))
+
 
 
 class ShopFileWrite(DomainModelWrite):
@@ -165,22 +169,12 @@ class ShopFileWrite(DomainModelWrite):
         order: The order in which the file should be loaded into pyshop
         is_ascii: The file extension of the file
     """
-
-    _container_fields: ClassVar[tuple[str, ...]] = (
-        "file_reference",
-        "file_reference_prefix",
-        "is_ascii",
-        "label",
-        "name",
-        "order",
-    )
+    _container_fields: ClassVar[tuple[str, ...]] = ("file_reference", "file_reference_prefix", "is_ascii", "label", "name", "order",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopFile", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
-        "power_ops_types", "ShopFile"
-    )
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "ShopFile")
     name: str
     label: str
     file_reference: Union[FileMetadataWrite, str, None] = Field(None, alias="fileReference")
@@ -189,14 +183,15 @@ class ShopFileWrite(DomainModelWrite):
     is_ascii: bool = Field(alias="isAscii")
 
 
+
 class ShopFileList(DomainModelList[ShopFile]):
     """List of shop files in the read version."""
 
     _INSTANCE = ShopFile
-
     def as_write(self) -> ShopFileWriteList:
         """Convert these read versions of shop file to the writing versions."""
         return ShopFileWriteList([node.as_write() for node in self.data])
+
 
 
 class ShopFileWriteList(DomainModelWriteList[ShopFileWrite]):
@@ -238,9 +233,7 @@ def _create_shop_file_filter(
     if file_reference_prefix and isinstance(file_reference_prefix, list):
         filters.append(dm.filters.In(view_id.as_property_ref("fileReferencePrefix"), values=file_reference_prefix))
     if file_reference_prefix_prefix is not None:
-        filters.append(
-            dm.filters.Prefix(view_id.as_property_ref("fileReferencePrefix"), value=file_reference_prefix_prefix)
-        )
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("fileReferencePrefix"), value=file_reference_prefix_prefix))
     if min_order is not None or max_order is not None:
         filters.append(dm.filters.Range(view_id.as_property_ref("order"), gte=min_order, lte=max_order))
     if isinstance(is_ascii, bool):
@@ -294,17 +287,15 @@ class _ShopFileQuery(NodeQueryCore[T_DomainModelList, ShopFileList]):
         self.file_reference_prefix = StringFilter(self, self._view_id.as_property_ref("fileReferencePrefix"))
         self.order = IntFilter(self, self._view_id.as_property_ref("order"))
         self.is_ascii = BooleanFilter(self, self._view_id.as_property_ref("isAscii"))
-        self._filter_classes.extend(
-            [
-                self.space,
-                self.external_id,
-                self.name,
-                self.label,
-                self.file_reference_prefix,
-                self.order,
-                self.is_ascii,
-            ]
-        )
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.name,
+            self.label,
+            self.file_reference_prefix,
+            self.order,
+            self.is_ascii,
+        ])
 
     def list_shop_file(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopFileList:
         return self._list(limit=limit)

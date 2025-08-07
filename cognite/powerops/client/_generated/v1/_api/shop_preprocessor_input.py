@@ -46,11 +46,7 @@ from cognite.powerops.client._generated.v1.data_classes import (
 )
 
 
-class ShopPreprocessorInputAPI(
-    NodeAPI[
-        ShopPreprocessorInput, ShopPreprocessorInputWrite, ShopPreprocessorInputList, ShopPreprocessorInputWriteList
-    ]
-):
+class ShopPreprocessorInputAPI(NodeAPI[ShopPreprocessorInput, ShopPreprocessorInputWrite, ShopPreprocessorInputList, ShopPreprocessorInputWriteList]):
     _view_id = dm.ViewId("power_ops_core", "ShopPreprocessorInput", "1")
     _properties_by_field: ClassVar[dict[str, str]] = _SHOPPREPROCESSORINPUT_PROPERTIES_BY_FIELD
     _class_type = ShopPreprocessorInput
@@ -59,6 +55,7 @@ class ShopPreprocessorInputAPI(
 
     def __init__(self, client: CogniteClient):
         super().__init__(client=client)
+
 
     @overload
     def retrieve(
@@ -123,14 +120,7 @@ class ShopPreprocessorInputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        scenario: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
@@ -223,9 +213,7 @@ class ShopPreprocessorInputAPI(
         group_by: None = None,
         property: ShopPreprocessorInputFields | SequenceNotStr[ShopPreprocessorInputFields] | None = None,
         query: str | None = None,
-        search_property: (
-            ShopPreprocessorInputTextFields | SequenceNotStr[ShopPreprocessorInputTextFields] | None
-        ) = None,
+        search_property: ShopPreprocessorInputTextFields | SequenceNotStr[ShopPreprocessorInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -234,14 +222,7 @@ class ShopPreprocessorInputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        scenario: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
@@ -259,9 +240,7 @@ class ShopPreprocessorInputAPI(
         group_by: None = None,
         property: ShopPreprocessorInputFields | SequenceNotStr[ShopPreprocessorInputFields] | None = None,
         query: str | None = None,
-        search_property: (
-            ShopPreprocessorInputTextFields | SequenceNotStr[ShopPreprocessorInputTextFields] | None
-        ) = None,
+        search_property: ShopPreprocessorInputTextFields | SequenceNotStr[ShopPreprocessorInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -270,14 +249,7 @@ class ShopPreprocessorInputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        scenario: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
@@ -291,17 +263,13 @@ class ShopPreprocessorInputAPI(
     @overload
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: ShopPreprocessorInputFields | SequenceNotStr[ShopPreprocessorInputFields],
         property: ShopPreprocessorInputFields | SequenceNotStr[ShopPreprocessorInputFields] | None = None,
         query: str | None = None,
-        search_property: (
-            ShopPreprocessorInputTextFields | SequenceNotStr[ShopPreprocessorInputTextFields] | None
-        ) = None,
+        search_property: ShopPreprocessorInputTextFields | SequenceNotStr[ShopPreprocessorInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -310,14 +278,7 @@ class ShopPreprocessorInputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        scenario: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
@@ -330,17 +291,13 @@ class ShopPreprocessorInputAPI(
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: ShopPreprocessorInputFields | SequenceNotStr[ShopPreprocessorInputFields] | None = None,
         property: ShopPreprocessorInputFields | SequenceNotStr[ShopPreprocessorInputFields] | None = None,
         query: str | None = None,
-        search_property: (
-            ShopPreprocessorInputTextFields | SequenceNotStr[ShopPreprocessorInputTextFields] | None
-        ) = None,
+        search_property: ShopPreprocessorInputTextFields | SequenceNotStr[ShopPreprocessorInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -349,14 +306,7 @@ class ShopPreprocessorInputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        scenario: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
@@ -445,9 +395,7 @@ class ShopPreprocessorInputAPI(
         property: ShopPreprocessorInputFields,
         interval: float,
         query: str | None = None,
-        search_property: (
-            ShopPreprocessorInputTextFields | SequenceNotStr[ShopPreprocessorInputTextFields] | None
-        ) = None,
+        search_property: ShopPreprocessorInputTextFields | SequenceNotStr[ShopPreprocessorInputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -456,14 +404,7 @@ class ShopPreprocessorInputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        scenario: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
@@ -546,15 +487,13 @@ class ShopPreprocessorInputAPI(
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(
-            factory.root(
-                filter=filter_,
-                sort=sort,
-                limit=limit,
-                max_retrieve_batch_limit=chunk_size,
-                has_container_fields=True,
-            )
-        )
+        builder.append(factory.root(
+            filter=filter_,
+            sort=sort,
+            limit=limit,
+            max_retrieve_batch_limit=chunk_size,
+            has_container_fields=True,
+        ))
         if retrieve_connections == "full":
             builder.extend(
                 factory.from_direct_relation(
@@ -576,14 +515,7 @@ class ShopPreprocessorInputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        scenario: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
@@ -698,14 +630,7 @@ class ShopPreprocessorInputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        scenario: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_start_time: datetime.datetime | None = None,
         max_start_time: datetime.datetime | None = None,
         min_end_time: datetime.datetime | None = None,
@@ -781,7 +706,7 @@ class ShopPreprocessorInputAPI(
             space,
             filter,
         )
-        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
-            return self._list(limit=limit, filter=filter_, sort=sort_input)
+            return self._list(limit=limit,  filter=filter_, sort=sort_input)
         return self._query(filter_, limit, retrieve_connections, sort_input, "list")

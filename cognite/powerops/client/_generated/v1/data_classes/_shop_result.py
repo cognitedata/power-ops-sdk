@@ -42,29 +42,10 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     ViewPropertyId,
     DirectRelationFilter,
 )
-
 if TYPE_CHECKING:
-    from cognite.powerops.client._generated.v1.data_classes._alert import (
-        Alert,
-        AlertList,
-        AlertGraphQL,
-        AlertWrite,
-        AlertWriteList,
-    )
-    from cognite.powerops.client._generated.v1.data_classes._shop_case import (
-        ShopCase,
-        ShopCaseList,
-        ShopCaseGraphQL,
-        ShopCaseWrite,
-        ShopCaseWriteList,
-    )
-    from cognite.powerops.client._generated.v1.data_classes._shop_time_series import (
-        ShopTimeSeries,
-        ShopTimeSeriesList,
-        ShopTimeSeriesGraphQL,
-        ShopTimeSeriesWrite,
-        ShopTimeSeriesWriteList,
-    )
+    from cognite.powerops.client._generated.v1.data_classes._alert import Alert, AlertList, AlertGraphQL, AlertWrite, AlertWriteList
+    from cognite.powerops.client._generated.v1.data_classes._shop_case import ShopCase, ShopCaseList, ShopCaseGraphQL, ShopCaseWrite, ShopCaseWriteList
+    from cognite.powerops.client._generated.v1.data_classes._shop_time_series import ShopTimeSeries, ShopTimeSeriesList, ShopTimeSeriesGraphQL, ShopTimeSeriesWrite, ShopTimeSeriesWriteList
 
 
 __all__ = [
@@ -119,9 +100,7 @@ class ShopResultGraphQL(GraphQLCore):
     messages: Optional[FileMetadataGraphQL] = None
     cplex_logs: Optional[FileMetadataGraphQL] = Field(None, alias="cplexLogs")
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
-    output_time_series: Optional[list[ShopTimeSeriesGraphQL]] = Field(
-        default=None, repr=False, alias="outputTimeSeries"
-    )
+    output_time_series: Optional[list[ShopTimeSeriesGraphQL]] = Field(default=None, repr=False, alias="outputTimeSeries")
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -133,6 +112,7 @@ class ShopResultGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
 
     @field_validator("case", "alerts", "output_time_series", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
@@ -181,10 +161,7 @@ class ShopResult(DomainModel):
     messages: Union[FileMetadata, str, None] = None
     cplex_logs: Union[FileMetadata, str, None] = Field(None, alias="cplexLogs")
     alerts: Optional[list[Union[Alert, str, dm.NodeId]]] = Field(default=None, repr=False)
-    output_time_series: Optional[list[Union[ShopTimeSeries, str, dm.NodeId]]] = Field(
-        default=None, repr=False, alias="outputTimeSeries"
-    )
-
+    output_time_series: Optional[list[Union[ShopTimeSeries, str, dm.NodeId]]] = Field(default=None, repr=False, alias="outputTimeSeries")
     @field_validator("case", mode="before")
     @classmethod
     def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
@@ -200,6 +177,7 @@ class ShopResult(DomainModel):
     def as_write(self) -> ShopResultWrite:
         """Convert this read version of shop result to the writing version."""
         return ShopResultWrite.model_validate(as_write_args(self))
+
 
 
 class ShopResultWrite(DomainModelWrite):
@@ -220,19 +198,8 @@ class ShopResultWrite(DomainModelWrite):
         alerts: An array of calculation level Alerts.
         output_time_series: TODO
     """
-
-    _container_fields: ClassVar[tuple[str, ...]] = (
-        "case",
-        "cplex_logs",
-        "messages",
-        "objective_value",
-        "post_run",
-        "pre_run",
-    )
-    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (
-        ("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")),
-        ("output_time_series", dm.DirectRelationReference("power_ops_types", "ShopResult.outputTimeSeries")),
-    )
+    _container_fields: ClassVar[tuple[str, ...]] = ("case", "cplex_logs", "messages", "objective_value", "post_run", "pre_run",)
+    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")), ("output_time_series", dm.DirectRelationReference("power_ops_types", "ShopResult.outputTimeSeries")),)
     _direct_relations: ClassVar[tuple[str, ...]] = ("case",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopResult", "1")
@@ -246,9 +213,7 @@ class ShopResultWrite(DomainModelWrite):
     messages: Union[FileMetadataWrite, str, None] = None
     cplex_logs: Union[FileMetadataWrite, str, None] = Field(None, alias="cplexLogs")
     alerts: Optional[list[Union[AlertWrite, str, dm.NodeId]]] = Field(default=None, repr=False)
-    output_time_series: Optional[list[Union[ShopTimeSeriesWrite, str, dm.NodeId]]] = Field(
-        default=None, repr=False, alias="outputTimeSeries"
-    )
+    output_time_series: Optional[list[Union[ShopTimeSeriesWrite, str, dm.NodeId]]] = Field(default=None, repr=False, alias="outputTimeSeries")
 
     @field_validator("case", "alerts", "output_time_series", mode="before")
     def as_node_id(cls, value: Any) -> Any:
@@ -265,75 +230,49 @@ class ShopResultList(DomainModelList[ShopResult]):
     """List of shop results in the read version."""
 
     _INSTANCE = ShopResult
-
     def as_write(self) -> ShopResultWriteList:
         """Convert these read versions of shop result to the writing versions."""
         return ShopResultWriteList([node.as_write() for node in self.data])
 
+
     @property
     def case(self) -> ShopCaseList:
         from ._shop_case import ShopCase, ShopCaseList
-
         return ShopCaseList([item.case for item in self.data if isinstance(item.case, ShopCase)])
-
     @property
     def alerts(self) -> AlertList:
         from ._alert import Alert, AlertList
-
         return AlertList([item for items in self.data for item in items.alerts or [] if isinstance(item, Alert)])
 
     @property
     def output_time_series(self) -> ShopTimeSeriesList:
         from ._shop_time_series import ShopTimeSeries, ShopTimeSeriesList
-
-        return ShopTimeSeriesList(
-            [item for items in self.data for item in items.output_time_series or [] if isinstance(item, ShopTimeSeries)]
-        )
+        return ShopTimeSeriesList([item for items in self.data for item in items.output_time_series or [] if isinstance(item, ShopTimeSeries)])
 
 
 class ShopResultWriteList(DomainModelWriteList[ShopResultWrite]):
     """List of shop results in the writing version."""
 
     _INSTANCE = ShopResultWrite
-
     @property
     def case(self) -> ShopCaseWriteList:
         from ._shop_case import ShopCaseWrite, ShopCaseWriteList
-
         return ShopCaseWriteList([item.case for item in self.data if isinstance(item.case, ShopCaseWrite)])
-
     @property
     def alerts(self) -> AlertWriteList:
         from ._alert import AlertWrite, AlertWriteList
-
-        return AlertWriteList(
-            [item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)]
-        )
+        return AlertWriteList([item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)])
 
     @property
     def output_time_series(self) -> ShopTimeSeriesWriteList:
         from ._shop_time_series import ShopTimeSeriesWrite, ShopTimeSeriesWriteList
+        return ShopTimeSeriesWriteList([item for items in self.data for item in items.output_time_series or [] if isinstance(item, ShopTimeSeriesWrite)])
 
-        return ShopTimeSeriesWriteList(
-            [
-                item
-                for items in self.data
-                for item in items.output_time_series or []
-                if isinstance(item, ShopTimeSeriesWrite)
-            ]
-        )
 
 
 def _create_shop_result_filter(
     view_id: dm.ViewId,
-    case: (
-        str
-        | tuple[str, str]
-        | dm.NodeId
-        | dm.DirectRelationReference
-        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-        | None
-    ) = None,
+    case: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -342,9 +281,7 @@ def _create_shop_result_filter(
     if isinstance(case, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(case):
         filters.append(dm.filters.Equals(view_id.as_property_ref("case"), value=as_instance_dict_id(case)))
     if case and isinstance(case, Sequence) and not isinstance(case, str) and not is_tuple_id(case):
-        filters.append(
-            dm.filters.In(view_id.as_property_ref("case"), values=[as_instance_dict_id(item) for item in case])
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("case"), values=[as_instance_dict_id(item) for item in case]))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
@@ -435,13 +372,11 @@ class _ShopResultQuery(NodeQueryCore[T_DomainModelList, ShopResultList]):
         self.space = StringFilter(self, ["node", "space"])
         self.external_id = StringFilter(self, ["node", "externalId"])
         self.case_filter = DirectRelationFilter(self, self._view_id.as_property_ref("case"))
-        self._filter_classes.extend(
-            [
-                self.space,
-                self.external_id,
-                self.case_filter,
-            ]
-        )
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.case_filter,
+        ])
 
     def list_shop_result(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopResultList:
         return self._list(limit=limit)

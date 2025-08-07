@@ -70,25 +70,13 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
     def __init__(self, client: CogniteClient):
         super().__init__(client=client)
 
+
     @overload
     def retrieve(
         self,
         external_id: str | dm.NodeId | tuple[str, str],
         space: str = DEFAULT_INSTANCE_SPACE,
-        as_child_class: (
-            SequenceNotStr[
-                Literal[
-                    "BenchmarkingCalculationInput",
-                    "BenchmarkingTaskDispatcherInputDayAhead",
-                    "PartialBidMatrixCalculationInput",
-                    "ShopPreprocessorInput",
-                    "ShopTriggerInput",
-                    "TaskDispatcherInput",
-                    "TotalBidMatrixCalculationInput",
-                ]
-            ]
-            | None
-        ) = None,
+        as_child_class: SequenceNotStr[Literal["BenchmarkingCalculationInput", "BenchmarkingTaskDispatcherInputDayAhead", "PartialBidMatrixCalculationInput", "ShopPreprocessorInput", "ShopTriggerInput", "TaskDispatcherInput", "TotalBidMatrixCalculationInput"]] | None = None,
     ) -> FunctionInput | None: ...
 
     @overload
@@ -96,40 +84,14 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
         self,
         external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]],
         space: str = DEFAULT_INSTANCE_SPACE,
-        as_child_class: (
-            SequenceNotStr[
-                Literal[
-                    "BenchmarkingCalculationInput",
-                    "BenchmarkingTaskDispatcherInputDayAhead",
-                    "PartialBidMatrixCalculationInput",
-                    "ShopPreprocessorInput",
-                    "ShopTriggerInput",
-                    "TaskDispatcherInput",
-                    "TotalBidMatrixCalculationInput",
-                ]
-            ]
-            | None
-        ) = None,
+        as_child_class: SequenceNotStr[Literal["BenchmarkingCalculationInput", "BenchmarkingTaskDispatcherInputDayAhead", "PartialBidMatrixCalculationInput", "ShopPreprocessorInput", "ShopTriggerInput", "TaskDispatcherInput", "TotalBidMatrixCalculationInput"]] | None = None,
     ) -> FunctionInputList: ...
 
     def retrieve(
         self,
         external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]],
         space: str = DEFAULT_INSTANCE_SPACE,
-        as_child_class: (
-            SequenceNotStr[
-                Literal[
-                    "BenchmarkingCalculationInput",
-                    "BenchmarkingTaskDispatcherInputDayAhead",
-                    "PartialBidMatrixCalculationInput",
-                    "ShopPreprocessorInput",
-                    "ShopTriggerInput",
-                    "TaskDispatcherInput",
-                    "TotalBidMatrixCalculationInput",
-                ]
-            ]
-            | None
-        ) = None,
+        as_child_class: SequenceNotStr[Literal["BenchmarkingCalculationInput", "BenchmarkingTaskDispatcherInputDayAhead", "PartialBidMatrixCalculationInput", "ShopPreprocessorInput", "ShopTriggerInput", "TaskDispatcherInput", "TotalBidMatrixCalculationInput"]] | None = None,
     ) -> FunctionInput | FunctionInputList | None:
         """Retrieve one or more function inputs by id(s).
 
@@ -154,7 +116,11 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
                 ... )
 
         """
-        return self._retrieve(external_id, space, as_child_class=as_child_class)
+        return self._retrieve(
+            external_id,
+            space,
+            as_child_class=as_child_class
+        )
 
     def search(
         self,
@@ -286,11 +252,9 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
     @overload
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: FunctionInputFields | SequenceNotStr[FunctionInputFields],
         property: FunctionInputFields | SequenceNotStr[FunctionInputFields] | None = None,
         query: str | None = None,
@@ -311,11 +275,9 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: FunctionInputFields | SequenceNotStr[FunctionInputFields] | None = None,
         property: FunctionInputFields | SequenceNotStr[FunctionInputFields] | None = None,
         query: str | None = None,
@@ -479,15 +441,13 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(
-            factory.root(
-                filter=filter_,
-                sort=sort,
-                limit=limit,
-                max_retrieve_batch_limit=chunk_size,
-                has_container_fields=True,
-            )
-        )
+        builder.append(factory.root(
+            filter=filter_,
+            sort=sort,
+            limit=limit,
+            max_retrieve_batch_limit=chunk_size,
+            has_container_fields=True,
+        ))
         return builder.build()
 
     def iterate(
@@ -654,5 +614,5 @@ class FunctionInputAPI(NodeAPI[FunctionInput, FunctionInputWrite, FunctionInputL
             space,
             filter,
         )
-        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
-        return self._list(limit=limit, filter=filter_, sort=sort_input)
+        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        return self._list(limit=limit,  filter=filter_, sort=sort_input)

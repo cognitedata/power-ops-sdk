@@ -37,36 +37,11 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     IntFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._function_output import FunctionOutput, FunctionOutputWrite
-
 if TYPE_CHECKING:
-    from cognite.powerops.client._generated.v1.data_classes._alert import (
-        Alert,
-        AlertList,
-        AlertGraphQL,
-        AlertWrite,
-        AlertWriteList,
-    )
-    from cognite.powerops.client._generated.v1.data_classes._bid_configuration_day_ahead import (
-        BidConfigurationDayAhead,
-        BidConfigurationDayAheadList,
-        BidConfigurationDayAheadGraphQL,
-        BidConfigurationDayAheadWrite,
-        BidConfigurationDayAheadWriteList,
-    )
-    from cognite.powerops.client._generated.v1.data_classes._bid_matrix import (
-        BidMatrix,
-        BidMatrixList,
-        BidMatrixGraphQL,
-        BidMatrixWrite,
-        BidMatrixWriteList,
-    )
-    from cognite.powerops.client._generated.v1.data_classes._partial_bid_matrix_calculation_input import (
-        PartialBidMatrixCalculationInput,
-        PartialBidMatrixCalculationInputList,
-        PartialBidMatrixCalculationInputGraphQL,
-        PartialBidMatrixCalculationInputWrite,
-        PartialBidMatrixCalculationInputWriteList,
-    )
+    from cognite.powerops.client._generated.v1.data_classes._alert import Alert, AlertList, AlertGraphQL, AlertWrite, AlertWriteList
+    from cognite.powerops.client._generated.v1.data_classes._bid_configuration_day_ahead import BidConfigurationDayAhead, BidConfigurationDayAheadList, BidConfigurationDayAheadGraphQL, BidConfigurationDayAheadWrite, BidConfigurationDayAheadWriteList
+    from cognite.powerops.client._generated.v1.data_classes._bid_matrix import BidMatrix, BidMatrixList, BidMatrixGraphQL, BidMatrixWrite, BidMatrixWriteList
+    from cognite.powerops.client._generated.v1.data_classes._partial_bid_matrix_calculation_input import PartialBidMatrixCalculationInput, PartialBidMatrixCalculationInputList, PartialBidMatrixCalculationInputGraphQL, PartialBidMatrixCalculationInputWrite, PartialBidMatrixCalculationInputWriteList
 
 
 __all__ = [
@@ -80,12 +55,8 @@ __all__ = [
 ]
 
 
-PartialBidMatrixCalculationOutputTextFields = Literal[
-    "external_id", "workflow_execution_id", "function_name", "function_call_id"
-]
-PartialBidMatrixCalculationOutputFields = Literal[
-    "external_id", "workflow_execution_id", "workflow_step", "function_name", "function_call_id"
-]
+PartialBidMatrixCalculationOutputTextFields = Literal["external_id", "workflow_execution_id", "function_name", "function_call_id"]
+PartialBidMatrixCalculationOutputFields = Literal["external_id", "workflow_execution_id", "workflow_step", "function_name", "function_call_id"]
 
 _PARTIALBIDMATRIXCALCULATIONOUTPUT_PROPERTIES_BY_FIELD = {
     "external_id": "externalId",
@@ -121,14 +92,10 @@ class PartialBidMatrixCalculationOutputGraphQL(GraphQLCore):
     workflow_step: Optional[int] = Field(None, alias="workflowStep")
     function_name: Optional[str] = Field(None, alias="functionName")
     function_call_id: Optional[str] = Field(None, alias="functionCallId")
-    function_input: Optional[PartialBidMatrixCalculationInputGraphQL] = Field(
-        default=None, repr=False, alias="functionInput"
-    )
+    function_input: Optional[PartialBidMatrixCalculationInputGraphQL] = Field(default=None, repr=False, alias="functionInput")
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
     partial_matrix: Optional[BidMatrixGraphQL] = Field(default=None, repr=False, alias="partialMatrix")
-    bid_configuration: Optional[BidConfigurationDayAheadGraphQL] = Field(
-        default=None, repr=False, alias="bidConfiguration"
-    )
+    bid_configuration: Optional[BidConfigurationDayAheadGraphQL] = Field(default=None, repr=False, alias="bidConfiguration")
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -140,6 +107,7 @@ class PartialBidMatrixCalculationOutputGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
 
     @field_validator("function_input", "alerts", "partial_matrix", "bid_configuration", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
@@ -179,17 +147,10 @@ class PartialBidMatrixCalculationOutput(FunctionOutput):
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PartialBidMatrixCalculationOutput", "1")
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "PartialBidMatrixCalculationOutput"
-    )
-    function_input: Union[PartialBidMatrixCalculationInput, str, dm.NodeId, None] = Field(
-        default=None, repr=False, alias="functionInput"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "PartialBidMatrixCalculationOutput")
+    function_input: Union[PartialBidMatrixCalculationInput, str, dm.NodeId, None] = Field(default=None, repr=False, alias="functionInput")
     partial_matrix: Union[BidMatrix, str, dm.NodeId, None] = Field(default=None, repr=False, alias="partialMatrix")
-    bid_configuration: Union[BidConfigurationDayAhead, str, dm.NodeId, None] = Field(
-        default=None, repr=False, alias="bidConfiguration"
-    )
-
+    bid_configuration: Union[BidConfigurationDayAhead, str, dm.NodeId, None] = Field(default=None, repr=False, alias="bidConfiguration")
     @field_validator("function_input", "partial_matrix", "bid_configuration", mode="before")
     @classmethod
     def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
@@ -205,6 +166,7 @@ class PartialBidMatrixCalculationOutput(FunctionOutput):
     def as_write(self) -> PartialBidMatrixCalculationOutputWrite:
         """Convert this read version of partial bid matrix calculation output to the writing version."""
         return PartialBidMatrixCalculationOutputWrite.model_validate(as_write_args(self))
+
 
 
 class PartialBidMatrixCalculationOutputWrite(FunctionOutputWrite):
@@ -225,37 +187,16 @@ class PartialBidMatrixCalculationOutputWrite(FunctionOutputWrite):
         partial_matrix: The partial matrix field.
         bid_configuration: The bid configuration field.
     """
-
-    _container_fields: ClassVar[tuple[str, ...]] = (
-        "bid_configuration",
-        "function_call_id",
-        "function_input",
-        "function_name",
-        "partial_matrix",
-        "workflow_execution_id",
-        "workflow_step",
-    )
-    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (
-        ("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")),
-    )
-    _direct_relations: ClassVar[tuple[str, ...]] = (
-        "bid_configuration",
-        "function_input",
-        "partial_matrix",
-    )
+    _container_fields: ClassVar[tuple[str, ...]] = ("bid_configuration", "function_call_id", "function_input", "function_name", "partial_matrix", "workflow_execution_id", "workflow_step",)
+    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")),)
+    _direct_relations: ClassVar[tuple[str, ...]] = ("bid_configuration", "function_input", "partial_matrix",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PartialBidMatrixCalculationOutput", "1")
 
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
-        "power_ops_types", "PartialBidMatrixCalculationOutput"
-    )
-    function_input: Union[PartialBidMatrixCalculationInputWrite, str, dm.NodeId, None] = Field(
-        default=None, repr=False, alias="functionInput"
-    )
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "PartialBidMatrixCalculationOutput")
+    function_input: Union[PartialBidMatrixCalculationInputWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="functionInput")
     partial_matrix: Union[BidMatrixWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="partialMatrix")
-    bid_configuration: Union[BidConfigurationDayAheadWrite, str, dm.NodeId, None] = Field(
-        default=None, repr=False, alias="bidConfiguration"
-    )
+    bid_configuration: Union[BidConfigurationDayAheadWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="bidConfiguration")
 
     @field_validator("function_input", "partial_matrix", "bid_configuration", mode="before")
     def as_node_id(cls, value: Any) -> Any:
@@ -272,98 +213,50 @@ class PartialBidMatrixCalculationOutputList(DomainModelList[PartialBidMatrixCalc
     """List of partial bid matrix calculation outputs in the read version."""
 
     _INSTANCE = PartialBidMatrixCalculationOutput
-
     def as_write(self) -> PartialBidMatrixCalculationOutputWriteList:
         """Convert these read versions of partial bid matrix calculation output to the writing versions."""
         return PartialBidMatrixCalculationOutputWriteList([node.as_write() for node in self.data])
 
+
     @property
     def function_input(self) -> PartialBidMatrixCalculationInputList:
-        from ._partial_bid_matrix_calculation_input import (
-            PartialBidMatrixCalculationInput,
-            PartialBidMatrixCalculationInputList,
-        )
-
-        return PartialBidMatrixCalculationInputList(
-            [
-                item.function_input
-                for item in self.data
-                if isinstance(item.function_input, PartialBidMatrixCalculationInput)
-            ]
-        )
-
+        from ._partial_bid_matrix_calculation_input import PartialBidMatrixCalculationInput, PartialBidMatrixCalculationInputList
+        return PartialBidMatrixCalculationInputList([item.function_input for item in self.data if isinstance(item.function_input, PartialBidMatrixCalculationInput)])
     @property
     def alerts(self) -> AlertList:
         from ._alert import Alert, AlertList
-
         return AlertList([item for items in self.data for item in items.alerts or [] if isinstance(item, Alert)])
 
     @property
     def partial_matrix(self) -> BidMatrixList:
         from ._bid_matrix import BidMatrix, BidMatrixList
-
         return BidMatrixList([item.partial_matrix for item in self.data if isinstance(item.partial_matrix, BidMatrix)])
-
     @property
     def bid_configuration(self) -> BidConfigurationDayAheadList:
         from ._bid_configuration_day_ahead import BidConfigurationDayAhead, BidConfigurationDayAheadList
-
-        return BidConfigurationDayAheadList(
-            [
-                item.bid_configuration
-                for item in self.data
-                if isinstance(item.bid_configuration, BidConfigurationDayAhead)
-            ]
-        )
-
+        return BidConfigurationDayAheadList([item.bid_configuration for item in self.data if isinstance(item.bid_configuration, BidConfigurationDayAhead)])
 
 class PartialBidMatrixCalculationOutputWriteList(DomainModelWriteList[PartialBidMatrixCalculationOutputWrite]):
     """List of partial bid matrix calculation outputs in the writing version."""
 
     _INSTANCE = PartialBidMatrixCalculationOutputWrite
-
     @property
     def function_input(self) -> PartialBidMatrixCalculationInputWriteList:
-        from ._partial_bid_matrix_calculation_input import (
-            PartialBidMatrixCalculationInputWrite,
-            PartialBidMatrixCalculationInputWriteList,
-        )
-
-        return PartialBidMatrixCalculationInputWriteList(
-            [
-                item.function_input
-                for item in self.data
-                if isinstance(item.function_input, PartialBidMatrixCalculationInputWrite)
-            ]
-        )
-
+        from ._partial_bid_matrix_calculation_input import PartialBidMatrixCalculationInputWrite, PartialBidMatrixCalculationInputWriteList
+        return PartialBidMatrixCalculationInputWriteList([item.function_input for item in self.data if isinstance(item.function_input, PartialBidMatrixCalculationInputWrite)])
     @property
     def alerts(self) -> AlertWriteList:
         from ._alert import AlertWrite, AlertWriteList
-
-        return AlertWriteList(
-            [item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)]
-        )
+        return AlertWriteList([item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)])
 
     @property
     def partial_matrix(self) -> BidMatrixWriteList:
         from ._bid_matrix import BidMatrixWrite, BidMatrixWriteList
-
-        return BidMatrixWriteList(
-            [item.partial_matrix for item in self.data if isinstance(item.partial_matrix, BidMatrixWrite)]
-        )
-
+        return BidMatrixWriteList([item.partial_matrix for item in self.data if isinstance(item.partial_matrix, BidMatrixWrite)])
     @property
     def bid_configuration(self) -> BidConfigurationDayAheadWriteList:
         from ._bid_configuration_day_ahead import BidConfigurationDayAheadWrite, BidConfigurationDayAheadWriteList
-
-        return BidConfigurationDayAheadWriteList(
-            [
-                item.bid_configuration
-                for item in self.data
-                if isinstance(item.bid_configuration, BidConfigurationDayAheadWrite)
-            ]
-        )
+        return BidConfigurationDayAheadWriteList([item.bid_configuration for item in self.data if isinstance(item.bid_configuration, BidConfigurationDayAheadWrite)])
 
 
 def _create_partial_bid_matrix_calculation_output_filter(
@@ -376,30 +269,9 @@ def _create_partial_bid_matrix_calculation_output_filter(
     function_name_prefix: str | None = None,
     function_call_id: str | list[str] | None = None,
     function_call_id_prefix: str | None = None,
-    function_input: (
-        str
-        | tuple[str, str]
-        | dm.NodeId
-        | dm.DirectRelationReference
-        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-        | None
-    ) = None,
-    partial_matrix: (
-        str
-        | tuple[str, str]
-        | dm.NodeId
-        | dm.DirectRelationReference
-        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-        | None
-    ) = None,
-    bid_configuration: (
-        str
-        | tuple[str, str]
-        | dm.NodeId
-        | dm.DirectRelationReference
-        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-        | None
-    ) = None,
+    function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+    partial_matrix: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+    bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -410,13 +282,9 @@ def _create_partial_bid_matrix_calculation_output_filter(
     if workflow_execution_id and isinstance(workflow_execution_id, list):
         filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
     if workflow_execution_id_prefix is not None:
-        filters.append(
-            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
-        )
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix))
     if min_workflow_step is not None or max_workflow_step is not None:
-        filters.append(
-            dm.filters.Range(view_id.as_property_ref("workflowStep"), gte=min_workflow_step, lte=max_workflow_step)
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("workflowStep"), gte=min_workflow_step, lte=max_workflow_step))
     if isinstance(function_name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("functionName"), value=function_name))
     if function_name and isinstance(function_name, list):
@@ -430,51 +298,17 @@ def _create_partial_bid_matrix_calculation_output_filter(
     if function_call_id_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("functionCallId"), value=function_call_id_prefix))
     if isinstance(function_input, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(function_input):
-        filters.append(
-            dm.filters.Equals(view_id.as_property_ref("functionInput"), value=as_instance_dict_id(function_input))
-        )
-    if (
-        function_input
-        and isinstance(function_input, Sequence)
-        and not isinstance(function_input, str)
-        and not is_tuple_id(function_input)
-    ):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("functionInput"), values=[as_instance_dict_id(item) for item in function_input]
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("functionInput"), value=as_instance_dict_id(function_input)))
+    if function_input and isinstance(function_input, Sequence) and not isinstance(function_input, str) and not is_tuple_id(function_input):
+        filters.append(dm.filters.In(view_id.as_property_ref("functionInput"), values=[as_instance_dict_id(item) for item in function_input]))
     if isinstance(partial_matrix, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(partial_matrix):
-        filters.append(
-            dm.filters.Equals(view_id.as_property_ref("partialMatrix"), value=as_instance_dict_id(partial_matrix))
-        )
-    if (
-        partial_matrix
-        and isinstance(partial_matrix, Sequence)
-        and not isinstance(partial_matrix, str)
-        and not is_tuple_id(partial_matrix)
-    ):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("partialMatrix"), values=[as_instance_dict_id(item) for item in partial_matrix]
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("partialMatrix"), value=as_instance_dict_id(partial_matrix)))
+    if partial_matrix and isinstance(partial_matrix, Sequence) and not isinstance(partial_matrix, str) and not is_tuple_id(partial_matrix):
+        filters.append(dm.filters.In(view_id.as_property_ref("partialMatrix"), values=[as_instance_dict_id(item) for item in partial_matrix]))
     if isinstance(bid_configuration, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(bid_configuration):
-        filters.append(
-            dm.filters.Equals(view_id.as_property_ref("bidConfiguration"), value=as_instance_dict_id(bid_configuration))
-        )
-    if (
-        bid_configuration
-        and isinstance(bid_configuration, Sequence)
-        and not isinstance(bid_configuration, str)
-        and not is_tuple_id(bid_configuration)
-    ):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("bidConfiguration"),
-                values=[as_instance_dict_id(item) for item in bid_configuration],
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("bidConfiguration"), value=as_instance_dict_id(bid_configuration)))
+    if bid_configuration and isinstance(bid_configuration, Sequence) and not isinstance(bid_configuration, str) and not is_tuple_id(bid_configuration):
+        filters.append(dm.filters.In(view_id.as_property_ref("bidConfiguration"), values=[as_instance_dict_id(item) for item in bid_configuration]))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
@@ -521,10 +355,7 @@ class _PartialBidMatrixCalculationOutputQuery(NodeQueryCore[T_DomainModelList, P
             reverse_expression,
         )
 
-        if (
-            _PartialBidMatrixCalculationInputQuery not in created_types
-            and len(creation_path) + 1 < global_config.max_select_depth
-        ):
+        if _PartialBidMatrixCalculationInputQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.function_input = _PartialBidMatrixCalculationInputQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -566,10 +397,7 @@ class _PartialBidMatrixCalculationOutputQuery(NodeQueryCore[T_DomainModelList, P
                 connection_property=ViewPropertyId(self._view_id, "partialMatrix"),
             )
 
-        if (
-            _BidConfigurationDayAheadQuery not in created_types
-            and len(creation_path) + 1 < global_config.max_select_depth
-        ):
+        if _BidConfigurationDayAheadQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.bid_configuration = _BidConfigurationDayAheadQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -592,28 +420,22 @@ class _PartialBidMatrixCalculationOutputQuery(NodeQueryCore[T_DomainModelList, P
         self.function_input_filter = DirectRelationFilter(self, self._view_id.as_property_ref("functionInput"))
         self.partial_matrix_filter = DirectRelationFilter(self, self._view_id.as_property_ref("partialMatrix"))
         self.bid_configuration_filter = DirectRelationFilter(self, self._view_id.as_property_ref("bidConfiguration"))
-        self._filter_classes.extend(
-            [
-                self.space,
-                self.external_id,
-                self.workflow_execution_id,
-                self.workflow_step,
-                self.function_name,
-                self.function_call_id,
-                self.function_input_filter,
-                self.partial_matrix_filter,
-                self.bid_configuration_filter,
-            ]
-        )
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.workflow_execution_id,
+            self.workflow_step,
+            self.function_name,
+            self.function_call_id,
+            self.function_input_filter,
+            self.partial_matrix_filter,
+            self.bid_configuration_filter,
+        ])
 
-    def list_partial_bid_matrix_calculation_output(
-        self, limit: int = DEFAULT_QUERY_LIMIT
-    ) -> PartialBidMatrixCalculationOutputList:
+    def list_partial_bid_matrix_calculation_output(self, limit: int = DEFAULT_QUERY_LIMIT) -> PartialBidMatrixCalculationOutputList:
         return self._list(limit=limit)
 
 
-class PartialBidMatrixCalculationOutputQuery(
-    _PartialBidMatrixCalculationOutputQuery[PartialBidMatrixCalculationOutputList]
-):
+class PartialBidMatrixCalculationOutputQuery(_PartialBidMatrixCalculationOutputQuery[PartialBidMatrixCalculationOutputList]):
     def __init__(self, client: CogniteClient):
         super().__init__(set(), [], client, PartialBidMatrixCalculationOutputList)
