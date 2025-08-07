@@ -23,6 +23,14 @@ filter:
 
 version: "{{power_ops_data_model_version}}"
 properties:
+  name:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: DataSetConfiguration
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: The name of the data set configuration
   readDataSet:
     container:
       space: "{{power_ops_models_space}}"
