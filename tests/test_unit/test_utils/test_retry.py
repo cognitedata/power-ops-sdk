@@ -3,7 +3,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from cognite.powerops.utils.retry.api import retry, retry_call
+from cognite.powerops.utils.retry import retry, retry_call
 
 
 def test_retry(monkeypatch):
