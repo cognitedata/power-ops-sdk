@@ -36,8 +36,15 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     IntFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._function_input import FunctionInput, FunctionInputWrite
+
 if TYPE_CHECKING:
-    from cognite.powerops.client._generated.v1.data_classes._shop_result import ShopResult, ShopResultList, ShopResultGraphQL, ShopResultWrite, ShopResultWriteList
+    from cognite.powerops.client._generated.v1.data_classes._shop_result import (
+        ShopResult,
+        ShopResultList,
+        ShopResultGraphQL,
+        ShopResultWrite,
+        ShopResultWriteList,
+    )
 
 
 __all__ = [
@@ -51,8 +58,12 @@ __all__ = [
 ]
 
 
-BenchmarkingCalculationInputTextFields = Literal["external_id", "workflow_execution_id", "function_name", "function_call_id"]
-BenchmarkingCalculationInputFields = Literal["external_id", "workflow_execution_id", "workflow_step", "function_name", "function_call_id"]
+BenchmarkingCalculationInputTextFields = Literal[
+    "external_id", "workflow_execution_id", "function_name", "function_call_id"
+]
+BenchmarkingCalculationInputFields = Literal[
+    "external_id", "workflow_execution_id", "workflow_step", "function_name", "function_call_id"
+]
 
 _BENCHMARKINGCALCULATIONINPUT_PROPERTIES_BY_FIELD = {
     "external_id": "externalId",
@@ -98,7 +109,6 @@ class BenchmarkingCalculationInputGraphQL(GraphQLCore):
             )
         return values
 
-
     @field_validator("shop_results", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -134,8 +144,12 @@ class BenchmarkingCalculationInput(FunctionInput):
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingCalculationInput", "1")
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingCalculationInput")
-    shop_results: Optional[list[Union[ShopResult, str, dm.NodeId]]] = Field(default=None, repr=False, alias="shopResults")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
+        "power_ops_types", "BenchmarkingCalculationInput"
+    )
+    shop_results: Optional[list[Union[ShopResult, str, dm.NodeId]]] = Field(
+        default=None, repr=False, alias="shopResults"
+    )
 
     @field_validator("shop_results", mode="before")
     @classmethod
@@ -147,7 +161,6 @@ class BenchmarkingCalculationInput(FunctionInput):
     def as_write(self) -> BenchmarkingCalculationInputWrite:
         """Convert this read version of benchmarking calculation input to the writing version."""
         return BenchmarkingCalculationInputWrite.model_validate(as_write_args(self))
-
 
 
 class BenchmarkingCalculationInputWrite(FunctionInputWrite):
@@ -165,13 +178,25 @@ class BenchmarkingCalculationInputWrite(FunctionInputWrite):
         function_call_id: The function call id
         shop_results: An array of shop results.
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("function_call_id", "function_name", "workflow_execution_id", "workflow_step",)
-    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("shop_results", dm.DirectRelationReference("power_ops_types", "ShopResults")),)
+
+    _container_fields: ClassVar[tuple[str, ...]] = (
+        "function_call_id",
+        "function_name",
+        "workflow_execution_id",
+        "workflow_step",
+    )
+    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (
+        ("shop_results", dm.DirectRelationReference("power_ops_types", "ShopResults")),
+    )
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingCalculationInput", "1")
 
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingCalculationInput")
-    shop_results: Optional[list[Union[ShopResultWrite, str, dm.NodeId]]] = Field(default=None, repr=False, alias="shopResults")
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
+        "power_ops_types", "BenchmarkingCalculationInput"
+    )
+    shop_results: Optional[list[Union[ShopResultWrite, str, dm.NodeId]]] = Field(
+        default=None, repr=False, alias="shopResults"
+    )
 
     @field_validator("shop_results", mode="before")
     def as_node_id(cls, value: Any) -> Any:
@@ -188,26 +213,32 @@ class BenchmarkingCalculationInputList(DomainModelList[BenchmarkingCalculationIn
     """List of benchmarking calculation inputs in the read version."""
 
     _INSTANCE = BenchmarkingCalculationInput
+
     def as_write(self) -> BenchmarkingCalculationInputWriteList:
         """Convert these read versions of benchmarking calculation input to the writing versions."""
         return BenchmarkingCalculationInputWriteList([node.as_write() for node in self.data])
 
-
     @property
     def shop_results(self) -> ShopResultList:
         from ._shop_result import ShopResult, ShopResultList
-        return ShopResultList([item for items in self.data for item in items.shop_results or [] if isinstance(item, ShopResult)])
+
+        return ShopResultList(
+            [item for items in self.data for item in items.shop_results or [] if isinstance(item, ShopResult)]
+        )
 
 
 class BenchmarkingCalculationInputWriteList(DomainModelWriteList[BenchmarkingCalculationInputWrite]):
     """List of benchmarking calculation inputs in the writing version."""
 
     _INSTANCE = BenchmarkingCalculationInputWrite
+
     @property
     def shop_results(self) -> ShopResultWriteList:
         from ._shop_result import ShopResultWrite, ShopResultWriteList
-        return ShopResultWriteList([item for items in self.data for item in items.shop_results or [] if isinstance(item, ShopResultWrite)])
 
+        return ShopResultWriteList(
+            [item for items in self.data for item in items.shop_results or [] if isinstance(item, ShopResultWrite)]
+        )
 
 
 def _create_benchmarking_calculation_input_filter(
@@ -230,9 +261,13 @@ def _create_benchmarking_calculation_input_filter(
     if workflow_execution_id and isinstance(workflow_execution_id, list):
         filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
     if workflow_execution_id_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix))
+        filters.append(
+            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
+        )
     if min_workflow_step is not None or max_workflow_step is not None:
-        filters.append(dm.filters.Range(view_id.as_property_ref("workflowStep"), gte=min_workflow_step, lte=max_workflow_step))
+        filters.append(
+            dm.filters.Range(view_id.as_property_ref("workflowStep"), gte=min_workflow_step, lte=max_workflow_step)
+        )
     if isinstance(function_name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("functionName"), value=function_name))
     if function_name and isinstance(function_name, list):
@@ -308,14 +343,16 @@ class _BenchmarkingCalculationInputQuery(NodeQueryCore[T_DomainModelList, Benchm
         self.workflow_step = IntFilter(self, self._view_id.as_property_ref("workflowStep"))
         self.function_name = StringFilter(self, self._view_id.as_property_ref("functionName"))
         self.function_call_id = StringFilter(self, self._view_id.as_property_ref("functionCallId"))
-        self._filter_classes.extend([
-            self.space,
-            self.external_id,
-            self.workflow_execution_id,
-            self.workflow_step,
-            self.function_name,
-            self.function_call_id,
-        ])
+        self._filter_classes.extend(
+            [
+                self.space,
+                self.external_id,
+                self.workflow_execution_id,
+                self.workflow_step,
+                self.function_name,
+                self.function_call_id,
+            ]
+        )
 
     def list_benchmarking_calculation_input(self, limit: int = DEFAULT_QUERY_LIMIT) -> BenchmarkingCalculationInputList:
         return self._list(limit=limit)

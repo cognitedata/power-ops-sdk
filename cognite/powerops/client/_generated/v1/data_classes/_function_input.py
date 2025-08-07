@@ -49,7 +49,9 @@ __all__ = [
 
 
 FunctionInputTextFields = Literal["external_id", "workflow_execution_id", "function_name", "function_call_id"]
-FunctionInputFields = Literal["external_id", "workflow_execution_id", "workflow_step", "function_name", "function_call_id"]
+FunctionInputFields = Literal[
+    "external_id", "workflow_execution_id", "workflow_step", "function_name", "function_call_id"
+]
 
 _FUNCTIONINPUT_PROPERTIES_BY_FIELD = {
     "external_id": "externalId",
@@ -93,8 +95,6 @@ class FunctionInputGraphQL(GraphQLCore):
             )
         return values
 
-
-
     def as_read(self) -> FunctionInput:
         """Convert this GraphQL format of function input to the reading format."""
         return FunctionInput.model_validate(as_read_args(self))
@@ -128,11 +128,9 @@ class FunctionInput(DomainModel):
     function_name: str = Field(alias="functionName")
     function_call_id: str = Field(alias="functionCallId")
 
-
     def as_write(self) -> FunctionInputWrite:
         """Convert this read version of function input to the writing version."""
         return FunctionInputWrite.model_validate(as_write_args(self))
-
 
 
 class FunctionInputWrite(DomainModelWrite):
@@ -149,7 +147,13 @@ class FunctionInputWrite(DomainModelWrite):
         function_name: The name of the function
         function_call_id: The function call id
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("function_call_id", "function_name", "workflow_execution_id", "workflow_step",)
+
+    _container_fields: ClassVar[tuple[str, ...]] = (
+        "function_call_id",
+        "function_name",
+        "workflow_execution_id",
+        "workflow_step",
+    )
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "FunctionInput", "1")
 
@@ -161,15 +165,14 @@ class FunctionInputWrite(DomainModelWrite):
     function_call_id: str = Field(alias="functionCallId")
 
 
-
 class FunctionInputList(DomainModelList[FunctionInput]):
     """List of function inputs in the read version."""
 
     _INSTANCE = FunctionInput
+
     def as_write(self) -> FunctionInputWriteList:
         """Convert these read versions of function input to the writing versions."""
         return FunctionInputWriteList([node.as_write() for node in self.data])
-
 
 
 class FunctionInputWriteList(DomainModelWriteList[FunctionInputWrite]):
@@ -198,9 +201,13 @@ def _create_function_input_filter(
     if workflow_execution_id and isinstance(workflow_execution_id, list):
         filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
     if workflow_execution_id_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix))
+        filters.append(
+            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
+        )
     if min_workflow_step is not None or max_workflow_step is not None:
-        filters.append(dm.filters.Range(view_id.as_property_ref("workflowStep"), gte=min_workflow_step, lte=max_workflow_step))
+        filters.append(
+            dm.filters.Range(view_id.as_property_ref("workflowStep"), gte=min_workflow_step, lte=max_workflow_step)
+        )
     if isinstance(function_name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("functionName"), value=function_name))
     if function_name and isinstance(function_name, list):
@@ -261,14 +268,16 @@ class _FunctionInputQuery(NodeQueryCore[T_DomainModelList, FunctionInputList]):
         self.workflow_step = IntFilter(self, self._view_id.as_property_ref("workflowStep"))
         self.function_name = StringFilter(self, self._view_id.as_property_ref("functionName"))
         self.function_call_id = StringFilter(self, self._view_id.as_property_ref("functionCallId"))
-        self._filter_classes.extend([
-            self.space,
-            self.external_id,
-            self.workflow_execution_id,
-            self.workflow_step,
-            self.function_name,
-            self.function_call_id,
-        ])
+        self._filter_classes.extend(
+            [
+                self.space,
+                self.external_id,
+                self.workflow_execution_id,
+                self.workflow_step,
+                self.function_name,
+                self.function_call_id,
+            ]
+        )
 
     def list_function_input(self, limit: int = DEFAULT_QUERY_LIMIT) -> FunctionInputList:
         return self._list(limit=limit)

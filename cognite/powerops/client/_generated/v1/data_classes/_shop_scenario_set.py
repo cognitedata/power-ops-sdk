@@ -35,9 +35,22 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     ViewPropertyId,
     DirectRelationFilter,
 )
+
 if TYPE_CHECKING:
-    from cognite.powerops.client._generated.v1.data_classes._date_specification import DateSpecification, DateSpecificationList, DateSpecificationGraphQL, DateSpecificationWrite, DateSpecificationWriteList
-    from cognite.powerops.client._generated.v1.data_classes._shop_scenario import ShopScenario, ShopScenarioList, ShopScenarioGraphQL, ShopScenarioWrite, ShopScenarioWriteList
+    from cognite.powerops.client._generated.v1.data_classes._date_specification import (
+        DateSpecification,
+        DateSpecificationList,
+        DateSpecificationGraphQL,
+        DateSpecificationWrite,
+        DateSpecificationWriteList,
+    )
+    from cognite.powerops.client._generated.v1.data_classes._shop_scenario import (
+        ShopScenario,
+        ShopScenarioList,
+        ShopScenarioGraphQL,
+        ShopScenarioWrite,
+        ShopScenarioWriteList,
+    )
 
 
 __all__ = [
@@ -78,7 +91,9 @@ class ShopScenarioSetGraphQL(GraphQLCore):
 
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopScenarioSet", "1")
     name: Optional[str] = None
-    start_specification: Optional[DateSpecificationGraphQL] = Field(default=None, repr=False, alias="startSpecification")
+    start_specification: Optional[DateSpecificationGraphQL] = Field(
+        default=None, repr=False, alias="startSpecification"
+    )
     end_specification: Optional[DateSpecificationGraphQL] = Field(default=None, repr=False, alias="endSpecification")
     scenarios: Optional[list[ShopScenarioGraphQL]] = Field(default=None, repr=False)
 
@@ -92,7 +107,6 @@ class ShopScenarioSetGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
-
 
     @field_validator("start_specification", "end_specification", "scenarios", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
@@ -131,9 +145,14 @@ class ShopScenarioSet(DomainModel):
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
     name: str
-    start_specification: Union[DateSpecification, str, dm.NodeId, None] = Field(default=None, repr=False, alias="startSpecification")
-    end_specification: Union[DateSpecification, str, dm.NodeId, None] = Field(default=None, repr=False, alias="endSpecification")
+    start_specification: Union[DateSpecification, str, dm.NodeId, None] = Field(
+        default=None, repr=False, alias="startSpecification"
+    )
+    end_specification: Union[DateSpecification, str, dm.NodeId, None] = Field(
+        default=None, repr=False, alias="endSpecification"
+    )
     scenarios: Optional[list[Union[ShopScenario, str, dm.NodeId]]] = Field(default=None, repr=False)
+
     @field_validator("start_specification", "end_specification", mode="before")
     @classmethod
     def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
@@ -151,7 +170,6 @@ class ShopScenarioSet(DomainModel):
         return ShopScenarioSetWrite.model_validate(as_write_args(self))
 
 
-
 class ShopScenarioSetWrite(DomainModelWrite):
     """This represents the writing version of shop scenario set.
 
@@ -166,17 +184,31 @@ class ShopScenarioSetWrite(DomainModelWrite):
         end_specification: TODO description
         scenarios: Configuration of the partial bids that make up the total bid configuration
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("end_specification", "name", "start_specification",)
-    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("scenarios", dm.DirectRelationReference("power_ops_types", "ShopScenarioSet.scenarios")),)
-    _direct_relations: ClassVar[tuple[str, ...]] = ("end_specification", "start_specification",)
+
+    _container_fields: ClassVar[tuple[str, ...]] = (
+        "end_specification",
+        "name",
+        "start_specification",
+    )
+    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (
+        ("scenarios", dm.DirectRelationReference("power_ops_types", "ShopScenarioSet.scenarios")),
+    )
+    _direct_relations: ClassVar[tuple[str, ...]] = (
+        "end_specification",
+        "start_specification",
+    )
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopScenarioSet", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
     name: str
-    start_specification: Union[DateSpecificationWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="startSpecification")
-    end_specification: Union[DateSpecificationWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="endSpecification")
+    start_specification: Union[DateSpecificationWrite, str, dm.NodeId, None] = Field(
+        default=None, repr=False, alias="startSpecification"
+    )
+    end_specification: Union[DateSpecificationWrite, str, dm.NodeId, None] = Field(
+        default=None, repr=False, alias="endSpecification"
+    )
     scenarios: Optional[list[Union[ShopScenarioWrite, str, dm.NodeId]]] = Field(default=None, repr=False)
 
     @field_validator("start_specification", "end_specification", "scenarios", mode="before")
@@ -194,50 +226,90 @@ class ShopScenarioSetList(DomainModelList[ShopScenarioSet]):
     """List of shop scenario sets in the read version."""
 
     _INSTANCE = ShopScenarioSet
+
     def as_write(self) -> ShopScenarioSetWriteList:
         """Convert these read versions of shop scenario set to the writing versions."""
         return ShopScenarioSetWriteList([node.as_write() for node in self.data])
 
-
     @property
     def start_specification(self) -> DateSpecificationList:
         from ._date_specification import DateSpecification, DateSpecificationList
-        return DateSpecificationList([item.start_specification for item in self.data if isinstance(item.start_specification, DateSpecification)])
+
+        return DateSpecificationList(
+            [item.start_specification for item in self.data if isinstance(item.start_specification, DateSpecification)]
+        )
+
     @property
     def end_specification(self) -> DateSpecificationList:
         from ._date_specification import DateSpecification, DateSpecificationList
-        return DateSpecificationList([item.end_specification for item in self.data if isinstance(item.end_specification, DateSpecification)])
+
+        return DateSpecificationList(
+            [item.end_specification for item in self.data if isinstance(item.end_specification, DateSpecification)]
+        )
+
     @property
     def scenarios(self) -> ShopScenarioList:
         from ._shop_scenario import ShopScenario, ShopScenarioList
-        return ShopScenarioList([item for items in self.data for item in items.scenarios or [] if isinstance(item, ShopScenario)])
+
+        return ShopScenarioList(
+            [item for items in self.data for item in items.scenarios or [] if isinstance(item, ShopScenario)]
+        )
 
 
 class ShopScenarioSetWriteList(DomainModelWriteList[ShopScenarioSetWrite]):
     """List of shop scenario sets in the writing version."""
 
     _INSTANCE = ShopScenarioSetWrite
+
     @property
     def start_specification(self) -> DateSpecificationWriteList:
         from ._date_specification import DateSpecificationWrite, DateSpecificationWriteList
-        return DateSpecificationWriteList([item.start_specification for item in self.data if isinstance(item.start_specification, DateSpecificationWrite)])
+
+        return DateSpecificationWriteList(
+            [
+                item.start_specification
+                for item in self.data
+                if isinstance(item.start_specification, DateSpecificationWrite)
+            ]
+        )
+
     @property
     def end_specification(self) -> DateSpecificationWriteList:
         from ._date_specification import DateSpecificationWrite, DateSpecificationWriteList
-        return DateSpecificationWriteList([item.end_specification for item in self.data if isinstance(item.end_specification, DateSpecificationWrite)])
+
+        return DateSpecificationWriteList(
+            [item.end_specification for item in self.data if isinstance(item.end_specification, DateSpecificationWrite)]
+        )
+
     @property
     def scenarios(self) -> ShopScenarioWriteList:
         from ._shop_scenario import ShopScenarioWrite, ShopScenarioWriteList
-        return ShopScenarioWriteList([item for items in self.data for item in items.scenarios or [] if isinstance(item, ShopScenarioWrite)])
 
+        return ShopScenarioWriteList(
+            [item for items in self.data for item in items.scenarios or [] if isinstance(item, ShopScenarioWrite)]
+        )
 
 
 def _create_shop_scenario_set_filter(
     view_id: dm.ViewId,
     name: str | list[str] | None = None,
     name_prefix: str | None = None,
-    start_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
-    end_specification: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+    start_specification: (
+        str
+        | tuple[str, str]
+        | dm.NodeId
+        | dm.DirectRelationReference
+        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+        | None
+    ) = None,
+    end_specification: (
+        str
+        | tuple[str, str]
+        | dm.NodeId
+        | dm.DirectRelationReference
+        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+        | None
+    ) = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -249,14 +321,42 @@ def _create_shop_scenario_set_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
     if name_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
-    if isinstance(start_specification, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(start_specification):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("startSpecification"), value=as_instance_dict_id(start_specification)))
-    if start_specification and isinstance(start_specification, Sequence) and not isinstance(start_specification, str) and not is_tuple_id(start_specification):
-        filters.append(dm.filters.In(view_id.as_property_ref("startSpecification"), values=[as_instance_dict_id(item) for item in start_specification]))
+    if isinstance(start_specification, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(
+        start_specification
+    ):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("startSpecification"), value=as_instance_dict_id(start_specification)
+            )
+        )
+    if (
+        start_specification
+        and isinstance(start_specification, Sequence)
+        and not isinstance(start_specification, str)
+        and not is_tuple_id(start_specification)
+    ):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("startSpecification"),
+                values=[as_instance_dict_id(item) for item in start_specification],
+            )
+        )
     if isinstance(end_specification, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(end_specification):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("endSpecification"), value=as_instance_dict_id(end_specification)))
-    if end_specification and isinstance(end_specification, Sequence) and not isinstance(end_specification, str) and not is_tuple_id(end_specification):
-        filters.append(dm.filters.In(view_id.as_property_ref("endSpecification"), values=[as_instance_dict_id(item) for item in end_specification]))
+        filters.append(
+            dm.filters.Equals(view_id.as_property_ref("endSpecification"), value=as_instance_dict_id(end_specification))
+        )
+    if (
+        end_specification
+        and isinstance(end_specification, Sequence)
+        and not isinstance(end_specification, str)
+        and not is_tuple_id(end_specification)
+    ):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("endSpecification"),
+                values=[as_instance_dict_id(item) for item in end_specification],
+            )
+        )
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
@@ -346,15 +446,19 @@ class _ShopScenarioSetQuery(NodeQueryCore[T_DomainModelList, ShopScenarioSetList
         self.space = StringFilter(self, ["node", "space"])
         self.external_id = StringFilter(self, ["node", "externalId"])
         self.name = StringFilter(self, self._view_id.as_property_ref("name"))
-        self.start_specification_filter = DirectRelationFilter(self, self._view_id.as_property_ref("startSpecification"))
+        self.start_specification_filter = DirectRelationFilter(
+            self, self._view_id.as_property_ref("startSpecification")
+        )
         self.end_specification_filter = DirectRelationFilter(self, self._view_id.as_property_ref("endSpecification"))
-        self._filter_classes.extend([
-            self.space,
-            self.external_id,
-            self.name,
-            self.start_specification_filter,
-            self.end_specification_filter,
-        ])
+        self._filter_classes.extend(
+            [
+                self.space,
+                self.external_id,
+                self.name,
+                self.start_specification_filter,
+                self.end_specification_filter,
+            ]
+        )
 
     def list_shop_scenario_set(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopScenarioSetList:
         return self._list(limit=limit)

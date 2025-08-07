@@ -47,7 +47,14 @@ from cognite.powerops.client._generated.v1.data_classes import (
 )
 
 
-class PartialBidConfigurationAPI(NodeAPI[PartialBidConfiguration, PartialBidConfigurationWrite, PartialBidConfigurationList, PartialBidConfigurationWriteList]):
+class PartialBidConfigurationAPI(
+    NodeAPI[
+        PartialBidConfiguration,
+        PartialBidConfigurationWrite,
+        PartialBidConfigurationList,
+        PartialBidConfigurationWriteList,
+    ]
+):
     _view_id = dm.ViewId("power_ops_core", "PartialBidConfiguration", "1")
     _properties_by_field: ClassVar[dict[str, str]] = _PARTIALBIDCONFIGURATION_PROPERTIES_BY_FIELD
     _direct_children_by_external_id: ClassVar[dict[str, type[DomainModel]]] = {
@@ -61,13 +68,14 @@ class PartialBidConfigurationAPI(NodeAPI[PartialBidConfiguration, PartialBidConf
     def __init__(self, client: CogniteClient):
         super().__init__(client=client)
 
-
     @overload
     def retrieve(
         self,
         external_id: str | dm.NodeId | tuple[str, str],
         space: str = DEFAULT_INSTANCE_SPACE,
-        as_child_class: SequenceNotStr[Literal["ShopBasedPartialBidConfiguration", "WaterValueBasedPartialBidConfiguration"]] | None = None,
+        as_child_class: (
+            SequenceNotStr[Literal["ShopBasedPartialBidConfiguration", "WaterValueBasedPartialBidConfiguration"]] | None
+        ) = None,
         retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> PartialBidConfiguration | None: ...
 
@@ -76,7 +84,9 @@ class PartialBidConfigurationAPI(NodeAPI[PartialBidConfiguration, PartialBidConf
         self,
         external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]],
         space: str = DEFAULT_INSTANCE_SPACE,
-        as_child_class: SequenceNotStr[Literal["ShopBasedPartialBidConfiguration", "WaterValueBasedPartialBidConfiguration"]] | None = None,
+        as_child_class: (
+            SequenceNotStr[Literal["ShopBasedPartialBidConfiguration", "WaterValueBasedPartialBidConfiguration"]] | None
+        ) = None,
         retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> PartialBidConfigurationList: ...
 
@@ -84,7 +94,9 @@ class PartialBidConfigurationAPI(NodeAPI[PartialBidConfiguration, PartialBidConf
         self,
         external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]],
         space: str = DEFAULT_INSTANCE_SPACE,
-        as_child_class: SequenceNotStr[Literal["ShopBasedPartialBidConfiguration", "WaterValueBasedPartialBidConfiguration"]] | None = None,
+        as_child_class: (
+            SequenceNotStr[Literal["ShopBasedPartialBidConfiguration", "WaterValueBasedPartialBidConfiguration"]] | None
+        ) = None,
         retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> PartialBidConfiguration | PartialBidConfigurationList | None:
         """Retrieve one or more partial bid configurations by id(s).
@@ -114,10 +126,7 @@ class PartialBidConfigurationAPI(NodeAPI[PartialBidConfiguration, PartialBidConf
 
         """
         return self._retrieve(
-            external_id,
-            space,
-            retrieve_connections=retrieve_connections,
-            as_child_class=as_child_class
+            external_id, space, retrieve_connections=retrieve_connections, as_child_class=as_child_class
         )
 
     def search(
@@ -128,7 +137,14 @@ class PartialBidConfigurationAPI(NodeAPI[PartialBidConfiguration, PartialBidConf
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
-        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        power_asset: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         add_steps: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -204,12 +220,21 @@ class PartialBidConfigurationAPI(NodeAPI[PartialBidConfiguration, PartialBidConf
         group_by: None = None,
         property: PartialBidConfigurationFields | SequenceNotStr[PartialBidConfigurationFields] | None = None,
         query: str | None = None,
-        search_property: PartialBidConfigurationTextFields | SequenceNotStr[PartialBidConfigurationTextFields] | None = None,
+        search_property: (
+            PartialBidConfigurationTextFields | SequenceNotStr[PartialBidConfigurationTextFields] | None
+        ) = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
-        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        power_asset: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         add_steps: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -224,12 +249,21 @@ class PartialBidConfigurationAPI(NodeAPI[PartialBidConfiguration, PartialBidConf
         group_by: None = None,
         property: PartialBidConfigurationFields | SequenceNotStr[PartialBidConfigurationFields] | None = None,
         query: str | None = None,
-        search_property: PartialBidConfigurationTextFields | SequenceNotStr[PartialBidConfigurationTextFields] | None = None,
+        search_property: (
+            PartialBidConfigurationTextFields | SequenceNotStr[PartialBidConfigurationTextFields] | None
+        ) = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
-        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        power_asset: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         add_steps: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -240,18 +274,29 @@ class PartialBidConfigurationAPI(NodeAPI[PartialBidConfiguration, PartialBidConf
     @overload
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
         group_by: PartialBidConfigurationFields | SequenceNotStr[PartialBidConfigurationFields],
         property: PartialBidConfigurationFields | SequenceNotStr[PartialBidConfigurationFields] | None = None,
         query: str | None = None,
-        search_property: PartialBidConfigurationTextFields | SequenceNotStr[PartialBidConfigurationTextFields] | None = None,
+        search_property: (
+            PartialBidConfigurationTextFields | SequenceNotStr[PartialBidConfigurationTextFields] | None
+        ) = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
-        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        power_asset: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         add_steps: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -261,18 +306,29 @@ class PartialBidConfigurationAPI(NodeAPI[PartialBidConfiguration, PartialBidConf
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
         group_by: PartialBidConfigurationFields | SequenceNotStr[PartialBidConfigurationFields] | None = None,
         property: PartialBidConfigurationFields | SequenceNotStr[PartialBidConfigurationFields] | None = None,
         query: str | None = None,
-        search_property: PartialBidConfigurationTextFields | SequenceNotStr[PartialBidConfigurationTextFields] | None = None,
+        search_property: (
+            PartialBidConfigurationTextFields | SequenceNotStr[PartialBidConfigurationTextFields] | None
+        ) = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
-        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        power_asset: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         add_steps: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -344,12 +400,21 @@ class PartialBidConfigurationAPI(NodeAPI[PartialBidConfiguration, PartialBidConf
         property: PartialBidConfigurationFields,
         interval: float,
         query: str | None = None,
-        search_property: PartialBidConfigurationTextFields | SequenceNotStr[PartialBidConfigurationTextFields] | None = None,
+        search_property: (
+            PartialBidConfigurationTextFields | SequenceNotStr[PartialBidConfigurationTextFields] | None
+        ) = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
-        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        power_asset: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         add_steps: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -415,13 +480,15 @@ class PartialBidConfigurationAPI(NodeAPI[PartialBidConfiguration, PartialBidConf
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(factory.root(
-            filter=filter_,
-            sort=sort,
-            limit=limit,
-            max_retrieve_batch_limit=chunk_size,
-            has_container_fields=True,
-        ))
+        builder.append(
+            factory.root(
+                filter=filter_,
+                sort=sort,
+                limit=limit,
+                max_retrieve_batch_limit=chunk_size,
+                has_container_fields=True,
+            )
+        )
         if retrieve_connections == "full":
             builder.extend(
                 factory.from_direct_relation(
@@ -439,7 +506,14 @@ class PartialBidConfigurationAPI(NodeAPI[PartialBidConfiguration, PartialBidConf
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
-        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        power_asset: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         add_steps: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -533,7 +607,14 @@ class PartialBidConfigurationAPI(NodeAPI[PartialBidConfiguration, PartialBidConf
         name_prefix: str | None = None,
         method: str | list[str] | None = None,
         method_prefix: str | None = None,
-        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        power_asset: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         add_steps: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -592,7 +673,7 @@ class PartialBidConfigurationAPI(NodeAPI[PartialBidConfiguration, PartialBidConf
             space,
             filter,
         )
-        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
-            return self._list(limit=limit,  filter=filter_, sort=sort_input)
+            return self._list(limit=limit, filter=filter_, sort=sort_input)
         return self._query(filter_, limit, retrieve_connections, sort_input, "list")

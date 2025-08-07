@@ -33,7 +33,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     NodeQueryCore,
     StringFilter,
     ViewPropertyId,
-
 )
 
 
@@ -90,8 +89,6 @@ class ShopTimeResolutionGraphQL(GraphQLCore):
             )
         return values
 
-
-
     def as_read(self) -> ShopTimeResolution:
         """Convert this GraphQL format of shop time resolution to the reading format."""
         return ShopTimeResolution.model_validate(as_read_args(self))
@@ -118,16 +115,16 @@ class ShopTimeResolution(DomainModel):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopTimeResolution", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopTimeResolution")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
+        "power_ops_types", "ShopTimeResolution"
+    )
     name: str
     minutes_after_start: list[int] = Field(alias="minutesAfterStart")
     time_resolution_minutes: list[int] = Field(alias="timeResolutionMinutes")
 
-
     def as_write(self) -> ShopTimeResolutionWrite:
         """Convert this read version of shop time resolution to the writing version."""
         return ShopTimeResolutionWrite.model_validate(as_write_args(self))
-
 
 
 class ShopTimeResolutionWrite(DomainModelWrite):
@@ -143,26 +140,32 @@ class ShopTimeResolutionWrite(DomainModelWrite):
         minutes_after_start: Minutes after SHOP Simulation start.
         time_resolution_minutes: The SHOP time resolution (in minutes) to use for SHOP.
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("minutes_after_start", "name", "time_resolution_minutes",)
+
+    _container_fields: ClassVar[tuple[str, ...]] = (
+        "minutes_after_start",
+        "name",
+        "time_resolution_minutes",
+    )
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopTimeResolution", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "ShopTimeResolution")
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
+        "power_ops_types", "ShopTimeResolution"
+    )
     name: str
     minutes_after_start: list[int] = Field(alias="minutesAfterStart")
     time_resolution_minutes: list[int] = Field(alias="timeResolutionMinutes")
-
 
 
 class ShopTimeResolutionList(DomainModelList[ShopTimeResolution]):
     """List of shop time resolutions in the read version."""
 
     _INSTANCE = ShopTimeResolution
+
     def as_write(self) -> ShopTimeResolutionWriteList:
         """Convert these read versions of shop time resolution to the writing versions."""
         return ShopTimeResolutionWriteList([node.as_write() for node in self.data])
-
 
 
 class ShopTimeResolutionWriteList(DomainModelWriteList[ShopTimeResolutionWrite]):
@@ -231,11 +234,13 @@ class _ShopTimeResolutionQuery(NodeQueryCore[T_DomainModelList, ShopTimeResoluti
         self.space = StringFilter(self, ["node", "space"])
         self.external_id = StringFilter(self, ["node", "externalId"])
         self.name = StringFilter(self, self._view_id.as_property_ref("name"))
-        self._filter_classes.extend([
-            self.space,
-            self.external_id,
-            self.name,
-        ])
+        self._filter_classes.extend(
+            [
+                self.space,
+                self.external_id,
+                self.name,
+            ]
+        )
 
     def list_shop_time_resolution(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopTimeResolutionList:
         return self._list(limit=limit)

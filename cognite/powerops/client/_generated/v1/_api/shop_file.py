@@ -54,7 +54,6 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
     def __init__(self, client: CogniteClient):
         super().__init__(client=client)
 
-
     @overload
     def retrieve(
         self,
@@ -234,9 +233,11 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
     @overload
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
         group_by: ShopFileFields | SequenceNotStr[ShopFileFields],
         property: ShopFileFields | SequenceNotStr[ShopFileFields] | None = None,
         query: str | None = None,
@@ -258,9 +259,11 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
         group_by: ShopFileFields | SequenceNotStr[ShopFileFields] | None = None,
         property: ShopFileFields | SequenceNotStr[ShopFileFields] | None = None,
         query: str | None = None,
@@ -430,13 +433,15 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(factory.root(
-            filter=filter_,
-            sort=sort,
-            limit=limit,
-            max_retrieve_batch_limit=chunk_size,
-            has_container_fields=True,
-        ))
+        builder.append(
+            factory.root(
+                filter=filter_,
+                sort=sort,
+                limit=limit,
+                max_retrieve_batch_limit=chunk_size,
+                has_container_fields=True,
+            )
+        )
         return builder.build()
 
     def iterate(
@@ -609,5 +614,5 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
             space,
             filter,
         )
-        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
-        return self._list(limit=limit,  filter=filter_, sort=sort_input)
+        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        return self._list(limit=limit, filter=filter_, sort=sort_input)

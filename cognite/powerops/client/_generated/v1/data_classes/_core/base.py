@@ -49,7 +49,10 @@ from pydantic import BaseModel, Field, field_validator, model_validator
 
 from cognite.powerops.client._generated.v1.data_classes._core.constants import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes._core.cdf_external import GraphQLExternal
-from cognite.powerops.client._generated.v1.data_classes._core.helpers import as_direct_relation_reference, parse_single_connection
+from cognite.powerops.client._generated.v1.data_classes._core.helpers import (
+    as_direct_relation_reference,
+    parse_single_connection,
+)
 from cognite.powerops.client._generated.v1.config import global_config
 
 if sys.version_info >= (3, 11):

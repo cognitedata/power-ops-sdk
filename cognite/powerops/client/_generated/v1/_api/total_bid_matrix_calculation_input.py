@@ -45,10 +45,19 @@ from cognite.powerops.client._generated.v1.data_classes import (
     BidConfigurationDayAhead,
     BidMatrix,
 )
-from cognite.powerops.client._generated.v1._api.total_bid_matrix_calculation_input_partial_bid_matrices import TotalBidMatrixCalculationInputPartialBidMatricesAPI
+from cognite.powerops.client._generated.v1._api.total_bid_matrix_calculation_input_partial_bid_matrices import (
+    TotalBidMatrixCalculationInputPartialBidMatricesAPI,
+)
 
 
-class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, TotalBidMatrixCalculationInputWrite, TotalBidMatrixCalculationInputList, TotalBidMatrixCalculationInputWriteList]):
+class TotalBidMatrixCalculationInputAPI(
+    NodeAPI[
+        TotalBidMatrixCalculationInput,
+        TotalBidMatrixCalculationInputWrite,
+        TotalBidMatrixCalculationInputList,
+        TotalBidMatrixCalculationInputWriteList,
+    ]
+):
     _view_id = dm.ViewId("power_ops_core", "TotalBidMatrixCalculationInput", "1")
     _properties_by_field: ClassVar[dict[str, str]] = _TOTALBIDMATRIXCALCULATIONINPUT_PROPERTIES_BY_FIELD
     _class_type = TotalBidMatrixCalculationInput
@@ -114,7 +123,9 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
     def search(
         self,
         query: str,
-        properties: TotalBidMatrixCalculationInputTextFields | SequenceNotStr[TotalBidMatrixCalculationInputTextFields] | None = None,
+        properties: (
+            TotalBidMatrixCalculationInputTextFields | SequenceNotStr[TotalBidMatrixCalculationInputTextFields] | None
+        ) = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -123,14 +134,23 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-        sort_by: TotalBidMatrixCalculationInputFields | SequenceNotStr[TotalBidMatrixCalculationInputFields] | None = None,
+        sort_by: (
+            TotalBidMatrixCalculationInputFields | SequenceNotStr[TotalBidMatrixCalculationInputFields] | None
+        ) = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> TotalBidMatrixCalculationInputList:
@@ -208,9 +228,13 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         self,
         aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
-        property: TotalBidMatrixCalculationInputFields | SequenceNotStr[TotalBidMatrixCalculationInputFields] | None = None,
+        property: (
+            TotalBidMatrixCalculationInputFields | SequenceNotStr[TotalBidMatrixCalculationInputFields] | None
+        ) = None,
         query: str | None = None,
-        search_property: TotalBidMatrixCalculationInputTextFields | SequenceNotStr[TotalBidMatrixCalculationInputTextFields] | None = None,
+        search_property: (
+            TotalBidMatrixCalculationInputTextFields | SequenceNotStr[TotalBidMatrixCalculationInputTextFields] | None
+        ) = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -219,7 +243,14 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -233,9 +264,13 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         self,
         aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: None = None,
-        property: TotalBidMatrixCalculationInputFields | SequenceNotStr[TotalBidMatrixCalculationInputFields] | None = None,
+        property: (
+            TotalBidMatrixCalculationInputFields | SequenceNotStr[TotalBidMatrixCalculationInputFields] | None
+        ) = None,
         query: str | None = None,
-        search_property: TotalBidMatrixCalculationInputTextFields | SequenceNotStr[TotalBidMatrixCalculationInputTextFields] | None = None,
+        search_property: (
+            TotalBidMatrixCalculationInputTextFields | SequenceNotStr[TotalBidMatrixCalculationInputTextFields] | None
+        ) = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -244,7 +279,14 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -256,13 +298,19 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
     @overload
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
         group_by: TotalBidMatrixCalculationInputFields | SequenceNotStr[TotalBidMatrixCalculationInputFields],
-        property: TotalBidMatrixCalculationInputFields | SequenceNotStr[TotalBidMatrixCalculationInputFields] | None = None,
+        property: (
+            TotalBidMatrixCalculationInputFields | SequenceNotStr[TotalBidMatrixCalculationInputFields] | None
+        ) = None,
         query: str | None = None,
-        search_property: TotalBidMatrixCalculationInputTextFields | SequenceNotStr[TotalBidMatrixCalculationInputTextFields] | None = None,
+        search_property: (
+            TotalBidMatrixCalculationInputTextFields | SequenceNotStr[TotalBidMatrixCalculationInputTextFields] | None
+        ) = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -271,7 +319,14 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -282,13 +337,21 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
-        group_by: TotalBidMatrixCalculationInputFields | SequenceNotStr[TotalBidMatrixCalculationInputFields] | None = None,
-        property: TotalBidMatrixCalculationInputFields | SequenceNotStr[TotalBidMatrixCalculationInputFields] | None = None,
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
+        group_by: (
+            TotalBidMatrixCalculationInputFields | SequenceNotStr[TotalBidMatrixCalculationInputFields] | None
+        ) = None,
+        property: (
+            TotalBidMatrixCalculationInputFields | SequenceNotStr[TotalBidMatrixCalculationInputFields] | None
+        ) = None,
         query: str | None = None,
-        search_property: TotalBidMatrixCalculationInputTextFields | SequenceNotStr[TotalBidMatrixCalculationInputTextFields] | None = None,
+        search_property: (
+            TotalBidMatrixCalculationInputTextFields | SequenceNotStr[TotalBidMatrixCalculationInputTextFields] | None
+        ) = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -297,7 +360,14 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -380,7 +450,9 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         property: TotalBidMatrixCalculationInputFields,
         interval: float,
         query: str | None = None,
-        search_property: TotalBidMatrixCalculationInputTextFields | SequenceNotStr[TotalBidMatrixCalculationInputTextFields] | None = None,
+        search_property: (
+            TotalBidMatrixCalculationInputTextFields | SequenceNotStr[TotalBidMatrixCalculationInputTextFields] | None
+        ) = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -389,7 +461,14 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -466,13 +545,15 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(factory.root(
-            filter=filter_,
-            sort=sort,
-            limit=limit,
-            max_retrieve_batch_limit=chunk_size,
-            has_container_fields=True,
-        ))
+        builder.append(
+            factory.root(
+                filter=filter_,
+                sort=sort,
+                limit=limit,
+                max_retrieve_batch_limit=chunk_size,
+                has_container_fields=True,
+            )
+        )
         if retrieve_connections == "identifier" or retrieve_connections == "full":
             builder.extend(
                 factory.from_edge(
@@ -504,7 +585,14 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -613,7 +701,14 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -683,7 +778,7 @@ class TotalBidMatrixCalculationInputAPI(NodeAPI[TotalBidMatrixCalculationInput, 
             space,
             filter,
         )
-        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
-            return self._list(limit=limit,  filter=filter_, sort=sort_input)
+            return self._list(limit=limit, filter=filter_, sort=sort_input)
         return self._query(filter_, limit, retrieve_connections, sort_input, "list")

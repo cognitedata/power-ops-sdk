@@ -50,7 +50,18 @@ __all__ = [
 
 
 MarketConfigurationTextFields = Literal["external_id", "name", "timezone", "price_unit", "time_unit"]
-MarketConfigurationFields = Literal["external_id", "name", "max_price", "min_price", "timezone", "price_unit", "price_steps", "tick_size", "time_unit", "trade_lot"]
+MarketConfigurationFields = Literal[
+    "external_id",
+    "name",
+    "max_price",
+    "min_price",
+    "timezone",
+    "price_unit",
+    "price_steps",
+    "tick_size",
+    "time_unit",
+    "trade_lot",
+]
 
 _MARKETCONFIGURATION_PROPERTIES_BY_FIELD = {
     "external_id": "externalId",
@@ -111,8 +122,6 @@ class MarketConfigurationGraphQL(GraphQLCore):
             )
         return values
 
-
-
     def as_read(self) -> MarketConfiguration:
         """Convert this GraphQL format of market configuration to the reading format."""
         return MarketConfiguration.model_validate(as_read_args(self))
@@ -147,7 +156,9 @@ class MarketConfiguration(DomainModel):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "MarketConfiguration", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "MarketConfiguration")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
+        "power_ops_types", "MarketConfiguration"
+    )
     name: str
     max_price: float = Field(alias="maxPrice")
     min_price: float = Field(alias="minPrice")
@@ -158,11 +169,9 @@ class MarketConfiguration(DomainModel):
     time_unit: str = Field(alias="timeUnit")
     trade_lot: float = Field(alias="tradeLot")
 
-
     def as_write(self) -> MarketConfigurationWrite:
         """Convert this read version of market configuration to the writing version."""
         return MarketConfigurationWrite.model_validate(as_write_args(self))
-
 
 
 class MarketConfigurationWrite(DomainModelWrite):
@@ -186,12 +195,25 @@ class MarketConfigurationWrite(DomainModelWrite):
         trade_lot: 'Granularity' of the volumes; trade lot = 0.2 means that volumes must be 'rounded to nearest 0.2'
             (i. e. 66.5 is not allowed, but 66.4 is)
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("max_price", "min_price", "name", "price_steps", "price_unit", "tick_size", "time_unit", "timezone", "trade_lot",)
+
+    _container_fields: ClassVar[tuple[str, ...]] = (
+        "max_price",
+        "min_price",
+        "name",
+        "price_steps",
+        "price_unit",
+        "tick_size",
+        "time_unit",
+        "timezone",
+        "trade_lot",
+    )
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "MarketConfiguration", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "MarketConfiguration")
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
+        "power_ops_types", "MarketConfiguration"
+    )
     name: str
     max_price: float = Field(alias="maxPrice")
     min_price: float = Field(alias="minPrice")
@@ -203,15 +225,14 @@ class MarketConfigurationWrite(DomainModelWrite):
     trade_lot: float = Field(alias="tradeLot")
 
 
-
 class MarketConfigurationList(DomainModelList[MarketConfiguration]):
     """List of market configurations in the read version."""
 
     _INSTANCE = MarketConfiguration
+
     def as_write(self) -> MarketConfigurationWriteList:
         """Convert these read versions of market configuration to the writing versions."""
         return MarketConfigurationWriteList([node.as_write() for node in self.data])
-
 
 
 class MarketConfigurationWriteList(DomainModelWriteList[MarketConfigurationWrite]):
@@ -268,7 +289,9 @@ def _create_market_configuration_filter(
     if price_unit_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("priceUnit"), value=price_unit_prefix))
     if min_price_steps is not None or max_price_steps is not None:
-        filters.append(dm.filters.Range(view_id.as_property_ref("priceSteps"), gte=min_price_steps, lte=max_price_steps))
+        filters.append(
+            dm.filters.Range(view_id.as_property_ref("priceSteps"), gte=min_price_steps, lte=max_price_steps)
+        )
     if min_tick_size is not None or max_tick_size is not None:
         filters.append(dm.filters.Range(view_id.as_property_ref("tickSize"), gte=min_tick_size, lte=max_tick_size))
     if isinstance(time_unit, str):
@@ -332,19 +355,21 @@ class _MarketConfigurationQuery(NodeQueryCore[T_DomainModelList, MarketConfigura
         self.tick_size = FloatFilter(self, self._view_id.as_property_ref("tickSize"))
         self.time_unit = StringFilter(self, self._view_id.as_property_ref("timeUnit"))
         self.trade_lot = FloatFilter(self, self._view_id.as_property_ref("tradeLot"))
-        self._filter_classes.extend([
-            self.space,
-            self.external_id,
-            self.name,
-            self.max_price,
-            self.min_price,
-            self.timezone,
-            self.price_unit,
-            self.price_steps,
-            self.tick_size,
-            self.time_unit,
-            self.trade_lot,
-        ])
+        self._filter_classes.extend(
+            [
+                self.space,
+                self.external_id,
+                self.name,
+                self.max_price,
+                self.min_price,
+                self.timezone,
+                self.price_unit,
+                self.price_steps,
+                self.tick_size,
+                self.time_unit,
+                self.trade_lot,
+            ]
+        )
 
     def list_market_configuration(self, limit: int = DEFAULT_QUERY_LIMIT) -> MarketConfigurationList:
         return self._list(limit=limit)

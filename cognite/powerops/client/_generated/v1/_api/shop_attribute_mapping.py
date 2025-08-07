@@ -44,7 +44,9 @@ from cognite.powerops.client._generated.v1.data_classes import (
 )
 
 
-class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMappingWrite, ShopAttributeMappingList, ShopAttributeMappingWriteList]):
+class ShopAttributeMappingAPI(
+    NodeAPI[ShopAttributeMapping, ShopAttributeMappingWrite, ShopAttributeMappingList, ShopAttributeMappingWriteList]
+):
     _view_id = dm.ViewId("power_ops_core", "ShopAttributeMapping", "1")
     _properties_by_field: ClassVar[dict[str, str]] = _SHOPATTRIBUTEMAPPING_PROPERTIES_BY_FIELD
     _class_type = ShopAttributeMapping
@@ -53,7 +55,6 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
 
     def __init__(self, client: CogniteClient):
         super().__init__(client=client)
-
 
     @overload
     def retrieve(
@@ -239,9 +240,11 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
     @overload
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
         group_by: ShopAttributeMappingFields | SequenceNotStr[ShopAttributeMappingFields],
         property: ShopAttributeMappingFields | SequenceNotStr[ShopAttributeMappingFields] | None = None,
         query: str | None = None,
@@ -264,9 +267,11 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
         group_by: ShopAttributeMappingFields | SequenceNotStr[ShopAttributeMappingFields] | None = None,
         property: ShopAttributeMappingFields | SequenceNotStr[ShopAttributeMappingFields] | None = None,
         query: str | None = None,
@@ -442,13 +447,15 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(factory.root(
-            filter=filter_,
-            sort=sort,
-            limit=limit,
-            max_retrieve_batch_limit=chunk_size,
-            has_container_fields=True,
-        ))
+        builder.append(
+            factory.root(
+                filter=filter_,
+                sort=sort,
+                limit=limit,
+                max_retrieve_batch_limit=chunk_size,
+                has_container_fields=True,
+            )
+        )
         return builder.build()
 
     def iterate(
@@ -627,5 +634,5 @@ class ShopAttributeMappingAPI(NodeAPI[ShopAttributeMapping, ShopAttributeMapping
             space,
             filter,
         )
-        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
-        return self._list(limit=limit,  filter=filter_, sort=sort_input)
+        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        return self._list(limit=limit, filter=filter_, sort=sort_input)

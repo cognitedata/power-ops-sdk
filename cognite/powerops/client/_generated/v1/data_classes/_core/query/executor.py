@@ -17,7 +17,11 @@ from cognite.powerops.client._generated.v1.data_classes._core.query.constants im
     SEARCH_LIMIT,
 )
 from cognite.powerops.client._generated.v1.data_classes._core.query.processing import QueryResultCleaner
-from cognite.powerops.client._generated.v1.data_classes._core.query.step import QueryBuildStep, QueryResultStep, QueryResultStepList
+from cognite.powerops.client._generated.v1.data_classes._core.query.step import (
+    QueryBuildStep,
+    QueryResultStep,
+    QueryResultStepList,
+)
 
 
 class QueryReducingBatchSize(UserWarning):

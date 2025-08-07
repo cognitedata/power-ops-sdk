@@ -94,8 +94,6 @@ class PlantGraphQL(GraphQLCore):
             )
         return values
 
-
-
     def as_read(self) -> Plant:
         """Convert this GraphQL format of plant to the reading format."""
         return Plant.model_validate(as_read_args(self))
@@ -124,11 +122,9 @@ class Plant(PowerAsset):
 
     node_type: Union[dm.DirectRelationReference, None] = None
 
-
     def as_write(self) -> PlantWrite:
         """Convert this read version of plant to the writing version."""
         return PlantWrite.model_validate(as_write_args(self))
-
 
 
 class PlantWrite(PowerAssetWrite):
@@ -145,22 +141,27 @@ class PlantWrite(PowerAssetWrite):
         ordering: The ordering of the asset
         asset_type: The type of the asset
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("asset_type", "display_name", "name", "ordering",)
+
+    _container_fields: ClassVar[tuple[str, ...]] = (
+        "asset_type",
+        "display_name",
+        "name",
+        "ordering",
+    )
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "Plant", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
 
 
-
 class PlantList(DomainModelList[Plant]):
     """List of plants in the read version."""
 
     _INSTANCE = Plant
+
     def as_write(self) -> PlantWriteList:
         """Convert these read versions of plant to the writing versions."""
         return PlantWriteList([node.as_write() for node in self.data])
-
 
 
 class PlantWriteList(DomainModelWriteList[PlantWrite]):
@@ -252,14 +253,16 @@ class _PlantQuery(NodeQueryCore[T_DomainModelList, PlantList]):
         self.display_name = StringFilter(self, self._view_id.as_property_ref("displayName"))
         self.ordering = IntFilter(self, self._view_id.as_property_ref("ordering"))
         self.asset_type = StringFilter(self, self._view_id.as_property_ref("assetType"))
-        self._filter_classes.extend([
-            self.space,
-            self.external_id,
-            self.name,
-            self.display_name,
-            self.ordering,
-            self.asset_type,
-        ])
+        self._filter_classes.extend(
+            [
+                self.space,
+                self.external_id,
+                self.name,
+                self.display_name,
+                self.ordering,
+                self.asset_type,
+            ]
+        )
 
     def list_plant(self, limit: int = DEFAULT_QUERY_LIMIT) -> PlantList:
         return self._list(limit=limit)

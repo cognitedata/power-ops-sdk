@@ -94,8 +94,6 @@ class WatercourseGraphQL(GraphQLCore):
             )
         return values
 
-
-
     def as_read(self) -> Watercourse:
         """Convert this GraphQL format of watercourse to the reading format."""
         return Watercourse.model_validate(as_read_args(self))
@@ -124,11 +122,9 @@ class Watercourse(PowerAsset):
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "Watercourse")
 
-
     def as_write(self) -> WatercourseWrite:
         """Convert this read version of watercourse to the writing version."""
         return WatercourseWrite.model_validate(as_write_args(self))
-
 
 
 class WatercourseWrite(PowerAssetWrite):
@@ -145,22 +141,29 @@ class WatercourseWrite(PowerAssetWrite):
         ordering: The ordering of the asset
         asset_type: The type of the asset
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("asset_type", "display_name", "name", "ordering",)
+
+    _container_fields: ClassVar[tuple[str, ...]] = (
+        "asset_type",
+        "display_name",
+        "name",
+        "ordering",
+    )
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "Watercourse", "1")
 
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "Watercourse")
-
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
+        "power_ops_types", "Watercourse"
+    )
 
 
 class WatercourseList(DomainModelList[Watercourse]):
     """List of watercourses in the read version."""
 
     _INSTANCE = Watercourse
+
     def as_write(self) -> WatercourseWriteList:
         """Convert these read versions of watercourse to the writing versions."""
         return WatercourseWriteList([node.as_write() for node in self.data])
-
 
 
 class WatercourseWriteList(DomainModelWriteList[WatercourseWrite]):
@@ -252,14 +255,16 @@ class _WatercourseQuery(NodeQueryCore[T_DomainModelList, WatercourseList]):
         self.display_name = StringFilter(self, self._view_id.as_property_ref("displayName"))
         self.ordering = IntFilter(self, self._view_id.as_property_ref("ordering"))
         self.asset_type = StringFilter(self, self._view_id.as_property_ref("assetType"))
-        self._filter_classes.extend([
-            self.space,
-            self.external_id,
-            self.name,
-            self.display_name,
-            self.ordering,
-            self.asset_type,
-        ])
+        self._filter_classes.extend(
+            [
+                self.space,
+                self.external_id,
+                self.name,
+                self.display_name,
+                self.ordering,
+                self.asset_type,
+            ]
+        )
 
     def list_watercourse(self, limit: int = DEFAULT_QUERY_LIMIT) -> WatercourseList:
         return self._list(limit=limit)

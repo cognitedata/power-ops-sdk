@@ -60,8 +60,37 @@ __all__ = [
 ]
 
 
-PriceAreaAFRRTextFields = Literal["external_id", "name", "display_name", "asset_type", "capacity_price_up", "capacity_price_down", "activation_price_up", "activation_price_down", "relative_activation", "total_capacity_allocation_up", "total_capacity_allocation_down", "own_capacity_allocation_up", "own_capacity_allocation_down"]
-PriceAreaAFRRFields = Literal["external_id", "name", "display_name", "ordering", "asset_type", "capacity_price_up", "capacity_price_down", "activation_price_up", "activation_price_down", "relative_activation", "total_capacity_allocation_up", "total_capacity_allocation_down", "own_capacity_allocation_up", "own_capacity_allocation_down"]
+PriceAreaAFRRTextFields = Literal[
+    "external_id",
+    "name",
+    "display_name",
+    "asset_type",
+    "capacity_price_up",
+    "capacity_price_down",
+    "activation_price_up",
+    "activation_price_down",
+    "relative_activation",
+    "total_capacity_allocation_up",
+    "total_capacity_allocation_down",
+    "own_capacity_allocation_up",
+    "own_capacity_allocation_down",
+]
+PriceAreaAFRRFields = Literal[
+    "external_id",
+    "name",
+    "display_name",
+    "ordering",
+    "asset_type",
+    "capacity_price_up",
+    "capacity_price_down",
+    "activation_price_up",
+    "activation_price_down",
+    "relative_activation",
+    "total_capacity_allocation_up",
+    "total_capacity_allocation_down",
+    "own_capacity_allocation_up",
+    "own_capacity_allocation_down",
+]
 
 _PRICEAREAAFRR_PROPERTIES_BY_FIELD = {
     "external_id": "externalId",
@@ -132,8 +161,6 @@ class PriceAreaAFRRGraphQL(GraphQLCore):
             )
         return values
 
-
-
     def as_read(self) -> PriceAreaAFRR:
         """Convert this GraphQL format of price area afrr to the reading format."""
         return PriceAreaAFRR.model_validate(as_read_args(self))
@@ -180,11 +207,9 @@ class PriceAreaAFRR(PriceArea):
     own_capacity_allocation_up: Union[TimeSeries, str, None] = Field(None, alias="ownCapacityAllocationUp")
     own_capacity_allocation_down: Union[TimeSeries, str, None] = Field(None, alias="ownCapacityAllocationDown")
 
-
     def as_write(self) -> PriceAreaAFRRWrite:
         """Convert this read version of price area afrr to the writing version."""
         return PriceAreaAFRRWrite.model_validate(as_write_args(self))
-
 
 
 class PriceAreaAFRRWrite(PriceAreaWrite):
@@ -210,7 +235,22 @@ class PriceAreaAFRRWrite(PriceAreaWrite):
         own_capacity_allocation_up: The own capacity allocation up field.
         own_capacity_allocation_down: The own capacity allocation down field.
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("activation_price_down", "activation_price_up", "asset_type", "capacity_price_down", "capacity_price_up", "display_name", "name", "ordering", "own_capacity_allocation_down", "own_capacity_allocation_up", "relative_activation", "total_capacity_allocation_down", "total_capacity_allocation_up",)
+
+    _container_fields: ClassVar[tuple[str, ...]] = (
+        "activation_price_down",
+        "activation_price_up",
+        "asset_type",
+        "capacity_price_down",
+        "capacity_price_up",
+        "display_name",
+        "name",
+        "ordering",
+        "own_capacity_allocation_down",
+        "own_capacity_allocation_up",
+        "relative_activation",
+        "total_capacity_allocation_down",
+        "total_capacity_allocation_up",
+    )
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PriceAreaAFRR", "1")
 
@@ -226,15 +266,14 @@ class PriceAreaAFRRWrite(PriceAreaWrite):
     own_capacity_allocation_down: Union[TimeSeriesWrite, str, None] = Field(None, alias="ownCapacityAllocationDown")
 
 
-
 class PriceAreaAFRRList(DomainModelList[PriceAreaAFRR]):
     """List of price area afrrs in the read version."""
 
     _INSTANCE = PriceAreaAFRR
+
     def as_write(self) -> PriceAreaAFRRWriteList:
         """Convert these read versions of price area afrr to the writing versions."""
         return PriceAreaAFRRWriteList([node.as_write() for node in self.data])
-
 
 
 class PriceAreaAFRRWriteList(DomainModelWriteList[PriceAreaAFRRWrite]):
@@ -326,68 +365,109 @@ class _PriceAreaAFRRQuery(NodeQueryCore[T_DomainModelList, PriceAreaAFRRList]):
         self.display_name = StringFilter(self, self._view_id.as_property_ref("displayName"))
         self.ordering = IntFilter(self, self._view_id.as_property_ref("ordering"))
         self.asset_type = StringFilter(self, self._view_id.as_property_ref("assetType"))
-        self._filter_classes.extend([
-            self.space,
-            self.external_id,
-            self.name,
-            self.display_name,
-            self.ordering,
-            self.asset_type,
-        ])
-        self.capacity_price_up = TimeSeriesReferenceAPI(client,  lambda limit: [
-            item.capacity_price_up if isinstance(item.capacity_price_up, str) else item.capacity_price_up.external_id #type: ignore[misc]
-            for item in self._list(limit=limit)
-            if item.capacity_price_up is not None and
-               (isinstance(item.capacity_price_up, str) or item.capacity_price_up.external_id is not None)
-        ])
-        self.capacity_price_down = TimeSeriesReferenceAPI(client,  lambda limit: [
-            item.capacity_price_down if isinstance(item.capacity_price_down, str) else item.capacity_price_down.external_id #type: ignore[misc]
-            for item in self._list(limit=limit)
-            if item.capacity_price_down is not None and
-               (isinstance(item.capacity_price_down, str) or item.capacity_price_down.external_id is not None)
-        ])
-        self.activation_price_up = TimeSeriesReferenceAPI(client,  lambda limit: [
-            item.activation_price_up if isinstance(item.activation_price_up, str) else item.activation_price_up.external_id #type: ignore[misc]
-            for item in self._list(limit=limit)
-            if item.activation_price_up is not None and
-               (isinstance(item.activation_price_up, str) or item.activation_price_up.external_id is not None)
-        ])
-        self.activation_price_down = TimeSeriesReferenceAPI(client,  lambda limit: [
-            item.activation_price_down if isinstance(item.activation_price_down, str) else item.activation_price_down.external_id #type: ignore[misc]
-            for item in self._list(limit=limit)
-            if item.activation_price_down is not None and
-               (isinstance(item.activation_price_down, str) or item.activation_price_down.external_id is not None)
-        ])
-        self.relative_activation = TimeSeriesReferenceAPI(client,  lambda limit: [
-            item.relative_activation if isinstance(item.relative_activation, str) else item.relative_activation.external_id #type: ignore[misc]
-            for item in self._list(limit=limit)
-            if item.relative_activation is not None and
-               (isinstance(item.relative_activation, str) or item.relative_activation.external_id is not None)
-        ])
-        self.total_capacity_allocation_up = TimeSeriesReferenceAPI(client,  lambda limit: [
-            item.total_capacity_allocation_up if isinstance(item.total_capacity_allocation_up, str) else item.total_capacity_allocation_up.external_id #type: ignore[misc]
-            for item in self._list(limit=limit)
-            if item.total_capacity_allocation_up is not None and
-               (isinstance(item.total_capacity_allocation_up, str) or item.total_capacity_allocation_up.external_id is not None)
-        ])
-        self.total_capacity_allocation_down = TimeSeriesReferenceAPI(client,  lambda limit: [
-            item.total_capacity_allocation_down if isinstance(item.total_capacity_allocation_down, str) else item.total_capacity_allocation_down.external_id #type: ignore[misc]
-            for item in self._list(limit=limit)
-            if item.total_capacity_allocation_down is not None and
-               (isinstance(item.total_capacity_allocation_down, str) or item.total_capacity_allocation_down.external_id is not None)
-        ])
-        self.own_capacity_allocation_up = TimeSeriesReferenceAPI(client,  lambda limit: [
-            item.own_capacity_allocation_up if isinstance(item.own_capacity_allocation_up, str) else item.own_capacity_allocation_up.external_id #type: ignore[misc]
-            for item in self._list(limit=limit)
-            if item.own_capacity_allocation_up is not None and
-               (isinstance(item.own_capacity_allocation_up, str) or item.own_capacity_allocation_up.external_id is not None)
-        ])
-        self.own_capacity_allocation_down = TimeSeriesReferenceAPI(client,  lambda limit: [
-            item.own_capacity_allocation_down if isinstance(item.own_capacity_allocation_down, str) else item.own_capacity_allocation_down.external_id #type: ignore[misc]
-            for item in self._list(limit=limit)
-            if item.own_capacity_allocation_down is not None and
-               (isinstance(item.own_capacity_allocation_down, str) or item.own_capacity_allocation_down.external_id is not None)
-        ])
+        self._filter_classes.extend(
+            [
+                self.space,
+                self.external_id,
+                self.name,
+                self.display_name,
+                self.ordering,
+                self.asset_type,
+            ]
+        )
+        self.capacity_price_up = TimeSeriesReferenceAPI(
+            client,
+            lambda limit: [
+                item.capacity_price_up if isinstance(item.capacity_price_up, str) else item.capacity_price_up.external_id  # type: ignore[misc]
+                for item in self._list(limit=limit)
+                if item.capacity_price_up is not None
+                and (isinstance(item.capacity_price_up, str) or item.capacity_price_up.external_id is not None)
+            ],
+        )
+        self.capacity_price_down = TimeSeriesReferenceAPI(
+            client,
+            lambda limit: [
+                item.capacity_price_down if isinstance(item.capacity_price_down, str) else item.capacity_price_down.external_id  # type: ignore[misc]
+                for item in self._list(limit=limit)
+                if item.capacity_price_down is not None
+                and (isinstance(item.capacity_price_down, str) or item.capacity_price_down.external_id is not None)
+            ],
+        )
+        self.activation_price_up = TimeSeriesReferenceAPI(
+            client,
+            lambda limit: [
+                item.activation_price_up if isinstance(item.activation_price_up, str) else item.activation_price_up.external_id  # type: ignore[misc]
+                for item in self._list(limit=limit)
+                if item.activation_price_up is not None
+                and (isinstance(item.activation_price_up, str) or item.activation_price_up.external_id is not None)
+            ],
+        )
+        self.activation_price_down = TimeSeriesReferenceAPI(
+            client,
+            lambda limit: [
+                item.activation_price_down if isinstance(item.activation_price_down, str) else item.activation_price_down.external_id  # type: ignore[misc]
+                for item in self._list(limit=limit)
+                if item.activation_price_down is not None
+                and (isinstance(item.activation_price_down, str) or item.activation_price_down.external_id is not None)
+            ],
+        )
+        self.relative_activation = TimeSeriesReferenceAPI(
+            client,
+            lambda limit: [
+                item.relative_activation if isinstance(item.relative_activation, str) else item.relative_activation.external_id  # type: ignore[misc]
+                for item in self._list(limit=limit)
+                if item.relative_activation is not None
+                and (isinstance(item.relative_activation, str) or item.relative_activation.external_id is not None)
+            ],
+        )
+        self.total_capacity_allocation_up = TimeSeriesReferenceAPI(
+            client,
+            lambda limit: [
+                item.total_capacity_allocation_up if isinstance(item.total_capacity_allocation_up, str) else item.total_capacity_allocation_up.external_id  # type: ignore[misc]
+                for item in self._list(limit=limit)
+                if item.total_capacity_allocation_up is not None
+                and (
+                    isinstance(item.total_capacity_allocation_up, str)
+                    or item.total_capacity_allocation_up.external_id is not None
+                )
+            ],
+        )
+        self.total_capacity_allocation_down = TimeSeriesReferenceAPI(
+            client,
+            lambda limit: [
+                item.total_capacity_allocation_down if isinstance(item.total_capacity_allocation_down, str) else item.total_capacity_allocation_down.external_id  # type: ignore[misc]
+                for item in self._list(limit=limit)
+                if item.total_capacity_allocation_down is not None
+                and (
+                    isinstance(item.total_capacity_allocation_down, str)
+                    or item.total_capacity_allocation_down.external_id is not None
+                )
+            ],
+        )
+        self.own_capacity_allocation_up = TimeSeriesReferenceAPI(
+            client,
+            lambda limit: [
+                item.own_capacity_allocation_up if isinstance(item.own_capacity_allocation_up, str) else item.own_capacity_allocation_up.external_id  # type: ignore[misc]
+                for item in self._list(limit=limit)
+                if item.own_capacity_allocation_up is not None
+                and (
+                    isinstance(item.own_capacity_allocation_up, str)
+                    or item.own_capacity_allocation_up.external_id is not None
+                )
+            ],
+        )
+        self.own_capacity_allocation_down = TimeSeriesReferenceAPI(
+            client,
+            lambda limit: [
+                item.own_capacity_allocation_down if isinstance(item.own_capacity_allocation_down, str) else item.own_capacity_allocation_down.external_id  # type: ignore[misc]
+                for item in self._list(limit=limit)
+                if item.own_capacity_allocation_down is not None
+                and (
+                    isinstance(item.own_capacity_allocation_down, str)
+                    or item.own_capacity_allocation_down.external_id is not None
+                )
+            ],
+        )
 
     def list_price_area_afrr(self, limit: int = DEFAULT_QUERY_LIMIT) -> PriceAreaAFRRList:
         return self._list(limit=limit)

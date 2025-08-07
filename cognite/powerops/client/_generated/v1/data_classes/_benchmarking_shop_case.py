@@ -39,9 +39,22 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     TimestampFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._shop_case import ShopCase, ShopCaseWrite
+
 if TYPE_CHECKING:
-    from cognite.powerops.client._generated.v1.data_classes._shop_file import ShopFile, ShopFileList, ShopFileGraphQL, ShopFileWrite, ShopFileWriteList
-    from cognite.powerops.client._generated.v1.data_classes._shop_scenario import ShopScenario, ShopScenarioList, ShopScenarioGraphQL, ShopScenarioWrite, ShopScenarioWriteList
+    from cognite.powerops.client._generated.v1.data_classes._shop_file import (
+        ShopFile,
+        ShopFileList,
+        ShopFileGraphQL,
+        ShopFileWrite,
+        ShopFileWriteList,
+    )
+    from cognite.powerops.client._generated.v1.data_classes._shop_scenario import (
+        ShopScenario,
+        ShopScenarioList,
+        ShopScenarioGraphQL,
+        ShopScenarioWrite,
+        ShopScenarioWriteList,
+    )
 
 
 __all__ = [
@@ -54,8 +67,10 @@ __all__ = [
 ]
 
 
-BenchmarkingShopCaseTextFields = Literal["external_id", ]
-BenchmarkingShopCaseFields = Literal["external_id", "start_time", "end_time", "status", "delivery_date", "bid_generated"]
+BenchmarkingShopCaseTextFields = Literal["external_id",]
+BenchmarkingShopCaseFields = Literal[
+    "external_id", "start_time", "end_time", "status", "delivery_date", "bid_generated"
+]
 
 _BENCHMARKINGSHOPCASE_PROPERTIES_BY_FIELD = {
     "external_id": "externalId",
@@ -92,7 +107,9 @@ class BenchmarkingShopCaseGraphQL(GraphQLCore):
     scenario: Optional[ShopScenarioGraphQL] = Field(default=None, repr=False)
     start_time: Optional[datetime.datetime] = Field(None, alias="startTime")
     end_time: Optional[datetime.datetime] = Field(None, alias="endTime")
-    status: Optional[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] = None
+    status: Optional[
+        Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]
+    ] = None
     shop_files: Optional[list[ShopFileGraphQL]] = Field(default=None, repr=False, alias="shopFiles")
     bid_source: Optional[dict] = Field(default=None, alias="bidSource")
     delivery_date: Optional[datetime.date] = Field(None, alias="deliveryDate")
@@ -108,7 +125,6 @@ class BenchmarkingShopCaseGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
-
 
     @field_validator("scenario", "shop_files", "bid_source", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
@@ -149,10 +165,13 @@ class BenchmarkingShopCase(ShopCase):
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingShopCase", "1")
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingShopCase")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
+        "power_ops_types", "BenchmarkingShopCase"
+    )
     bid_source: Union[str, dm.NodeId, None] = Field(default=None, alias="bidSource")
     delivery_date: Optional[datetime.date] = Field(None, alias="deliveryDate")
     bid_generated: Optional[datetime.datetime] = Field(None, alias="bidGenerated")
+
     @field_validator("scenario", "bid_source", mode="before")
     @classmethod
     def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
@@ -168,7 +187,6 @@ class BenchmarkingShopCase(ShopCase):
     def as_write(self) -> BenchmarkingShopCaseWrite:
         """Convert this read version of benchmarking shop case to the writing version."""
         return BenchmarkingShopCaseWrite.model_validate(as_write_args(self))
-
 
 
 class BenchmarkingShopCaseWrite(ShopCaseWrite):
@@ -190,62 +208,109 @@ class BenchmarkingShopCaseWrite(ShopCaseWrite):
         delivery_date: The delivery date
         bid_generated: Timestamp of when the bid had been generated
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("bid_generated", "bid_source", "delivery_date", "end_time", "scenario", "start_time", "status",)
-    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("shop_files", dm.DirectRelationReference("power_ops_types", "ShopCase.shopFiles")),)
-    _direct_relations: ClassVar[tuple[str, ...]] = ("bid_source", "scenario",)
+
+    _container_fields: ClassVar[tuple[str, ...]] = (
+        "bid_generated",
+        "bid_source",
+        "delivery_date",
+        "end_time",
+        "scenario",
+        "start_time",
+        "status",
+    )
+    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (
+        ("shop_files", dm.DirectRelationReference("power_ops_types", "ShopCase.shopFiles")),
+    )
+    _direct_relations: ClassVar[tuple[str, ...]] = (
+        "bid_source",
+        "scenario",
+    )
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingShopCase", "1")
 
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingShopCase")
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
+        "power_ops_types", "BenchmarkingShopCase"
+    )
     bid_source: Union[str, dm.NodeId, None] = Field(default=None, alias="bidSource")
     delivery_date: Optional[datetime.date] = Field(None, alias="deliveryDate")
     bid_generated: Optional[datetime.datetime] = Field(None, alias="bidGenerated")
-
 
 
 class BenchmarkingShopCaseList(DomainModelList[BenchmarkingShopCase]):
     """List of benchmarking shop cases in the read version."""
 
     _INSTANCE = BenchmarkingShopCase
+
     def as_write(self) -> BenchmarkingShopCaseWriteList:
         """Convert these read versions of benchmarking shop case to the writing versions."""
         return BenchmarkingShopCaseWriteList([node.as_write() for node in self.data])
 
-
     @property
     def scenario(self) -> ShopScenarioList:
         from ._shop_scenario import ShopScenario, ShopScenarioList
+
         return ShopScenarioList([item.scenario for item in self.data if isinstance(item.scenario, ShopScenario)])
+
     @property
     def shop_files(self) -> ShopFileList:
         from ._shop_file import ShopFile, ShopFileList
-        return ShopFileList([item for items in self.data for item in items.shop_files or [] if isinstance(item, ShopFile)])
+
+        return ShopFileList(
+            [item for items in self.data for item in items.shop_files or [] if isinstance(item, ShopFile)]
+        )
 
 
 class BenchmarkingShopCaseWriteList(DomainModelWriteList[BenchmarkingShopCaseWrite]):
     """List of benchmarking shop cases in the writing version."""
 
     _INSTANCE = BenchmarkingShopCaseWrite
+
     @property
     def scenario(self) -> ShopScenarioWriteList:
         from ._shop_scenario import ShopScenarioWrite, ShopScenarioWriteList
-        return ShopScenarioWriteList([item.scenario for item in self.data if isinstance(item.scenario, ShopScenarioWrite)])
+
+        return ShopScenarioWriteList(
+            [item.scenario for item in self.data if isinstance(item.scenario, ShopScenarioWrite)]
+        )
+
     @property
     def shop_files(self) -> ShopFileWriteList:
         from ._shop_file import ShopFileWrite, ShopFileWriteList
-        return ShopFileWriteList([item for items in self.data for item in items.shop_files or [] if isinstance(item, ShopFileWrite)])
 
+        return ShopFileWriteList(
+            [item for items in self.data for item in items.shop_files or [] if isinstance(item, ShopFileWrite)]
+        )
 
 
 def _create_benchmarking_shop_case_filter(
     view_id: dm.ViewId,
-    scenario: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+    scenario: (
+        str
+        | tuple[str, str]
+        | dm.NodeId
+        | dm.DirectRelationReference
+        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+        | None
+    ) = None,
     min_start_time: datetime.datetime | None = None,
     max_start_time: datetime.datetime | None = None,
     min_end_time: datetime.datetime | None = None,
     max_end_time: datetime.datetime | None = None,
-    status: Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"] | list[Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]] | None = None,
-    bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+    status: (
+        Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]
+        | list[
+            Literal["completed", "default", "failed", "notSet", "queued", "running", "stale", "timedOut", "triggered"]
+        ]
+        | None
+    ) = None,
+    bid_source: (
+        str
+        | tuple[str, str]
+        | dm.NodeId
+        | dm.DirectRelationReference
+        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+        | None
+    ) = None,
     min_delivery_date: datetime.date | None = None,
     max_delivery_date: datetime.date | None = None,
     min_bid_generated: datetime.datetime | None = None,
@@ -258,23 +323,58 @@ def _create_benchmarking_shop_case_filter(
     if isinstance(scenario, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(scenario):
         filters.append(dm.filters.Equals(view_id.as_property_ref("scenario"), value=as_instance_dict_id(scenario)))
     if scenario and isinstance(scenario, Sequence) and not isinstance(scenario, str) and not is_tuple_id(scenario):
-        filters.append(dm.filters.In(view_id.as_property_ref("scenario"), values=[as_instance_dict_id(item) for item in scenario]))
+        filters.append(
+            dm.filters.In(view_id.as_property_ref("scenario"), values=[as_instance_dict_id(item) for item in scenario])
+        )
     if min_start_time is not None or max_start_time is not None:
-        filters.append(dm.filters.Range(view_id.as_property_ref("startTime"), gte=min_start_time.isoformat(timespec="milliseconds") if min_start_time else None, lte=max_start_time.isoformat(timespec="milliseconds") if max_start_time else None))
+        filters.append(
+            dm.filters.Range(
+                view_id.as_property_ref("startTime"),
+                gte=min_start_time.isoformat(timespec="milliseconds") if min_start_time else None,
+                lte=max_start_time.isoformat(timespec="milliseconds") if max_start_time else None,
+            )
+        )
     if min_end_time is not None or max_end_time is not None:
-        filters.append(dm.filters.Range(view_id.as_property_ref("endTime"), gte=min_end_time.isoformat(timespec="milliseconds") if min_end_time else None, lte=max_end_time.isoformat(timespec="milliseconds") if max_end_time else None))
+        filters.append(
+            dm.filters.Range(
+                view_id.as_property_ref("endTime"),
+                gte=min_end_time.isoformat(timespec="milliseconds") if min_end_time else None,
+                lte=max_end_time.isoformat(timespec="milliseconds") if max_end_time else None,
+            )
+        )
     if isinstance(status, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("status"), value=status))
     if status and isinstance(status, list):
         filters.append(dm.filters.In(view_id.as_property_ref("status"), values=status))
     if isinstance(bid_source, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(bid_source):
         filters.append(dm.filters.Equals(view_id.as_property_ref("bidSource"), value=as_instance_dict_id(bid_source)))
-    if bid_source and isinstance(bid_source, Sequence) and not isinstance(bid_source, str) and not is_tuple_id(bid_source):
-        filters.append(dm.filters.In(view_id.as_property_ref("bidSource"), values=[as_instance_dict_id(item) for item in bid_source]))
+    if (
+        bid_source
+        and isinstance(bid_source, Sequence)
+        and not isinstance(bid_source, str)
+        and not is_tuple_id(bid_source)
+    ):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("bidSource"), values=[as_instance_dict_id(item) for item in bid_source]
+            )
+        )
     if min_delivery_date is not None or max_delivery_date is not None:
-        filters.append(dm.filters.Range(view_id.as_property_ref("deliveryDate"), gte=min_delivery_date.isoformat() if min_delivery_date else None, lte=max_delivery_date.isoformat() if max_delivery_date else None))
+        filters.append(
+            dm.filters.Range(
+                view_id.as_property_ref("deliveryDate"),
+                gte=min_delivery_date.isoformat() if min_delivery_date else None,
+                lte=max_delivery_date.isoformat() if max_delivery_date else None,
+            )
+        )
     if min_bid_generated is not None or max_bid_generated is not None:
-        filters.append(dm.filters.Range(view_id.as_property_ref("bidGenerated"), gte=min_bid_generated.isoformat(timespec="milliseconds") if min_bid_generated else None, lte=max_bid_generated.isoformat(timespec="milliseconds") if max_bid_generated else None))
+        filters.append(
+            dm.filters.Range(
+                view_id.as_property_ref("bidGenerated"),
+                gte=min_bid_generated.isoformat(timespec="milliseconds") if min_bid_generated else None,
+                lte=max_bid_generated.isoformat(timespec="milliseconds") if max_bid_generated else None,
+            )
+        )
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
@@ -347,7 +447,6 @@ class _BenchmarkingShopCaseQuery(NodeQueryCore[T_DomainModelList, BenchmarkingSh
                 connection_property=ViewPropertyId(self._view_id, "shopFiles"),
             )
 
-
         self.space = StringFilter(self, ["node", "space"])
         self.external_id = StringFilter(self, ["node", "externalId"])
         self.scenario_filter = DirectRelationFilter(self, self._view_id.as_property_ref("scenario"))
@@ -356,16 +455,18 @@ class _BenchmarkingShopCaseQuery(NodeQueryCore[T_DomainModelList, BenchmarkingSh
         self.bid_source_filter = DirectRelationFilter(self, self._view_id.as_property_ref("bidSource"))
         self.delivery_date = DateFilter(self, self._view_id.as_property_ref("deliveryDate"))
         self.bid_generated = TimestampFilter(self, self._view_id.as_property_ref("bidGenerated"))
-        self._filter_classes.extend([
-            self.space,
-            self.external_id,
-            self.scenario_filter,
-            self.start_time,
-            self.end_time,
-            self.bid_source_filter,
-            self.delivery_date,
-            self.bid_generated,
-        ])
+        self._filter_classes.extend(
+            [
+                self.space,
+                self.external_id,
+                self.scenario_filter,
+                self.start_time,
+                self.end_time,
+                self.bid_source_filter,
+                self.delivery_date,
+                self.bid_generated,
+            ]
+        )
 
     def list_benchmarking_shop_case(self, limit: int = DEFAULT_QUERY_LIMIT) -> BenchmarkingShopCaseList:
         return self._list(limit=limit)

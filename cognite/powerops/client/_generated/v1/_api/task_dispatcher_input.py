@@ -46,7 +46,9 @@ from cognite.powerops.client._generated.v1.data_classes import (
 )
 
 
-class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWrite, TaskDispatcherInputList, TaskDispatcherInputWriteList]):
+class TaskDispatcherInputAPI(
+    NodeAPI[TaskDispatcherInput, TaskDispatcherInputWrite, TaskDispatcherInputList, TaskDispatcherInputWriteList]
+):
     _view_id = dm.ViewId("power_ops_core", "TaskDispatcherInput", "1")
     _properties_by_field: ClassVar[dict[str, str]] = _TASKDISPATCHERINPUT_PROPERTIES_BY_FIELD
     _class_type = TaskDispatcherInput
@@ -55,7 +57,6 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
 
     def __init__(self, client: CogniteClient):
         super().__init__(client=client)
-
 
     @overload
     def retrieve(
@@ -120,7 +121,14 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -216,7 +224,14 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -241,7 +256,14 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -253,9 +275,11 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
     @overload
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
         group_by: TaskDispatcherInputFields | SequenceNotStr[TaskDispatcherInputFields],
         property: TaskDispatcherInputFields | SequenceNotStr[TaskDispatcherInputFields] | None = None,
         query: str | None = None,
@@ -268,7 +292,14 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -279,9 +310,11 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
         group_by: TaskDispatcherInputFields | SequenceNotStr[TaskDispatcherInputFields] | None = None,
         property: TaskDispatcherInputFields | SequenceNotStr[TaskDispatcherInputFields] | None = None,
         query: str | None = None,
@@ -294,7 +327,14 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -386,7 +426,14 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -463,13 +510,15 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(factory.root(
-            filter=filter_,
-            sort=sort,
-            limit=limit,
-            max_retrieve_batch_limit=chunk_size,
-            has_container_fields=True,
-        ))
+        builder.append(
+            factory.root(
+                filter=filter_,
+                sort=sort,
+                limit=limit,
+                max_retrieve_batch_limit=chunk_size,
+                has_container_fields=True,
+            )
+        )
         if retrieve_connections == "full":
             builder.extend(
                 factory.from_direct_relation(
@@ -491,7 +540,14 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -600,7 +656,14 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        bid_configuration: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
@@ -670,7 +733,7 @@ class TaskDispatcherInputAPI(NodeAPI[TaskDispatcherInput, TaskDispatcherInputWri
             space,
             filter,
         )
-        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
-            return self._list(limit=limit,  filter=filter_, sort=sort_input)
+            return self._list(limit=limit, filter=filter_, sort=sort_input)
         return self._query(filter_, limit, retrieve_connections, sort_input, "list")
