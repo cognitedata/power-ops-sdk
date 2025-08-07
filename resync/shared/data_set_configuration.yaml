@@ -1,0 +1,12 @@
+# DataSetConfiguration view definition
+# - name: String!
+#   read_data_set: String!
+#   write_data_set: String!
+#   monitor_data_set: String
+#   process_data_set: String
+
+- name: "PowerOps DataSet Configuration"
+  read_data_set:  "powerops:process"
+  write_data_set: "powerops:process"
+  monitor_data_set: "powerops:monitor"
+  process_data_set: "powerops:process"
