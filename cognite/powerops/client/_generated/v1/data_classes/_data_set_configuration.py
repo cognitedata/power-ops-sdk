@@ -33,6 +33,7 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     NodeQueryCore,
     StringFilter,
     ViewPropertyId,
+
 )
 
 
@@ -95,6 +96,8 @@ class DataSetConfigurationGraphQL(GraphQLCore):
             )
         return values
 
+
+
     def as_read(self) -> DataSetConfiguration:
         """Convert this GraphQL format of data set configuration to the reading format."""
         return DataSetConfiguration.model_validate(as_read_args(self))
@@ -130,9 +133,11 @@ class DataSetConfiguration(DomainModel):
     monitor_data_set: Optional[str] = Field(None, alias="monitorDataSet")
     process_data_set: Optional[str] = Field(None, alias="processDataSet")
 
+
     def as_write(self) -> DataSetConfigurationWrite:
         """Convert this read version of data set configuration to the writing version."""
         return DataSetConfigurationWrite.model_validate(as_write_args(self))
+
 
 
 class DataSetConfigurationWrite(DomainModelWrite):
@@ -163,14 +168,15 @@ class DataSetConfigurationWrite(DomainModelWrite):
     process_data_set: Optional[str] = Field(None, alias="processDataSet")
 
 
+
 class DataSetConfigurationList(DomainModelList[DataSetConfiguration]):
     """List of data set configurations in the read version."""
 
     _INSTANCE = DataSetConfiguration
-
     def as_write(self) -> DataSetConfigurationWriteList:
         """Convert these read versions of data set configuration to the writing versions."""
         return DataSetConfigurationWriteList([node.as_write() for node in self.data])
+
 
 
 class DataSetConfigurationWriteList(DomainModelWriteList[DataSetConfigurationWrite]):

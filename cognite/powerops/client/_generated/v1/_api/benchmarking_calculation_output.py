@@ -45,22 +45,11 @@ from cognite.powerops.client._generated.v1.data_classes import (
     BenchmarkingCalculationInput,
     BenchmarkingResultDayAhead,
 )
-from cognite.powerops.client._generated.v1._api.benchmarking_calculation_output_alerts import (
-    BenchmarkingCalculationOutputAlertsAPI,
-)
-from cognite.powerops.client._generated.v1._api.benchmarking_calculation_output_benchmarking_results import (
-    BenchmarkingCalculationOutputBenchmarkingResultsAPI,
-)
+from cognite.powerops.client._generated.v1._api.benchmarking_calculation_output_alerts import BenchmarkingCalculationOutputAlertsAPI
+from cognite.powerops.client._generated.v1._api.benchmarking_calculation_output_benchmarking_results import BenchmarkingCalculationOutputBenchmarkingResultsAPI
 
 
-class BenchmarkingCalculationOutputAPI(
-    NodeAPI[
-        BenchmarkingCalculationOutput,
-        BenchmarkingCalculationOutputWrite,
-        BenchmarkingCalculationOutputList,
-        BenchmarkingCalculationOutputWriteList,
-    ]
-):
+class BenchmarkingCalculationOutputAPI(NodeAPI[BenchmarkingCalculationOutput, BenchmarkingCalculationOutputWrite, BenchmarkingCalculationOutputList, BenchmarkingCalculationOutputWriteList]):
     _view_id = dm.ViewId("power_ops_core", "BenchmarkingCalculationOutput", "1")
     _properties_by_field: ClassVar[dict[str, str]] = _BENCHMARKINGCALCULATIONOUTPUT_PROPERTIES_BY_FIELD
     _class_type = BenchmarkingCalculationOutput
@@ -127,9 +116,7 @@ class BenchmarkingCalculationOutputAPI(
     def search(
         self,
         query: str,
-        properties: (
-            BenchmarkingCalculationOutputTextFields | SequenceNotStr[BenchmarkingCalculationOutputTextFields] | None
-        ) = None,
+        properties: BenchmarkingCalculationOutputTextFields | SequenceNotStr[BenchmarkingCalculationOutputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -138,21 +125,12 @@ class BenchmarkingCalculationOutputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        function_input: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-        sort_by: (
-            BenchmarkingCalculationOutputFields | SequenceNotStr[BenchmarkingCalculationOutputFields] | None
-        ) = None,
+        sort_by: BenchmarkingCalculationOutputFields | SequenceNotStr[BenchmarkingCalculationOutputFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> BenchmarkingCalculationOutputList:
@@ -226,13 +204,9 @@ class BenchmarkingCalculationOutputAPI(
         self,
         aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
-        property: (
-            BenchmarkingCalculationOutputFields | SequenceNotStr[BenchmarkingCalculationOutputFields] | None
-        ) = None,
+        property: BenchmarkingCalculationOutputFields | SequenceNotStr[BenchmarkingCalculationOutputFields] | None = None,
         query: str | None = None,
-        search_property: (
-            BenchmarkingCalculationOutputTextFields | SequenceNotStr[BenchmarkingCalculationOutputTextFields] | None
-        ) = None,
+        search_property: BenchmarkingCalculationOutputTextFields | SequenceNotStr[BenchmarkingCalculationOutputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -241,14 +215,7 @@ class BenchmarkingCalculationOutputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        function_input: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -260,13 +227,9 @@ class BenchmarkingCalculationOutputAPI(
         self,
         aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: None = None,
-        property: (
-            BenchmarkingCalculationOutputFields | SequenceNotStr[BenchmarkingCalculationOutputFields] | None
-        ) = None,
+        property: BenchmarkingCalculationOutputFields | SequenceNotStr[BenchmarkingCalculationOutputFields] | None = None,
         query: str | None = None,
-        search_property: (
-            BenchmarkingCalculationOutputTextFields | SequenceNotStr[BenchmarkingCalculationOutputTextFields] | None
-        ) = None,
+        search_property: BenchmarkingCalculationOutputTextFields | SequenceNotStr[BenchmarkingCalculationOutputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -275,14 +238,7 @@ class BenchmarkingCalculationOutputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        function_input: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -292,19 +248,13 @@ class BenchmarkingCalculationOutputAPI(
     @overload
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: BenchmarkingCalculationOutputFields | SequenceNotStr[BenchmarkingCalculationOutputFields],
-        property: (
-            BenchmarkingCalculationOutputFields | SequenceNotStr[BenchmarkingCalculationOutputFields] | None
-        ) = None,
+        property: BenchmarkingCalculationOutputFields | SequenceNotStr[BenchmarkingCalculationOutputFields] | None = None,
         query: str | None = None,
-        search_property: (
-            BenchmarkingCalculationOutputTextFields | SequenceNotStr[BenchmarkingCalculationOutputTextFields] | None
-        ) = None,
+        search_property: BenchmarkingCalculationOutputTextFields | SequenceNotStr[BenchmarkingCalculationOutputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -313,14 +263,7 @@ class BenchmarkingCalculationOutputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        function_input: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -329,21 +272,13 @@ class BenchmarkingCalculationOutputAPI(
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
-        group_by: (
-            BenchmarkingCalculationOutputFields | SequenceNotStr[BenchmarkingCalculationOutputFields] | None
-        ) = None,
-        property: (
-            BenchmarkingCalculationOutputFields | SequenceNotStr[BenchmarkingCalculationOutputFields] | None
-        ) = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: BenchmarkingCalculationOutputFields | SequenceNotStr[BenchmarkingCalculationOutputFields] | None = None,
+        property: BenchmarkingCalculationOutputFields | SequenceNotStr[BenchmarkingCalculationOutputFields] | None = None,
         query: str | None = None,
-        search_property: (
-            BenchmarkingCalculationOutputTextFields | SequenceNotStr[BenchmarkingCalculationOutputTextFields] | None
-        ) = None,
+        search_property: BenchmarkingCalculationOutputTextFields | SequenceNotStr[BenchmarkingCalculationOutputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -352,14 +287,7 @@ class BenchmarkingCalculationOutputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        function_input: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -436,9 +364,7 @@ class BenchmarkingCalculationOutputAPI(
         property: BenchmarkingCalculationOutputFields,
         interval: float,
         query: str | None = None,
-        search_property: (
-            BenchmarkingCalculationOutputTextFields | SequenceNotStr[BenchmarkingCalculationOutputTextFields] | None
-        ) = None,
+        search_property: BenchmarkingCalculationOutputTextFields | SequenceNotStr[BenchmarkingCalculationOutputTextFields] | None = None,
         workflow_execution_id: str | list[str] | None = None,
         workflow_execution_id_prefix: str | None = None,
         min_workflow_step: int | None = None,
@@ -447,14 +373,7 @@ class BenchmarkingCalculationOutputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        function_input: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -525,15 +444,13 @@ class BenchmarkingCalculationOutputAPI(
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(
-            factory.root(
-                filter=filter_,
-                sort=sort,
-                limit=limit,
-                max_retrieve_batch_limit=chunk_size,
-                has_container_fields=True,
-            )
-        )
+        builder.append(factory.root(
+            filter=filter_,
+            sort=sort,
+            limit=limit,
+            max_retrieve_batch_limit=chunk_size,
+            has_container_fields=True,
+        ))
         if retrieve_connections == "identifier" or retrieve_connections == "full":
             builder.extend(
                 factory.from_edge(
@@ -574,14 +491,7 @@ class BenchmarkingCalculationOutputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        function_input: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         filter: dm.Filter | None = None,
@@ -684,14 +594,7 @@ class BenchmarkingCalculationOutputAPI(
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        function_input: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -755,7 +658,7 @@ class BenchmarkingCalculationOutputAPI(
             space,
             filter,
         )
-        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
-            return self._list(limit=limit, filter=filter_, sort=sort_input)
+            return self._list(limit=limit,  filter=filter_, sort=sort_input)
         return self._query(filter_, limit, retrieve_connections, sort_input, "list")

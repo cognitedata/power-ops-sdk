@@ -46,9 +46,7 @@ from cognite.powerops.client._generated.v1.data_classes import (
 from cognite.powerops.client._generated.v1._api.plant_information_generators import PlantInformationGeneratorsAPI
 
 
-class PlantInformationAPI(
-    NodeAPI[PlantInformation, PlantInformationWrite, PlantInformationList, PlantInformationWriteList]
-):
+class PlantInformationAPI(NodeAPI[PlantInformation, PlantInformationWrite, PlantInformationList, PlantInformationWriteList]):
     _view_id = dm.ViewId("power_ops_core", "PlantInformation", "1")
     _properties_by_field: ClassVar[dict[str, str]] = _PLANTINFORMATION_PROPERTIES_BY_FIELD
     _class_type = PlantInformation
@@ -291,11 +289,9 @@ class PlantInformationAPI(
     @overload
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: PlantInformationFields | SequenceNotStr[PlantInformationFields],
         property: PlantInformationFields | SequenceNotStr[PlantInformationFields] | None = None,
         query: str | None = None,
@@ -326,11 +322,9 @@ class PlantInformationAPI(
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: PlantInformationFields | SequenceNotStr[PlantInformationFields] | None = None,
         property: PlantInformationFields | SequenceNotStr[PlantInformationFields] | None = None,
         query: str | None = None,
@@ -554,15 +548,13 @@ class PlantInformationAPI(
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(
-            factory.root(
-                filter=filter_,
-                sort=sort,
-                limit=limit,
-                max_retrieve_batch_limit=chunk_size,
-                has_container_fields=True,
-            )
-        )
+        builder.append(factory.root(
+            filter=filter_,
+            sort=sort,
+            limit=limit,
+            max_retrieve_batch_limit=chunk_size,
+            has_container_fields=True,
+        ))
         if retrieve_connections == "identifier" or retrieve_connections == "full":
             builder.extend(
                 factory.from_edge(
@@ -807,7 +799,7 @@ class PlantInformationAPI(
             space,
             filter,
         )
-        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
-            return self._list(limit=limit, filter=filter_, sort=sort_input)
+            return self._list(limit=limit,  filter=filter_, sort=sort_input)
         return self._query(filter_, limit, retrieve_connections, sort_input, "list")

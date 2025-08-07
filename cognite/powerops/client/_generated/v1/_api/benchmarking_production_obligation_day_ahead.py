@@ -44,14 +44,7 @@ from cognite.powerops.client._generated.v1.data_classes import (
 )
 
 
-class BenchmarkingProductionObligationDayAheadAPI(
-    NodeAPI[
-        BenchmarkingProductionObligationDayAhead,
-        BenchmarkingProductionObligationDayAheadWrite,
-        BenchmarkingProductionObligationDayAheadList,
-        BenchmarkingProductionObligationDayAheadWriteList,
-    ]
-):
+class BenchmarkingProductionObligationDayAheadAPI(NodeAPI[BenchmarkingProductionObligationDayAhead, BenchmarkingProductionObligationDayAheadWrite, BenchmarkingProductionObligationDayAheadList, BenchmarkingProductionObligationDayAheadWriteList]):
     _view_id = dm.ViewId("power_ops_core", "BenchmarkingProductionObligationDayAhead", "1")
     _properties_by_field: ClassVar[dict[str, str]] = _BENCHMARKINGPRODUCTIONOBLIGATIONDAYAHEAD_PROPERTIES_BY_FIELD
     _class_type = BenchmarkingProductionObligationDayAhead
@@ -60,6 +53,7 @@ class BenchmarkingProductionObligationDayAheadAPI(
 
     def __init__(self, client: CogniteClient):
         super().__init__(client=client)
+
 
     @overload
     def retrieve(
@@ -108,22 +102,14 @@ class BenchmarkingProductionObligationDayAheadAPI(
     def search(
         self,
         query: str,
-        properties: (
-            BenchmarkingProductionObligationDayAheadTextFields
-            | SequenceNotStr[BenchmarkingProductionObligationDayAheadTextFields]
-            | None
-        ) = None,
+        properties: BenchmarkingProductionObligationDayAheadTextFields | SequenceNotStr[BenchmarkingProductionObligationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-        sort_by: (
-            BenchmarkingProductionObligationDayAheadFields
-            | SequenceNotStr[BenchmarkingProductionObligationDayAheadFields]
-            | None
-        ) = None,
+        sort_by: BenchmarkingProductionObligationDayAheadFields | SequenceNotStr[BenchmarkingProductionObligationDayAheadFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> BenchmarkingProductionObligationDayAheadList:
@@ -183,17 +169,9 @@ class BenchmarkingProductionObligationDayAheadAPI(
         self,
         aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
-        property: (
-            BenchmarkingProductionObligationDayAheadFields
-            | SequenceNotStr[BenchmarkingProductionObligationDayAheadFields]
-            | None
-        ) = None,
+        property: BenchmarkingProductionObligationDayAheadFields | SequenceNotStr[BenchmarkingProductionObligationDayAheadFields] | None = None,
         query: str | None = None,
-        search_property: (
-            BenchmarkingProductionObligationDayAheadTextFields
-            | SequenceNotStr[BenchmarkingProductionObligationDayAheadTextFields]
-            | None
-        ) = None,
+        search_property: BenchmarkingProductionObligationDayAheadTextFields | SequenceNotStr[BenchmarkingProductionObligationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
@@ -207,17 +185,9 @@ class BenchmarkingProductionObligationDayAheadAPI(
         self,
         aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: None = None,
-        property: (
-            BenchmarkingProductionObligationDayAheadFields
-            | SequenceNotStr[BenchmarkingProductionObligationDayAheadFields]
-            | None
-        ) = None,
+        property: BenchmarkingProductionObligationDayAheadFields | SequenceNotStr[BenchmarkingProductionObligationDayAheadFields] | None = None,
         query: str | None = None,
-        search_property: (
-            BenchmarkingProductionObligationDayAheadTextFields
-            | SequenceNotStr[BenchmarkingProductionObligationDayAheadTextFields]
-            | None
-        ) = None,
+        search_property: BenchmarkingProductionObligationDayAheadTextFields | SequenceNotStr[BenchmarkingProductionObligationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
@@ -229,26 +199,13 @@ class BenchmarkingProductionObligationDayAheadAPI(
     @overload
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
-        group_by: (
-            BenchmarkingProductionObligationDayAheadFields
-            | SequenceNotStr[BenchmarkingProductionObligationDayAheadFields]
-        ),
-        property: (
-            BenchmarkingProductionObligationDayAheadFields
-            | SequenceNotStr[BenchmarkingProductionObligationDayAheadFields]
-            | None
-        ) = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: BenchmarkingProductionObligationDayAheadFields | SequenceNotStr[BenchmarkingProductionObligationDayAheadFields],
+        property: BenchmarkingProductionObligationDayAheadFields | SequenceNotStr[BenchmarkingProductionObligationDayAheadFields] | None = None,
         query: str | None = None,
-        search_property: (
-            BenchmarkingProductionObligationDayAheadTextFields
-            | SequenceNotStr[BenchmarkingProductionObligationDayAheadTextFields]
-            | None
-        ) = None,
+        search_property: BenchmarkingProductionObligationDayAheadTextFields | SequenceNotStr[BenchmarkingProductionObligationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
@@ -259,27 +216,13 @@ class BenchmarkingProductionObligationDayAheadAPI(
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
-        group_by: (
-            BenchmarkingProductionObligationDayAheadFields
-            | SequenceNotStr[BenchmarkingProductionObligationDayAheadFields]
-            | None
-        ) = None,
-        property: (
-            BenchmarkingProductionObligationDayAheadFields
-            | SequenceNotStr[BenchmarkingProductionObligationDayAheadFields]
-            | None
-        ) = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: BenchmarkingProductionObligationDayAheadFields | SequenceNotStr[BenchmarkingProductionObligationDayAheadFields] | None = None,
+        property: BenchmarkingProductionObligationDayAheadFields | SequenceNotStr[BenchmarkingProductionObligationDayAheadFields] | None = None,
         query: str | None = None,
-        search_property: (
-            BenchmarkingProductionObligationDayAheadTextFields
-            | SequenceNotStr[BenchmarkingProductionObligationDayAheadTextFields]
-            | None
-        ) = None,
+        search_property: BenchmarkingProductionObligationDayAheadTextFields | SequenceNotStr[BenchmarkingProductionObligationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
@@ -344,11 +287,7 @@ class BenchmarkingProductionObligationDayAheadAPI(
         property: BenchmarkingProductionObligationDayAheadFields,
         interval: float,
         query: str | None = None,
-        search_property: (
-            BenchmarkingProductionObligationDayAheadTextFields
-            | SequenceNotStr[BenchmarkingProductionObligationDayAheadTextFields]
-            | None
-        ) = None,
+        search_property: BenchmarkingProductionObligationDayAheadTextFields | SequenceNotStr[BenchmarkingProductionObligationDayAheadTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
@@ -407,15 +346,13 @@ class BenchmarkingProductionObligationDayAheadAPI(
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(
-            factory.root(
-                filter=filter_,
-                sort=sort,
-                limit=limit,
-                max_retrieve_batch_limit=chunk_size,
-                has_container_fields=True,
-            )
-        )
+        builder.append(factory.root(
+            filter=filter_,
+            sort=sort,
+            limit=limit,
+            max_retrieve_batch_limit=chunk_size,
+            has_container_fields=True,
+        ))
         return builder.build()
 
     def iterate(
@@ -505,11 +442,7 @@ class BenchmarkingProductionObligationDayAheadAPI(
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-        sort_by: (
-            BenchmarkingProductionObligationDayAheadFields
-            | Sequence[BenchmarkingProductionObligationDayAheadFields]
-            | None
-        ) = None,
+        sort_by: BenchmarkingProductionObligationDayAheadFields | Sequence[BenchmarkingProductionObligationDayAheadFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> BenchmarkingProductionObligationDayAheadList:
@@ -550,5 +483,5 @@ class BenchmarkingProductionObligationDayAheadAPI(
             space,
             filter,
         )
-        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
-        return self._list(limit=limit, filter=filter_, sort=sort_input)
+        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        return self._list(limit=limit,  filter=filter_, sort=sort_input)

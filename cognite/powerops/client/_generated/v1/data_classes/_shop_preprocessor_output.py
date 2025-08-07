@@ -37,29 +37,10 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     IntFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._function_output import FunctionOutput, FunctionOutputWrite
-
 if TYPE_CHECKING:
-    from cognite.powerops.client._generated.v1.data_classes._alert import (
-        Alert,
-        AlertList,
-        AlertGraphQL,
-        AlertWrite,
-        AlertWriteList,
-    )
-    from cognite.powerops.client._generated.v1.data_classes._shop_case import (
-        ShopCase,
-        ShopCaseList,
-        ShopCaseGraphQL,
-        ShopCaseWrite,
-        ShopCaseWriteList,
-    )
-    from cognite.powerops.client._generated.v1.data_classes._shop_preprocessor_input import (
-        ShopPreprocessorInput,
-        ShopPreprocessorInputList,
-        ShopPreprocessorInputGraphQL,
-        ShopPreprocessorInputWrite,
-        ShopPreprocessorInputWriteList,
-    )
+    from cognite.powerops.client._generated.v1.data_classes._alert import Alert, AlertList, AlertGraphQL, AlertWrite, AlertWriteList
+    from cognite.powerops.client._generated.v1.data_classes._shop_case import ShopCase, ShopCaseList, ShopCaseGraphQL, ShopCaseWrite, ShopCaseWriteList
+    from cognite.powerops.client._generated.v1.data_classes._shop_preprocessor_input import ShopPreprocessorInput, ShopPreprocessorInputList, ShopPreprocessorInputGraphQL, ShopPreprocessorInputWrite, ShopPreprocessorInputWriteList
 
 
 __all__ = [
@@ -74,9 +55,7 @@ __all__ = [
 
 
 ShopPreprocessorOutputTextFields = Literal["external_id", "workflow_execution_id", "function_name", "function_call_id"]
-ShopPreprocessorOutputFields = Literal[
-    "external_id", "workflow_execution_id", "workflow_step", "function_name", "function_call_id"
-]
+ShopPreprocessorOutputFields = Literal["external_id", "workflow_execution_id", "workflow_step", "function_name", "function_call_id"]
 
 _SHOPPREPROCESSOROUTPUT_PROPERTIES_BY_FIELD = {
     "external_id": "externalId",
@@ -126,6 +105,7 @@ class ShopPreprocessorOutputGraphQL(GraphQLCore):
             )
         return values
 
+
     @field_validator("function_input", "alerts", "case", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -163,14 +143,9 @@ class ShopPreprocessorOutput(FunctionOutput):
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopPreprocessorOutput", "1")
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "ShopPreprocessorOutput"
-    )
-    function_input: Union[ShopPreprocessorInput, str, dm.NodeId, None] = Field(
-        default=None, repr=False, alias="functionInput"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopPreprocessorOutput")
+    function_input: Union[ShopPreprocessorInput, str, dm.NodeId, None] = Field(default=None, repr=False, alias="functionInput")
     case: Union[ShopCase, str, dm.NodeId, None] = Field(default=None, repr=False)
-
     @field_validator("function_input", "case", mode="before")
     @classmethod
     def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
@@ -186,6 +161,7 @@ class ShopPreprocessorOutput(FunctionOutput):
     def as_write(self) -> ShopPreprocessorOutputWrite:
         """Convert this read version of shop preprocessor output to the writing version."""
         return ShopPreprocessorOutputWrite.model_validate(as_write_args(self))
+
 
 
 class ShopPreprocessorOutputWrite(FunctionOutputWrite):
@@ -205,31 +181,14 @@ class ShopPreprocessorOutputWrite(FunctionOutputWrite):
         alerts: An array of calculation level Alerts.
         case: The Case to trigger shop with
     """
-
-    _container_fields: ClassVar[tuple[str, ...]] = (
-        "case",
-        "function_call_id",
-        "function_input",
-        "function_name",
-        "workflow_execution_id",
-        "workflow_step",
-    )
-    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (
-        ("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")),
-    )
-    _direct_relations: ClassVar[tuple[str, ...]] = (
-        "case",
-        "function_input",
-    )
+    _container_fields: ClassVar[tuple[str, ...]] = ("case", "function_call_id", "function_input", "function_name", "workflow_execution_id", "workflow_step",)
+    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")),)
+    _direct_relations: ClassVar[tuple[str, ...]] = ("case", "function_input",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopPreprocessorOutput", "1")
 
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
-        "power_ops_types", "ShopPreprocessorOutput"
-    )
-    function_input: Union[ShopPreprocessorInputWrite, str, dm.NodeId, None] = Field(
-        default=None, repr=False, alias="functionInput"
-    )
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "ShopPreprocessorOutput")
+    function_input: Union[ShopPreprocessorInputWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="functionInput")
     case: Union[ShopCaseWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
 
     @field_validator("function_input", "case", mode="before")
@@ -247,57 +206,41 @@ class ShopPreprocessorOutputList(DomainModelList[ShopPreprocessorOutput]):
     """List of shop preprocessor outputs in the read version."""
 
     _INSTANCE = ShopPreprocessorOutput
-
     def as_write(self) -> ShopPreprocessorOutputWriteList:
         """Convert these read versions of shop preprocessor output to the writing versions."""
         return ShopPreprocessorOutputWriteList([node.as_write() for node in self.data])
 
+
     @property
     def function_input(self) -> ShopPreprocessorInputList:
         from ._shop_preprocessor_input import ShopPreprocessorInput, ShopPreprocessorInputList
-
-        return ShopPreprocessorInputList(
-            [item.function_input for item in self.data if isinstance(item.function_input, ShopPreprocessorInput)]
-        )
-
+        return ShopPreprocessorInputList([item.function_input for item in self.data if isinstance(item.function_input, ShopPreprocessorInput)])
     @property
     def alerts(self) -> AlertList:
         from ._alert import Alert, AlertList
-
         return AlertList([item for items in self.data for item in items.alerts or [] if isinstance(item, Alert)])
 
     @property
     def case(self) -> ShopCaseList:
         from ._shop_case import ShopCase, ShopCaseList
-
         return ShopCaseList([item.case for item in self.data if isinstance(item.case, ShopCase)])
-
 
 class ShopPreprocessorOutputWriteList(DomainModelWriteList[ShopPreprocessorOutputWrite]):
     """List of shop preprocessor outputs in the writing version."""
 
     _INSTANCE = ShopPreprocessorOutputWrite
-
     @property
     def function_input(self) -> ShopPreprocessorInputWriteList:
         from ._shop_preprocessor_input import ShopPreprocessorInputWrite, ShopPreprocessorInputWriteList
-
-        return ShopPreprocessorInputWriteList(
-            [item.function_input for item in self.data if isinstance(item.function_input, ShopPreprocessorInputWrite)]
-        )
-
+        return ShopPreprocessorInputWriteList([item.function_input for item in self.data if isinstance(item.function_input, ShopPreprocessorInputWrite)])
     @property
     def alerts(self) -> AlertWriteList:
         from ._alert import AlertWrite, AlertWriteList
-
-        return AlertWriteList(
-            [item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)]
-        )
+        return AlertWriteList([item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)])
 
     @property
     def case(self) -> ShopCaseWriteList:
         from ._shop_case import ShopCaseWrite, ShopCaseWriteList
-
         return ShopCaseWriteList([item.case for item in self.data if isinstance(item.case, ShopCaseWrite)])
 
 
@@ -311,22 +254,8 @@ def _create_shop_preprocessor_output_filter(
     function_name_prefix: str | None = None,
     function_call_id: str | list[str] | None = None,
     function_call_id_prefix: str | None = None,
-    function_input: (
-        str
-        | tuple[str, str]
-        | dm.NodeId
-        | dm.DirectRelationReference
-        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-        | None
-    ) = None,
-    case: (
-        str
-        | tuple[str, str]
-        | dm.NodeId
-        | dm.DirectRelationReference
-        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-        | None
-    ) = None,
+    function_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+    case: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -337,13 +266,9 @@ def _create_shop_preprocessor_output_filter(
     if workflow_execution_id and isinstance(workflow_execution_id, list):
         filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
     if workflow_execution_id_prefix is not None:
-        filters.append(
-            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
-        )
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix))
     if min_workflow_step is not None or max_workflow_step is not None:
-        filters.append(
-            dm.filters.Range(view_id.as_property_ref("workflowStep"), gte=min_workflow_step, lte=max_workflow_step)
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("workflowStep"), gte=min_workflow_step, lte=max_workflow_step))
     if isinstance(function_name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("functionName"), value=function_name))
     if function_name and isinstance(function_name, list):
@@ -357,26 +282,13 @@ def _create_shop_preprocessor_output_filter(
     if function_call_id_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("functionCallId"), value=function_call_id_prefix))
     if isinstance(function_input, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(function_input):
-        filters.append(
-            dm.filters.Equals(view_id.as_property_ref("functionInput"), value=as_instance_dict_id(function_input))
-        )
-    if (
-        function_input
-        and isinstance(function_input, Sequence)
-        and not isinstance(function_input, str)
-        and not is_tuple_id(function_input)
-    ):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("functionInput"), values=[as_instance_dict_id(item) for item in function_input]
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("functionInput"), value=as_instance_dict_id(function_input)))
+    if function_input and isinstance(function_input, Sequence) and not isinstance(function_input, str) and not is_tuple_id(function_input):
+        filters.append(dm.filters.In(view_id.as_property_ref("functionInput"), values=[as_instance_dict_id(item) for item in function_input]))
     if isinstance(case, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(case):
         filters.append(dm.filters.Equals(view_id.as_property_ref("case"), value=as_instance_dict_id(case)))
     if case and isinstance(case, Sequence) and not isinstance(case, str) and not is_tuple_id(case):
-        filters.append(
-            dm.filters.In(view_id.as_property_ref("case"), values=[as_instance_dict_id(item) for item in case])
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("case"), values=[as_instance_dict_id(item) for item in case]))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
@@ -472,18 +384,16 @@ class _ShopPreprocessorOutputQuery(NodeQueryCore[T_DomainModelList, ShopPreproce
         self.function_call_id = StringFilter(self, self._view_id.as_property_ref("functionCallId"))
         self.function_input_filter = DirectRelationFilter(self, self._view_id.as_property_ref("functionInput"))
         self.case_filter = DirectRelationFilter(self, self._view_id.as_property_ref("case"))
-        self._filter_classes.extend(
-            [
-                self.space,
-                self.external_id,
-                self.workflow_execution_id,
-                self.workflow_step,
-                self.function_name,
-                self.function_call_id,
-                self.function_input_filter,
-                self.case_filter,
-            ]
-        )
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.workflow_execution_id,
+            self.workflow_step,
+            self.function_name,
+            self.function_call_id,
+            self.function_input_filter,
+            self.case_filter,
+        ])
 
     def list_shop_preprocessor_output(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopPreprocessorOutputList:
         return self._list(limit=limit)
