@@ -103,6 +103,8 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
         self,
         query: str,
         properties: DataSetConfigurationTextFields | SequenceNotStr[DataSetConfigurationTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         read_data_set: str | list[str] | None = None,
         read_data_set_prefix: str | None = None,
         write_data_set: str | list[str] | None = None,
@@ -124,6 +126,8 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
         Args:
             query: The search query,
             properties: The property to search, if nothing is passed all text fields will be searched.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             read_data_set: The read data set to filter on.
             read_data_set_prefix: The prefix of the read data set to filter on.
             write_data_set: The write data set to filter on.
@@ -160,6 +164,8 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
         """
         filter_ = _create_data_set_configuration_filter(
             self._view_id,
+            name,
+            name_prefix,
             read_data_set,
             read_data_set_prefix,
             write_data_set,
@@ -190,6 +196,8 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
         property: DataSetConfigurationFields | SequenceNotStr[DataSetConfigurationFields] | None = None,
         query: str | None = None,
         search_property: DataSetConfigurationTextFields | SequenceNotStr[DataSetConfigurationTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         read_data_set: str | list[str] | None = None,
         read_data_set_prefix: str | None = None,
         write_data_set: str | list[str] | None = None,
@@ -212,6 +220,8 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
         property: DataSetConfigurationFields | SequenceNotStr[DataSetConfigurationFields] | None = None,
         query: str | None = None,
         search_property: DataSetConfigurationTextFields | SequenceNotStr[DataSetConfigurationTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         read_data_set: str | list[str] | None = None,
         read_data_set_prefix: str | None = None,
         write_data_set: str | list[str] | None = None,
@@ -236,6 +246,8 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
         property: DataSetConfigurationFields | SequenceNotStr[DataSetConfigurationFields] | None = None,
         query: str | None = None,
         search_property: DataSetConfigurationTextFields | SequenceNotStr[DataSetConfigurationTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         read_data_set: str | list[str] | None = None,
         read_data_set_prefix: str | None = None,
         write_data_set: str | list[str] | None = None,
@@ -259,6 +271,8 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
         property: DataSetConfigurationFields | SequenceNotStr[DataSetConfigurationFields] | None = None,
         query: str | None = None,
         search_property: DataSetConfigurationTextFields | SequenceNotStr[DataSetConfigurationTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         read_data_set: str | list[str] | None = None,
         read_data_set_prefix: str | None = None,
         write_data_set: str | list[str] | None = None,
@@ -284,6 +298,8 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
             property: The property to perform aggregation on.
             query: The query to search for in the text field.
             search_property: The text field to search in.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             read_data_set: The read data set to filter on.
             read_data_set_prefix: The prefix of the read data set to filter on.
             write_data_set: The write data set to filter on.
@@ -314,6 +330,8 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
 
         filter_ = _create_data_set_configuration_filter(
             self._view_id,
+            name,
+            name_prefix,
             read_data_set,
             read_data_set_prefix,
             write_data_set,
@@ -342,6 +360,8 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
         interval: float,
         query: str | None = None,
         search_property: DataSetConfigurationTextFields | SequenceNotStr[DataSetConfigurationTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         read_data_set: str | list[str] | None = None,
         read_data_set_prefix: str | None = None,
         write_data_set: str | list[str] | None = None,
@@ -362,6 +382,8 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
             interval: The interval to use for the histogram bins.
             query: The query to search for in the text field.
             search_property: The text field to search in.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             read_data_set: The read data set to filter on.
             read_data_set_prefix: The prefix of the read data set to filter on.
             write_data_set: The write data set to filter on.
@@ -383,6 +405,8 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
         """
         filter_ = _create_data_set_configuration_filter(
             self._view_id,
+            name,
+            name_prefix,
             read_data_set,
             read_data_set_prefix,
             write_data_set,
@@ -430,6 +454,8 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
     def iterate(
         self,
         chunk_size: int = DEFAULT_CHUNK_SIZE,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         read_data_set: str | list[str] | None = None,
         read_data_set_prefix: str | None = None,
         write_data_set: str | list[str] | None = None,
@@ -448,6 +474,8 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
 
         Args:
             chunk_size: The number of data set configurations to return in each iteration. Defaults to 100.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             read_data_set: The read data set to filter on.
             read_data_set_prefix: The prefix of the read data set to filter on.
             write_data_set: The write data set to filter on.
@@ -510,6 +538,8 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
         )
         filter_ = _create_data_set_configuration_filter(
             self._view_id,
+            name,
+            name_prefix,
             read_data_set,
             read_data_set_prefix,
             write_data_set,
@@ -526,6 +556,8 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
 
     def list(
         self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         read_data_set: str | list[str] | None = None,
         read_data_set_prefix: str | None = None,
         write_data_set: str | list[str] | None = None,
@@ -545,6 +577,8 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
         """List/filter data set configurations
 
         Args:
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             read_data_set: The read data set to filter on.
             read_data_set_prefix: The prefix of the read data set to filter on.
             write_data_set: The write data set to filter on.
@@ -579,6 +613,8 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
         """
         filter_ = _create_data_set_configuration_filter(
             self._view_id,
+            name,
+            name_prefix,
             read_data_set,
             read_data_set_prefix,
             write_data_set,
