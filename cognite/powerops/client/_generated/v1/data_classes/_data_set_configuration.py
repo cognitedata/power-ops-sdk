@@ -48,10 +48,10 @@ __all__ = [
 
 
 DataSetConfigurationTextFields = Literal[
-    "external_id", "read_data_set", "write_data_set", "monitor_data_set", "process_dataset"
+    "external_id", "read_data_set", "write_data_set", "monitor_data_set", "process_data_set"
 ]
 DataSetConfigurationFields = Literal[
-    "external_id", "read_data_set", "write_data_set", "monitor_data_set", "process_dataset"
+    "external_id", "read_data_set", "write_data_set", "monitor_data_set", "process_data_set"
 ]
 
 _DATASETCONFIGURATION_PROPERTIES_BY_FIELD = {
@@ -59,7 +59,7 @@ _DATASETCONFIGURATION_PROPERTIES_BY_FIELD = {
     "read_data_set": "readDataSet",
     "write_data_set": "writeDataSet",
     "monitor_data_set": "monitorDataSet",
-    "process_dataset": "processDataset",
+    "process_data_set": "processDataSet",
 }
 
 
@@ -76,14 +76,14 @@ class DataSetConfigurationGraphQL(GraphQLCore):
         read_data_set: The data set to read data from into the solution
         write_data_set: The data set to write solution data to
         monitor_data_set: The data set to write monitoring data to, like logs from the solution
-        process_dataset: The data set to process data from into the solution
+        process_data_set: The data set to process data from into the solution
     """
 
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "DataSetConfiguration", "1")
     read_data_set: Optional[str] = Field(None, alias="readDataSet")
     write_data_set: Optional[str] = Field(None, alias="writeDataSet")
     monitor_data_set: Optional[str] = Field(None, alias="monitorDataSet")
-    process_dataset: Optional[str] = Field(None, alias="processDataset")
+    process_data_set: Optional[str] = Field(None, alias="processDataSet")
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -117,7 +117,7 @@ class DataSetConfiguration(DomainModel):
         read_data_set: The data set to read data from into the solution
         write_data_set: The data set to write solution data to
         monitor_data_set: The data set to write monitoring data to, like logs from the solution
-        process_dataset: The data set to process data from into the solution
+        process_data_set: The data set to process data from into the solution
     """
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "DataSetConfiguration", "1")
@@ -129,7 +129,7 @@ class DataSetConfiguration(DomainModel):
     read_data_set: str = Field(alias="readDataSet")
     write_data_set: str = Field(alias="writeDataSet")
     monitor_data_set: Optional[str] = Field(None, alias="monitorDataSet")
-    process_dataset: Optional[str] = Field(None, alias="processDataset")
+    process_data_set: Optional[str] = Field(None, alias="processDataSet")
 
     def as_write(self) -> DataSetConfigurationWrite:
         """Convert this read version of data set configuration to the writing version."""
@@ -148,12 +148,12 @@ class DataSetConfigurationWrite(DomainModelWrite):
         read_data_set: The data set to read data from into the solution
         write_data_set: The data set to write solution data to
         monitor_data_set: The data set to write monitoring data to, like logs from the solution
-        process_dataset: The data set to process data from into the solution
+        process_data_set: The data set to process data from into the solution
     """
 
     _container_fields: ClassVar[tuple[str, ...]] = (
         "monitor_data_set",
-        "process_dataset",
+        "process_data_set",
         "read_data_set",
         "write_data_set",
     )
@@ -167,7 +167,7 @@ class DataSetConfigurationWrite(DomainModelWrite):
     read_data_set: str = Field(alias="readDataSet")
     write_data_set: str = Field(alias="writeDataSet")
     monitor_data_set: Optional[str] = Field(None, alias="monitorDataSet")
-    process_dataset: Optional[str] = Field(None, alias="processDataset")
+    process_data_set: Optional[str] = Field(None, alias="processDataSet")
 
 
 class DataSetConfigurationList(DomainModelList[DataSetConfiguration]):
@@ -194,8 +194,8 @@ def _create_data_set_configuration_filter(
     write_data_set_prefix: str | None = None,
     monitor_data_set: str | list[str] | None = None,
     monitor_data_set_prefix: str | None = None,
-    process_dataset: str | list[str] | None = None,
-    process_dataset_prefix: str | None = None,
+    process_data_set: str | list[str] | None = None,
+    process_data_set_prefix: str | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -219,12 +219,12 @@ def _create_data_set_configuration_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("monitorDataSet"), values=monitor_data_set))
     if monitor_data_set_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("monitorDataSet"), value=monitor_data_set_prefix))
-    if isinstance(process_dataset, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("processDataset"), value=process_dataset))
-    if process_dataset and isinstance(process_dataset, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("processDataset"), values=process_dataset))
-    if process_dataset_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("processDataset"), value=process_dataset_prefix))
+    if isinstance(process_data_set, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("processDataSet"), value=process_data_set))
+    if process_data_set and isinstance(process_data_set, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("processDataSet"), values=process_data_set))
+    if process_data_set_prefix is not None:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("processDataSet"), value=process_data_set_prefix))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
@@ -272,7 +272,7 @@ class _DataSetConfigurationQuery(NodeQueryCore[T_DomainModelList, DataSetConfigu
         self.read_data_set = StringFilter(self, self._view_id.as_property_ref("readDataSet"))
         self.write_data_set = StringFilter(self, self._view_id.as_property_ref("writeDataSet"))
         self.monitor_data_set = StringFilter(self, self._view_id.as_property_ref("monitorDataSet"))
-        self.process_dataset = StringFilter(self, self._view_id.as_property_ref("processDataset"))
+        self.process_data_set = StringFilter(self, self._view_id.as_property_ref("processDataSet"))
         self._filter_classes.extend(
             [
                 self.space,
@@ -280,7 +280,7 @@ class _DataSetConfigurationQuery(NodeQueryCore[T_DomainModelList, DataSetConfigu
                 self.read_data_set,
                 self.write_data_set,
                 self.monitor_data_set,
-                self.process_dataset,
+                self.process_data_set,
             ]
         )
 

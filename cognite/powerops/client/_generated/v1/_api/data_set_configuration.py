@@ -110,8 +110,8 @@ class DataSetConfigurationAPI(
         write_data_set_prefix: str | None = None,
         monitor_data_set: str | list[str] | None = None,
         monitor_data_set_prefix: str | None = None,
-        process_dataset: str | list[str] | None = None,
-        process_dataset_prefix: str | None = None,
+        process_data_set: str | list[str] | None = None,
+        process_data_set_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -131,8 +131,8 @@ class DataSetConfigurationAPI(
             write_data_set_prefix: The prefix of the write data set to filter on.
             monitor_data_set: The monitor data set to filter on.
             monitor_data_set_prefix: The prefix of the monitor data set to filter on.
-            process_dataset: The process dataset to filter on.
-            process_dataset_prefix: The prefix of the process dataset to filter on.
+            process_data_set: The process data set to filter on.
+            process_data_set_prefix: The prefix of the process data set to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of data set configurations to return. Defaults to 25.
@@ -167,8 +167,8 @@ class DataSetConfigurationAPI(
             write_data_set_prefix,
             monitor_data_set,
             monitor_data_set_prefix,
-            process_dataset,
-            process_dataset_prefix,
+            process_data_set,
+            process_data_set_prefix,
             external_id_prefix,
             space,
             filter,
@@ -197,8 +197,8 @@ class DataSetConfigurationAPI(
         write_data_set_prefix: str | None = None,
         monitor_data_set: str | list[str] | None = None,
         monitor_data_set_prefix: str | None = None,
-        process_dataset: str | list[str] | None = None,
-        process_dataset_prefix: str | None = None,
+        process_data_set: str | list[str] | None = None,
+        process_data_set_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -219,8 +219,8 @@ class DataSetConfigurationAPI(
         write_data_set_prefix: str | None = None,
         monitor_data_set: str | list[str] | None = None,
         monitor_data_set_prefix: str | None = None,
-        process_dataset: str | list[str] | None = None,
-        process_dataset_prefix: str | None = None,
+        process_data_set: str | list[str] | None = None,
+        process_data_set_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -245,8 +245,8 @@ class DataSetConfigurationAPI(
         write_data_set_prefix: str | None = None,
         monitor_data_set: str | list[str] | None = None,
         monitor_data_set_prefix: str | None = None,
-        process_dataset: str | list[str] | None = None,
-        process_dataset_prefix: str | None = None,
+        process_data_set: str | list[str] | None = None,
+        process_data_set_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -270,8 +270,8 @@ class DataSetConfigurationAPI(
         write_data_set_prefix: str | None = None,
         monitor_data_set: str | list[str] | None = None,
         monitor_data_set_prefix: str | None = None,
-        process_dataset: str | list[str] | None = None,
-        process_dataset_prefix: str | None = None,
+        process_data_set: str | list[str] | None = None,
+        process_data_set_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -295,8 +295,8 @@ class DataSetConfigurationAPI(
             write_data_set_prefix: The prefix of the write data set to filter on.
             monitor_data_set: The monitor data set to filter on.
             monitor_data_set_prefix: The prefix of the monitor data set to filter on.
-            process_dataset: The process dataset to filter on.
-            process_dataset_prefix: The prefix of the process dataset to filter on.
+            process_data_set: The process data set to filter on.
+            process_data_set_prefix: The prefix of the process data set to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of data set configurations to return. Defaults to 25.
@@ -325,8 +325,8 @@ class DataSetConfigurationAPI(
             write_data_set_prefix,
             monitor_data_set,
             monitor_data_set_prefix,
-            process_dataset,
-            process_dataset_prefix,
+            process_data_set,
+            process_data_set_prefix,
             external_id_prefix,
             space,
             filter,
@@ -353,8 +353,8 @@ class DataSetConfigurationAPI(
         write_data_set_prefix: str | None = None,
         monitor_data_set: str | list[str] | None = None,
         monitor_data_set_prefix: str | None = None,
-        process_dataset: str | list[str] | None = None,
-        process_dataset_prefix: str | None = None,
+        process_data_set: str | list[str] | None = None,
+        process_data_set_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -373,8 +373,8 @@ class DataSetConfigurationAPI(
             write_data_set_prefix: The prefix of the write data set to filter on.
             monitor_data_set: The monitor data set to filter on.
             monitor_data_set_prefix: The prefix of the monitor data set to filter on.
-            process_dataset: The process dataset to filter on.
-            process_dataset_prefix: The prefix of the process dataset to filter on.
+            process_data_set: The process data set to filter on.
+            process_data_set_prefix: The prefix of the process data set to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of data set configurations to return.
@@ -394,8 +394,8 @@ class DataSetConfigurationAPI(
             write_data_set_prefix,
             monitor_data_set,
             monitor_data_set_prefix,
-            process_dataset,
-            process_dataset_prefix,
+            process_data_set,
+            process_data_set_prefix,
             external_id_prefix,
             space,
             filter,
@@ -443,8 +443,8 @@ class DataSetConfigurationAPI(
         write_data_set_prefix: str | None = None,
         monitor_data_set: str | list[str] | None = None,
         monitor_data_set_prefix: str | None = None,
-        process_dataset: str | list[str] | None = None,
-        process_dataset_prefix: str | None = None,
+        process_data_set: str | list[str] | None = None,
+        process_data_set_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         filter: dm.Filter | None = None,
@@ -461,8 +461,8 @@ class DataSetConfigurationAPI(
             write_data_set_prefix: The prefix of the write data set to filter on.
             monitor_data_set: The monitor data set to filter on.
             monitor_data_set_prefix: The prefix of the monitor data set to filter on.
-            process_dataset: The process dataset to filter on.
-            process_dataset_prefix: The prefix of the process dataset to filter on.
+            process_data_set: The process data set to filter on.
+            process_data_set_prefix: The prefix of the process data set to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             filter: (Advanced) If the filtering available in the above is not sufficient,
@@ -523,8 +523,8 @@ class DataSetConfigurationAPI(
             write_data_set_prefix,
             monitor_data_set,
             monitor_data_set_prefix,
-            process_dataset,
-            process_dataset_prefix,
+            process_data_set,
+            process_data_set_prefix,
             external_id_prefix,
             space,
             filter,
@@ -539,8 +539,8 @@ class DataSetConfigurationAPI(
         write_data_set_prefix: str | None = None,
         monitor_data_set: str | list[str] | None = None,
         monitor_data_set_prefix: str | None = None,
-        process_dataset: str | list[str] | None = None,
-        process_dataset_prefix: str | None = None,
+        process_data_set: str | list[str] | None = None,
+        process_data_set_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -558,8 +558,8 @@ class DataSetConfigurationAPI(
             write_data_set_prefix: The prefix of the write data set to filter on.
             monitor_data_set: The monitor data set to filter on.
             monitor_data_set_prefix: The prefix of the monitor data set to filter on.
-            process_dataset: The process dataset to filter on.
-            process_dataset_prefix: The prefix of the process dataset to filter on.
+            process_data_set: The process data set to filter on.
+            process_data_set_prefix: The prefix of the process data set to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of data set configurations to return.
@@ -592,8 +592,8 @@ class DataSetConfigurationAPI(
             write_data_set_prefix,
             monitor_data_set,
             monitor_data_set_prefix,
-            process_dataset,
-            process_dataset_prefix,
+            process_data_set,
+            process_data_set_prefix,
             external_id_prefix,
             space,
             filter,
