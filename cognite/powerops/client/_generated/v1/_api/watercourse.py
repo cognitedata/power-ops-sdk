@@ -54,6 +54,7 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
     def __init__(self, client: CogniteClient):
         super().__init__(client=client)
 
+
     @overload
     def retrieve(
         self,
@@ -228,11 +229,9 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
     @overload
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: WatercourseFields | SequenceNotStr[WatercourseFields],
         property: WatercourseFields | SequenceNotStr[WatercourseFields] | None = None,
         query: str | None = None,
@@ -253,11 +252,9 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: WatercourseFields | SequenceNotStr[WatercourseFields] | None = None,
         property: WatercourseFields | SequenceNotStr[WatercourseFields] | None = None,
         query: str | None = None,
@@ -421,15 +418,13 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(
-            factory.root(
-                filter=filter_,
-                sort=sort,
-                limit=limit,
-                max_retrieve_batch_limit=chunk_size,
-                has_container_fields=True,
-            )
-        )
+        builder.append(factory.root(
+            filter=filter_,
+            sort=sort,
+            limit=limit,
+            max_retrieve_batch_limit=chunk_size,
+            has_container_fields=True,
+        ))
         return builder.build()
 
     def iterate(
@@ -596,5 +591,5 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList, Wat
             space,
             filter,
         )
-        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
-        return self._list(limit=limit, filter=filter_, sort=sort_input)
+        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        return self._list(limit=limit,  filter=filter_, sort=sort_input)

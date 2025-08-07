@@ -36,19 +36,9 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     BooleanFilter,
     DirectRelationFilter,
 )
-from cognite.powerops.client._generated.v1.data_classes._partial_bid_configuration import (
-    PartialBidConfiguration,
-    PartialBidConfigurationWrite,
-)
-
+from cognite.powerops.client._generated.v1.data_classes._partial_bid_configuration import PartialBidConfiguration, PartialBidConfigurationWrite
 if TYPE_CHECKING:
-    from cognite.powerops.client._generated.v1.data_classes._plant_water_value_based import (
-        PlantWaterValueBased,
-        PlantWaterValueBasedList,
-        PlantWaterValueBasedGraphQL,
-        PlantWaterValueBasedWrite,
-        PlantWaterValueBasedWriteList,
-    )
+    from cognite.powerops.client._generated.v1.data_classes._plant_water_value_based import PlantWaterValueBased, PlantWaterValueBasedList, PlantWaterValueBasedGraphQL, PlantWaterValueBasedWrite, PlantWaterValueBasedWriteList
 
 
 __all__ = [
@@ -106,6 +96,7 @@ class WaterValueBasedPartialBidConfigurationGraphQL(GraphQLCore):
             )
         return values
 
+
     @field_validator("power_asset", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -140,19 +131,18 @@ class WaterValueBasedPartialBidConfiguration(PartialBidConfiguration):
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "WaterValueBasedPartialBidConfiguration", "1")
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "WaterValueBasedPartialBidConfiguration"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "WaterValueBasedPartialBidConfiguration")
     power_asset: Union[PlantWaterValueBased, str, dm.NodeId, None] = Field(default=None, repr=False, alias="powerAsset")
-
     @field_validator("power_asset", mode="before")
     @classmethod
     def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
         return parse_single_connection(value, info.field_name)
 
+
     def as_write(self) -> WaterValueBasedPartialBidConfigurationWrite:
         """Convert this read version of water value based partial bid configuration to the writing version."""
         return WaterValueBasedPartialBidConfigurationWrite.model_validate(as_write_args(self))
+
 
 
 class WaterValueBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
@@ -169,23 +159,13 @@ class WaterValueBasedPartialBidConfigurationWrite(PartialBidConfigurationWrite):
         power_asset: TODO description (has to be a Plant)
         add_steps: TODO definition
     """
-
-    _container_fields: ClassVar[tuple[str, ...]] = (
-        "add_steps",
-        "method",
-        "name",
-        "power_asset",
-    )
+    _container_fields: ClassVar[tuple[str, ...]] = ("add_steps", "method", "name", "power_asset",)
     _direct_relations: ClassVar[tuple[str, ...]] = ("power_asset",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "WaterValueBasedPartialBidConfiguration", "1")
 
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
-        "power_ops_types", "WaterValueBasedPartialBidConfiguration"
-    )
-    power_asset: Union[PlantWaterValueBasedWrite, str, dm.NodeId, None] = Field(
-        default=None, repr=False, alias="powerAsset"
-    )
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "WaterValueBasedPartialBidConfiguration")
+    power_asset: Union[PlantWaterValueBasedWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="powerAsset")
 
     @field_validator("power_asset", mode="before")
     def as_node_id(cls, value: Any) -> Any:
@@ -202,34 +182,24 @@ class WaterValueBasedPartialBidConfigurationList(DomainModelList[WaterValueBased
     """List of water value based partial bid configurations in the read version."""
 
     _INSTANCE = WaterValueBasedPartialBidConfiguration
-
     def as_write(self) -> WaterValueBasedPartialBidConfigurationWriteList:
         """Convert these read versions of water value based partial bid configuration to the writing versions."""
         return WaterValueBasedPartialBidConfigurationWriteList([node.as_write() for node in self.data])
 
+
     @property
     def power_asset(self) -> PlantWaterValueBasedList:
         from ._plant_water_value_based import PlantWaterValueBased, PlantWaterValueBasedList
+        return PlantWaterValueBasedList([item.power_asset for item in self.data if isinstance(item.power_asset, PlantWaterValueBased)])
 
-        return PlantWaterValueBasedList(
-            [item.power_asset for item in self.data if isinstance(item.power_asset, PlantWaterValueBased)]
-        )
-
-
-class WaterValueBasedPartialBidConfigurationWriteList(
-    DomainModelWriteList[WaterValueBasedPartialBidConfigurationWrite]
-):
+class WaterValueBasedPartialBidConfigurationWriteList(DomainModelWriteList[WaterValueBasedPartialBidConfigurationWrite]):
     """List of water value based partial bid configurations in the writing version."""
 
     _INSTANCE = WaterValueBasedPartialBidConfigurationWrite
-
     @property
     def power_asset(self) -> PlantWaterValueBasedWriteList:
         from ._plant_water_value_based import PlantWaterValueBasedWrite, PlantWaterValueBasedWriteList
-
-        return PlantWaterValueBasedWriteList(
-            [item.power_asset for item in self.data if isinstance(item.power_asset, PlantWaterValueBasedWrite)]
-        )
+        return PlantWaterValueBasedWriteList([item.power_asset for item in self.data if isinstance(item.power_asset, PlantWaterValueBasedWrite)])
 
 
 def _create_water_value_based_partial_bid_configuration_filter(
@@ -238,14 +208,7 @@ def _create_water_value_based_partial_bid_configuration_filter(
     name_prefix: str | None = None,
     method: str | list[str] | None = None,
     method_prefix: str | None = None,
-    power_asset: (
-        str
-        | tuple[str, str]
-        | dm.NodeId
-        | dm.DirectRelationReference
-        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-        | None
-    ) = None,
+    power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
     add_steps: bool | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
@@ -266,17 +229,8 @@ def _create_water_value_based_partial_bid_configuration_filter(
         filters.append(dm.filters.Prefix(view_id.as_property_ref("method"), value=method_prefix))
     if isinstance(power_asset, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(power_asset):
         filters.append(dm.filters.Equals(view_id.as_property_ref("powerAsset"), value=as_instance_dict_id(power_asset)))
-    if (
-        power_asset
-        and isinstance(power_asset, Sequence)
-        and not isinstance(power_asset, str)
-        and not is_tuple_id(power_asset)
-    ):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("powerAsset"), values=[as_instance_dict_id(item) for item in power_asset]
-            )
-        )
+    if power_asset and isinstance(power_asset, Sequence) and not isinstance(power_asset, str) and not is_tuple_id(power_asset):
+        filters.append(dm.filters.In(view_id.as_property_ref("powerAsset"), values=[as_instance_dict_id(item) for item in power_asset]))
     if isinstance(add_steps, bool):
         filters.append(dm.filters.Equals(view_id.as_property_ref("addSteps"), value=add_steps))
     if external_id_prefix is not None:
@@ -290,9 +244,7 @@ def _create_water_value_based_partial_bid_configuration_filter(
     return dm.filters.And(*filters) if filters else None
 
 
-class _WaterValueBasedPartialBidConfigurationQuery(
-    NodeQueryCore[T_DomainModelList, WaterValueBasedPartialBidConfigurationList]
-):
+class _WaterValueBasedPartialBidConfigurationQuery(NodeQueryCore[T_DomainModelList, WaterValueBasedPartialBidConfigurationList]):
     _view_id = WaterValueBasedPartialBidConfiguration._view_id
     _result_cls = WaterValueBasedPartialBidConfiguration
     _result_list_cls_end = WaterValueBasedPartialBidConfigurationList
@@ -344,25 +296,19 @@ class _WaterValueBasedPartialBidConfigurationQuery(
         self.method = StringFilter(self, self._view_id.as_property_ref("method"))
         self.power_asset_filter = DirectRelationFilter(self, self._view_id.as_property_ref("powerAsset"))
         self.add_steps = BooleanFilter(self, self._view_id.as_property_ref("addSteps"))
-        self._filter_classes.extend(
-            [
-                self.space,
-                self.external_id,
-                self.name,
-                self.method,
-                self.power_asset_filter,
-                self.add_steps,
-            ]
-        )
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.name,
+            self.method,
+            self.power_asset_filter,
+            self.add_steps,
+        ])
 
-    def list_water_value_based_partial_bid_configuration(
-        self, limit: int = DEFAULT_QUERY_LIMIT
-    ) -> WaterValueBasedPartialBidConfigurationList:
+    def list_water_value_based_partial_bid_configuration(self, limit: int = DEFAULT_QUERY_LIMIT) -> WaterValueBasedPartialBidConfigurationList:
         return self._list(limit=limit)
 
 
-class WaterValueBasedPartialBidConfigurationQuery(
-    _WaterValueBasedPartialBidConfigurationQuery[WaterValueBasedPartialBidConfigurationList]
-):
+class WaterValueBasedPartialBidConfigurationQuery(_WaterValueBasedPartialBidConfigurationQuery[WaterValueBasedPartialBidConfigurationList]):
     def __init__(self, client: CogniteClient):
         super().__init__(set(), [], client, WaterValueBasedPartialBidConfigurationList)

@@ -49,24 +49,12 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     NodeQueryCore,
     StringFilter,
     ViewPropertyId,
+
 )
 from cognite.powerops.client._generated.v1.data_classes._bid_matrix import BidMatrix, BidMatrixWrite
-
 if TYPE_CHECKING:
-    from cognite.powerops.client._generated.v1.data_classes._alert import (
-        Alert,
-        AlertList,
-        AlertGraphQL,
-        AlertWrite,
-        AlertWriteList,
-    )
-    from cognite.powerops.client._generated.v1.data_classes._bid_matrix import (
-        BidMatrix,
-        BidMatrixList,
-        BidMatrixGraphQL,
-        BidMatrixWrite,
-        BidMatrixWriteList,
-    )
+    from cognite.powerops.client._generated.v1.data_classes._alert import Alert, AlertList, AlertGraphQL, AlertWrite, AlertWriteList
+    from cognite.powerops.client._generated.v1.data_classes._bid_matrix import BidMatrix, BidMatrixList, BidMatrixGraphQL, BidMatrixWrite, BidMatrixWriteList
 
 
 __all__ = [
@@ -113,9 +101,7 @@ class BidMatrixInformationGraphQL(GraphQLCore):
     bid_matrix: Optional[SequenceGraphQL] = Field(None, alias="bidMatrix")
     linked_time_series: Optional[list[TimeSeriesGraphQL]] = Field(None, alias="linkedTimeSeries")
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
-    underlying_bid_matrices: Optional[list[BidMatrixGraphQL]] = Field(
-        default=None, repr=False, alias="underlyingBidMatrices"
-    )
+    underlying_bid_matrices: Optional[list[BidMatrixGraphQL]] = Field(default=None, repr=False, alias="underlyingBidMatrices")
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -172,9 +158,7 @@ class BidMatrixInformation(BidMatrix):
     node_type: Union[dm.DirectRelationReference, None] = None
     linked_time_series: Optional[list[Union[TimeSeries, str]]] = Field(None, alias="linkedTimeSeries")
     alerts: Optional[list[Union[Alert, str, dm.NodeId]]] = Field(default=None, repr=False)
-    underlying_bid_matrices: Optional[list[Union[BidMatrix, str, dm.NodeId]]] = Field(
-        default=None, repr=False, alias="underlyingBidMatrices"
-    )
+    underlying_bid_matrices: Optional[list[Union[BidMatrix, str, dm.NodeId]]] = Field(default=None, repr=False, alias="underlyingBidMatrices")
 
     @field_validator("alerts", "underlying_bid_matrices", mode="before")
     @classmethod
@@ -186,6 +170,7 @@ class BidMatrixInformation(BidMatrix):
     def as_write(self) -> BidMatrixInformationWrite:
         """Convert this read version of bid matrix information to the writing version."""
         return BidMatrixInformationWrite.model_validate(as_write_args(self))
+
 
 
 class BidMatrixInformationWrite(BidMatrixWrite):
@@ -203,25 +188,15 @@ class BidMatrixInformationWrite(BidMatrixWrite):
         alerts: An array of calculation level Alerts.
         underlying_bid_matrices: An array of intermediate BidMatrices.
     """
-
-    _container_fields: ClassVar[tuple[str, ...]] = (
-        "bid_matrix",
-        "linked_time_series",
-        "state",
-    )
-    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (
-        ("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")),
-        ("underlying_bid_matrices", dm.DirectRelationReference("power_ops_types", "intermediateBidMatrix")),
-    )
+    _container_fields: ClassVar[tuple[str, ...]] = ("bid_matrix", "linked_time_series", "state",)
+    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")), ("underlying_bid_matrices", dm.DirectRelationReference("power_ops_types", "intermediateBidMatrix")),)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BidMatrixInformation", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
     linked_time_series: Optional[list[Union[TimeSeriesWrite, str]]] = Field(None, alias="linkedTimeSeries")
     alerts: Optional[list[Union[AlertWrite, str, dm.NodeId]]] = Field(default=None, repr=False)
-    underlying_bid_matrices: Optional[list[Union[BidMatrixWrite, str, dm.NodeId]]] = Field(
-        default=None, repr=False, alias="underlyingBidMatrices"
-    )
+    underlying_bid_matrices: Optional[list[Union[BidMatrixWrite, str, dm.NodeId]]] = Field(default=None, repr=False, alias="underlyingBidMatrices")
 
     @field_validator("alerts", "underlying_bid_matrices", mode="before")
     def as_node_id(cls, value: Any) -> Any:
@@ -238,51 +213,36 @@ class BidMatrixInformationList(DomainModelList[BidMatrixInformation]):
     """List of bid matrix information in the read version."""
 
     _INSTANCE = BidMatrixInformation
-
     def as_write(self) -> BidMatrixInformationWriteList:
         """Convert these read versions of bid matrix information to the writing versions."""
         return BidMatrixInformationWriteList([node.as_write() for node in self.data])
 
+
     @property
     def alerts(self) -> AlertList:
         from ._alert import Alert, AlertList
-
         return AlertList([item for items in self.data for item in items.alerts or [] if isinstance(item, Alert)])
 
     @property
     def underlying_bid_matrices(self) -> BidMatrixList:
         from ._bid_matrix import BidMatrix, BidMatrixList
-
-        return BidMatrixList(
-            [item for items in self.data for item in items.underlying_bid_matrices or [] if isinstance(item, BidMatrix)]
-        )
+        return BidMatrixList([item for items in self.data for item in items.underlying_bid_matrices or [] if isinstance(item, BidMatrix)])
 
 
 class BidMatrixInformationWriteList(DomainModelWriteList[BidMatrixInformationWrite]):
     """List of bid matrix information in the writing version."""
 
     _INSTANCE = BidMatrixInformationWrite
-
     @property
     def alerts(self) -> AlertWriteList:
         from ._alert import AlertWrite, AlertWriteList
-
-        return AlertWriteList(
-            [item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)]
-        )
+        return AlertWriteList([item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)])
 
     @property
     def underlying_bid_matrices(self) -> BidMatrixWriteList:
         from ._bid_matrix import BidMatrixWrite, BidMatrixWriteList
+        return BidMatrixWriteList([item for items in self.data for item in items.underlying_bid_matrices or [] if isinstance(item, BidMatrixWrite)])
 
-        return BidMatrixWriteList(
-            [
-                item
-                for items in self.data
-                for item in items.underlying_bid_matrices or []
-                if isinstance(item, BidMatrixWrite)
-            ]
-        )
 
 
 def _create_bid_matrix_information_filter(
@@ -375,23 +335,19 @@ class _BidMatrixInformationQuery(NodeQueryCore[T_DomainModelList, BidMatrixInfor
         self.space = StringFilter(self, ["node", "space"])
         self.external_id = StringFilter(self, ["node", "externalId"])
         self.state = StringFilter(self, self._view_id.as_property_ref("state"))
-        self._filter_classes.extend(
-            [
-                self.space,
-                self.external_id,
-                self.state,
-            ]
-        )
-        self.linked_time_series = TimeSeriesReferenceAPI(
-            client,
-            lambda limit: [
-                ts if isinstance(ts, str) else ts.external_id  # type: ignore[misc]
-                for item in self._list(limit=limit)
-                if item.linked_time_series is not None
-                for ts in item.linked_time_series
-                if ts is not None and (isinstance(ts, str) or ts.external_id is not None)
-            ],
-        )
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.state,
+        ])
+        self.linked_time_series = TimeSeriesReferenceAPI(client,  lambda limit: [
+            ts if isinstance(ts, str) else ts.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.linked_time_series is not None
+            for ts in item.linked_time_series
+            if ts is not None and
+               (isinstance(ts, str) or ts.external_id is not None)
+        ])
 
     def list_bid_matrix_information(self, limit: int = DEFAULT_QUERY_LIMIT) -> BidMatrixInformationList:
         return self._list(limit=limit)

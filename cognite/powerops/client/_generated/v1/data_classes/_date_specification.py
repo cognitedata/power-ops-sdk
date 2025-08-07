@@ -33,6 +33,7 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     NodeQueryCore,
     StringFilter,
     ViewPropertyId,
+
 )
 
 
@@ -48,9 +49,7 @@ __all__ = [
 
 
 DateSpecificationTextFields = Literal["external_id", "name", "processing_timezone", "resulting_timezone", "floor_frame"]
-DateSpecificationFields = Literal[
-    "external_id", "name", "processing_timezone", "resulting_timezone", "floor_frame", "shift_definition"
-]
+DateSpecificationFields = Literal["external_id", "name", "processing_timezone", "resulting_timezone", "floor_frame", "shift_definition"]
 
 _DATESPECIFICATION_PROPERTIES_BY_FIELD = {
     "external_id": "externalId",
@@ -97,6 +96,8 @@ class DateSpecificationGraphQL(GraphQLCore):
             )
         return values
 
+
+
     def as_read(self) -> DateSpecification:
         """Convert this GraphQL format of date specification to the reading format."""
         return DateSpecification.model_validate(as_read_args(self))
@@ -125,18 +126,18 @@ class DateSpecification(DomainModel):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "DateSpecification", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "DateSpecification"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "DateSpecification")
     name: str
     processing_timezone: Optional[str] = Field(None, alias="processingTimezone")
     resulting_timezone: Optional[str] = Field(None, alias="resultingTimezone")
     floor_frame: Optional[str] = Field(None, alias="floorFrame")
     shift_definition: Optional[dict] = Field(None, alias="shiftDefinition")
 
+
     def as_write(self) -> DateSpecificationWrite:
         """Convert this read version of date specification to the writing version."""
         return DateSpecificationWrite.model_validate(as_write_args(self))
+
 
 
 class DateSpecificationWrite(DomainModelWrite):
@@ -154,21 +155,12 @@ class DateSpecificationWrite(DomainModelWrite):
         floor_frame: TODO description
         shift_definition: TODO description
     """
-
-    _container_fields: ClassVar[tuple[str, ...]] = (
-        "floor_frame",
-        "name",
-        "processing_timezone",
-        "resulting_timezone",
-        "shift_definition",
-    )
+    _container_fields: ClassVar[tuple[str, ...]] = ("floor_frame", "name", "processing_timezone", "resulting_timezone", "shift_definition",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "DateSpecification", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
-        "power_ops_types", "DateSpecification"
-    )
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "DateSpecification")
     name: str
     processing_timezone: Optional[str] = Field("UTC", alias="processingTimezone")
     resulting_timezone: Optional[str] = Field("UTC", alias="resultingTimezone")
@@ -176,14 +168,15 @@ class DateSpecificationWrite(DomainModelWrite):
     shift_definition: Optional[dict] = Field(None, alias="shiftDefinition")
 
 
+
 class DateSpecificationList(DomainModelList[DateSpecification]):
     """List of date specifications in the read version."""
 
     _INSTANCE = DateSpecification
-
     def as_write(self) -> DateSpecificationWriteList:
         """Convert these read versions of date specification to the writing versions."""
         return DateSpecificationWriteList([node.as_write() for node in self.data])
+
 
 
 class DateSpecificationWriteList(DomainModelWriteList[DateSpecificationWrite]):
@@ -218,9 +211,7 @@ def _create_date_specification_filter(
     if processing_timezone and isinstance(processing_timezone, list):
         filters.append(dm.filters.In(view_id.as_property_ref("processingTimezone"), values=processing_timezone))
     if processing_timezone_prefix is not None:
-        filters.append(
-            dm.filters.Prefix(view_id.as_property_ref("processingTimezone"), value=processing_timezone_prefix)
-        )
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("processingTimezone"), value=processing_timezone_prefix))
     if isinstance(resulting_timezone, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("resultingTimezone"), value=resulting_timezone))
     if resulting_timezone and isinstance(resulting_timezone, list):
@@ -281,16 +272,14 @@ class _DateSpecificationQuery(NodeQueryCore[T_DomainModelList, DateSpecification
         self.processing_timezone = StringFilter(self, self._view_id.as_property_ref("processingTimezone"))
         self.resulting_timezone = StringFilter(self, self._view_id.as_property_ref("resultingTimezone"))
         self.floor_frame = StringFilter(self, self._view_id.as_property_ref("floorFrame"))
-        self._filter_classes.extend(
-            [
-                self.space,
-                self.external_id,
-                self.name,
-                self.processing_timezone,
-                self.resulting_timezone,
-                self.floor_frame,
-            ]
-        )
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.name,
+            self.processing_timezone,
+            self.resulting_timezone,
+            self.floor_frame,
+        ])
 
     def list_date_specification(self, limit: int = DEFAULT_QUERY_LIMIT) -> DateSpecificationList:
         return self._list(limit=limit)

@@ -47,19 +47,9 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     FloatFilter,
     IntFilter,
 )
-from cognite.powerops.client._generated.v1.data_classes._plant_water_value_based import (
-    PlantWaterValueBased,
-    PlantWaterValueBasedWrite,
-)
-
+from cognite.powerops.client._generated.v1.data_classes._plant_water_value_based import PlantWaterValueBased, PlantWaterValueBasedWrite
 if TYPE_CHECKING:
-    from cognite.powerops.client._generated.v1.data_classes._generator import (
-        Generator,
-        GeneratorList,
-        GeneratorGraphQL,
-        GeneratorWrite,
-        GeneratorWriteList,
-    )
+    from cognite.powerops.client._generated.v1.data_classes._generator import Generator, GeneratorList, GeneratorGraphQL, GeneratorWrite, GeneratorWriteList
 
 
 __all__ = [
@@ -73,39 +63,8 @@ __all__ = [
 ]
 
 
-PlantInformationTextFields = Literal[
-    "external_id",
-    "name",
-    "display_name",
-    "asset_type",
-    "production_max_time_series",
-    "production_min_time_series",
-    "water_value_time_series",
-    "feeding_fee_time_series",
-    "outlet_level_time_series",
-    "inlet_level_time_series",
-    "head_direct_time_series",
-]
-PlantInformationFields = Literal[
-    "external_id",
-    "name",
-    "display_name",
-    "ordering",
-    "asset_type",
-    "head_loss_factor",
-    "outlet_level",
-    "production_max",
-    "production_min",
-    "penstock_head_loss_factors",
-    "connection_losses",
-    "production_max_time_series",
-    "production_min_time_series",
-    "water_value_time_series",
-    "feeding_fee_time_series",
-    "outlet_level_time_series",
-    "inlet_level_time_series",
-    "head_direct_time_series",
-]
+PlantInformationTextFields = Literal["external_id", "name", "display_name", "asset_type", "production_max_time_series", "production_min_time_series", "water_value_time_series", "feeding_fee_time_series", "outlet_level_time_series", "inlet_level_time_series", "head_direct_time_series"]
+PlantInformationFields = Literal["external_id", "name", "display_name", "ordering", "asset_type", "head_loss_factor", "outlet_level", "production_max", "production_min", "penstock_head_loss_factors", "connection_losses", "production_max_time_series", "production_min_time_series", "water_value_time_series", "feeding_fee_time_series", "outlet_level_time_series", "inlet_level_time_series", "head_direct_time_series"]
 
 _PLANTINFORMATION_PROPERTIES_BY_FIELD = {
     "external_id": "externalId",
@@ -190,6 +149,7 @@ class PlantInformationGraphQL(GraphQLCore):
             )
         return values
 
+
     @field_validator("generators", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -252,6 +212,7 @@ class PlantInformation(PlantWaterValueBased):
         return PlantInformationWrite.model_validate(as_write_args(self))
 
 
+
 class PlantInformationWrite(PlantWaterValueBasedWrite):
     """This represents the writing version of plant information.
 
@@ -280,65 +241,39 @@ class PlantInformationWrite(PlantWaterValueBasedWrite):
         head_direct_time_series: The head direct time series field.
         generators: The generator field.
     """
-
-    _container_fields: ClassVar[tuple[str, ...]] = (
-        "asset_type",
-        "connection_losses",
-        "display_name",
-        "feeding_fee_time_series",
-        "head_direct_time_series",
-        "head_loss_factor",
-        "inlet_level_time_series",
-        "name",
-        "ordering",
-        "outlet_level",
-        "outlet_level_time_series",
-        "penstock_head_loss_factors",
-        "production_max",
-        "production_max_time_series",
-        "production_min",
-        "production_min_time_series",
-        "water_value_time_series",
-    )
-    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (
-        ("generators", dm.DirectRelationReference("power_ops_types", "isSubAssetOf")),
-    )
+    _container_fields: ClassVar[tuple[str, ...]] = ("asset_type", "connection_losses", "display_name", "feeding_fee_time_series", "head_direct_time_series", "head_loss_factor", "inlet_level_time_series", "name", "ordering", "outlet_level", "outlet_level_time_series", "penstock_head_loss_factors", "production_max", "production_max_time_series", "production_min", "production_min_time_series", "water_value_time_series",)
+    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("generators", dm.DirectRelationReference("power_ops_types", "isSubAssetOf")),)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PlantInformation", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
 
 
+
 class PlantInformationList(DomainModelList[PlantInformation]):
     """List of plant information in the read version."""
 
     _INSTANCE = PlantInformation
-
     def as_write(self) -> PlantInformationWriteList:
         """Convert these read versions of plant information to the writing versions."""
         return PlantInformationWriteList([node.as_write() for node in self.data])
 
+
     @property
     def generators(self) -> GeneratorList:
         from ._generator import Generator, GeneratorList
-
-        return GeneratorList(
-            [item for items in self.data for item in items.generators or [] if isinstance(item, Generator)]
-        )
+        return GeneratorList([item for items in self.data for item in items.generators or [] if isinstance(item, Generator)])
 
 
 class PlantInformationWriteList(DomainModelWriteList[PlantInformationWrite]):
     """List of plant information in the writing version."""
 
     _INSTANCE = PlantInformationWrite
-
     @property
     def generators(self) -> GeneratorWriteList:
         from ._generator import GeneratorWrite, GeneratorWriteList
+        return GeneratorWriteList([item for items in self.data for item in items.generators or [] if isinstance(item, GeneratorWrite)])
 
-        return GeneratorWriteList(
-            [item for items in self.data for item in items.generators or [] if isinstance(item, GeneratorWrite)]
-        )
 
 
 def _create_plant_information_filter(
@@ -387,29 +322,15 @@ def _create_plant_information_filter(
     if asset_type_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("assetType"), value=asset_type_prefix))
     if min_head_loss_factor is not None or max_head_loss_factor is not None:
-        filters.append(
-            dm.filters.Range(
-                view_id.as_property_ref("headLossFactor"), gte=min_head_loss_factor, lte=max_head_loss_factor
-            )
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("headLossFactor"), gte=min_head_loss_factor, lte=max_head_loss_factor))
     if min_outlet_level is not None or max_outlet_level is not None:
-        filters.append(
-            dm.filters.Range(view_id.as_property_ref("outletLevel"), gte=min_outlet_level, lte=max_outlet_level)
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("outletLevel"), gte=min_outlet_level, lte=max_outlet_level))
     if min_production_max is not None or max_production_max is not None:
-        filters.append(
-            dm.filters.Range(view_id.as_property_ref("productionMax"), gte=min_production_max, lte=max_production_max)
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("productionMax"), gte=min_production_max, lte=max_production_max))
     if min_production_min is not None or max_production_min is not None:
-        filters.append(
-            dm.filters.Range(view_id.as_property_ref("productionMin"), gte=min_production_min, lte=max_production_min)
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("productionMin"), gte=min_production_min, lte=max_production_min))
     if min_connection_losses is not None or max_connection_losses is not None:
-        filters.append(
-            dm.filters.Range(
-                view_id.as_property_ref("connectionLosses"), gte=min_connection_losses, lte=max_connection_losses
-            )
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("connectionLosses"), gte=min_connection_losses, lte=max_connection_losses))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
@@ -478,105 +399,61 @@ class _PlantInformationQuery(NodeQueryCore[T_DomainModelList, PlantInformationLi
         self.production_max = FloatFilter(self, self._view_id.as_property_ref("productionMax"))
         self.production_min = FloatFilter(self, self._view_id.as_property_ref("productionMin"))
         self.connection_losses = FloatFilter(self, self._view_id.as_property_ref("connectionLosses"))
-        self._filter_classes.extend(
-            [
-                self.space,
-                self.external_id,
-                self.name,
-                self.display_name,
-                self.ordering,
-                self.asset_type,
-                self.head_loss_factor,
-                self.outlet_level,
-                self.production_max,
-                self.production_min,
-                self.connection_losses,
-            ]
-        )
-        self.production_max_time_series = TimeSeriesReferenceAPI(
-            client,
-            lambda limit: [
-                item.production_max_time_series if isinstance(item.production_max_time_series, str) else item.production_max_time_series.external_id  # type: ignore[misc]
-                for item in self._list(limit=limit)
-                if item.production_max_time_series is not None
-                and (
-                    isinstance(item.production_max_time_series, str)
-                    or item.production_max_time_series.external_id is not None
-                )
-            ],
-        )
-        self.production_min_time_series = TimeSeriesReferenceAPI(
-            client,
-            lambda limit: [
-                item.production_min_time_series if isinstance(item.production_min_time_series, str) else item.production_min_time_series.external_id  # type: ignore[misc]
-                for item in self._list(limit=limit)
-                if item.production_min_time_series is not None
-                and (
-                    isinstance(item.production_min_time_series, str)
-                    or item.production_min_time_series.external_id is not None
-                )
-            ],
-        )
-        self.water_value_time_series = TimeSeriesReferenceAPI(
-            client,
-            lambda limit: [
-                item.water_value_time_series if isinstance(item.water_value_time_series, str) else item.water_value_time_series.external_id  # type: ignore[misc]
-                for item in self._list(limit=limit)
-                if item.water_value_time_series is not None
-                and (
-                    isinstance(item.water_value_time_series, str)
-                    or item.water_value_time_series.external_id is not None
-                )
-            ],
-        )
-        self.feeding_fee_time_series = TimeSeriesReferenceAPI(
-            client,
-            lambda limit: [
-                item.feeding_fee_time_series if isinstance(item.feeding_fee_time_series, str) else item.feeding_fee_time_series.external_id  # type: ignore[misc]
-                for item in self._list(limit=limit)
-                if item.feeding_fee_time_series is not None
-                and (
-                    isinstance(item.feeding_fee_time_series, str)
-                    or item.feeding_fee_time_series.external_id is not None
-                )
-            ],
-        )
-        self.outlet_level_time_series = TimeSeriesReferenceAPI(
-            client,
-            lambda limit: [
-                item.outlet_level_time_series if isinstance(item.outlet_level_time_series, str) else item.outlet_level_time_series.external_id  # type: ignore[misc]
-                for item in self._list(limit=limit)
-                if item.outlet_level_time_series is not None
-                and (
-                    isinstance(item.outlet_level_time_series, str)
-                    or item.outlet_level_time_series.external_id is not None
-                )
-            ],
-        )
-        self.inlet_level_time_series = TimeSeriesReferenceAPI(
-            client,
-            lambda limit: [
-                item.inlet_level_time_series if isinstance(item.inlet_level_time_series, str) else item.inlet_level_time_series.external_id  # type: ignore[misc]
-                for item in self._list(limit=limit)
-                if item.inlet_level_time_series is not None
-                and (
-                    isinstance(item.inlet_level_time_series, str)
-                    or item.inlet_level_time_series.external_id is not None
-                )
-            ],
-        )
-        self.head_direct_time_series = TimeSeriesReferenceAPI(
-            client,
-            lambda limit: [
-                item.head_direct_time_series if isinstance(item.head_direct_time_series, str) else item.head_direct_time_series.external_id  # type: ignore[misc]
-                for item in self._list(limit=limit)
-                if item.head_direct_time_series is not None
-                and (
-                    isinstance(item.head_direct_time_series, str)
-                    or item.head_direct_time_series.external_id is not None
-                )
-            ],
-        )
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.name,
+            self.display_name,
+            self.ordering,
+            self.asset_type,
+            self.head_loss_factor,
+            self.outlet_level,
+            self.production_max,
+            self.production_min,
+            self.connection_losses,
+        ])
+        self.production_max_time_series = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.production_max_time_series if isinstance(item.production_max_time_series, str) else item.production_max_time_series.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.production_max_time_series is not None and
+               (isinstance(item.production_max_time_series, str) or item.production_max_time_series.external_id is not None)
+        ])
+        self.production_min_time_series = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.production_min_time_series if isinstance(item.production_min_time_series, str) else item.production_min_time_series.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.production_min_time_series is not None and
+               (isinstance(item.production_min_time_series, str) or item.production_min_time_series.external_id is not None)
+        ])
+        self.water_value_time_series = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.water_value_time_series if isinstance(item.water_value_time_series, str) else item.water_value_time_series.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.water_value_time_series is not None and
+               (isinstance(item.water_value_time_series, str) or item.water_value_time_series.external_id is not None)
+        ])
+        self.feeding_fee_time_series = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.feeding_fee_time_series if isinstance(item.feeding_fee_time_series, str) else item.feeding_fee_time_series.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.feeding_fee_time_series is not None and
+               (isinstance(item.feeding_fee_time_series, str) or item.feeding_fee_time_series.external_id is not None)
+        ])
+        self.outlet_level_time_series = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.outlet_level_time_series if isinstance(item.outlet_level_time_series, str) else item.outlet_level_time_series.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.outlet_level_time_series is not None and
+               (isinstance(item.outlet_level_time_series, str) or item.outlet_level_time_series.external_id is not None)
+        ])
+        self.inlet_level_time_series = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.inlet_level_time_series if isinstance(item.inlet_level_time_series, str) else item.inlet_level_time_series.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.inlet_level_time_series is not None and
+               (isinstance(item.inlet_level_time_series, str) or item.inlet_level_time_series.external_id is not None)
+        ])
+        self.head_direct_time_series = TimeSeriesReferenceAPI(client,  lambda limit: [
+            item.head_direct_time_series if isinstance(item.head_direct_time_series, str) else item.head_direct_time_series.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.head_direct_time_series is not None and
+               (isinstance(item.head_direct_time_series, str) or item.head_direct_time_series.external_id is not None)
+        ])
 
     def list_plant_information(self, limit: int = DEFAULT_QUERY_LIMIT) -> PlantInformationList:
         return self._list(limit=limit)

@@ -93,6 +93,8 @@ class PowerAssetGraphQL(GraphQLCore):
             )
         return values
 
+
+
     def as_read(self) -> PowerAsset:
         """Convert this GraphQL format of power asset to the reading format."""
         return PowerAsset.model_validate(as_read_args(self))
@@ -126,9 +128,11 @@ class PowerAsset(DomainModel):
     ordering: Optional[int] = None
     asset_type: Optional[str] = Field(None, alias="assetType")
 
+
     def as_write(self) -> PowerAssetWrite:
         """Convert this read version of power asset to the writing version."""
         return PowerAssetWrite.model_validate(as_write_args(self))
+
 
 
 class PowerAssetWrite(DomainModelWrite):
@@ -145,13 +149,7 @@ class PowerAssetWrite(DomainModelWrite):
         ordering: The ordering of the asset
         asset_type: The type of the asset
     """
-
-    _container_fields: ClassVar[tuple[str, ...]] = (
-        "asset_type",
-        "display_name",
-        "name",
-        "ordering",
-    )
+    _container_fields: ClassVar[tuple[str, ...]] = ("asset_type", "display_name", "name", "ordering",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PowerAsset", "1")
 
@@ -163,14 +161,15 @@ class PowerAssetWrite(DomainModelWrite):
     asset_type: Optional[str] = Field(None, alias="assetType")
 
 
+
 class PowerAssetList(DomainModelList[PowerAsset]):
     """List of power assets in the read version."""
 
     _INSTANCE = PowerAsset
-
     def as_write(self) -> PowerAssetWriteList:
         """Convert these read versions of power asset to the writing versions."""
         return PowerAssetWriteList([node.as_write() for node in self.data])
+
 
 
 class PowerAssetWriteList(DomainModelWriteList[PowerAssetWrite]):
@@ -262,16 +261,14 @@ class _PowerAssetQuery(NodeQueryCore[T_DomainModelList, PowerAssetList]):
         self.display_name = StringFilter(self, self._view_id.as_property_ref("displayName"))
         self.ordering = IntFilter(self, self._view_id.as_property_ref("ordering"))
         self.asset_type = StringFilter(self, self._view_id.as_property_ref("assetType"))
-        self._filter_classes.extend(
-            [
-                self.space,
-                self.external_id,
-                self.name,
-                self.display_name,
-                self.ordering,
-                self.asset_type,
-            ]
-        )
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.name,
+            self.display_name,
+            self.ordering,
+            self.asset_type,
+        ])
 
     def list_power_asset(self, limit: int = DEFAULT_QUERY_LIMIT) -> PowerAssetList:
         return self._list(limit=limit)

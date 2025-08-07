@@ -52,40 +52,12 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     DirectRelationFilter,
     FloatFilter,
 )
-from cognite.powerops.client._generated.v1.data_classes._bid_matrix_information import (
-    BidMatrixInformation,
-    BidMatrixInformationWrite,
-)
-
+from cognite.powerops.client._generated.v1.data_classes._bid_matrix_information import BidMatrixInformation, BidMatrixInformationWrite
 if TYPE_CHECKING:
-    from cognite.powerops.client._generated.v1.data_classes._alert import (
-        Alert,
-        AlertList,
-        AlertGraphQL,
-        AlertWrite,
-        AlertWriteList,
-    )
-    from cognite.powerops.client._generated.v1.data_classes._bid_matrix import (
-        BidMatrix,
-        BidMatrixList,
-        BidMatrixGraphQL,
-        BidMatrixWrite,
-        BidMatrixWriteList,
-    )
-    from cognite.powerops.client._generated.v1.data_classes._partial_bid_configuration import (
-        PartialBidConfiguration,
-        PartialBidConfigurationList,
-        PartialBidConfigurationGraphQL,
-        PartialBidConfigurationWrite,
-        PartialBidConfigurationWriteList,
-    )
-    from cognite.powerops.client._generated.v1.data_classes._power_asset import (
-        PowerAsset,
-        PowerAssetList,
-        PowerAssetGraphQL,
-        PowerAssetWrite,
-        PowerAssetWriteList,
-    )
+    from cognite.powerops.client._generated.v1.data_classes._alert import Alert, AlertList, AlertGraphQL, AlertWrite, AlertWriteList
+    from cognite.powerops.client._generated.v1.data_classes._bid_matrix import BidMatrix, BidMatrixList, BidMatrixGraphQL, BidMatrixWrite, BidMatrixWriteList
+    from cognite.powerops.client._generated.v1.data_classes._partial_bid_configuration import PartialBidConfiguration, PartialBidConfigurationList, PartialBidConfigurationGraphQL, PartialBidConfigurationWrite, PartialBidConfigurationWriteList
+    from cognite.powerops.client._generated.v1.data_classes._power_asset import PowerAsset, PowerAssetList, PowerAssetGraphQL, PowerAssetWrite, PowerAssetWriteList
 
 
 __all__ = [
@@ -136,14 +108,10 @@ class PartialBidMatrixInformationGraphQL(GraphQLCore):
     bid_matrix: Optional[SequenceGraphQL] = Field(None, alias="bidMatrix")
     linked_time_series: Optional[list[TimeSeriesGraphQL]] = Field(None, alias="linkedTimeSeries")
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
-    underlying_bid_matrices: Optional[list[BidMatrixGraphQL]] = Field(
-        default=None, repr=False, alias="underlyingBidMatrices"
-    )
+    underlying_bid_matrices: Optional[list[BidMatrixGraphQL]] = Field(default=None, repr=False, alias="underlyingBidMatrices")
     power_asset: Optional[PowerAssetGraphQL] = Field(default=None, repr=False, alias="powerAsset")
     resource_cost: Optional[float] = Field(None, alias="resourceCost")
-    partial_bid_configuration: Optional[PartialBidConfigurationGraphQL] = Field(
-        default=None, repr=False, alias="partialBidConfiguration"
-    )
+    partial_bid_configuration: Optional[PartialBidConfigurationGraphQL] = Field(default=None, repr=False, alias="partialBidConfiguration")
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -203,10 +171,7 @@ class PartialBidMatrixInformation(BidMatrixInformation):
     node_type: Union[dm.DirectRelationReference, None] = None
     power_asset: Union[PowerAsset, str, dm.NodeId, None] = Field(default=None, repr=False, alias="powerAsset")
     resource_cost: Optional[float] = Field(None, alias="resourceCost")
-    partial_bid_configuration: Union[PartialBidConfiguration, str, dm.NodeId, None] = Field(
-        default=None, repr=False, alias="partialBidConfiguration"
-    )
-
+    partial_bid_configuration: Union[PartialBidConfiguration, str, dm.NodeId, None] = Field(default=None, repr=False, alias="partialBidConfiguration")
     @field_validator("power_asset", "partial_bid_configuration", mode="before")
     @classmethod
     def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
@@ -222,6 +187,7 @@ class PartialBidMatrixInformation(BidMatrixInformation):
     def as_write(self) -> PartialBidMatrixInformationWrite:
         """Convert this read version of partial bid matrix information to the writing version."""
         return PartialBidMatrixInformationWrite.model_validate(as_write_args(self))
+
 
 
 class PartialBidMatrixInformationWrite(BidMatrixInformationWrite):
@@ -242,32 +208,16 @@ class PartialBidMatrixInformationWrite(BidMatrixInformationWrite):
         resource_cost: The resource cost field.
         partial_bid_configuration: The partial bid configuration field.
     """
-
-    _container_fields: ClassVar[tuple[str, ...]] = (
-        "bid_matrix",
-        "linked_time_series",
-        "partial_bid_configuration",
-        "power_asset",
-        "resource_cost",
-        "state",
-    )
-    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (
-        ("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")),
-        ("underlying_bid_matrices", dm.DirectRelationReference("power_ops_types", "intermediateBidMatrix")),
-    )
-    _direct_relations: ClassVar[tuple[str, ...]] = (
-        "partial_bid_configuration",
-        "power_asset",
-    )
+    _container_fields: ClassVar[tuple[str, ...]] = ("bid_matrix", "linked_time_series", "partial_bid_configuration", "power_asset", "resource_cost", "state",)
+    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")), ("underlying_bid_matrices", dm.DirectRelationReference("power_ops_types", "intermediateBidMatrix")),)
+    _direct_relations: ClassVar[tuple[str, ...]] = ("partial_bid_configuration", "power_asset",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "PartialBidMatrixInformation", "1")
 
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
     power_asset: Union[PowerAssetWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="powerAsset")
     resource_cost: Optional[float] = Field(None, alias="resourceCost")
-    partial_bid_configuration: Union[PartialBidConfigurationWrite, str, dm.NodeId, None] = Field(
-        default=None, repr=False, alias="partialBidConfiguration"
-    )
+    partial_bid_configuration: Union[PartialBidConfigurationWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="partialBidConfiguration")
 
     @field_validator("power_asset", "partial_bid_configuration", mode="before")
     def as_node_id(cls, value: Any) -> Any:
@@ -284,113 +234,62 @@ class PartialBidMatrixInformationList(DomainModelList[PartialBidMatrixInformatio
     """List of partial bid matrix information in the read version."""
 
     _INSTANCE = PartialBidMatrixInformation
-
     def as_write(self) -> PartialBidMatrixInformationWriteList:
         """Convert these read versions of partial bid matrix information to the writing versions."""
         return PartialBidMatrixInformationWriteList([node.as_write() for node in self.data])
 
+
     @property
     def alerts(self) -> AlertList:
         from ._alert import Alert, AlertList
-
         return AlertList([item for items in self.data for item in items.alerts or [] if isinstance(item, Alert)])
 
     @property
     def underlying_bid_matrices(self) -> BidMatrixList:
         from ._bid_matrix import BidMatrix, BidMatrixList
-
-        return BidMatrixList(
-            [item for items in self.data for item in items.underlying_bid_matrices or [] if isinstance(item, BidMatrix)]
-        )
+        return BidMatrixList([item for items in self.data for item in items.underlying_bid_matrices or [] if isinstance(item, BidMatrix)])
 
     @property
     def power_asset(self) -> PowerAssetList:
         from ._power_asset import PowerAsset, PowerAssetList
-
         return PowerAssetList([item.power_asset for item in self.data if isinstance(item.power_asset, PowerAsset)])
-
     @property
     def partial_bid_configuration(self) -> PartialBidConfigurationList:
         from ._partial_bid_configuration import PartialBidConfiguration, PartialBidConfigurationList
-
-        return PartialBidConfigurationList(
-            [
-                item.partial_bid_configuration
-                for item in self.data
-                if isinstance(item.partial_bid_configuration, PartialBidConfiguration)
-            ]
-        )
-
+        return PartialBidConfigurationList([item.partial_bid_configuration for item in self.data if isinstance(item.partial_bid_configuration, PartialBidConfiguration)])
 
 class PartialBidMatrixInformationWriteList(DomainModelWriteList[PartialBidMatrixInformationWrite]):
     """List of partial bid matrix information in the writing version."""
 
     _INSTANCE = PartialBidMatrixInformationWrite
-
     @property
     def alerts(self) -> AlertWriteList:
         from ._alert import AlertWrite, AlertWriteList
-
-        return AlertWriteList(
-            [item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)]
-        )
+        return AlertWriteList([item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)])
 
     @property
     def underlying_bid_matrices(self) -> BidMatrixWriteList:
         from ._bid_matrix import BidMatrixWrite, BidMatrixWriteList
-
-        return BidMatrixWriteList(
-            [
-                item
-                for items in self.data
-                for item in items.underlying_bid_matrices or []
-                if isinstance(item, BidMatrixWrite)
-            ]
-        )
+        return BidMatrixWriteList([item for items in self.data for item in items.underlying_bid_matrices or [] if isinstance(item, BidMatrixWrite)])
 
     @property
     def power_asset(self) -> PowerAssetWriteList:
         from ._power_asset import PowerAssetWrite, PowerAssetWriteList
-
-        return PowerAssetWriteList(
-            [item.power_asset for item in self.data if isinstance(item.power_asset, PowerAssetWrite)]
-        )
-
+        return PowerAssetWriteList([item.power_asset for item in self.data if isinstance(item.power_asset, PowerAssetWrite)])
     @property
     def partial_bid_configuration(self) -> PartialBidConfigurationWriteList:
         from ._partial_bid_configuration import PartialBidConfigurationWrite, PartialBidConfigurationWriteList
-
-        return PartialBidConfigurationWriteList(
-            [
-                item.partial_bid_configuration
-                for item in self.data
-                if isinstance(item.partial_bid_configuration, PartialBidConfigurationWrite)
-            ]
-        )
+        return PartialBidConfigurationWriteList([item.partial_bid_configuration for item in self.data if isinstance(item.partial_bid_configuration, PartialBidConfigurationWrite)])
 
 
 def _create_partial_bid_matrix_information_filter(
     view_id: dm.ViewId,
     state: str | list[str] | None = None,
     state_prefix: str | None = None,
-    power_asset: (
-        str
-        | tuple[str, str]
-        | dm.NodeId
-        | dm.DirectRelationReference
-        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-        | None
-    ) = None,
+    power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
     min_resource_cost: float | None = None,
     max_resource_cost: float | None = None,
-    partial_bid_configuration: (
-        str
-        | tuple[str, str]
-        | dm.NodeId
-        | dm.DirectRelationReference
-        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-        | None
-    ) = None,
+    partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -404,41 +303,14 @@ def _create_partial_bid_matrix_information_filter(
         filters.append(dm.filters.Prefix(view_id.as_property_ref("state"), value=state_prefix))
     if isinstance(power_asset, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(power_asset):
         filters.append(dm.filters.Equals(view_id.as_property_ref("powerAsset"), value=as_instance_dict_id(power_asset)))
-    if (
-        power_asset
-        and isinstance(power_asset, Sequence)
-        and not isinstance(power_asset, str)
-        and not is_tuple_id(power_asset)
-    ):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("powerAsset"), values=[as_instance_dict_id(item) for item in power_asset]
-            )
-        )
+    if power_asset and isinstance(power_asset, Sequence) and not isinstance(power_asset, str) and not is_tuple_id(power_asset):
+        filters.append(dm.filters.In(view_id.as_property_ref("powerAsset"), values=[as_instance_dict_id(item) for item in power_asset]))
     if min_resource_cost is not None or max_resource_cost is not None:
-        filters.append(
-            dm.filters.Range(view_id.as_property_ref("resourceCost"), gte=min_resource_cost, lte=max_resource_cost)
-        )
-    if isinstance(partial_bid_configuration, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(
-        partial_bid_configuration
-    ):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("partialBidConfiguration"), value=as_instance_dict_id(partial_bid_configuration)
-            )
-        )
-    if (
-        partial_bid_configuration
-        and isinstance(partial_bid_configuration, Sequence)
-        and not isinstance(partial_bid_configuration, str)
-        and not is_tuple_id(partial_bid_configuration)
-    ):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("partialBidConfiguration"),
-                values=[as_instance_dict_id(item) for item in partial_bid_configuration],
-            )
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("resourceCost"), gte=min_resource_cost, lte=max_resource_cost))
+    if isinstance(partial_bid_configuration, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(partial_bid_configuration):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("partialBidConfiguration"), value=as_instance_dict_id(partial_bid_configuration)))
+    if partial_bid_configuration and isinstance(partial_bid_configuration, Sequence) and not isinstance(partial_bid_configuration, str) and not is_tuple_id(partial_bid_configuration):
+        filters.append(dm.filters.In(view_id.as_property_ref("partialBidConfiguration"), values=[as_instance_dict_id(item) for item in partial_bid_configuration]))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
@@ -527,10 +399,7 @@ class _PartialBidMatrixInformationQuery(NodeQueryCore[T_DomainModelList, Partial
                 connection_property=ViewPropertyId(self._view_id, "powerAsset"),
             )
 
-        if (
-            _PartialBidConfigurationQuery not in created_types
-            and len(creation_path) + 1 < global_config.max_select_depth
-        ):
+        if _PartialBidConfigurationQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.partial_bid_configuration = _PartialBidConfigurationQuery(
                 created_types.copy(),
                 self._creation_path,
@@ -549,29 +418,23 @@ class _PartialBidMatrixInformationQuery(NodeQueryCore[T_DomainModelList, Partial
         self.state = StringFilter(self, self._view_id.as_property_ref("state"))
         self.power_asset_filter = DirectRelationFilter(self, self._view_id.as_property_ref("powerAsset"))
         self.resource_cost = FloatFilter(self, self._view_id.as_property_ref("resourceCost"))
-        self.partial_bid_configuration_filter = DirectRelationFilter(
-            self, self._view_id.as_property_ref("partialBidConfiguration")
-        )
-        self._filter_classes.extend(
-            [
-                self.space,
-                self.external_id,
-                self.state,
-                self.power_asset_filter,
-                self.resource_cost,
-                self.partial_bid_configuration_filter,
-            ]
-        )
-        self.linked_time_series = TimeSeriesReferenceAPI(
-            client,
-            lambda limit: [
-                ts if isinstance(ts, str) else ts.external_id  # type: ignore[misc]
-                for item in self._list(limit=limit)
-                if item.linked_time_series is not None
-                for ts in item.linked_time_series
-                if ts is not None and (isinstance(ts, str) or ts.external_id is not None)
-            ],
-        )
+        self.partial_bid_configuration_filter = DirectRelationFilter(self, self._view_id.as_property_ref("partialBidConfiguration"))
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.state,
+            self.power_asset_filter,
+            self.resource_cost,
+            self.partial_bid_configuration_filter,
+        ])
+        self.linked_time_series = TimeSeriesReferenceAPI(client,  lambda limit: [
+            ts if isinstance(ts, str) else ts.external_id #type: ignore[misc]
+            for item in self._list(limit=limit)
+            if item.linked_time_series is not None
+            for ts in item.linked_time_series
+            if ts is not None and
+               (isinstance(ts, str) or ts.external_id is not None)
+        ])
 
     def list_partial_bid_matrix_information(self, limit: int = DEFAULT_QUERY_LIMIT) -> PartialBidMatrixInformationList:
         return self._list(limit=limit)

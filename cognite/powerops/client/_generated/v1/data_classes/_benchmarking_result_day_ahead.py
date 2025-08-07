@@ -40,22 +40,9 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     FloatFilter,
     TimestampFilter,
 )
-
 if TYPE_CHECKING:
-    from cognite.powerops.client._generated.v1.data_classes._alert import (
-        Alert,
-        AlertList,
-        AlertGraphQL,
-        AlertWrite,
-        AlertWriteList,
-    )
-    from cognite.powerops.client._generated.v1.data_classes._shop_result import (
-        ShopResult,
-        ShopResultList,
-        ShopResultGraphQL,
-        ShopResultWrite,
-        ShopResultWriteList,
-    )
+    from cognite.powerops.client._generated.v1.data_classes._alert import Alert, AlertList, AlertGraphQL, AlertWrite, AlertWriteList
+    from cognite.powerops.client._generated.v1.data_classes._shop_result import ShopResult, ShopResultList, ShopResultGraphQL, ShopResultWrite, ShopResultWriteList
 
 
 __all__ = [
@@ -70,9 +57,7 @@ __all__ = [
 
 
 BenchmarkingResultDayAheadTextFields = Literal["external_id", "name", "workflow_execution_id"]
-BenchmarkingResultDayAheadFields = Literal[
-    "external_id", "name", "workflow_execution_id", "delivery_date", "bid_generated", "is_selected", "value"
-]
+BenchmarkingResultDayAheadFields = Literal["external_id", "name", "workflow_execution_id", "delivery_date", "bid_generated", "is_selected", "value"]
 
 _BENCHMARKINGRESULTDAYAHEAD_PROPERTIES_BY_FIELD = {
     "external_id": "externalId",
@@ -131,6 +116,7 @@ class BenchmarkingResultDayAheadGraphQL(GraphQLCore):
             )
         return values
 
+
     @field_validator("bid_source", "shop_result", "alerts", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
@@ -174,9 +160,7 @@ class BenchmarkingResultDayAhead(DomainModel):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingResultDayAhead", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "BenchmarkingResultDayAhead"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingResultDayAhead")
     name: Optional[str] = None
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     bid_source: Union[str, dm.NodeId, None] = Field(default=None, alias="bidSource")
@@ -186,7 +170,6 @@ class BenchmarkingResultDayAhead(DomainModel):
     is_selected: Optional[bool] = Field(None, alias="isSelected")
     value: Optional[float] = None
     alerts: Optional[list[Union[Alert, str, dm.NodeId]]] = Field(default=None, repr=False)
-
     @field_validator("bid_source", "shop_result", mode="before")
     @classmethod
     def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
@@ -202,6 +185,7 @@ class BenchmarkingResultDayAhead(DomainModel):
     def as_write(self) -> BenchmarkingResultDayAheadWrite:
         """Convert this read version of benchmarking result day ahead to the writing version."""
         return BenchmarkingResultDayAheadWrite.model_validate(as_write_args(self))
+
 
 
 class BenchmarkingResultDayAheadWrite(DomainModelWrite):
@@ -226,31 +210,14 @@ class BenchmarkingResultDayAheadWrite(DomainModelWrite):
             (e. g. if the difference is above some limit)
         alerts: An array of benchmarking calculation level Alerts.
     """
-
-    _container_fields: ClassVar[tuple[str, ...]] = (
-        "bid_generated",
-        "bid_source",
-        "delivery_date",
-        "is_selected",
-        "name",
-        "shop_result",
-        "value",
-        "workflow_execution_id",
-    )
-    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (
-        ("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")),
-    )
-    _direct_relations: ClassVar[tuple[str, ...]] = (
-        "bid_source",
-        "shop_result",
-    )
+    _container_fields: ClassVar[tuple[str, ...]] = ("bid_generated", "bid_source", "delivery_date", "is_selected", "name", "shop_result", "value", "workflow_execution_id",)
+    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")),)
+    _direct_relations: ClassVar[tuple[str, ...]] = ("bid_source", "shop_result",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingResultDayAhead", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
-        "power_ops_types", "BenchmarkingResultDayAhead"
-    )
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "BenchmarkingResultDayAhead")
     name: Optional[str] = None
     workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
     bid_source: Union[str, dm.NodeId, None] = Field(default=None, alias="bidSource")
@@ -276,21 +243,18 @@ class BenchmarkingResultDayAheadList(DomainModelList[BenchmarkingResultDayAhead]
     """List of benchmarking result day aheads in the read version."""
 
     _INSTANCE = BenchmarkingResultDayAhead
-
     def as_write(self) -> BenchmarkingResultDayAheadWriteList:
         """Convert these read versions of benchmarking result day ahead to the writing versions."""
         return BenchmarkingResultDayAheadWriteList([node.as_write() for node in self.data])
 
+
     @property
     def shop_result(self) -> ShopResultList:
         from ._shop_result import ShopResult, ShopResultList
-
         return ShopResultList([item.shop_result for item in self.data if isinstance(item.shop_result, ShopResult)])
-
     @property
     def alerts(self) -> AlertList:
         from ._alert import Alert, AlertList
-
         return AlertList([item for items in self.data for item in items.alerts or [] if isinstance(item, Alert)])
 
 
@@ -298,22 +262,15 @@ class BenchmarkingResultDayAheadWriteList(DomainModelWriteList[BenchmarkingResul
     """List of benchmarking result day aheads in the writing version."""
 
     _INSTANCE = BenchmarkingResultDayAheadWrite
-
     @property
     def shop_result(self) -> ShopResultWriteList:
         from ._shop_result import ShopResultWrite, ShopResultWriteList
-
-        return ShopResultWriteList(
-            [item.shop_result for item in self.data if isinstance(item.shop_result, ShopResultWrite)]
-        )
-
+        return ShopResultWriteList([item.shop_result for item in self.data if isinstance(item.shop_result, ShopResultWrite)])
     @property
     def alerts(self) -> AlertWriteList:
         from ._alert import AlertWrite, AlertWriteList
+        return AlertWriteList([item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)])
 
-        return AlertWriteList(
-            [item for items in self.data for item in items.alerts or [] if isinstance(item, AlertWrite)]
-        )
 
 
 def _create_benchmarking_result_day_ahead_filter(
@@ -322,26 +279,12 @@ def _create_benchmarking_result_day_ahead_filter(
     name_prefix: str | None = None,
     workflow_execution_id: str | list[str] | None = None,
     workflow_execution_id_prefix: str | None = None,
-    bid_source: (
-        str
-        | tuple[str, str]
-        | dm.NodeId
-        | dm.DirectRelationReference
-        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-        | None
-    ) = None,
+    bid_source: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
     min_delivery_date: datetime.date | None = None,
     max_delivery_date: datetime.date | None = None,
     min_bid_generated: datetime.datetime | None = None,
     max_bid_generated: datetime.datetime | None = None,
-    shop_result: (
-        str
-        | tuple[str, str]
-        | dm.NodeId
-        | dm.DirectRelationReference
-        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-        | None
-    ) = None,
+    shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
     is_selected: bool | None = None,
     min_value: float | None = None,
     max_value: float | None = None,
@@ -361,51 +304,19 @@ def _create_benchmarking_result_day_ahead_filter(
     if workflow_execution_id and isinstance(workflow_execution_id, list):
         filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
     if workflow_execution_id_prefix is not None:
-        filters.append(
-            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
-        )
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix))
     if isinstance(bid_source, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(bid_source):
         filters.append(dm.filters.Equals(view_id.as_property_ref("bidSource"), value=as_instance_dict_id(bid_source)))
-    if (
-        bid_source
-        and isinstance(bid_source, Sequence)
-        and not isinstance(bid_source, str)
-        and not is_tuple_id(bid_source)
-    ):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("bidSource"), values=[as_instance_dict_id(item) for item in bid_source]
-            )
-        )
+    if bid_source and isinstance(bid_source, Sequence) and not isinstance(bid_source, str) and not is_tuple_id(bid_source):
+        filters.append(dm.filters.In(view_id.as_property_ref("bidSource"), values=[as_instance_dict_id(item) for item in bid_source]))
     if min_delivery_date is not None or max_delivery_date is not None:
-        filters.append(
-            dm.filters.Range(
-                view_id.as_property_ref("deliveryDate"),
-                gte=min_delivery_date.isoformat() if min_delivery_date else None,
-                lte=max_delivery_date.isoformat() if max_delivery_date else None,
-            )
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("deliveryDate"), gte=min_delivery_date.isoformat() if min_delivery_date else None, lte=max_delivery_date.isoformat() if max_delivery_date else None))
     if min_bid_generated is not None or max_bid_generated is not None:
-        filters.append(
-            dm.filters.Range(
-                view_id.as_property_ref("bidGenerated"),
-                gte=min_bid_generated.isoformat(timespec="milliseconds") if min_bid_generated else None,
-                lte=max_bid_generated.isoformat(timespec="milliseconds") if max_bid_generated else None,
-            )
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("bidGenerated"), gte=min_bid_generated.isoformat(timespec="milliseconds") if min_bid_generated else None, lte=max_bid_generated.isoformat(timespec="milliseconds") if max_bid_generated else None))
     if isinstance(shop_result, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(shop_result):
         filters.append(dm.filters.Equals(view_id.as_property_ref("shopResult"), value=as_instance_dict_id(shop_result)))
-    if (
-        shop_result
-        and isinstance(shop_result, Sequence)
-        and not isinstance(shop_result, str)
-        and not is_tuple_id(shop_result)
-    ):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("shopResult"), values=[as_instance_dict_id(item) for item in shop_result]
-            )
-        )
+    if shop_result and isinstance(shop_result, Sequence) and not isinstance(shop_result, str) and not is_tuple_id(shop_result):
+        filters.append(dm.filters.In(view_id.as_property_ref("shopResult"), values=[as_instance_dict_id(item) for item in shop_result]))
     if isinstance(is_selected, bool):
         filters.append(dm.filters.Equals(view_id.as_property_ref("isSelected"), value=is_selected))
     if min_value is not None or max_value is not None:
@@ -454,6 +365,7 @@ class _BenchmarkingResultDayAheadQuery(NodeQueryCore[T_DomainModelList, Benchmar
             reverse_expression,
         )
 
+
         if _ShopResultQuery not in created_types and len(creation_path) + 1 < global_config.max_select_depth:
             self.shop_result = _ShopResultQuery(
                 created_types.copy(),
@@ -492,20 +404,18 @@ class _BenchmarkingResultDayAheadQuery(NodeQueryCore[T_DomainModelList, Benchmar
         self.shop_result_filter = DirectRelationFilter(self, self._view_id.as_property_ref("shopResult"))
         self.is_selected = BooleanFilter(self, self._view_id.as_property_ref("isSelected"))
         self.value = FloatFilter(self, self._view_id.as_property_ref("value"))
-        self._filter_classes.extend(
-            [
-                self.space,
-                self.external_id,
-                self.name,
-                self.workflow_execution_id,
-                self.bid_source_filter,
-                self.delivery_date,
-                self.bid_generated,
-                self.shop_result_filter,
-                self.is_selected,
-                self.value,
-            ]
-        )
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.name,
+            self.workflow_execution_id,
+            self.bid_source_filter,
+            self.delivery_date,
+            self.bid_generated,
+            self.shop_result_filter,
+            self.is_selected,
+            self.value,
+        ])
 
     def list_benchmarking_result_day_ahead(self, limit: int = DEFAULT_QUERY_LIMIT) -> BenchmarkingResultDayAheadList:
         return self._list(limit=limit)

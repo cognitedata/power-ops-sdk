@@ -47,25 +47,12 @@ from cognite.powerops.client._generated.v1.data_classes import (
     PowerAsset,
     PriceProduction,
 )
-from cognite.powerops.client._generated.v1._api.partial_bid_matrix_information_with_scenarios_alerts import (
-    PartialBidMatrixInformationWithScenariosAlertsAPI,
-)
-from cognite.powerops.client._generated.v1._api.partial_bid_matrix_information_with_scenarios_underlying_bid_matrices import (
-    PartialBidMatrixInformationWithScenariosUnderlyingBidMatricesAPI,
-)
-from cognite.powerops.client._generated.v1._api.partial_bid_matrix_information_with_scenarios_multi_scenario_input import (
-    PartialBidMatrixInformationWithScenariosMultiScenarioInputAPI,
-)
+from cognite.powerops.client._generated.v1._api.partial_bid_matrix_information_with_scenarios_alerts import PartialBidMatrixInformationWithScenariosAlertsAPI
+from cognite.powerops.client._generated.v1._api.partial_bid_matrix_information_with_scenarios_underlying_bid_matrices import PartialBidMatrixInformationWithScenariosUnderlyingBidMatricesAPI
+from cognite.powerops.client._generated.v1._api.partial_bid_matrix_information_with_scenarios_multi_scenario_input import PartialBidMatrixInformationWithScenariosMultiScenarioInputAPI
 
 
-class PartialBidMatrixInformationWithScenariosAPI(
-    NodeAPI[
-        PartialBidMatrixInformationWithScenarios,
-        PartialBidMatrixInformationWithScenariosWrite,
-        PartialBidMatrixInformationWithScenariosList,
-        PartialBidMatrixInformationWithScenariosWriteList,
-    ]
-):
+class PartialBidMatrixInformationWithScenariosAPI(NodeAPI[PartialBidMatrixInformationWithScenarios, PartialBidMatrixInformationWithScenariosWrite, PartialBidMatrixInformationWithScenariosList, PartialBidMatrixInformationWithScenariosWriteList]):
     _view_id = dm.ViewId("power_ops_core", "PartialBidMatrixInformationWithScenarios", "1")
     _properties_by_field: ClassVar[dict[str, str]] = _PARTIALBIDMATRIXINFORMATIONWITHSCENARIOS_PROPERTIES_BY_FIELD
     _class_type = PartialBidMatrixInformationWithScenarios
@@ -134,40 +121,18 @@ class PartialBidMatrixInformationWithScenariosAPI(
     def search(
         self,
         query: str,
-        properties: (
-            PartialBidMatrixInformationWithScenariosTextFields
-            | SequenceNotStr[PartialBidMatrixInformationWithScenariosTextFields]
-            | None
-        ) = None,
+        properties: PartialBidMatrixInformationWithScenariosTextFields | SequenceNotStr[PartialBidMatrixInformationWithScenariosTextFields] | None = None,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
-        power_asset: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_resource_cost: float | None = None,
         max_resource_cost: float | None = None,
-        partial_bid_configuration: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-        sort_by: (
-            PartialBidMatrixInformationWithScenariosFields
-            | SequenceNotStr[PartialBidMatrixInformationWithScenariosFields]
-            | None
-        ) = None,
+        sort_by: PartialBidMatrixInformationWithScenariosFields | SequenceNotStr[PartialBidMatrixInformationWithScenariosFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
     ) -> PartialBidMatrixInformationWithScenariosList:
@@ -235,37 +200,15 @@ class PartialBidMatrixInformationWithScenariosAPI(
         self,
         aggregate: Aggregations | dm.aggregations.MetricAggregation,
         group_by: None = None,
-        property: (
-            PartialBidMatrixInformationWithScenariosFields
-            | SequenceNotStr[PartialBidMatrixInformationWithScenariosFields]
-            | None
-        ) = None,
+        property: PartialBidMatrixInformationWithScenariosFields | SequenceNotStr[PartialBidMatrixInformationWithScenariosFields] | None = None,
         query: str | None = None,
-        search_property: (
-            PartialBidMatrixInformationWithScenariosTextFields
-            | SequenceNotStr[PartialBidMatrixInformationWithScenariosTextFields]
-            | None
-        ) = None,
+        search_property: PartialBidMatrixInformationWithScenariosTextFields | SequenceNotStr[PartialBidMatrixInformationWithScenariosTextFields] | None = None,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
-        power_asset: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_resource_cost: float | None = None,
         max_resource_cost: float | None = None,
-        partial_bid_configuration: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -277,37 +220,15 @@ class PartialBidMatrixInformationWithScenariosAPI(
         self,
         aggregate: SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
         group_by: None = None,
-        property: (
-            PartialBidMatrixInformationWithScenariosFields
-            | SequenceNotStr[PartialBidMatrixInformationWithScenariosFields]
-            | None
-        ) = None,
+        property: PartialBidMatrixInformationWithScenariosFields | SequenceNotStr[PartialBidMatrixInformationWithScenariosFields] | None = None,
         query: str | None = None,
-        search_property: (
-            PartialBidMatrixInformationWithScenariosTextFields
-            | SequenceNotStr[PartialBidMatrixInformationWithScenariosTextFields]
-            | None
-        ) = None,
+        search_property: PartialBidMatrixInformationWithScenariosTextFields | SequenceNotStr[PartialBidMatrixInformationWithScenariosTextFields] | None = None,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
-        power_asset: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_resource_cost: float | None = None,
         max_resource_cost: float | None = None,
-        partial_bid_configuration: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -317,46 +238,19 @@ class PartialBidMatrixInformationWithScenariosAPI(
     @overload
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
-        group_by: (
-            PartialBidMatrixInformationWithScenariosFields
-            | SequenceNotStr[PartialBidMatrixInformationWithScenariosFields]
-        ),
-        property: (
-            PartialBidMatrixInformationWithScenariosFields
-            | SequenceNotStr[PartialBidMatrixInformationWithScenariosFields]
-            | None
-        ) = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: PartialBidMatrixInformationWithScenariosFields | SequenceNotStr[PartialBidMatrixInformationWithScenariosFields],
+        property: PartialBidMatrixInformationWithScenariosFields | SequenceNotStr[PartialBidMatrixInformationWithScenariosFields] | None = None,
         query: str | None = None,
-        search_property: (
-            PartialBidMatrixInformationWithScenariosTextFields
-            | SequenceNotStr[PartialBidMatrixInformationWithScenariosTextFields]
-            | None
-        ) = None,
+        search_property: PartialBidMatrixInformationWithScenariosTextFields | SequenceNotStr[PartialBidMatrixInformationWithScenariosTextFields] | None = None,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
-        power_asset: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_resource_cost: float | None = None,
         max_resource_cost: float | None = None,
-        partial_bid_configuration: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -365,47 +259,19 @@ class PartialBidMatrixInformationWithScenariosAPI(
 
     def aggregate(
         self,
-        aggregate: (
-            Aggregations
-            | dm.aggregations.MetricAggregation
-            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
-        ),
-        group_by: (
-            PartialBidMatrixInformationWithScenariosFields
-            | SequenceNotStr[PartialBidMatrixInformationWithScenariosFields]
-            | None
-        ) = None,
-        property: (
-            PartialBidMatrixInformationWithScenariosFields
-            | SequenceNotStr[PartialBidMatrixInformationWithScenariosFields]
-            | None
-        ) = None,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        group_by: PartialBidMatrixInformationWithScenariosFields | SequenceNotStr[PartialBidMatrixInformationWithScenariosFields] | None = None,
+        property: PartialBidMatrixInformationWithScenariosFields | SequenceNotStr[PartialBidMatrixInformationWithScenariosFields] | None = None,
         query: str | None = None,
-        search_property: (
-            PartialBidMatrixInformationWithScenariosTextFields
-            | SequenceNotStr[PartialBidMatrixInformationWithScenariosTextFields]
-            | None
-        ) = None,
+        search_property: PartialBidMatrixInformationWithScenariosTextFields | SequenceNotStr[PartialBidMatrixInformationWithScenariosTextFields] | None = None,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
-        power_asset: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_resource_cost: float | None = None,
         max_resource_cost: float | None = None,
-        partial_bid_configuration: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -476,31 +342,13 @@ class PartialBidMatrixInformationWithScenariosAPI(
         property: PartialBidMatrixInformationWithScenariosFields,
         interval: float,
         query: str | None = None,
-        search_property: (
-            PartialBidMatrixInformationWithScenariosTextFields
-            | SequenceNotStr[PartialBidMatrixInformationWithScenariosTextFields]
-            | None
-        ) = None,
+        search_property: PartialBidMatrixInformationWithScenariosTextFields | SequenceNotStr[PartialBidMatrixInformationWithScenariosTextFields] | None = None,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
-        power_asset: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_resource_cost: float | None = None,
         max_resource_cost: float | None = None,
-        partial_bid_configuration: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -565,15 +413,13 @@ class PartialBidMatrixInformationWithScenariosAPI(
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(
-            factory.root(
-                filter=filter_,
-                sort=sort,
-                limit=limit,
-                max_retrieve_batch_limit=chunk_size,
-                has_container_fields=True,
-            )
-        )
+        builder.append(factory.root(
+            filter=filter_,
+            sort=sort,
+            limit=limit,
+            max_retrieve_batch_limit=chunk_size,
+            has_container_fields=True,
+        ))
         if retrieve_connections == "identifier" or retrieve_connections == "full":
             builder.extend(
                 factory.from_edge(
@@ -624,24 +470,10 @@ class PartialBidMatrixInformationWithScenariosAPI(
         chunk_size: int = DEFAULT_CHUNK_SIZE,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
-        power_asset: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_resource_cost: float | None = None,
         max_resource_cost: float | None = None,
-        partial_bid_configuration: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         filter: dm.Filter | None = None,
@@ -733,33 +565,15 @@ class PartialBidMatrixInformationWithScenariosAPI(
         self,
         state: str | list[str] | None = None,
         state_prefix: str | None = None,
-        power_asset: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        power_asset: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         min_resource_cost: float | None = None,
         max_resource_cost: float | None = None,
-        partial_bid_configuration: (
-            str
-            | tuple[str, str]
-            | dm.NodeId
-            | dm.DirectRelationReference
-            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-            | None
-        ) = None,
+        partial_bid_configuration: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-        sort_by: (
-            PartialBidMatrixInformationWithScenariosFields
-            | Sequence[PartialBidMatrixInformationWithScenariosFields]
-            | None
-        ) = None,
+        sort_by: PartialBidMatrixInformationWithScenariosFields | Sequence[PartialBidMatrixInformationWithScenariosFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
         retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
@@ -813,7 +627,7 @@ class PartialBidMatrixInformationWithScenariosAPI(
             space,
             filter,
         )
-        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
-            return self._list(limit=limit, filter=filter_, sort=sort_input)
+            return self._list(limit=limit,  filter=filter_, sort=sort_input)
         return self._query(filter_, limit, retrieve_connections, sort_input, "list")

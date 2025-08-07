@@ -51,22 +51,8 @@ __all__ = [
 ]
 
 
-ShopPenaltyReportTextFields = Literal[
-    "external_id", "workflow_execution_id", "title", "description", "severity", "alert_type", "calculation_run"
-]
-ShopPenaltyReportFields = Literal[
-    "external_id",
-    "time",
-    "workflow_execution_id",
-    "title",
-    "description",
-    "severity",
-    "alert_type",
-    "status_code",
-    "event_ids",
-    "calculation_run",
-    "penalties",
-]
+ShopPenaltyReportTextFields = Literal["external_id", "workflow_execution_id", "title", "description", "severity", "alert_type", "calculation_run"]
+ShopPenaltyReportFields = Literal["external_id", "time", "workflow_execution_id", "title", "description", "severity", "alert_type", "status_code", "event_ids", "calculation_run", "penalties"]
 
 _SHOPPENALTYREPORT_PROPERTIES_BY_FIELD = {
     "external_id": "externalId",
@@ -131,6 +117,8 @@ class ShopPenaltyReportGraphQL(GraphQLCore):
             )
         return values
 
+
+
     def as_read(self) -> ShopPenaltyReport:
         """Convert this GraphQL format of shop penalty report to the reading format."""
         return ShopPenaltyReport.model_validate(as_read_args(self))
@@ -166,14 +154,14 @@ class ShopPenaltyReport(Alert):
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopPenaltyReport", "1")
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "ShopPenaltyReport"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopPenaltyReport")
     penalties: Optional[list[dict]] = None
+
 
     def as_write(self) -> ShopPenaltyReportWrite:
         """Convert this read version of shop penalty report to the writing version."""
         return ShopPenaltyReportWrite.model_validate(as_write_args(self))
+
 
 
 class ShopPenaltyReportWrite(AlertWrite):
@@ -199,36 +187,23 @@ class ShopPenaltyReportWrite(AlertWrite):
             the BidDocument)
         penalties: TODO
     """
-
-    _container_fields: ClassVar[tuple[str, ...]] = (
-        "alert_type",
-        "calculation_run",
-        "description",
-        "event_ids",
-        "penalties",
-        "severity",
-        "status_code",
-        "time",
-        "title",
-        "workflow_execution_id",
-    )
+    _container_fields: ClassVar[tuple[str, ...]] = ("alert_type", "calculation_run", "description", "event_ids", "penalties", "severity", "status_code", "time", "title", "workflow_execution_id",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopPenaltyReport", "1")
 
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
-        "power_ops_types", "ShopPenaltyReport"
-    )
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "ShopPenaltyReport")
     penalties: Optional[list[dict]] = None
+
 
 
 class ShopPenaltyReportList(DomainModelList[ShopPenaltyReport]):
     """List of shop penalty reports in the read version."""
 
     _INSTANCE = ShopPenaltyReport
-
     def as_write(self) -> ShopPenaltyReportWriteList:
         """Convert these read versions of shop penalty report to the writing versions."""
         return ShopPenaltyReportWriteList([node.as_write() for node in self.data])
+
 
 
 class ShopPenaltyReportWriteList(DomainModelWriteList[ShopPenaltyReportWrite]):
@@ -261,21 +236,13 @@ def _create_shop_penalty_report_filter(
 ) -> dm.Filter | None:
     filters: list[dm.Filter] = []
     if min_time is not None or max_time is not None:
-        filters.append(
-            dm.filters.Range(
-                view_id.as_property_ref("time"),
-                gte=min_time.isoformat(timespec="milliseconds") if min_time else None,
-                lte=max_time.isoformat(timespec="milliseconds") if max_time else None,
-            )
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("time"), gte=min_time.isoformat(timespec="milliseconds") if min_time else None, lte=max_time.isoformat(timespec="milliseconds") if max_time else None))
     if isinstance(workflow_execution_id, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id))
     if workflow_execution_id and isinstance(workflow_execution_id, list):
         filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
     if workflow_execution_id_prefix is not None:
-        filters.append(
-            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
-        )
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix))
     if isinstance(title, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("title"), value=title))
     if title and isinstance(title, list):
@@ -301,9 +268,7 @@ def _create_shop_penalty_report_filter(
     if alert_type_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("alertType"), value=alert_type_prefix))
     if min_status_code is not None or max_status_code is not None:
-        filters.append(
-            dm.filters.Range(view_id.as_property_ref("statusCode"), gte=min_status_code, lte=max_status_code)
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("statusCode"), gte=min_status_code, lte=max_status_code))
     if isinstance(calculation_run, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("calculationRun"), value=calculation_run))
     if calculation_run and isinstance(calculation_run, list):
@@ -362,20 +327,18 @@ class _ShopPenaltyReportQuery(NodeQueryCore[T_DomainModelList, ShopPenaltyReport
         self.alert_type = StringFilter(self, self._view_id.as_property_ref("alertType"))
         self.status_code = IntFilter(self, self._view_id.as_property_ref("statusCode"))
         self.calculation_run = StringFilter(self, self._view_id.as_property_ref("calculationRun"))
-        self._filter_classes.extend(
-            [
-                self.space,
-                self.external_id,
-                self.time,
-                self.workflow_execution_id,
-                self.title,
-                self.description,
-                self.severity,
-                self.alert_type,
-                self.status_code,
-                self.calculation_run,
-            ]
-        )
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.time,
+            self.workflow_execution_id,
+            self.title,
+            self.description,
+            self.severity,
+            self.alert_type,
+            self.status_code,
+            self.calculation_run,
+        ])
 
     def list_shop_penalty_report(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopPenaltyReportList:
         return self._list(limit=limit)

@@ -37,22 +37,9 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     IntFilter,
 )
 from cognite.powerops.client._generated.v1.data_classes._function_input import FunctionInput, FunctionInputWrite
-
 if TYPE_CHECKING:
-    from cognite.powerops.client._generated.v1.data_classes._shop_case import (
-        ShopCase,
-        ShopCaseList,
-        ShopCaseGraphQL,
-        ShopCaseWrite,
-        ShopCaseWriteList,
-    )
-    from cognite.powerops.client._generated.v1.data_classes._shop_preprocessor_input import (
-        ShopPreprocessorInput,
-        ShopPreprocessorInputList,
-        ShopPreprocessorInputGraphQL,
-        ShopPreprocessorInputWrite,
-        ShopPreprocessorInputWriteList,
-    )
+    from cognite.powerops.client._generated.v1.data_classes._shop_case import ShopCase, ShopCaseList, ShopCaseGraphQL, ShopCaseWrite, ShopCaseWriteList
+    from cognite.powerops.client._generated.v1.data_classes._shop_preprocessor_input import ShopPreprocessorInput, ShopPreprocessorInputList, ShopPreprocessorInputGraphQL, ShopPreprocessorInputWrite, ShopPreprocessorInputWriteList
 
 
 __all__ = [
@@ -66,12 +53,8 @@ __all__ = [
 ]
 
 
-ShopTriggerInputTextFields = Literal[
-    "external_id", "workflow_execution_id", "function_name", "function_call_id", "cog_shop_tag"
-]
-ShopTriggerInputFields = Literal[
-    "external_id", "workflow_execution_id", "workflow_step", "function_name", "function_call_id", "cog_shop_tag"
-]
+ShopTriggerInputTextFields = Literal["external_id", "workflow_execution_id", "function_name", "function_call_id", "cog_shop_tag"]
+ShopTriggerInputFields = Literal["external_id", "workflow_execution_id", "workflow_step", "function_name", "function_call_id", "cog_shop_tag"]
 
 _SHOPTRIGGERINPUT_PROPERTIES_BY_FIELD = {
     "external_id": "externalId",
@@ -109,9 +92,7 @@ class ShopTriggerInputGraphQL(GraphQLCore):
     function_call_id: Optional[str] = Field(None, alias="functionCallId")
     cog_shop_tag: Optional[str] = Field(None, alias="cogShopTag")
     case: Optional[ShopCaseGraphQL] = Field(default=None, repr=False)
-    preprocessor_input: Optional[ShopPreprocessorInputGraphQL] = Field(
-        default=None, repr=False, alias="preprocessorInput"
-    )
+    preprocessor_input: Optional[ShopPreprocessorInputGraphQL] = Field(default=None, repr=False, alias="preprocessorInput")
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -123,6 +104,7 @@ class ShopTriggerInputGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
 
     @field_validator("case", "preprocessor_input", mode="before")
     def parse_graphql(cls, value: Any) -> Any:
@@ -161,23 +143,20 @@ class ShopTriggerInput(FunctionInput):
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopTriggerInput", "1")
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power_ops_types", "ShopTriggerInput"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopTriggerInput")
     cog_shop_tag: Optional[str] = Field(None, alias="cogShopTag")
     case: Union[ShopCase, str, dm.NodeId, None] = Field(default=None, repr=False)
-    preprocessor_input: Union[ShopPreprocessorInput, str, dm.NodeId, None] = Field(
-        default=None, repr=False, alias="preprocessorInput"
-    )
-
+    preprocessor_input: Union[ShopPreprocessorInput, str, dm.NodeId, None] = Field(default=None, repr=False, alias="preprocessorInput")
     @field_validator("case", "preprocessor_input", mode="before")
     @classmethod
     def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
         return parse_single_connection(value, info.field_name)
 
+
     def as_write(self) -> ShopTriggerInputWrite:
         """Convert this read version of shop trigger input to the writing version."""
         return ShopTriggerInputWrite.model_validate(as_write_args(self))
+
 
 
 class ShopTriggerInputWrite(FunctionInputWrite):
@@ -197,31 +176,15 @@ class ShopTriggerInputWrite(FunctionInputWrite):
         case: The SHOP case (with all details like model, scenario, and time series)
         preprocessor_input: The preprocessor input to the shop run
     """
-
-    _container_fields: ClassVar[tuple[str, ...]] = (
-        "case",
-        "cog_shop_tag",
-        "function_call_id",
-        "function_name",
-        "preprocessor_input",
-        "workflow_execution_id",
-        "workflow_step",
-    )
-    _direct_relations: ClassVar[tuple[str, ...]] = (
-        "case",
-        "preprocessor_input",
-    )
+    _container_fields: ClassVar[tuple[str, ...]] = ("case", "cog_shop_tag", "function_call_id", "function_name", "preprocessor_input", "workflow_execution_id", "workflow_step",)
+    _direct_relations: ClassVar[tuple[str, ...]] = ("case", "preprocessor_input",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopTriggerInput", "1")
 
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
-        "power_ops_types", "ShopTriggerInput"
-    )
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "ShopTriggerInput")
     cog_shop_tag: Optional[str] = Field(None, alias="cogShopTag")
     case: Union[ShopCaseWrite, str, dm.NodeId, None] = Field(default=None, repr=False)
-    preprocessor_input: Union[ShopPreprocessorInputWrite, str, dm.NodeId, None] = Field(
-        default=None, repr=False, alias="preprocessorInput"
-    )
+    preprocessor_input: Union[ShopPreprocessorInputWrite, str, dm.NodeId, None] = Field(default=None, repr=False, alias="preprocessorInput")
 
     @field_validator("case", "preprocessor_input", mode="before")
     def as_node_id(cls, value: Any) -> Any:
@@ -238,52 +201,32 @@ class ShopTriggerInputList(DomainModelList[ShopTriggerInput]):
     """List of shop trigger inputs in the read version."""
 
     _INSTANCE = ShopTriggerInput
-
     def as_write(self) -> ShopTriggerInputWriteList:
         """Convert these read versions of shop trigger input to the writing versions."""
         return ShopTriggerInputWriteList([node.as_write() for node in self.data])
 
+
     @property
     def case(self) -> ShopCaseList:
         from ._shop_case import ShopCase, ShopCaseList
-
         return ShopCaseList([item.case for item in self.data if isinstance(item.case, ShopCase)])
-
     @property
     def preprocessor_input(self) -> ShopPreprocessorInputList:
         from ._shop_preprocessor_input import ShopPreprocessorInput, ShopPreprocessorInputList
-
-        return ShopPreprocessorInputList(
-            [
-                item.preprocessor_input
-                for item in self.data
-                if isinstance(item.preprocessor_input, ShopPreprocessorInput)
-            ]
-        )
-
+        return ShopPreprocessorInputList([item.preprocessor_input for item in self.data if isinstance(item.preprocessor_input, ShopPreprocessorInput)])
 
 class ShopTriggerInputWriteList(DomainModelWriteList[ShopTriggerInputWrite]):
     """List of shop trigger inputs in the writing version."""
 
     _INSTANCE = ShopTriggerInputWrite
-
     @property
     def case(self) -> ShopCaseWriteList:
         from ._shop_case import ShopCaseWrite, ShopCaseWriteList
-
         return ShopCaseWriteList([item.case for item in self.data if isinstance(item.case, ShopCaseWrite)])
-
     @property
     def preprocessor_input(self) -> ShopPreprocessorInputWriteList:
         from ._shop_preprocessor_input import ShopPreprocessorInputWrite, ShopPreprocessorInputWriteList
-
-        return ShopPreprocessorInputWriteList(
-            [
-                item.preprocessor_input
-                for item in self.data
-                if isinstance(item.preprocessor_input, ShopPreprocessorInputWrite)
-            ]
-        )
+        return ShopPreprocessorInputWriteList([item.preprocessor_input for item in self.data if isinstance(item.preprocessor_input, ShopPreprocessorInputWrite)])
 
 
 def _create_shop_trigger_input_filter(
@@ -298,22 +241,8 @@ def _create_shop_trigger_input_filter(
     function_call_id_prefix: str | None = None,
     cog_shop_tag: str | list[str] | None = None,
     cog_shop_tag_prefix: str | None = None,
-    case: (
-        str
-        | tuple[str, str]
-        | dm.NodeId
-        | dm.DirectRelationReference
-        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-        | None
-    ) = None,
-    preprocessor_input: (
-        str
-        | tuple[str, str]
-        | dm.NodeId
-        | dm.DirectRelationReference
-        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
-        | None
-    ) = None,
+    case: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+    preprocessor_input: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -324,13 +253,9 @@ def _create_shop_trigger_input_filter(
     if workflow_execution_id and isinstance(workflow_execution_id, list):
         filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
     if workflow_execution_id_prefix is not None:
-        filters.append(
-            dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix)
-        )
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix))
     if min_workflow_step is not None or max_workflow_step is not None:
-        filters.append(
-            dm.filters.Range(view_id.as_property_ref("workflowStep"), gte=min_workflow_step, lte=max_workflow_step)
-        )
+        filters.append(dm.filters.Range(view_id.as_property_ref("workflowStep"), gte=min_workflow_step, lte=max_workflow_step))
     if isinstance(function_name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("functionName"), value=function_name))
     if function_name and isinstance(function_name, list):
@@ -352,27 +277,11 @@ def _create_shop_trigger_input_filter(
     if isinstance(case, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(case):
         filters.append(dm.filters.Equals(view_id.as_property_ref("case"), value=as_instance_dict_id(case)))
     if case and isinstance(case, Sequence) and not isinstance(case, str) and not is_tuple_id(case):
-        filters.append(
-            dm.filters.In(view_id.as_property_ref("case"), values=[as_instance_dict_id(item) for item in case])
-        )
+        filters.append(dm.filters.In(view_id.as_property_ref("case"), values=[as_instance_dict_id(item) for item in case]))
     if isinstance(preprocessor_input, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(preprocessor_input):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("preprocessorInput"), value=as_instance_dict_id(preprocessor_input)
-            )
-        )
-    if (
-        preprocessor_input
-        and isinstance(preprocessor_input, Sequence)
-        and not isinstance(preprocessor_input, str)
-        and not is_tuple_id(preprocessor_input)
-    ):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("preprocessorInput"),
-                values=[as_instance_dict_id(item) for item in preprocessor_input],
-            )
-        )
+        filters.append(dm.filters.Equals(view_id.as_property_ref("preprocessorInput"), value=as_instance_dict_id(preprocessor_input)))
+    if preprocessor_input and isinstance(preprocessor_input, Sequence) and not isinstance(preprocessor_input, str) and not is_tuple_id(preprocessor_input):
+        filters.append(dm.filters.In(view_id.as_property_ref("preprocessorInput"), values=[as_instance_dict_id(item) for item in preprocessor_input]))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
@@ -454,19 +363,17 @@ class _ShopTriggerInputQuery(NodeQueryCore[T_DomainModelList, ShopTriggerInputLi
         self.cog_shop_tag = StringFilter(self, self._view_id.as_property_ref("cogShopTag"))
         self.case_filter = DirectRelationFilter(self, self._view_id.as_property_ref("case"))
         self.preprocessor_input_filter = DirectRelationFilter(self, self._view_id.as_property_ref("preprocessorInput"))
-        self._filter_classes.extend(
-            [
-                self.space,
-                self.external_id,
-                self.workflow_execution_id,
-                self.workflow_step,
-                self.function_name,
-                self.function_call_id,
-                self.cog_shop_tag,
-                self.case_filter,
-                self.preprocessor_input_filter,
-            ]
-        )
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.workflow_execution_id,
+            self.workflow_step,
+            self.function_name,
+            self.function_call_id,
+            self.cog_shop_tag,
+            self.case_filter,
+            self.preprocessor_input_filter,
+        ])
 
     def list_shop_trigger_input(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopTriggerInputList:
         return self._list(limit=limit)
