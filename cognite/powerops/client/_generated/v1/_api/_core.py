@@ -194,8 +194,7 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList], ABC):
     ) -> T_DomainModelList:
         executor = self._build(filter_, limit, retrieve_connections, sort)
         results = executor.execute_query(self._client, remove_not_connected=False)
-        unpack_edges: Literal["skip", "identifier"] = "identifier" if retrieve_connections == "identifier" else "skip"
-        unpacked = QueryUnpacker(results, edges=unpack_edges).unpack()
+        unpacked = QueryUnpacker(results, edges="skip").unpack()
         item_list = instantiate_classes(self._class_type, unpacked, context)
         return self._class_list(item_list)
 
@@ -216,10 +215,7 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList], ABC):
         self._last_cursors = cursors
         executor = self._build(filter_, limit, retrieve_connections, sort, chunk_size)
         for batch_results in executor.iterate(self._client, remove_not_connected=False, init_cursors=cursors):
-            unpack_edges: Literal["skip", "identifier"] = (
-                "identifier" if retrieve_connections == "identifier" else "skip"
-            )
-            unpacked = QueryUnpacker(batch_results, edges=unpack_edges).unpack()
+            unpacked = QueryUnpacker(batch_results, edges="skip").unpack()
             yield self._class_list(
                 instantiate_classes(self._class_type, unpacked, "iterate"), cursors=batch_results._cursors
             )
@@ -687,6 +683,7 @@ _GRAPHQL_DATA_CLASS_BY_DATA_MODEL_BY_TYPE: dict[dm.DataModelId, dict[str, type[G
         "DateSpecification": data_classes.DateSpecificationGraphQL,
         "ShopOutputTimeSeriesDefinition": data_classes.ShopOutputTimeSeriesDefinitionGraphQL,
         "ShopFile": data_classes.ShopFileGraphQL,
+        "DataSetConfiguration": data_classes.DataSetConfigurationGraphQL,
     },
     dm.DataModelId("power_ops_core", "frontend_AFRRBid", "1"): {
         "BidDocumentAFRR": data_classes.BidDocumentAFRRGraphQL,

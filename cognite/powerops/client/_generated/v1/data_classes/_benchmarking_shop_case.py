@@ -192,7 +192,7 @@ class BenchmarkingShopCaseWrite(ShopCaseWrite):
     """
     _container_fields: ClassVar[tuple[str, ...]] = ("bid_generated", "bid_source", "delivery_date", "end_time", "scenario", "start_time", "status",)
     _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (("shop_files", dm.DirectRelationReference("power_ops_types", "ShopCase.shopFiles")),)
-    _direct_relations: ClassVar[tuple[str, ...]] = ("scenario",)
+    _direct_relations: ClassVar[tuple[str, ...]] = ("bid_source", "scenario",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "BenchmarkingShopCase", "1")
 
