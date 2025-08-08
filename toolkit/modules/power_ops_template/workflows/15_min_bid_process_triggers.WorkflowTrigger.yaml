@@ -1,12 +1,12 @@
-- externalId: trigger_bid_process:bid_configuration_day_ahead_water_value_no2_full
+- externalId: trigger_bid_process:bid_configuration_day_ahead_15_min_water_value_no2_full
   triggerRule:
     triggerType: schedule
-    cronExpression: "{{wf_day_ahead_bid_process_cron}}"
+    cronExpression: "{{wf_day_ahead_bid_process_cron_15_min}}"
   input:
     bidConfiguration:
-      externalId: "bid_configuration_day_ahead_water_value_no2_full"
+      externalId: "bid_configuration_day_ahead_15_min_water_value_no2_full"
   metadata:
-    config: "bid_configuration_day_ahead_water_value_no2_full"
+    config: "bid_configuration_day_ahead_15_min_water_value_no2_full"
     market: "{{wf_day_ahead_market}}"
     method: "Water Value NO2 Full"
     priceArea: "NO2"
@@ -15,15 +15,15 @@
   authentication:
     clientId: "{{wf_trigger_client_id}}"
     clientSecret: "{{wf_trigger_client_secret}}"
-- externalId: trigger_bid_process:bid_configuration_day_ahead_multi_scenario_20_no2
+- externalId: trigger_bid_process:bid_configuration_day_ahead_15_min_multi_scenario_20_no2
   triggerRule:
     triggerType: schedule
-    cronExpression: "{{wf_day_ahead_bid_process_cron}}"
+    cronExpression: "{{wf_day_ahead_bid_process_cron_15_min}}"
   input:
     bidConfiguration:
-      externalId: "bid_configuration_day_ahead_multi_scenario_20_no2"
+      externalId: "bid_configuration_day_ahead_15_min_multi_scenario_20_no2"
   metadata:
-    config: "bid_configuration_day_ahead_multi_scenario_20_no2"
+    config: "bid_configuration_day_ahead_15_min_multi_scenario_20_no2"
     market: "{{wf_day_ahead_market}}"
     method: "Multi scenario 20 NO2"
     priceArea: "NO2"
@@ -32,15 +32,15 @@
   authentication:
     clientId: "{{wf_trigger_client_id}}"
     clientSecret: "{{wf_trigger_client_secret}}"
-- externalId: trigger_bid_process:bid_configuration_day_ahead_multi_scenario_3_no2
+- externalId: trigger_bid_process:bid_configuration_day_ahead_15_min_multi_scenario_3_no2
   triggerRule:
     triggerType: schedule
-    cronExpression: "{{wf_day_ahead_bid_process_cron}}"
+    cronExpression: "{{wf_day_ahead_bid_process_cron_15_min}}"
   input:
     bidConfiguration:
-      externalId: "bid_configuration_day_ahead_multi_scenario_3_no2"
+      externalId: "bid_configuration_day_ahead_15_min_multi_scenario_3_no2"
   metadata:
-    config: "bid_configuration_day_ahead_multi_scenario_3_no2"
+    config: "bid_configuration_day_ahead_15_min_multi_scenario_3_no2"
     market: "{{wf_day_ahead_market}}"
     method: "Multi Scenario 3 NO2"
     priceArea: "NO2"
@@ -49,15 +49,15 @@
   authentication:
     clientId: "{{wf_trigger_client_id}}"
     clientSecret: "{{wf_trigger_client_secret}}"
-- externalId: trigger_bid_process:bid_configuration_day_ahead_multi_scenario_2_no2
+- externalId: trigger_bid_process:bid_configuration_day_ahead_15_min_multi_scenario_2_no2
   triggerRule:
     triggerType: schedule
-    cronExpression: "{{wf_day_ahead_bid_process_cron}}"
+    cronExpression: "{{wf_day_ahead_bid_process_cron_15_min}}"
   input:
     bidConfiguration:
-      externalId: "bid_configuration_day_ahead_multi_scenario_2_no2"
+      externalId: "bid_configuration_day_ahead_15_min_multi_scenario_2_no2"
   metadata:
-    config: "bid_configuration_day_ahead_multi_scenario_2_no2"
+    config: "bid_configuration_day_ahead_15_min_multi_scenario_2_no2"
     market: "{{wf_day_ahead_market}}"
     method: "Multi Scenario 2 NO2"
     priceArea: "NO2"
@@ -66,15 +66,15 @@
   authentication:
     clientId: "{{wf_trigger_client_id}}"
     clientSecret: "{{wf_trigger_client_secret}}"
-- externalId: trigger_bid_process:bid_configuration_day_ahead_no2_combination
+- externalId: trigger_bid_process:bid_configuration_day_ahead_15_min_no2_combination
   triggerRule:
     triggerType: schedule
-    cronExpression: "{{wf_day_ahead_bid_process_cron}}"
+    cronExpression: "{{wf_day_ahead_bid_process_cron_15_min}}"
   input:
     bidConfiguration:
-      externalId: "bid_configuration_day_ahead_no2_combination"
+      externalId: "bid_configuration_day_ahead_15_min_no2_combination"
   metadata:
-    config: "bid_configuration_day_ahead_no2_combination"
+    config: "bid_configuration_day_ahead_15_min_no2_combination"
     market: "{{wf_day_ahead_market}}"
     method: "NO2 Combination"
     priceArea: "NO2"
@@ -83,15 +83,15 @@
   authentication:
     clientId: "{{wf_trigger_client_id}}"
     clientSecret: "{{wf_trigger_client_secret}}"
-- externalId: trigger_bid_process:bid_configuration_day_ahead_price_independent_no2
+- externalId: trigger_bid_process:bid_configuration_day_ahead_15_min_price_independent_no2
   triggerRule:
     triggerType: schedule
-    cronExpression: "{{wf_day_ahead_bid_process_cron}}"
+    cronExpression: "{{wf_day_ahead_bid_process_cron_15_min}}"
   input:
     bidConfiguration:
-      externalId: "bid_configuration_day_ahead_price_independent_no2"
+      externalId: "bid_configuration_day_ahead_15_min_price_independent_no2"
   metadata:
-    config: "bid_configuration_day_ahead_price_independent_no2"
+    config: "bid_configuration_day_ahead_15_min_price_independent_no2"
     market: "{{wf_day_ahead_market}}"
     method: "Price Independent NO2"
     priceArea: "NO2"
@@ -100,15 +100,15 @@
   authentication:
     clientId: "{{wf_trigger_client_id}}"
     clientSecret: "{{wf_trigger_client_secret}}"
-- externalId: trigger_bid_process:bid_configuration_day_ahead_multi_scenario_3_sola
+- externalId: trigger_bid_process:bid_configuration_day_ahead_15_min_multi_scenario_3_sola
   triggerRule:
     triggerType: schedule
-    cronExpression: "{{wf_day_ahead_bid_process_cron}}"
+    cronExpression: "{{wf_day_ahead_bid_process_cron_15_min}}"
   input:
     bidConfiguration:
-      externalId: "bid_configuration_day_ahead_multi_scenario_3_sola"
+      externalId: "bid_configuration_day_ahead_15_min_multi_scenario_3_sola"
   metadata:
-    config: "bid_configuration_day_ahead_multi_scenario_3_sola"
+    config: "bid_configuration_day_ahead_15_min_multi_scenario_3_sola"
     market: "{{wf_day_ahead_market}}"
     method: "Multi Scenario 3 Sola"
     priceArea: "NO2"
@@ -117,15 +117,15 @@
   authentication:
     clientId: "{{wf_trigger_client_id}}"
     clientSecret: "{{wf_trigger_client_secret}}"
-- externalId: trigger_bid_process:bid_configuration_day_ahead_water_value_no2_lund
+- externalId: trigger_bid_process:bid_configuration_day_ahead_15_min_water_value_no2_lund
   triggerRule:
     triggerType: schedule
-    cronExpression: "{{wf_day_ahead_bid_process_cron}}"
+    cronExpression: "{{wf_day_ahead_bid_process_cron_15_min}}"
   input:
     bidConfiguration:
-      externalId: "bid_configuration_day_ahead_water_value_no2_lund"
+      externalId: "bid_configuration_day_ahead_15_min_water_value_no2_lund"
   metadata:
-    config: "bid_configuration_day_ahead_water_value_no2_lund"
+    config: "bid_configuration_day_ahead_15_min_water_value_no2_lund"
     market: "{{wf_day_ahead_market}}"
     method: "Water Value NO2 Lund"
     priceArea: "NO2"
@@ -134,15 +134,15 @@
   authentication:
     clientId: "{{wf_trigger_client_id}}"
     clientSecret: "{{wf_trigger_client_secret}}"
-- externalId: trigger_bid_process:bid_configuration_day_ahead_water_value_no2_lund_step
+- externalId: trigger_bid_process:bid_configuration_day_ahead_15_min_water_value_no2_lund_step
   triggerRule:
     triggerType: schedule
-    cronExpression: "{{wf_day_ahead_bid_process_cron}}"
+    cronExpression: "{{wf_day_ahead_bid_process_cron_15_min}}"
   input:
     bidConfiguration:
-      externalId: "bid_configuration_day_ahead_water_value_no2_lund_step"
+      externalId: "bid_configuration_day_ahead_15_min_water_value_no2_lund_step"
   metadata:
-    config: "bid_configuration_day_ahead_water_value_no2_lund_step"
+    config: "bid_configuration_day_ahead_15_min_water_value_no2_lund_step"
     market: "{{wf_day_ahead_market}}"
     method: "Water Value NO2 Lund Step"
     priceArea: "NO2"
@@ -151,15 +151,15 @@
   authentication:
     clientId: "{{wf_trigger_client_id}}"
     clientSecret: "{{wf_trigger_client_secret}}"
-- externalId: trigger_bid_process:bid_configuration_day_ahead_water_value_no2_sola
+- externalId: trigger_bid_process:bid_configuration_day_ahead_15_min_water_value_no2_sola
   triggerRule:
     triggerType: schedule
-    cronExpression: "{{wf_day_ahead_bid_process_cron}}"
+    cronExpression: "{{wf_day_ahead_bid_process_cron_15_min}}"
   input:
     bidConfiguration:
-      externalId: "bid_configuration_day_ahead_water_value_no2_sola"
+      externalId: "bid_configuration_day_ahead_15_min_water_value_no2_sola"
   metadata:
-    config: "bid_configuration_day_ahead_water_value_no2_sola"
+    config: "bid_configuration_day_ahead_15_min_water_value_no2_sola"
     market: "{{wf_day_ahead_market}}"
     method: "Water Value NO2 Sola"
     priceArea: "NO2"
@@ -168,15 +168,15 @@
   authentication:
     clientId: "{{wf_trigger_client_id}}"
     clientSecret: "{{wf_trigger_client_secret}}"
-- externalId: trigger_bid_process:bid_configuration_day_ahead_water_value_no2_sola_step
+- externalId: trigger_bid_process:bid_configuration_day_ahead_15_min_water_value_no2_sola_step
   triggerRule:
     triggerType: schedule
-    cronExpression: "{{wf_day_ahead_bid_process_cron}}"
+    cronExpression: "{{wf_day_ahead_bid_process_cron_15_min}}"
   input:
     bidConfiguration:
-      externalId: "bid_configuration_day_ahead_water_value_no2_sola_step"
+      externalId: "bid_configuration_day_ahead_15_min_water_value_no2_sola_step"
   metadata:
-    config: "bid_configuration_day_ahead_water_value_no2_sola_step"
+    config: "bid_configuration_day_ahead_15_min_water_value_no2_sola_step"
     market: "{{wf_day_ahead_market}}"
     method: "Water Value NO2 Sola Step"
     priceArea: "NO2"

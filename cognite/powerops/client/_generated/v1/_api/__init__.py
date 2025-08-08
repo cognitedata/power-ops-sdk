@@ -32,6 +32,7 @@ from cognite.powerops.client._generated.v1._api.bid_matrix_information_alerts im
 from cognite.powerops.client._generated.v1._api.bid_matrix_information_underlying_bid_matrices import BidMatrixInformationUnderlyingBidMatricesAPI
 from cognite.powerops.client._generated.v1._api.bid_row import BidRowAPI
 from cognite.powerops.client._generated.v1._api.bid_row_alerts import BidRowAlertsAPI
+from cognite.powerops.client._generated.v1._api.data_set_configuration import DataSetConfigurationAPI
 from cognite.powerops.client._generated.v1._api.date_specification import DateSpecificationAPI
 from cognite.powerops.client._generated.v1._api.function_input import FunctionInputAPI
 from cognite.powerops.client._generated.v1._api.function_output import FunctionOutputAPI
@@ -142,6 +143,7 @@ __all__ = [
     "BidMatrixInformationUnderlyingBidMatricesAPI",
     "BidRowAPI",
     "BidRowAlertsAPI",
+    "DataSetConfigurationAPI",
     "DateSpecificationAPI",
     "FunctionInputAPI",
     "FunctionOutputAPI",

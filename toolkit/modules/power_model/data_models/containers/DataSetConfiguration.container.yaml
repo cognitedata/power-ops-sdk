@@ -1,0 +1,29 @@
+space: "{{power_ops_models_space}}"
+externalId: DataSetConfiguration
+name: DataSetConfiguration
+usedFor: node
+properties:
+  readDataSet:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: readDataSet
+  writeDataSet:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: writeDataSet
+  monitorDataSet:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: monitorDataSet
