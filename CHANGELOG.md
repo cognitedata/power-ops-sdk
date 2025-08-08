@@ -15,6 +15,17 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [1.0.0] - 2025-08-13
+### Removed
+* Removed all classes and functions previously marked as deprecated
+  * ....
+
+## Breaking Change
+* Renamed `PowerOpsModelsV1Client` to `PowerOpsModelsClient`
+  * Migration steps: replace `PowerOpsModelsV1Client` with `PowerOpsModelsClient`, should only be referenced for type hinting
+* Renamed `PowerOpsClient(...).v1` to `PowerOpsClient(...).powerops`
+  * Migration steps:
+
 ## [0.114.0] - 2025-07-31
 ### Changed
 * Adding DataSetConfiguration Container and View
