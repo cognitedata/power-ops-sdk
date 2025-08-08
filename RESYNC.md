@@ -44,7 +44,7 @@ all assets in a model file is in the backlog to be implemented.
 
 ### Default folder structure
 
-```
+```text
 📦 resync
 ├─ fornebu
 │  ├─ data_model_configuration.yaml
@@ -84,7 +84,7 @@ Any integer keys contained inside `[]` will fetch the value at that index, ie. l
 
 The `default_value` will be used for any instances that do not have any values in the designated `extraction_path`
 
-```
+```yaml
 generator:
   production_min:
     source_file: "toolkit/modules/power_ops_template/files/[SOURCE-FILE]"
@@ -104,7 +104,7 @@ overridden by a custom `extraction_path`. This option currently only supports pr
 
 `"[SOURCE:<source_file>]<extraction_path>"`
 
-```
+```yaml
 - name: Lund
   display_name: Lund
   ordering: 1
@@ -133,7 +133,7 @@ for `[name]` except instead of inferring the type it will use the provided type 
 For example, the two *partials* external_ids would become `water_value_based_partial_bid_configuration_plant_lund` and
 `shop_based_partial_bid_configuration_plant_lund_set_a`
 
-```
+```yaml
 - name: Mixed Configuration
   market_configuration: "[external_id]market_configuration_nord_pool_day_ahead"
   price_area: "[name]NO2"
@@ -151,19 +151,19 @@ Instructions assume Cognite client is configured through `power_ops_config.yaml`
 See available commands:
 
 ```bash
-$ powerops --help
+powerops --help
 ```
 
 Step 1: Example of generating toolkit files:
 
 ```bash
-$ powerops pre-build power_ops_config.yaml resync/configuration.yaml
+powerops pre-build power_ops_config.yaml resync/configuration.yaml
 ```
 
 Step 2: Example of dry run purging (deleting) nodes/edges not in the generated toolkit files:
 
 ```bash
-$ powerops purge power_ops_config.yaml resync/configuration.yaml --dry-run
+powerops purge power_ops_config.yaml resync/configuration.yaml --dry-run
 ```
 
 Step 3: Build and deploy toolkit module, see toolkit documentation for details here.
@@ -171,14 +171,84 @@ Step 3: Build and deploy toolkit module, see toolkit documentation for details h
 Step 4: Example of purging nodes/edges not in the generated toolkit files when satisfied with dry-run output:
 
 ```bash
-$ powerops purge power_ops_config.yaml resync/configuration.yaml
+powerops purge power_ops_config.yaml resync/configuration.yaml
 ```
-
-
 
 ## CI/CD
 
-Refer to CI/CD setup in this repo to see how resync & toolkit can be automated through PRs.
+Refer to CI/CD setup in this repo to see how resync & toolkit can be automated through PRs:
+
 - [.pre-commit-config.yaml](.pre-commit-config.yaml)
 - [.github/workflows/toolkit-build.yaml](.github/workflows/toolkit-build.yaml)
 - [.github/workflows/toolkit-deploy.yaml](.github/workflows/toolkit-deploy.yaml)
+
+## Migration Guide to 15 min Market
+
+With the change in the market from 1 hour to 15 min granularity bids the only changes needed by customers in the PowerOps solution is to update their configurations in resync.
+
+In preparation for the transition in the market out advice would be to duplicate your existing bid configurations and have two sets of configurations, one for 1 hour and the other for 15 min (with the 1 hour configurations being deleted once the transition is completed and verified). You can reference our example bid configurations in the `power-ops-sdk/resync/` folder where we have duplicated all our bids and prefixed everything related to the 15 min bids "15 min", see [resync/shared/bid_configuration_day_ahead.yaml](resync/shared/bid_configuration_day_ahead.yaml).
+
+There are a few specific objects that need to be updated for this change, detailed below.
+
+### Market Configuration
+
+The `time_unit` field on the Market Configuration must be updated to "15m". This is used to display in the proper format in the frontend and for parts of the bid generation logic to validate we have the right number of columns (ie. 96 columns for 15 min and 24 for 1 hour).
+
+```yaml
+- name: "Nord Pool Day-Ahead 15 min"
+  max_price: 4000.0
+  min_price: -500.0
+  timezone: "Europe/Oslo"
+  price_unit: "EUR/MWh"
+  price_steps: 200
+  tick_size: 0.1
+  time_unit: 15m
+  trade_lot: 0.1
+```
+
+### Shop Time Resolution
+
+The `time_resolution_minutes` must be 15 during the time period where SHOP needs to produce 15 min granularity. See Sintef's documentation about how to use `time.timeresolution` but the below configuration in Resync would result in the following SHOP configuration.
+
+```yaml
+- name: 15 min test
+  minutes_after_start:
+    - 0
+    - 1440 # 1 day
+    - 4320 # 3 days
+  time_resolution_minutes:
+    - 15
+    - 60
+    - 240 # 4 hours
+```
+
+Resulting SHOP Time Configuration where the resolution is 15 for the first day which will be used for the bid generation. The period that will be used for bid generation must be 15 in order to get the correct number of columns from the ShopResult in post-processing.
+
+```yaml
+time:
+  endtime: '2025-08-17 22:00:00'
+  starttime: '2025-08-07 22:00:00'
+  timeresolution:
+    '2025-08-07 22:00:00': 15
+    '2025-08-08 22:00:00': 60
+    '2025-08-10 22:00:00': 240
+```
+
+### Shop Scenario
+
+Ensure the `time_resolution` reference points to the correct ShopTimeResolution instance.
+
+**Note:** If you are making duplicates of your bid configurations to have both 1 hour and 15 min you'll need to duplicate your ShopScenarios and ShopScenarioSets as well in order to update all the proper references.
+
+```yaml
+- name: "15 min Fornebu base"
+  model: "[name]Fornebu"
+  commands: "[name]default"
+  time_resolution: "[name|type:ShopTimeResolution]15 min test"
+  source: resync
+  attribute_mappings_override: []
+  output_definition:
+    - "[name]market price"
+    - "[name]plant production"
+    - "[name]plant consumption"
+```
