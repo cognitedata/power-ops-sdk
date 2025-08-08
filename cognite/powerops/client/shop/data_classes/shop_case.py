@@ -5,12 +5,14 @@ from collections.abc import Sequence as SequenceType
 from pathlib import Path
 
 import yaml
+from deprecated import deprecated
 
 from cognite.powerops.client.shop.data_classes.shop_file_reference import SHOPFileReference, SHOPFileType
 
 logger = logging.getLogger(__name__)
 
 
+@deprecated
 class SHOPCase:
     r"""
     Wrapper around YAML file for SHOP, describing a case.

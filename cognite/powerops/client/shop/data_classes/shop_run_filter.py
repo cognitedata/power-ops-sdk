@@ -5,10 +5,12 @@ import datetime
 import arrow
 from cognite.client.data_classes import filters
 from cognite.client.utils._time import datetime_to_ms
+from deprecated import deprecated
 
 from cognite.powerops.client.shop.data_classes.shop_run import SHOPRunEvent
 
 
+@deprecated
 def _custom_contains_any(
     keys: str | list[str],
     values: str | list[str],
@@ -22,6 +24,7 @@ def _custom_contains_any(
     return filters.Or(*[filters.Equals(keys, v) for v in values])
 
 
+@deprecated
 def _time_to_ms(time: str | arrow.Arrow | datetime.datetime) -> int:
     """Convert a time to milliseconds since epoch"""
     if isinstance(time, str):
@@ -34,6 +37,7 @@ def _time_to_ms(time: str | arrow.Arrow | datetime.datetime) -> int:
     raise TypeError(f"Could not convert {time} to milliseconds")
 
 
+@deprecated
 def _get_time_range_filter(
     property: str,
     after: str | arrow.Arrow | datetime.datetime | None = None,
@@ -53,6 +57,7 @@ def _get_time_range_filter(
     return filters.Range(property=property, **_range)
 
 
+@deprecated
 class SHOPRunFilter:
     def __init__(
         self,

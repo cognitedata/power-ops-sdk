@@ -146,9 +146,7 @@ class TestBidConfiguration:
         assert retrieved_bid_config.bid_date_specification == new_date_specification.external_id
         assert len(retrieved_bid_config.partials) == len(new_partials_shop)
 
-        # FIXME: retrieve_connections="identifier" returns the WRONG external IDs because it
-        # passes the xids to the xid generator??
-        # assert all(partial.external_id in retrieved_bid_config.partials for partial in new_partials_shop) # noqa: E501, ERA001
+        assert all(partial.external_id in retrieved_bid_config.partials for partial in new_partials_shop)
 
     def test_bid_configuration_upsert_full(
         self,
@@ -160,11 +158,6 @@ class TestBidConfiguration:
     ):
         assert new_bid_configuration_shop is not None
         assert isinstance(new_bid_configuration_shop, BidConfigurationDayAhead)
-
-        # NOTE: Hack to get the objects to be the same
-        new_market_configuration.instanceType = "node"
-        new_price_area.instanceType = "node"
-        new_date_specification.instanceType = "node"
 
         assert new_bid_configuration_shop.market_configuration == new_market_configuration
         assert new_bid_configuration_shop.price_area == new_price_area

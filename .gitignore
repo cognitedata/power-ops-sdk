@@ -65,3 +65,4 @@ demo/*
 */.venv.*
 .venv.*
 build.*
+*.dat

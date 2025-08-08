@@ -10,12 +10,14 @@ from cognite.client.data_classes import DatapointsList, Event, LabelFilter, Rela
 from cognite.client.exceptions import CogniteDuplicatedError
 from cognite.client.utils import ms_to_datetime
 from cognite.client.utils.useful_types import SequenceNotStr
+from deprecated import deprecated
 
 from cognite.powerops.utils.require import require
 
 logger = logging.getLogger(__name__)
 
 
+@deprecated
 def retrieve_event(client: CogniteClient, external_id: str) -> Event:
     event = client.events.retrieve(external_id=external_id)
     if event is None:
@@ -42,6 +44,7 @@ def merge_dicts(*args: dict) -> dict:
     return merged
 
 
+@deprecated
 def retrieve_relationships_from_source_ext_id(
     client: CogniteClient,
     source_ext_id: str,
@@ -184,6 +187,7 @@ def retrieve_time_series_datapoints(  # type: ignore[no-untyped-def]
     return merge_dicts(time_series_start, time_series_end, time_series_range)
 
 
+@deprecated
 def create_event(client: CogniteClient, event: Event) -> None:
     try:
         client.events.create(event)

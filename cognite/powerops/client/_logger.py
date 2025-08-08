@@ -18,6 +18,7 @@ import logging
 import sys
 from typing import Union
 
+from deprecated import deprecated
 from loguru import logger
 
 __all__ = [
@@ -29,6 +30,7 @@ LoggingLevelT = Union[int, str]
 
 
 # https://github.com/Delgan/loguru#entirely-compatible-with-standard-logging
+@deprecated
 class InterceptHandler(logging.Handler):
     def emit(self, record):
         # Get corresponding Loguru level if it exists.
@@ -46,5 +48,6 @@ class InterceptHandler(logging.Handler):
         logger.opt(depth=depth, exception=record.exc_info).log(level, record.getMessage())
 
 
+@deprecated
 def configure_debug_logging(level: LoggingLevelT) -> None:
     logging.basicConfig(handlers=[InterceptHandler()], level=level, force=True)
