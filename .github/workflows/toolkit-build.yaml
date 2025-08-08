@@ -10,7 +10,7 @@ on:
 env:
   COLUMNS: 99
   TOOLKIT_ENV: staging
-  TOOLKIT_VERSION: 0.5.75
+  TOOLKIT_VERSION: 0.5.94
   PYTHON_VERSION: "3.11"
   CLIENT_CONFIG_FILE: "power_ops_config.yaml"
   CONFIGURATION_FILE: "resync/configuration.yaml"

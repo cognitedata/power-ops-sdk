@@ -28,9 +28,9 @@ class PowerOpsClient:
     def __init__(
         self,
         client: CogniteClient,
-        read_dataset: str,
-        write_dataset: str,
-        monitor_dataset: str | None = None,
+        read_dataset: str,  # TODO: not required anymore
+        write_dataset: str,  # TODO: not required anymore
+        monitor_dataset: str | None = None,  # TODO: not required anymore
         cog_shop_service: Literal["prod", "staging"] | None = None,
     ):
         self.cdf = client

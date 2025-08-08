@@ -2,12 +2,14 @@ from typing import Literal
 
 import arrow
 from cognite.client.data_classes import Event, FileMetadata
+from deprecated import deprecated
 from pydantic import BaseModel, ConfigDict, field_validator
 from typing_extensions import Self
 
 _SHOP_VERSION_FALLBACK = "15.3.3.2"
 
 
+@deprecated
 class DayaheadFunctionEvent:
     event_type: str = "POWEROPS_FUNCTION_CALL"
     external_id_prefix: str = "POWEROPS_FUNCTION_CALL_"
@@ -40,6 +42,7 @@ class DayaheadFunctionEvent:
         )
 
 
+@deprecated
 class PartialFunctionEvent(DayaheadFunctionEvent):
     plant: str = "bid:plant"
     method: str = "bid:bid_matrix_generation_method"
@@ -50,12 +53,14 @@ class PartialFunctionEvent(DayaheadFunctionEvent):
     plant_name_override: str = "bid:plant_name_override"
 
 
+@deprecated
 class TotalFunctionEvent(DayaheadFunctionEvent):
     portfolio: str = "bid:portfolio"
     bid_process_configuration_name: str = "bid:bid_process_configuration_name"
     relationship_label_to_trigger_event: str = "relationship_to.calculate_total_bid_matrix_event"
 
 
+@deprecated
 class DayaheadTriggerEvent:
     event_type: str = "POWEROPS_BID_PROCESS_FROM_PRERUNS"
     external_id_prefix: str = "POWEROPS_BID_PROCESS_"
@@ -109,12 +114,14 @@ class DayaheadTriggerEvent:
         )
 
 
+@deprecated
 class PrerunFileMetadata:
     plants: str = "shop:plants"
     price_scenario: str = "shop:price_scenario"
     _plants_delimiter: str = ","
 
 
+@deprecated
 class SHOPPreRunFile(BaseModel):
     """
     Represents a single shop run based on a pre-run file.
@@ -135,6 +142,7 @@ class SHOPPreRunFile(BaseModel):
         )
 
 
+@deprecated
 class Case(BaseModel):
     """
     Case definition based on a set of prerun files to run for certain plants that are used in the set of prerun files
@@ -147,6 +155,7 @@ class Case(BaseModel):
     pre_runs_external_id_prefix: str | None = None
 
 
+@deprecated
 class BidTimeFrame(BaseModel):
     """
     Used to dynamically specify what times to run the Dayahead bid process for in local time
@@ -194,6 +203,7 @@ class BidTimeFrame(BaseModel):
         return self.start_time_arrow.shift(days=1).format(self._date_string_format)
 
 
+@deprecated
 class DayaheadTrigger(BaseModel):
     """
     Contains the blueprint of a Dayahead workflow definition. Used to trigger one or more cases within a price area
@@ -228,6 +238,7 @@ class DayaheadTrigger(BaseModel):
     dayahead_configuration_external_id: str | None = "market_configuration_nordpool_dayahead"
 
 
+@deprecated
 class DayaheadWorkflowRun(BaseModel):
     """
     Return object when triggering a DayaheadTrigger workflow via the API.

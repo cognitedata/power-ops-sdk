@@ -3,10 +3,12 @@ from __future__ import annotations
 from typing import Union
 
 from cognite.client.data_classes import Asset, Event, FileMetadata, Relationship, Sequence, TimeSeries
+from deprecated import deprecated
 
 CDF_Resource = Union[Asset, TimeSeries, FileMetadata, Sequence, Event]
 
 
+@deprecated
 def simple_relationship(
     source: CDF_Resource,
     target: CDF_Resource,
