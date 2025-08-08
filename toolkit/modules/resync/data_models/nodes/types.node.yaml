@@ -4,6 +4,8 @@
   space: power_ops_types
 - externalId: BidConfigurationDayAhead
   space: power_ops_types
+- externalId: DataSetConfiguration
+  space: power_ops_types
 - externalId: DateSpecification
   space: power_ops_types
 - externalId: Generator

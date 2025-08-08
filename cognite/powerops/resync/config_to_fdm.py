@@ -40,6 +40,11 @@ logger = logging.getLogger("resync")
 __all__ = ["ResyncImporter"]
 
 
+class MissingViewError(Exception):
+    def __init__(self, view_id: str):
+        super().__init__(f"View for type {view_id} not found in CDF, check if latest DM has been deployed")
+
+
 class ResyncImporter:
     """Importer class for resync to populate the data model from yaml configuration files.
 
@@ -294,7 +299,10 @@ class ResyncImporter:
 
         type_external_id = object_type.__name__.replace("Write", "")
 
-        view = client.data_modeling.views.retrieve(ids=[("power_ops_core", type_external_id)])[0]
+        fetched_view = client.data_modeling.views.retrieve(ids=[("power_ops_core", type_external_id)])
+        if not fetched_view:
+            raise MissingViewError(type_external_id)
+        view = fetched_view[0]
         properties = view.properties
         edge_properties = {}
         direct_relation_list_properties = {}
