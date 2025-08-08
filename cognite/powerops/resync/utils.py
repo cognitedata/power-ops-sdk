@@ -11,8 +11,8 @@ from typing import Any
 
 from pydantic.alias_generators import to_snake
 
-import cognite.powerops.client._generated.v1.data_classes as v1_data_classes
-from cognite.powerops.client._generated.v1.data_classes._core import DomainModelWrite
+import cognite.powerops.client._generated.data_classes as v1_data_classes
+from cognite.powerops.client._generated.data_classes._core import DomainModelWrite
 
 logger = logging.getLogger("resync")
 

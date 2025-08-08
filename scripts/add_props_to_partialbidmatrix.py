@@ -6,7 +6,7 @@ You need to specify what properties you want to link to the matrix information o
 from cognite.client.data_classes import TimeSeries, TimeSeriesList
 from cognite.client import CogniteClient
 from cognite.powerops import PowerOpsClient
-from cognite.powerops.client._generated.v1.data_classes import BidMatrixInformationWrite
+from cognite.powerops.client._generated.data_classes import BidMatrixInformationWrite
 
 
 def initialize_clients():

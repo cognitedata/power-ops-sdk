@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 import requests
 
-from cognite.powerops.client._generated.v1.data_classes import (
+from cognite.powerops.client._generated.data_classes import (
     ShopCase,
     ShopCaseWrite,
     ShopFile,

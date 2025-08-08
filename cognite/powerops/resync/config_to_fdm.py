@@ -27,7 +27,7 @@ from cognite.client.data_classes.data_modeling import (
 )
 from pydantic import ValidationError
 
-import cognite.powerops.client._generated.v1.data_classes as v1_data_classes
+import cognite.powerops.client._generated.data_classes as v1_data_classes
 from cognite.powerops.resync.data_classes import (
     DataModelConfiguration,
     PropertyConfiguration,

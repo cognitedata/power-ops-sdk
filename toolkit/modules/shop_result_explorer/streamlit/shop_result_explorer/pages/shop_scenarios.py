@@ -8,7 +8,7 @@ from cognite.client.utils import ms_to_datetime
 from utils import filters_to_str, nested_get
 
 from cognite.powerops.client import PowerOpsClient
-from cognite.powerops.client._generated.v1.data_classes import (
+from cognite.powerops.client._generated.data_classes import (
     ShopPreprocessorInputWrite,
     ShopTriggerInputWrite,
 )
