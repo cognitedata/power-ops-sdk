@@ -37,12 +37,14 @@ def new_bid_configuration(power_ops_client) -> BidConfigurationDayAhead:
         bid_date_specification=None,
         partials=None,
     )
-    power_ops_client.v1.upsert(bid_config)
-    yield power_ops_client.v1.day_ahead_configuration.bid_configuration_day_ahead.retrieve(external_id=external_id)
+    power_ops_client.powerops.upsert(bid_config)
+    yield power_ops_client.powerops.day_ahead_configuration.bid_configuration_day_ahead.retrieve(
+        external_id=external_id
+    )
     # Clean up after the test
-    power_ops_client.v1.delete(external_id=external_id)
+    power_ops_client.powerops.delete(external_id=external_id)
     assert (
-        power_ops_client.v1.day_ahead_configuration.bid_configuration_day_ahead.retrieve(external_id=external_id)
+        power_ops_client.powerops.day_ahead_configuration.bid_configuration_day_ahead.retrieve(external_id=external_id)
         is None
     )
 
@@ -62,11 +64,13 @@ def new_market_configuration(power_ops_client) -> MarketConfiguration:
         time_unit="15m",
         trade_lot=0.2,
     )
-    power_ops_client.v1.upsert(market_config)
-    yield power_ops_client.v1.day_ahead_configuration.market_configuration.retrieve(external_id=external_id)
+    power_ops_client.powerops.upsert(market_config)
+    yield power_ops_client.powerops.day_ahead_configuration.market_configuration.retrieve(external_id=external_id)
     # Clean up after the test
-    power_ops_client.v1.delete(external_id=external_id)
-    assert power_ops_client.v1.day_ahead_configuration.market_configuration.retrieve(external_id=external_id) is None
+    power_ops_client.powerops.delete(external_id=external_id)
+    assert (
+        power_ops_client.powerops.day_ahead_configuration.market_configuration.retrieve(external_id=external_id) is None
+    )
 
 
 @pytest.fixture
@@ -79,11 +83,13 @@ def new_price_area(power_ops_client) -> PriceAreaDayAhead:
         main_price_scenario=None,
         price_scenarios=[],
     )
-    power_ops_client.v1.upsert(price_area)
-    yield power_ops_client.v1.day_ahead_configuration.price_area_day_ahead.retrieve(external_id=external_id)
+    power_ops_client.powerops.upsert(price_area)
+    yield power_ops_client.powerops.day_ahead_configuration.price_area_day_ahead.retrieve(external_id=external_id)
     # Clean up after the test
-    power_ops_client.v1.delete(external_id=external_id)
-    assert power_ops_client.v1.day_ahead_configuration.price_area_day_ahead.retrieve(external_id=external_id) is None
+    power_ops_client.powerops.delete(external_id=external_id)
+    assert (
+        power_ops_client.powerops.day_ahead_configuration.price_area_day_ahead.retrieve(external_id=external_id) is None
+    )
 
 
 @pytest.fixture
@@ -100,11 +106,13 @@ def new_date_specification(power_ops_client) -> DateSpecification:
             "week": 5,
         },
     )
-    power_ops_client.v1.upsert(date_specification)
-    yield power_ops_client.v1.day_ahead_configuration.date_specification.retrieve(external_id=external_id)
+    power_ops_client.powerops.upsert(date_specification)
+    yield power_ops_client.powerops.day_ahead_configuration.date_specification.retrieve(external_id=external_id)
     # Clean up after the test
-    power_ops_client.v1.delete(external_id=external_id)
-    assert power_ops_client.v1.day_ahead_configuration.date_specification.retrieve(external_id=external_id) is None
+    power_ops_client.powerops.delete(external_id=external_id)
+    assert (
+        power_ops_client.powerops.day_ahead_configuration.date_specification.retrieve(external_id=external_id) is None
+    )
 
 
 @pytest.fixture
@@ -138,15 +146,19 @@ def new_partials_shop(power_ops_client) -> ShopBasedPartialBidConfigurationList:
         )
         partials.append(partial)
 
-    power_ops_client.v1.upsert(partials)
+    power_ops_client.powerops.upsert(partials)
 
-    yield power_ops_client.v1.day_ahead_configuration.shop_based_partial_bid_configuration.retrieve(
+    yield power_ops_client.powerops.day_ahead_configuration.shop_based_partial_bid_configuration.retrieve(
         external_id=external_ids,
     )
     # Clean up after the test
-    power_ops_client.v1.delete(external_id=external_ids)
+    power_ops_client.powerops.delete(external_id=external_ids)
     assert (
-        len(power_ops_client.v1.day_ahead_configuration.partial_bid_configuration.retrieve(external_id=external_ids))
+        len(
+            power_ops_client.powerops.day_ahead_configuration.partial_bid_configuration.retrieve(
+                external_id=external_ids
+            )
+        )
         == 0
     )
 
@@ -170,15 +182,19 @@ def new_partials_water(power_ops_client) -> WaterValueBasedPartialBidConfigurati
         )
         partials.append(partial)
 
-    power_ops_client.v1.upsert(partials)
+    power_ops_client.powerops.upsert(partials)
 
-    yield power_ops_client.v1.day_ahead_configuration.water_value_based_partial_bid_configuration.retrieve(
+    yield power_ops_client.powerops.day_ahead_configuration.water_value_based_partial_bid_configuration.retrieve(
         external_id=external_ids,
     )
     # Clean up after the test
-    power_ops_client.v1.delete(external_id=external_ids)
+    power_ops_client.powerops.delete(external_id=external_ids)
     assert (
-        len(power_ops_client.v1.day_ahead_configuration.partial_bid_configuration.retrieve(external_id=external_ids))
+        len(
+            power_ops_client.powerops.day_ahead_configuration.partial_bid_configuration.retrieve(
+                external_id=external_ids
+            )
+        )
         == 0
     )
 
@@ -198,9 +214,9 @@ def new_bid_configuration_shop(
     updated_bid_config.bid_date_specification = new_date_specification.as_write()
     updated_bid_config.partials = [partial.as_write() for partial in new_partials_shop]
 
-    power_ops_client.v1.upsert(updated_bid_config)
+    power_ops_client.powerops.upsert(updated_bid_config)
 
-    yield power_ops_client.v1.day_ahead_configuration.bid_configuration_day_ahead.retrieve(
+    yield power_ops_client.powerops.day_ahead_configuration.bid_configuration_day_ahead.retrieve(
         external_id=updated_bid_config.external_id,
         retrieve_connections="full",
     )

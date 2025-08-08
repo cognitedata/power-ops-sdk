@@ -33,7 +33,7 @@ def update_partial_bid_matrix_information(
         plant_ex_id (str): External ID of the power asset.
         bidconfig_ex_id (str): External ID of the partial bid configuration.
     """
-    the_partial_bidmatrix = power_client.v1.day_ahead_bid.partial_bid_matrix_information.retrieve(external_id=ex_id)
+    the_partial_bidmatrix = power_client.powerops.day_ahead_bid.partial_bid_matrix_information.retrieve(external_id=ex_id)
     the_partial_bidmatrix.power_asset = plant_ex_id
     the_partial_bidmatrix.partial_bid_configuration = bidconfig_ex_id
 
@@ -43,7 +43,7 @@ def update_partial_bid_matrix_information(
     the_partial_bidmatrix_write = the_partial_bidmatrix.as_write()
 
     # Upsert the partial bid matrix information object:
-    power_client.v1.upsert(the_partial_bidmatrix_write, replace=False)
+    power_client.powerops.upsert(the_partial_bidmatrix_write, replace=False)
 
 
 def update_bid_matrix_information(power_client: PowerOpsClient, ex_id: str):
@@ -54,12 +54,12 @@ def update_bid_matrix_information(power_client: PowerOpsClient, ex_id: str):
         power_client (PowerOpsClient): An authenticated PowerOps client.
         ex_id (str): External ID of the bid matrix information object.
     """
-    the_bidmatrixinfo = power_client.v1.day_ahead_bid.bid_matrix_information.retrieve(external_id=ex_id)
+    the_bidmatrixinfo = power_client.powerops.day_ahead_bid.bid_matrix_information.retrieve(external_id=ex_id)
     the_bidmatrixinfo_write = the_bidmatrixinfo.as_write()
     print(f"Bid Matrix: {the_bidmatrixinfo_write}")
 
     # Upset the bid matrix information object:
-    power_client.v1.upsert(the_bidmatrixinfo_write, replace=False)
+    power_client.powerops.upsert(the_bidmatrixinfo_write, replace=False)
 
 
 def main():
@@ -91,7 +91,7 @@ if __name__ == "__main__":
 # bidconfig_ex_id = "shop_based_partial_bid_configuration_lund_2"
 
 
-# lund_partial_bidmatrix = power_client.v1.day_ahead_bid.partial_bid_matrix_information.retrieve(external_id=ex_id)
+# lund_partial_bidmatrix = power_client.powerops.day_ahead_bid.partial_bid_matrix_information.retrieve(external_id=ex_id)
 
 # lund_partial_bidmatrix.power_asset = plant_ex_id
 # lund_partial_bidmatrix.partial_bid_configuration = bidconfig_ex_id
@@ -101,9 +101,9 @@ if __name__ == "__main__":
 
 
 # lund_partial_bidmatrix = lund_partial_bidmatrix.as_write()
-# power_client.v1.upsert(lund_partial_bidmatrix, replace=False)
+# power_client.powerops.upsert(lund_partial_bidmatrix, replace=False)
 
 
-# lund_bidmatrixinfo = power_client.v1.day_ahead_bid.bid_matrix_information.retrieve(external_id=ex_id)
+# lund_bidmatrixinfo = power_client.powerops.day_ahead_bid.bid_matrix_information.retrieve(external_id=ex_id)
 # lund_bidmatrixinfo = lund_bidmatrixinfo.as_write()
-# power_client.v1.upsert(lund_bidmatrixinfo, replace=False)
+# power_client.powerops.upsert(lund_bidmatrixinfo, replace=False)

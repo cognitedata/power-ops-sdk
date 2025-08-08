@@ -110,7 +110,7 @@ class TestBidConfiguration:
         new_date_specification: DateSpecification,
         new_partials_shop: ShopBasedPartialBidConfigurationList,
     ):
-        retrieved_bid_config = power_ops_client.v1.day_ahead_configuration.bid_configuration_day_ahead.retrieve(
+        retrieved_bid_config = power_ops_client.powerops.day_ahead_configuration.bid_configuration_day_ahead.retrieve(
             external_id=new_bid_configuration_shop.external_id,
             retrieve_connections="skip",
         )
@@ -133,7 +133,7 @@ class TestBidConfiguration:
         new_date_specification: DateSpecification,
         new_partials_shop: ShopBasedPartialBidConfigurationList,
     ):
-        retrieved_bid_config = power_ops_client.v1.day_ahead_configuration.bid_configuration_day_ahead.retrieve(
+        retrieved_bid_config = power_ops_client.powerops.day_ahead_configuration.bid_configuration_day_ahead.retrieve(
             external_id=new_bid_configuration_shop.external_id,
             retrieve_connections="identifier",
         )
@@ -177,7 +177,7 @@ class TestBidConfiguration:
         new_bid_configuration_shop: BidConfigurationDayAhead,
     ):
         query = graphql_query_bid_configuration(new_bid_configuration_shop.external_id)
-        response = power_ops_client.v1.day_ahead_configuration.graphql_query(query)
+        response = power_ops_client.powerops.day_ahead_configuration.graphql_query(query)
 
         assert response is not None
         assert isinstance(response, GraphQLList)

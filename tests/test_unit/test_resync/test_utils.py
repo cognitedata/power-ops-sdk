@@ -7,7 +7,7 @@ from unittest.mock import patch
 import pytest
 from pydantic.alias_generators import to_snake
 
-import cognite.powerops.client._generated.data_classes as v1_data_classes
+import cognite.powerops.client._generated.data_classes as data_classes
 from cognite.powerops.client._generated.data_classes import (
     Alert,
     AlertWrite,
@@ -23,9 +23,9 @@ from cognite.powerops.resync.utils import (
     get_type_prefix_from_string,
 )
 
-DomainModelWrite = v1_data_classes.DomainModelWrite
-GeneratorEfficiencyCurveWrite = v1_data_classes.GeneratorEfficiencyCurveWrite
-TurbineEfficiencyCurveWrite = v1_data_classes.TurbineEfficiencyCurveWrite
+DomainModelWrite = data_classes.DomainModelWrite
+GeneratorEfficiencyCurveWrite = data_classes.GeneratorEfficiencyCurveWrite
+TurbineEfficiencyCurveWrite = data_classes.TurbineEfficiencyCurveWrite
 
 logger = logging.getLogger(__name__)
 

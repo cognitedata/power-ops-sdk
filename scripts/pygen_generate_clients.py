@@ -21,7 +21,7 @@ def main():
     version = "1"
     instance_space = "power_ops_instances"
     client_name = "PowerOpsModelsClient"
-    v1_models = [
+    models = [
         "compute_ShopBasedDayAhead",
         "compute_TotalBidMatrixCalculation",
         "compute_WaterValueBasedDayAheadBid",
@@ -32,9 +32,9 @@ def main():
         "compute_BenchmarkingDayAhead",
     ]
 
-    print(f"Generating DM v1 Client for all {len(v1_models)} models")
+    print(f"Generating DM Client for all {len(models)} models")
     generate_sdk(
-        [dm.DataModelId(space, external_id, version) for external_id in v1_models],
+        [dm.DataModelId(space, external_id, version) for external_id in models],
         client,
         top_level_package=top_level,
         default_instance_space=instance_space,
@@ -44,7 +44,7 @@ def main():
         overwrite=True,
         format_code=True,
     )
-    print("Done generating v1 client")
+    print("Done generating client")
 
 
 if __name__ == "__main__":
