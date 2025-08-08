@@ -12,7 +12,7 @@ from cognite.client import CogniteClient
 from pydantic import BaseModel
 from typing_extensions import Self
 
-from cognite.powerops.utils.cdf.calls import retrieve_range
+from cognite.powerops.utils.retrieve import retrieve_range
 
 logger = getLogger(__name__)
 

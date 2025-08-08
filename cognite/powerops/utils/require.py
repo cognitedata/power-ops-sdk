@@ -1,5 +1,3 @@
-# TODO DRY up with power-ops-functions
-
 from typing import Any, TypeVar, overload
 
 _T = TypeVar("_T")

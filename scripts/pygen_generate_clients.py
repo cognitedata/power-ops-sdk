@@ -14,14 +14,14 @@ REPO_ROOT = Path(__file__).parent.parent
 def main():
     client = PowerOpsClient.from_config("power_ops_config.yaml").cdf
 
-    top_level = "cognite.powerops.client._generated.v1"
-    output_dir = REPO_ROOT / "cognite" / "powerops" / "client" / "_generated" / "v1"
+    top_level = "cognite.powerops.client._generated"
+    output_dir = REPO_ROOT / "cognite" / "powerops" / "client" / "_generated"
 
     space = "power_ops_core"
     version = "1"
     instance_space = "power_ops_instances"
-    client_name = "PowerOpsModelsV1Client"
-    v1_models = [
+    client_name = "PowerOpsModelsClient"
+    models = [
         "compute_ShopBasedDayAhead",
         "compute_TotalBidMatrixCalculation",
         "compute_WaterValueBasedDayAheadBid",
@@ -32,9 +32,9 @@ def main():
         "compute_BenchmarkingDayAhead",
     ]
 
-    print(f"Generating DM v1 Client for all {len(v1_models)} models")
+    print(f"Generating DM Client for all {len(models)} models")
     generate_sdk(
-        [dm.DataModelId(space, external_id, version) for external_id in v1_models],
+        [dm.DataModelId(space, external_id, version) for external_id in models],
         client,
         top_level_package=top_level,
         default_instance_space=instance_space,
@@ -44,7 +44,7 @@ def main():
         overwrite=True,
         format_code=True,
     )
-    print("Done generating v1 client")
+    print("Done generating client")
 
 
 if __name__ == "__main__":

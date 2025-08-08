@@ -8,7 +8,7 @@ from cognite.client.utils import ms_to_datetime
 from utils import filters_to_str, nested_get
 
 from cognite.powerops.client import PowerOpsClient
-from cognite.powerops.client._generated.v1.data_classes import (
+from cognite.powerops.client._generated.data_classes import (
     ShopPreprocessorInputWrite,
     ShopTriggerInputWrite,
 )
@@ -58,7 +58,7 @@ def run_shop(
         workflowStep=-1,
         functionCallId="_",
     )
-    power_ops_client.v1.upsert(shop_trigger_input)
+    power_ops_client.powerops.upsert(shop_trigger_input)
     return power_ops_client.cdf.functions.call(
         external_id="shop_trigger",
         data={"shop_trigger_input_instance_external_id": shop_trigger_input.external_id},

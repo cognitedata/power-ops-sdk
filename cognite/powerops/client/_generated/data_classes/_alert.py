@@ -1,0 +1,361 @@
+from __future__ import annotations
+
+import datetime
+from collections.abc import Sequence
+from typing import Any, ClassVar, Literal, Optional, Union
+
+from cognite.client import data_modeling as dm, CogniteClient
+from pydantic import Field
+from pydantic import field_validator, model_validator, ValidationInfo
+
+from cognite.powerops.client._generated.config import global_config
+from cognite.powerops.client._generated.data_classes._core import (
+    DEFAULT_INSTANCE_SPACE,
+    DEFAULT_QUERY_LIMIT,
+    DataRecord,
+    DataRecordGraphQL,
+    DataRecordWrite,
+    DomainModel,
+    DomainModelWrite,
+    DomainModelWriteList,
+    DomainModelList,
+    DomainRelation,
+    DomainRelationWrite,
+    GraphQLCore,
+    ResourcesWrite,
+    T_DomainModelList,
+    as_node_id,
+    as_read_args,
+    as_write_args,
+    is_tuple_id,
+    as_instance_dict_id,
+    parse_single_connection,
+    QueryCore,
+    NodeQueryCore,
+    StringFilter,
+    ViewPropertyId,
+    IntFilter,
+    TimestampFilter,
+)
+
+
+__all__ = [
+    "Alert",
+    "AlertWrite",
+    "AlertList",
+    "AlertWriteList",
+    "AlertFields",
+    "AlertTextFields",
+    "AlertGraphQL",
+]
+
+
+AlertTextFields = Literal["external_id", "workflow_execution_id", "title", "description", "severity", "alert_type", "calculation_run"]
+AlertFields = Literal["external_id", "time", "workflow_execution_id", "title", "description", "severity", "alert_type", "status_code", "event_ids", "calculation_run"]
+
+_ALERT_PROPERTIES_BY_FIELD = {
+    "external_id": "externalId",
+    "time": "time",
+    "workflow_execution_id": "workflowExecutionId",
+    "title": "title",
+    "description": "description",
+    "severity": "severity",
+    "alert_type": "alertType",
+    "status_code": "statusCode",
+    "event_ids": "eventIds",
+    "calculation_run": "calculationRun",
+}
+
+
+class AlertGraphQL(GraphQLCore):
+    """This represents the reading version of alert, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the alert.
+        data_record: The data record of the alert node.
+        time: Timestamp that the alert occurred (within the workflow)
+        workflow_execution_id: Process ID in the workflow that the alert is related to
+        title: Summary description of the alert
+        description: Detailed description of the alert
+        severity: CRITICAL (calculation could not completed) WARNING  (calculation completed, with major issue) INFO
+            (calculation completed, with minor issues)
+        alert_type: Classification of the alert (not in current alerting implementation)
+        status_code: Unique status code for the alert. May be used by the frontend to avoid use of hardcoded
+            description (i.e. like a translation)
+        event_ids: An array of associated alert CDF Events (e.g. SHOP Run events)
+        calculation_run: The identifier of the parent Bid Calculation (required so that alerts can be created before
+            the BidDocument)
+    """
+
+    view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "Alert", "1")
+    time: Optional[datetime.datetime] = None
+    workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
+    title: Optional[str] = None
+    description: Optional[str] = None
+    severity: Optional[str] = None
+    alert_type: Optional[str] = Field(None, alias="alertType")
+    status_code: Optional[int] = Field(None, alias="statusCode")
+    event_ids: Optional[list[int]] = Field(None, alias="eventIds")
+    calculation_run: Optional[str] = Field(None, alias="calculationRun")
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+
+
+    def as_read(self) -> Alert:
+        """Convert this GraphQL format of alert to the reading format."""
+        return Alert.model_validate(as_read_args(self))
+
+    def as_write(self) -> AlertWrite:
+        """Convert this GraphQL format of alert to the writing format."""
+        return AlertWrite.model_validate(as_write_args(self))
+
+
+class Alert(DomainModel):
+    """This represents the reading version of alert.
+
+    It is used to when data is retrieved from CDF.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the alert.
+        data_record: The data record of the alert node.
+        time: Timestamp that the alert occurred (within the workflow)
+        workflow_execution_id: Process ID in the workflow that the alert is related to
+        title: Summary description of the alert
+        description: Detailed description of the alert
+        severity: CRITICAL (calculation could not completed) WARNING  (calculation completed, with major issue) INFO
+            (calculation completed, with minor issues)
+        alert_type: Classification of the alert (not in current alerting implementation)
+        status_code: Unique status code for the alert. May be used by the frontend to avoid use of hardcoded
+            description (i.e. like a translation)
+        event_ids: An array of associated alert CDF Events (e.g. SHOP Run events)
+        calculation_run: The identifier of the parent Bid Calculation (required so that alerts can be created before
+            the BidDocument)
+    """
+
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "Alert", "1")
+
+    space: str = DEFAULT_INSTANCE_SPACE
+    node_type: Union[dm.DirectRelationReference, None] = None
+    time: datetime.datetime
+    workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
+    title: str
+    description: Optional[str] = None
+    severity: Optional[str] = None
+    alert_type: Optional[str] = Field(None, alias="alertType")
+    status_code: Optional[int] = Field(None, alias="statusCode")
+    event_ids: Optional[list[int]] = Field(None, alias="eventIds")
+    calculation_run: Optional[str] = Field(None, alias="calculationRun")
+
+
+    def as_write(self) -> AlertWrite:
+        """Convert this read version of alert to the writing version."""
+        return AlertWrite.model_validate(as_write_args(self))
+
+
+
+class AlertWrite(DomainModelWrite):
+    """This represents the writing version of alert.
+
+    It is used to when data is sent to CDF.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the alert.
+        data_record: The data record of the alert node.
+        time: Timestamp that the alert occurred (within the workflow)
+        workflow_execution_id: Process ID in the workflow that the alert is related to
+        title: Summary description of the alert
+        description: Detailed description of the alert
+        severity: CRITICAL (calculation could not completed) WARNING  (calculation completed, with major issue) INFO
+            (calculation completed, with minor issues)
+        alert_type: Classification of the alert (not in current alerting implementation)
+        status_code: Unique status code for the alert. May be used by the frontend to avoid use of hardcoded
+            description (i.e. like a translation)
+        event_ids: An array of associated alert CDF Events (e.g. SHOP Run events)
+        calculation_run: The identifier of the parent Bid Calculation (required so that alerts can be created before
+            the BidDocument)
+    """
+    _container_fields: ClassVar[tuple[str, ...]] = ("alert_type", "calculation_run", "description", "event_ids", "severity", "status_code", "time", "title", "workflow_execution_id",)
+
+    _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "Alert", "1")
+
+    space: str = DEFAULT_INSTANCE_SPACE
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
+    time: datetime.datetime
+    workflow_execution_id: Optional[str] = Field(None, alias="workflowExecutionId")
+    title: str
+    description: Optional[str] = None
+    severity: Optional[str] = None
+    alert_type: Optional[str] = Field(None, alias="alertType")
+    status_code: Optional[int] = Field(None, alias="statusCode")
+    event_ids: Optional[list[int]] = Field(None, alias="eventIds")
+    calculation_run: Optional[str] = Field(None, alias="calculationRun")
+
+
+
+class AlertList(DomainModelList[Alert]):
+    """List of alerts in the read version."""
+
+    _INSTANCE = Alert
+    def as_write(self) -> AlertWriteList:
+        """Convert these read versions of alert to the writing versions."""
+        return AlertWriteList([node.as_write() for node in self.data])
+
+
+
+class AlertWriteList(DomainModelWriteList[AlertWrite]):
+    """List of alerts in the writing version."""
+
+    _INSTANCE = AlertWrite
+
+
+def _create_alert_filter(
+    view_id: dm.ViewId,
+    min_time: datetime.datetime | None = None,
+    max_time: datetime.datetime | None = None,
+    workflow_execution_id: str | list[str] | None = None,
+    workflow_execution_id_prefix: str | None = None,
+    title: str | list[str] | None = None,
+    title_prefix: str | None = None,
+    description: str | list[str] | None = None,
+    description_prefix: str | None = None,
+    severity: str | list[str] | None = None,
+    severity_prefix: str | None = None,
+    alert_type: str | list[str] | None = None,
+    alert_type_prefix: str | None = None,
+    min_status_code: int | None = None,
+    max_status_code: int | None = None,
+    calculation_run: str | list[str] | None = None,
+    calculation_run_prefix: str | None = None,
+    external_id_prefix: str | None = None,
+    space: str | list[str] | None = None,
+    filter: dm.Filter | None = None,
+) -> dm.Filter | None:
+    filters: list[dm.Filter] = []
+    if min_time is not None or max_time is not None:
+        filters.append(dm.filters.Range(view_id.as_property_ref("time"), gte=min_time.isoformat(timespec="milliseconds") if min_time else None, lte=max_time.isoformat(timespec="milliseconds") if max_time else None))
+    if isinstance(workflow_execution_id, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id))
+    if workflow_execution_id and isinstance(workflow_execution_id, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("workflowExecutionId"), values=workflow_execution_id))
+    if workflow_execution_id_prefix is not None:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("workflowExecutionId"), value=workflow_execution_id_prefix))
+    if isinstance(title, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("title"), value=title))
+    if title and isinstance(title, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("title"), values=title))
+    if title_prefix is not None:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("title"), value=title_prefix))
+    if isinstance(description, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("description"), value=description))
+    if description and isinstance(description, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("description"), values=description))
+    if description_prefix is not None:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("description"), value=description_prefix))
+    if isinstance(severity, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("severity"), value=severity))
+    if severity and isinstance(severity, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("severity"), values=severity))
+    if severity_prefix is not None:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("severity"), value=severity_prefix))
+    if isinstance(alert_type, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("alertType"), value=alert_type))
+    if alert_type and isinstance(alert_type, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("alertType"), values=alert_type))
+    if alert_type_prefix is not None:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("alertType"), value=alert_type_prefix))
+    if min_status_code is not None or max_status_code is not None:
+        filters.append(dm.filters.Range(view_id.as_property_ref("statusCode"), gte=min_status_code, lte=max_status_code))
+    if isinstance(calculation_run, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("calculationRun"), value=calculation_run))
+    if calculation_run and isinstance(calculation_run, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("calculationRun"), values=calculation_run))
+    if calculation_run_prefix is not None:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("calculationRun"), value=calculation_run_prefix))
+    if external_id_prefix is not None:
+        filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
+    if isinstance(space, str):
+        filters.append(dm.filters.Equals(["node", "space"], value=space))
+    if space and isinstance(space, list):
+        filters.append(dm.filters.In(["node", "space"], values=space))
+    if filter:
+        filters.append(filter)
+    return dm.filters.And(*filters) if filters else None
+
+
+class _AlertQuery(NodeQueryCore[T_DomainModelList, AlertList]):
+    _view_id = Alert._view_id
+    _result_cls = Alert
+    _result_list_cls_end = AlertList
+
+    def __init__(
+        self,
+        created_types: set[type],
+        creation_path: list[QueryCore],
+        client: CogniteClient,
+        result_list_cls: type[T_DomainModelList],
+        expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
+        connection_name: str | None = None,
+        connection_property: ViewPropertyId | None = None,
+        connection_type: Literal["reverse-list"] | None = None,
+        reverse_expression: dm.query.NodeOrEdgeResultSetExpression | None = None,
+    ):
+
+        super().__init__(
+            created_types,
+            creation_path,
+            client,
+            result_list_cls,
+            expression,
+            dm.filters.HasData(views=[self._view_id]),
+            connection_name,
+            connection_property,
+            connection_type,
+            reverse_expression,
+        )
+
+        self.space = StringFilter(self, ["node", "space"])
+        self.external_id = StringFilter(self, ["node", "externalId"])
+        self.time = TimestampFilter(self, self._view_id.as_property_ref("time"))
+        self.workflow_execution_id = StringFilter(self, self._view_id.as_property_ref("workflowExecutionId"))
+        self.title = StringFilter(self, self._view_id.as_property_ref("title"))
+        self.description = StringFilter(self, self._view_id.as_property_ref("description"))
+        self.severity = StringFilter(self, self._view_id.as_property_ref("severity"))
+        self.alert_type = StringFilter(self, self._view_id.as_property_ref("alertType"))
+        self.status_code = IntFilter(self, self._view_id.as_property_ref("statusCode"))
+        self.calculation_run = StringFilter(self, self._view_id.as_property_ref("calculationRun"))
+        self._filter_classes.extend([
+            self.space,
+            self.external_id,
+            self.time,
+            self.workflow_execution_id,
+            self.title,
+            self.description,
+            self.severity,
+            self.alert_type,
+            self.status_code,
+            self.calculation_run,
+        ])
+
+    def list_alert(self, limit: int = DEFAULT_QUERY_LIMIT) -> AlertList:
+        return self._list(limit=limit)
+
+
+class AlertQuery(_AlertQuery[AlertList]):
+    def __init__(self, client: CogniteClient):
+        super().__init__(set(), [], client, AlertList)

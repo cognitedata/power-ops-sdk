@@ -19,8 +19,6 @@ global:
   max_retries: 10
   max_retry_backoff: 10
 
-# `power_ops` is a required section, and it contains the configuration for the PowerOps SDK.
+# `power_ops` is an optional section, and it contains the configuration for the PowerOps SDK.
 power_ops:
-  read_dataset: "powerops:process"
-  write_dataset: "powerops:process"
-  monitor_dataset: "powerops:monitor"
+  cog_shop_service: "staging" # defaults to prod, but can be set to staging if needed to test against the staging CShaaS environment

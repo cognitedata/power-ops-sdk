@@ -23,7 +23,7 @@ def pre_build(client_configuration: Path, configuration: Path) -> None:
     """
     client = PowerOpsClient.from_config(client_configuration)
 
-    data_model_classes = get_data_model_write_classes(client.v1)
+    data_model_classes = get_data_model_write_classes(client.powerops)
 
     resync_importer = ResyncImporter.from_yaml(configuration, data_model_classes, client.cdf)
     resync_data_model_objects, external_ids = resync_importer.to_toolkit_nodes_edges(client.cdf)
