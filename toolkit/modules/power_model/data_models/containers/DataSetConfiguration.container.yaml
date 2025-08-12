@@ -3,6 +3,14 @@ externalId: DataSetConfiguration
 name: DataSetConfiguration
 usedFor: node
 properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
   readDataSet:
     type:
       list: false
@@ -27,3 +35,11 @@ properties:
     nullable: true
     autoIncrement: false
     name: monitorDataSet
+  processDataSet:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: processDataSet
