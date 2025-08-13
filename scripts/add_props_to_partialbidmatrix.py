@@ -16,7 +16,7 @@ def initialize_clients():
     Returns:
         tuple: A tuple containing the PowerOps client and the CDF client.
     """
-    power_client = PowerOpsClient.from_settings()
+    power_client = PowerOpsClient.from_config("power_ops_config.yaml")
     cdf_client = power_client.cdf
     return power_client, cdf_client
 
@@ -83,7 +83,7 @@ if __name__ == "__main__":
     main()
 
 
-# power_client = PowerOpsClient.from_settings()
+# power_client = PowerOpsClient.from_config("power_ops_config.yaml")
 # cdf_client = power_client.cdf
 
 # ex_id = "POWEROPS_finalised-partial-bid-matrix_Lund_2023-5-8_536e"
