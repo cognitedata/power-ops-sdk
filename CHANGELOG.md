@@ -33,6 +33,7 @@ Changes are grouped as follows:
   * `utils.retry.api` is moved to `utils.retry`
   * `utils.cdf.extraction_pipelines` is moved to `utils.extraction_pipelines`
   * `utils.cdf.calls` to `utils.retrieve`
+* Moved `get_data_set_from_config` from `utils.cdf.datasets_calls` into `utils.retrieve`
 
 ## [0.114.2] - 2025-08-13
 ### Added

@@ -7,7 +7,7 @@ from cognite.powerops.client._generated.v1.data_classes import (
     DataRecord,
     DataSetConfiguration,
 )
-from cognite.powerops.utils.cdf.datasets_calls import get_data_set_from_config
+from cognite.powerops.utils.retrieve import get_data_set_from_config
 
 
 @pytest.fixture
