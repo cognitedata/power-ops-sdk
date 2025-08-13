@@ -15,8 +15,12 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [1.0.0] - 2025-08-14
+### Removed
+* Removed all classes and functions marked as deprecated
+
 ## [0.114.2] - 2025-08-13
-### Changed
+### Added
 * Added `get_data_set_from_config` utility function to retrieve the correct CDF dataset for each type (READ, WRITE, MONITOR, PROCESS) from a DataSetConfiguration.
 
 ## [0.114.1] - 2025-07-31
