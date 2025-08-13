@@ -1,5 +1,3 @@
-import time
-
 import pytest
 
 from cognite.powerops.client._generated.v1.data_classes import DataSetConfiguration
@@ -11,8 +9,6 @@ from cognite.powerops.utils.cdf.datasets_calls import get_latest_dataset
 
 @pytest.fixture
 def temp_datasetconfiguration(power_ops_client: PowerOpsClient):
-    now = int(time.time() * 1000)  # Current time in ms since epoch
-
     config = DataSetConfigurationWrite(
         external_id="integration_temp_config",
         name="Integration Temp Config",
@@ -20,7 +16,7 @@ def temp_datasetconfiguration(power_ops_client: PowerOpsClient):
         write_data_set="powerops:process",
         monitor_data_set="new_powerops:monitor",
         process_data_set="powerops:process",
-        data_record=DataRecordWrite(last_updated_time=now, created_time=now, version=1),
+        data_record=DataRecordWrite(version=1),
     )
     power_ops_client.v1.upsert(config)
     yield config
@@ -47,7 +43,9 @@ def test_get_current_dataset_configuration_all_types(power_ops_client: PowerOpsC
 def test_create_and_get_latest_dataset_configuration(
     power_ops_client: PowerOpsClient, temp_datasetconfiguration: DataSetConfiguration
 ):
-    assert get_latest_dataset(power_ops_client, "READ").external_id == temp_datasetconfiguration.read_data_set
-    assert get_latest_dataset(power_ops_client, "WRITE").external_id == temp_datasetconfiguration.write_data_set
-    assert get_latest_dataset(power_ops_client, "MONITOR").external_id == temp_datasetconfiguration.monitor_data_set
-    assert get_latest_dataset(power_ops_client, "PROCESS").external_id == temp_datasetconfiguration.process_data_set
+    print(f"Created dataset configuration: {temp_datasetconfiguration}")
+    print(f"Latest READ dataset: {get_latest_dataset(power_ops_client, 'READ')}")
+    assert get_latest_dataset(power_ops_client, "READ").external_id == "powerops:process"
+    assert get_latest_dataset(power_ops_client, "WRITE").external_id == "powerops:process"
+    assert get_latest_dataset(power_ops_client, "MONITOR").external_id == "new_powerops:monitor"
+    assert get_latest_dataset(power_ops_client, "PROCESS").external_id == "powerops:process"
