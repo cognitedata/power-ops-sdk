@@ -15,6 +15,10 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.114.2] - 2025-08-13
+### Changed
+* Added `get_data_set_from_config` utility function to retrieve the correct CDF dataset for each type (READ, WRITE, MONITOR, PROCESS) from a DataSetConfiguration.
+
 ## [0.114.1] - 2025-07-31
 ### Changed
 * Adding process data set to DataSetConfiguration Container and View

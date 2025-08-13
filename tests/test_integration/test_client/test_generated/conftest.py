@@ -1,5 +1,3 @@
-import uuid
-
 import pytest
 
 from cognite.powerops.client import PowerOpsClient
@@ -19,11 +17,7 @@ from cognite.powerops.client._generated.v1.data_classes import (
     WaterValueBasedPartialBidConfigurationList,
     WaterValueBasedPartialBidConfigurationWrite,
 )
-
-
-def random_external_id(prefix: str) -> str:
-    """Generate a random external ID for testing purposes."""
-    return f"{prefix}_{uuid.uuid4().hex}"
+from tests.test_integration.conftest import random_external_id
 
 
 @pytest.fixture
