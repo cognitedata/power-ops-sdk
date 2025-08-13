@@ -35,7 +35,6 @@ class PowerOpsClient:
     ):
         self.cdf = client
 
-        # TODO: remove both lines below
         self.datasets = DataSetsAPI(self.cdf, read_dataset, write_dataset, monitor_dataset)
         self.shop = SHOPRunAPI(self.cdf, self.datasets.write_dataset_id)
 
