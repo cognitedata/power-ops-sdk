@@ -1,44 +1,31 @@
 from unittest.mock import MagicMock
 
 import pytest
+from cognite.client.data_classes import DataSet
 
-from cognite.powerops.client.powerops_client import PowerOpsClient
+from cognite.powerops.client._generated.v1.data_classes import (
+    DataRecord,
+    DataSetConfiguration,
+)
 from cognite.powerops.utils.cdf.datasets_calls import get_latest_dataset
-
-
-@pytest.fixture
-def get_monitor_dataset_by_external_id(client: PowerOpsClient):
-    return client.cdf.data_sets.retrieve(external_id="monitor_dataset")
-
-
-class DummyDataRecord:
-    def __init__(self, last_updated_time):
-        self.last_updated_time = last_updated_time
-
-
-class DummyConfig:
-    def __init__(self, read, write, monitor, process, last_updated_time):
-        self.read_data_set = read
-        self.write_data_set = write
-        self.monitor_data_set = monitor
-        self.process_data_set = process
-        self.data_record = DummyDataRecord(last_updated_time)
-
-
-class DummyDataset:
-    def __init__(self, id, external_id):
-        self.id = id
-        self.external_id = external_id
 
 
 @pytest.fixture
 def mock_client():
     client = MagicMock()
     client.v1.day_ahead_configuration.data_set_configuration.list.return_value = [
-        DummyConfig("read_ext", "write_ext", "monitor_ext", "process_ext", 100)
+        DataSetConfiguration(
+            external_id="config1",
+            name="Config 1",
+            read_data_set="read_ext",
+            write_data_set="write_ext",
+            monitor_data_set="monitor_ext",
+            process_data_set="process_ext",
+            data_record=DataRecord(last_updated_time=1234567890, created_time=1234560000, version=1),
+        )
     ]
     client.cdf.data_sets.retrieve.side_effect = lambda external_id: (
-        DummyDataset(42, external_id) if external_id else None
+        DataSet(id=42, external_id=external_id) if external_id else None
     )
     return client
 
@@ -47,13 +34,33 @@ def mock_client():
 def mock_client_multiple_configs():
     client = MagicMock()
     client.v1.day_ahead_configuration.data_set_configuration.list.return_value = [
-        DummyConfig("old_read", "old_write", "old_monitor", "old_process", 100),
-        DummyConfig("new_read", "new_write", "new_monitor", "new_process", 200),
+        DataSetConfiguration(
+            external_id="old_config",
+            name="Old Config",
+            read_data_set="old_read",
+            write_data_set="old_write",
+            monitor_data_set="old_monitor",
+            process_data_set="old_process",
+            data_record=DataRecord(last_updated_time=200, created_time=1234560000, version=1),
+        ),
+        DataSetConfiguration(
+            external_id="new_config",
+            name="New Config",
+            read_data_set="new_read",
+            write_data_set="new_write",
+            monitor_data_set="new_monitor",
+            process_data_set="new_process",
+            data_record=DataRecord(last_updated_time=1234567890, created_time=1234560000, version=1),
+        ),
     ]
     client.cdf.data_sets.retrieve.side_effect = lambda external_id: (
-        DummyDataset(99, external_id) if external_id else None
+        DataSet(id=99, external_id=external_id) if external_id else None
     )
     return client
+
+
+def get_monitor_dataset_by_external_id(client):
+    return client.cdf.data_sets.retrieve(external_id="monitor_ext")
 
 
 def test_get_latest_dataset_read(mock_client):
@@ -80,6 +87,13 @@ def test_get_latest_dataset_process(mock_client):
     assert ds.external_id == "process_ext"
 
 
+def test_get_monitor_dataset_by_external_id(mock_client):
+    ds = get_monitor_dataset_by_external_id(mock_client)
+    assert ds is not None
+    assert ds.id == 42
+    assert ds.external_id == "monitor_ext"
+
+
 def test_no_dataset_config():
     client = MagicMock()
     client.v1.day_ahead_configuration.data_set_configuration.list.return_value = []
@@ -90,7 +104,15 @@ def test_no_dataset_config():
 def test_no_external_id():
     client = MagicMock()
     client.v1.day_ahead_configuration.data_set_configuration.list.return_value = [
-        DummyConfig(None, None, None, None, 100)
+        DataSetConfiguration(
+            external_id="no_extid",
+            name="No External Id",
+            read_data_set="",
+            write_data_set="",
+            monitor_data_set="",
+            process_data_set="",
+            data_record=DataRecord(last_updated_time=100, created_time=50, version=1),
+        )
     ]
     with pytest.raises(ValueError, match="No external_id found for data_set_type: READ"):
         get_latest_dataset(client, "READ")
@@ -99,7 +121,15 @@ def test_no_external_id():
 def test_dataset_not_found():
     client = MagicMock()
     client.v1.day_ahead_configuration.data_set_configuration.list.return_value = [
-        DummyConfig("read_ext", "write_ext", "monitor_ext", "process_ext", 100)
+        DataSetConfiguration(
+            external_id="config1",
+            name="Config 1",
+            read_data_set="read_ext",
+            write_data_set="write_ext",
+            monitor_data_set="monitor_ext",
+            process_data_set="process_ext",
+            data_record=DataRecord(last_updated_time=100, created_time=50, version=1),
+        )
     ]
     client.cdf.data_sets.retrieve.return_value = None
     with pytest.raises(ValueError, match="Dataset with external_id 'read_ext' not found."):
