@@ -33,7 +33,6 @@ from cognite.powerops.client._generated.v1.data_classes._core import (
     NodeQueryCore,
     StringFilter,
     ViewPropertyId,
-
 )
 
 
@@ -48,14 +47,20 @@ __all__ = [
 ]
 
 
-DataSetConfigurationTextFields = Literal["external_id", "read_data_set", "write_data_set", "monitor_data_set"]
-DataSetConfigurationFields = Literal["external_id", "read_data_set", "write_data_set", "monitor_data_set"]
+DataSetConfigurationTextFields = Literal[
+    "external_id", "name", "read_data_set", "write_data_set", "monitor_data_set", "process_data_set"
+]
+DataSetConfigurationFields = Literal[
+    "external_id", "name", "read_data_set", "write_data_set", "monitor_data_set", "process_data_set"
+]
 
 _DATASETCONFIGURATION_PROPERTIES_BY_FIELD = {
     "external_id": "externalId",
+    "name": "name",
     "read_data_set": "readDataSet",
     "write_data_set": "writeDataSet",
     "monitor_data_set": "monitorDataSet",
+    "process_data_set": "processDataSet",
 }
 
 
@@ -69,15 +74,19 @@ class DataSetConfigurationGraphQL(GraphQLCore):
         space: The space where the node is located.
         external_id: The external id of the data set configuration.
         data_record: The data record of the data set configuration node.
-        read_data_set: The name of the market
-        write_data_set: The highest price allowed
-        monitor_data_set: The lowest price allowed
+        name: The name of the data set configuration
+        read_data_set: The data set to read data from into the solution
+        write_data_set: The data set to write solution data to
+        monitor_data_set: The data set to write monitoring data to, like logs from the solution
+        process_data_set: The data set to process data from into the solution
     """
 
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "DataSetConfiguration", "1")
+    name: Optional[str] = None
     read_data_set: Optional[str] = Field(None, alias="readDataSet")
     write_data_set: Optional[str] = Field(None, alias="writeDataSet")
     monitor_data_set: Optional[str] = Field(None, alias="monitorDataSet")
+    process_data_set: Optional[str] = Field(None, alias="processDataSet")
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -89,8 +98,6 @@ class DataSetConfigurationGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
-
-
 
     def as_read(self) -> DataSetConfiguration:
         """Convert this GraphQL format of data set configuration to the reading format."""
@@ -110,24 +117,28 @@ class DataSetConfiguration(DomainModel):
         space: The space where the node is located.
         external_id: The external id of the data set configuration.
         data_record: The data record of the data set configuration node.
-        read_data_set: The name of the market
-        write_data_set: The highest price allowed
-        monitor_data_set: The lowest price allowed
+        name: The name of the data set configuration
+        read_data_set: The data set to read data from into the solution
+        write_data_set: The data set to write solution data to
+        monitor_data_set: The data set to write monitoring data to, like logs from the solution
+        process_data_set: The data set to process data from into the solution
     """
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "DataSetConfiguration", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "DataSetConfiguration")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
+        "power_ops_types", "DataSetConfiguration"
+    )
+    name: str
     read_data_set: str = Field(alias="readDataSet")
     write_data_set: str = Field(alias="writeDataSet")
     monitor_data_set: Optional[str] = Field(None, alias="monitorDataSet")
-
+    process_data_set: Optional[str] = Field(None, alias="processDataSet")
 
     def as_write(self) -> DataSetConfigurationWrite:
         """Convert this read version of data set configuration to the writing version."""
         return DataSetConfigurationWrite.model_validate(as_write_args(self))
-
 
 
 class DataSetConfigurationWrite(DomainModelWrite):
@@ -139,30 +150,42 @@ class DataSetConfigurationWrite(DomainModelWrite):
         space: The space where the node is located.
         external_id: The external id of the data set configuration.
         data_record: The data record of the data set configuration node.
-        read_data_set: The name of the market
-        write_data_set: The highest price allowed
-        monitor_data_set: The lowest price allowed
+        name: The name of the data set configuration
+        read_data_set: The data set to read data from into the solution
+        write_data_set: The data set to write solution data to
+        monitor_data_set: The data set to write monitoring data to, like logs from the solution
+        process_data_set: The data set to process data from into the solution
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("monitor_data_set", "read_data_set", "write_data_set",)
+
+    _container_fields: ClassVar[tuple[str, ...]] = (
+        "monitor_data_set",
+        "name",
+        "process_data_set",
+        "read_data_set",
+        "write_data_set",
+    )
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "DataSetConfiguration", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "DataSetConfiguration")
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
+        "power_ops_types", "DataSetConfiguration"
+    )
+    name: str
     read_data_set: str = Field(alias="readDataSet")
     write_data_set: str = Field(alias="writeDataSet")
     monitor_data_set: Optional[str] = Field(None, alias="monitorDataSet")
-
+    process_data_set: Optional[str] = Field(None, alias="processDataSet")
 
 
 class DataSetConfigurationList(DomainModelList[DataSetConfiguration]):
     """List of data set configurations in the read version."""
 
     _INSTANCE = DataSetConfiguration
+
     def as_write(self) -> DataSetConfigurationWriteList:
         """Convert these read versions of data set configuration to the writing versions."""
         return DataSetConfigurationWriteList([node.as_write() for node in self.data])
-
 
 
 class DataSetConfigurationWriteList(DomainModelWriteList[DataSetConfigurationWrite]):
@@ -173,17 +196,27 @@ class DataSetConfigurationWriteList(DomainModelWriteList[DataSetConfigurationWri
 
 def _create_data_set_configuration_filter(
     view_id: dm.ViewId,
+    name: str | list[str] | None = None,
+    name_prefix: str | None = None,
     read_data_set: str | list[str] | None = None,
     read_data_set_prefix: str | None = None,
     write_data_set: str | list[str] | None = None,
     write_data_set_prefix: str | None = None,
     monitor_data_set: str | list[str] | None = None,
     monitor_data_set_prefix: str | None = None,
+    process_data_set: str | list[str] | None = None,
+    process_data_set_prefix: str | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters: list[dm.Filter] = []
+    if isinstance(name, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
+    if name and isinstance(name, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
+    if name_prefix is not None:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
     if isinstance(read_data_set, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("readDataSet"), value=read_data_set))
     if read_data_set and isinstance(read_data_set, list):
@@ -202,6 +235,12 @@ def _create_data_set_configuration_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("monitorDataSet"), values=monitor_data_set))
     if monitor_data_set_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("monitorDataSet"), value=monitor_data_set_prefix))
+    if isinstance(process_data_set, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("processDataSet"), value=process_data_set))
+    if process_data_set and isinstance(process_data_set, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("processDataSet"), values=process_data_set))
+    if process_data_set_prefix is not None:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("processDataSet"), value=process_data_set_prefix))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
@@ -246,16 +285,22 @@ class _DataSetConfigurationQuery(NodeQueryCore[T_DomainModelList, DataSetConfigu
 
         self.space = StringFilter(self, ["node", "space"])
         self.external_id = StringFilter(self, ["node", "externalId"])
+        self.name = StringFilter(self, self._view_id.as_property_ref("name"))
         self.read_data_set = StringFilter(self, self._view_id.as_property_ref("readDataSet"))
         self.write_data_set = StringFilter(self, self._view_id.as_property_ref("writeDataSet"))
         self.monitor_data_set = StringFilter(self, self._view_id.as_property_ref("monitorDataSet"))
-        self._filter_classes.extend([
-            self.space,
-            self.external_id,
-            self.read_data_set,
-            self.write_data_set,
-            self.monitor_data_set,
-        ])
+        self.process_data_set = StringFilter(self, self._view_id.as_property_ref("processDataSet"))
+        self._filter_classes.extend(
+            [
+                self.space,
+                self.external_id,
+                self.name,
+                self.read_data_set,
+                self.write_data_set,
+                self.monitor_data_set,
+                self.process_data_set,
+            ]
+        )
 
     def list_data_set_configuration(self, limit: int = DEFAULT_QUERY_LIMIT) -> DataSetConfigurationList:
         return self._list(limit=limit)

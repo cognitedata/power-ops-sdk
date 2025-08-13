@@ -15,6 +15,10 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.114.1] - 2025-07-31
+### Changed
+* Adding process data set to DataSetConfiguration Container and View
+
 ## [0.114.0] - 2025-07-31
 ### Changed
 * Adding DataSetConfiguration Container and View
