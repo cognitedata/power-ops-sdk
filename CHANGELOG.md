@@ -18,6 +18,7 @@ Changes are grouped as follows:
 ## [1.0.0] - 2025-08-14
 ### Removed
 * Removed all classes and functions marked as deprecated
+  * SHOPRunAPI
 
 ## [0.114.2] - 2025-08-13
 ### Added
