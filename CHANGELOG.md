@@ -19,7 +19,13 @@ Changes are grouped as follows:
 ### Removed
 * Removed all classes and functions marked as deprecated
   * SHOPRunAPI
-  * DataSetsAPI
+  * _logger
+  * cdf_labels
+  * utils.helpers
+  * utils.identifiers
+  * utils.lookup
+  * utils.navigation
+  * utils.cdf.resource_creation
 
 ## [0.114.2] - 2025-08-13
 ### Added
