@@ -13,7 +13,7 @@ from cognite.powerops.utils.retrieve import get_data_set_from_config
 @pytest.fixture
 def mock_client() -> MagicMock:
     client = MagicMock()
-    client.v1.day_ahead_configuration.data_set_configuration.list.return_value = [
+    client.powermodel.day_ahead_configuration.data_set_configuration.list.return_value = [
         DataSetConfiguration(
             external_id="config1",
             name="Config 1",
@@ -33,7 +33,7 @@ def mock_client() -> MagicMock:
 @pytest.fixture
 def mock_client_multiple_configs():
     client = MagicMock()
-    client.v1.day_ahead_configuration.data_set_configuration.list.return_value = [
+    client.powermodel.day_ahead_configuration.data_set_configuration.list.return_value = [
         DataSetConfiguration(
             external_id="old_config",
             name="Old Config",
@@ -90,13 +90,13 @@ class TestGetLatestDataset:
 
     def test_no_dataset_config(self):
         client = MagicMock()
-        client.v1.day_ahead_configuration.data_set_configuration.list.return_value = []
+        client.powermodel.day_ahead_configuration.data_set_configuration.list.return_value = []
         with pytest.raises(ValueError, match="No dataset configuration found."):
             get_data_set_from_config(client, "READ")
 
     def test_no_external_id(self):
         client = MagicMock()
-        client.v1.day_ahead_configuration.data_set_configuration.list.return_value = [
+        client.powermodel.day_ahead_configuration.data_set_configuration.list.return_value = [
             DataSetConfiguration(
                 external_id="no_extid",
                 name="No External Id",
@@ -112,7 +112,7 @@ class TestGetLatestDataset:
 
     def test_dataset_not_found(self):
         client = MagicMock()
-        client.v1.day_ahead_configuration.data_set_configuration.list.return_value = [
+        client.powermodel.day_ahead_configuration.data_set_configuration.list.return_value = [
             DataSetConfiguration(
                 external_id="config1",
                 name="Config 1",

@@ -173,7 +173,7 @@ def get_data_set_from_config(client: PowerOpsClient, data_set_type: DataSetType 
         ValueError: If no dataset configuration is found, if the specified data_set_type is invalid, or
                     if the dataset with the specified external_id is not found.
     """
-    dataset_configs = client.v1.day_ahead_configuration.data_set_configuration.list(limit=-1)
+    dataset_configs = client.powermodel.day_ahead_configuration.data_set_configuration.list(limit=-1)
     if not dataset_configs:
         raise ValueError("No dataset configuration found.")
 

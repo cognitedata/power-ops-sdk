@@ -423,16 +423,16 @@ def new_multi_scenario_partial(
         partial_bid_configuration=new_partials_shop[0].as_id(),
         price_production=None,
     )
-    power_ops_client.v1.upsert(multi_scenario_partial)
+    power_ops_client.powermodel.upsert(multi_scenario_partial)
     yield (
-        power_ops_client.v1.shop_based_day_ahead_bid_process.multi_scenario_partial_bid_matrix_calculation_input.retrieve(
+        power_ops_client.powermodel.shop_based_day_ahead_bid_process.multi_scenario_partial_bid_matrix_calculation_input.retrieve(
             external_id=external_id
         )
     )
     # Clean up after the test
-    power_ops_client.v1.delete(external_id=external_id)
+    power_ops_client.powermodel.delete(external_id=external_id)
     assert (
-        power_ops_client.v1.shop_based_day_ahead_bid_process.multi_scenario_partial_bid_matrix_calculation_input.retrieve(
+        power_ops_client.powermodel.shop_based_day_ahead_bid_process.multi_scenario_partial_bid_matrix_calculation_input.retrieve(
             external_id=external_id
         )
         is None
@@ -458,16 +458,16 @@ def new_water_value_based(
         partial_bid_configuration=new_partials_water[0].as_id(),
         price_production=None,
     )
-    power_ops_client.v1.upsert(multi_scenario_partial)
+    power_ops_client.powermodel.upsert(multi_scenario_partial)
     yield (
-        power_ops_client.v1.water_value_based_day_ahead_bid_process.water_value_based_partial_bid_matrix_calculation_input.retrieve(
+        power_ops_client.powermodel.water_value_based_day_ahead_bid_process.water_value_based_partial_bid_matrix_calculation_input.retrieve(
             external_id=external_id
         )
     )
     # Clean up after the test
-    power_ops_client.v1.delete(external_id=external_id)
+    power_ops_client.powermodel.delete(external_id=external_id)
     assert (
-        power_ops_client.v1.water_value_based_day_ahead_bid_process.water_value_based_partial_bid_matrix_calculation_input.retrieve(
+        power_ops_client.powermodel.water_value_based_day_ahead_bid_process.water_value_based_partial_bid_matrix_calculation_input.retrieve(
             external_id=external_id
         )
         is None
@@ -481,7 +481,7 @@ class TestBidMatrixCalculationInput:
         new_multi_scenario_partial: MultiScenarioPartialBidMatrixCalculationInput,
     ):
         query = render_shop_based_partial_bid_matrix_calc_input_query(new_multi_scenario_partial.external_id)
-        response = power_ops_client.v1.shop_based_day_ahead_bid_process.graphql_query(query)
+        response = power_ops_client.powermodel.shop_based_day_ahead_bid_process.graphql_query(query)
 
         assert response is not None
         assert isinstance(response, GraphQLList)
@@ -507,7 +507,7 @@ class TestBidMatrixCalculationInput:
         new_water_value_based: WaterValueBasedPartialBidMatrixCalculationInput,
     ):
         query = render_water_value_based_partial_bid_matrix_calc_input_query(new_water_value_based.external_id)
-        response = power_ops_client.v1.water_value_based_day_ahead_bid_process.graphql_query(query)
+        response = power_ops_client.powermodel.water_value_based_day_ahead_bid_process.graphql_query(query)
 
         assert response is not None
         assert isinstance(response, GraphQLList)

@@ -36,6 +36,7 @@ Changes are grouped as follows:
 * Moved `get_data_set_from_config` from `utils.cdf.datasets_calls` into `utils.retrieve`
 * Moved `cognite.powerops.client._generated.v1.` to `cognite.powerops.client._generated.`
 * Renamed `PowerOpsModelsV1Client` to `PowerOpsModelsClient`
+* Renamed `PowerOpsClient.v1` to `PowerOpsClient.powermodel`
 
 ## [0.114.2] - 2025-08-13
 ### Added

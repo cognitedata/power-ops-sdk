@@ -29,8 +29,8 @@ class PowerOpsClient:
         cog_shop_service: Literal["prod", "staging"] | None = None,
     ):
         self.cdf = client
-        self.v1 = PowerOpsModelsClient(self.cdf)
-        self.cogshop = CogShopAPI(self.cdf, self.v1, cog_shop_service)
+        self.powermodel = PowerOpsModelsClient(self.cdf)
+        self.cogshop = CogShopAPI(self.cdf, self.powermodel, cog_shop_service)
 
         DomainModelWrite.external_id_factory = ExternalIdFactory.create_external_id_factory(
             prefix_ext_id_factory=ExternalIdFactory(
