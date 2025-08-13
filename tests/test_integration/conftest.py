@@ -1,3 +1,5 @@
+import uuid
+
 import pytest
 
 from cognite.powerops.client.powerops_client import PowerOpsClient
@@ -11,3 +13,8 @@ def power_ops_client() -> PowerOpsClient:
     po_client = PowerOpsClient.from_config(config_path)
 
     return po_client
+
+
+def random_external_id(prefix: str) -> str:
+    """Generate a random external ID for testing purposes."""
+    return f"{prefix}_{uuid.uuid4().hex}"

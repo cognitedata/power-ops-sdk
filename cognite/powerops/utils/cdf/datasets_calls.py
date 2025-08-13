@@ -7,7 +7,22 @@ from cognite.powerops.client.powerops_client import PowerOpsClient
 DataSetType = Literal["READ", "WRITE", "MONITOR", "PROCESS"]
 
 
-def get_latest_dataset(client: PowerOpsClient, data_set_type: DataSetType = "READ") -> DataSet | None:
+def get_data_set_from_config(client: PowerOpsClient, data_set_type: DataSetType = "READ") -> DataSet:
+    """
+    Get the latest dataset configuration for a given data_set_type.
+
+    Args:
+        client (PowerOpsClient): The PowerOps client instance.
+        data_set_type (DataSetType): The type of dataset to retrieve. Valid options
+                                     are "READ", "WRITE", "MONITOR", "PROCESS".
+
+    Returns:
+        DataSet: The dataset object corresponding to the specified data_set_type.
+
+    Raises:
+        ValueError: If no dataset configuration is found, if the specified data_set_type is invalid, or
+                    if the dataset with the specified external_id is not found.
+    """
     dataset_configs = client.v1.day_ahead_configuration.data_set_configuration.list(limit=-1)
     if not dataset_configs:
         raise ValueError("No dataset configuration found.")
@@ -33,6 +48,8 @@ def get_latest_dataset(client: PowerOpsClient, data_set_type: DataSetType = "REA
         raise ValueError(f"No external_id found for data_set_type: {data_set_type}")
 
     dataset = client.cdf.data_sets.retrieve(external_id=external_id)
+
     if dataset is None:
         raise ValueError(f"Dataset with external_id '{external_id}' not found.")
+
     return dataset
