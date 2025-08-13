@@ -15,7 +15,7 @@ from cognite.powerops.client._generated.v1.data_classes import (
 
 st.set_page_config(page_title="View Shop config (scenario)", layout="wide")
 client = CogniteClient()
-power_ops_client = PowerOpsClient(client=client, read_dataset="powerops:misc", write_dataset="powerops:misc")
+power_ops_client = PowerOpsClient(client=client)
 
 if "exp_scenario_selector_expanded" not in st.session_state:
     st.session_state["exp_scenario_selector_expanded"] = True
