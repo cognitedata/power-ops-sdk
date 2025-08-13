@@ -17,7 +17,7 @@ Changes are grouped as follows:
 
 ## [0.114.2] - 2025-08-13
 ### Changed
-* Added `get_latest_dataset` utility function to retrieve the correct CDF dataset for each type (READ, WRITE, MONITOR, PROCESS) from a DataSetConfiguration.
+* Added `get_data_set_from_config` utility function to retrieve the correct CDF dataset for each type (READ, WRITE, MONITOR, PROCESS) from a DataSetConfiguration.
 
 ## [0.114.1] - 2025-07-31
 ### Changed
