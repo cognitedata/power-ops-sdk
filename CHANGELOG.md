@@ -32,6 +32,7 @@ Changes are grouped as follows:
 * Restructured utils module to eliminate nested utils
   * `utils.retry.api` is moved to `utils.retry`
   * `utils.cdf.extraction_pipelines` is moved to `utils.extraction_pipelines`
+  * `utils.cdf.calls` to `utils.retrieve`
 
 ## [0.114.2] - 2025-08-13
 ### Added
