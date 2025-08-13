@@ -47,9 +47,7 @@ def test_get_current_dataset_configuration_all_types(power_ops_client: PowerOpsC
 def test_create_and_get_latest_dataset_configuration(
     power_ops_client: PowerOpsClient, temp_datasetconfiguration: DataSetConfiguration
 ):
-    print(f"Created dataset configuration: {temp_datasetconfiguration}")
-    print(f"Latest READ dataset: {get_latest_dataset(power_ops_client, 'READ')}")
-    assert get_latest_dataset(power_ops_client, "READ").external_id == "powerops:process"
-    assert get_latest_dataset(power_ops_client, "WRITE").external_id == "powerops:process"
-    assert get_latest_dataset(power_ops_client, "MONITOR").external_id == "new_powerops:monitor"
-    assert get_latest_dataset(power_ops_client, "PROCESS").external_id == "powerops:process"
+    assert get_latest_dataset(power_ops_client, "READ").external_id == temp_datasetconfiguration.read_data_set
+    assert get_latest_dataset(power_ops_client, "WRITE").external_id == temp_datasetconfiguration.write_data_set
+    assert get_latest_dataset(power_ops_client, "MONITOR").external_id == temp_datasetconfiguration.monitor_data_set
+    assert get_latest_dataset(power_ops_client, "PROCESS").external_id == temp_datasetconfiguration.process_data_set
