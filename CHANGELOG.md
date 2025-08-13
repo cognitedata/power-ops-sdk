@@ -28,6 +28,10 @@ Changes are grouped as follows:
   * utils.cdf.resource_creation
   * utils.cdf.calls (only the event/relationship based functions)
 
+### Changed
+* Restructured utils module to eliminate nested utils
+  * `utils.retry.api` is moved to `utils.retry`
+
 ## [0.114.2] - 2025-08-13
 ### Added
 * Added `get_data_set_from_config` utility function to retrieve the correct CDF dataset for each type (READ, WRITE, MONITOR, PROCESS) from a DataSetConfiguration.
