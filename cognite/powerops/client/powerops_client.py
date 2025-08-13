@@ -15,7 +15,6 @@ from cognite.pygen.utils.external_id_factories import ExternalIdFactory
 
 from ._generated.v1 import PowerOpsModelsV1Client
 from ._generated.v1.data_classes._core import DomainModelWrite
-from .data_set_api import DataSetsAPI
 
 # max_domain = max_total (255) - uuid (32) + separator (1)  noqa: ERA001
 _MAX_DOMAIN_LENGTH = 233
@@ -27,15 +26,9 @@ class PowerOpsClient:
     def __init__(
         self,
         client: CogniteClient,
-        read_dataset: str,  # TODO: not required anymore
-        write_dataset: str,  # TODO: not required anymore
-        monitor_dataset: str | None = None,  # TODO: not required anymore
         cog_shop_service: Literal["prod", "staging"] | None = None,
     ):
         self.cdf = client
-
-        self.datasets = DataSetsAPI(self.cdf, read_dataset, write_dataset, monitor_dataset)
-
         self.v1 = PowerOpsModelsV1Client(self.cdf)
         self.cogshop = CogShopAPI(self.cdf, self.v1, cog_shop_service)
 

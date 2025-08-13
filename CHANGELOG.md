@@ -19,6 +19,7 @@ Changes are grouped as follows:
 ### Removed
 * Removed all classes and functions marked as deprecated
   * SHOPRunAPI
+  * DataSetsAPI
 
 ## [0.114.2] - 2025-08-13
 ### Added
