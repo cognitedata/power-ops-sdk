@@ -1,28 +1,16 @@
 from __future__ import annotations
 
 import logging
-from typing import Union
 
 import numpy as np
 import pandas as pd
 from cognite.client import CogniteClient
-from cognite.client.data_classes import DatapointsList, Event, LabelFilter, RelationshipList
-from cognite.client.exceptions import CogniteDuplicatedError
+from cognite.client.data_classes import DatapointsList
 from cognite.client.utils import ms_to_datetime
-from cognite.client.utils.useful_types import SequenceNotStr
-from deprecated import deprecated
 
 from cognite.powerops.utils.require import require
 
 logger = logging.getLogger(__name__)
-
-
-@deprecated
-def retrieve_event(client: CogniteClient, external_id: str) -> Event:
-    event = client.events.retrieve(external_id=external_id)
-    if event is None:
-        raise ValueError(f"Event not found: {external_id}")
-    return event
 
 
 def remove_duplicates(lst: list) -> list:
@@ -42,28 +30,6 @@ def merge_dicts(*args: dict) -> dict:
             raise Exception(f"Key collision on '{overlap}' when merging dictionaries!")
         merged = {**merged, **dict_}
     return merged
-
-
-@deprecated
-def retrieve_relationships_from_source_ext_id(
-    client: CogniteClient,
-    source_ext_id: str,
-    label_ext_id: Union[str, list[str]] | None,
-    target_types: SequenceNotStr[str] | None = None,
-) -> RelationshipList:
-    """
-    Retrieve relationships between source and target using the source ext id.
-    Using the `containsAny` filter, we can retrieve all relationships with  given label.
-    """
-    if isinstance(label_ext_id, str):
-        label_ext_id = [label_ext_id]
-    if label_ext_id is not None:
-        _labels = LabelFilter(contains_any=label_ext_id)
-    else:
-        _labels = None
-    return client.relationships.list(
-        source_external_ids=[source_ext_id], labels=_labels, limit=-1, target_types=target_types
-    )
 
 
 def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, end: int) -> pd.DataFrame:
@@ -185,12 +151,3 @@ def retrieve_time_series_datapoints(  # type: ignore[no-untyped-def]
     logger.debug(f"Not retrieving datapoints for {_time_series_none}")
 
     return merge_dicts(time_series_start, time_series_end, time_series_range)
-
-
-@deprecated
-def create_event(client: CogniteClient, event: Event) -> None:
-    try:
-        client.events.create(event)
-    except CogniteDuplicatedError:
-        logger.warning(f"Event with external_id '{event.external_id}' already exists")
-        exit(1)

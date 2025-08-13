@@ -26,6 +26,7 @@ Changes are grouped as follows:
   * utils.lookup
   * utils.navigation
   * utils.cdf.resource_creation
+  * utils.cdf.calls (only the event/relationship based functions)
 
 ## [0.114.2] - 2025-08-13
 ### Added
