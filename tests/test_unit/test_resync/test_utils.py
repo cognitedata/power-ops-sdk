@@ -7,8 +7,8 @@ from unittest.mock import patch
 import pytest
 from pydantic.alias_generators import to_snake
 
-import cognite.powerops.client._generated.v1.data_classes as v1_data_classes
-from cognite.powerops.client._generated.v1.data_classes import (
+import cognite.powerops.client._generated.data_classes as v1_data_classes
+from cognite.powerops.client._generated.data_classes import (
     Alert,
     AlertWrite,
     BenchmarkingCalculationInput,

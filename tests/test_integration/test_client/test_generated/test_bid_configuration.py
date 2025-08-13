@@ -1,5 +1,5 @@
 from cognite.powerops.client import PowerOpsClient
-from cognite.powerops.client._generated.v1.data_classes import (
+from cognite.powerops.client._generated.data_classes import (
     BidConfigurationDayAhead,
     BidConfigurationDayAheadGraphQL,
     DateSpecification,

@@ -4,7 +4,7 @@ import pytest
 from cognite.client import data_modeling as dm
 from pydantic import ValidationError
 
-from cognite.powerops.client._generated.v1.data_classes._shop_case import (
+from cognite.powerops.client._generated.data_classes._shop_case import (
     DataRecord,
     ShopCase,
     ShopCaseGraphQL,

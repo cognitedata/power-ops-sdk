@@ -3,7 +3,7 @@ from unittest.mock import MagicMock
 import pytest
 from cognite.client.data_classes import DataSet
 
-from cognite.powerops.client._generated.v1.data_classes import (
+from cognite.powerops.client._generated.data_classes import (
     DataRecord,
     DataSetConfiguration,
 )

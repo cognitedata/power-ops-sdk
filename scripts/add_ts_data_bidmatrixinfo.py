@@ -4,7 +4,7 @@ from cognite.client.data_classes import TimeSeries, TimeSeriesList
 from cognite.client.exceptions import CogniteNotFoundError
 from cognite.client import CogniteClient
 from cognite.powerops import PowerOpsClient
-from cognite.powerops.client._generated.v1.data_classes import BidMatrixInformationWrite
+from cognite.powerops.client._generated.data_classes import BidMatrixInformationWrite
 
 from typing import Union
 import random
