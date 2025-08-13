@@ -44,7 +44,9 @@ from cognite.powerops.client._generated.v1.data_classes import (
 )
 
 
-class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfigurationWrite, DataSetConfigurationList, DataSetConfigurationWriteList]):
+class DataSetConfigurationAPI(
+    NodeAPI[DataSetConfiguration, DataSetConfigurationWrite, DataSetConfigurationList, DataSetConfigurationWriteList]
+):
     _view_id = dm.ViewId("power_ops_core", "DataSetConfiguration", "1")
     _properties_by_field: ClassVar[dict[str, str]] = _DATASETCONFIGURATION_PROPERTIES_BY_FIELD
     _class_type = DataSetConfiguration
@@ -53,7 +55,6 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
 
     def __init__(self, client: CogniteClient):
         super().__init__(client=client)
-
 
     @overload
     def retrieve(
@@ -103,12 +104,16 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
         self,
         query: str,
         properties: DataSetConfigurationTextFields | SequenceNotStr[DataSetConfigurationTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         read_data_set: str | list[str] | None = None,
         read_data_set_prefix: str | None = None,
         write_data_set: str | list[str] | None = None,
         write_data_set_prefix: str | None = None,
         monitor_data_set: str | list[str] | None = None,
         monitor_data_set_prefix: str | None = None,
+        process_data_set: str | list[str] | None = None,
+        process_data_set_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -122,12 +127,16 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
         Args:
             query: The search query,
             properties: The property to search, if nothing is passed all text fields will be searched.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             read_data_set: The read data set to filter on.
             read_data_set_prefix: The prefix of the read data set to filter on.
             write_data_set: The write data set to filter on.
             write_data_set_prefix: The prefix of the write data set to filter on.
             monitor_data_set: The monitor data set to filter on.
             monitor_data_set_prefix: The prefix of the monitor data set to filter on.
+            process_data_set: The process data set to filter on.
+            process_data_set_prefix: The prefix of the process data set to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of data set configurations to return. Defaults to 25.
@@ -156,12 +165,16 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
         """
         filter_ = _create_data_set_configuration_filter(
             self._view_id,
+            name,
+            name_prefix,
             read_data_set,
             read_data_set_prefix,
             write_data_set,
             write_data_set_prefix,
             monitor_data_set,
             monitor_data_set_prefix,
+            process_data_set,
+            process_data_set_prefix,
             external_id_prefix,
             space,
             filter,
@@ -184,12 +197,16 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
         property: DataSetConfigurationFields | SequenceNotStr[DataSetConfigurationFields] | None = None,
         query: str | None = None,
         search_property: DataSetConfigurationTextFields | SequenceNotStr[DataSetConfigurationTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         read_data_set: str | list[str] | None = None,
         read_data_set_prefix: str | None = None,
         write_data_set: str | list[str] | None = None,
         write_data_set_prefix: str | None = None,
         monitor_data_set: str | list[str] | None = None,
         monitor_data_set_prefix: str | None = None,
+        process_data_set: str | list[str] | None = None,
+        process_data_set_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -204,12 +221,16 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
         property: DataSetConfigurationFields | SequenceNotStr[DataSetConfigurationFields] | None = None,
         query: str | None = None,
         search_property: DataSetConfigurationTextFields | SequenceNotStr[DataSetConfigurationTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         read_data_set: str | list[str] | None = None,
         read_data_set_prefix: str | None = None,
         write_data_set: str | list[str] | None = None,
         write_data_set_prefix: str | None = None,
         monitor_data_set: str | list[str] | None = None,
         monitor_data_set_prefix: str | None = None,
+        process_data_set: str | list[str] | None = None,
+        process_data_set_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -219,19 +240,25 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
     @overload
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
         group_by: DataSetConfigurationFields | SequenceNotStr[DataSetConfigurationFields],
         property: DataSetConfigurationFields | SequenceNotStr[DataSetConfigurationFields] | None = None,
         query: str | None = None,
         search_property: DataSetConfigurationTextFields | SequenceNotStr[DataSetConfigurationTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         read_data_set: str | list[str] | None = None,
         read_data_set_prefix: str | None = None,
         write_data_set: str | list[str] | None = None,
         write_data_set_prefix: str | None = None,
         monitor_data_set: str | list[str] | None = None,
         monitor_data_set_prefix: str | None = None,
+        process_data_set: str | list[str] | None = None,
+        process_data_set_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -240,19 +267,25 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
         group_by: DataSetConfigurationFields | SequenceNotStr[DataSetConfigurationFields] | None = None,
         property: DataSetConfigurationFields | SequenceNotStr[DataSetConfigurationFields] | None = None,
         query: str | None = None,
         search_property: DataSetConfigurationTextFields | SequenceNotStr[DataSetConfigurationTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         read_data_set: str | list[str] | None = None,
         read_data_set_prefix: str | None = None,
         write_data_set: str | list[str] | None = None,
         write_data_set_prefix: str | None = None,
         monitor_data_set: str | list[str] | None = None,
         monitor_data_set_prefix: str | None = None,
+        process_data_set: str | list[str] | None = None,
+        process_data_set_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -270,12 +303,16 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
             property: The property to perform aggregation on.
             query: The query to search for in the text field.
             search_property: The text field to search in.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             read_data_set: The read data set to filter on.
             read_data_set_prefix: The prefix of the read data set to filter on.
             write_data_set: The write data set to filter on.
             write_data_set_prefix: The prefix of the write data set to filter on.
             monitor_data_set: The monitor data set to filter on.
             monitor_data_set_prefix: The prefix of the monitor data set to filter on.
+            process_data_set: The process data set to filter on.
+            process_data_set_prefix: The prefix of the process data set to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of data set configurations to return. Defaults to 25.
@@ -298,12 +335,16 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
 
         filter_ = _create_data_set_configuration_filter(
             self._view_id,
+            name,
+            name_prefix,
             read_data_set,
             read_data_set_prefix,
             write_data_set,
             write_data_set_prefix,
             monitor_data_set,
             monitor_data_set_prefix,
+            process_data_set,
+            process_data_set_prefix,
             external_id_prefix,
             space,
             filter,
@@ -324,12 +365,16 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
         interval: float,
         query: str | None = None,
         search_property: DataSetConfigurationTextFields | SequenceNotStr[DataSetConfigurationTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         read_data_set: str | list[str] | None = None,
         read_data_set_prefix: str | None = None,
         write_data_set: str | list[str] | None = None,
         write_data_set_prefix: str | None = None,
         monitor_data_set: str | list[str] | None = None,
         monitor_data_set_prefix: str | None = None,
+        process_data_set: str | list[str] | None = None,
+        process_data_set_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -342,12 +387,16 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
             interval: The interval to use for the histogram bins.
             query: The query to search for in the text field.
             search_property: The text field to search in.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             read_data_set: The read data set to filter on.
             read_data_set_prefix: The prefix of the read data set to filter on.
             write_data_set: The write data set to filter on.
             write_data_set_prefix: The prefix of the write data set to filter on.
             monitor_data_set: The monitor data set to filter on.
             monitor_data_set_prefix: The prefix of the monitor data set to filter on.
+            process_data_set: The process data set to filter on.
+            process_data_set_prefix: The prefix of the process data set to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of data set configurations to return.
@@ -361,12 +410,16 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
         """
         filter_ = _create_data_set_configuration_filter(
             self._view_id,
+            name,
+            name_prefix,
             read_data_set,
             read_data_set_prefix,
             write_data_set,
             write_data_set_prefix,
             monitor_data_set,
             monitor_data_set_prefix,
+            process_data_set,
+            process_data_set_prefix,
             external_id_prefix,
             space,
             filter,
@@ -394,24 +447,30 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(factory.root(
-            filter=filter_,
-            sort=sort,
-            limit=limit,
-            max_retrieve_batch_limit=chunk_size,
-            has_container_fields=True,
-        ))
+        builder.append(
+            factory.root(
+                filter=filter_,
+                sort=sort,
+                limit=limit,
+                max_retrieve_batch_limit=chunk_size,
+                has_container_fields=True,
+            )
+        )
         return builder.build()
 
     def iterate(
         self,
         chunk_size: int = DEFAULT_CHUNK_SIZE,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         read_data_set: str | list[str] | None = None,
         read_data_set_prefix: str | None = None,
         write_data_set: str | list[str] | None = None,
         write_data_set_prefix: str | None = None,
         monitor_data_set: str | list[str] | None = None,
         monitor_data_set_prefix: str | None = None,
+        process_data_set: str | list[str] | None = None,
+        process_data_set_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         filter: dm.Filter | None = None,
@@ -422,12 +481,16 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
 
         Args:
             chunk_size: The number of data set configurations to return in each iteration. Defaults to 100.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             read_data_set: The read data set to filter on.
             read_data_set_prefix: The prefix of the read data set to filter on.
             write_data_set: The write data set to filter on.
             write_data_set_prefix: The prefix of the write data set to filter on.
             monitor_data_set: The monitor data set to filter on.
             monitor_data_set_prefix: The prefix of the monitor data set to filter on.
+            process_data_set: The process data set to filter on.
+            process_data_set_prefix: The prefix of the process data set to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             filter: (Advanced) If the filtering available in the above is not sufficient,
@@ -482,12 +545,16 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
         )
         filter_ = _create_data_set_configuration_filter(
             self._view_id,
+            name,
+            name_prefix,
             read_data_set,
             read_data_set_prefix,
             write_data_set,
             write_data_set_prefix,
             monitor_data_set,
             monitor_data_set_prefix,
+            process_data_set,
+            process_data_set_prefix,
             external_id_prefix,
             space,
             filter,
@@ -496,12 +563,16 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
 
     def list(
         self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         read_data_set: str | list[str] | None = None,
         read_data_set_prefix: str | None = None,
         write_data_set: str | list[str] | None = None,
         write_data_set_prefix: str | None = None,
         monitor_data_set: str | list[str] | None = None,
         monitor_data_set_prefix: str | None = None,
+        process_data_set: str | list[str] | None = None,
+        process_data_set_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -513,12 +584,16 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
         """List/filter data set configurations
 
         Args:
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             read_data_set: The read data set to filter on.
             read_data_set_prefix: The prefix of the read data set to filter on.
             write_data_set: The write data set to filter on.
             write_data_set_prefix: The prefix of the write data set to filter on.
             monitor_data_set: The monitor data set to filter on.
             monitor_data_set_prefix: The prefix of the monitor data set to filter on.
+            process_data_set: The process data set to filter on.
+            process_data_set_prefix: The prefix of the process data set to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of data set configurations to return.
@@ -545,15 +620,19 @@ class DataSetConfigurationAPI(NodeAPI[DataSetConfiguration, DataSetConfiguration
         """
         filter_ = _create_data_set_configuration_filter(
             self._view_id,
+            name,
+            name_prefix,
             read_data_set,
             read_data_set_prefix,
             write_data_set,
             write_data_set_prefix,
             monitor_data_set,
             monitor_data_set_prefix,
+            process_data_set,
+            process_data_set_prefix,
             external_id_prefix,
             space,
             filter,
         )
-        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
-        return self._list(limit=limit,  filter=filter_, sort=sort_input)
+        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        return self._list(limit=limit, filter=filter_, sort=sort_input)

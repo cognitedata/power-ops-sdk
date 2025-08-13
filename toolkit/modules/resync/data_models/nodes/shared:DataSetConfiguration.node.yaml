@@ -1,0 +1,18 @@
+- externalId: data_set_configuration_powerops_dataset_configuration
+  instanceType: node
+  sources:
+  - properties:
+      monitorDataSet: powerops:monitor
+      name: PowerOps DataSet Configuration
+      processDataSet: powerops:process
+      readDataSet: powerops:process
+      writeDataSet: powerops:process
+    source:
+      externalId: DataSetConfiguration
+      space: power_ops_core
+      type: view
+      version: '1'
+  space: power_ops_instances
+  type:
+    externalId: DataSetConfiguration
+    space: power_ops_types
