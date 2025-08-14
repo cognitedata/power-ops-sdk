@@ -8,9 +8,9 @@ Once you have admin credentials to the project proceed to the below steps.
 
 ## PowerOps Toolkit
 
-- Provide PowerOps/project team with a set of client credentials that have enough privileges to run toolkit. These will be added as secrets to the repo for the CI/CD pipeline
+- Provide PowerOps/project team with a set of client credentials that have enough privileges to run toolkit. These will be added as secrets to a Github environment (see [this script](scripts/update_gh_env_secrets.py)) in this repo for the CI/CD pipeline. The project will then be added in the [pipeline script](.github/workflows/toolkit-release.yml),
 - Create a PR to configure a new toolkit config in this repo to deploy the PowerOps data model to the new project. See the [staging configuration](toolkit/config.staging.yaml) as an example.
-  - No need to run toolkit locally as the CI/CD pipeline will automatically deploy the resources
+  - No need to run toolkit locally as the release process will automatically deploy the resources.
 
 **Note:** The CI/CD pipeline in this repo is *only* responsible for deploying the PowerOps data model (ie. resources in the power_model module) so any other resources should be deployed using toolkit configured separately in a customer repo. Refer to the `power_ops_template` and `resync` modules as examples to be used in the customer repo.
 
