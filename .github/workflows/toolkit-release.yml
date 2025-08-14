@@ -99,12 +99,12 @@ jobs:
         WF_TRIGGER_SECRET: ${{ secrets.CLIENT_SECRET }}
         TOOLKIT_ENV: ${{ secrets.TOOLKIT_ENV }}
 
-      steps:
-        - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        - name: Build modules
-          run: cdf build --env $TOOLKIT_ENV --build-dir cdf-tk-build
-        - name: Deploy modules
-          run: cdf deploy cdf-tk-build
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Build modules
+        run: cdf build --env $TOOLKIT_ENV --build-dir cdf-tk-build
+      - name: Deploy modules
+        run: cdf deploy cdf-tk-build
 
   resync-purge:
     name: Resync Purge to CDF project ${{ matrix.gh_env }}
