@@ -13,7 +13,7 @@ on:
       target_environment:
         description: "Environment to deploy to"
         required: true
-        default: "all"
+        default: "customers"
         type: choice
         # Must be updated if new environments are added
         options:
@@ -47,7 +47,7 @@ jobs:
         id: env-matrix
         # This must be manually updated if new environments are added
         run: |
-          # {"include": [{"gh_env": "heco-prod"}, {"gh_env": "heco-prod"}, ...]}
+          # {"include": [{"gh_env": "heco-prod"}, {"gh_env": "lyse-prod"}, ...]}
           ALL_ENVS='["heco-dev", "heco-prod", "lyse-dev", "lyse-prod", "oe-dev", "oe-prod", "statkraft-em-pilot", "hydro-energi-pilot"]'
 
           # For a 'release', the input will be empty, so it defaults to 'customers', otherwise it uses the input from the workflow dispatch event.
