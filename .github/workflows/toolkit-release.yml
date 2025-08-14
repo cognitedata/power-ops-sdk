@@ -60,7 +60,7 @@ jobs:
           TARGET_ENV="${{ github.event.inputs.target_environment || 'all' }}"
           echo "Target environment selected: $TARGET_ENV"
 
-          local ENVS_JSON
+          ENVS_JSON="[]"
 
           if [[ "$TARGET_ENV" == "all" ]]; then
             # If "all" is selected or it's a release, use the full list.
