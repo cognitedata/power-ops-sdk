@@ -133,9 +133,10 @@ jobs:
           poetry install
       - name: Run resync plan
         env:
+          PROJECT: ${{ matrix.gh_env }}
+
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          PROJECT: ${{ secrets.PROJECT }}
           CLUSTER: ${{ secrets.CLUSTER }}
           TENANT_ID: ${{ secrets.TENANT_ID }}
 
