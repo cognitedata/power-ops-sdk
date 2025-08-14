@@ -11,9 +11,9 @@ on:
   workflow_dispatch:
     inputs:
       target_environment:
-        description: 'Environment to deploy to'
+        description: "Environment to deploy to"
         required: true
-        default: 'all'
+        default: "all"
         type: choice
         # Must be updated if new environments are added
         options:
@@ -51,8 +51,8 @@ jobs:
 
       - name: Generate Deployment Matrix
         id: env-matrix
+        # This must be manually updated if new environments are added
         run: |
-          # This must be manually updated if new environments are added
           # {"include": [{"gh_env": "power-ops-sandbox"}, {"gh_env": "power-ops-staging"}, ...]}
           ALL_ENVS='["power-ops-sandbox", "power-ops-staging", "heco-dev", "heco-prod", "lyse-dev", "lyse-prod", "oe-dev", "oe-prod", "statkraft-em-pilot", "hydro-energi-pilot"]'
 
@@ -116,7 +116,7 @@ jobs:
       fail-fast: false
       # Use the matrix generated in prepare-deployment
       matrix: ${{ fromJson(needs.prepare-deployment.outputs.matrix) }}
-    needs: deploy-modules
+    needs: [deploy-modules, prepare-deployment]
     environment:
       name: ${{ matrix.gh_env }}
     runs-on: ubuntu-latest
