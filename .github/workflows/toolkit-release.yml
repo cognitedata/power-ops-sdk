@@ -54,11 +54,13 @@ jobs:
         run: |
           # This must be manually updated if new environments are added
           # {"include": [{"gh_env": "power-ops-sandbox"}, {"gh_env": "power-ops-staging"}, ...]}
-          ENVS='["power-ops-sandbox", "power-ops-staging", "heco-dev", "heco-prod", "lyse-dev", "lyse-prod", "oe-dev", "oe-prod", "statkraft-em-pilot", "hydro-energi-pilot"]'
+          ALL_ENVS='["power-ops-sandbox", "power-ops-staging", "heco-dev", "heco-prod", "lyse-dev", "lyse-prod", "oe-dev", "oe-prod", "statkraft-em-pilot", "hydro-energi-pilot"]'
 
           # For a 'release', the input will be empty, so it defaults to 'all', otherwise it uses the input from the workflow dispatch event.
           TARGET_ENV="${{ github.event.inputs.target_environment || 'all' }}"
           echo "Target environment selected: $TARGET_ENV"
+
+          local ENVS_JSON
 
           if [[ "$TARGET_ENV" == "all" ]]; then
             # If "all" is selected or it's a release, use the full list.
@@ -68,7 +70,8 @@ jobs:
             ENVS_JSON="[\"$TARGET_ENV\"]"
           fi
 
-          MATRIX=$(echo $ENVS | jq -c '{"include": map({gh_env: .})}')
+          MATRIX=$(echo "$ENVS_JSON" | jq -c '{"include": map({gh_env: .})}')
+          echo "Generated Matrix: $MATRIX"
           echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
 
       - name: Set Toolkit Image
@@ -91,8 +94,9 @@ jobs:
       image: ${{ needs.prepare-deployment.outputs.image }}
       env:
         LOGIN_FLOW: client_credentials
+        CDF_PROJECT: ${{ github.environment }}
+
         CDF_CLUSTER: ${{ secrets.CLUSTER }}
-        CDF_PROJECT: ${{ secrets.PROJECT }}
         IDP_CLIENT_ID: ${{ secrets.CLIENT_ID }}
         IDP_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
         IDP_TENANT_ID: ${{ secrets.TENANT_ID }}
@@ -100,12 +104,11 @@ jobs:
         TOOLKIT_ENV: ${{ secrets.TOOLKIT_ENV }}
 
     steps:
-      - name: Debug Passed Environment Variables
-        run: |
-          echo "Value for CDF_PROJECT is: '$CDF_PROJECT'"
-          echo "Value for TOOLKIT_ENV is: '$TOOLKIT_ENV'"
-          echo "Value for IDP_CLIENT_ID is: '$IDP_CLIENT_ID'"
-
+      # - name: Debug Passed Environment Variables
+      #   run: |
+      #     echo "Value for CDF_PROJECT is: '$CDF_PROJECT'"
+      #     echo "Value for TOOLKIT_ENV is: '$TOOLKIT_ENV'"
+      #     echo "Value for IDP_CLIENT_ID is: '$IDP_CLIENT_ID'"
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Build modules
         run: cdf build --env $TOOLKIT_ENV --build-dir cdf-tk-build
