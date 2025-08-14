@@ -40,9 +40,14 @@ REQUIRED_ENVS = {
     "PROJECT": None,
     "CDF_CLUSTER": "CLUSTER",
     "CLIENT_ID": "CLIENT_ID",
-    "CLIENT_SECRET": "CLIENT_SECRET",
+    "CLIENT_SECRET": "CLIENT_SECRET",  # Toolkit admin
     "TENANT_ID": "TENANT_ID",
     "TOOLKIT_ENV": "TOOLKIT_ENV",
+}
+
+OPTIONAL_ENVS = {
+    # Read write only -- Optional, so far only used for power-ops-sandbox and power-ops-staging
+    "WF_TRIGGER_SECRET": "WF_TRIGGER_SECRET",
 }
 
 
@@ -87,10 +92,12 @@ def check_missing_vars():
 def set_all_github_secrets_from_name_mapping(cdf_project):
     for env, gh_secret in REQUIRED_ENVS.items():
         value = os.getenv(env)
-        if isinstance(gh_secret, list):
-            for secret in gh_secret:
-                set_github_secret(cdf_project, secret, value)
-        elif gh_secret is not None:
+        if gh_secret is not None:
+            set_github_secret(cdf_project, gh_secret, value)
+
+    for env, gh_secret in OPTIONAL_ENVS.items():
+        value = os.getenv(env)
+        if value is not None and gh_secret is not None:
             set_github_secret(cdf_project, gh_secret, value)
 
 
