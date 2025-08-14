@@ -4,7 +4,7 @@ from cognite.client.data_classes import TimeSeries, TimeSeriesList
 from cognite.client.exceptions import CogniteNotFoundError
 from cognite.client import CogniteClient
 from cognite.powerops import PowerOpsClient
-from cognite.powerops.client._generated.v1.data_classes import BidMatrixInformationWrite
+from cognite.powerops.client._generated.data_classes import BidMatrixInformationWrite
 
 from typing import Union
 import random
@@ -161,7 +161,7 @@ def link_ts_to_bid_matrix_info(power: PowerOpsClient, ts_list: list[TimeSeries])
     """
     upsert_list = []
 
-    for matrix in power.v1.day_ahead_bid.bid_matrix_information.list(limit=None):
+    for matrix in power.powermodel.day_ahead_bid.bid_matrix_information.list(limit=None):
         matrix.alerts = None
         matrix_write = matrix.as_write()
         matrix_write.linked_time_series = get_random_item(ts_list)
@@ -203,7 +203,7 @@ def main():
     upsert_list = link_ts_to_bid_matrix_info(power_client, ts_list)
 
     # Upsert the bid matrix information objects with the linked time series:
-    power_client.v1.upsert(upsert_list, replace=False)
+    power_client.powermodel.upsert(upsert_list, replace=False)
 
 
 if __name__ == "__main__":

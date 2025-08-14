@@ -15,8 +15,31 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.114.2] - 2025-08-13
+## [1.0.0] - 2025-08-14
+### Removed
+* Removed all classes and functions marked as deprecated
+  * SHOPRunAPI
+  * _logger
+  * cdf_labels
+  * utils.helpers
+  * utils.identifiers
+  * utils.lookup
+  * utils.navigation
+  * utils.cdf.resource_creation
+  * utils.cdf.calls (only the event/relationship based functions)
+
 ### Changed
+* Restructured utils module to eliminate nested utils
+  * `utils.retry.api` is moved to `utils.retry`
+  * `utils.cdf.extraction_pipelines` is moved to `utils.extraction_pipelines`
+  * `utils.cdf.calls` to `utils.retrieve`
+* Moved `get_data_set_from_config` from `utils.cdf.datasets_calls` into `utils.retrieve`
+* Moved `cognite.powerops.client._generated.v1.` to `cognite.powerops.client._generated.`
+* Renamed `PowerOpsModelsV1Client` to `PowerOpsModelsClient`
+* Renamed `PowerOpsClient.v1` to `PowerOpsClient.powermodel`
+
+## [0.114.2] - 2025-08-13
+### Added
 * Added `get_data_set_from_config` utility function to retrieve the correct CDF dataset for each type (READ, WRITE, MONITOR, PROCESS) from a DataSetConfiguration.
 
 ## [0.114.1] - 2025-07-31

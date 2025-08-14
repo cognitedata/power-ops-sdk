@@ -17,7 +17,7 @@ You can control which module is deployed by setting the `selected_module_and_pac
 ...
 ```
 
-This will only deploy the `power_model_v1` module.
+This will only deploy the `power_model` module.
 
 ## Authentication
 

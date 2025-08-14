@@ -1,6 +1,6 @@
 [project]
 name = "cognite-power-ops"
-version = "0.114.2"
+version = "1.0.0"
 description = "SDK for power markets operations on Cognite Data Fusion"
 readme = "README.md"
 authors = [
@@ -36,8 +36,6 @@ tomli-w = "^1.0.0"
 tabulate = "^0.9"
 toml = ">=0.10"
 cachelib = "^0.13.0"
-deprecated = "^1.2.18"
-types-Deprecated = "^1.2.15"
 
 
 [project.scripts]

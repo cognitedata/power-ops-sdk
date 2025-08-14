@@ -27,7 +27,7 @@ from cognite.client.data_classes.data_modeling import (
 )
 from pydantic import ValidationError
 
-import cognite.powerops.client._generated.v1.data_classes as v1_data_classes
+import cognite.powerops.client._generated.data_classes as data_classes
 from cognite.powerops.resync.data_classes import (
     DataModelConfiguration,
     PropertyConfiguration,
@@ -100,7 +100,7 @@ class ResyncImporter:
         self.type_space = type_space
         self.data_model_version = data_model_version
 
-        v1_data_classes.DomainModelWrite.external_id_factory = ext_id_factory
+        data_classes.DomainModelWrite.external_id_factory = ext_id_factory
 
     @classmethod
     def from_yaml(
@@ -139,7 +139,7 @@ class ResyncImporter:
             data_model_version=configuration.get("data_model_version", "1"),
         )
 
-    def to_toolkit_nodes_edges(self, client: CogniteClient) -> tuple[list[v1_data_classes.DomainModelWrite], list[str]]:
+    def to_toolkit_nodes_edges(self, client: CogniteClient) -> tuple[list[data_classes.DomainModelWrite], list[str]]:
         """Converts configuration files to toolkit format files for relevant nodes and edges.
 
         Retrieves raw data from files and using the resync configuration parses the data into
@@ -150,7 +150,7 @@ class ResyncImporter:
             external_ids: A list of all external ids created and referenced from the data model objects.
         """
 
-        data_model_objects: dict[str, v1_data_classes.DomainModelWrite] = {}
+        data_model_objects: dict[str, data_classes.DomainModelWrite] = {}
         type_nodes = {}
 
         for folder in self.folders_to_process:
@@ -178,13 +178,13 @@ class ResyncImporter:
 
                 logger.info(f"Processing {data_model_file} as type {type_configuration.name}")
 
-                objects_to_add: list[v1_data_classes.DomainModelWrite] = []
+                objects_to_add: list[data_classes.DomainModelWrite] = []
                 for unprocessed_object in raw_data_model_objects:
                     results = self._dict_to_type_object(unprocessed_object, type_configuration)
                     objects_to_add.extend(results[0].values())
                     data_model_objects.update(results[0])
 
-                grouped_objects_to_add: dict[type, list[v1_data_classes.DomainModelWrite]] = {}
+                grouped_objects_to_add: dict[type, list[data_classes.DomainModelWrite]] = {}
                 for obj in objects_to_add:
                     obj_type = type(obj)  # Get the type of the object
                     if obj_type not in grouped_objects_to_add:
@@ -214,7 +214,7 @@ class ResyncImporter:
         self,
         raw_data: dict,
         type_configuration: DataModelConfiguration,
-    ) -> tuple[dict[str, v1_data_classes.DomainModelWrite], list[str]]:
+    ) -> tuple[dict[str, data_classes.DomainModelWrite], list[str]]:
         """Converts a dictionary object into the specified data type.
 
         Provided the data input and type configuration the dictionary will be updated with properties to be overridden
@@ -254,7 +254,7 @@ class ResyncImporter:
         parsed_data = self._join_data_by_parsing_method(immutable_data, parsed_properties, parsed_reference_data)
 
         # TODO: handle these special cases in a better way
-        if type_configuration.type_ is v1_data_classes.PlantInformationWrite:
+        if type_configuration.type_ is data_classes.PlantInformationWrite:
             parsed_data["generators"] = (
                 self._get_all_connections(parsed_data, "plant", "generator")
                 if "generators" not in parsed_data
@@ -279,7 +279,7 @@ class ResyncImporter:
 
     def _type_objects_to_file(
         self,
-        data_model_objects: list[v1_data_classes.DomainModelWrite],
+        data_model_objects: list[data_classes.DomainModelWrite],
         prefix_name: str,
         object_type: Any,
         client: CogniteClient,
@@ -532,7 +532,7 @@ class ResyncImporter:
 
     def _populate_properties_from_configurations(
         self, property_configuration_data: dict, property_configurations: list[PropertyConfiguration], raw_data: dict
-    ) -> tuple[dict[str, Any], dict[str, v1_data_classes.DomainModelWrite]]:
+    ) -> tuple[dict[str, Any], dict[str, data_classes.DomainModelWrite]]:
         """Populates properties from configurations based on the provided data.
 
         Provided the data input and property configurations the data will be parsed based on the property configurations

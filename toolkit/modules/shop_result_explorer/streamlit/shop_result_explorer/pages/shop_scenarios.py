@@ -8,14 +8,14 @@ from cognite.client.utils import ms_to_datetime
 from utils import filters_to_str, nested_get
 
 from cognite.powerops.client import PowerOpsClient
-from cognite.powerops.client._generated.v1.data_classes import (
+from cognite.powerops.client._generated.data_classes import (
     ShopPreprocessorInputWrite,
     ShopTriggerInputWrite,
 )
 
 st.set_page_config(page_title="View Shop config (scenario)", layout="wide")
 client = CogniteClient()
-power_ops_client = PowerOpsClient(client=client, read_dataset="powerops:misc", write_dataset="powerops:misc")
+power_ops_client = PowerOpsClient(client=client)
 
 if "exp_scenario_selector_expanded" not in st.session_state:
     st.session_state["exp_scenario_selector_expanded"] = True
@@ -58,7 +58,7 @@ def run_shop(
         workflowStep=-1,
         functionCallId="_",
     )
-    power_ops_client.v1.upsert(shop_trigger_input)
+    power_ops_client.powermodel.upsert(shop_trigger_input)
     return power_ops_client.cdf.functions.call(
         external_id="shop_trigger",
         data={"shop_trigger_input_instance_external_id": shop_trigger_input.external_id},

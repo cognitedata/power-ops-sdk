@@ -5,7 +5,7 @@ from cognite.client import CogniteClient
 from cognite.client.data_classes import DataSet, ExtractionPipelineRun, FileMetadata
 from cognite.client.testing import monkeypatch_cognite_client
 
-from cognite.powerops.utils.cdf.extraction_pipelines import MSG_CHAR_LIMIT, ExtractionPipelineCreate, RunStatus
+from cognite.powerops.utils.extraction_pipelines import MSG_CHAR_LIMIT, ExtractionPipelineCreate, RunStatus
 
 
 @pytest.fixture()
