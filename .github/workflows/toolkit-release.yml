@@ -7,27 +7,6 @@ on:
       - "toolkit/**"
       - ".github/workflows/toolkit-release.yaml"
       - "!**/*.md"
-  # Allow manual triggering of the workflow
-  workflow_dispatch:
-    inputs:
-      target_environment:
-        description: 'Environment to deploy to'
-        required: true
-        default: 'all'
-        type: choice
-        # Must be updated if new environments are added
-        options:
-          - all
-          - power-ops-sandbox
-          - power-ops-staging
-          - heco-dev
-          - heco-prod
-          - lyse-dev
-          - lyse-prod
-          - oe-dev
-          - oe-prod
-          - statkraft-em-pilot
-          - hydro-energi-pilot
 
 env:
   COLUMNS: 99
@@ -52,22 +31,9 @@ jobs:
       - name: Generate Deployment Matrix
         id: env-matrix
         run: |
-          # This must be manually updated if new environments are added
+          # This step now ONLY creates a simple list of the GitHub Environments to target.
           # {"include": [{"gh_env": "power-ops-sandbox"}, {"gh_env": "power-ops-staging"}, ...]}
           ENVS='["power-ops-sandbox", "power-ops-staging", "heco-dev", "heco-prod", "lyse-dev", "lyse-prod", "oe-dev", "oe-prod", "statkraft-em-pilot", "hydro-energi-pilot"]'
-
-          # For a 'release', the input will be empty, so it defaults to 'all', otherwise it uses the input from the workflow dispatch event.
-          TARGET_ENV="${{ github.event.inputs.target_environment || 'all' }}"
-          echo "Target environment selected: $TARGET_ENV"
-
-          if [[ "$TARGET_ENV" == "all" ]]; then
-            # If "all" is selected or it's a release, use the full list.
-            ENVS_JSON=$ALL_ENVS
-          else
-            # If a specific environment is selected, create a list with just that one.
-            ENVS_JSON="[\"$TARGET_ENV\"]"
-          fi
-
           MATRIX=$(echo $ENVS | jq -c '{"include": map({gh_env: .})}')
           echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
 
