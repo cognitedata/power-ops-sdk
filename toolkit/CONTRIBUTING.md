@@ -190,4 +190,3 @@ In order to automatically deploy the changes to all customer environments, we cr
 2) Create a Release through the Github web UI; you will need to review the commits that fall between the previous release and tagged commit in order to write the summarised release notes. Select the commit tag previously created.
 
 3) Publish the Release. This will trigger the start of the [CI/CD pipeline](.github/workflows/toolkit-release.yaml), which will deploy the changes to all the customer environments.
-
