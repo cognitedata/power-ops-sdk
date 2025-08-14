@@ -491,14 +491,14 @@ format = ["black (>=24.4.2)"]
 
 [[package]]
 name = "cognite-sdk"
-version = "7.80.0"
+version = "7.80.1"
 description = "Cognite Python SDK"
 optional = false
 python-versions = "<4.0,>=3.10"
 groups = ["main", "dev"]
 files = [
-    {file = "cognite_sdk-7.80.0-py3-none-any.whl", hash = "sha256:97f07b7af356f6edc2152baf3c0908f368150dbd0e0165a7bd40fa01aee9d17a"},
-    {file = "cognite_sdk-7.80.0.tar.gz", hash = "sha256:b1bf38305c7d4c278f94d05e5a9e4bccd0906c0cf9ee076b9de6888d859815d2"},
+    {file = "cognite_sdk-7.80.1-py3-none-any.whl", hash = "sha256:96385aa5a4930e19e8e68754334ca3c5d7fb5b13485d8f0dc3c67b5cfcadcb1d"},
+    {file = "cognite_sdk-7.80.1.tar.gz", hash = "sha256:b4035dab1a2cf7f22c8c465d900e2472a9ad67c205e2b3652c0f630edfc6f430"},
 ]
 
 [package.dependencies]
