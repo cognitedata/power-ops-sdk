@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 import requests
 
-from cognite.powerops.client._generated.v1.data_classes import (
+from cognite.powerops.client._generated.data_classes import (
     ShopCase,
     ShopCaseWrite,
     ShopFile,
@@ -82,20 +82,20 @@ def test_create_trigger_shop_case(power_ops_client: PowerOpsClient):
     assert res_shop_case is None, "Expected no existing shop case with matching xid before upsert"
 
     # Upsert the shop case and validate the response exists
-    power_ops_client.v1.upsert(shop_case)
+    power_ops_client.powermodel.upsert(shop_case)
     res_shop_case = power_ops_client.cogshop.retrieve_shop_case(shop_case.external_id)
     assert res_shop_case is not None, "Expected to find the upserted shop case"
     assert isinstance(res_shop_case, ShopCase)
     assert res_shop_case.status == "default"  # Confirm the status is default after upsert
 
     # Validate the scenario, model, and files are created and linked correctly from the shop case upsert
-    res = power_ops_client.v1.shop_based_day_ahead_bid_process.shop_scenario.retrieve(scenario.external_id)
+    res = power_ops_client.powermodel.shop_based_day_ahead_bid_process.shop_scenario.retrieve(scenario.external_id)
     assert isinstance(res, ShopScenario)
-    res = power_ops_client.v1.shop_based_day_ahead_bid_process.shop_model.retrieve(model.external_id)
+    res = power_ops_client.powermodel.shop_based_day_ahead_bid_process.shop_model.retrieve(model.external_id)
     assert isinstance(res, ShopModel)
-    res = power_ops_client.v1.shop_based_day_ahead_bid_process.shop_file.retrieve(shop_files[0].external_id)
+    res = power_ops_client.powermodel.shop_based_day_ahead_bid_process.shop_file.retrieve(shop_files[0].external_id)
     assert isinstance(res, ShopFile)
-    res = power_ops_client.v1.shop_based_day_ahead_bid_process.shop_file.retrieve(shop_files[1].external_id)
+    res = power_ops_client.powermodel.shop_based_day_ahead_bid_process.shop_file.retrieve(shop_files[1].external_id)
     assert isinstance(res, ShopFile)
 
     # Trigger the shop case and validate the status is updated, mock the API call to simulate the trigger action
@@ -119,14 +119,14 @@ def test_create_trigger_shop_case(power_ops_client: PowerOpsClient):
     assert res_shop_case.status == "triggered"
 
     # Clean up: delete the shop case and validate it no longer exists along with its related objects
-    power_ops_client.v1.delete(external_id=shop_case, space="power_ops_instances")
+    power_ops_client.powermodel.delete(external_id=shop_case, space="power_ops_instances")
     res_shop_case = power_ops_client.cogshop.retrieve_shop_case(shop_case.external_id)
     assert res_shop_case is None
-    res = power_ops_client.v1.shop_based_day_ahead_bid_process.shop_scenario.retrieve(scenario.external_id)
+    res = power_ops_client.powermodel.shop_based_day_ahead_bid_process.shop_scenario.retrieve(scenario.external_id)
     assert res is None
-    res = power_ops_client.v1.shop_based_day_ahead_bid_process.shop_model.retrieve(model.external_id)
+    res = power_ops_client.powermodel.shop_based_day_ahead_bid_process.shop_model.retrieve(model.external_id)
     assert res is None
-    res = power_ops_client.v1.shop_based_day_ahead_bid_process.shop_file.retrieve(shop_files[0].external_id)
+    res = power_ops_client.powermodel.shop_based_day_ahead_bid_process.shop_file.retrieve(shop_files[0].external_id)
     assert res is None
-    res = power_ops_client.v1.shop_based_day_ahead_bid_process.shop_file.retrieve(shop_files[1].external_id)
+    res = power_ops_client.powermodel.shop_based_day_ahead_bid_process.shop_file.retrieve(shop_files[1].external_id)
     assert res is None

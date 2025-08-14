@@ -3,7 +3,7 @@ from unittest import mock
 
 import pytest
 
-from cognite.powerops.client._generated.v1.data_classes import ShopCaseWrite, ShopModelWrite, ShopScenarioWrite
+from cognite.powerops.client._generated.data_classes import ShopCaseWrite, ShopModelWrite, ShopScenarioWrite
 from cognite.powerops.client.shop.cogshop_api import CogShopAPI
 
 

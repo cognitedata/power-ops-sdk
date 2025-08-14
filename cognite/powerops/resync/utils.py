@@ -11,8 +11,8 @@ from typing import Any
 
 from pydantic.alias_generators import to_snake
 
-import cognite.powerops.client._generated.v1.data_classes as v1_data_classes
-from cognite.powerops.client._generated.v1.data_classes._core import DomainModelWrite
+import cognite.powerops.client._generated.data_classes as data_classes
+from cognite.powerops.client._generated.data_classes._core import DomainModelWrite
 
 logger = logging.getLogger("resync")
 
@@ -30,7 +30,7 @@ def get_prefix_from_type(domain_model_type: type) -> str:
         The type prefix as a snake case string.
     """
 
-    if issubclass(domain_model_type, v1_data_classes.DomainModelWrite):
+    if issubclass(domain_model_type, data_classes.DomainModelWrite):
         type_name = domain_model_type.__name__.removesuffix("Write")
     else:
         # TODO: should check if it's in the non write classes
@@ -73,7 +73,7 @@ def get_data_model_write_classes(data_model_client: Any) -> dict[str, type]:
     Returns:
         A dictionary with the type prefix as the key and the domain model write class as the value.
     """
-    all_data_model_classes = v1_data_classes.__dict__
+    all_data_model_classes = data_classes.__dict__
 
     expected_types_mapping = {}
     for dm_class in all_data_model_classes.keys():
@@ -113,9 +113,9 @@ def ext_id_factory(domain_model_type: type, data: dict) -> str:
         return data["external_id"]
 
     # TODO proper naming
-    if domain_model_type is v1_data_classes.GeneratorEfficiencyCurveWrite:
+    if domain_model_type is data_classes.GeneratorEfficiencyCurveWrite:
         return f"{type_prefix}:{_get_short_hash(data)}"
-    elif domain_model_type is v1_data_classes.TurbineEfficiencyCurveWrite:
+    elif domain_model_type is data_classes.TurbineEfficiencyCurveWrite:
         return f"{type_prefix}:{_get_short_hash(data)}"
 
     try:
@@ -207,7 +207,7 @@ def get_property_type_from_annotation_string(annotation: str) -> type:
             type_string = matches[0]
             if not type_string.endswith("Write"):
                 type_string += "Write"
-            return v1_data_classes.__dict__[type_string]
+            return data_classes.__dict__[type_string]
         except KeyError as exc:
             raise ValueError(f"Type {matches[0]} is not supported, add import to type") from exc
     else:

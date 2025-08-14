@@ -1,10 +1,10 @@
 import pytest
 from cognite.client.data_classes import DataSet
 
-from cognite.powerops.client._generated.v1.data_classes import DataSetConfiguration
-from cognite.powerops.client._generated.v1.data_classes._data_set_configuration import DataSetConfigurationWrite
+from cognite.powerops.client._generated.data_classes import DataSetConfiguration
+from cognite.powerops.client._generated.data_classes._data_set_configuration import DataSetConfigurationWrite
 from cognite.powerops.client.powerops_client import PowerOpsClient
-from cognite.powerops.utils.cdf.datasets_calls import get_data_set_from_config
+from cognite.powerops.utils.retrieve import get_data_set_from_config
 from tests.test_integration.conftest import random_external_id
 
 
@@ -19,10 +19,13 @@ def new_data_set_configuration(power_ops_client: PowerOpsClient):
         monitor_data_set="new_powerops:monitor",
         process_data_set="powerops:process",
     )
-    power_ops_client.v1.upsert(config)
+    power_ops_client.powermodel.upsert(config)
     yield config
-    power_ops_client.v1.delete(external_id=config.external_id)
-    assert power_ops_client.v1.day_ahead_configuration.data_set_configuration.retrieve(external_id=external_id) is None
+    power_ops_client.powermodel.delete(external_id=config.external_id)
+    assert (
+        power_ops_client.powermodel.day_ahead_configuration.data_set_configuration.retrieve(external_id=external_id)
+        is None
+    )
 
 
 class TestGetLatestDataset:

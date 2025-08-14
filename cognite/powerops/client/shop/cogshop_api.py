@@ -5,8 +5,8 @@ from urllib.parse import urlparse
 import requests
 from cognite.client import CogniteClient
 
-from cognite.powerops.client._generated.v1._api_client import PowerOpsModelsV1Client
-from cognite.powerops.client._generated.v1.data_classes import (
+from cognite.powerops.client._generated._api_client import PowerOpsModelsClient
+from cognite.powerops.client._generated.data_classes import (
     ShopCase,
     ShopCaseWrite,
     ShopFileWrite,
@@ -15,7 +15,7 @@ from cognite.powerops.client._generated.v1.data_classes import (
     ShopResultList,
     ShopScenarioWrite,
 )
-from cognite.powerops.client._generated.v1.data_classes._core import (
+from cognite.powerops.client._generated.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
 )
 
@@ -24,7 +24,7 @@ class CogShopAPI:
     def __init__(
         self,
         cdf: CogniteClient,
-        po: PowerOpsModelsV1Client,
+        po: PowerOpsModelsClient,
         cog_shop_service: Literal["prod", "staging"] | None = None,
     ):
         self._cdf = cdf

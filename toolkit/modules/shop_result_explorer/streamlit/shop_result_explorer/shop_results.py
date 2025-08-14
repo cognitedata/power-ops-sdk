@@ -69,7 +69,7 @@ def combine_date_and_time(_date: date, _time: time) -> datetime:
 
 ######################################################################################################## UTILS
 client = CogniteClient()
-po_client = PowerOpsClient(read_dataset="powerops:misc", write_dataset="powerops:misc", client=client)
+po_client = PowerOpsClient(client=client)
 
 
 ################################################################################################# Page config
