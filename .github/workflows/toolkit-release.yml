@@ -18,6 +18,8 @@ on:
         # Must be updated if new environments are added
         options:
           - customers
+          - power-ops-sandbox
+          - power-ops-staging
           - heco-dev
           - heco-prod
           - lyse-dev
