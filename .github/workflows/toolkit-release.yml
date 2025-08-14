@@ -5,7 +5,7 @@ on:
       - published
     paths:
       - "toolkit/**"
-      - ".github/workflows/toolkit-deploy.yaml"
+      - ".github/workflows/toolkit-release.yaml"
       - "!**/*.md"
 
 env:
