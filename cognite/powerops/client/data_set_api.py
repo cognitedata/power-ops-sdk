@@ -4,8 +4,10 @@ from functools import cached_property
 from typing import Union
 
 from cognite.client import CogniteClient
+from deprecated import deprecated
 
 
+@deprecated
 class DataSetsAPI:
     def __init__(self, client: CogniteClient, read: str, write: str, monitor: str | None):
         self.cdf = client
