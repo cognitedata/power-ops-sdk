@@ -24,3 +24,7 @@ variables:
     wf_day_ahead_bid_process_cron_15_min: "30 8 * * *" # translates to 8:30 UTC / 10:30 CEST
     wf_trigger_client_id: "d985b4fe-275e-4df3-9e49-b6b18a77778a"
     wf_trigger_client_secret: ${WF_TRIGGER_SECRET}
+    # variables used for optional group set up in power_ops_template
+    read_only_group_source_id: 497b3c43-950c-48de-9e41-87246f2ca510
+    read_write_group_source_id: 3ac1480d-2b64-43e9-824b-7553940b7d41
+    admin_read_write_group_source_id: 01986145-61d1-4cef-b7c9-f31261a429a0
