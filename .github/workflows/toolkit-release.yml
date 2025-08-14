@@ -1,0 +1,107 @@
+name: Toolkit Release
+on:
+  release:
+    types:
+      - published
+    paths:
+      - "toolkit/**"
+      - ".github/workflows/toolkit-release.yaml"
+      - "!**/*.md"
+  # Allow manual triggering of the workflow
+  workflow_dispatch:
+    inputs:
+      target_environment:
+        description: "Environment to deploy to"
+        required: true
+        default: "customers"
+        type: choice
+        # Must be updated if new environments are added
+        options:
+          - customers
+          - power-ops-sandbox
+          - power-ops-staging
+          - heco-dev
+          - heco-prod
+          - lyse-dev
+          - lyse-prod
+          - oe-dev
+          - oe-prod
+          - statkraft-em-pilot
+          - hydro-energi-pilot
+
+env:
+  TOOLKIT_VERSION: 0.5.94
+
+jobs:
+  prepare-deployment:
+    name: Prepare Deployment Matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.env-matrix.outputs.matrix }}
+      image: ${{ steps.image.outputs.image }}
+      release_tag: ${{ steps.set-release_tag.outputs.tag }}
+    steps:
+      - name: Set Release Tag from Event
+        id: set-release_tag
+        run: echo "tag=${{ github.event.release.tag_name }}" >> "$GITHUB_OUTPUT"
+
+      - name: Generate Deployment Matrix
+        id: env-matrix
+        # This must be manually updated if new environments are added
+        run: |
+          # {"include": [{"gh_env": "heco-prod"}, {"gh_env": "lyse-prod"}, ...]}
+          ALL_ENVS='["heco-dev", "heco-prod", "lyse-dev", "lyse-prod", "oe-dev", "oe-prod", "statkraft-em-pilot", "hydro-energi-pilot"]'
+
+          # For a 'release', the input will be empty, so it defaults to 'customers', otherwise it uses the input from the workflow dispatch event.
+          TARGET_ENV="${{ github.event.inputs.target_environment || 'customers' }}"
+          echo "Target environment selected: $TARGET_ENV"
+
+          ENVS_JSON="[]"
+
+          if [[ "$TARGET_ENV" == "customers" ]]; then
+            # If "customers" is selected or it's a release, use the full list.
+            ENVS_JSON=$ALL_ENVS
+          else
+            # If a specific environment is selected, create a list with just that one.
+            ENVS_JSON="[\"$TARGET_ENV\"]"
+          fi
+
+          MATRIX=$(echo "$ENVS_JSON" | jq -c '{"include": map({gh_env: .})}')
+          echo "Generated Matrix: $MATRIX"
+          echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
+
+      - name: Set Toolkit Image
+        id: image
+        run: echo "image=cognite/toolkit:$TOOLKIT_VERSION" >> "$GITHUB_OUTPUT"
+
+  deploy-modules:
+    name: Deploy to ${{ matrix.gh_env }}
+    needs: prepare-deployment
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      # Use the matrix generated in the previous job
+      matrix: ${{ fromJson(needs.prepare-deployment.outputs.matrix) }}
+    # Activate the GitHub Environment
+    environment:
+      name: ${{ matrix.gh_env }}
+
+    container:
+      image: ${{ needs.prepare-deployment.outputs.image }}
+      env:
+        LOGIN_FLOW: client_credentials
+        CDF_PROJECT: ${{ matrix.gh_env }}
+
+        CDF_CLUSTER: ${{ secrets.CLUSTER }}
+        IDP_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+        IDP_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+        IDP_TENANT_ID: ${{ secrets.TENANT_ID }}
+        WF_TRIGGER_SECRET: ${{ secrets.WF_TRIGGER_SECRET }}
+        TOOLKIT_ENV: ${{ secrets.TOOLKIT_ENV }}
+
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Build modules
+        run: cdf build --env $TOOLKIT_ENV --build-dir cdf-tk-build
+      - name: Deploy modules
+        run: cdf deploy cdf-tk-build
