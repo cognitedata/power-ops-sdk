@@ -70,13 +70,17 @@ If a change requires a version change, the following version system should be us
 
 1. Make the relevant changes to the `.yaml` files in the `data_models` folder.
 2. Post on slack `#powerops-core-team` that you are about to make changes to ensure it doesn't conflict with others work.
-6. Create a PR and request feedback on your suggested changes.
-7. Once PR is approved inform the team that the changes will be deployed to `power-ops-staging`.
-8. Deploy changes manually to **power-ops-staging** ensuring you've used the correct version if needed.
-9. Regenerate the SDK for the data model changes by calling `python scripts/pygen_generate_clients.py`.
-10. Bump the SDK version in `pyproject.toml` and `cognite/powerops/_version.py`.
-11. Update the `CHANGELOG.md` with the changes made.
-12. Get a second approval on the PR.
+3. Create a PR and request feedback on your suggested changes.
+4. Approve the `CI` pipeline which will deploy your changes to `power-ops-sandbox`. Self approval is allowed for this step.
+5. Verify that the changes are correct in `power-ops-sandbox` and that the data model is as expected. Make iterative changes to the PR if needed.
+   1. For each new push to the PR, the `CI` pipeline will need an approval from a team member to run and redeploy the changes to `power-ops-sandbox`.
+6. Once the team has approved of the changes, regenerate the SDK for the data model changes by calling `python scripts/pygen_generate_clients.py`. Be sure to run connected to `power-ops-sandbox` to ensure the SDK is generated with the latest changes.
+7. Bump the SDK version in `pyproject.toml` and `cognite/powerops/_version.py`.
+8. Update the `CHANGELOG.md` with the changes made.
+9. Request a review of the PR from the team.
+10. Add the `waiting-for-risk` label to the PR, and wait for the risk review to be completed. [Risk review docs](https://docs.infra.cogheim.net/developer-portal/guides/definition-of-done/risk-reviews/)
+11. When the risk review is completed, you can merge the PR into `main`. A `CD` pipeline will be triggered to deploy the changes to `power-ops-staging`. This pipeline will also require an approval from a team member to run. Self approval is allowed for this step.
+12. If the changes are correct in `power-ops-staging`, you can then deploy the changes to customer environments by following the [Release process](#release-process).
 
 ## Manual Deployment
 
@@ -91,52 +95,13 @@ If a change requires a version change, the following version system should be us
          ```
 
    3. **config.lyse-dev.yaml**
-      1. CDF_PROJECT: `lyse-dev`
-      2. ENV: `lyse-dev`
+      1. CDF_PROJECT: `hydro-energy-pilot`
+      2. ENV: `hydro-pilot`
 
          ```bash
-         export ENV="lyse-dev"
+         export ENV="hydro-pilot"
          ```
-
-   4. **config.lyse-prod.yaml**
-      1. CDF_PROJECT: `lyse-prod`
-      2. ENV: `lyse-prod`
-
-         ```bash
-         export ENV="lyse-prod"
-         ```
-
-   5. **config.heco-dev.yaml**
-      1. CDF_PROJECT: `heco-dev`
-      2. ENV: `heco-dev`
-
-         ```bash
-         export ENV="heco-dev"
-         ```
-
-   6. **config.heco-prod.yaml**
-      1. CDF_PROJECT: `heco-prod`
-      2. ENV: `heco-prod`
-
-         ```bash
-         export ENV="heco-prod"
-         ```
-
-   7. **config.oe-dev.yaml**
-      1. CDF_PROJECT: `oe-dev`
-      2. ENV: `oe-dev`
-
-         ```bash
-         export ENV="oe-dev"
-         ```
-
-   8. **config.oe-prod.yaml**
-      1. CDF_PROJECT: `oe-prod`
-      2. ENV: `oe-prod`
-
-         ```bash
-         export ENV="oe-prod"
-         ```
+      ... etc
 
 2. Ensure the credentials in your `.env` file point to the same environment you want to deploy to
 3. Build the configurations and remove existing files in the build directory:
