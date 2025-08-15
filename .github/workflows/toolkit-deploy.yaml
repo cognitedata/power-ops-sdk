@@ -10,10 +10,10 @@ on:
       - "!**/*.md"
 
 env:
-  COLUMNS: 99
-  PYTHON_VERSION: "3.11"
   TOOLKIT_ENV: staging
+  CDF_PROJECT: power-ops-staging
   TOOLKIT_VERSION: 0.5.94
+  PYTHON_VERSION: "3.11"
   CLIENT_CONFIG_FILE: "power_ops_config.yaml"
   CONFIGURATION_FILE: "resync/configuration.yaml"
 
@@ -29,13 +29,13 @@ jobs:
     name: Toolkit Deploy
     needs: get-toolkit-version
     runs-on: ubuntu-latest
-    environment: CD
+    environment: power-ops-staging
     container:
       image: ${{ needs.get-toolkit-version.outputs.image }}
       env:
         LOGIN_FLOW: client_credentials
         CDF_CLUSTER: ${{ vars.CLUSTER }}
-        CDF_PROJECT: ${{ vars.PROJECT }}
+        CDF_PROJECT: $CDF_PROJECT
         IDP_CLIENT_ID: ${{ vars.CLIENT_ID }}
         IDP_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
         IDP_TENANT_ID: ${{ vars.TENANT_ID }}
@@ -48,7 +48,7 @@ jobs:
         run: cdf deploy cdf-tk-build
 
   resync-purge:
-    name: Resync Purge to CDF project ${{ vars.PROJECT }}
+    name: Resync Purge to CDF project $CDF_PROJECT
     needs: deploy-modules
     environment:
       name: CD
@@ -65,13 +65,13 @@ jobs:
           python3 -m pip install --upgrade pip poetry==2.*
           poetry config virtualenvs.create false
           poetry install
-      - name: Run resync plan
+      - name: Run resync purge
         env:
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           CLIENT_ID: ${{ vars.CLIENT_ID }}
-          PROJECT: ${{ vars.PROJECT }}
+          PROJECT: $CDF_PROJECT
           CLUSTER: ${{ vars.CLUSTER }}
           TENANT_ID: ${{ vars.TENANT_ID }}
         run: |
-          echo Running resync plan in CDF environment $PROJECT
+          echo Running resync purge in CDF environment $PROJECT
           powerops purge $CLIENT_CONFIG_FILE $CONFIGURATION_FILE
