@@ -8,8 +8,6 @@ on:
       - "!**/*.md"
 
 env:
-  TOOLKIT_ENV: sandbox
-  CDF_PROJECT: power-ops-sandbox
   TOOLKIT_VERSION: 0.5.94
   PYTHON_VERSION: "3.11"
   CLIENT_CONFIG_FILE: "power_ops_config.yaml"
@@ -25,20 +23,21 @@ jobs:
         run: echo "image=cognite/toolkit:$TOOLKIT_VERSION" >> "$GITHUB_OUTPUT"
 
   build-modules:
-    name: Toolkit Dry Run
+    name: Build and deploy sandbox
     needs: get-toolkit-version
     runs-on: ubuntu-latest
-    environment: CI
+    environment: power-ops-sandbox
     container:
       image: ${{ needs.get-toolkit-version.outputs.image }}
       env:
         LOGIN_FLOW: client_credentials
-        CDF_CLUSTER: ${{ vars.CLUSTER }}
-        CDF_PROJECT: $CDF_PROJECT
-        IDP_CLIENT_ID: ${{ vars.CLIENT_ID }}
+        CDF_PROJECT: power-ops-sandbox
+        CDF_CLUSTER: ${{ secrets.CLUSTER }}
+        IDP_CLIENT_ID: ${{ secrets.CLIENT_ID }}
         IDP_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-        IDP_TENANT_ID: ${{ vars.TENANT_ID }}
+        IDP_TENANT_ID: ${{ secrets.TENANT_ID }}
         WF_TRIGGER_SECRET: ${{ secrets.WF_TRIGGER_SECRET }}
+        TOOLKIT_ENV: ${{ secrets.TOOLKIT_ENV}}
 
     defaults:
       run:
@@ -63,7 +62,7 @@ jobs:
           set -o pipefail
           cdf build --verbose --env $TOOLKIT_ENV --build-dir cdf-tk-build | tee cdf-tk-logs/build.log
 
-      - name: Run modules deployment
+      - name: Deploy modules
         id: deploy
         continue-on-error: true
         if: ${{ steps.build.outcome == 'success' }}
@@ -81,9 +80,9 @@ jobs:
           if-no-files-found: error
 
   resync-purge:
-    name: Resync Purge Dry Run to CDF project $CDF_PROJECT
+    name: Resync Purge to CDF project power-ops-sandbox
     environment:
-      name: CI
+      name: power-ops-sandbox
     runs-on: ubuntu-latest
     outputs:
       purge-status: ${{ steps.purge.outcome }}
@@ -106,19 +105,19 @@ jobs:
           poetry config virtualenvs.create false
           poetry install
 
-      - name: Run resync plan
+      - name: Run resync purge
         id: purge
         env:
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-          CLIENT_ID: ${{ vars.CLIENT_ID }}
-          PROJECT: $CDF_PROJECT
-          CLUSTER: ${{ vars.CLUSTER }}
-          TENANT_ID: ${{ vars.TENANT_ID }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          PROJECT: power-ops-sandbox
+          CLUSTER: ${{ secrets.CLUSTER }}
+          TENANT_ID: ${{ secrets.TENANT_ID }}
         continue-on-error: true
         run: |
           echo Running resync plan in CDF environment $PROJECT
           set -o pipefail
-          powerops purge $CLIENT_CONFIG_FILE $CONFIGURATION_FILE --dry-run --logs resync-logs/purge.log
+          powerops purge $CLIENT_CONFIG_FILE $CONFIGURATION_FILE --logs resync-logs/purge.log
 
       - name: Store logs
         id: store-logs
@@ -157,7 +156,7 @@ jobs:
         run: |
           set -e
           B_STATUS="Build status: **${{ needs.build-modules.outputs.build-status }}**"
-          DR_STATUS="Dry run status: **${{ needs.build-modules.outputs.deploy-status }}**"
+          D_STATUS="Deploy status: **${{ needs.build-modules.outputs.deploy-status }}**"
           RP_STATUS="Resync purge status: **${{ needs.resync-purge.outputs.purge-status }}**"
 
           if [ -f cdf-tk-logs/deploy.log ]; then
@@ -179,8 +178,8 @@ jobs:
 
           RUN_LINK="[$GITHUB_RUN_ID]($REPO_URL/actions/runs/$GITHUB_RUN_ID)"
 
-          printf 'Toolkit dry run triggered: %s\n\n%s\n%s\n%s\n\n' \
-            "$RUN_LINK" "$B_STATUS" "$DR_STATUS" "$RP_STATUS" > pr-comment-body.txt
+          printf 'Toolkit deploy triggered: %s\n\n%s\n%s\n%s\n\n' \
+            "$RUN_LINK" "$B_STATUS" "$D_STATUS" "$RP_STATUS" > pr-comment-body.txt
 
           printf '<details><summary>View Toolkit Logs</summary>\n\n```\n%s\n```\n</details>\n\n' \
             "$MSG" >> pr-comment-body.txt
