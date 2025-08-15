@@ -1,4 +1,4 @@
-name: Toolkit Dry Run Dev
+name: Toolkit Deploy Sandbox
 
 on:
   pull_request:
@@ -8,8 +8,8 @@ on:
       - "!**/*.md"
 
 env:
-  COLUMNS: 99
-  TOOLKIT_ENV: staging
+  TOOLKIT_ENV: sandbox
+  CDF_PROJECT: power-ops-sandbox
   TOOLKIT_VERSION: 0.5.94
   PYTHON_VERSION: "3.11"
   CLIENT_CONFIG_FILE: "power_ops_config.yaml"
@@ -34,10 +34,12 @@ jobs:
       env:
         LOGIN_FLOW: client_credentials
         CDF_CLUSTER: ${{ vars.CLUSTER }}
-        CDF_PROJECT: ${{ vars.PROJECT }}
+        CDF_PROJECT: $CDF_PROJECT
         IDP_CLIENT_ID: ${{ vars.CLIENT_ID }}
         IDP_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
         IDP_TENANT_ID: ${{ vars.TENANT_ID }}
+        WF_TRIGGER_SECRET: ${{ secrets.WF_TRIGGER_SECRET }}
+
     defaults:
       run:
         shell: bash
@@ -61,13 +63,13 @@ jobs:
           set -o pipefail
           cdf build --verbose --env $TOOLKIT_ENV --build-dir cdf-tk-build | tee cdf-tk-logs/build.log
 
-      - name: Dry run modules deployment
+      - name: Run modules deployment
         id: deploy
         continue-on-error: true
         if: ${{ steps.build.outcome == 'success' }}
         run: |
           set -o pipefail
-          cdf deploy --verbose --dry-run cdf-tk-build | tee cdf-tk-logs/deploy.log
+          cdf deploy --verbose cdf-tk-build | tee cdf-tk-logs/deploy.log
 
       - name: Store logs
         id: store-logs
@@ -79,7 +81,7 @@ jobs:
           if-no-files-found: error
 
   resync-purge:
-    name: Resync Purge Dry Run to CDF project ${{ vars.PROJECT }}
+    name: Resync Purge Dry Run to CDF project $CDF_PROJECT
     environment:
       name: CI
     runs-on: ubuntu-latest
@@ -109,7 +111,7 @@ jobs:
         env:
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           CLIENT_ID: ${{ vars.CLIENT_ID }}
-          PROJECT: ${{ vars.PROJECT }}
+          PROJECT: $CDF_PROJECT
           CLUSTER: ${{ vars.CLUSTER }}
           TENANT_ID: ${{ vars.TENANT_ID }}
         continue-on-error: true
