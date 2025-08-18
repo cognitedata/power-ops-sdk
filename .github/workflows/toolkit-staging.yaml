@@ -6,7 +6,7 @@ on:
       - "main"
     paths:
       - "toolkit/**"
-      - ".github/workflows/toolkit-deploy.yaml"
+      - ".github/workflows/toolkit-staging.yaml"
       - "!**/*.md"
 
 env:
