@@ -16,7 +16,7 @@ EXAMPLE DOTENV FILE (.sandbox.env):
     CLIENT_SECRET=xxx
     WF_TRIGGER_SECRET=xxx
     TENANT_ID=xxx
-    TOOLKIT_ENV=sandbox # See `CONTRIBUTING.md` how to set this value
+    TOOLKIT_ENV=sandbox # The value ENV value that toolkit expects, see `CONTRIBUTING.md` for examples
 
 EXAMPLE USAGE:
     python3 scripts/update_gh_env_secrets.py .sandbox.env
