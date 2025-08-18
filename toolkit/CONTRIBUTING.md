@@ -94,7 +94,7 @@ If a change requires a version change, the following version system should be us
          export ENV="staging"
          ```
 
-   3. **config.lyse-dev.yaml**
+   3. **config.hydro-pilot.yaml**
       1. CDF_PROJECT: `hydro-energy-pilot`
       2. ENV: `hydro-pilot`
 

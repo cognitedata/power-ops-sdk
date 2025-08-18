@@ -50,7 +50,7 @@ jobs:
     name: Resync Purge to CDF project power-ops-staging
     needs: deploy-modules
     environment:
-      name: power-ops-sandbox
+      name: power-ops-staging
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
