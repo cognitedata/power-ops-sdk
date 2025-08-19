@@ -11,10 +11,10 @@ You can control which module is deployed by setting the `selected_module_and_pac
 `toolkit/config.dev.yaml`:
 
 ```yaml
-...
-   selected:
-      - modules/power_model
-...
+
+---
+selected:
+  - modules/power_model
 ```
 
 This will only deploy the `power_model` module.
@@ -45,10 +45,10 @@ deploy the changes.
 
 ### Changes to Containers
 
-If the change is allowed and it *is not* a breaking change then no version or additional considerations need to be taken
+If the change is allowed and it _is not_ a breaking change then no version or additional considerations need to be taken
 into account.
 
-If the change is allowed and it *is* a breaking change then the change needs to be carefully planned to scope it's impacts.
+If the change is allowed and it _is_ a breaking change then the change needs to be carefully planned to scope it's impacts.
 
 If the change is not allowed (like deleting a property) then alternative workarounds need to be implemented (ie. do not
 use the property we want to delete).
@@ -64,7 +64,7 @@ If a change requires a version change, the following version system should be us
 - Changes deployed to customer environment (dev & prod) should bump the MAJOR version
 - Once deployed to the next environment the previous environment will "rest"
   - If testing is done in `power-ops-staging` with version 1.0.3, then those models will be deployed to `customer-dev`
-   as 1.1.0. Likewise, if testing is done with `power-ops-staging` at 1.1.0, then in `customer-dev` it would become version 2.0.0.
+    as 1.1.0. Likewise, if testing is done with `power-ops-staging` at 1.1.0, then in `customer-dev` it would become version 2.0.0.
 
 ## Local development process
 
@@ -82,45 +82,69 @@ If a change requires a version change, the following version system should be us
 11. When the risk review is completed, you can merge the PR into `main`. A [`CD` pipeline](../.github/workflows/toolkit-staging.yaml) will be triggered to deploy the changes to `power-ops-staging`. This pipeline will also require an approval from a team member to run. Self approval is allowed for this step.
 12. If the changes are correct in `power-ops-staging`, you can then deploy the changes to customer environments by following the [Release process](#release-process).
 
-## Manual Deployment
+## Release process
 
-1. Check which environment to deploy to, they are defined in the `cognite` folder in the `config.<ENV>.yaml` files
+In order to automatically deploy the changes to all customer environments, we create a Github Release.
+A Release will include >= 1 commits from the `main` branch. The procedure is as follows:
 
-   2. **config.staging.yaml**
+1. Create a git tag at the head commit, in the format `vYYYY.MM.DD` (with an optional numeric suffix e.g. `-2` if there is already a release tag for this date) e.g. `git checkout main && git pull && git tag v2025.08.14 && git push origin --tags`
+
+2. Create a Release through the Github web UI; you will need to review the commits that fall between the previous release and tagged commit in order to write the summarised release notes. Select the commit tag previously created.
+
+3. Publish the Release. This will trigger the start of the [CI/CD pipeline](.github/workflows/toolkit-release.yaml), which will deploy the changes to all the customer environments.
+
+### Manual Deployment
+
+Changes to the PowerModel in `toolkit/custom_modules/power_model` should **not** be deployed manually as it is important that the Power Model is the same across all environments.
+However, there may be cases where you would want to deploy specific changes to a given environment:
+
+- Deploying to key configuration resync nodes to environments, e.g.`shared:DataSetConfiguration.node.yaml` to all environments.
+- Uploading SHOP license files (`*.dat`-file) or other sensitive files that cannot be committed to the repository.
+
+In these cases, you can follow the steps below to deploy changes manually:
+1. Check which environment to deploy to. All possible environments are defined in the `toolkit/` folder in the `config.<ENV>.yaml`-files
+
+   1. **config.staging.yaml**
+
       1. CDF_PROJECT: `power-ops-staging`
-      2. ENV: `staging`
+      2. ENV (TOOLKIT_ENV): `staging`
 
          ```bash
          export ENV="staging"
          ```
 
-   3. **config.hydro-pilot.yaml**
+   2. **config.hydro-pilot.yaml**
+
       1. CDF_PROJECT: `hydro-energy-pilot`
-      2. ENV: `hydro-pilot`
+      2. ENV (TOOLKIT_ENV): `hydro-pilot`
 
          ```bash
          export ENV="hydro-pilot"
          ```
-      ... etc
+
+         ... etc
 
 2. Ensure the credentials in your `.env` file point to the same environment you want to deploy to
-3. Build the configurations and remove existing files in the build directory:
+3. Locally update the `config.<ENV>.yaml` if you you are doing custom deployment.
+4. Build the configurations and remove existing files in the build directory:
 
    ```bash
    cdf build --env=$ENV
    ```
 
-4. Dry-run the deployment to see what changes would be made:
+5. Dry-run the deployment to see what changes would be made:
 
    ```bash
    cdf deploy --env=$ENV --dry-run
    ```
 
-5. Deploy the changes if the environment and changes your making won't impact other people's work:
+6. Deploy the changes if the environment and changes your making won't impact other people's work:
 
    ```bash
    cdf deploy --env=$ENV
    ```
+
+7. Verify that the changes are correct in the environment you deployed to. Make sure to restore the `config.<ENV>.yaml` file to the original state if you made changes to it.
 
 ### WARNING: Full manual redeploy steps
 
@@ -132,7 +156,7 @@ need to be re-ingested or not.
 
 DO NOT perform these steps unless it has been aligned with the full team and a solution has been agreed upon.
 
-1. Follow the same 1-3 steps from the [Manual Deployment](#manual-deployment) steps
+1. Follow the same 1-4 steps from the [Manual Deployment](#manual-deployment) steps
 2. Dry-run the deployment to see what changes would be made with the `drop` flags:
 
    ```bash
@@ -144,14 +168,3 @@ DO NOT perform these steps unless it has been aligned with the full team and a s
    ```bash
    cdf deploy --drop-data --drop --env=$ENV
    ```
-
-## Release process / Automatic Deployment
-
-In order to automatically deploy the changes to all customer environments, we create a Github Release.
- A Release will include >= 1 commits from the `main` branch. The procedure is as follows:
-
-1) Create a git tag at the head commit, in the format `vYYYY.MM.DD` (with an optional numeric suffix e.g. `-2` if there is already a release tag for this date) e.g. `git checkout main && git pull && git tag v2025.08.14 && git push origin --tags`
-
-2) Create a Release through the Github web UI; you will need to review the commits that fall between the previous release and tagged commit in order to write the summarised release notes. Select the commit tag previously created.
-
-3) Publish the Release. This will trigger the start of the [CI/CD pipeline](.github/workflows/toolkit-release.yaml), which will deploy the changes to all the customer environments.
