@@ -144,3 +144,14 @@ DO NOT perform these steps unless it has been aligned with the full team and a s
    ```bash
    cdf deploy --drop-data --drop --env=$ENV
    ```
+
+## Release process / Automatic Deployment
+
+In order to automatically deploy the changes to all customer environments, we create a Github Release.
+ A Release will include >= 1 commits from the `main` branch. The procedure is as follows:
+
+1) Create a git tag at the head commit, in the format `vYYYY.MM.DD` (with an optional numeric suffix e.g. `-2` if there is already a release tag for this date) e.g. `git checkout main && git pull && git tag v2025.08.14 && git push origin --tags`
+
+2) Create a Release through the Github web UI; you will need to review the commits that fall between the previous release and tagged commit in order to write the summarised release notes. Select the commit tag previously created.
+
+3) Publish the Release. This will trigger the start of the [CI/CD pipeline](.github/workflows/toolkit-release.yaml), which will deploy the changes to all the customer environments.
