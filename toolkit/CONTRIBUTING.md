@@ -70,14 +70,14 @@ If a change requires a version change, the following version system should be us
 
 1. Make the relevant changes to the `.yaml` files in the `data_models` folder.
 2. Post on slack `#powerops-core-team` that you are about to make changes to ensure it doesn't conflict with others work.
-3. Create a PR and request feedback on your suggested changes.
-4. Approve the [`CI` pipeline](../.github/workflows/toolkit-sandbox.yaml) which will deploy your changes to `power-ops-sandbox`. Self approval is allowed for this step.
+3. Create a PR and request feedback on your suggested changes. A [`CI` pipeline](../.github/workflows/toolkit-sandbox.yaml) will be triggers on each push, but it will not deploy the changes until it is approved by a team member since it requires protected GitHub Environment variables .
+4. Approve the `CI` pipeline and deploy your changes to `power-ops-sandbox`. Self approval is allowed for this step.
 5. Verify that the changes are correct in `power-ops-sandbox` and that the data model is as expected. Make iterative changes to the PR if needed.
-   1. For each new push to the PR, the `CI` pipeline will need an approval from a team member to run and redeploy the changes to `power-ops-sandbox`.
+   > **NOTE**: For each new push to the PR, the `CI` pipeline will need a new approval from a team member to run and redeploy the changes to `power-ops-sandbox`.
 6. Once the team has approved of the changes, regenerate the SDK for the data model changes by calling `python scripts/pygen_generate_clients.py`. Be sure to run connected to `power-ops-sandbox` to ensure the SDK is generated with the latest changes.
 7. Bump the SDK version in `pyproject.toml` and `cognite/powerops/_version.py`.
 8. Update the `CHANGELOG.md` with the changes made.
-9. Request a review of the PR from the team.
+9.  Request a review of the PR from the team.
 10. Add the `waiting-for-risk` label to the PR, and wait for the risk review to be completed. [Risk review docs](https://docs.infra.cogheim.net/developer-portal/guides/definition-of-done/risk-reviews/)
 11. When the risk review is completed, you can merge the PR into `main`. A [`CD` pipeline](../.github/workflows/toolkit-staging.yaml) will be triggered to deploy the changes to `power-ops-staging`. This pipeline will also require an approval from a team member to run. Self approval is allowed for this step.
 12. If the changes are correct in `power-ops-staging`, you can then deploy the changes to customer environments by following the [Release process](#release-process).
