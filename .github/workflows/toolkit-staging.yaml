@@ -6,14 +6,12 @@ on:
       - "main"
     paths:
       - "toolkit/**"
-      - ".github/workflows/toolkit-deploy.yaml"
+      - ".github/workflows/toolkit-staging.yaml"
       - "!**/*.md"
 
 env:
-  COLUMNS: 99
-  PYTHON_VERSION: "3.11"
-  TOOLKIT_ENV: staging
   TOOLKIT_VERSION: 0.5.94
+  PYTHON_VERSION: "3.11"
   CLIENT_CONFIG_FILE: "power_ops_config.yaml"
   CONFIGURATION_FILE: "resync/configuration.yaml"
 
@@ -26,20 +24,21 @@ jobs:
       - id: image
         run: echo "image=cognite/toolkit:$TOOLKIT_VERSION" >> "$GITHUB_OUTPUT"
   deploy-modules:
-    name: Toolkit Deploy
+    name: Toolkit build and deploy staging
     needs: get-toolkit-version
     runs-on: ubuntu-latest
-    environment: CD
+    environment: power-ops-staging
     container:
       image: ${{ needs.get-toolkit-version.outputs.image }}
       env:
         LOGIN_FLOW: client_credentials
-        CDF_CLUSTER: ${{ vars.CLUSTER }}
-        CDF_PROJECT: ${{ vars.PROJECT }}
-        IDP_CLIENT_ID: ${{ vars.CLIENT_ID }}
+        CDF_PROJECT: power-ops-staging
+        CDF_CLUSTER: ${{ secrets.CLUSTER }}
+        IDP_CLIENT_ID: ${{ secrets.CLIENT_ID }}
         IDP_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-        IDP_TENANT_ID: ${{ vars.TENANT_ID }}
+        IDP_TENANT_ID: ${{ secrets.TENANT_ID }}
         WF_TRIGGER_SECRET: ${{ secrets.WF_TRIGGER_SECRET }}
+        TOOLKIT_ENV: ${{ secrets.TOOLKIT_ENV}}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Build modules
@@ -48,10 +47,10 @@ jobs:
         run: cdf deploy cdf-tk-build
 
   resync-purge:
-    name: Resync Purge to CDF project ${{ vars.PROJECT }}
+    name: Resync Purge to CDF project power-ops-staging
     needs: deploy-modules
     environment:
-      name: CD
+      name: power-ops-staging
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -65,13 +64,13 @@ jobs:
           python3 -m pip install --upgrade pip poetry==2.*
           poetry config virtualenvs.create false
           poetry install
-      - name: Run resync plan
+      - name: Run resync purge
         env:
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-          CLIENT_ID: ${{ vars.CLIENT_ID }}
-          PROJECT: ${{ vars.PROJECT }}
-          CLUSTER: ${{ vars.CLUSTER }}
-          TENANT_ID: ${{ vars.TENANT_ID }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          PROJECT: power-ops-staging
+          CLUSTER: ${{ secrets.CLUSTER }}
+          TENANT_ID: ${{ secrets.TENANT_ID }}
         run: |
-          echo Running resync plan in CDF environment $PROJECT
+          echo Running resync purge in CDF environment $PROJECT
           powerops purge $CLIENT_CONFIG_FILE $CONFIGURATION_FILE

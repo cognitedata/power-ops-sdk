@@ -179,8 +179,8 @@ powerops purge power_ops_config.yaml resync/configuration.yaml
 Refer to CI/CD setup in this repo to see how resync & toolkit can be automated through PRs:
 
 - [.pre-commit-config.yaml](.pre-commit-config.yaml)
-- [.github/workflows/toolkit-build.yaml](.github/workflows/toolkit-build.yaml)
-- [.github/workflows/toolkit-deploy.yaml](.github/workflows/toolkit-deploy.yaml)
+- [.github/workflows/toolkit-sandbox.yaml](.github/workflows/toolkit-sandbox.yaml)
+- [.github/workflows/toolkit-staging.yaml](.github/workflows/toolkit-staging.yaml)
 
 ## Migration Guide to 15 min Market
 
