@@ -51,6 +51,19 @@ class CogShopAPI:
         write_classic_ts: bool = True,
         shop_dump_output_only: bool = False,
     ) -> None:
+        """
+        Trigger a SHOP case in CogSHOP as a Service.
+
+        Args:
+            shop_case_external_id (str):
+                External ID of the SHOP case to trigger.
+            write_classic_ts (bool):
+                Whether to CogSHOP should write classic time series as part of post processing.
+            shop_dump_output_only (bool):
+                Used in CogSHOP as `shop.dump_yaml(output_only=shop_dump_output_only)`.
+                Only used for post run yaml dumps. Pre run will always use `output_only=False`.
+        """
+
         def auth(r: requests.PreparedRequest) -> requests.PreparedRequest:
             auth_header_name, auth_header_value = self._cdf._config.credentials.authorization_header()
             r.headers[auth_header_name] = auth_header_value
