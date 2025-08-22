@@ -15,6 +15,10 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [1.1.0] - 2025-08-22
+### Added
+* Added `shop_dump_output_only` as an optional flag to `trigger_shop_case`.
+
 ## [1.0.0] - 2025-08-14
 ### Removed
 * Removed all classes and functions marked as deprecated
