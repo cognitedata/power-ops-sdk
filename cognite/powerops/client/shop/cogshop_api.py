@@ -45,7 +45,25 @@ class CogShopAPI:
 
         return f"https://power-ops-api{environment}.{cluster}.cognite.ai/{project}/run-shop-as-service"
 
-    def trigger_shop_case(self, shop_case_external_id: str, write_classic_ts: bool = True) -> None:
+    def trigger_shop_case(
+        self,
+        shop_case_external_id: str,
+        write_classic_ts: bool = True,
+        shop_dump_output_only: bool = False,
+    ) -> None:
+        """
+        Trigger a SHOP case in CogSHOP as a Service.
+
+        Args:
+            shop_case_external_id (str):
+                External ID of the SHOP case to trigger.
+            write_classic_ts (bool):
+                Whether to CogSHOP should write classic time series as part of post processing.
+            shop_dump_output_only (bool):
+                Used in CogSHOP as `shop.dump_yaml(output_only=shop_dump_output_only)`.
+                Only used for post run yaml dumps. Pre run will always use `output_only=False`.
+        """
+
         def auth(r: requests.PreparedRequest) -> requests.PreparedRequest:
             auth_header_name, auth_header_value = self._cdf._config.credentials.authorization_header()
             r.headers[auth_header_name] = auth_header_value
@@ -58,6 +76,7 @@ class CogShopAPI:
                 {
                     "case_external_id": shop_case_external_id,
                     "write_classic_ts": write_classic_ts,
+                    "shop_dump_output_only": shop_dump_output_only,
                 }
             ],
         }
