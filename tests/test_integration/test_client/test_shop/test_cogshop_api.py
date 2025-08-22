@@ -107,7 +107,9 @@ def test_create_trigger_shop_case(power_ops_client: PowerOpsClient):
         expected_url = "https://power-ops-api.staging.bluefield.cognite.ai/power-ops-staging/run-shop-as-service"
         expected_json = {
             "mode": "fdm",
-            "runs": [{"case_external_id": shop_case.external_id, "write_classic_ts": True}],
+            "runs": [
+                {"case_external_id": shop_case.external_id, "write_classic_ts": True, "shop_dump_output_only": False}
+            ],
         }
         mock_post.assert_called_once()
         kwargs = mock_post.call_args[1]
