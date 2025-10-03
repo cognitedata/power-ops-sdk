@@ -15,6 +15,10 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [1.1.1] - 2025-08-22
+### Fixed
+* Bumped `deepdiff` version to ^8.6.1 to fix security vulnerability.
+
 ## [1.1.0] - 2025-08-22
 ### Added
 * Added `shop_dump_output_only` as an optional flag to `trigger_shop_case`.
