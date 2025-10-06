@@ -15,7 +15,11 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [1.1.1] - 2025-08-22
+## [1.1.2] - 2025-10-03
+### Fixed
+* Bumped `twine` version to ^6.0.0 to fix release PyPI failure.
+
+## [1.1.1] - 2025-09-22
 ### Fixed
 * Bumped `deepdiff` version to ^8.6.1 to fix security vulnerability.
 
