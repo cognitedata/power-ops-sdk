@@ -55,7 +55,7 @@ pytest = "^8.1.1"
 pytest-cov = "^5.0.0"
 twine = "^6.0.0"
 python-dotenv = "^1"
-cognite-toolkit = "0.5.94"
+cognite-toolkit = "0.6.7"
 
 
 [tool.ruff]

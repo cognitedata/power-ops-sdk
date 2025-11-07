@@ -491,14 +491,14 @@ format = ["black (>=24.4.2)"]
 
 [[package]]
 name = "cognite-sdk"
-version = "7.80.0"
+version = "7.89.0"
 description = "Cognite Python SDK"
 optional = false
 python-versions = "<4.0,>=3.10"
 groups = ["main", "dev"]
 files = [
-    {file = "cognite_sdk-7.80.0-py3-none-any.whl", hash = "sha256:97f07b7af356f6edc2152baf3c0908f368150dbd0e0165a7bd40fa01aee9d17a"},
-    {file = "cognite_sdk-7.80.0.tar.gz", hash = "sha256:b1bf38305c7d4c278f94d05e5a9e4bccd0906c0cf9ee076b9de6888d859815d2"},
+    {file = "cognite_sdk-7.89.0-py3-none-any.whl", hash = "sha256:3ff81fe8820f240641a613908971db161bd60723f50d476388b54dbf2856ae01"},
+    {file = "cognite_sdk-7.89.0.tar.gz", hash = "sha256:8dfe5a550f2462dec098fe7236ce275d1f8e9e8a1454d7524c829c50e79f13ec"},
 ]
 
 [package.dependencies]
@@ -522,18 +522,18 @@ yaml = ["PyYAML (>=6.0,<7.0)"]
 
 [[package]]
 name = "cognite-toolkit"
-version = "0.5.94"
+version = "0.6.7"
 description = "Official Cognite Data Fusion tool for project templates and configuration deployment"
 optional = false
 python-versions = ">=3.10"
 groups = ["dev"]
 files = [
-    {file = "cognite_toolkit-0.5.94-py3-none-any.whl", hash = "sha256:13d87c09ec30fe1219a225215a2ab4bc2916deb99c4fe255554ef19c039d6973"},
-    {file = "cognite_toolkit-0.5.94.tar.gz", hash = "sha256:92449944fa2d103c80c7a76666e959b37fd1abc6e178ddad5d5944783fa2a063"},
+    {file = "cognite_toolkit-0.6.7-py3-none-any.whl", hash = "sha256:f6ede2a106e273aa8f5d2b44f8d074026200c3f47ee6fb0c513fd9d56e20971c"},
+    {file = "cognite_toolkit-0.6.7.tar.gz", hash = "sha256:99bb646bb95c788dce34887d6980edca7510f9c0c3c55a6d3cb8542b43ca9e48"},
 ]
 
 [package.dependencies]
-cognite-sdk = ">=7.77.0,<8.0.0"
+cognite-sdk = ">=7.80.2,<8.0.0"
 filelock = ">=3.18.0"
 mixpanel = ">=4.10.1"
 packaging = ">=25,<25.1"
@@ -4405,4 +4405,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.13"
-content-hash = "960764dabb31639faccdcdd6e41c174e68e41d49e82105428f24b6cba842f710"
+content-hash = "ebda7ef008d11bf6e0029a92dd15a15a5b0bb992d2408c1de20d30de80febe43"
