@@ -1,5 +1,4 @@
 - externalId: shop_based_partial_bid_configuration_15_min_sola_1
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -21,7 +20,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_sola_2
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -43,7 +41,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_sola_20
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -65,7 +62,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_sola_3
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -87,7 +83,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_sola_3_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -109,7 +104,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_sola_1
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -131,7 +125,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_sola_2
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -153,7 +146,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_sola_20
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -175,7 +167,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_sola_3
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -197,7 +188,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_sola_3_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true

@@ -375,7 +375,6 @@ class ResyncImporter:
                 for edge_end_external_id in edge_info:
                     if edge_end_external_id:
                         edge_object = {
-                            "instanceType": "edge",
                             "type": {
                                 "space": edge_properties[edge_name].space,
                                 "externalId": edge_properties[edge_name].external_id,
@@ -404,7 +403,6 @@ class ResyncImporter:
             node_object = {
                 "space": self.instance_space,
                 "externalId": external_id,
-                "instanceType": "node",
                 "type": {
                     "space": self.type_space,
                     "externalId": type_external_id,

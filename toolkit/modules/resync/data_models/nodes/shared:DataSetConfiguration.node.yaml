@@ -1,5 +1,4 @@
 - externalId: data_set_configuration_powerops_dataset_configuration
-  instanceType: node
   sources:
   - properties:
       monitorDataSet: powerops:monitor

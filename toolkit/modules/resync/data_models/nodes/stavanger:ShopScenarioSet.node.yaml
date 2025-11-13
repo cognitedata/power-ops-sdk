@@ -1,5 +1,4 @@
 - externalId: shop_scenario_set_15_min_stavanger_1_scenario
-  instanceType: node
   sources:
   - properties:
       endSpecification:
@@ -19,7 +18,6 @@
     externalId: ShopScenarioSet
     space: power_ops_types
 - externalId: shop_scenario_set_15_min_stavanger_1_scenario_15_min_test
-  instanceType: node
   sources:
   - properties:
       endSpecification:
@@ -39,7 +37,6 @@
     externalId: ShopScenarioSet
     space: power_ops_types
 - externalId: shop_scenario_set_15_min_stavanger_20_scenarios
-  instanceType: node
   sources:
   - properties:
       endSpecification:
@@ -59,7 +56,6 @@
     externalId: ShopScenarioSet
     space: power_ops_types
 - externalId: shop_scenario_set_15_min_stavanger_2_scenarios
-  instanceType: node
   sources:
   - properties:
       endSpecification:
@@ -79,7 +75,6 @@
     externalId: ShopScenarioSet
     space: power_ops_types
 - externalId: shop_scenario_set_15_min_stavanger_3_scenarios
-  instanceType: node
   sources:
   - properties:
       endSpecification:
@@ -99,7 +94,6 @@
     externalId: ShopScenarioSet
     space: power_ops_types
 - externalId: shop_scenario_set_stavanger_1_scenario
-  instanceType: node
   sources:
   - properties:
       endSpecification:
@@ -119,7 +113,6 @@
     externalId: ShopScenarioSet
     space: power_ops_types
 - externalId: shop_scenario_set_stavanger_1_scenario_15_min_test
-  instanceType: node
   sources:
   - properties:
       endSpecification:
@@ -139,7 +132,6 @@
     externalId: ShopScenarioSet
     space: power_ops_types
 - externalId: shop_scenario_set_stavanger_20_scenarios
-  instanceType: node
   sources:
   - properties:
       endSpecification:
@@ -159,7 +151,6 @@
     externalId: ShopScenarioSet
     space: power_ops_types
 - externalId: shop_scenario_set_stavanger_2_scenarios
-  instanceType: node
   sources:
   - properties:
       endSpecification:
@@ -179,7 +170,6 @@
     externalId: ShopScenarioSet
     space: power_ops_types
 - externalId: shop_scenario_set_stavanger_3_scenarios
-  instanceType: node
   sources:
   - properties:
       endSpecification:

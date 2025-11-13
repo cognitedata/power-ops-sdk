@@ -2,7 +2,6 @@
     externalId: plant_information_dalby
     space: power_ops_instances
   externalId: shop_model_with_assets:fornebu:plant_information_dalby
-  instanceType: edge
   space: power_ops_instances
   startNode:
     externalId: shop_model_with_assets:fornebu
@@ -14,7 +13,6 @@
     externalId: plant_information_holen
     space: power_ops_instances
   externalId: shop_model_with_assets:fornebu:plant_information_holen
-  instanceType: edge
   space: power_ops_instances
   startNode:
     externalId: shop_model_with_assets:fornebu
@@ -26,7 +24,6 @@
     externalId: plant_information_landet
     space: power_ops_instances
   externalId: shop_model_with_assets:fornebu:plant_information_landet
-  instanceType: edge
   space: power_ops_instances
   startNode:
     externalId: shop_model_with_assets:fornebu
@@ -38,7 +35,6 @@
     externalId: plant_information_lien_krv
     space: power_ops_instances
   externalId: shop_model_with_assets:fornebu:plant_information_lien_krv
-  instanceType: edge
   space: power_ops_instances
   startNode:
     externalId: shop_model_with_assets:fornebu
@@ -50,7 +46,6 @@
     externalId: plant_information_lund
     space: power_ops_instances
   externalId: shop_model_with_assets:fornebu:plant_information_lund
-  instanceType: edge
   space: power_ops_instances
   startNode:
     externalId: shop_model_with_assets:fornebu
@@ -62,7 +57,6 @@
     externalId: plant_information_rull1
     space: power_ops_instances
   externalId: shop_model_with_assets:fornebu:plant_information_rull1
-  instanceType: edge
   space: power_ops_instances
   startNode:
     externalId: shop_model_with_assets:fornebu
@@ -74,7 +68,6 @@
     externalId: plant_information_rull2
     space: power_ops_instances
   externalId: shop_model_with_assets:fornebu:plant_information_rull2
-  instanceType: edge
   space: power_ops_instances
   startNode:
     externalId: shop_model_with_assets:fornebu
@@ -86,7 +79,6 @@
     externalId: plant_information_scott
     space: power_ops_instances
   externalId: shop_model_with_assets:fornebu:plant_information_scott
-  instanceType: edge
   space: power_ops_instances
   startNode:
     externalId: shop_model_with_assets:fornebu
@@ -98,7 +90,6 @@
     externalId: plant_information_strand_krv
     space: power_ops_instances
   externalId: shop_model_with_assets:fornebu:plant_information_strand_krv
-  instanceType: edge
   space: power_ops_instances
   startNode:
     externalId: shop_model_with_assets:fornebu
@@ -110,7 +101,6 @@
     externalId: benchmarking_production_obligation:0
     space: power_ops_instances
   externalId: shop_model_with_assets:stavanger:benchmarking_production_obligation:0
-  instanceType: edge
   space: power_ops_instances
   startNode:
     externalId: shop_model_with_assets:stavanger
@@ -122,7 +112,6 @@
     externalId: plant_information_sola
     space: power_ops_instances
   externalId: shop_model_with_assets:stavanger:plant_information_sola
-  instanceType: edge
   space: power_ops_instances
   startNode:
     externalId: shop_model_with_assets:stavanger

@@ -1,5 +1,4 @@
 - externalId: benchmarking_production_obligation:0
-  instanceType: node
   sources:
   - properties:
       name: No production

@@ -1,5 +1,4 @@
 - externalId: generator_efficiency_curve:6dac3bf7
-  instanceType: node
   sources:
   - properties:
       efficiency:

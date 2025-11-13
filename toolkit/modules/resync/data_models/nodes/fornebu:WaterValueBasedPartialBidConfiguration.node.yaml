@@ -1,5 +1,4 @@
 - externalId: water_value_based_partial_bid_configuration_plant_dalby_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -18,7 +17,6 @@
     externalId: WaterValueBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: water_value_based_partial_bid_configuration_plant_holen
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -37,7 +35,6 @@
     externalId: WaterValueBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: water_value_based_partial_bid_configuration_plant_landet_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -56,7 +53,6 @@
     externalId: WaterValueBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: water_value_based_partial_bid_configuration_plant_lien_krv
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -75,7 +71,6 @@
     externalId: WaterValueBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: water_value_based_partial_bid_configuration_plant_lund
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -94,7 +89,6 @@
     externalId: WaterValueBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: water_value_based_partial_bid_configuration_plant_lund_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -113,7 +107,6 @@
     externalId: WaterValueBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: water_value_based_partial_bid_configuration_plant_rull1_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -132,7 +125,6 @@
     externalId: WaterValueBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: water_value_based_partial_bid_configuration_plant_rull2
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -151,7 +143,6 @@
     externalId: WaterValueBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: water_value_based_partial_bid_configuration_plant_scott_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -170,7 +161,6 @@
     externalId: WaterValueBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: water_value_based_partial_bid_configuration_plant_strand_krv
-  instanceType: node
   sources:
   - properties:
       addSteps: false

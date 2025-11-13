@@ -1,5 +1,4 @@
 - externalId: benchmarking_configuration_day_ahead_day_ahead_benchmarking_configuration_no2
-  instanceType: node
   sources:
   - properties:
       name: Day Ahead Benchmarking Configuration NO2

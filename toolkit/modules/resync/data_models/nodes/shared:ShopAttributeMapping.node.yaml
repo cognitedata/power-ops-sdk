@@ -1,5 +1,4 @@
 - externalId: base_mapping_dayahead_buy_price
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -25,7 +24,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: base_mapping_dayahead_sale_price
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -44,7 +42,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_minus_0_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -71,7 +68,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_minus_100_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -98,7 +94,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_minus_10_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -125,7 +120,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_minus_120_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -152,7 +146,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_minus_140_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -179,7 +172,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_minus_15_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -206,7 +198,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_minus_160_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -233,7 +224,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_minus_180_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -260,7 +250,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_minus_200_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -287,7 +276,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_minus_20_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -314,7 +302,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_minus_30_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -341,7 +328,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_minus_40_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -368,7 +354,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_minus_500_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -395,7 +380,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_minus_50_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -422,7 +406,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_minus_5_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -449,7 +432,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_minus_60_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -476,7 +458,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_minus_80_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -503,7 +484,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_multiply_0_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -537,7 +517,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_plus_100_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -564,7 +543,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_plus_10_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -591,7 +569,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_plus_120_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -618,7 +595,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_plus_140_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -645,7 +621,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_plus_15_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -672,7 +647,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_plus_160_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -699,7 +673,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_plus_180_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -726,7 +699,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_plus_2000_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -753,7 +725,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_plus_200_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -780,7 +751,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_plus_20_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -807,7 +777,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_plus_30_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -834,7 +803,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_plus_40_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -861,7 +829,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_plus_50_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -888,7 +855,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_plus_5_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -915,7 +881,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_plus_60_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -942,7 +907,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_plus_70_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -969,7 +933,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_buy_price_plus_80_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -996,7 +959,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_minus_0_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1023,7 +985,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_minus_100_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1050,7 +1011,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_minus_10_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1077,7 +1037,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_minus_120_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1104,7 +1063,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_minus_140_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1131,7 +1089,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_minus_15_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1158,7 +1115,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_minus_160_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1185,7 +1141,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_minus_180_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1212,7 +1167,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_minus_200_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1239,7 +1193,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_minus_20_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1266,7 +1219,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_minus_30_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1293,7 +1245,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_minus_40_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1320,7 +1271,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_minus_500_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1347,7 +1297,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_minus_50_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1374,7 +1323,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_minus_5_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1401,7 +1349,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_minus_60_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1428,7 +1375,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_minus_80_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1455,7 +1401,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_multiply_0_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1482,7 +1427,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_plus_100_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1509,7 +1453,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_plus_10_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1536,7 +1479,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_plus_120_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1563,7 +1505,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_plus_140_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1590,7 +1531,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_plus_15_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1617,7 +1557,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_plus_160_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1644,7 +1583,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_plus_180_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1671,7 +1609,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_plus_2000_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1698,7 +1635,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_plus_200_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1725,7 +1661,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_plus_20_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1752,7 +1687,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_plus_30_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1779,7 +1713,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_plus_40_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1806,7 +1739,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_plus_50_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1833,7 +1765,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_plus_5_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1860,7 +1791,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_plus_60_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1887,7 +1817,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_plus_70_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN
@@ -1914,7 +1843,6 @@
     externalId: ShopAttributeMapping
     space: power_ops_types
 - externalId: no2_sale_price_plus_80_first_24h
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN

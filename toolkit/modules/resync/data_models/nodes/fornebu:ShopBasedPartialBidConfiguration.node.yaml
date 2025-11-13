@@ -1,5 +1,4 @@
 - externalId: shop_based_partial_bid_configuration_15_min_dalby_1
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -21,7 +20,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_dalby_2
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -43,7 +41,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_dalby_20
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -65,7 +62,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_dalby_20_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -87,7 +83,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_dalby_2_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -109,7 +104,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_dalby_3
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -131,7 +125,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_dalby_3_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -153,7 +146,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_holen_1
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -175,7 +167,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_holen_2
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -197,7 +188,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_holen_20
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -219,7 +209,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_holen_20_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -241,7 +230,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_holen_2_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -263,7 +251,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_holen_3
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -285,7 +272,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_holen_3_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -307,7 +293,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_landet_1
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -329,7 +314,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_landet_2
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -351,7 +335,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_landet_20
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -373,7 +356,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_landet_20_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -395,7 +377,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_landet_2_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -417,7 +398,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_landet_3
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -439,7 +419,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_landet_3_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -461,7 +440,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_lien_krv_1
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -483,7 +461,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_lien_krv_2
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -505,7 +482,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_lien_krv_20
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -527,7 +503,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_lien_krv_20_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -549,7 +524,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_lien_krv_2_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -571,7 +545,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_lien_krv_3
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -593,7 +566,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_lien_krv_3_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -615,7 +587,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_lund_1
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -637,7 +608,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_lund_2
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -659,7 +629,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_lund_20
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -681,7 +650,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_lund_20_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -703,7 +671,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_lund_2_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -725,7 +692,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_lund_3
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -747,7 +713,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_lund_3_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -769,7 +734,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_rull1_1
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -791,7 +755,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_rull1_2
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -813,7 +776,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_rull1_20
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -835,7 +797,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_rull1_20_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -857,7 +818,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_rull1_2_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -879,7 +839,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_rull1_3
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -901,7 +860,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_rull1_3_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -923,7 +881,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_rull2_1
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -945,7 +902,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_rull2_2
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -967,7 +923,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_rull2_20
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -989,7 +944,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_rull2_20_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -1011,7 +965,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_rull2_2_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -1033,7 +986,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_rull2_3
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -1055,7 +1007,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_rull2_3_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -1077,7 +1028,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_scott_1
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -1099,7 +1049,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_scott_2
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -1121,7 +1070,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_scott_20
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -1143,7 +1091,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_scott_20_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -1165,7 +1112,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_scott_2_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -1187,7 +1133,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_scott_3
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -1209,7 +1154,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_scott_3_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -1231,7 +1175,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_strand_krv_1
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -1253,7 +1196,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_strand_krv_2
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -1275,7 +1217,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_strand_krv_20
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -1297,7 +1238,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_strand_krv_20_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -1319,7 +1259,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_strand_krv_2_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -1341,7 +1280,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_strand_krv_3
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -1363,7 +1301,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_15_min_strand_krv_3_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -1385,7 +1322,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_dalby_1
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -1407,7 +1343,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_dalby_2
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -1429,7 +1364,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_dalby_20
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -1451,7 +1385,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_dalby_20_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -1473,7 +1406,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_dalby_2_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -1495,7 +1427,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_dalby_3
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -1517,7 +1448,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_dalby_3_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -1539,7 +1469,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_holen_1
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -1561,7 +1490,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_holen_2
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -1583,7 +1511,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_holen_20
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -1605,7 +1532,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_holen_20_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -1627,7 +1553,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_holen_2_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -1649,7 +1574,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_holen_3
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -1671,7 +1595,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_holen_3_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -1693,7 +1616,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_landet_1
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -1715,7 +1637,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_landet_2
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -1737,7 +1658,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_landet_20
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -1759,7 +1679,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_landet_20_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -1781,7 +1700,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_landet_2_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -1803,7 +1721,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_landet_3
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -1825,7 +1742,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_landet_3_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -1847,7 +1763,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_lien_krv_1
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -1869,7 +1784,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_lien_krv_2
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -1891,7 +1805,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_lien_krv_20
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -1913,7 +1826,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_lien_krv_20_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -1935,7 +1847,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_lien_krv_2_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -1957,7 +1868,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_lien_krv_3
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -1979,7 +1889,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_lien_krv_3_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -2001,7 +1910,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_lund_1
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -2023,7 +1931,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_lund_2
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -2045,7 +1952,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_lund_20
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -2067,7 +1973,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_lund_20_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -2089,7 +1994,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_lund_2_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -2111,7 +2015,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_lund_3
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -2133,7 +2036,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_lund_3_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -2155,7 +2057,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_rull1_1
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -2177,7 +2078,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_rull1_2
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -2199,7 +2099,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_rull1_20
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -2221,7 +2120,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_rull1_20_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -2243,7 +2141,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_rull1_2_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -2265,7 +2162,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_rull1_3
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -2287,7 +2183,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_rull1_3_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -2309,7 +2204,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_rull2_1
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -2331,7 +2225,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_rull2_2
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -2353,7 +2246,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_rull2_20
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -2375,7 +2267,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_rull2_20_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -2397,7 +2288,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_rull2_2_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -2419,7 +2309,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_rull2_3
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -2441,7 +2330,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_rull2_3_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -2463,7 +2351,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_scott_1
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -2485,7 +2372,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_scott_2
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -2507,7 +2393,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_scott_20
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -2529,7 +2414,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_scott_20_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -2551,7 +2435,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_scott_2_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -2573,7 +2456,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_scott_3
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -2595,7 +2477,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_scott_3_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -2617,7 +2498,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_strand_krv_1
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -2639,7 +2519,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_strand_krv_2
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -2661,7 +2540,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_strand_krv_20
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -2683,7 +2561,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_strand_krv_20_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -2705,7 +2582,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_strand_krv_2_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true
@@ -2727,7 +2603,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_strand_krv_3
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -2749,7 +2624,6 @@
     externalId: ShopBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: shop_based_partial_bid_configuration_strand_krv_3_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true

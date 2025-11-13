@@ -1,5 +1,4 @@
 - externalId: shop_commands_alternative_x
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -18,7 +17,6 @@
     externalId: ShopCommands
     space: power_ops_types
 - externalId: shop_commands_default
-  instanceType: node
   sources:
   - properties:
       commands:

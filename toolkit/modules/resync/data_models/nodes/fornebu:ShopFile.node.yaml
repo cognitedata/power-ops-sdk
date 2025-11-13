@@ -1,5 +1,4 @@
 - externalId: shop_file_water_value_cut_file
-  instanceType: node
   sources:
   - properties:
       fileReference: SHOP_Fornebu_water_value_cut_file
@@ -17,7 +16,6 @@
     externalId: ShopFile
     space: power_ops_types
 - externalId: shop_file_water_value_cut_file_reservoir_mapping
-  instanceType: node
   sources:
   - properties:
       fileReference: SHOP_Fornebu_water_value_cut_file_reservoir_mapping

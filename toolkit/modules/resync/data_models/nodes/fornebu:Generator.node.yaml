@@ -1,5 +1,4 @@
 - externalId: generator_dalby_g1
-  instanceType: node
   sources:
   - properties:
       assetType: generator
@@ -24,7 +23,6 @@
     externalId: Generator
     space: power_ops_types
 - externalId: generator_holen_g1
-  instanceType: node
   sources:
   - properties:
       assetType: generator
@@ -49,7 +47,6 @@
     externalId: Generator
     space: power_ops_types
 - externalId: generator_landet_g1
-  instanceType: node
   sources:
   - properties:
       assetType: generator
@@ -74,7 +71,6 @@
     externalId: Generator
     space: power_ops_types
 - externalId: generator_lien_krv_g1
-  instanceType: node
   sources:
   - properties:
       assetType: generator
@@ -99,7 +95,6 @@
     externalId: Generator
     space: power_ops_types
 - externalId: generator_lund_g1
-  instanceType: node
   sources:
   - properties:
       assetType: generator
@@ -124,7 +119,6 @@
     externalId: Generator
     space: power_ops_types
 - externalId: generator_rull1_g1
-  instanceType: node
   sources:
   - properties:
       assetType: generator
@@ -149,7 +143,6 @@
     externalId: Generator
     space: power_ops_types
 - externalId: generator_rull2_g1
-  instanceType: node
   sources:
   - properties:
       assetType: generator
@@ -174,7 +167,6 @@
     externalId: Generator
     space: power_ops_types
 - externalId: generator_rull2_g2
-  instanceType: node
   sources:
   - properties:
       assetType: generator
@@ -199,7 +191,6 @@
     externalId: Generator
     space: power_ops_types
 - externalId: generator_scott_g1
-  instanceType: node
   sources:
   - properties:
       assetType: generator
@@ -224,7 +215,6 @@
     externalId: Generator
     space: power_ops_types
 - externalId: generator_strand_krv_g1
-  instanceType: node
   sources:
   - properties:
       assetType: generator

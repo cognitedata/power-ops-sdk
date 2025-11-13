@@ -1,5 +1,4 @@
 - externalId: plant_information_dalby
-  instanceType: node
   sources:
   - properties:
       assetType: plant
@@ -26,7 +25,6 @@
     externalId: PlantInformation
     space: power_ops_types
 - externalId: plant_information_holen
-  instanceType: node
   sources:
   - properties:
       assetType: plant
@@ -53,7 +51,6 @@
     externalId: PlantInformation
     space: power_ops_types
 - externalId: plant_information_landet
-  instanceType: node
   sources:
   - properties:
       assetType: plant
@@ -80,7 +77,6 @@
     externalId: PlantInformation
     space: power_ops_types
 - externalId: plant_information_lien_krv
-  instanceType: node
   sources:
   - properties:
       assetType: plant
@@ -107,7 +103,6 @@
     externalId: PlantInformation
     space: power_ops_types
 - externalId: plant_information_lund
-  instanceType: node
   sources:
   - properties:
       assetType: plant
@@ -135,7 +130,6 @@
     externalId: PlantInformation
     space: power_ops_types
 - externalId: plant_information_rull1
-  instanceType: node
   sources:
   - properties:
       assetType: plant
@@ -163,7 +157,6 @@
     externalId: PlantInformation
     space: power_ops_types
 - externalId: plant_information_rull2
-  instanceType: node
   sources:
   - properties:
       assetType: plant
@@ -191,7 +184,6 @@
     externalId: PlantInformation
     space: power_ops_types
 - externalId: plant_information_scott
-  instanceType: node
   sources:
   - properties:
       assetType: plant
@@ -218,7 +210,6 @@
     externalId: PlantInformation
     space: power_ops_types
 - externalId: plant_information_strand_krv
-  instanceType: node
   sources:
   - properties:
       assetType: plant

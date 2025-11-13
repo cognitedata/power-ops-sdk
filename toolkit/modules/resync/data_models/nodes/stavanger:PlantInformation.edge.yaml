@@ -2,7 +2,6 @@
     externalId: generator_sola_g1
     space: power_ops_instances
   externalId: plant_information_sola:generator_sola_g1
-  instanceType: edge
   space: power_ops_instances
   startNode:
     externalId: plant_information_sola
@@ -14,7 +13,6 @@
     externalId: generator_sola_g2
     space: power_ops_instances
   externalId: plant_information_sola:generator_sola_g2
-  instanceType: edge
   space: power_ops_instances
   startNode:
     externalId: plant_information_sola

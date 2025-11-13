@@ -1,5 +1,4 @@
 - externalId: shop_model_fornebu
-  instanceType: node
   sources:
   - properties:
       model: SHOP_model_fornebu

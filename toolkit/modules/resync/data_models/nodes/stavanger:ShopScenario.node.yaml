@@ -1,5 +1,4 @@
 - externalId: shop_scenario_15_min_stavanger_base
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -23,7 +22,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_15_min_stavanger_price_minus_10_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -47,7 +45,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_15_min_stavanger_price_minus_15_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -71,7 +68,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_15_min_stavanger_price_minus_200_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -95,7 +91,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_15_min_stavanger_price_minus_20_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -119,7 +114,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_15_min_stavanger_price_minus_30_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -143,7 +137,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_15_min_stavanger_price_minus_40_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -167,7 +160,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_15_min_stavanger_price_minus_500_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -191,7 +183,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_15_min_stavanger_price_minus_50_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -215,7 +206,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_15_min_stavanger_price_minus_5_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -239,7 +229,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_15_min_stavanger_price_multiply_0_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -263,7 +252,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_15_min_stavanger_price_plus_100_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -287,7 +275,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_15_min_stavanger_price_plus_10_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -311,7 +298,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_15_min_stavanger_price_plus_15_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -335,7 +321,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_15_min_stavanger_price_plus_2000_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -359,7 +344,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_15_min_stavanger_price_plus_200_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -383,7 +367,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_15_min_stavanger_price_plus_20_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -407,7 +390,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_15_min_stavanger_price_plus_30_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -431,7 +413,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_15_min_stavanger_price_plus_40_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -455,7 +436,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_15_min_stavanger_price_plus_50_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -479,7 +459,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_15_min_stavanger_price_plus_5_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -503,7 +482,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_15_min_stavanger_price_plus_70_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -527,7 +505,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_stavanger_base
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -551,7 +528,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_stavanger_price_minus_10_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -575,7 +551,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_stavanger_price_minus_15_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -599,7 +574,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_stavanger_price_minus_200_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -623,7 +597,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_stavanger_price_minus_20_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -647,7 +620,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_stavanger_price_minus_30_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -671,7 +643,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_stavanger_price_minus_40_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -695,7 +666,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_stavanger_price_minus_500_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -719,7 +689,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_stavanger_price_minus_50_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -743,7 +712,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_stavanger_price_minus_5_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -767,7 +735,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_stavanger_price_multiply_0_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -791,7 +758,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_stavanger_price_plus_100_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -815,7 +781,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_stavanger_price_plus_10_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -839,7 +804,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_stavanger_price_plus_15_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -863,7 +827,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_stavanger_price_plus_2000_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -887,7 +850,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_stavanger_price_plus_200_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -911,7 +873,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_stavanger_price_plus_20_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -935,7 +896,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_stavanger_price_plus_30_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -959,7 +919,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_stavanger_price_plus_40_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -983,7 +942,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_stavanger_price_plus_50_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -1007,7 +965,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_stavanger_price_plus_5_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:
@@ -1031,7 +988,6 @@
     externalId: ShopScenario
     space: power_ops_types
 - externalId: shop_scenario_stavanger_price_plus_70_first_24h
-  instanceType: node
   sources:
   - properties:
       commands:

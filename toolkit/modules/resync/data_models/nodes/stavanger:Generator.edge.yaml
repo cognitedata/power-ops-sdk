@@ -2,7 +2,6 @@
     externalId: turbine_efficiency_curve:eb016103
     space: power_ops_instances
   externalId: generator_sola_g1:turbine_efficiency_curve:eb016103
-  instanceType: edge
   space: power_ops_instances
   startNode:
     externalId: generator_sola_g1
@@ -14,7 +13,6 @@
     externalId: turbine_efficiency_curve:57dd9982
     space: power_ops_instances
   externalId: generator_sola_g2:turbine_efficiency_curve:57dd9982
-  instanceType: edge
   space: power_ops_instances
   startNode:
     externalId: generator_sola_g2

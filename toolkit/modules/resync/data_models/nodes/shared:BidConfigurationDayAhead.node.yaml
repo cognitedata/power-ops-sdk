@@ -1,5 +1,4 @@
 - externalId: bid_configuration_day_ahead_15_min_multi_scenario_20_no2
-  instanceType: node
   sources:
   - properties:
       bidDateSpecification:
@@ -22,7 +21,6 @@
     externalId: BidConfigurationDayAhead
     space: power_ops_types
 - externalId: bid_configuration_day_ahead_15_min_multi_scenario_2_no2
-  instanceType: node
   sources:
   - properties:
       bidDateSpecification:
@@ -45,7 +43,6 @@
     externalId: BidConfigurationDayAhead
     space: power_ops_types
 - externalId: bid_configuration_day_ahead_15_min_multi_scenario_3_no2
-  instanceType: node
   sources:
   - properties:
       bidDateSpecification:
@@ -68,7 +65,6 @@
     externalId: BidConfigurationDayAhead
     space: power_ops_types
 - externalId: bid_configuration_day_ahead_15_min_multi_scenario_3_sola
-  instanceType: node
   sources:
   - properties:
       bidDateSpecification:
@@ -91,7 +87,6 @@
     externalId: BidConfigurationDayAhead
     space: power_ops_types
 - externalId: bid_configuration_day_ahead_15_min_no2_combination
-  instanceType: node
   sources:
   - properties:
       bidDateSpecification:
@@ -114,7 +109,6 @@
     externalId: BidConfigurationDayAhead
     space: power_ops_types
 - externalId: bid_configuration_day_ahead_15_min_price_independent_no2
-  instanceType: node
   sources:
   - properties:
       bidDateSpecification:
@@ -137,7 +131,6 @@
     externalId: BidConfigurationDayAhead
     space: power_ops_types
 - externalId: bid_configuration_day_ahead_15_min_water_value_no2_full
-  instanceType: node
   sources:
   - properties:
       bidDateSpecification:
@@ -160,7 +153,6 @@
     externalId: BidConfigurationDayAhead
     space: power_ops_types
 - externalId: bid_configuration_day_ahead_15_min_water_value_no2_lund
-  instanceType: node
   sources:
   - properties:
       bidDateSpecification:
@@ -183,7 +175,6 @@
     externalId: BidConfigurationDayAhead
     space: power_ops_types
 - externalId: bid_configuration_day_ahead_15_min_water_value_no2_lund_step
-  instanceType: node
   sources:
   - properties:
       bidDateSpecification:
@@ -206,7 +197,6 @@
     externalId: BidConfigurationDayAhead
     space: power_ops_types
 - externalId: bid_configuration_day_ahead_15_min_water_value_no2_sola
-  instanceType: node
   sources:
   - properties:
       bidDateSpecification:
@@ -229,7 +219,6 @@
     externalId: BidConfigurationDayAhead
     space: power_ops_types
 - externalId: bid_configuration_day_ahead_15_min_water_value_no2_sola_step
-  instanceType: node
   sources:
   - properties:
       bidDateSpecification:
@@ -252,7 +241,6 @@
     externalId: BidConfigurationDayAhead
     space: power_ops_types
 - externalId: bid_configuration_day_ahead_multi_scenario_20_no2
-  instanceType: node
   sources:
   - properties:
       bidDateSpecification:
@@ -275,7 +263,6 @@
     externalId: BidConfigurationDayAhead
     space: power_ops_types
 - externalId: bid_configuration_day_ahead_multi_scenario_2_no2
-  instanceType: node
   sources:
   - properties:
       bidDateSpecification:
@@ -298,7 +285,6 @@
     externalId: BidConfigurationDayAhead
     space: power_ops_types
 - externalId: bid_configuration_day_ahead_multi_scenario_3_no2
-  instanceType: node
   sources:
   - properties:
       bidDateSpecification:
@@ -321,7 +307,6 @@
     externalId: BidConfigurationDayAhead
     space: power_ops_types
 - externalId: bid_configuration_day_ahead_multi_scenario_3_sola
-  instanceType: node
   sources:
   - properties:
       bidDateSpecification:
@@ -344,7 +329,6 @@
     externalId: BidConfigurationDayAhead
     space: power_ops_types
 - externalId: bid_configuration_day_ahead_no2_combination
-  instanceType: node
   sources:
   - properties:
       bidDateSpecification:
@@ -367,7 +351,6 @@
     externalId: BidConfigurationDayAhead
     space: power_ops_types
 - externalId: bid_configuration_day_ahead_price_independent_no2
-  instanceType: node
   sources:
   - properties:
       bidDateSpecification:
@@ -390,7 +373,6 @@
     externalId: BidConfigurationDayAhead
     space: power_ops_types
 - externalId: bid_configuration_day_ahead_water_value_no2_full
-  instanceType: node
   sources:
   - properties:
       bidDateSpecification:
@@ -413,7 +395,6 @@
     externalId: BidConfigurationDayAhead
     space: power_ops_types
 - externalId: bid_configuration_day_ahead_water_value_no2_lund
-  instanceType: node
   sources:
   - properties:
       bidDateSpecification:
@@ -436,7 +417,6 @@
     externalId: BidConfigurationDayAhead
     space: power_ops_types
 - externalId: bid_configuration_day_ahead_water_value_no2_lund_step
-  instanceType: node
   sources:
   - properties:
       bidDateSpecification:
@@ -459,7 +439,6 @@
     externalId: BidConfigurationDayAhead
     space: power_ops_types
 - externalId: bid_configuration_day_ahead_water_value_no2_sola
-  instanceType: node
   sources:
   - properties:
       bidDateSpecification:
@@ -482,7 +461,6 @@
     externalId: BidConfigurationDayAhead
     space: power_ops_types
 - externalId: bid_configuration_day_ahead_water_value_no2_sola_step
-  instanceType: node
   sources:
   - properties:
       bidDateSpecification:

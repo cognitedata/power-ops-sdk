@@ -1,5 +1,4 @@
 - externalId: generator_sola_g1
-  instanceType: node
   sources:
   - properties:
       assetType: generator
@@ -24,7 +23,6 @@
     externalId: Generator
     space: power_ops_types
 - externalId: generator_sola_g2
-  instanceType: node
   sources:
   - properties:
       assetType: generator

@@ -1,5 +1,4 @@
 - externalId: shop_time_resolution_15_min_test
-  instanceType: node
   sources:
   - properties:
       minutesAfterStart:
@@ -21,7 +20,6 @@
     externalId: ShopTimeResolution
     space: power_ops_types
 - externalId: shop_time_resolution_default
-  instanceType: node
   sources:
   - properties:
       minutesAfterStart:
