@@ -15,6 +15,10 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [1.1.3] - 2025-11-13
+### Fixed
+* Bumped `cognite-toolkit` version to 0.6.70.
+
 ## [1.1.2] - 2025-10-03
 ### Fixed
 * Bumped `twine` version to ^6.0.0 to fix release PyPI failure.
