@@ -455,7 +455,7 @@ class QueryBuildStepFactory:
     def _full_filter(filter: dm.Filter | None, has_container_fields: bool, view_id: dm.ViewId) -> dm.Filter | None:
         if has_container_fields:
             has_data = dm.filters.HasData(views=[view_id])
-            return dm.filters.And(filter, has_data) if filter else has_data
+            return dm.filters.And(filter, has_data) if (filter is not None) else has_data
 
         return filter
 
