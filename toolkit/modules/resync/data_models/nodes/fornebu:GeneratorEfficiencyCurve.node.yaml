@@ -1,5 +1,4 @@
 - externalId: generator_efficiency_curve:1a9811bb
-  instanceType: node
   sources:
   - properties:
       efficiency:
@@ -24,7 +23,6 @@
     externalId: GeneratorEfficiencyCurve
     space: power_ops_types
 - externalId: generator_efficiency_curve:1c6693a8
-  instanceType: node
   sources:
   - properties:
       efficiency:
@@ -45,7 +43,6 @@
     externalId: GeneratorEfficiencyCurve
     space: power_ops_types
 - externalId: generator_efficiency_curve:415890f2
-  instanceType: node
   sources:
   - properties:
       efficiency:
@@ -68,7 +65,6 @@
     externalId: GeneratorEfficiencyCurve
     space: power_ops_types
 - externalId: generator_efficiency_curve:45440148
-  instanceType: node
   sources:
   - properties:
       efficiency:
@@ -93,7 +89,6 @@
     externalId: GeneratorEfficiencyCurve
     space: power_ops_types
 - externalId: generator_efficiency_curve:5a5d2435
-  instanceType: node
   sources:
   - properties:
       efficiency:
@@ -112,7 +107,6 @@
     externalId: GeneratorEfficiencyCurve
     space: power_ops_types
 - externalId: generator_efficiency_curve:81d769a6
-  instanceType: node
   sources:
   - properties:
       efficiency:
@@ -147,7 +141,6 @@
     externalId: GeneratorEfficiencyCurve
     space: power_ops_types
 - externalId: generator_efficiency_curve:c04055b4
-  instanceType: node
   sources:
   - properties:
       efficiency:
@@ -172,7 +165,6 @@
     externalId: GeneratorEfficiencyCurve
     space: power_ops_types
 - externalId: generator_efficiency_curve:cd6396a6
-  instanceType: node
   sources:
   - properties:
       efficiency:
@@ -201,7 +193,6 @@
     externalId: GeneratorEfficiencyCurve
     space: power_ops_types
 - externalId: generator_efficiency_curve:d0c68b2b
-  instanceType: node
   sources:
   - properties:
       efficiency:
@@ -234,7 +225,6 @@
     externalId: GeneratorEfficiencyCurve
     space: power_ops_types
 - externalId: generator_efficiency_curve:d4933751
-  instanceType: node
   sources:
   - properties:
       efficiency:

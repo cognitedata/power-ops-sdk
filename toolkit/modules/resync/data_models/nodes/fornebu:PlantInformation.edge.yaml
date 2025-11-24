@@ -2,7 +2,6 @@
     externalId: generator_dalby_g1
     space: power_ops_instances
   externalId: plant_information_dalby:generator_dalby_g1
-  instanceType: edge
   space: power_ops_instances
   startNode:
     externalId: plant_information_dalby
@@ -14,7 +13,6 @@
     externalId: generator_holen_g1
     space: power_ops_instances
   externalId: plant_information_holen:generator_holen_g1
-  instanceType: edge
   space: power_ops_instances
   startNode:
     externalId: plant_information_holen
@@ -26,7 +24,6 @@
     externalId: generator_landet_g1
     space: power_ops_instances
   externalId: plant_information_landet:generator_landet_g1
-  instanceType: edge
   space: power_ops_instances
   startNode:
     externalId: plant_information_landet
@@ -38,7 +35,6 @@
     externalId: generator_lien_krv_g1
     space: power_ops_instances
   externalId: plant_information_lien_krv:generator_lien_krv_g1
-  instanceType: edge
   space: power_ops_instances
   startNode:
     externalId: plant_information_lien_krv
@@ -50,7 +46,6 @@
     externalId: generator_lund_g1
     space: power_ops_instances
   externalId: plant_information_lund:generator_lund_g1
-  instanceType: edge
   space: power_ops_instances
   startNode:
     externalId: plant_information_lund
@@ -62,7 +57,6 @@
     externalId: generator_rull1_g1
     space: power_ops_instances
   externalId: plant_information_rull1:generator_rull1_g1
-  instanceType: edge
   space: power_ops_instances
   startNode:
     externalId: plant_information_rull1
@@ -74,7 +68,6 @@
     externalId: generator_rull2_g1
     space: power_ops_instances
   externalId: plant_information_rull2:generator_rull2_g1
-  instanceType: edge
   space: power_ops_instances
   startNode:
     externalId: plant_information_rull2
@@ -86,7 +79,6 @@
     externalId: generator_rull2_g2
     space: power_ops_instances
   externalId: plant_information_rull2:generator_rull2_g2
-  instanceType: edge
   space: power_ops_instances
   startNode:
     externalId: plant_information_rull2
@@ -98,7 +90,6 @@
     externalId: generator_scott_g1
     space: power_ops_instances
   externalId: plant_information_scott:generator_scott_g1
-  instanceType: edge
   space: power_ops_instances
   startNode:
     externalId: plant_information_scott
@@ -110,7 +101,6 @@
     externalId: generator_strand_krv_g1
     space: power_ops_instances
   externalId: plant_information_strand_krv:generator_strand_krv_g1
-  instanceType: edge
   space: power_ops_instances
   startNode:
     externalId: plant_information_strand_krv

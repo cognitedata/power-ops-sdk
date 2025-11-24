@@ -1,5 +1,4 @@
 - externalId: turbine_efficiency_curve:57dd9982
-  instanceType: node
   sources:
   - properties:
       efficiency:
@@ -19,7 +18,6 @@
     externalId: TurbineEfficiencyCurve
     space: power_ops_types
 - externalId: turbine_efficiency_curve:eb016103
-  instanceType: node
   sources:
   - properties:
       efficiency:

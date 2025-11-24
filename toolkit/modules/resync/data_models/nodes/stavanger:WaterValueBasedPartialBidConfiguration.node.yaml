@@ -1,5 +1,4 @@
 - externalId: water_value_based_partial_bid_configuration_plant_sola
-  instanceType: node
   sources:
   - properties:
       addSteps: false
@@ -18,7 +17,6 @@
     externalId: WaterValueBasedPartialBidConfiguration
     space: power_ops_types
 - externalId: water_value_based_partial_bid_configuration_plant_sola_step
-  instanceType: node
   sources:
   - properties:
       addSteps: true

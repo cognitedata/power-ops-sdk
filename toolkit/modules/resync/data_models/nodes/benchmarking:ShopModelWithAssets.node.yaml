@@ -1,5 +1,4 @@
 - externalId: shop_model_with_assets:fornebu
-  instanceType: node
   sources:
   - properties:
       shopCommands:
@@ -18,7 +17,6 @@
     externalId: ShopModelWithAssets
     space: power_ops_types
 - externalId: shop_model_with_assets:stavanger
-  instanceType: node
   sources:
   - properties:
       shopCommands:

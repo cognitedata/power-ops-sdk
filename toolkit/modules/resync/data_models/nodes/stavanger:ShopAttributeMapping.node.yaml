@@ -1,5 +1,4 @@
 - externalId: base_mapping_stavanger_reservoir_dale_inflow
-  instanceType: node
   sources:
   - properties:
       aggregation: MEAN

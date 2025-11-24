@@ -1,5 +1,4 @@
 - externalId: date_specification_default_biddate
-  instanceType: node
   sources:
   - properties:
       floorFrame: hour
@@ -18,7 +17,6 @@
     externalId: DateSpecification
     space: power_ops_types
 - externalId: date_specification_default_end
-  instanceType: node
   sources:
   - properties:
       floorFrame: week
@@ -38,7 +36,6 @@
     externalId: DateSpecification
     space: power_ops_types
 - externalId: date_specification_default_start
-  instanceType: node
   sources:
   - properties:
       floorFrame: day
@@ -57,7 +54,6 @@
     externalId: DateSpecification
     space: power_ops_types
 - externalId: date_specification_end_of_next_week
-  instanceType: node
   sources:
   - properties:
       floorFrame: week
@@ -76,7 +72,6 @@
     externalId: DateSpecification
     space: power_ops_types
 - externalId: date_specification_shifted_biddate
-  instanceType: node
   sources:
   - properties:
       floorFrame: hour
@@ -95,7 +90,6 @@
     externalId: DateSpecification
     space: power_ops_types
 - externalId: date_specification_shifted_end
-  instanceType: node
   sources:
   - properties:
       floorFrame: week
@@ -115,7 +109,6 @@
     externalId: DateSpecification
     space: power_ops_types
 - externalId: date_specification_shifted_start
-  instanceType: node
   sources:
   - properties:
       floorFrame: day
@@ -134,7 +127,6 @@
     externalId: DateSpecification
     space: power_ops_types
 - externalId: date_specification_start_of_tomorrow
-  instanceType: node
   sources:
   - properties:
       floorFrame: day

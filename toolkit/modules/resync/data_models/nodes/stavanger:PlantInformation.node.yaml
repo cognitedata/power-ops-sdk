@@ -1,5 +1,4 @@
 - externalId: plant_information_sola
-  instanceType: node
   sources:
   - properties:
       assetType: plant

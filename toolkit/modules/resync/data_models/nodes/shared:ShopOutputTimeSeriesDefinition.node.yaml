@@ -1,5 +1,4 @@
 - externalId: shop_output_time_series_definition_market_price
-  instanceType: node
   sources:
   - properties:
       attributeName: sale_price
@@ -18,7 +17,6 @@
     externalId: ShopOutputTimeSeriesDefinition
     space: power_ops_types
 - externalId: shop_output_time_series_definition_market_sale
-  instanceType: node
   sources:
   - properties:
       attributeName: sale
@@ -37,7 +35,6 @@
     externalId: ShopOutputTimeSeriesDefinition
     space: power_ops_types
 - externalId: shop_output_time_series_definition_plant_consumption
-  instanceType: node
   sources:
   - properties:
       attributeName: consumption
@@ -56,7 +53,6 @@
     externalId: ShopOutputTimeSeriesDefinition
     space: power_ops_types
 - externalId: shop_output_time_series_definition_plant_production
-  instanceType: node
   sources:
   - properties:
       attributeName: production
@@ -75,7 +71,6 @@
     externalId: ShopOutputTimeSeriesDefinition
     space: power_ops_types
 - externalId: shop_output_time_series_definition_reservoir_energy_conversion_factor
-  instanceType: node
   sources:
   - properties:
       attributeName: energy_conversion_factor
@@ -94,7 +89,6 @@
     externalId: ShopOutputTimeSeriesDefinition
     space: power_ops_types
 - externalId: shop_output_time_series_definition_reservoir_water_value
-  instanceType: node
   sources:
   - properties:
       attributeName: water_value_global_result
