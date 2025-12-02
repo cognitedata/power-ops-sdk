@@ -15,6 +15,10 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [1.1.4] - 2025-11-25
+### Fixed
+* Fixed warning from checking existence of cognite filter.
+
 ## [1.1.3] - 2025-11-13
 ### Fixed
 * Bumped `cognite-toolkit` version to 0.6.70.
