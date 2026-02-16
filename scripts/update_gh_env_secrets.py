@@ -5,6 +5,9 @@ This script will update all the required secrets for the given CDF project based
 in the provided dotenv file. Ensure all the below environment variables are set in the dotenv file before running and
 you have the required dependencies installed and authenticated.
 
+In addition to the project-specific environment, the script can also update secrets for the independent CI and CD
+GitHub environments. Use the --ci and/or --cd flags to include them.
+
 DEPENDENCIES:
     - GitHub CLI (gh): https://cli.github.com/
     - Run  `gh auth login` to authenticate with your GitHub account.
@@ -17,14 +20,20 @@ EXAMPLE DOTENV FILE (.sandbox.env):
     WF_TRIGGER_SECRET=xxx
     TENANT_ID=xxx
     TOOLKIT_ENV=sandbox # The value ENV value that toolkit expects, see `CONTRIBUTING.md` for examples
+    CODECOV_TOKEN=xxx       # Required for --ci and --cd
+    PYPI_API_TOKEN=xxx      # Required for --cd
 
 EXAMPLE USAGE:
     python3 scripts/update_gh_env_secrets.py .sandbox.env
+    python3 scripts/update_gh_env_secrets.py .sandbox.env --ci --cd
+    python3 scripts/update_gh_env_secrets.py .sandbox.env --ci
+    python3 scripts/update_gh_env_secrets.py .sandbox.env --cd
 
 If no path to an env file is provided, the script will use the default .env file in the current directory.
 
 """
 
+import argparse
 import os
 import sys
 import dotenv
@@ -35,6 +44,7 @@ import base64
 
 REPO_NAME = "cognitedata/power-ops-sdk"
 
+# --- Project environment secrets (keyed by PROJECT env var) ---
 # List of required environment variables with its corresponding GitHub secret name
 REQUIRED_ENVS = {
     "PROJECT": None,
@@ -47,6 +57,21 @@ REQUIRED_ENVS = {
 
 OPTIONAL_ENVS = {
     # Read write only -- Optional, so far only used for power-ops-sandbox and power-ops-staging
+    "WF_TRIGGER_SECRET": "WF_TRIGGER_SECRET",
+}
+
+# --- CI / CD environment secrets (independent from project environments) ---
+CI_ENV_NAME = "CI"
+CI_SECRETS = {
+    "CLIENT_SECRET": "CLIENT_SECRET",
+    "CODECOV_TOKEN": "CODECOV_TOKEN",
+}
+
+CD_ENV_NAME = "CD"
+CD_SECRETS = {
+    "CLIENT_SECRET": "CLIENT_SECRET",
+    "CODECOV_TOKEN": "CODECOV_TOKEN",
+    "PYPI_API_TOKEN": "PYPI_API_TOKEN",
     "WF_TRIGGER_SECRET": "WF_TRIGGER_SECRET",
 }
 
@@ -89,33 +114,65 @@ def check_missing_vars():
         exit(1)
 
 
-def set_all_github_secrets_from_name_mapping(cdf_project):
-    for env, gh_secret in REQUIRED_ENVS.items():
+def set_all_github_secrets_from_name_mapping(env_name, required=None, optional=None):
+    for env, gh_secret in (required or {}).items():
         value = os.getenv(env)
         if gh_secret is not None:
-            set_github_secret(cdf_project, gh_secret, value)
+            set_github_secret(env_name, gh_secret, value)
 
-    for env, gh_secret in OPTIONAL_ENVS.items():
+    for env, gh_secret in (optional or {}).items():
         value = os.getenv(env)
         if value is not None and gh_secret is not None:
-            set_github_secret(cdf_project, gh_secret, value)
+            set_github_secret(env_name, gh_secret, value)
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Update GitHub environment secrets for power-ops-sdk."
+    )
+    parser.add_argument(
+        "env_file",
+        nargs="?",
+        default=".env",
+        help="Path to the dotenv file (default: .env)",
+    )
+    parser.add_argument(
+        "--ci",
+        action="store_true",
+        help="Also update secrets for the CI environment",
+    )
+    parser.add_argument(
+        "--cd",
+        action="store_true",
+        help="Also update secrets for the CD environment",
+    )
+    return parser.parse_args()
 
 
 if __name__ == "__main__":
-    # Check if a custom env file path is provided
-    env_file_path = ".env"
-    if len(sys.argv) == 2:
-        env_file_path = sys.argv[1]
+    args = parse_args()
 
-    print(f"Using env file: {env_file_path}")
-
+    print(f"Using env file: {args.env_file}")
     print()
+
     # Load environment variables from the specified .env file and check for missing variables
-    dotenv.load_dotenv(env_file_path)
+    dotenv.load_dotenv(args.env_file)
     check_missing_vars()
 
-    # Set GitHub secrets
+    # Set project-specific GitHub secrets
     cdf_project = os.getenv("PROJECT")
-    print(f"Setting GitHub secrets in env {cdf_project}...")
-    set_all_github_secrets_from_name_mapping(cdf_project)
+    print(f"Setting GitHub secrets in env '{cdf_project}'...")
+    set_all_github_secrets_from_name_mapping(cdf_project, required=REQUIRED_ENVS, optional=OPTIONAL_ENVS)
     print()
+
+    # Set CI environment secrets
+    if args.ci:
+        print(f"Setting GitHub secrets in env '{CI_ENV_NAME}'...")
+        set_all_github_secrets_from_name_mapping(CI_ENV_NAME, required=CI_SECRETS)
+        print()
+
+    # Set CD environment secrets
+    if args.cd:
+        print(f"Setting GitHub secrets in env '{CD_ENV_NAME}'...")
+        set_all_github_secrets_from_name_mapping(CD_ENV_NAME, required=CD_SECRETS)
+        print()
