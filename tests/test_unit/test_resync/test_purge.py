@@ -1,11 +1,15 @@
 from __future__ import annotations
 
+import importlib
 from pathlib import Path
 from unittest.mock import patch
 
 import pytest
 
-from cognite.powerops.resync.purge import ResyncPurge
+# Import the module object directly to avoid name collision with the `purge` function
+# exported from cognite.powerops.resync.__init__
+purge_module = importlib.import_module("cognite.powerops.resync.purge")
+ResyncPurge = purge_module.ResyncPurge
 
 
 def _rglob_factory(yaml_files: list[Path], yml_files: list[Path] | None = None):
@@ -16,9 +20,7 @@ def _rglob_factory(yaml_files: list[Path], yml_files: list[Path] | None = None):
     def _rglob(pattern):
         if pattern == "*.yaml":
             return yaml_files
-        if pattern == "*.yml":
-            return yml_files
-        return []
+        return yml_files
 
     return _rglob
 
@@ -45,7 +47,7 @@ def purge_instance(cognite_client_mock):
 class TestGetToolkitExternalIds:
     """Tests for the get_toolkit_external_ids method, focusing on instance type resolution."""
 
-    @patch("cognite.powerops.resync.purge.load_yaml")
+    @patch.object(purge_module, "load_yaml")
     def test_node_from_instance_type_field(self, mock_load_yaml, purge_instance):
         """When instanceType is present in the YAML, it should be used regardless of filename."""
         mock_load_yaml.return_value = [
@@ -63,7 +65,7 @@ class TestGetToolkitExternalIds:
         assert nodes == {"MyNodeType": [("sp", "node_1")]}
         assert edges == {}
 
-    @patch("cognite.powerops.resync.purge.load_yaml")
+    @patch.object(purge_module, "load_yaml")
     def test_edge_from_instance_type_field(self, mock_load_yaml, purge_instance):
         """When instanceType is present in the YAML, it should be used regardless of filename."""
         mock_load_yaml.return_value = [
@@ -81,7 +83,7 @@ class TestGetToolkitExternalIds:
         assert nodes == {}
         assert edges == {"MyEdgeType": [("sp", "edge_1")]}
 
-    @patch("cognite.powerops.resync.purge.load_yaml")
+    @patch.object(purge_module, "load_yaml")
     def test_node_inferred_from_filename(self, mock_load_yaml, purge_instance):
         """When instanceType is missing, instance type should be inferred from .node in filename."""
         mock_load_yaml.return_value = [
@@ -98,7 +100,7 @@ class TestGetToolkitExternalIds:
         assert nodes == {"Generator": [("sp", "node_1")]}
         assert edges == {}
 
-    @patch("cognite.powerops.resync.purge.load_yaml")
+    @patch.object(purge_module, "load_yaml")
     def test_edge_inferred_from_filename(self, mock_load_yaml, purge_instance):
         """When instanceType is missing, instance type should be inferred from .edge in filename."""
         mock_load_yaml.return_value = [
@@ -115,7 +117,7 @@ class TestGetToolkitExternalIds:
         assert nodes == {}
         assert edges == {"BelongsTo": [("sp", "edge_1")]}
 
-    @patch("cognite.powerops.resync.purge.load_yaml")
+    @patch.object(purge_module, "load_yaml")
     def test_instance_type_field_takes_precedence_over_filename(self, mock_load_yaml, purge_instance):
         """instanceType in YAML should take precedence over file-name inference."""
         mock_load_yaml.return_value = [
@@ -134,7 +136,7 @@ class TestGetToolkitExternalIds:
         assert nodes == {"SomeType": [("sp", "node_1")]}
         assert edges == {}
 
-    @patch("cognite.powerops.resync.purge.load_yaml")
+    @patch.object(purge_module, "load_yaml")
     def test_instance_without_type_or_filename_hint_is_skipped(self, mock_load_yaml, purge_instance):
         """Instances with no instanceType and no filename hint should be skipped."""
         mock_load_yaml.return_value = [
@@ -151,7 +153,7 @@ class TestGetToolkitExternalIds:
         assert nodes == {}
         assert edges == {}
 
-    @patch("cognite.powerops.resync.purge.load_yaml")
+    @patch.object(purge_module, "load_yaml")
     def test_node_without_type_field_is_skipped(self, mock_load_yaml, purge_instance):
         """A node instance missing the 'type' key should not be added to results."""
         mock_load_yaml.return_value = [
@@ -168,7 +170,7 @@ class TestGetToolkitExternalIds:
         assert nodes == {}
         assert edges == {}
 
-    @patch("cognite.powerops.resync.purge.load_yaml")
+    @patch.object(purge_module, "load_yaml")
     def test_edge_without_type_field_is_skipped(self, mock_load_yaml, purge_instance):
         """An edge instance missing the 'type' key should not be added to results."""
         mock_load_yaml.return_value = [
@@ -185,7 +187,7 @@ class TestGetToolkitExternalIds:
         assert nodes == {}
         assert edges == {}
 
-    @patch("cognite.powerops.resync.purge.load_yaml")
+    @patch.object(purge_module, "load_yaml")
     def test_multiple_instances_grouped_by_type(self, mock_load_yaml, purge_instance):
         """Multiple instances of the same type should be grouped together."""
         mock_load_yaml.return_value = [
@@ -215,7 +217,7 @@ class TestGetToolkitExternalIds:
         assert nodes == {"Generator": [("sp", "node_1"), ("sp", "node_2")]}
         assert edges == {"BelongsTo": [("sp", "edge_1")]}
 
-    @patch("cognite.powerops.resync.purge.load_yaml")
+    @patch.object(purge_module, "load_yaml")
     def test_multiple_directories(self, mock_load_yaml, purge_instance):
         """Instances from multiple toolkit directories should be merged."""
         purge_instance.toolkit_directory = [Path("/fake/toolkit_a"), Path("/fake/toolkit_b")]
@@ -250,7 +252,7 @@ class TestGetToolkitExternalIds:
 
         assert nodes == {"Plant": [("sp", "node_a"), ("sp", "node_b")]}
 
-    @patch("cognite.powerops.resync.purge.load_yaml")
+    @patch.object(purge_module, "load_yaml")
     def test_yml_extension_is_also_loaded(self, mock_load_yaml, purge_instance):
         """Both .yaml and .yml files should be discovered and loaded."""
         mock_load_yaml.return_value = [

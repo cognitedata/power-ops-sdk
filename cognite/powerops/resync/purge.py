@@ -131,7 +131,7 @@ class ResyncPurge:
             yaml_files = list(toolkit_directory.rglob("*.yaml")) + list(toolkit_directory.rglob("*.yml"))
             for file in yaml_files:
                 instances = load_yaml(file, expected_return_type="list")
-                
+
                 # Determine instance type from file extension or YAML content
                 file_name = file.name.lower()
                 if ".node" in file_name:
@@ -140,11 +140,9 @@ class ResyncPurge:
                     file_instance_type = "edge"
                 else:
                     file_instance_type = None
-                    
+
                 for instance in instances:
                     if instance_type := instance.get("instanceType") or file_instance_type:
-                        if not instance_type:
-                            raise ValueError(f"Instance type is required in the instance {instance}")
                         external_id: tuple[str, str] = (instance["space"], instance["externalId"])
                         if instance_type == "node":
                             node_type = instance.get("type")
