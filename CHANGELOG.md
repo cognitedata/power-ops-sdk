@@ -15,6 +15,10 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [1.1.5] - 2026-02-17
+### Fixed
+* Fixed resync purge to infer instance type from filename (`.node` / `.edge`) when `instanceType` is not present in YAML content.
+
 ## [1.1.4] - 2025-11-25
 ### Fixed
 * Fixed warning from checking existence of cognite filter.
