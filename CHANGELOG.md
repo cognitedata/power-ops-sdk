@@ -15,6 +15,17 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [1.1.6] - 2026-02-17
+### Added
+* Added repository-managed documentation configuration with `.readthedocs.yaml`, `mkdocs.yml`, and `docs/` pages to make hosted docs builds reproducible from the repository.
+* Added a Tutorials section in MkDocs, including an `Advanced Cogshop Run` walkthrough based on `tutorials/advanced_cogshop_run.ipynb`.
+
+### Changed
+* Expanded `Setup` and `Resync` docs pages to include in-site content instead of link-only placeholders.
+* Improved tutorial documentation with explicit cleanup steps and hyperlink formatting for external URLs.
+* Updated README release badge workflow link and converted selected documentation references to absolute URLs for better rendering on external platforms.
+* Added `project.urls` metadata in `pyproject.toml` to improve published package links on PyPI.
+
 ## [1.1.5] - 2026-02-17
 ### Fixed
 * Fixed resync purge to infer instance type from filename (`.node` / `.edge`) when `instanceType` is not present in YAML content.
