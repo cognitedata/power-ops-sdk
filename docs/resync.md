@@ -2,18 +2,18 @@
 
 Resource Sync (`resync`) synchronizes PowerOps configuration files with CDF through the `powerops` CLI.
 
-`resync` generates toolkit files that can be used for detailed diffs before deployment.  
+`resync` generates toolkit files that can be used for detailed diffs before deployment.
 Since toolkit does not automatically identify stale objects for deletion, `resync purge` can delete nodes and edges not defined in generated toolkit files.
 
 ## Configuration Files
 
 `resync` uses three main configuration layers:
 
-1. **Resync configuration**  
+1. **Resync configuration**
    General settings (for example, working directory, model versions, spaces).
-2. **Data model configuration (optional)**  
+2. **Data model configuration (optional)**
    Type-level extraction rules shared by groups of instances.
-3. **Data model population files**  
+3. **Data model population files**
    Instance-level values and references.
 
 Commonly used object types include:
