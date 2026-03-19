@@ -66,3 +66,8 @@ demo/*
 .venv.*
 build.*
 *.dat
+.cursor/
+.venv-docs/
+.venv-doccheck/
+site/
+

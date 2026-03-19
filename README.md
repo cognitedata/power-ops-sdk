@@ -1,6 +1,6 @@
 # Welcome to PowerOps SDK
 
-[![release](https://img.shields.io/github/actions/workflow/status/cognitedata/power-ops-sdk/release.yml?style=for-the-badge)](https://github.com/cognitedata/power-ops/actions/workflows/release.yml)
+[![release](https://img.shields.io/github/actions/workflow/status/cognitedata/power-ops-sdk/sdk-release.yml?style=for-the-badge)](https://github.com/cognitedata/power-ops-sdk/actions/workflows/sdk-release.yml)
 [![Documentation Status](https://readthedocs.com/projects/cognite-power-ops-sdk/badge/?version=latest&style=for-the-badge)](https://cognite-power-ops-sdk.readthedocs-hosted.com/en/latest/?badge=latest)
 [![Github](https://shields.io/badge/github-cognite/power_ops_sdk-green?logo=github&style=for-the-badge)](https://github.com/cognitedata/power-ops-sdk)
 [![PyPI](https://img.shields.io/pypi/v/cognite-power-ops?style=for-the-badge)](https://pypi.org/project/cognite-power-ops/)
@@ -12,7 +12,7 @@
 
 ## What is it?
 
-The PowerOps SDK is a domain-specific SDK for interacting with Cognite Data Fusion (CDF) for the power operations' domain. Requires PowerOps to be deployed and configured for CDF project before using, see [project setup instructions](./SETUP.md) for more details.
+The PowerOps SDK is a domain-specific SDK for interacting with Cognite Data Fusion (CDF) for the power operations' domain. Requires PowerOps to be deployed and configured for CDF project before using, see [project setup instructions](https://github.com/cognitedata/power-ops-sdk/blob/main/SETUP.md) for more details.
 
 ## Main Features
 
@@ -31,7 +31,7 @@ Configuration of the `PowerOpsClient` and `resync` is done through a yaml file a
 
 ### YAML configuration
 
-The configuration is in `.yaml` format and the path to the configuration file must be explicitly provided. Refer to the [example config file](power_ops_config.yaml) for the most up to date example of required fields.
+The configuration is in `.yaml` format and the path to the configuration file must be explicitly provided. Refer to the [example config file](https://github.com/cognitedata/power-ops-sdk/blob/main/power_ops_config.yaml) for the most up to date example of required fields.
 
 Secrets should not be written directly in this configuration file as the file is intended to be committed to git. Instead use the following syntax to refer to an environment variable as a value.
 
@@ -46,7 +46,7 @@ If you are using a `.env` file etc. then you must handle loading the proper envi
 
 ### Run Resync
 
-Refer to the [resync documentation](RESYNC.md).
+Refer to the [resync documentation](https://github.com/cognitedata/power-ops-sdk/blob/main/RESYNC.md).
 
 ### PowerOpsClient
 
