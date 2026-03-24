@@ -1,0 +1,18 @@
+site_name: PowerOpsSDK
+site_description: PowerOps SDK documentation
+site_url: https://cognite-power-ops-sdk.readthedocs-hosted.com/
+repo_url: https://github.com/cognitedata/power-ops-sdk
+repo_name: cognitedata/power-ops-sdk
+
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Quickstart: quickstart.md
+  - Setup: setup.md
+  - Resync: resync.md
+  - Tutorials:
+      - Overview: tutorials/index.md
+      - Advanced Cogshop Run: tutorials/advanced_cogshop_run.md
