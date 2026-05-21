@@ -23,22 +23,21 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      # The installation is required as mypy must be run in the local system environment, not in the pre-commit environment.
       - name: Install required dependencies
         run: |
           python3 -m pip install --upgrade pip poetry
-          poetry config virtualenvs.create false
           poetry install
 
       - name: Linting and static code checks
         run: |
-          pre-commit run --all-files
+          poetry run pre-commit run --all-files
 
   tests:
     runs-on: ubuntu-latest
     environment: CI
     strategy:
       fail-fast: false
+      max-parallel: 1
       matrix:
         python-version:
           - "3.10"
@@ -53,16 +52,16 @@ jobs:
       - name: Install core dependencies
         run: |
           python3 -m pip install --upgrade pip poetry
-          poetry config virtualenvs.create false
           poetry install
 
       - name: Test
-        run: pytest --cov --cov-report term --cov-report xml:coverage.xml
+        run: poetry run pytest --cov --cov-report term --cov-report xml:coverage.xml
 
       - uses: codecov/codecov-action@18283e04ce6e62d37312384ff67231eb8fd56d24 # v5
-        if: matrix.python-version == ${{ env.PYTHON_VERSION }}
+        if: ${{ matrix.python-version == env.PYTHON_VERSION }}
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Build package
         run: poetry build
+
