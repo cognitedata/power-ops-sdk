@@ -43,9 +43,9 @@ jobs:
       - name: Install SSH client and git
         run: |
           apt-get update -qq && apt-get install -y -qq openssh-client git
-          mkdir -p ~/.ssh
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          chmod 700 ~/.ssh && chmod 600 ~/.ssh/known_hosts
+          mkdir -p /root/.ssh
+          ssh-keyscan github.com >> /root/.ssh/known_hosts
+          chmod 700 /root/.ssh && chmod 600 /root/.ssh/known_hosts
 
       - name: Add SSH key
         uses: webfactory/ssh-agent@v0.9.0
