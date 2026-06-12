@@ -2,6 +2,24 @@
 
 This page summarizes how to set up a new PowerOps project.
 
+## Repository Setup
+
+This repository uses a private Git submodule for the toolkit ([cognitedata/power-ops-sdk-toolkit](https://github.com/cognitedata/power-ops-sdk-toolkit)). After cloning, initialise it with:
+
+```bash
+git submodule update --init --recursive
+```
+
+Or clone with submodules in one step:
+
+```bash
+# SSH
+git clone --recurse-submodules git@github.com:cognitedata/power-ops-sdk.git
+
+# HTTPS
+git clone --recurse-submodules https://github.com/cognitedata/power-ops-sdk.git
+```
+
 ## Initial CDF Setup
 
 1. Create and configure a CDF project.
