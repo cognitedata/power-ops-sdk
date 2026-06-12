@@ -1,3 +1,0 @@
-[submodule "toolkit"]
-	path = toolkit
-	url = git@github.com:cognitedata/power-ops-sdk-toolkit.git
