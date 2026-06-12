@@ -100,8 +100,8 @@ jobs:
         TOOLKIT_ENV: ${{ secrets.TOOLKIT_ENV }}
 
     steps:
-      - name: Install SSH client
-        run: apt-get update -qq && apt-get install -y -qq openssh-client
+      - name: Install SSH client and git
+        run: apt-get update -qq && apt-get install -y -qq openssh-client git
 
       - name: Add SSH key
         uses: webfactory/ssh-agent@v0.9.0

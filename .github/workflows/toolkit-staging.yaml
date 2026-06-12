@@ -40,8 +40,8 @@ jobs:
         WF_TRIGGER_SECRET: ${{ secrets.WF_TRIGGER_SECRET }}
         TOOLKIT_ENV: ${{ secrets.TOOLKIT_ENV}}
     steps:
-      - name: Install SSH client
-        run: apt-get update -qq && apt-get install -y -qq openssh-client
+      - name: Install SSH client and git
+        run: apt-get update -qq && apt-get install -y -qq openssh-client git
 
       - name: Add SSH key
         uses: webfactory/ssh-agent@v0.9.0
@@ -88,7 +88,6 @@ jobs:
       - name: Install dependencies
         run: |
           python3 -m pip install --upgrade pip poetry==2.*
-          poetry config virtualenvs.create false
           poetry install
       - name: Run resync purge
         env:
@@ -99,4 +98,4 @@ jobs:
           TENANT_ID: ${{ secrets.TENANT_ID }}
         run: |
           echo Running resync purge in CDF environment $PROJECT
-          powerops purge $CLIENT_CONFIG_FILE $CONFIGURATION_FILE
+          poetry run powerops purge $CLIENT_CONFIG_FILE $CONFIGURATION_FILE
