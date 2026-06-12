@@ -46,6 +46,9 @@ jobs:
       build-status: ${{ steps.build.outcome }}
       deploy-status: ${{ steps.deploy.outcome }}
     steps:
+      - name: Install SSH client
+        run: apt-get update -qq && apt-get install -y -qq openssh-client
+
       - name: Add SSH key
         uses: webfactory/ssh-agent@v0.9.0
         with:
