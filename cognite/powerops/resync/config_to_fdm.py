@@ -88,6 +88,7 @@ class ResyncImporter:
 
         self.working_directory = working_directory
         self.toolkit_directory = toolkit_directory
+        self.toolkit_directory.mkdir(parents=True, exist_ok=True)
         self.folders_to_process = [p for p in self.working_directory.iterdir() if p.is_dir()]
 
         self.data_model_configuration = data_model_configuration or {}
