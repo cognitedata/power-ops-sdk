@@ -25,6 +25,12 @@ The PowerOps SDK is a domain-specific SDK for interacting with Cognite Data Fusi
 pip install cognite-power-ops
 ```
 
+> **Note:** This repository includes a private Git submodule for the toolkit ([cognitedata/power-ops-sdk-toolkit](https://github.com/cognitedata/power-ops-sdk-toolkit)). After cloning, run:
+> ```bash
+> git submodule update --init --recursive
+> ```
+> Or clone with submodules directly using SSH (`git@github.com:cognitedata/power-ops-sdk.git`) or HTTPS (`https://github.com/cognitedata/power-ops-sdk.git`) with the `--recurse-submodules` flag.
+
 ## Configuration
 
 Configuration of the `PowerOpsClient` and `resync` is done through a yaml file and environment variables.

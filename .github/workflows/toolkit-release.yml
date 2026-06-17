@@ -100,7 +100,27 @@ jobs:
         TOOLKIT_ENV: ${{ secrets.TOOLKIT_ENV }}
 
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Install SSH client and git
+        run: |
+          apt-get update -qq && apt-get install -y -qq openssh-client git
+          mkdir -p /root/.ssh
+          ssh-keyscan github.com >> /root/.ssh/known_hosts
+          chmod 700 /root/.ssh && chmod 600 /root/.ssh/known_hosts
+          git config --global --add safe.directory '*'
+
+      - name: Add SSH key
+        uses: webfactory/ssh-agent@dc588b651fe13675774614f8e6a936a468676387 #v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SUBMODULE_DEPLOY_KEY }}
+
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          submodules: 'true'
+
+      - name: Force submodule to latest remote commit
+        run: git submodule update --remote --recursive
+
       - name: Build modules
         run: cdf build --env $TOOLKIT_ENV --build-dir cdf-tk-build
       - name: Deploy modules
