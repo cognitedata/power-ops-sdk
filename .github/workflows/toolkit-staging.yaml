@@ -49,7 +49,7 @@ jobs:
           git config --global --add safe.directory '*'
 
       - name: Add SSH key
-        uses: webfactory/ssh-agent@v0.9.0
+        uses: webfactory/ssh-agent@dc588b651fe13675774614f8e6a936a468676387 #v0.9.0
         with:
           ssh-private-key: ${{ secrets.SUBMODULE_DEPLOY_KEY }}
 
@@ -74,7 +74,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Add SSH key
-        uses: webfactory/ssh-agent@v0.9.0
+        uses: webfactory/ssh-agent@dc588b651fe13675774614f8e6a936a468676387 #v0.9.0
         with:
           ssh-private-key: ${{ secrets.SUBMODULE_DEPLOY_KEY }}
 

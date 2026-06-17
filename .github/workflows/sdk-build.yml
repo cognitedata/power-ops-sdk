@@ -18,7 +18,7 @@ jobs:
     environment: CI
     steps:
       - name: Add SSH key
-        uses: webfactory/ssh-agent@v0.9.0
+        uses: webfactory/ssh-agent@dc588b651fe13675774614f8e6a936a468676387 #v0.9.0
         with:
           ssh-private-key: ${{ secrets.SUBMODULE_DEPLOY_KEY }}
 
@@ -57,7 +57,7 @@ jobs:
           - "3.12"
     steps:
       - name: Add SSH key
-        uses: webfactory/ssh-agent@v0.9.0
+        uses: webfactory/ssh-agent@dc588b651fe13675774614f8e6a936a468676387 #v0.9.0
         with:
           ssh-private-key: ${{ secrets.SUBMODULE_DEPLOY_KEY }}
 
