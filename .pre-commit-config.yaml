@@ -33,7 +33,7 @@ repos:
       - id: name-tests-test
         args:
           - --pytest-test-first
-        exclude: "constants.py"
+        exclude: "constants.py|mock_powerops.py"
       - id: trailing-whitespace
       - id: no-commit-to-branch
 
