@@ -42,7 +42,7 @@ import json
 import base64
 
 
-REPO_NAME = "cognitedata/power-ops-sdk"
+REPO_NAME = "cognitedata/power-ops-sdk-toolkit"
 
 # --- Project environment secrets (keyed by PROJECT env var) ---
 # List of required environment variables with its corresponding GitHub secret name
