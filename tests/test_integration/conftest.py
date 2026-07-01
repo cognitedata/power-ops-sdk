@@ -1,12 +1,12 @@
 import uuid
-
-import pytest
 from unittest.mock import MagicMock
 
-from cognite.pygen.utils.external_id_factories import ExternalIdFactory
+import pytest
+
 from cognite.powerops.client._generated.data_classes._core import DomainModelWrite
-from cognite.powerops.client.powerops_client import PowerOpsClient, _MAX_DOMAIN_LENGTH
+from cognite.powerops.client.powerops_client import _MAX_DOMAIN_LENGTH, PowerOpsClient
 from cognite.powerops.client.shop.cogshop_api import CogShopAPI
+from cognite.pygen.utils.external_id_factories import ExternalIdFactory
 from tests.mock_powerops import MockPowerOpsModelsClient
 
 

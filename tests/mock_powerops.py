@@ -56,11 +56,7 @@ def _write_to_read(write_obj: DomainModelWrite, store: dict, retrieve_connection
             else:
                 items = value if isinstance(value, list) else [value]
                 if retrieve_connections == "identifier":
-                    ids = [
-                        v.external_id if isinstance(v, DomainModelWrite) else str(v)
-                        for v in items
-                        if v is not None
-                    ]
+                    ids = [v.external_id if isinstance(v, DomainModelWrite) else str(v) for v in items if v is not None]
                     kwargs[field_name] = ids if ids else None
                 else:  # full
                     resolved = []
@@ -72,9 +68,7 @@ def _write_to_read(write_obj: DomainModelWrite, store: dict, retrieve_connection
                             resolved.append(read if read is not None else v.external_id)
                         elif isinstance(v, str):
                             stored = store.get(v)
-                            resolved.append(
-                                _write_to_read(stored, store, retrieve_connections) if stored else v
-                            )
+                            resolved.append(_write_to_read(stored, store, retrieve_connections) if stored else v)
                         else:
                             resolved.append(v)
                     kwargs[field_name] = resolved if resolved else None
@@ -88,9 +82,7 @@ def _write_to_read(write_obj: DomainModelWrite, store: dict, retrieve_connection
                     kwargs[field_name] = read if read is not None else value.external_id
                 elif isinstance(value, str):
                     stored = store.get(value)
-                    kwargs[field_name] = (
-                        _write_to_read(stored, store, retrieve_connections) if stored else value
-                    )
+                    kwargs[field_name] = _write_to_read(stored, store, retrieve_connections) if stored else value
                 else:
                     kwargs[field_name] = value
             else:  # skip or identifier: return external_id string
