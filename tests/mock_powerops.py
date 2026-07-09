@@ -10,7 +10,9 @@ from cognite.powerops.client._generated.data_classes._core import (
     DEFAULT_INSTANCE_SPACE,
     DataRecord,
     DataRecordGraphQL,
+    DomainModel,
     DomainModelWrite,
+    GraphQLCore,
     GraphQLList,
 )
 
@@ -25,7 +27,28 @@ def _make_data_record_graphql() -> DataRecordGraphQL:
     return DataRecordGraphQL(last_updated_time=_FIXED_TS, created_time=_FIXED_TS)
 
 
-def _write_to_read(write_obj: DomainModelWrite, store: dict, retrieve_connections: str = "full"):
+def _resolve_read_ref(value: Any, store: dict, retrieve_connections: str) -> Any:
+    """Resolve a single reference to its Read form: a nested write object, a store lookup key, or a passthrough."""
+    if isinstance(value, DomainModelWrite):
+        read = _write_to_read(value, store, retrieve_connections)
+        return read if read is not None else value.external_id
+    if isinstance(value, str):
+        stored = store.get(value)
+        return _write_to_read(stored, store, retrieve_connections) if stored else value
+    return value
+
+
+def _resolve_graphql_ref(value: Any, store: dict) -> Any:
+    """Resolve a single reference to its GraphQL form: a nested write object, a store lookup key, or a passthrough."""
+    if isinstance(value, DomainModelWrite):
+        return _write_to_graphql(value, store)
+    if isinstance(value, str):
+        stored = store.get(value)
+        return _write_to_graphql(stored, store) if stored else None
+    return value
+
+
+def _write_to_read(write_obj: DomainModelWrite, store: dict, retrieve_connections: str = "full") -> DomainModel | None:
     """Convert a DomainModelWrite object to its corresponding Read object."""
     write_class = type(write_obj)
     read_class_name = write_class.__name__.removesuffix("Write")
@@ -59,32 +82,14 @@ def _write_to_read(write_obj: DomainModelWrite, store: dict, retrieve_connection
                     ids = [v.external_id if isinstance(v, DomainModelWrite) else str(v) for v in items if v is not None]
                     kwargs[field_name] = ids if ids else None
                 else:  # full
-                    resolved = []
-                    for v in items:
-                        if v is None:
-                            continue
-                        if isinstance(v, DomainModelWrite):
-                            read = _write_to_read(v, store, retrieve_connections)
-                            resolved.append(read if read is not None else v.external_id)
-                        elif isinstance(v, str):
-                            stored = store.get(v)
-                            resolved.append(_write_to_read(stored, store, retrieve_connections) if stored else v)
-                        else:
-                            resolved.append(v)
+                    resolved = [_resolve_read_ref(v, store, retrieve_connections) for v in items if v is not None]
                     kwargs[field_name] = resolved if resolved else None
 
         elif field_name in direct_relation_fields:
             if value is None:
                 kwargs[field_name] = None
             elif retrieve_connections == "full":
-                if isinstance(value, DomainModelWrite):
-                    read = _write_to_read(value, store, retrieve_connections)
-                    kwargs[field_name] = read if read is not None else value.external_id
-                elif isinstance(value, str):
-                    stored = store.get(value)
-                    kwargs[field_name] = _write_to_read(stored, store, retrieve_connections) if stored else value
-                else:
-                    kwargs[field_name] = value
+                kwargs[field_name] = _resolve_read_ref(value, store, retrieve_connections)
             else:  # skip or identifier: return external_id string
                 if isinstance(value, DomainModelWrite):
                     kwargs[field_name] = value.external_id
@@ -100,7 +105,7 @@ def _write_to_read(write_obj: DomainModelWrite, store: dict, retrieve_connection
         return None
 
 
-def _write_to_graphql(write_obj: DomainModelWrite, store: dict):
+def _write_to_graphql(write_obj: DomainModelWrite, store: dict) -> GraphQLCore | None:
     """Convert a DomainModelWrite object to its corresponding GraphQL object."""
     write_class = type(write_obj)
     graphql_class_name = write_class.__name__.removesuffix("Write") + "GraphQL"
@@ -128,31 +133,10 @@ def _write_to_graphql(write_obj: DomainModelWrite, store: dict):
                 kwargs[field_name] = None
             else:
                 items = value if isinstance(value, list) else [value]
-                resolved = []
-                for v in items:
-                    if v is None:
-                        continue
-                    if isinstance(v, DomainModelWrite):
-                        gql = _write_to_graphql(v, store)
-                        if gql is not None:
-                            resolved.append(gql)
-                    elif isinstance(v, str):
-                        stored = store.get(v)
-                        if stored:
-                            gql = _write_to_graphql(stored, store)
-                            if gql is not None:
-                                resolved.append(gql)
+                resolved = [ref for v in items if v is not None and (ref := _resolve_graphql_ref(v, store)) is not None]
                 kwargs[field_name] = resolved if resolved else None
         elif field_name in direct_relation_fields:
-            if value is None:
-                kwargs[field_name] = None
-            elif isinstance(value, DomainModelWrite):
-                kwargs[field_name] = _write_to_graphql(value, store)
-            elif isinstance(value, str):
-                stored = store.get(value)
-                kwargs[field_name] = _write_to_graphql(stored, store) if stored else None
-            else:
-                kwargs[field_name] = value
+            kwargs[field_name] = None if value is None else _resolve_graphql_ref(value, store)
         else:
             kwargs[field_name] = value
 
