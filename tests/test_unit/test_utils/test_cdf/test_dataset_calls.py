@@ -25,7 +25,9 @@ def mock_client() -> MagicMock:
         )
     ]
     client.cdf.data_sets.retrieve.side_effect = lambda external_id: (
-        DataSet(id=42, external_id=external_id) if external_id else None
+        DataSet(id=42, external_id=external_id, created_time=0, last_updated_time=0, write_protected=False)
+        if external_id
+        else None
     )
     return client
 
@@ -54,7 +56,9 @@ def mock_client_multiple_configs():
         ),
     ]
     client.cdf.data_sets.retrieve.side_effect = lambda external_id: (
-        DataSet(id=99, external_id=external_id) if external_id else None
+        DataSet(id=99, external_id=external_id, created_time=0, last_updated_time=0, write_protected=False)
+        if external_id
+        else None
     )
     return client
 

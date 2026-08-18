@@ -44,9 +44,7 @@ from cognite.powerops.client._generated.data_classes._core import (
     NodeQueryCore,
     StringFilter,
     ViewPropertyId,
-
 )
-
 
 __all__ = [
     "ShopAttributeMapping",
@@ -59,8 +57,19 @@ __all__ = [
 ]
 
 
-ShopAttributeMappingTextFields = Literal["external_id", "object_type", "object_name", "attribute_name", "time_series", "retrieve", "aggregation"]
-ShopAttributeMappingFields = Literal["external_id", "object_type", "object_name", "attribute_name", "time_series", "transformations", "retrieve", "aggregation"]
+ShopAttributeMappingTextFields = Literal[
+    "external_id", "object_type", "object_name", "attribute_name", "time_series", "retrieve", "aggregation"
+]
+ShopAttributeMappingFields = Literal[
+    "external_id",
+    "object_type",
+    "object_name",
+    "attribute_name",
+    "time_series",
+    "transformations",
+    "retrieve",
+    "aggregation",
+]
 
 _SHOPATTRIBUTEMAPPING_PROPERTIES_BY_FIELD = {
     "external_id": "externalId",
@@ -113,8 +122,6 @@ class ShopAttributeMappingGraphQL(GraphQLCore):
             )
         return values
 
-
-
     def as_read(self) -> ShopAttributeMapping:
         """Convert this GraphQL format of shop attribute mapping to the reading format."""
         return ShopAttributeMapping.model_validate(as_read_args(self))
@@ -145,7 +152,9 @@ class ShopAttributeMapping(DomainModel):
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopAttributeMapping", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power_ops_types", "ShopAttributeMapping")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
+        "power_ops_types", "ShopAttributeMapping"
+    )
     object_type: str = Field(alias="objectType")
     object_name: str = Field(alias="objectName")
     attribute_name: str = Field(alias="attributeName")
@@ -154,11 +163,9 @@ class ShopAttributeMapping(DomainModel):
     retrieve: Optional[str] = None
     aggregation: Optional[str] = None
 
-
     def as_write(self) -> ShopAttributeMappingWrite:
         """Convert this read version of shop attribute mapping to the writing version."""
         return ShopAttributeMappingWrite.model_validate(as_write_args(self))
-
 
 
 class ShopAttributeMappingWrite(DomainModelWrite):
@@ -178,12 +185,23 @@ class ShopAttributeMappingWrite(DomainModelWrite):
         retrieve: How to retrieve time series data
         aggregation: How to aggregate time series data
     """
-    _container_fields: ClassVar[tuple[str, ...]] = ("aggregation", "attribute_name", "object_name", "object_type", "retrieve", "time_series", "transformations",)
+
+    _container_fields: ClassVar[tuple[str, ...]] = (
+        "aggregation",
+        "attribute_name",
+        "object_name",
+        "object_type",
+        "retrieve",
+        "time_series",
+        "transformations",
+    )
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopAttributeMapping", "1")
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference("power_ops_types", "ShopAttributeMapping")
+    node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = dm.DirectRelationReference(
+        "power_ops_types", "ShopAttributeMapping"
+    )
     object_type: str = Field(alias="objectType")
     object_name: str = Field(alias="objectName")
     attribute_name: str = Field(alias="attributeName")
@@ -193,15 +211,14 @@ class ShopAttributeMappingWrite(DomainModelWrite):
     aggregation: Optional[str] = None
 
 
-
 class ShopAttributeMappingList(DomainModelList[ShopAttributeMapping]):
     """List of shop attribute mappings in the read version."""
 
     _INSTANCE = ShopAttributeMapping
+
     def as_write(self) -> ShopAttributeMappingWriteList:
         """Convert these read versions of shop attribute mapping to the writing versions."""
         return ShopAttributeMappingWriteList([node.as_write() for node in self.data])
-
 
 
 class ShopAttributeMappingWriteList(DomainModelWriteList[ShopAttributeMappingWrite]):
@@ -306,21 +323,26 @@ class _ShopAttributeMappingQuery(NodeQueryCore[T_DomainModelList, ShopAttributeM
         self.attribute_name = StringFilter(self, self._view_id.as_property_ref("attributeName"))
         self.retrieve = StringFilter(self, self._view_id.as_property_ref("retrieve"))
         self.aggregation = StringFilter(self, self._view_id.as_property_ref("aggregation"))
-        self._filter_classes.extend([
-            self.space,
-            self.external_id,
-            self.object_type,
-            self.object_name,
-            self.attribute_name,
-            self.retrieve,
-            self.aggregation,
-        ])
-        self.time_series = TimeSeriesReferenceAPI(client,  lambda limit: [
-            item.time_series if isinstance(item.time_series, str) else item.time_series.external_id #type: ignore[misc]
-            for item in self._list(limit=limit)
-            if item.time_series is not None and
-               (isinstance(item.time_series, str) or item.time_series.external_id is not None)
-        ])
+        self._filter_classes.extend(
+            [
+                self.space,
+                self.external_id,
+                self.object_type,
+                self.object_name,
+                self.attribute_name,
+                self.retrieve,
+                self.aggregation,
+            ]
+        )
+        self.time_series = TimeSeriesReferenceAPI(
+            client,
+            lambda limit: [
+                item.time_series if isinstance(item.time_series, str) else item.time_series.external_id  # type: ignore[misc]
+                for item in self._list(limit=limit)
+                if item.time_series is not None
+                and (isinstance(item.time_series, str) or item.time_series.external_id is not None)
+            ],
+        )
 
     def list_shop_attribute_mapping(self, limit: int = DEFAULT_QUERY_LIMIT) -> ShopAttributeMappingList:
         return self._list(limit=limit)

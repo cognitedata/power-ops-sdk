@@ -15,6 +15,16 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [1.1.7] - 2026-08-18
+### Changed
+* Bumped `cognite-sdk` to `>=8.6.0` (from `>=7.67.1`), `cognite-pygen` to `^1.4.0` (from `^1.2.21`), and `cognite-toolkit` (dev) to `0.8.165` (from `0.6.70`).
+* Regenerated the pygen-based FDM client in `cognite/powerops/client/_generated/` for compatibility with `cognite-sdk` v8.
+
+### Fixed
+* Fixed `ExtractionPipelineCreate`/`PipelineRun` to construct `ExtractionPipelineWrite`/`ExtractionPipelineRunWrite` instead of the now-incompatible read-only `ExtractionPipeline`/`ExtractionPipelineRun` classes.
+* Fixed `cognite.powerops.utils.retrieve` to handle the new `LatestDatapointList`/`LatestDatapoint` return type from `client.time_series.data.retrieve_latest`, preserving prior timestamp/value semantics.
+* Fixed the `retry` decorator to tolerate callables (e.g. `cognite.client.testing` mocks) whose `__name__` is not a plain string.
+
 ## [1.1.6] - 2026-02-17
 ### Added
 * Added repository-managed documentation configuration with `.readthedocs.yaml`, `mkdocs.yml`, and `docs/` pages to make hosted docs builds reproducible from the repository.

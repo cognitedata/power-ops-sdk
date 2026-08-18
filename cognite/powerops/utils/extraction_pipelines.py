@@ -11,7 +11,7 @@ from typing import Any, ClassVar
 
 from cognite.client import CogniteClient
 from cognite.client._constants import MAX_VALID_INTERNAL_ID
-from cognite.client.data_classes import ExtractionPipeline, ExtractionPipelineRun
+from cognite.client.data_classes import ExtractionPipelineWrite, ExtractionPipelineRunWrite
 from cognite.client.exceptions import CogniteAPIError
 
 from cognite.powerops.utils.retry import retry
@@ -94,7 +94,7 @@ class PipelineRun:
             self.data[self.exception] = traceback.format_exc()
 
         message = self.get_message(self.config.dump_truncated_to_file)
-        run = ExtractionPipelineRun(
+        run = ExtractionPipelineRunWrite(
             status=self.status.value, extpipe_external_id=self.pipeline_external_id, message=message
         )
         if not self.is_dry_run:
@@ -234,7 +234,7 @@ class ExtractionPipelineCreate:
         if extraction_pipeline is None:
             self._data_set_id = self._get_data_set_it(client)
             client.extraction_pipelines.create(
-                ExtractionPipeline(
+                ExtractionPipelineWrite(
                     external_id=self.external_id,
                     name=self.external_id,
                     data_set_id=self._data_set_id,

@@ -18,9 +18,15 @@ def decorator(caller):  # type: ignore[no-untyped-def]
     """
 
     def decor(f):  # type: ignore[no-untyped-def]
-        @wraps(f)
         def wrapper(*args, **kwargs):  # type: ignore[no-untyped-def]
             return caller(f, *args, **kwargs)
+
+        try:
+            wraps(f)(wrapper)
+        except TypeError:
+            # `f` may be a mock (e.g. from cognite.client.testing.monkeypatch_cognite_client())
+            # whose introspection attributes (like __name__) aren't plain strings.
+            pass
 
         return wrapper
 

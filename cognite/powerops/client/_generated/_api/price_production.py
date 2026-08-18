@@ -55,7 +55,6 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
     def __init__(self, client: CogniteClient):
         super().__init__(client=client)
 
-
     @overload
     def retrieve(
         self,
@@ -113,7 +112,14 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         properties: PriceProductionTextFields | SequenceNotStr[PriceProductionTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_result: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -185,7 +191,14 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         search_property: PriceProductionTextFields | SequenceNotStr[PriceProductionTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_result: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -202,7 +215,14 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         search_property: PriceProductionTextFields | SequenceNotStr[PriceProductionTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_result: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -212,16 +232,25 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
     @overload
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
         group_by: PriceProductionFields | SequenceNotStr[PriceProductionFields],
         property: PriceProductionFields | SequenceNotStr[PriceProductionFields] | None = None,
         query: str | None = None,
         search_property: PriceProductionTextFields | SequenceNotStr[PriceProductionTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_result: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -230,16 +259,25 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | SequenceNotStr[Aggregations | dm.aggregations.MetricAggregation]
+        ),
         group_by: PriceProductionFields | SequenceNotStr[PriceProductionFields] | None = None,
         property: PriceProductionFields | SequenceNotStr[PriceProductionFields] | None = None,
         query: str | None = None,
         search_property: PriceProductionTextFields | SequenceNotStr[PriceProductionTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_result: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -307,7 +345,14 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         search_property: PriceProductionTextFields | SequenceNotStr[PriceProductionTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_result: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -366,13 +411,15 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
     ) -> QueryExecutor:
         builder = QueryBuilder()
         factory = QueryBuildStepFactory(builder.create_name, view_id=self._view_id, edge_connection_property="end_node")
-        builder.append(factory.root(
-            filter=filter_,
-            sort=sort,
-            limit=limit,
-            max_retrieve_batch_limit=chunk_size,
-            has_container_fields=True,
-        ))
+        builder.append(
+            factory.root(
+                filter=filter_,
+                sort=sort,
+                limit=limit,
+                max_retrieve_batch_limit=chunk_size,
+                has_container_fields=True,
+            )
+        )
         if retrieve_connections == "full":
             builder.extend(
                 factory.from_direct_relation(
@@ -388,7 +435,14 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         chunk_size: int = DEFAULT_CHUNK_SIZE,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_result: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         filter: dm.Filter | None = None,
@@ -473,7 +527,14 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        shop_result: str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference] | None = None,
+        shop_result: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -525,7 +586,7 @@ class PriceProductionAPI(NodeAPI[PriceProduction, PriceProductionWrite, PricePro
             space,
             filter,
         )
-        sort_input =  self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
+        sort_input = self._create_sort(sort_by, direction, sort)  # type: ignore[arg-type]
         if retrieve_connections == "skip":
-            return self._list(limit=limit,  filter=filter_, sort=sort_input)
+            return self._list(limit=limit, filter=filter_, sort=sort_input)
         return self._query(filter_, limit, retrieve_connections, sort_input, "list")

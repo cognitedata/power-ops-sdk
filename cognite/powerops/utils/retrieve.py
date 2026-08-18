@@ -6,7 +6,7 @@ from typing import Literal
 import numpy as np
 import pandas as pd
 from cognite.client import CogniteClient
-from cognite.client.data_classes import DatapointsList, DataSet
+from cognite.client.data_classes import DataSet, LatestDatapointList
 from cognite.client.utils import ms_to_datetime
 
 from cognite.powerops.client.powerops_client import PowerOpsClient
@@ -56,9 +56,17 @@ def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, 
     ).to_pandas()
 
     # Retrieve latest datapoints before start
-    df_latest = client.time_series.data.retrieve_latest(
+    latest_datapoints = client.time_series.data.retrieve_latest(
         external_id=external_ids, before=start, ignore_unknown_ids=True
-    ).to_pandas()
+    )
+    df_latest = pd.DataFrame(
+        {
+            # dp.has_datapoint guarantees dp.timestamp and dp.value are not None here.
+            dp.external_id: pd.Series([dp.value], index=[pd.Timestamp(dp.timestamp).tz_localize(None)])  # type: ignore[arg-type]
+            for dp in latest_datapoints
+            if dp.has_datapoint
+        }
+    )
 
     # Make sure we have a start timestamp in range
     if df_range.empty:
@@ -109,19 +117,16 @@ def retrieve_latest(client: CogniteClient, external_ids: list[str | None], befor
         return {}
     external_ids = remove_duplicates(external_ids)
     logger.debug(f"Retrieving {external_ids} before '{ms_to_datetime(before)}'")
-    time_series: DatapointsList = client.time_series.data.retrieve_latest(
+    latest_datapoints: LatestDatapointList = client.time_series.data.retrieve_latest(
         external_id=external_ids, before=before, ignore_unknown_ids=True
     )
 
-    # For (Cog)Datapoints in (Cog)DatapointsList
-    for datapoints in time_series:
-        if len(datapoints) > 0:  # TODO: what to do about ts with no datapoints?
-            datapoints.timestamp[0] = before
-
+    # Force the timestamp of each latest datapoint to align exactly with `before`.
+    before_index = pd.DatetimeIndex(data=np.array([int(before)], dtype="datetime64[ms]"))
     res = {
-        require(datapoints.external_id): datapoints.to_pandas().iloc[:, 0]  # iloc to convert DataFrame to Series
-        for datapoints in time_series
-        if len(datapoints) > 0
+        require(dp.external_id): pd.Series([dp.value], index=before_index)
+        for dp in latest_datapoints
+        if dp.has_datapoint  # TODO: what to do about ts with no datapoints?
     }
     if missing := set(external_ids).difference(res):
         logger.warning(f"Missing: {', '.join(map(str, missing))}")

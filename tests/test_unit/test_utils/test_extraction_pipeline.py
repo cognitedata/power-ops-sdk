@@ -2,7 +2,7 @@ import json
 
 import pytest
 from cognite.client import CogniteClient
-from cognite.client.data_classes import DataSet, ExtractionPipelineRun, FileMetadata
+from cognite.client.data_classes import DataSet, ExtractionPipelineRunWrite, FileMetadata
 from cognite.client.testing import monkeypatch_cognite_client
 
 from cognite.powerops.utils.extraction_pipelines import MSG_CHAR_LIMIT, ExtractionPipelineCreate, RunStatus
@@ -11,8 +11,12 @@ from cognite.powerops.utils.extraction_pipelines import MSG_CHAR_LIMIT, Extracti
 @pytest.fixture()
 def cognite_client() -> CogniteClient:
     with monkeypatch_cognite_client() as client:
-        client.data_sets.retrieve.return_value = DataSet(id=1, external_id="unit test")
-        client.files.upload_bytes.return_value = FileMetadata(id=123)
+        client.data_sets.retrieve.return_value = DataSet(
+            id=1, external_id="unit test", created_time=0, last_updated_time=0, write_protected=False
+        )
+        client.files.upload_bytes.return_value = FileMetadata(
+            id=123, uploaded=True, created_time=0, last_updated_time=0, name="unit-test-file"
+        )
         yield client
 
 
@@ -76,7 +80,7 @@ def test_create_pipeline_run_raise_exception(
     # Assert
     file_content = cognite_client.files.upload_bytes.call_args.kwargs["content"]
     assert "exception" in file_content
-    run: ExtractionPipelineRun
+    run: ExtractionPipelineRunWrite
     run, *_ = cognite_client.extraction_pipelines.runs.create.call_args.args
     assert run.status == "failure"
     assert '"exception":"...' in run.message
@@ -88,7 +92,9 @@ def test_pipeline_run_upload_file() -> None:
     long_error_message = "Long error message" * 1000
     short_error_message = "Short error message"
     with monkeypatch_cognite_client() as client:
-        client.files.upload_bytes.return_value = FileMetadata(id=1, external_id="test_file")
+        client.files.upload_bytes.return_value = FileMetadata(
+            id=1, external_id="test_file", uploaded=True, created_time=0, last_updated_time=0, name="test_file"
+        )
         pipeline = ExtractionPipelineCreate(
             external_id="test_pipeline",
             data_set_external_id="test_dataset",
@@ -117,7 +123,9 @@ def test_pipeline_run_upload_file_nested_structure() -> None:
     nested_structure = {"nested": "Long error message" * 1000}
     a_list = ["listItem", "longMessage" * 100]
     with monkeypatch_cognite_client() as client:
-        client.files.upload_bytes.return_value = FileMetadata(id=1, external_id="test_file")
+        client.files.upload_bytes.return_value = FileMetadata(
+            id=1, external_id="test_file", uploaded=True, created_time=0, last_updated_time=0, name="test_file"
+        )
         pipeline = ExtractionPipelineCreate(
             external_id="test_pipeline",
             data_set_external_id="test_dataset",
@@ -141,7 +149,9 @@ def test_pipeline_run_upload_file_nested_structure() -> None:
 
 def test_pipeline_minimum_input_files() -> None:
     with monkeypatch_cognite_client() as client:
-        client.files.upload_bytes.return_value = FileMetadata(id=1, external_id="test_file")
+        client.files.upload_bytes.return_value = FileMetadata(
+            id=1, external_id="test_file", uploaded=True, created_time=0, last_updated_time=0, name="test_file"
+        )
         pipeline = ExtractionPipelineCreate(
             external_id="test_pipeline", data_set_external_id="test_dataset", truncate_keys_first=["logs"]
         )
