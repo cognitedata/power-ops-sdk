@@ -28,6 +28,7 @@ def new_data_set_configuration(power_ops_client: PowerOpsClient):
     )
 
 
+@pytest.mark.cdf
 class TestGetLatestDataset:
     def test_all_data_set_types(self, power_ops_client: PowerOpsClient):
         # Relies on at least the DataSetConfiguration having been created by resync/toolkit

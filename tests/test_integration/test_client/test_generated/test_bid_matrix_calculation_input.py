@@ -475,6 +475,7 @@ def new_water_value_based(
 
 
 class TestBidMatrixCalculationInput:
+    @pytest.mark.cdf
     def test_shop_graphql(
         self,
         power_ops_client: PowerOpsClient,
@@ -501,6 +502,7 @@ class TestBidMatrixCalculationInput:
         scenarios = response_obj_read.partial_bid_configuration.scenario_set.scenarios
         assert all(isinstance(scenario, ShopScenario) for scenario in scenarios)
 
+    @pytest.mark.cdf
     def test_water_graphql(
         self,
         power_ops_client: PowerOpsClient,
