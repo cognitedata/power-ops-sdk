@@ -1,3 +1,5 @@
+import pytest
+
 from cognite.powerops.client import PowerOpsClient
 from cognite.powerops.client._generated.data_classes import (
     BidConfigurationDayAhead,
@@ -171,6 +173,7 @@ class TestBidConfiguration:
         # NOTE: the partials are returned as type PartialBidConfiguration and NOT ShopBasedPartialBidConfiguration
         assert all(isinstance(partial, PartialBidConfiguration) for partial in new_bid_configuration_shop.partials)
 
+    @pytest.mark.cdf
     def test_bid_configuration_graphql(
         self,
         power_ops_client: PowerOpsClient,

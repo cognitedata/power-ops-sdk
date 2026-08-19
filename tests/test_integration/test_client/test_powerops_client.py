@@ -1,7 +1,10 @@
+import pytest
+
 from cognite.powerops.client.powerops_client import PowerOpsClient
 from tests.constants import REPO_ROOT
 
 
+@pytest.mark.cdf
 def test_from_config():
     config_path = REPO_ROOT / "power_ops_config.yaml"
 

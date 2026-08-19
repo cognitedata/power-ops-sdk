@@ -76,3 +76,19 @@ power_ops_client = PowerOpsClient(client=cognite_client, read_dataset="xid_datas
 ```
 
 For more examples on using the PowerOpsClient, see the examples section of the documentation.
+
+## Running Tests
+
+Run the test suite with:
+
+```bash
+pytest
+```
+
+Most tests run against an in-memory mock of `PowerOpsClient` (`tests/mock_powerops.py`) and don't require CDF access. Tests that do need a real CDF connection are marked with `@pytest.mark.cdf`.
+
+To skip the CDF-dependent tests, e.g. when running locally without CDF credentials configured, use the `--skipcdf` flag. This is also what CI uses:
+
+```bash
+pytest --skipcdf
+```

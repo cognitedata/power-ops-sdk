@@ -104,7 +104,7 @@ def test_create_trigger_shop_case(power_ops_client: PowerOpsClient):
         mock_post.return_value.json.return_value = {"message": "Shop run triggered MOCK"}
         power_ops_client.cogshop.trigger_shop_case(shop_case.external_id)
 
-        expected_url = "https://power-ops-api.staging.bluefield.cognite.ai/power-ops-staging/run-shop-as-service"
+        expected_url = "https://power-ops-api.mock_cluster.cognite.ai/power-ops-mock-project/run-shop-as-service"
         expected_json = {
             "mode": "fdm",
             "runs": [

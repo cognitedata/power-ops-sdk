@@ -33,7 +33,7 @@ repos:
       - id: name-tests-test
         args:
           - --pytest-test-first
-        exclude: "constants.py"
+        exclude: "constants.py|mock_powerops.py"
       - id: trailing-whitespace
       - id: no-commit-to-branch
 
@@ -55,7 +55,7 @@ repos:
         pass_filenames: false
       - id: "resync"
         name: "resync"
-        entry: "powerops pre-build power_ops_config.yaml resync/configuration.yaml --silent"
+        entry: "pytest tests/test_unit/test_resync/ -q"
         files: "resync/"
         language: system
         pass_filenames: false
