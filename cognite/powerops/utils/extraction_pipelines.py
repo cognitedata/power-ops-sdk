@@ -11,7 +11,7 @@ from typing import Any, ClassVar
 
 from cognite.client import CogniteClient
 from cognite.client._constants import MAX_VALID_INTERNAL_ID
-from cognite.client.data_classes import ExtractionPipelineWrite, ExtractionPipelineRunWrite
+from cognite.client.data_classes import ExtractionPipelineRunWrite, ExtractionPipelineWrite
 from cognite.client.exceptions import CogniteAPIError
 
 from cognite.powerops.utils.retry import retry
