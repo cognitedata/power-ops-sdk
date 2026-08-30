@@ -65,7 +65,7 @@ class CogShopAPI:
         """
 
         def auth(r: requests.PreparedRequest) -> requests.PreparedRequest:
-            auth_header_name, auth_header_value = self._cdf._config.credentials.authorization_header()
+            auth_header_name, auth_header_value = self._cdf.config.credentials.authorization_header()
             r.headers[auth_header_name] = auth_header_value
             return r
 
@@ -340,6 +340,9 @@ def _shop_case_query(external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> s
               space
               fileReference {{
                 externalId
+                id
+                name
+                uploaded
               }}
             }}
           }}
