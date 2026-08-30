@@ -328,10 +328,10 @@ class DataRecordWriteList(_DataRecordListCore[DataRecordWrite]):
 
 
 class DomainModelWrite(DomainModelCore, extra="ignore", populate_by_name=True):
-    _container_fields: ClassVar[tuple[str, ...]] = tuple()
-    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = tuple()
-    _inwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = tuple()
-    _direct_relations: ClassVar[tuple[str, ...]] = tuple()
+    _container_fields: ClassVar[tuple[str, ...]] = ()
+    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = ()
+    _inwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = ()
+    _direct_relations: ClassVar[tuple[str, ...]] = ()
     external_id_factory: ClassVar[Optional[Callable[[type[DomainModelWrite], dict], str]]] = None
     data_record: DataRecordWrite = Field(default_factory=DataRecordWrite)
     node_type: Union[dm.DirectRelationReference, dm.NodeId, tuple[str, str], None] = None
@@ -572,10 +572,10 @@ def default_edge_external_id_factory(
 class DomainRelationWrite(Core, extra="forbid"):
     _view_id: ClassVar[dm.ViewId]
 
-    _container_fields: ClassVar[tuple[str, ...]] = tuple()
-    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = tuple()
-    _inwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = tuple()
-    _direct_relations: ClassVar[tuple[str, ...]] = tuple()
+    _container_fields: ClassVar[tuple[str, ...]] = ()
+    _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = ()
+    _inwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = ()
+    _direct_relations: ClassVar[tuple[str, ...]] = ()
     _validate_other_node: ClassVar[Callable | None] = None
 
     external_id_factory: ClassVar[
