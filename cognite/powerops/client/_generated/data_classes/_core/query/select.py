@@ -31,7 +31,6 @@ from cognite.powerops.client._generated.data_classes._core.query.builder import 
 from cognite.powerops.client._generated.data_classes._core.query.processing import QueryUnpacker
 from cognite.powerops.client._generated.data_classes._core.query.step import QueryBuildStep, ViewPropertyId
 
-
 T_DomainListEnd = TypeVar("T_DomainListEnd", bound=Union[DomainModelList, DomainRelationList], covariant=True)
 
 
@@ -97,9 +96,9 @@ global_config.max_select_depth = {global_config.max_select_depth+1}
         raise AttributeError(error_message)
 
     def _assemble_filter(self) -> dm.filters.Filter | None:
-        filters: list[dm.filters.Filter] = [self._view_filter] if self._view_filter else []
+        filters: list[dm.filters.Filter] = [self._view_filter] if self._view_filter is not None else []
         for filter_cls in self._filter_classes:
-            if item := filter_cls._as_filter():
+            if (item := filter_cls._as_filter()) is not None:
                 filters.append(item)
         return dm.filters.And(*filters) if filters else None
 
@@ -225,7 +224,7 @@ class NodeQueryCore(QueryCore[T_DomainModelList, T_DomainListEnd]):
                     step.connection_property = item._connection_property
                 step.expression.from_ = from_
                 step.expression.filter = item._assemble_filter()
-                step.expression.sort = item._create_sort()
+                step.expression.sort = item._create_sort() or []
                 builder.append(step)
             elif isinstance(item, NodeQueryCore) and isinstance(item._expression, dm.query.EdgeResultSetExpression):
                 # Edge without properties
@@ -264,7 +263,7 @@ class NodeQueryCore(QueryCore[T_DomainModelList, T_DomainListEnd]):
                 )
                 step.expression.from_ = from_
                 step.expression.filter = item._assemble_filter()
-                step.expression.sort = item._create_sort()
+                step.expression.sort = item._create_sort() or []
                 builder.append(step)
             else:
                 raise TypeError(f"Unsupported query step type: {type(item._expression)}")

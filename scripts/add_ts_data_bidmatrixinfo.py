@@ -1,6 +1,6 @@
 ###this script adds time series data to the bid matrix information objects in the powerops client
 
-from cognite.client.data_classes import TimeSeries, TimeSeriesList
+from cognite.client.data_classes import TimeSeries, TimeSeriesList, TimeSeriesWrite
 from cognite.client.exceptions import CogniteNotFoundError
 from cognite.client import CogniteClient
 from cognite.powerops import PowerOpsClient
@@ -11,18 +11,18 @@ import random
 import arrow
 
 
-def create_time_series_objects() -> list[TimeSeries]:
+def create_time_series_objects() -> list[TimeSeriesWrite]:
     """
     Create a list of time series objects with predefined metadata.
 
     Returns:
-        list[TimeSeries]: A list of TimeSeries objects.
+        list[TimeSeriesWrite]: A list of TimeSeriesWrite objects.
     """
 
     ts_list = [
-        TimeSeries(external_id="emilie_ts_onhour", name="emilie_ts_onhour", metadata={"data_type": "on_hour"}),
-        TimeSeries(external_id="emilie_ts_empty", name="emilie_ts_empty", metadata={"data_type": "none"}),
-        TimeSeries(external_id="emilie_ts_offhour", name="emilie_ts_offhour", metadata={"data_type": "off_hour"}),
+        TimeSeriesWrite(external_id="emilie_ts_onhour", name="emilie_ts_onhour", metadata={"data_type": "on_hour"}),
+        TimeSeriesWrite(external_id="emilie_ts_empty", name="emilie_ts_empty", metadata={"data_type": "none"}),
+        TimeSeriesWrite(external_id="emilie_ts_offhour", name="emilie_ts_offhour", metadata={"data_type": "off_hour"}),
     ]
     return ts_list
 

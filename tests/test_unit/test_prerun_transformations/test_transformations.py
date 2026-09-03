@@ -11,6 +11,8 @@ import pytz
 from cognite.client import CogniteClient
 from cognite.client.data_classes import (
     Datapoints,
+    LatestDatapoint,
+    LatestDatapointList,
     TimeSeries,
 )
 from pydantic import ValidationError
@@ -636,18 +638,38 @@ def test_add_water_in_transit(cognite_client_mock: CogniteClient, test_case: Add
             }
 
         cognite_client_mock.time_series.data.retrieve.return_value = Datapoints(
+            id=0,
             external_id=test_case.discharge_ts_external_id,
+            is_string=False,
+            is_step=True,
+            type="numeric",
             value=test_case.discharge_values,
             timestamp=discharge_times_ms,
         )
 
-        cognite_client_mock.time_series.data.retrieve_latest.return_value = Datapoints(
-            external_id=test_case.discharge_ts_external_id,
-            value=[test_case.discharge_values[-1]],
-            timestamp=[discharge_times_ms[-1]],
+        cognite_client_mock.time_series.data.retrieve_latest.return_value = LatestDatapointList(
+            [
+                LatestDatapoint(
+                    id=0,
+                    external_id=test_case.discharge_ts_external_id,
+                    is_string=False,
+                    is_step=True,
+                    type="numeric",
+                    value=test_case.discharge_values[-1],
+                    timestamp=datetime.fromtimestamp(discharge_times_ms[-1] / 1000, tz=timezone.utc),
+                    before=None,
+                )
+            ]
         )
         cognite_client_mock.time_series.retrieve_multiple.return_value = [
-            TimeSeries(external_id=test_case.discharge_ts_external_id, is_step=True)
+            TimeSeries(
+                id=0,
+                external_id=test_case.discharge_ts_external_id,
+                is_step=True,
+                is_string=False,
+                created_time=0,
+                last_updated_time=0,
+            )
         ]
 
         transformation.pre_apply(client=cognite_client_mock, shop_model=model, start=start_time_ms, end=end_time_ms)
