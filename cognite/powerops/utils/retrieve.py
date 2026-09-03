@@ -59,14 +59,10 @@ def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, 
     latest_datapoints = client.time_series.data.retrieve_latest(
         external_id=external_ids, before=start, ignore_unknown_ids=True
     )
-    df_latest = pd.DataFrame(
-        {
-            # dp.has_datapoint guarantees dp.timestamp and dp.value are not None here.
-            dp.external_id: pd.Series([dp.value], index=[pd.Timestamp(dp.timestamp).tz_localize(None)])  # type: ignore[arg-type]
-            for dp in latest_datapoints
-            if dp.has_datapoint
-        }
+    df_latest = (
+        latest_datapoints.to_pandas().reset_index().pivot_table(index="timestamp", columns="identifier", values="value")
     )
+    df_latest.index = df_latest.index.tz_localize(None)  # type: ignore[attr-defined]
 
     # Make sure we have a start timestamp in range
     if df_range.empty:
@@ -122,7 +118,7 @@ def retrieve_latest(client: CogniteClient, external_ids: list[str | None], befor
     )
 
     # Force the timestamp of each latest datapoint to align exactly with `before`.
-    before_index = pd.DatetimeIndex(data=np.array([int(before)], dtype="datetime64[ms]"))
+    before_index = pd.to_datetime([before], unit="ms")
     res = {
         require(dp.external_id): pd.Series([dp.value], index=before_index)
         for dp in latest_datapoints
