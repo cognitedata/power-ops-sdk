@@ -2,9 +2,10 @@ import datetime
 from unittest import mock
 
 import pytest
+import requests
 
 from cognite.powerops.client._generated.data_classes import ShopCaseWrite, ShopModelWrite, ShopScenarioWrite
-from cognite.powerops.client.shop.cogshop_api import CogShopAPI
+from cognite.powerops.client.shop.cogshop_api import CogShopAPI, CogShopStatus
 
 
 @pytest.fixture
@@ -104,3 +105,74 @@ class TestShopCaseMethods:
         assert shop_case.scenario.model.external_id == "test_model_ext_id"
         assert shop_case.scenario.model.name == "test_model"
         assert shop_case.scenario.model.shop_version == "16.0.2"
+
+
+class TestStatus:
+    @mock.patch("cognite.powerops.client.shop.cogshop_api.requests.get")
+    def test_running_service_is_available_with_queue_counts(self, mock_get, cogshop_api):
+        mock_get.return_value.json.return_value = {"status": "RUNNING", "todo": 2, "doing": 1, "todoList": []}
+
+        result = cogshop_api.status()
+
+        assert result == CogShopStatus(status="RUNNING", queued=2, running=1)
+        assert result.is_available
+        assert (
+            mock_get.call_args.kwargs["url"]
+            == "https://power-ops-api.staging.api.cognite.ai/power-ops-staging/shop/metrics"
+        )
+
+    @mock.patch("cognite.powerops.client.shop.cogshop_api.requests.get")
+    def test_sends_cdf_credentials_and_timeout(self, mock_get, cogshop_api, mock_cdf):
+        mock_cdf.config.credentials.authorization_header.return_value = ("Authorization", "Bearer token")
+        mock_get.return_value.json.return_value = {"status": "RUNNING", "todo": 0, "doing": 0}
+
+        cogshop_api.status(timeout=3.0)
+
+        assert mock_get.call_args.kwargs["timeout"] == 3.0
+        prepared = mock_get.call_args.kwargs["auth"](requests.Request("GET", "https://example.com").prepare())
+        assert prepared.headers["Authorization"] == "Bearer token"
+
+    @pytest.mark.parametrize("reported", ["DISABLED", "ERROR"])
+    @mock.patch("cognite.powerops.client.shop.cogshop_api.requests.get")
+    def test_service_reported_as_not_running_is_not_available(self, mock_get, cogshop_api, reported):
+        mock_get.return_value.json.return_value = {"status": reported, "todo": 0, "doing": 0}
+
+        result = cogshop_api.status()
+
+        assert result.status == reported
+        assert not result.is_available
+
+    @mock.patch("cognite.powerops.client.shop.cogshop_api.requests.get")
+    def test_unreachable_power_ops_api_is_reported_not_raised(self, mock_get, cogshop_api):
+        mock_get.side_effect = requests.ConnectionError("connection refused")
+
+        result = cogshop_api.status()
+
+        assert result == CogShopStatus(status="UNREACHABLE", queued=0, running=0, detail="connection refused")
+        assert not result.is_available
+
+    @mock.patch("cognite.powerops.client.shop.cogshop_api.requests.get")
+    def test_http_error_is_reported_with_detail(self, mock_get, cogshop_api):
+        mock_get.return_value.raise_for_status.side_effect = requests.HTTPError("403 Client Error: Forbidden")
+
+        result = cogshop_api.status()
+
+        assert result.status == "UNREACHABLE"
+        assert result.detail == "403 Client Error: Forbidden"
+
+    @mock.patch("cognite.powerops.client.shop.cogshop_api.requests.get")
+    def test_non_json_answer_is_reported_as_unreachable(self, mock_get, cogshop_api):
+        mock_get.return_value.json.side_effect = ValueError("Expecting value: line 1 column 1 (char 0)")
+
+        result = cogshop_api.status()
+
+        assert result.status == "UNREACHABLE"
+        assert "Expecting value" in result.detail
+
+    @mock.patch("cognite.powerops.client.shop.cogshop_api.requests.get")
+    def test_answer_without_status_is_an_error(self, mock_get, cogshop_api):
+        mock_get.return_value.json.return_value = {}
+
+        result = cogshop_api.status()
+
+        assert result == CogShopStatus(status="ERROR", queued=0, running=0)
