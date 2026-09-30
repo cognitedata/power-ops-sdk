@@ -67,6 +67,26 @@ retrieved_shop_case = powerops.cogshop.retrieve_shop_case(shop_case.external_id)
 
 ### Step 4: Trigger execution
 
+Optionally check that CogSHOP as a Service is reachable before triggering. `status()` does not raise for
+availability problems, it reports them in the result:
+
+```python
+service = powerops.cogshop.status()
+if not service.is_available:
+    raise RuntimeError(f"CogSHOP is not available: {service.status} {service.detail}")
+print(f"{service.queued} queued and {service.running} running SHOP runs")
+```
+
+| `status` | Meaning |
+|---|---|
+| `RUNNING` | CogSHOP answered and has a queue for this project. |
+| `DISABLED` | CogSHOP answered, but this project is not set up in CogSHOP. |
+| `ERROR` | The PowerOps API could not reach CogSHOP. |
+| `UNREACHABLE` | The PowerOps API itself could not be reached or rejected the request, see `detail`. |
+
+The answer can be up to one minute old, and `RUNNING` means reachable, not guaranteed. After triggering, the
+`ShopCase` status moves on from `triggered` (to `queued`, then `running`) once CogSHOP has accepted the run.
+
 ```python
 powerops.cogshop.trigger_shop_case(shop_case.external_id)
 ```

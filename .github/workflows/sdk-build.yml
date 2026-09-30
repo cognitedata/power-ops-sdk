@@ -51,7 +51,7 @@ jobs:
       - name: Test
         run: poetry run pytest --skipcdf --cov=cognite/powerops --cov-report term --cov-report xml:coverage.xml
 
-      - uses: codecov/codecov-action@18283e04ce6e62d37312384ff67231eb8fd56d24 # v5
+      - uses: codecov/codecov-action@0fb7174895f61a3b6b78fc075e0cd60383518dac # v5.5.5
         if: ${{ matrix.python-version == env.PYTHON_VERSION }}
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
