@@ -81,8 +81,13 @@ print(f"{service.queued} queued and {service.running} running SHOP runs")
 |---|---|
 | `RUNNING` | CogSHOP answered and has a queue for this project. |
 | `DISABLED` | CogSHOP answered, but this project is not set up in CogSHOP. |
-| `ERROR` | The PowerOps API could not reach CogSHOP. |
-| `UNREACHABLE` | The PowerOps API itself could not be reached or rejected the request, see `detail`. |
+| `ERROR` | The PowerOps API could not reach CogSHOP, or answered something this SDK version does not understand, see `detail`. |
+| `UNREACHABLE` | The PowerOps API itself could not be reached or rejected the request, see `detail` and `http_status`. |
+
+`detail` is written for people and logs; its wording is not stable, so do not parse it. To decide whether to
+retry, use `status` and `http_status`: a `4xx` code means the request itself has to change (credentials, project),
+while a `5xx` code or no code at all (connection failure, timeout) means the service was not there and trying
+again later may work.
 
 The answer can be up to one minute old, and `RUNNING` means reachable, not guaranteed. After triggering, the
 `ShopCase` status moves on from `triggered` (to `queued`, then `running`) once CogSHOP has accepted the run.

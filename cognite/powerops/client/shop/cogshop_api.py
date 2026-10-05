@@ -23,16 +23,27 @@ from cognite.powerops.client._generated.data_classes._core import (
 
 @dataclass(frozen=True)
 class CogShopStatus:
-    """Availability of CogSHOP as a Service for a project, as reported by the PowerOps API."""
+    """
+    Availability of CogSHOP as a Service for a project, as reported by the PowerOps API.
+
+    `detail` explains a status other than "RUNNING" to people and logs; its wording is not stable, so do not
+    parse it. `http_status` is the status code of a request the PowerOps API rejected, and None otherwise: the
+    request succeeded, or no HTTP answer arrived at all (connection failure, timeout).
+    """
 
     status: Literal["RUNNING", "DISABLED", "ERROR", "UNREACHABLE"]
     queued: int
     running: int
     detail: str = ""
+    http_status: int | None = None
 
     @property
     def is_available(self) -> bool:
         return self.status == "RUNNING"
+
+
+_REPORTED_STATUSES = ("RUNNING", "DISABLED", "ERROR")
+"""Status values the PowerOps API reports; "UNREACHABLE" is only ever set by this client."""
 
 
 class CogShopAPI:
@@ -79,7 +90,11 @@ class CogShopAPI:
         Returns:
             CogShopStatus with the service status and the number of queued and running SHOP runs.
             Availability problems are never raised: if the PowerOps API itself cannot be reached or rejects
-            the request, the status is "UNREACHABLE" and `detail` holds the reason.
+            the request, the status is "UNREACHABLE", `detail` holds the reason and `http_status` the code of
+            a rejected request. An answer this SDK version does not understand is reported as "ERROR".
+
+        Raises:
+            ValueError: If `timeout` is not positive. That is a programming error, not an availability problem.
 
         Note:
             The PowerOps API caches this answer for up to 60 seconds, and "RUNNING" only means the service
@@ -90,14 +105,24 @@ class CogShopAPI:
             response = requests.get(url=f"{self._power_ops_api_url()}/shop/metrics", auth=self._auth, timeout=timeout)
             response.raise_for_status()
             body = response.json()
-        except (requests.RequestException, ValueError) as exc:
-            return CogShopStatus(status="UNREACHABLE", queued=0, running=0, detail=str(exc))
+        except requests.RequestException as exc:
+            http_status = exc.response.status_code if exc.response is not None else None
+            return CogShopStatus(status="UNREACHABLE", queued=0, running=0, detail=str(exc), http_status=http_status)
 
-        return CogShopStatus(
-            status=body.get("status", "ERROR"),
-            queued=int(body.get("todo", 0)),
-            running=int(body.get("doing", 0)),
-        )
+        if not isinstance(body, dict):
+            detail = f"The PowerOps API answered with a JSON {type(body).__name__}, not an object"
+            return CogShopStatus(status="ERROR", queued=0, running=0, detail=detail)
+        reported = body.get("status")
+        if reported not in _REPORTED_STATUSES:
+            detail = f"The PowerOps API reported an unknown status: {reported!r}"
+            return CogShopStatus(status="ERROR", queued=0, running=0, detail=detail)
+        try:
+            queued, running = int(body.get("todo", 0)), int(body.get("doing", 0))
+        except (TypeError, ValueError) as exc:
+            detail = f"The PowerOps API reported unreadable queue counts: {exc}"
+            return CogShopStatus(status="ERROR", queued=0, running=0, detail=detail)
+
+        return CogShopStatus(status=reported, queued=queued, running=running)
 
     def trigger_shop_case(
         self,
