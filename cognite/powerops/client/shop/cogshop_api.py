@@ -42,8 +42,8 @@ class CogShopStatus:
         return self.status == "RUNNING"
 
 
+# Status values the PowerOps API reports; "UNREACHABLE" is only ever set by this client.
 _REPORTED_STATUSES = ("RUNNING", "DISABLED", "ERROR")
-"""Status values the PowerOps API reports; "UNREACHABLE" is only ever set by this client."""
 
 
 class CogShopAPI:
