@@ -15,6 +15,10 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [1.2.0] - 2026-09-17
+### Added
+* Added `PowerOpsClient.cogshop.status()` to check whether CogSHOP as a Service is reachable for the project before calling `trigger_shop_case`. It returns a `CogShopStatus` with `is_available`, the reported `status`, and the number of `queued` and `running` SHOP runs. Availability problems are reported in the result (`status="UNREACHABLE"` with a human-readable `detail` and, for a rejected request, `http_status`) instead of being raised; an answer the SDK does not understand is reported as `status="ERROR"`.
+
 ## [1.1.7] - 2026-08-18
 ### Changed
 * Bumped `cognite-sdk` to `>=8.6.0` (from `>=7.67.1`), `cognite-pygen` to `^1.4.0` (from `^1.2.21`), and `cognite-toolkit` (dev) to `0.8.165` (from `0.6.70`).
