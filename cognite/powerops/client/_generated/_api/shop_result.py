@@ -125,6 +125,38 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
             | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
             | None
         ) = None,
+        cplex_logs_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        messages_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        post_run_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        pre_run_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -139,6 +171,10 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
             query: The search query,
             properties: The property to search, if nothing is passed all text fields will be searched.
             case: The case to filter on.
+            cplex_logs_file: The cplex logs file to filter on.
+            messages_file: The messages file to filter on.
+            post_run_file: The post run file to filter on.
+            pre_run_file: The pre run file to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop results to return. Defaults to 25.
@@ -168,6 +204,10 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
         filter_ = _create_shop_result_filter(
             self._view_id,
             case,
+            cplex_logs_file,
+            messages_file,
+            post_run_file,
+            pre_run_file,
             external_id_prefix,
             space,
             filter,
@@ -196,6 +236,38 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
             | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
             | None
         ) = None,
+        cplex_logs_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        messages_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        post_run_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        pre_run_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -209,6 +281,38 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
         group_by: None = None,
         property: ShopResultFields | SequenceNotStr[ShopResultFields] | None = None,
         case: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        cplex_logs_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        messages_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        post_run_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        pre_run_file: (
             str
             | tuple[str, str]
             | dm.NodeId
@@ -240,6 +344,38 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
             | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
             | None
         ) = None,
+        cplex_logs_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        messages_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        post_run_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        pre_run_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -263,6 +399,38 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
             | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
             | None
         ) = None,
+        cplex_logs_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        messages_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        post_run_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        pre_run_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -279,6 +447,10 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
             group_by: The property to group by when doing the aggregation.
             property: The property to perform aggregation on.
             case: The case to filter on.
+            cplex_logs_file: The cplex logs file to filter on.
+            messages_file: The messages file to filter on.
+            post_run_file: The post run file to filter on.
+            pre_run_file: The pre run file to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop results to return. Defaults to 25.
@@ -302,6 +474,10 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
         filter_ = _create_shop_result_filter(
             self._view_id,
             case,
+            cplex_logs_file,
+            messages_file,
+            post_run_file,
+            pre_run_file,
             external_id_prefix,
             space,
             filter,
@@ -328,6 +504,38 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
             | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
             | None
         ) = None,
+        cplex_logs_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        messages_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        post_run_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        pre_run_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -339,6 +547,10 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
             property: The property to use as the value in the histogram.
             interval: The interval to use for the histogram bins.
             case: The case to filter on.
+            cplex_logs_file: The cplex logs file to filter on.
+            messages_file: The messages file to filter on.
+            post_run_file: The post run file to filter on.
+            pre_run_file: The pre run file to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop results to return.
@@ -353,6 +565,10 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
         filter_ = _create_shop_result_filter(
             self._view_id,
             case,
+            cplex_logs_file,
+            messages_file,
+            post_run_file,
+            pre_run_file,
             external_id_prefix,
             space,
             filter,
@@ -429,6 +645,38 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
             | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
             | None
         ) = None,
+        cplex_logs_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        messages_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        post_run_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        pre_run_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         filter: dm.Filter | None = None,
@@ -441,6 +689,10 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
         Args:
             chunk_size: The number of shop results to return in each iteration. Defaults to 100.
             case: The case to filter on.
+            cplex_logs_file: The cplex logs file to filter on.
+            messages_file: The messages file to filter on.
+            post_run_file: The post run file to filter on.
+            pre_run_file: The pre run file to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             filter: (Advanced) If the filtering available in the above is not sufficient,
@@ -499,6 +751,10 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
         filter_ = _create_shop_result_filter(
             self._view_id,
             case,
+            cplex_logs_file,
+            messages_file,
+            post_run_file,
+            pre_run_file,
             external_id_prefix,
             space,
             filter,
@@ -508,6 +764,38 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
     def list(
         self,
         case: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        cplex_logs_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        messages_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        post_run_file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
+        pre_run_file: (
             str
             | tuple[str, str]
             | dm.NodeId
@@ -528,6 +816,10 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
 
         Args:
             case: The case to filter on.
+            cplex_logs_file: The cplex logs file to filter on.
+            messages_file: The messages file to filter on.
+            post_run_file: The post run file to filter on.
+            pre_run_file: The pre run file to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop results to return.
@@ -558,6 +850,10 @@ class ShopResultAPI(NodeAPI[ShopResult, ShopResultWrite, ShopResultList, ShopRes
         filter_ = _create_shop_result_filter(
             self._view_id,
             case,
+            cplex_logs_file,
+            messages_file,
+            post_run_file,
+            pre_run_file,
             external_id_prefix,
             space,
             filter,

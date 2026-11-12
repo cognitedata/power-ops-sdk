@@ -107,6 +107,14 @@ class ShopResultGraphQL(GraphQLCore):
         post_run: The post-run data for the SHOP run
         messages: The messages from the SHOP run
         cplex_logs: The logs from CPLEX
+        cplex_logs_file: The CogniteFile node holding the cplex log file of the SHOP run (space and externalId). Set
+            instead of cplexLogs for runs written after the file migration
+        messages_file: The CogniteFile node holding the messages file of the SHOP run (space and externalId). Set
+            instead of messages for runs written after the file migration
+        post_run_file: The CogniteFile node holding the post-run file of the SHOP run (space and externalId). Set
+            instead of postRun for runs written after the file migration
+        pre_run_file: The CogniteFile node holding the pre-run file of the SHOP run (space and externalId). Set instead
+            of preRun for runs written after the file migration
         alerts: An array of calculation level Alerts.
         output_time_series: TODO
     """
@@ -118,6 +126,10 @@ class ShopResultGraphQL(GraphQLCore):
     post_run: Optional[FileMetadataGraphQL] = Field(None, alias="postRun")
     messages: Optional[FileMetadataGraphQL] = None
     cplex_logs: Optional[FileMetadataGraphQL] = Field(None, alias="cplexLogs")
+    cplex_logs_file: Optional[dict] = Field(default=None, alias="cplexLogsFile")
+    messages_file: Optional[dict] = Field(default=None, alias="messagesFile")
+    post_run_file: Optional[dict] = Field(default=None, alias="postRunFile")
+    pre_run_file: Optional[dict] = Field(default=None, alias="preRunFile")
     alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
     output_time_series: Optional[list[ShopTimeSeriesGraphQL]] = Field(
         default=None, repr=False, alias="outputTimeSeries"
@@ -134,7 +146,16 @@ class ShopResultGraphQL(GraphQLCore):
             )
         return values
 
-    @field_validator("case", "alerts", "output_time_series", mode="before")
+    @field_validator(
+        "case",
+        "cplex_logs_file",
+        "messages_file",
+        "post_run_file",
+        "pre_run_file",
+        "alerts",
+        "output_time_series",
+        mode="before",
+    )
     def parse_graphql(cls, value: Any) -> Any:
         if not isinstance(value, dict):
             return value
@@ -166,6 +187,14 @@ class ShopResult(DomainModel):
         post_run: The post-run data for the SHOP run
         messages: The messages from the SHOP run
         cplex_logs: The logs from CPLEX
+        cplex_logs_file: The CogniteFile node holding the cplex log file of the SHOP run (space and externalId). Set
+            instead of cplexLogs for runs written after the file migration
+        messages_file: The CogniteFile node holding the messages file of the SHOP run (space and externalId). Set
+            instead of messages for runs written after the file migration
+        post_run_file: The CogniteFile node holding the post-run file of the SHOP run (space and externalId). Set
+            instead of postRun for runs written after the file migration
+        pre_run_file: The CogniteFile node holding the pre-run file of the SHOP run (space and externalId). Set instead
+            of preRun for runs written after the file migration
         alerts: An array of calculation level Alerts.
         output_time_series: TODO
     """
@@ -180,12 +209,16 @@ class ShopResult(DomainModel):
     post_run: Union[FileMetadata, str, None] = Field(None, alias="postRun")
     messages: Union[FileMetadata, str, None] = None
     cplex_logs: Union[FileMetadata, str, None] = Field(None, alias="cplexLogs")
+    cplex_logs_file: Union[str, dm.NodeId, None] = Field(default=None, alias="cplexLogsFile")
+    messages_file: Union[str, dm.NodeId, None] = Field(default=None, alias="messagesFile")
+    post_run_file: Union[str, dm.NodeId, None] = Field(default=None, alias="postRunFile")
+    pre_run_file: Union[str, dm.NodeId, None] = Field(default=None, alias="preRunFile")
     alerts: Optional[list[Union[Alert, str, dm.NodeId]]] = Field(default=None, repr=False)
     output_time_series: Optional[list[Union[ShopTimeSeries, str, dm.NodeId]]] = Field(
         default=None, repr=False, alias="outputTimeSeries"
     )
 
-    @field_validator("case", mode="before")
+    @field_validator("case", "cplex_logs_file", "messages_file", "post_run_file", "pre_run_file", mode="before")
     @classmethod
     def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
         return parse_single_connection(value, info.field_name)
@@ -217,6 +250,14 @@ class ShopResultWrite(DomainModelWrite):
         post_run: The post-run data for the SHOP run
         messages: The messages from the SHOP run
         cplex_logs: The logs from CPLEX
+        cplex_logs_file: The CogniteFile node holding the cplex log file of the SHOP run (space and externalId). Set
+            instead of cplexLogs for runs written after the file migration
+        messages_file: The CogniteFile node holding the messages file of the SHOP run (space and externalId). Set
+            instead of messages for runs written after the file migration
+        post_run_file: The CogniteFile node holding the post-run file of the SHOP run (space and externalId). Set
+            instead of postRun for runs written after the file migration
+        pre_run_file: The CogniteFile node holding the pre-run file of the SHOP run (space and externalId). Set instead
+            of preRun for runs written after the file migration
         alerts: An array of calculation level Alerts.
         output_time_series: TODO
     """
@@ -224,16 +265,26 @@ class ShopResultWrite(DomainModelWrite):
     _container_fields: ClassVar[tuple[str, ...]] = (
         "case",
         "cplex_logs",
+        "cplex_logs_file",
         "messages",
+        "messages_file",
         "objective_value",
         "post_run",
+        "post_run_file",
         "pre_run",
+        "pre_run_file",
     )
     _outwards_edges: ClassVar[tuple[tuple[str, dm.DirectRelationReference], ...]] = (
         ("alerts", dm.DirectRelationReference("power_ops_types", "calculationIssue")),
         ("output_time_series", dm.DirectRelationReference("power_ops_types", "ShopResult.outputTimeSeries")),
     )
-    _direct_relations: ClassVar[tuple[str, ...]] = ("case",)
+    _direct_relations: ClassVar[tuple[str, ...]] = (
+        "case",
+        "cplex_logs_file",
+        "messages_file",
+        "post_run_file",
+        "pre_run_file",
+    )
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopResult", "1")
 
@@ -245,6 +296,10 @@ class ShopResultWrite(DomainModelWrite):
     post_run: Union[FileMetadataWrite, str, None] = Field(None, alias="postRun")
     messages: Union[FileMetadataWrite, str, None] = None
     cplex_logs: Union[FileMetadataWrite, str, None] = Field(None, alias="cplexLogs")
+    cplex_logs_file: Union[str, dm.NodeId, None] = Field(default=None, alias="cplexLogsFile")
+    messages_file: Union[str, dm.NodeId, None] = Field(default=None, alias="messagesFile")
+    post_run_file: Union[str, dm.NodeId, None] = Field(default=None, alias="postRunFile")
+    pre_run_file: Union[str, dm.NodeId, None] = Field(default=None, alias="preRunFile")
     alerts: Optional[list[Union[AlertWrite, str, dm.NodeId]]] = Field(default=None, repr=False)
     output_time_series: Optional[list[Union[ShopTimeSeriesWrite, str, dm.NodeId]]] = Field(
         default=None, repr=False, alias="outputTimeSeries"
@@ -334,6 +389,38 @@ def _create_shop_result_filter(
         | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
         | None
     ) = None,
+    cplex_logs_file: (
+        str
+        | tuple[str, str]
+        | dm.NodeId
+        | dm.DirectRelationReference
+        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+        | None
+    ) = None,
+    messages_file: (
+        str
+        | tuple[str, str]
+        | dm.NodeId
+        | dm.DirectRelationReference
+        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+        | None
+    ) = None,
+    post_run_file: (
+        str
+        | tuple[str, str]
+        | dm.NodeId
+        | dm.DirectRelationReference
+        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+        | None
+    ) = None,
+    pre_run_file: (
+        str
+        | tuple[str, str]
+        | dm.NodeId
+        | dm.DirectRelationReference
+        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+        | None
+    ) = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -344,6 +431,66 @@ def _create_shop_result_filter(
     if case and isinstance(case, Sequence) and not isinstance(case, str) and not is_tuple_id(case):
         filters.append(
             dm.filters.In(view_id.as_property_ref("case"), values=[as_instance_dict_id(item) for item in case])
+        )
+    if isinstance(cplex_logs_file, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(cplex_logs_file):
+        filters.append(
+            dm.filters.Equals(view_id.as_property_ref("cplexLogsFile"), value=as_instance_dict_id(cplex_logs_file))
+        )
+    if (
+        cplex_logs_file
+        and isinstance(cplex_logs_file, Sequence)
+        and not isinstance(cplex_logs_file, str)
+        and not is_tuple_id(cplex_logs_file)
+    ):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("cplexLogsFile"), values=[as_instance_dict_id(item) for item in cplex_logs_file]
+            )
+        )
+    if isinstance(messages_file, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(messages_file):
+        filters.append(
+            dm.filters.Equals(view_id.as_property_ref("messagesFile"), value=as_instance_dict_id(messages_file))
+        )
+    if (
+        messages_file
+        and isinstance(messages_file, Sequence)
+        and not isinstance(messages_file, str)
+        and not is_tuple_id(messages_file)
+    ):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("messagesFile"), values=[as_instance_dict_id(item) for item in messages_file]
+            )
+        )
+    if isinstance(post_run_file, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(post_run_file):
+        filters.append(
+            dm.filters.Equals(view_id.as_property_ref("postRunFile"), value=as_instance_dict_id(post_run_file))
+        )
+    if (
+        post_run_file
+        and isinstance(post_run_file, Sequence)
+        and not isinstance(post_run_file, str)
+        and not is_tuple_id(post_run_file)
+    ):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("postRunFile"), values=[as_instance_dict_id(item) for item in post_run_file]
+            )
+        )
+    if isinstance(pre_run_file, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(pre_run_file):
+        filters.append(
+            dm.filters.Equals(view_id.as_property_ref("preRunFile"), value=as_instance_dict_id(pre_run_file))
+        )
+    if (
+        pre_run_file
+        and isinstance(pre_run_file, Sequence)
+        and not isinstance(pre_run_file, str)
+        and not is_tuple_id(pre_run_file)
+    ):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("preRunFile"), values=[as_instance_dict_id(item) for item in pre_run_file]
+            )
         )
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
@@ -435,11 +582,19 @@ class _ShopResultQuery(NodeQueryCore[T_DomainModelList, ShopResultList]):
         self.space = StringFilter(self, ["node", "space"])
         self.external_id = StringFilter(self, ["node", "externalId"])
         self.case_filter = DirectRelationFilter(self, self._view_id.as_property_ref("case"))
+        self.cplex_logs_file_filter = DirectRelationFilter(self, self._view_id.as_property_ref("cplexLogsFile"))
+        self.messages_file_filter = DirectRelationFilter(self, self._view_id.as_property_ref("messagesFile"))
+        self.post_run_file_filter = DirectRelationFilter(self, self._view_id.as_property_ref("postRunFile"))
+        self.pre_run_file_filter = DirectRelationFilter(self, self._view_id.as_property_ref("preRunFile"))
         self._filter_classes.extend(
             [
                 self.space,
                 self.external_id,
                 self.case_filter,
+                self.cplex_logs_file_filter,
+                self.messages_file_filter,
+                self.post_run_file_filter,
+                self.pre_run_file_filter,
             ]
         )
 

@@ -41,6 +41,7 @@ from cognite.powerops.client._generated.data_classes._core import (
     StringFilter,
     ViewPropertyId,
     BooleanFilter,
+    DirectRelationFilter,
     IntFilter,
 )
 
@@ -85,6 +86,8 @@ class ShopFileGraphQL(GraphQLCore):
         file_reference_prefix: The file reference prefix field.
         order: The order in which the file should be loaded into pyshop
         is_ascii: The file extension of the file
+        file: The CogniteFile node holding the file content (space and externalId). Takes precedence over fileReference
+            and fileReferencePrefix when set
     """
 
     view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopFile", "1")
@@ -94,6 +97,7 @@ class ShopFileGraphQL(GraphQLCore):
     file_reference_prefix: Optional[str] = Field(None, alias="fileReferencePrefix")
     order: Optional[int] = None
     is_ascii: Optional[bool] = Field(None, alias="isAscii")
+    file: Optional[dict] = Field(default=None)
 
     @model_validator(mode="before")
     def parse_data_record(cls, values: Any) -> Any:
@@ -105,6 +109,14 @@ class ShopFileGraphQL(GraphQLCore):
                 last_updated_time=values.pop("lastUpdatedTime", None),
             )
         return values
+
+    @field_validator("file", mode="before")
+    def parse_graphql(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        if "items" in value:
+            return value["items"]
+        return value
 
     def as_read(self) -> ShopFile:
         """Convert this GraphQL format of shop file to the reading format."""
@@ -130,6 +142,8 @@ class ShopFile(DomainModel):
         file_reference_prefix: The file reference prefix field.
         order: The order in which the file should be loaded into pyshop
         is_ascii: The file extension of the file
+        file: The CogniteFile node holding the file content (space and externalId). Takes precedence over fileReference
+            and fileReferencePrefix when set
     """
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopFile", "1")
@@ -142,6 +156,12 @@ class ShopFile(DomainModel):
     file_reference_prefix: Optional[str] = Field(None, alias="fileReferencePrefix")
     order: int
     is_ascii: bool = Field(alias="isAscii")
+    file: Union[str, dm.NodeId, None] = Field(default=None)
+
+    @field_validator("file", mode="before")
+    @classmethod
+    def parse_single(cls, value: Any, info: ValidationInfo) -> Any:
+        return parse_single_connection(value, info.field_name)
 
     def as_write(self) -> ShopFileWrite:
         """Convert this read version of shop file to the writing version."""
@@ -163,9 +183,12 @@ class ShopFileWrite(DomainModelWrite):
         file_reference_prefix: The file reference prefix field.
         order: The order in which the file should be loaded into pyshop
         is_ascii: The file extension of the file
+        file: The CogniteFile node holding the file content (space and externalId). Takes precedence over fileReference
+            and fileReferencePrefix when set
     """
 
     _container_fields: ClassVar[tuple[str, ...]] = (
+        "file",
         "file_reference",
         "file_reference_prefix",
         "is_ascii",
@@ -173,6 +196,7 @@ class ShopFileWrite(DomainModelWrite):
         "name",
         "order",
     )
+    _direct_relations: ClassVar[tuple[str, ...]] = ("file",)
 
     _view_id: ClassVar[dm.ViewId] = dm.ViewId("power_ops_core", "ShopFile", "1")
 
@@ -186,6 +210,7 @@ class ShopFileWrite(DomainModelWrite):
     file_reference_prefix: Optional[str] = Field(None, alias="fileReferencePrefix")
     order: int
     is_ascii: bool = Field(alias="isAscii")
+    file: Union[str, dm.NodeId, None] = Field(default=None)
 
 
 class ShopFileList(DomainModelList[ShopFile]):
@@ -215,6 +240,14 @@ def _create_shop_file_filter(
     min_order: int | None = None,
     max_order: int | None = None,
     is_ascii: bool | None = None,
+    file: (
+        str
+        | tuple[str, str]
+        | dm.NodeId
+        | dm.DirectRelationReference
+        | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+        | None
+    ) = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -244,6 +277,12 @@ def _create_shop_file_filter(
         filters.append(dm.filters.Range(view_id.as_property_ref("order"), gte=min_order, lte=max_order))
     if isinstance(is_ascii, bool):
         filters.append(dm.filters.Equals(view_id.as_property_ref("isAscii"), value=is_ascii))
+    if isinstance(file, str | dm.NodeId | dm.DirectRelationReference) or is_tuple_id(file):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("file"), value=as_instance_dict_id(file)))
+    if file and isinstance(file, Sequence) and not isinstance(file, str) and not is_tuple_id(file):
+        filters.append(
+            dm.filters.In(view_id.as_property_ref("file"), values=[as_instance_dict_id(item) for item in file])
+        )
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
@@ -293,6 +332,7 @@ class _ShopFileQuery(NodeQueryCore[T_DomainModelList, ShopFileList]):
         self.file_reference_prefix = StringFilter(self, self._view_id.as_property_ref("fileReferencePrefix"))
         self.order = IntFilter(self, self._view_id.as_property_ref("order"))
         self.is_ascii = BooleanFilter(self, self._view_id.as_property_ref("isAscii"))
+        self.file_filter = DirectRelationFilter(self, self._view_id.as_property_ref("file"))
         self._filter_classes.extend(
             [
                 self.space,
@@ -302,6 +342,7 @@ class _ShopFileQuery(NodeQueryCore[T_DomainModelList, ShopFileList]):
                 self.file_reference_prefix,
                 self.order,
                 self.is_ascii,
+                self.file_filter,
             ]
         )
 
