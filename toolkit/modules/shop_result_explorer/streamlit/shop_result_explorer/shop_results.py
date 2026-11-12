@@ -4,6 +4,7 @@ import pandas as pd
 import streamlit as st
 import yaml
 from cognite.client import CogniteClient
+from cognite.client.data_classes import data_modeling as dm
 from cognite.powerops.client import PowerOpsClient
 from utils import filters_to_str, nested_get
 
@@ -35,9 +36,23 @@ custom_css = {
 }
 
 
+def select_result_file(shop_result: dict, classic_field: str) -> tuple[str | None, dict | None]:
+    """Return the external id to show and the CogniteFile node to download, or None for a classic file."""
+    if node := shop_result.get(f"{classic_field}File"):
+        return node["externalId"], node
+    return nested_get(shop_result, [classic_field, "externalId"]), None
+
+
 def load_file_contents(file_external_id: str):
+    # "Select" stores the CogniteFile node next to the external id; a typed-in id has no node and is read as classic.
+    file_node = st.session_state.get("file_node")
     try:
-        file_contents = client.files.download_bytes(external_id=file_external_id)
+        if file_node and file_node.get("externalId") == file_external_id:
+            file_contents = client.files.download_bytes(
+                instance_id=dm.NodeId(file_node["space"], file_node["externalId"])
+            )
+        else:
+            file_contents = client.files.download_bytes(external_id=file_external_id)
         st.session_state["shop_model_dict"] = yaml.safe_load(file_contents)
         st.session_state["loaded_file"] = file_external_id
     except Exception as e:
@@ -187,6 +202,10 @@ with exp_result_selector:
             }
         }
         objectiveValue
+        preRunFile
+        postRunFile
+        messagesFile
+        cplexLogsFile
         preRun {
             externalId
             downloadLink {
@@ -248,24 +267,27 @@ with exp_result_selector:
             col4.write(nested_get(shop_result, ["case", "endTime"]))
             col5.write(shop_result.get("lastUpdatedTime"))
             with col6:
-                post_run_file_xid = nested_get(shop_result, ["postRun", "externalId"])
+                post_run_file_xid, post_run_node = select_result_file(shop_result, "postRun")
                 if post_run_file_xid:
                     select_post_run = st.button("Select", key=f"postRun{ii}")
                     if select_post_run:
                         st.session_state["file_external_id"] = post_run_file_xid
+                        st.session_state["file_node"] = post_run_node
                         st.session_state["exp_result_selector_expanded"] = False
                         st.session_state["exp_result_explorer_expanded"] = True
 
             with col7:
-                pre_run_file_xid = nested_get(shop_result, ["preRun", "externalId"])
+                pre_run_file_xid, pre_run_node = select_result_file(shop_result, "preRun")
                 if pre_run_file_xid:
                     select_post_run = st.button("Select", key=f"preRun{ii}")
                     if select_post_run:
                         st.session_state["file_external_id"] = pre_run_file_xid
+                        st.session_state["file_node"] = pre_run_node
                         st.session_state["exp_result_selector_expanded"] = False
                         st.session_state["exp_result_explorer_expanded"] = True
             with col_download:
                 with st.popover(label=""):
+                    # Download links exist for classic files only; node-backed files are read via "Select" above.
                     for _shop_file in ["postRun", "preRun", "messages"]:
                         if url := ((shop_result.get(_shop_file) or {}).get("downloadLink", {}) or {}).get(
                             "downloadUrl", {}

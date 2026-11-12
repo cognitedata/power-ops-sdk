@@ -69,6 +69,38 @@ properties:
     containerPropertyIdentifier: cplexLogs
     name: cplexLogs
     description: The logs from CPLEX
+  preRunFile:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: ShopResult
+      type: container
+    containerPropertyIdentifier: preRunFile
+    name: preRunFile
+    description: The CogniteFile node holding the pre-run file of the SHOP run (space and externalId). Set instead of preRun for runs written after the file migration
+  postRunFile:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: ShopResult
+      type: container
+    containerPropertyIdentifier: postRunFile
+    name: postRunFile
+    description: The CogniteFile node holding the post-run file of the SHOP run (space and externalId). Set instead of postRun for runs written after the file migration
+  messagesFile:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: ShopResult
+      type: container
+    containerPropertyIdentifier: messagesFile
+    name: messagesFile
+    description: The CogniteFile node holding the messages file of the SHOP run (space and externalId). Set instead of messages for runs written after the file migration
+  cplexLogsFile:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: ShopResult
+      type: container
+    containerPropertyIdentifier: cplexLogsFile
+    name: cplexLogsFile
+    description: The CogniteFile node holding the cplex log file of the SHOP run (space and externalId). Set instead of cplexLogs for runs written after the file migration
   outputTimeSeries:
     type:
       space: "{{power_ops_type_space}}"

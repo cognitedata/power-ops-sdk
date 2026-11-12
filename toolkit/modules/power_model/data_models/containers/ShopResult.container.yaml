@@ -50,3 +50,35 @@ properties:
     autoIncrement: false
     name: cplexLogs
     description: The cplex logs from the shop run
+  preRunFile:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: preRunFile
+    description: The CogniteFile node (space and externalId) holding the pre-run file of the SHOP run. Set instead of preRun for runs written after the file migration
+  postRunFile:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: postRunFile
+    description: The CogniteFile node (space and externalId) holding the post-run file of the SHOP run. Set instead of postRun for runs written after the file migration
+  messagesFile:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: messagesFile
+    description: The CogniteFile node (space and externalId) holding the messages file of the SHOP run. Set instead of messages for runs written after the file migration
+  cplexLogsFile:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: cplexLogsFile
+    description: The CogniteFile node (space and externalId) holding the cplex log file of the SHOP run. Set instead of cplexLogs for runs written after the file migration

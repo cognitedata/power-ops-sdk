@@ -1,11 +1,29 @@
 import datetime
+import uuid
+from pathlib import Path
 from unittest import mock
 
 import pytest
 import requests
+from cognite.client.data_classes import FileMetadata
+from cognite.client.data_classes import data_modeling as dm
+from cognite.client.data_classes.data_modeling.cdm.v1 import CogniteFile, CogniteFileApply
 
-from cognite.powerops.client._generated.data_classes import ShopCaseWrite, ShopModelWrite, ShopScenarioWrite
-from cognite.powerops.client.shop.cogshop_api import CogShopAPI, CogShopStatus
+from cognite.powerops.client._generated.data_classes import (
+    ShopCaseWrite,
+    ShopFileWrite,
+    ShopModelWrite,
+    ShopScenarioWrite,
+)
+from cognite.powerops.client._generated.data_classes._core import DomainModelWrite
+from cognite.powerops.client.shop.cogshop_api import SHOP_RELEASE_TAG, CogShopAPI, CogShopStatus
+
+# `ShopFile.file` exists on the generated classes only after the model is deployed and pygen is rerun
+# (scripts/pygen_generate_clients.py); until then ShopFileWrite ignores the field.
+needs_regenerated_client = pytest.mark.skipif(
+    "file" not in ShopFileWrite.model_fields,
+    reason="generated client predates ShopFile.file: deploy the model to sandbox, rerun pygen_generate_clients.py",
+)
 
 
 @pytest.fixture
@@ -26,6 +44,12 @@ def mock_po():
 @pytest.fixture
 def cogshop_api(mock_cdf, mock_po):
     return CogShopAPI(mock_cdf, mock_po)
+
+
+@pytest.fixture
+def external_id_factory(monkeypatch):
+    """Write classes need an external id; PowerOpsClient installs a factory, these tests a plain one."""
+    monkeypatch.setattr(DomainModelWrite, "external_id_factory", lambda cls, data: f"test:{uuid.uuid4()}")
 
 
 class TestCogShopAPI:
@@ -221,3 +245,125 @@ class TestStatus:
             pytest.raises(ValueError),
         ):
             cogshop_api.status(timeout=-1)
+
+
+class TestShopFileReferences:
+    start_time = datetime.datetime(2023, 10, 1, 0, 0, tzinfo=datetime.timezone.utc)
+    end_time = datetime.datetime(2023, 10, 2, 0, 0, tzinfo=datetime.timezone.utc)
+
+    def _prepare(self, cogshop_api, shop_file_list):
+        return cogshop_api.prepare_shop_case_with_existing_scenario(
+            shop_file_list=shop_file_list,
+            start_time=self.start_time,
+            end_time=self.end_time,
+            shop_scenario_reference="scenario_ext_id",
+        )
+
+    def test_classic_external_id_sets_file_reference(self, cogshop_api, external_id_factory):
+        case = self._prepare(cogshop_api, [("classic_xid", "case.yaml", False, "")])
+
+        (shop_file,) = case.shop_files
+        assert isinstance(shop_file, ShopFileWrite)
+        assert shop_file.file_reference == "classic_xid"
+        assert getattr(shop_file, "file", None) is None
+        assert (shop_file.name, shop_file.is_ascii, shop_file.label, shop_file.order) == ("case.yaml", False, "", 1)
+
+    @needs_regenerated_client
+    def test_node_id_sets_file_and_leaves_the_classic_reference_empty(self, cogshop_api, external_id_factory):
+        node_id = dm.NodeId("power_ops_instances", "case_file")
+
+        case = self._prepare(
+            cogshop_api,
+            [(node_id, "case.yaml", False, ""), ("classic_xid", "commands.yaml", False, "commands")],
+        )
+
+        first, second = case.shop_files
+        assert first.file == node_id
+        assert first.file_reference is None
+        assert second.file is None
+        assert second.file_reference == "classic_xid"
+        assert [shop_file.order for shop_file in (first, second)] == [1, 2]
+
+    def test_other_reference_types_are_rejected(self, cogshop_api, external_id_factory):
+        with pytest.raises(TypeError):
+            self._prepare(cogshop_api, [(42, "case.yaml", False, "")])
+
+
+class TestUploadShopFile:
+    def test_applies_a_cognite_file_node_then_uploads_the_content_by_instance_id(self, cogshop_api, mock_cdf, tmp_path):
+        local = tmp_path / "case.yaml"
+        local.write_text("model: {}")
+
+        node_id = cogshop_api.upload_shop_file(local, "case_file", mime_type="application/yaml", tags=["demo"])
+
+        assert node_id == dm.NodeId("power_ops_instances", "case_file")
+        node = mock_cdf.data_modeling.instances.apply.call_args.kwargs["nodes"]
+        assert isinstance(node, CogniteFileApply)
+        assert (node.space, node.external_id, node.name, node.mime_type, node.tags) == (
+            "power_ops_instances",
+            "case_file",
+            "case.yaml",
+            "application/yaml",
+            ["demo"],
+        )
+        mock_cdf.files.upload_content.assert_called_once_with(path=str(local), instance_id=node_id)
+        mock_cdf.files.upload.assert_not_called()
+
+    def test_name_and_space_can_be_overridden(self, cogshop_api, mock_cdf, tmp_path):
+        local = tmp_path / "upload.tmp"
+        local.write_bytes(b"x")
+
+        node_id = cogshop_api.upload_shop_file(str(local), "cut_file", name="cut.txt", space="customer_space")
+
+        node = mock_cdf.data_modeling.instances.apply.call_args.kwargs["nodes"]
+        assert node_id == dm.NodeId("customer_space", "cut_file")
+        assert node.name == "cut.txt"
+
+    def test_missing_local_file_raises_before_touching_cdf(self, cogshop_api, mock_cdf, tmp_path):
+        with pytest.raises(FileNotFoundError):
+            cogshop_api.upload_shop_file(Path(tmp_path / "missing.yaml"), "missing")
+
+        mock_cdf.data_modeling.instances.apply.assert_not_called()
+        mock_cdf.files.upload_content.assert_not_called()
+
+
+class TestListShopVersions:
+    @staticmethod
+    def _classic(name: str) -> FileMetadata:
+        return FileMetadata(id=1, uploaded=True, created_time=0, last_updated_time=0, name=name)
+
+    @staticmethod
+    def _node(name: str) -> CogniteFile:
+        return CogniteFile(
+            space="power_ops_instances",
+            external_id=name,
+            version=1,
+            last_updated_time=0,
+            created_time=0,
+            name=name,
+        )
+
+    def test_nodes_first_then_classic_files_not_already_listed(self, cogshop_api, mock_cdf):
+        mock_cdf.data_modeling.instances.list.return_value = [
+            self._node("SHOP-18.2.0-pyshop-python3.11-linux.zip"),
+            self._node("SHOP-16.0.3-pyshop-python3.11-linux.zip"),
+        ]
+        mock_cdf.files.list.return_value = [
+            self._classic("SHOP-16.0.3-pyshop-python3.11-linux.zip"),
+            self._classic("SHOP-15.4.1.1-pyshop-python3.11-linux.zip"),
+        ]
+
+        versions = cogshop_api.list_shop_versions()
+
+        assert versions == [
+            "SHOP-18.2.0-pyshop-python3.11-linux.zip",
+            "SHOP-16.0.3-pyshop-python3.11-linux.zip",
+            "SHOP-15.4.1.1-pyshop-python3.11-linux.zip",
+        ]
+        list_kwargs = mock_cdf.data_modeling.instances.list.call_args.kwargs
+        assert list_kwargs["instance_type"] is CogniteFile
+        assert list_kwargs["limit"] == -1
+        assert list_kwargs["filter"].dump() == {
+            "containsAny": {"property": ("cdf_cdm", "CogniteFile/v1", "tags"), "values": [SHOP_RELEASE_TAG]}
+        }
+        mock_cdf.files.list.assert_called_once_with(metadata={"shop:type": SHOP_RELEASE_TAG}, limit=-1)
