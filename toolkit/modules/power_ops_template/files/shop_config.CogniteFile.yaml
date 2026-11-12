@@ -1,0 +1,27 @@
+# SHOP licence and release distributions as CogniteFile nodes; the tags are what CogShop-as-a-Service looks up.
+# Content is uploaded only when a file named `name` sits next to this YAML; otherwise upload it afterwards with
+# `files.upload_content(path, instance_id=...)`. The classic shop_config.FileMetadata.yaml stays until cog-shop reads nodes.
+- space: "{{power_ops_instance_space}}"
+  externalId: "SHOP_license"
+  name: "SHOP_license.dat"
+  description: "SHOP licence for CogShop-as-a-Service, from https://shop.sintef.energy/licence-generator/"
+  directory: "/toolkit/modules/power_ops/files/"
+  mimeType: "text/plain"
+  tags:
+    - "shop-license" # Required for CogShop-as-a-Service, do not change
+- space: "{{power_ops_instance_space}}"
+  externalId: "SHOP_16.0.3"
+  name: "SHOP-16.0.3-pyshop-python3.11-linux.zip"
+  description: "SHOP 16.0.3 pyshop distribution (SHOP-16.0.3-linux-pyshop-python-all), from https://shop.sintef.energy/download/shop16-0-3/"
+  directory: "/toolkit/modules/power_ops/files/"
+  mimeType: "application/zip"
+  tags:
+    - "shop-release" # Required for CogShop-as-a-Service, do not change
+- space: "{{power_ops_instance_space}}"
+  externalId: "SHOP_15.4.1.1"
+  name: "SHOP-15.4.1.1-pyshop-python3.11-linux.zip"
+  description: "SHOP 15.4.1.1 pyshop distribution (SHOP-15.4.1.1-linux-pyshop-python-all), from https://shop.sintef.energy/download/shop15-4-1-1/"
+  directory: "/toolkit/modules/power_ops/files/"
+  mimeType: "application/zip"
+  tags:
+    - "shop-release" # Required for CogShop-as-a-Service, do not change

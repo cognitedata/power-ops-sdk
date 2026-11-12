@@ -54,3 +54,11 @@ properties:
     autoIncrement: false
     name: isAscii
     description: The file extension of the file to determine if the filed should be loaded as either Ascii or Yaml
+  file:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: file
+    description: The CogniteFile node (space and externalId) holding the file content. Takes precedence over fileReference and fileReferencePrefix when set

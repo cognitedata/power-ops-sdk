@@ -15,6 +15,19 @@ Changes are grouped as follows:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [1.3.0] - 2026-10-29
+### Added
+* SHOP files can be data-modeling files (`cdf_cdm:CogniteFile` nodes) instead of classic CDF files. Classic references keep working.
+  * `power_ops_core` v1 gains five nullable direct relations, added in place: `ShopFile.file` and `ShopResult.preRunFile`, `postRunFile`, `messagesFile`, `cplexLogsFile`. The classic `file`-typed properties stay for historical instances.
+  * `PowerOpsClient.cogshop.upload_shop_file(path, external_id, ...)` uploads a local file as a `CogniteFile` node in `power_ops_instances` and returns its `NodeId`.
+  * `prepare_shop_case` and `prepare_shop_case_with_existing_scenario` accept that `NodeId` as the `file_reference` of a shop file tuple; a classic external id is still accepted (deprecated). Node references need a CogSHOP release that reads `ShopFile.file`: until it is deployed for your project, keep passing classic external ids.
+  * Toolkit template `power_ops_template/files/shop_config.CogniteFile.yaml`: the SHOP licence and release zips as `CogniteFile` nodes tagged `shop-license` / `shop-release`, next to the classic `FileMetadata` entries they will replace.
+
+### Changed
+* `PowerOpsClient.cogshop.list_shop_versions()` lists `CogniteFile` nodes tagged `shop-release` first and classic `shop:type=shop-release` files that are not already listed after them.
+* `retrieve_shop_case_graphql` also selects `ShopFile.file` (requires the model change to be deployed).
+* The Streamlit SHOP result explorer loads a result's file by instance id when the new relation is set.
+
 ## [1.2.0] - 2026-09-17
 ### Added
 * Added `PowerOpsClient.cogshop.status()` to check whether CogSHOP as a Service is reachable for the project before calling `trigger_shop_case`. It returns a `CogShopStatus` with `is_available`, the reported `status`, and the number of `queued` and `running` SHOP runs. Availability problems are reported in the result (`status="UNREACHABLE"` with a human-readable `detail` and, for a rejected request, `http_status`) instead of being raised; an answer the SDK does not understand is reported as `status="ERROR"`.

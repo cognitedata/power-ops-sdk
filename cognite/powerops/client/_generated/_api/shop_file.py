@@ -59,6 +59,7 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
         self,
         external_id: str | dm.NodeId | tuple[str, str],
         space: str = DEFAULT_INSTANCE_SPACE,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> ShopFile | None: ...
 
     @overload
@@ -66,12 +67,14 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
         self,
         external_id: SequenceNotStr[str | dm.NodeId | tuple[str, str]],
         space: str = DEFAULT_INSTANCE_SPACE,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> ShopFileList: ...
 
     def retrieve(
         self,
         external_id: str | dm.NodeId | tuple[str, str] | SequenceNotStr[str | dm.NodeId | tuple[str, str]],
         space: str = DEFAULT_INSTANCE_SPACE,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> ShopFile | ShopFileList | None:
         """Retrieve one or more shop files by id(s).
 
@@ -96,6 +99,7 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
         return self._retrieve(
             external_id,
             space,
+            retrieve_connections=retrieve_connections,
         )
 
     def search(
@@ -111,6 +115,14 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
         min_order: int | None = None,
         max_order: int | None = None,
         is_ascii: bool | None = None,
+        file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -133,6 +145,7 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
             min_order: The minimum value of the order to filter on.
             max_order: The maximum value of the order to filter on.
             is_ascii: The is ascii to filter on.
+            file: The file to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop files to return. Defaults to 25.
@@ -170,6 +183,7 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
             min_order,
             max_order,
             is_ascii,
+            file,
             external_id_prefix,
             space,
             filter,
@@ -201,6 +215,14 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
         min_order: int | None = None,
         max_order: int | None = None,
         is_ascii: bool | None = None,
+        file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -224,6 +246,14 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
         min_order: int | None = None,
         max_order: int | None = None,
         is_ascii: bool | None = None,
+        file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -251,6 +281,14 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
         min_order: int | None = None,
         max_order: int | None = None,
         is_ascii: bool | None = None,
+        file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -277,6 +315,14 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
         min_order: int | None = None,
         max_order: int | None = None,
         is_ascii: bool | None = None,
+        file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -303,6 +349,7 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
             min_order: The minimum value of the order to filter on.
             max_order: The maximum value of the order to filter on.
             is_ascii: The is ascii to filter on.
+            file: The file to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop files to return. Defaults to 25.
@@ -334,6 +381,7 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
             min_order,
             max_order,
             is_ascii,
+            file,
             external_id_prefix,
             space,
             filter,
@@ -363,6 +411,14 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
         min_order: int | None = None,
         max_order: int | None = None,
         is_ascii: bool | None = None,
+        file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -384,6 +440,7 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
             min_order: The minimum value of the order to filter on.
             max_order: The maximum value of the order to filter on.
             is_ascii: The is ascii to filter on.
+            file: The file to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop files to return.
@@ -406,6 +463,7 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
             min_order,
             max_order,
             is_ascii,
+            file,
             external_id_prefix,
             space,
             filter,
@@ -456,9 +514,18 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
         min_order: int | None = None,
         max_order: int | None = None,
         is_ascii: bool | None = None,
+        file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         filter: dm.Filter | None = None,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
         limit: int | None = None,
         cursors: dict[str, str | None] | None = None,
     ) -> Iterator[ShopFileList]:
@@ -475,6 +542,7 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
             min_order: The minimum value of the order to filter on.
             max_order: The maximum value of the order to filter on.
             is_ascii: The is ascii to filter on.
+            file: The file to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             filter: (Advanced) If the filtering available in the above is not sufficient,
@@ -538,6 +606,7 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
             min_order,
             max_order,
             is_ascii,
+            file,
             external_id_prefix,
             space,
             filter,
@@ -555,6 +624,14 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
         min_order: int | None = None,
         max_order: int | None = None,
         is_ascii: bool | None = None,
+        file: (
+            str
+            | tuple[str, str]
+            | dm.NodeId
+            | dm.DirectRelationReference
+            | Sequence[str | tuple[str, str] | dm.NodeId | dm.DirectRelationReference]
+            | None
+        ) = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -562,6 +639,7 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
         sort_by: ShopFileFields | Sequence[ShopFileFields] | None = None,
         direction: Literal["ascending", "descending"] = "ascending",
         sort: InstanceSort | list[InstanceSort] | None = None,
+        retrieve_connections: Literal["skip", "identifier", "full"] = "skip",
     ) -> ShopFileList:
         """List/filter shop files
 
@@ -575,6 +653,7 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
             min_order: The minimum value of the order to filter on.
             max_order: The maximum value of the order to filter on.
             is_ascii: The is ascii to filter on.
+            file: The file to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop files to return.
@@ -610,6 +689,7 @@ class ShopFileAPI(NodeAPI[ShopFile, ShopFileWrite, ShopFileList, ShopFileWriteLi
             min_order,
             max_order,
             is_ascii,
+            file,
             external_id_prefix,
             space,
             filter,

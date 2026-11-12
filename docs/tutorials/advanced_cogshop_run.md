@@ -15,21 +15,27 @@ Typical setup:
 - Verify credentials and project access.
 - Prepare local SHOP input files.
 
-Example helper for uploading files:
+Input files are uploaded as data-modeling files (`CogniteFile` nodes in `power_ops_instances`), and a
+`ShopFile` points at the node. `upload_shop_file` creates (or updates) the node, uploads the content and returns
+its `NodeId`:
 
 ```python
 from pathlib import Path
 
-def upload_file(local_file_name: str, external_id: str) -> str:
+def upload_file(local_file_name: str, external_id: str):
     file_path = (Path("example_case_files") / local_file_name).resolve()
-    uploaded = powerops.cdf.files.upload(
-        path=str(file_path),
+    return powerops.cogshop.upload_shop_file(
+        path=file_path,
         external_id=external_id,
-        name=local_file_name,
-        overwrite=True,
+        mime_type="application/yaml",
     )
-    return uploaded.external_id
 ```
+
+A classic CDF file external id (`powerops.cdf.files.upload(...)`) is still accepted in place of the `NodeId`,
+but that path is deprecated and will be removed after one release cycle.
+
+> **Note:** node references need a CogSHOP release that reads `ShopFile.file`. Until it is deployed for your
+> project, upload with `powerops.cdf.files.upload(...)` and pass the classic external id.
 
 ## Example 1: Multiple SHOP Files in One Case
 
@@ -165,14 +171,13 @@ for external_id in cleanup_case_ids + cleanup_scenario_ids:
     powerops.powermodel.delete(external_id)
 ```
 
-### Delete uploaded CDF files used by tutorial runs
+### Delete uploaded files used by tutorial runs
+
+Deleting the file node also deletes its content.
 
 ```python
-# File external IDs returned from upload_file(...)
-file_external_ids = [case_file, commands_file]
-
-for file_id in file_external_ids:
-    powerops.cdf.files.delete(external_id=file_id)
+# NodeIds returned from upload_file(...)
+powerops.cdf.data_modeling.instances.delete(nodes=[case_file, commands_file])
 ```
 
 ### Verify cleanup
@@ -180,7 +185,7 @@ for file_id in file_external_ids:
 ```python
 # Should return empty/None after deletion
 print(powerops.cogshop.retrieve_shop_case(shop_case.external_id))
-print(powerops.cdf.files.retrieve(external_id=case_file))
+print(powerops.cdf.files.retrieve(instance_id=case_file))
 ```
 
 ## Source Notebook

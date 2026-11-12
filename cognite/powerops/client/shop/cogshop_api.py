@@ -1,10 +1,13 @@
 import datetime
 from dataclasses import dataclass
-from typing import Literal
+from pathlib import Path
+from typing import Any, Literal
 from urllib.parse import urlparse
 
 import requests
 from cognite.client import CogniteClient
+from cognite.client.data_classes import data_modeling as dm
+from cognite.client.data_classes.data_modeling.cdm.v1 import CogniteFile, CogniteFileApply
 
 from cognite.powerops.client._generated._api_client import PowerOpsModelsClient
 from cognite.powerops.client._generated.data_classes import (
@@ -44,6 +47,25 @@ class CogShopStatus:
 
 # Status values the PowerOps API reports; "UNREACHABLE" is only ever set by this client.
 _REPORTED_STATUSES = ("RUNNING", "DISABLED", "ERROR")
+
+# Tags of the SHOP release and licence `CogniteFile` nodes (`power_ops_template/files/shop_config.CogniteFile.yaml`).
+SHOP_RELEASE_TAG = "shop-release"
+SHOP_LICENSE_TAG = "shop-license"
+
+# A SHOP input file: the id of a `CogniteFile` node (see `CogShopAPI.upload_shop_file`), or the external id of a
+# classic CDF file. Classic references are deprecated and kept for one release cycle.
+ShopFileReference = str | dm.NodeId
+
+
+def _shop_file_reference_kwargs(file_reference: ShopFileReference) -> dict[str, ShopFileReference]:
+    """The `ShopFileWrite` field a file reference goes to: `file` for a node, `fileReference` for a classic file."""
+    if isinstance(file_reference, dm.NodeId):
+        return {"file": file_reference}
+    if isinstance(file_reference, str):
+        return {"fileReference": file_reference}
+    raise TypeError(
+        f"A SHOP file reference must be a NodeId or a classic file external id, not {type(file_reference).__name__}."
+    )
 
 
 class CogShopAPI:
@@ -187,9 +209,50 @@ class CogShopAPI:
 
         raise ValueError(f"Invalid shop scenario reference: {shop_scenario_reference}.")
 
+    def upload_shop_file(
+        self,
+        path: str | Path,
+        external_id: str,
+        *,
+        name: str | None = None,
+        mime_type: str | None = None,
+        space: str = DEFAULT_INSTANCE_SPACE,
+        tags: list[str] | None = None,
+        description: str | None = None,
+    ) -> dm.NodeId:
+        """
+        Upload a SHOP input file as a `CogniteFile` node and return its id, to be used in `prepare_shop_case*`.
+
+        The node is upserted (an existing node with the same id keeps the properties not given here) and the
+        content is uploaded by instance id, replacing any previous content.
+
+        Args:
+            path: Local file to upload.
+            external_id: External id of the file node, unique within `space`.
+            name: File name stored on the node. Defaults to the local file name.
+            mime_type: MIME type of the content, e.g. "application/yaml" or "text/plain".
+            space: Instance space of the node. Defaults to "power_ops_instances".
+            tags: Free-text labels stored on the node.
+            description: Description stored on the node.
+
+        Returns:
+            dm.NodeId: The id of the file node, the `file_reference` of a shop file tuple.
+        """
+        path = Path(path)
+        if not path.is_file():
+            raise FileNotFoundError(f"No such file: {path}")
+        # An explicit None is applied as null and clears the property on an existing node; unset ones are left alone.
+        optional: dict[str, Any] = {"mime_type": mime_type, "tags": tags, "description": description}
+        properties = {key: value for key, value in optional.items() if value is not None}
+        node = CogniteFileApply(space=space, external_id=external_id, name=name or path.name, **properties)
+        self._cdf.data_modeling.instances.apply(nodes=node)
+        node_id = node.as_id()
+        self._cdf.files.upload_content(path=str(path), instance_id=node_id)
+        return node_id
+
     def prepare_shop_case_with_existing_scenario(
         self,
-        shop_file_list: list[tuple[str, str, bool, str]],
+        shop_file_list: list[tuple[ShopFileReference, str, bool, str]],
         start_time: datetime.datetime,
         end_time: datetime.datetime,
         shop_scenario_reference: str | ShopScenarioWrite,
@@ -204,7 +267,8 @@ class CogShopAPI:
         Args:
           shop_file_list: List of (file_reference, file_name, is_ascii, label) tuples,
                           in the order the files should be loaded.
-             `file_reference`: external id of file in CDF.
+             `file_reference`: `NodeId` of a `CogniteFile` node (see `upload_shop_file`), or the external id of a
+                               classic CDF file (deprecated).
              `file_name`: Name of the file.
              `is_ascii`: Whether the file is in ASCII format.
              `label`: Label to be added to the file, use "" if no labels
@@ -220,10 +284,10 @@ class CogShopAPI:
         shop_files_write = [
             ShopFileWrite(
                 name=file_name,
-                fileReference=file_reference,
                 isAscii=is_ascii,
                 label=label,
                 order=i + 1,  # Order is 1-indexed
+                **_shop_file_reference_kwargs(file_reference),
             )
             for i, (file_reference, file_name, is_ascii, label) in enumerate(shop_file_list)
         ]
@@ -240,7 +304,7 @@ class CogShopAPI:
 
     def prepare_shop_case(
         self,
-        shop_file_list: list[tuple[str, str, bool, str]],
+        shop_file_list: list[tuple[ShopFileReference, str, bool, str]],
         shop_version: str,
         start_time: datetime.datetime,
         end_time: datetime.datetime,
@@ -262,7 +326,8 @@ class CogShopAPI:
         Args:
           shop_file_list: List of (file_reference, file_name, is_ascii, label) tuples,
                           in the order the files should be loaded.
-            `file_reference`: external id of file in CDF.
+            `file_reference`: `NodeId` of a `CogniteFile` node (see `upload_shop_file`), or the external id of a
+                              classic CDF file (deprecated).
             `file_name`: Name of the file.
             `is_ascii`: Whether the file is in ASCII format.
             `label`: Label to be added to the file, use "" if no labels
@@ -334,12 +399,20 @@ class CogShopAPI:
         return self._po.shop_based_day_ahead_bid_process.shop_result.retrieve(external_id=result_external_id)
 
     def list_shop_versions(self) -> list[str]:
-        """List the available version of SHOP in CDF. Does not include versions that are "local" to CShaaS.
-        SHOP releases should have the following format:
-        'SHOP-{VERSION}-pyshop-python{py_version}.linux.zip' and the metadata {'shop:type': 'shop-release'}.
+        """List the SHOP releases available in CDF, by file name. Does not include versions bundled in CogSHOP.
+
+        A release is a `CogniteFile` node tagged "shop-release" or, until those are removed, a classic file with
+        the metadata {'shop:type': 'shop-release'}. Node names come first, then classic names not already listed.
         """
-        # todo? Add an endpoint to list the available versions of SHOP via powerops API?
-        return [file.name for file in self._cdf.files.list(metadata={"shop:type": "shop-release"}, limit=-1)]
+        nodes = self._cdf.data_modeling.instances.list(
+            instance_type=CogniteFile,
+            filter=dm.filters.ContainsAny(CogniteFile.get_source().as_property_ref("tags"), [SHOP_RELEASE_TAG]),
+            limit=-1,
+        )
+        names = [node.name for node in nodes if node.name]
+        classic = self._cdf.files.list(metadata={"shop:type": SHOP_RELEASE_TAG}, limit=-1)
+        names.extend(file.name for file in classic if file.name and file.name not in names)
+        return names
 
     def retrieve_shop_case_graphql(self, case_external_id: str) -> ShopCase:
         """Retrieve a shop case from CDF using GraphQL.
@@ -412,6 +485,7 @@ def _shop_case_query(external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> s
               name
               order
               space
+              file
               fileReference {{
                 externalId
                 id

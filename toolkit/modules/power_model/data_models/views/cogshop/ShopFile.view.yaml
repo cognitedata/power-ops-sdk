@@ -69,3 +69,11 @@ properties:
     containerPropertyIdentifier: isAscii
     name: isAscii
     description: The file extension of the file
+  file:
+    container:
+      space: "{{power_ops_models_space}}"
+      externalId: ShopFile
+      type: container
+    containerPropertyIdentifier: file
+    name: file
+    description: The CogniteFile node holding the file content (space and externalId). Takes precedence over fileReference and fileReferencePrefix when set
